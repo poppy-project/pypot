@@ -6,11 +6,42 @@
 	objectVersion = 46;
 	objects = {
 
+/* Begin PBXFileReference section */
+		A861048215BF3ADC005F6573 /* setup.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = setup.py; sourceTree = "<group>"; };
+		A861048315BF3AE8005F6573 /* README */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
 /* Begin PBXGroup section */
 		A861046F15BF06DC005F6573 = {
 			isa = PBXGroup;
 			children = (
+				A861048415BF3D62005F6573 /* pypot */,
+				A861048515BF3D62005F6573 /* samples */,
+				A861048615BF3D62005F6573 /* test */,
+				A861048215BF3ADC005F6573 /* setup.py */,
+				A861048315BF3AE8005F6573 /* README */,
 			);
+			sourceTree = "<group>";
+		};
+		A861048415BF3D62005F6573 /* pypot */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = pypot;
+			sourceTree = "<group>";
+		};
+		A861048515BF3D62005F6573 /* samples */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = samples;
+			sourceTree = "<group>";
+		};
+		A861048615BF3D62005F6573 /* test */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = test;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
