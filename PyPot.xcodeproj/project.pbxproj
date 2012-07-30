@@ -9,6 +9,9 @@
 /* Begin PBXFileReference section */
 		A861048215BF3ADC005F6573 /* setup.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = setup.py; sourceTree = "<group>"; };
 		A861048315BF3AE8005F6573 /* README */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README; sourceTree = "<group>"; };
+		A8BED67515BFFFAA00229A79 /* __init__.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = __init__.py; sourceTree = "<group>"; };
+		A8BED67615BFFFB900229A79 /* __init__.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = __init__.py; sourceTree = "<group>"; };
+		A8BED67715C0000100229A79 /* test_dynamixel.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = test_dynamixel.py; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -26,6 +29,8 @@
 		A861048415BF3D62005F6573 /* pypot */ = {
 			isa = PBXGroup;
 			children = (
+				A8BED67515BFFFAA00229A79 /* __init__.py */,
+				A8BED67315BFFF9B00229A79 /* dynamixel */,
 			);
 			path = pypot;
 			sourceTree = "<group>";
@@ -40,8 +45,17 @@
 		A861048615BF3D62005F6573 /* test */ = {
 			isa = PBXGroup;
 			children = (
+				A8BED67715C0000100229A79 /* test_dynamixel.py */,
 			);
 			path = test;
+			sourceTree = "<group>";
+		};
+		A8BED67315BFFF9B00229A79 /* dynamixel */ = {
+			isa = PBXGroup;
+			children = (
+				A8BED67615BFFFB900229A79 /* __init__.py */,
+			);
+			path = dynamixel;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -171,6 +185,7 @@
 				A861047B15BF06DC005F6573 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
