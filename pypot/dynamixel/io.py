@@ -5,8 +5,10 @@ import serial
 import threading
 
 from pypot.utils import flatten_list, reshape_list
+
 from conversions import *
 from protocol import *
+from packet import *
 
 
 class DynamixelIO:
@@ -17,8 +19,8 @@ class DynamixelIO:
         you can open serial communication with robotis motors (MX, RX, AX)
         using communication protocols TTL or RS485.
         
-        This class handles low-level IO communication by automatically creating
-        packets based on the need to access the different registers in the motors.
+        This class handles low-level IO communication by providing access to the
+        different registers in the motors.
         Users can use high-level access such as position, load, torque to control
         the motors.
         
@@ -53,6 +55,9 @@ class DynamixelIO:
         
         DynamixelCommunicationError:
         raised when the serial communication failed
+        
+        DynamixelTimeoutError:
+        raised when no status packet is returned.
         
         DynamixelUnsupportedFunctionForMotorError:
         raised when calling a method that is unsupported by the motor model
@@ -136,7 +141,7 @@ class DynamixelIO:
         if not (0 <= motor_id <= 253):
             raise ValueError('Motor id must be in [0, 253]!')
         
-        ping_packet = self._build_packet(motor_id, 'PING')
+        ping_packet = DynamixelPingPacket(motor_id)
         
         try:
             self._send_packet(ping_packet)
@@ -452,8 +457,8 @@ class DynamixelIO:
             
             The limits are in degrees.
             The hardware upper limit depends on the motor model.
-            MX : [0, 2 * PI]
-            AX, RX : [0, 5/3 * PI]
+            MX : [0, 360]
+            AX, RX : [0, 300]
             
             """
         if lower_limit >= upper_limit:
@@ -915,102 +920,67 @@ class DynamixelIO:
     
     # MARK: - Low level communication
     
-    def _send_packet(self, packet, wait_for_answer=True):
+    def _send_packet(self, instruction_packet, wait_for_answer=True):
         with self._lock:
-            nbytes = self._serial.write(array.array('B', packet).tostring())
-            if nbytes != len(packet):
+            nbytes = self._serial.write(instruction_packet.to_bytes())
+            if nbytes != len(instruction_packet):
                 raise DynamixelCommunicationError('Packet not correctly sent',
-                                                  packet[2],
-                                                  packet,
+                                                  instruction_packet,
                                                   None)
             
             if not wait_for_answer:
                 return
             
-            header = list(self._serial.read(4))
-            if not header:
-                raise DynamixelTimeoutError(packet[2], packet)
+            read_bytes = list(self._serial.read(DynamixelPacketHeader.LENGTH))
+            if not read_bytes:
+                raise DynamixelTimeoutError(instruction_packet)
             
-            if header[:2] != ['\xff', '\xff'] or len(header) != 4:
-                raise DynamixelCommunicationError('Packet received with an inconsistent header',
-                                                  packet[2],
-                                                  packet,
-                                                  header)
+            try:
+                header = DynamixelPacketHeader.from_bytes(read_bytes)
+                read_bytes += self._serial.read(header.packet_length)
+                status_packet = DynamixelStatusPacket.from_bytes(read_bytes)
+                    
+            except DynamixelInconsistentPacketError as e:
+                raise DynamixelCommunicationError(e.message,
+                                                  instruction_packet,
+                                                  read_bytes)
+        
+            if status_packet.error != 0:
+                raise DynamixelMotorError(status_packet)
             
-            motor_id, length = map(ord, header[2:])
-            
-            status_packet = map(ord, self._serial.read(length))
-            if len(status_packet) != length or len(status_packet) < 2:
-                raise DynamixelCommunicationError('Packet received with an inconsistent status packet',
-                                                  packet[2],
-                                                  packet,
-                                                  header + status_packet)
-            
-            error_code = status_packet[0]
-            parameters = status_packet[1:-1]
-            checksum = status_packet[-1]
-            
-            if self._compute_checksum(motor_id, length, error_code, parameters) != checksum:
-                raise DynamixelCommunicationError('Packet received with wrong checksum',
-                                                  packet[2],
-                                                  packet,
-                                                  header + status_packet)
-            
-            if error_code != 0:
-                raise DynamixelMotorError(motor_id, error_code)
-            
-            return parameters
+            return status_packet
     
     
     def _send_read_packet(self, motor_id, control_name):
-        address, number_of_data, data_length = DXL_CONTROLS[control_name]
-        
-        packet = self._build_packet(motor_id,
-                                    'READ_DATA',
-                                    (address, number_of_data * data_length))
-        
-        answer = self._send_packet(packet)
-        return self._decode_data(answer, data_length)
+        packet = DynamixelReadDataPacket(motor_id, control_name)
+        status_packet = self._send_packet(packet)
+                
+        return self._decode_data(status_packet.parameters,
+                                 REG_SIZE(control_name))
     
     
-    def _send_sync_read_packet(self, motor_ids, control_name):
-        address, number_of_data, data_length = DXL_CONTROLS[control_name]
-        
-        packet = self._build_packet(DXL_BROADCAST,
-                                    'SYNC_READ',
-                                    [address, number_of_data * data_length] + list(motor_ids))
-        
-        answer = self._send_packet(packet)
-        
-        return map(lambda data: self._decode_data(data, data_length),
-                   reshape_list(answer, number_of_data * data_length))
+    def _send_sync_read_packet(self, motor_ids, control_name):        
+        packet = DynamixelSyncReadDataPacket(motor_ids, control_name)
+        status_packet = self._send_packet(packet)
+
+        answer = reshape_list(status_packet.parameters, REG_LENGTH(control_name))
+
+        return map(lambda data: self._decode_data(data, REG_SIZE(control_name)),
+                   answer)
     
     
     def _send_write_packet(self, motor_id, control_name, data):
-        address, number_of_data, data_length = DXL_CONTROLS[control_name]
+        data = self._code_data(data, REG_SIZE(control_name))
         
-        data = self._code_data(data, data_length)
-        
-        if len(data) != number_of_data * data_length:
-            raise ValueError('invalid data (%s) for the control (%s)' % (data, control_name))
-        
-        packet = self._build_packet(motor_id,
-                                    'WRITE_DATA',
-                                    [address] + data)
-        
-        self._send_packet(packet)
+        write_packet = DynamixelWriteDataPacket(motor_id, control_name, data)        
+        self._send_packet(write_packet)
     
     def _send_sync_write_packet(self, control_name, data_tuples):
-        address, number_of_data, data_length = DXL_CONTROLS[control_name]
+        code_func = lambda chunk: [chunk[0]] + self._code_data(chunk[1:], REG_SIZE(control_name))
+        data = flatten_list(map(code_func, data_tuples))
         
-        data = flatten_list(map(lambda chunk: [chunk[0]] + self._code_data(chunk[1:], data_length),
-                                data_tuples))
-        
-        packet = self._build_packet(DXL_BROADCAST,
-                                    'SYNC_WRITE',
-                                    [address, number_of_data * data_length] + data)
-        
-        self._send_packet(packet, wait_for_answer=False)
+        sync_write_packet = DynamixelSyncWriteDataPacket(control_name, data)
+        self._send_packet(sync_write_packet, wait_for_answer=False)
     
     
     def _build_packet(self, motor_id, instruction_name, parameters=()):
@@ -1033,7 +1003,7 @@ class DynamixelIO:
     
     def _code_data(self, data, data_length):
         if data_length not in (1, 2):
-            raise ValueError('Unsupported data length (%d)' % (data_length))
+            raise ValueError('Unsupported size of data (%d)' % (data_length))
         
         if not hasattr(data, '__len__'):
             data = [data]
@@ -1045,7 +1015,7 @@ class DynamixelIO:
     
     def _decode_data(self, data, data_length):
         if data_length not in (1, 2):
-            raise ValueError('Unsupported data length (%d)' % (data_length))
+            raise ValueError('Unsupported size of data (%d)' % (data_length))
         
         if data_length == 2:
             data = map(two_bytes_to_integer, reshape_list(data, 2))
@@ -1054,29 +1024,19 @@ class DynamixelIO:
 
 # MARK: - Dxl Error
 
-class DynamixelIOError(Exception):
-    def __init__(self, motor_id):
-        self.motor_id = motor_id
-
-class DynamixelCommunicationError(DynamixelIOError):
-    def __init__(self, message, motor_id, sent_packet, received_packet):
-        DynamixelIOError.__init__(self, motor_id)
-        
+class DynamixelCommunicationError(Exception):
+    def __init__(self, message, instruction_packet, response):        
         self.message = message
-        self.sent_packet = sent_packet
-        self.received_packet = received_packet
+        self.instruction_packet = instruction_packet
+        self.response = map(ord, response) if response else None
     
     def __str__(self):
-        return '%s (Motor id:%d, sent packet: %s received packet: %s' % (self.message, self.motor_id, self.sent_packet, self.received_packet)
+        return '%s (instruction packet: %s, status packet: %s)' \
+            % (self.message, self.instruction_packet, self.response)
 
-class DynamixelTimeoutError(DynamixelIOError):
-    def __init__(self, motor_id, sent_packet):
-        DynamixelIOError.__init__(self, motor_id)
-        
-        self.sent_packet = sent_packet
-    
-    def __str__(self):
-        return 'Motor %d did not respond when sent packet %s' % (self.motor_id, self.sent_packet)
+class DynamixelTimeoutError(DynamixelCommunicationError):
+    def __init__(self, instruction_packet):
+        DynamixelCommunicationError.__init__(self, 'Timeout', instruction_packet, None)
 
 
 class DynamixelMotorError(Exception):

@@ -10,7 +10,7 @@ sys.path.append(os.path.join(os.getcwd(), '..'))
 
 import pypot.dynamixel
 
-port = '/dev/tty.usbserial-A4008aCD'
+port = '/dev/ttyACM0'
 timeout = 1
 
 if __name__ == '__main__':
