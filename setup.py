@@ -8,5 +8,5 @@ setup(name='PyPot',
       author_email='pierre.rouanet@gmail.com',
       url='https://bitbucket.org/pierrerouanet/pypot',
       description='Python Library for Robot Control',
-      requires=['serial>=2.6'],
+      requires=['serial'],
       )

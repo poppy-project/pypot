@@ -10,10 +10,18 @@ sys.path.append(os.path.join(os.getcwd(), '..'))
 
 import pypot.dynamixel
 
-port = '/dev/ttyACM0'
+
+
 timeout = 1
 
 if __name__ == '__main__':
+    ports = pypot.dynamixel.get_available_ports()
+    if not ports:
+        print 'No port found :-('
+        sys.exit(1)
+
+    port = ports[0]
+    print 'Try to connect on ', port
     dxl_io = pypot.dynamixel.DynamixelIO(port, timeout=timeout)
     
     print 'Connexion established :', dxl_io
