@@ -1,3 +1,4 @@
+
 from io import DynamixelIO
 
 import os
@@ -13,4 +14,3 @@ def get_available_ports():
         return glob.glob('/dev/ttyACM*') + glob.glob('/dev/ttyUSB*')
 
     raise NotImplementedError('Unknown operating system')
-    
