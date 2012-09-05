@@ -18,6 +18,7 @@
 		A8BED67515BFFFAA00229A79 /* __init__.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = __init__.py; sourceTree = "<group>"; };
 		A8BED67615BFFFB900229A79 /* __init__.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = __init__.py; sourceTree = "<group>"; };
 		A8BED67715C0000100229A79 /* test_dynamixel.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = test_dynamixel.py; sourceTree = "<group>"; };
+		A8C7D0D915F76468007C5E66 /* test_conversions.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = test_conversions.py; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -53,6 +54,7 @@
 		A861048615BF3D62005F6573 /* test */ = {
 			isa = PBXGroup;
 			children = (
+				A8C7D0D815F7645D007C5E66 /* dynamixel */,
 				A8BED67715C0000100229A79 /* test_dynamixel.py */,
 			);
 			path = test;
@@ -66,6 +68,14 @@
 				A89F23B415F602E8007590EC /* packet.py */,
 				A82D52C915F259B200ED73DC /* protocol.py */,
 				A82D52CA15F259C800ED73DC /* conversions.py */,
+			);
+			path = dynamixel;
+			sourceTree = "<group>";
+		};
+		A8C7D0D815F7645D007C5E66 /* dynamixel */ = {
+			isa = PBXGroup;
+			children = (
+				A8C7D0D915F76468007C5E66 /* test_conversions.py */,
 			);
 			path = dynamixel;
 			sourceTree = "<group>";
@@ -92,7 +102,7 @@
 		A861047115BF06DC005F6573 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0430;
+				LastUpgradeCheck = 0440;
 				ORGANIZATIONNAME = INRIA;
 			};
 			buildConfigurationList = A861047415BF06DC005F6573 /* Build configuration list for PBXProject "PyPot" */;
@@ -160,6 +170,7 @@
 		A861047A15BF06DC005F6573 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
 				DEBUGGING_SYMBOLS = YES;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -172,6 +183,7 @@
 		A861047B15BF06DC005F6573 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
 				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";

@@ -5,55 +5,59 @@ import math
 # MARK : Unit conversions
 
 position_range = {
-    'MX' : (4096.0, 360.0),
-    '*' : (1024.0, 300.0)
+    'MX' : (4096, 360.0),
+    '*' : (1024, 300.0)
 }
 
 def position_to_degree(position, motor_model):
     model = 'MX' if motor_model.startswith('MX') else '*'
     max_pos, max_deg = position_range[model]
     
-    if 0 >= position >= max_pos:
+    if not (0 <= position <= max_pos):
         raise ValueError('Position must be in [0, %d]' % (max_pos))
     
-    return (position / max_pos) * max_deg
+    return (float(position) / max_pos) * max_deg
 
 
 def degree_to_position(degree, motor_model):
     model = 'MX' if motor_model.startswith('MX') else '*'
     max_pos, max_deg = position_range[model]
     
-    if 0 >= degree >= max_deg:
+    if not (0 <= degree <= max_deg):
         raise ValueError('Degree must be in [0, %f]' % (max_deg))
     
     return int((degree / max_deg) * max_pos)
 
 SPEED_TO_RPM = 0.114
+SPEED_MAX = 2047
+SPEED_MID = 1024
 RPM_MAX = 117.0
 
 def speed_to_rpm(speed):
-    if not (0 <= speed <= 2047):
-        raise ValueError('Speed must be in [0, 2047]')
+    if not (0 <= speed <= SPEED_MAX):
+        raise ValueError('Speed must be in [0, %d]' % (SPEED_MAX))
     
     
     direction = ((speed >> 10) * 2) - 1
     
-    rpm = (speed % 1024) * SPEED_TO_RPM
+    rpm = (speed % SPEED_MID) * SPEED_TO_RPM
     
-    return direction * rpm
+    return float(direction * rpm)
 
 
 def rpm_to_speed(rpm):
-    if not (-RPM_MAX <= rpm < RPM_MAX):
+    if not (-RPM_MAX <= rpm <= RPM_MAX):
         raise ValueError('Rpm must be in [%d, %d]' % (int(-RPM_MAX), int(RPM_MAX)))
     
-    speed = 1024 * (abs(rpm) / RPM_MAX)
+    speed = (SPEED_MID - 1) * (abs(rpm) / RPM_MAX)
     
     if rpm > 0:
-        speed += 1024
+        speed += SPEED_MID
     
-    return int(speed)
+    return int(round(speed, 0))
 
+LOAD_MAX = 2047
+LOAD_MID = 1024
 
 def load_to_percent(load):
     """
@@ -61,22 +65,23 @@ def load_to_percent(load):
         http://support.robotis.com/en/product/dynamixel/mx_series/mx-28.htm#Actuator_Address_28
         
         """
-    if not (0 <= load <= 2047):
-        raise ValueError('Load must be in [0, 2047]')
+    if not (0 <= load <= LOAD_MAX):
+        raise ValueError('Load must be in [0, %d]' % (LOAD_MAX))
     
     direction = ((load >> 10) * 2) - 1
     
-    percent = (load % 1024) * 0.1
+    percent = (load % LOAD_MID) * 0.1
     percent = max(min(percent, 100.0), 0.0)
     
     return direction * percent
 
+MAX_TORQUE = 1023
 
 def percent_to_torque_limit(percent):
     if not (0 <= percent <= 100):
         raise ValueError('Percent must be in [0, 100]')
     
-    return int(percent * 10.23)
+    return int(percent * (MAX_TORQUE / 100.0))
 
 
 # MARK: - Byte conversions
