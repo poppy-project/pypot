@@ -14,6 +14,14 @@
 		A82D52CD15F25A5700ED73DC /* motor-sinus.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = "motor-sinus.py"; sourceTree = "<group>"; };
 		A861048215BF3ADC005F6573 /* setup.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = setup.py; sourceTree = "<group>"; };
 		A861048315BF3AE8005F6573 /* README */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README; sourceTree = "<group>"; };
+		A895D8031604E9BD0086C539 /* conf.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = conf.py; sourceTree = "<group>"; };
+		A895D8041604E9BD0086C539 /* index.rst */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = index.rst; sourceTree = "<group>"; };
+		A895D8051604E9BD0086C539 /* make.bat */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = make.bat; sourceTree = "<group>"; };
+		A895D8061604E9BD0086C539 /* Makefile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.make; path = Makefile; sourceTree = "<group>"; };
+		A895D8071604EC2B0086C539 /* intro.rst */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = intro.rst; sourceTree = "<group>"; };
+		A895D8081604EC450086C539 /* tutorial.rst */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = tutorial.rst; sourceTree = "<group>"; };
+		A895D8091604EC700086C539 /* dynamixel.rst */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = dynamixel.rst; sourceTree = "<group>"; };
+		A895D80A1604ECA30086C539 /* FAQ.rst */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = FAQ.rst; sourceTree = "<group>"; };
 		A89F23B415F602E8007590EC /* packet.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = packet.py; sourceTree = "<group>"; };
 		A8BED67515BFFFAA00229A79 /* __init__.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = __init__.py; sourceTree = "<group>"; };
 		A8BED67615BFFFB900229A79 /* __init__.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = __init__.py; sourceTree = "<group>"; };
@@ -33,6 +41,7 @@
 			isa = PBXGroup;
 			children = (
 				A861048415BF3D62005F6573 /* pypot */,
+				A895D7FF1604E9BD0086C539 /* doc */,
 				A82D52CC15F25A3F00ED73DC /* samples */,
 				A861048615BF3D62005F6573 /* test */,
 				A861048215BF3ADC005F6573 /* setup.py */,
@@ -56,6 +65,45 @@
 				A8BED67715C0000100229A79 /* test_dynamixel.py */,
 			);
 			path = test;
+			sourceTree = "<group>";
+		};
+		A895D7FF1604E9BD0086C539 /* doc */ = {
+			isa = PBXGroup;
+			children = (
+				A895D8001604E9BD0086C539 /* _build */,
+				A895D8011604E9BD0086C539 /* _static */,
+				A895D8021604E9BD0086C539 /* _templates */,
+				A895D8031604E9BD0086C539 /* conf.py */,
+				A895D8051604E9BD0086C539 /* make.bat */,
+				A895D8061604E9BD0086C539 /* Makefile */,
+				A895D8041604E9BD0086C539 /* index.rst */,
+				A895D8071604EC2B0086C539 /* intro.rst */,
+				A895D8081604EC450086C539 /* tutorial.rst */,
+				A895D8091604EC700086C539 /* dynamixel.rst */,
+				A895D80A1604ECA30086C539 /* FAQ.rst */,
+			);
+			path = doc;
+			sourceTree = "<group>";
+		};
+		A895D8001604E9BD0086C539 /* _build */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = _build;
+			sourceTree = "<group>";
+		};
+		A895D8011604E9BD0086C539 /* _static */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = _static;
+			sourceTree = "<group>";
+		};
+		A895D8021604E9BD0086C539 /* _templates */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = _templates;
 			sourceTree = "<group>";
 		};
 		A8BED67315BFFF9B00229A79 /* dynamixel */ = {
@@ -92,7 +140,7 @@
 		A861047115BF06DC005F6573 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0430;
+				LastUpgradeCheck = 0440;
 				ORGANIZATIONNAME = INRIA;
 			};
 			buildConfigurationList = A861047415BF06DC005F6573 /* Build configuration list for PBXProject "PyPot" */;
@@ -160,6 +208,7 @@
 		A861047A15BF06DC005F6573 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
 				DEBUGGING_SYMBOLS = YES;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -172,6 +221,7 @@
 		A861047B15BF06DC005F6573 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
 				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
