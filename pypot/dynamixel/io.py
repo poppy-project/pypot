@@ -48,11 +48,7 @@ class DynamixelIO:
             :param int baudrate: default for new motors: 57600, for PyPot motors: 1000000
             :param float timeout: read timeout in seconds
             
-            :raises: ValueError (when port is already used)
-            
-            Exception
-            ---------
-            IOError : raised when trying to open a port already in used
+            :raises: IOError (when port is already used)
             
             """
         if port in self.__open_ports:
@@ -262,14 +258,9 @@ class DynamixelIO:
         """
             Finds the model name of the robotis motor.
             
-            Parameters
-            ----------
-            motor_id : int
-            The motor ID [0-253]
-            
-            Returns
-            -------
-            one of the DXL_MODEL_NUMBER values (see protocol.py)
+            :param int motor_id: specified motor id [0-253]
+            :return: one of the DXL_MODEL_NUMBER values (see :py:mod:`~pypot.dynamixel.protocol`)
+            :raises: DynamixelUnsupportedMotorError if the motor model is currently unsupported.
             
             """
         model_number = self._send_read_packet(motor_id, 'MODEL_NUMBER')
