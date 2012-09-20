@@ -1,6 +1,6 @@
 import array
 
-from protocol import *
+from pypot.dynamixel.protocol import *
 
 # MARK: - Generic Packet
 
@@ -346,6 +346,12 @@ class DynamixelStatusPacket(DynamixelPacket):
             raise DynamixelInconsistentPacketError('Packet received with a wrong checksum', bytes)
         
         return status_packet
+    
+                
+    def to_bytes(self):
+        return self.header.to_bytes() + \
+            array.array('B', [self.error] + self.parameters + [self.checksum]).tostring()
+
     
     
     def _compute_checksum(self):

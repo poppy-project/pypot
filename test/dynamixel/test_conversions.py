@@ -12,13 +12,18 @@ class TestConversion(unittest.TestCase):
     def tearDown(self):
         pass
     
-    def test_position_degree(self):
+    def test_position_degree(self):        
         for model in conv.position_range.keys():
-            # Test position to degree
-            self.assertEqual(conv.position_to_degree(0, model), 0)
+            pmax, dmax = conv.position_range[model]
             
-            self.assertEqual(conv.position_to_degree(conv.position_range[model][0], model),
-                             conv.position_range[model][1])
+            # Test position to degree
+            self.assertEqual(conv.position_to_degree(0, model), -dmax / 2)
+            self.assertEqual(conv.position_to_degree(pmax -1, model), dmax / 2)
+            
+
+            self.assertTrue(abs(conv.position_to_degree(pmax / 2, model) - 0) < 0.2)
+            
+            return
             
             for _ in range(10):
                 N = random.randint(1, 100)
@@ -66,26 +71,32 @@ class TestConversion(unittest.TestCase):
     def test_speed_rpm(self):
         # Test speed to rpm
         self.assertEqual(conv.speed_to_rpm(0), 0)
-        self.assertAlmostEqual(conv.speed_to_rpm(conv.SPEED_MAX),
+        self.assertEqual(conv.speed_to_rpm(conv.SPEED_MAX / 2), 0)
+
+        self.assertAlmostEqual(conv.speed_to_rpm(conv.SPEED_MAX - 1),
                                conv.RPM_MAX,
-                               places=0)
+                               places=2)
+
+        self.assertAlmostEqual(conv.speed_to_rpm((conv.SPEED_MAX / 2) - 1),
+                               -conv.RPM_MAX,
+                               places=2)
+        
         
         for _ in range(10):
-            N = random.randint(1, 100)
+            s = random.randint(0, (conv.SPEED_MAX / 2) - 1)
             
-            s = ((conv.SPEED_MID / N) - 1)
-            
-            self.assertAlmostEqual(conv.speed_to_rpm(s) / (conv.RPM_MAX / N),
-                                   -1.0,
-                                   places=0)
-            self.assertAlmostEqual(conv.speed_to_rpm(s + conv.SPEED_MID) / (conv.RPM_MAX / N),
-                                   1.0,
-                                   places=0)
+            err = abs(conv.speed_to_rpm(s) - (-conv.RPM_MAX * (float(s) / ((conv.SPEED_MAX / 2) - 1))))
+            self.assertTrue(err < 1)
+        
+            err = abs(conv.speed_to_rpm(s + conv.SPEED_MAX / 2) - (conv.RPM_MAX * (float(s) / ((conv.SPEED_MAX / 2) - 1))))
+            self.assertTrue(err < 1)
+                
         
         for _ in range(10):
-            x = random.randint(0, conv.SPEED_MID - 1)
+            x = random.randint(0, (conv.SPEED_MAX / 2) - 1)
             self.assertEqual(conv.speed_to_rpm(x),
-                             -conv.speed_to_rpm(x + conv.SPEED_MID))
+                             -conv.speed_to_rpm(x + conv.SPEED_MAX / 2))
+                
         
         
         x = random.randint(conv.SPEED_MAX + 1, conv.SPEED_MAX + 100)
@@ -96,50 +107,47 @@ class TestConversion(unittest.TestCase):
         
         # Test rpm to speed
         self.assertEqual(conv.rpm_to_speed(0), 0)
-        self.assertEqual(conv.rpm_to_speed(conv.RPM_MAX), conv.SPEED_MAX)
+        self.assertTrue(abs(conv.rpm_to_speed(conv.RPM_MAX) - conv.SPEED_MAX) <= 1)
         
         for _ in range(10):
-            N = random.randint(1, 100)
-            x = conv.RPM_MAX / N
-            self.assertAlmostEqual(conv.rpm_to_speed(x) / float(conv.SPEED_MID + (conv.SPEED_MID / N)),
-                                   1.0,
-                                   places=0)
-            self.assertAlmostEqual(conv.rpm_to_speed(-x) / float(conv.SPEED_MID / N),
-                                   1.0,
-                                   places=0)
-        
-        x = random.randint(conv.RPM_MAX + 1, conv.RPM_MAX + 100)
-        self.assertRaises(ValueError, conv.rpm_to_speed, x)
-        
-        x = random.randint(conv.RPM_MAX + 1, conv.RPM_MAX + 100)
+            r = random.randint(0, int(conv.RPM_MAX))
+                
+            err = abs(conv.rpm_to_speed(r) - ((conv.SPEED_MAX / 2) + (r / conv.RPM_MAX) * ((conv.SPEED_MAX / 2) - 1)))
+            self.assertTrue(err < 1)
+            
+            err = abs(conv.rpm_to_speed(-r) - (r / conv.RPM_MAX) * ((conv.SPEED_MAX / 2) - 1))
+            self.assertTrue(err < 1)
+
+
+        x = random.randint(int(conv.RPM_MAX) + 1, int(conv.RPM_MAX) + 100)
         self.assertRaises(ValueError, conv.rpm_to_speed, x)
         self.assertRaises(ValueError, conv.rpm_to_speed, -x)
         
         for _ in range(10):
-            x = random.randint(1, conv.SPEED_MAX)
-            
-            self.assertAlmostEqual(x / conv.rpm_to_speed(conv.speed_to_rpm(x)),
-                                   1.0)
+            x = random.randint(0, conv.SPEED_MAX - 1)
+            err = abs(x - conv.rpm_to_speed(conv.speed_to_rpm(x)))
+            self.assertTrue(err < 1)    
     
-    
-    def test_load_to_percent(self):
+    def test_load_to_percent(self):        
         self.assertEqual(0, conv.load_to_percent(0))
-        self.assertEqual(100, conv.load_to_percent(conv.LOAD_MAX))
-        self.assertEqual(-100, conv.load_to_percent(conv.LOAD_MID - 1))
+        self.assertEqual(0, conv.load_to_percent(conv.LOAD_MAX / 2))
         
+        self.assertEqual(100, conv.load_to_percent(conv.LOAD_MAX - 1))
+        self.assertEqual(-100, conv.load_to_percent((conv.LOAD_MAX / 2) - 1))
+                
         x = random.randint(1, 100)
         self.assertRaises(ValueError, conv.load_to_percent, -x)
         self.assertRaises(ValueError, conv.load_to_percent, conv.LOAD_MAX + x)
         
         for _ in range(10):
             N = random.randint(1, 100)
-            x = (conv.LOAD_MID - 1) / N
-            self.assertAlmostEqual(conv.load_to_percent(x) / (100.0 / N),
-                                   -1.0,
-                                   places=0)
-            self.assertAlmostEqual(conv.load_to_percent(x + conv.LOAD_MID) / (100.0 / N),
-                                   1.0,
-                                   places=0)
+            x = (N / 100.0) * ((conv.LOAD_MAX / 2) - 1)
+            
+            err = abs(N - (-conv.load_to_percent(x)))
+            self.assertTrue(err < 1)
+            
+            err = abs(N - (conv.load_to_percent(conv.LOAD_MAX / 2 + x)))
+            self.assertTrue(err < 1)
     
     
     def test_percent_to_torque(self):
@@ -153,10 +161,8 @@ class TestConversion(unittest.TestCase):
         for _ in range(10):
             N = random.randint(1, 100)
             
-            self.assertAlmostEqual(conv.percent_to_torque_limit(100.0 / N) / (conv.MAX_TORQUE / N),
-                                   1.0,
-                                   places=0)
-    
+            err = abs(conv.percent_to_torque_limit(100.0 / N) - (float(conv.MAX_TORQUE) / N))
+            self.assertTrue(err <= 0.5)
     
     def test_integer_to_bytes(self):
         self.assertEqual((0, 0), conv.integer_to_two_bytes(0))

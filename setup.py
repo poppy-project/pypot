@@ -9,4 +9,5 @@ setup(name='PyPot',
       url='https://bitbucket.org/pierrerouanet/pypot',
       description='Python Library for Robot Control',
       requires=['serial'],
+      packages=['pypot', 'pypot.robot', 'pypot.config', 'pypot.dynamixel'],
       )

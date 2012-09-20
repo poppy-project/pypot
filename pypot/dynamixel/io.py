@@ -6,9 +6,9 @@ import threading
 
 from pypot.utils import flatten_list, reshape_list
 
-from conversions import *
-from protocol import *
-from packet import *
+from pypot.dynamixel.conversions import *
+from pypot.dynamixel.protocol import *
+from pypot.dynamixel.packet import *
 
 
 class DynamixelIO:
@@ -88,9 +88,13 @@ class DynamixelIO:
             timeout : float (optional)
             read timeout in seconds
             
+            Exception
+            ---------
+            IOError : raised when trying to open a port already in used
+            
             """
         if port in self.__open_ports:
-            raise ValueError('Port already used (%s)!' % (port))
+            raise IOError('Port already used (%s)!' % (port))
         
         self._serial = serial.Serial(port, baudrate, timeout=timeout)
         self.__open_ports.append(port)
@@ -98,11 +102,13 @@ class DynamixelIO:
         self._lock = threading.RLock()
         
         self._motor_models = {}
+        self._motor_return_level = {}
     
     def __del__(self):
         """ Automatically closes the serial communication on destruction. """
-        self.__open_ports.remove(self._serial.port)
-        self._serial.close()
+        if hasattr(self, '_serial'):
+            self.__open_ports.remove(self._serial.port)
+            self._serial.close()
     
     def __repr__(self):
         return "<DXL IO: port='%s' baudrate=%d timeout=%.g>" % (self._serial.port,
@@ -166,53 +172,7 @@ class DynamixelIO:
             
             """
         return filter(self.ping, possible_ids)
-    
-    
-    def get_model(self, motor_id):
-        """
-            Finds the model name of the robotis motor.
-            
-            Parameters
-            ----------
-            motor_id : int
-            The motor ID [0-253]
-            
-            Returns
-            -------
-            one of the DXL_MODEL_NUMBER values (see protocol.py)
-            
-            """
-        model_number = self._send_read_packet(motor_id, 'MODEL_NUMBER')
-        
-        if not DXL_MODEL_NUMBER.has_key(model_number):
-            raise DynamixelUnsupportedMotorError(motor_id, model_number)
-        
-        motor_model = DXL_MODEL_NUMBER[model_number]
-        self._motor_models[motor_id] = motor_model
-        return motor_model
-    
-    # def specify_model(self, motor_id, motor_model):
-    #     """
-    #         Specify the model of a virtual motor.
-    
-    #         Parameters
-    #         ----------
-    #         :param motor_id: int
-    #             The motor ID [0-253]
-    
-    #         """
-    #     if motor_model not in DXL_MODEL_NUMBER.values():
-    #         raise ValueError('Unknown motor model: %s' % (motor_model))
-    
-    #     self._motor_models[motor_id] = motor_model
-    
-    def _lazy_get_model(self, motor_id):
-        """ Finds the motor model if it is not already known. """
-        if not self._motor_models.has_key(motor_id):
-            self.get_model(motor_id)
-        
-        return self._motor_models[motor_id]
-    
+  
     
     # MARK: - Sync Read/Write
     
@@ -352,9 +312,8 @@ class DynamixelIO:
             id_speed_pairs : list<motor_id, position, speed, torque limit>
             
             """
-        motor_models = [self._lazy_get_model(mid) for mid in motor_ids]
-        
         ids, pos, speed, torque = zip(*id_pos_speed_torque_tuples)
+        motor_models = [self._lazy_get_model(mid) for mid in ids]
         
         pos = [degree_to_position(rad, model) for rad, model in zip(pos, motor_models)]
         speed = map(rpm_to_speed, speed)
@@ -363,9 +322,39 @@ class DynamixelIO:
         self._send_sync_write_packet('GOAL_POS_SPEED_TORQUE', zip(ids, pos, speed, torque))
     
     
-    
     # MARK: - Dxl Motor EEPROM Access
-    # Those values should not be modified too often !!!
+    # Those values should not be modified too often !!!    
+    
+    def get_model(self, motor_id):
+        """
+            Finds the model name of the robotis motor.
+            
+            Parameters
+            ----------
+            motor_id : int
+            The motor ID [0-253]
+            
+            Returns
+            -------
+            one of the DXL_MODEL_NUMBER values (see protocol.py)
+            
+            """
+        model_number = self._send_read_packet(motor_id, 'MODEL_NUMBER')
+        
+        if not DXL_MODEL_NUMBER.has_key(model_number):
+            raise DynamixelUnsupportedMotorError(motor_id, model_number)
+        
+        motor_model = DXL_MODEL_NUMBER[model_number]
+        self._motor_models[motor_id] = motor_model
+        return motor_model
+    
+    def _lazy_get_model(self, motor_id):
+        """ Finds the motor model if it is not already known. """
+        if not self._motor_models.has_key(motor_id):
+            self.get_model(motor_id)
+        
+        return self._motor_models[motor_id]
+
     
     def change_id(self, motor_id, new_motor_id):
         """
@@ -558,25 +547,67 @@ class DynamixelIO:
         
         self._send_write_packet(motor_id,
                                 'VOLTAGE_LIMITS',
-                                (lowest_limit_voltage * 10, highest_limit_voltage * 10))
+                                (int(lowest_limit_voltage * 10), int(highest_limit_voltage * 10)))
     
     def get_max_torque(self, motor_id):
         """ Returns the maximum output torque avaible in percent. """
-        return self._send_read_packet(motor_id, 'MAX_TORQUE') * (100.0 / 1023)
+        return torque_limit_to_percent(self._send_read_packet(motor_id, 'MAX_TORQUE'))
     
     def set_max_torque(self, motor_id, max_torque):
         """ Sets the maximum output torque avaible in percent. """
         if not (0 <= max_torque <= 100):
             raise ValueError('The maximum torque must be in [0, 100].')
         
-        self._send_write_packet(motor_id, 'MAX_TORQUE', int(max_torque * 10.23))
+        self._send_write_packet(motor_id, 'MAX_TORQUE',
+                                percent_to_torque_limit(max_torque))
     
     
     def get_status_return_level(self, motor_id):
-        return self._send_read_packet(motor_id, 'STATUS_RETURN_LEVEL')
+        """
+            Returns the level of status return.
+            
+            Threre are three levels of status return:
+                * 0 : no return packet
+                * 1 : return status packet only for the read instruction
+                * 2 : always return a status packet
+            
+            :param int motor_id: specified motor id [0-253]
+            :return: level of status return
+            
+            """
+        status_return_level = self._send_read_packet(motor_id, 'STATUS_RETURN_LEVEL')
+        self._motor_return_level[motor_id] = status_return_level
+        return status_return_level    
+            
+    def _lazy_get_status_return_level(self, motor_id):
+        """ Finds the motor status return level if it is not already known. """
+        if not self._motor_return_level.has_key(motor_id):
+            self._motor_return_level[motor_id] = 2
+            try:
+                self.get_status_return_level(motor_id)
+            except DynamixelTimeoutError as e:
+                del self._motor_return_level[motor_id]
+                raise e
+                
+        return self._motor_return_level[motor_id]
     
     def set_status_return_level(self, motor_id, status_return_level):
-        # TODO: what happened if we change to 0 or another value ?
+        """ Sets the level of status return.
+            
+            Threre are three levels of status return:
+                * 0 : no return packet
+                * 1 : return status packet only for the read instruction
+                * 2 : always return a status packet
+            
+            :param int motor_id: specified motor id [0-253]
+            :param int status_return_level: level of status return
+            :raises: ValueError if the status_return_level is not one of (0, 1, 2)
+            
+            """        
+        if status_return_level not in (0, 1, 2):
+            raise ValueError('Status level must be one of the following (0, 1, 2)')
+                
+        self._motor_return_level[motor_id] = status_return_level
         self._send_write_packet(motor_id, 'STATUS_RETURN_LEVEL', status_return_level)
     
     
@@ -597,15 +628,30 @@ class DynamixelIO:
     # MARK: - Dxl Motor RAM Access
     
     def is_torque_enabled(self, motor_id):
-        """ Check if the torque is enabled for the specified motor. """
+        """ 
+            Check if the torque is enabled for the specified motor. 
+            
+            .. note:: The torque will automatically be enabled when setting a position.
+
+            """
         return bool(self._send_read_packet(motor_id, 'TORQUE_ENABLE'))
     
     def enable_torque(self, motor_id):
-        """ Enables the torque to the specified motor. """
+        """ 
+            Enables the torque to the specified motor.
+            
+            .. note:: The torque will automatically be enabled when setting a position.
+            
+            """
         self._set_torque_enable(motor_id, True)
     
     def disable_torque(self, motor_id):
-        """ Disables the torque to the specified motor. """
+        """ 
+            Disables the torque to the specified motor.
+            
+            .. note:: The torque will automatically be enabled when setting a position.
+            
+            """
         self._set_torque_enable(motor_id, False)
     
     def _set_torque_enable(self, motor_id, torque_enable):
@@ -830,10 +876,11 @@ class DynamixelIO:
     
     
     def get_torque_limit(self, motor_id):
-        return self._send_read_packet(motor_id, 'TORQUE_LIMIT')
+        return torque_limit_to_percent(self._send_read_packet(motor_id, 'TORQUE_LIMIT'))
     
-    def set_torque_limit(self, motor_id, torque_limit):
-        self._send_write_packet(motor_id, 'TORQUE_LIMIT', torque_limit)
+    def set_torque_limit(self, motor_id, percent):
+        self._send_write_packet(motor_id, 'TORQUE_LIMIT',
+                                percent_to_torque_limit(percent))
     
     
     def get_load(self, motor_id):
@@ -920,7 +967,29 @@ class DynamixelIO:
     
     # MARK: - Low level communication
     
-    def _send_packet(self, instruction_packet, wait_for_answer=True):
+    def _send_packet(self, instruction_packet, receive_status_packet=True):
+        """ 
+            Sends a specified instruction packet to the serial port.
+            
+            If a response is required from the motors, it returns a status packet.
+            : warn a status packet will not be returned for all sync write 
+            operation. All other operations will return a status packet that
+            must be read from the serial in order to prevent leaving them 
+            on the serial buffer.
+            
+            Parameters
+            ----------
+            instruction_packet: packet.DynamixelInstructionPacket
+                
+            Returns
+            -------
+            status_packet: packet.DynamixelStatusPacket
+            
+            See Also
+            --------
+            packet.py
+            
+            """
         with self._lock:
             nbytes = self._serial.write(instruction_packet.to_bytes())
             if nbytes != len(instruction_packet):
@@ -928,7 +997,7 @@ class DynamixelIO:
                                                   instruction_packet,
                                                   None)
             
-            if not wait_for_answer:
+            if not receive_status_packet:
                 return
             
             read_bytes = list(self._serial.read(DynamixelPacketHeader.LENGTH))
@@ -946,20 +1015,58 @@ class DynamixelIO:
                                                   read_bytes)
         
             if status_packet.error != 0:
-                raise DynamixelMotorError(status_packet)
+                raise DynamixelMotorError(status_packet.motor_id,
+                                          status_packet.error)
             
             return status_packet
     
     
     def _send_read_packet(self, motor_id, control_name):
+        """
+            This reads the data returned by the status packet of the specified motor.
+            
+            Parameters
+            ----------
+            motor_id: int
+            control_name: string
+                a DXL_CONTROL key (see protocol.py)
+            
+            Returns
+            -------
+            status_packet (PARAM): data received inside the returned packet
+                This is only the parameter set provided within the status 
+                packet sent from the motor.
+            """
+        if self._lazy_get_status_return_level(motor_id) == 0:
+            raise DynamixelCommunicationError('Try to get a value from motor with a level of status return of 0')
+        
         packet = DynamixelReadDataPacket(motor_id, control_name)
         status_packet = self._send_packet(packet)
-                
-        return self._decode_data(status_packet.parameters,
-                                 REG_SIZE(control_name))
+             
+        if status_packet:
+            return self._decode_data(status_packet.parameters,
+                                     REG_SIZE(control_name))
     
     
-    def _send_sync_read_packet(self, motor_ids, control_name):        
+    def _send_sync_read_packet(self, motor_ids, control_name):
+        """
+            This reads the data returned by the status packet of all 
+            the specified motors.
+            
+            Parameters
+            ----------
+            motor_ids: list
+                list of ids of all the motors that return data
+            control_name: string
+                a DXL_CONTROL key (see protocol.py)
+            
+            Returns
+            -------
+            status_packet (PARAM): data received inside the returned packet
+                This is only the parameter set provided within the status
+                packet sent from the motors.
+
+            """
         packet = DynamixelSyncReadDataPacket(motor_ids, control_name)
         status_packet = self._send_packet(packet)
 
@@ -970,38 +1077,70 @@ class DynamixelIO:
     
     
     def _send_write_packet(self, motor_id, control_name, data):
+        """
+            This creates a write packet for the specified motor with the 
+            specified data.
+            
+            Parameters
+            ----------
+            motor_id: int
+            control_name: string
+                a DXL_CONTROL key (see protocol.py)            
+            data: int, tuple
+                data to write to the motors 
+            """
         data = self._code_data(data, REG_SIZE(control_name))
+
+        write_packet = DynamixelWriteDataPacket(motor_id, control_name, data)
         
-        write_packet = DynamixelWriteDataPacket(motor_id, control_name, data)        
-        self._send_packet(write_packet)
+        receive_status_packet = True if self._lazy_get_status_return_level(motor_id) == 2 else False
+        self._send_packet(write_packet, receive_status_packet)
     
     def _send_sync_write_packet(self, control_name, data_tuples):
+        """
+            This creates and sends a sync write packet for specified motors 
+            given specified data.
+            
+            The data to be written is a list of tuples, where the tuples are 
+            in the following form:
+                (MOTOR_ID, DATA1, DATA2,...)
+            
+            
+            Parameters
+            ----------
+            data_tuple: list(tuple)
+                data to write
+            control_name: string
+                a DXL_CONTROL key (see protocol.py)
+            
+            """
         code_func = lambda chunk: [chunk[0]] + self._code_data(chunk[1:], REG_SIZE(control_name))
         data = flatten_list(map(code_func, data_tuples))
         
         sync_write_packet = DynamixelSyncWriteDataPacket(control_name, data)
-        self._send_packet(sync_write_packet, wait_for_answer=False)
-    
-    
-    def _build_packet(self, motor_id, instruction_name, parameters=()):
-        instruction = DXL_INSTRUCTIONS[instruction_name]
-        
-        length = len(parameters) + 2
-        checksum = self._compute_checksum(motor_id, length, instruction, parameters)
-        
-        packet = [0xFF, 0xFF, motor_id, length, instruction] + list(parameters) + [checksum]
-        
-        return packet
-    
-    
-    def _compute_checksum(self, motor_id, length, instruction, parameters):
-        # Check Sum = ~ ( ID + Length + Instruction + Parameter1 + ... + Parameter N)
-        return 255 - ((motor_id + length + instruction + sum(parameters)) % 256)
-    
-    
+        self._send_packet(sync_write_packet, receive_status_packet=False)
+                
     # MARK : - Data coding/uncoding
     
     def _code_data(self, data, data_length):
+        """
+            This transforms the data into the correct format so that 
+            it can be added into a message packet
+            
+            Parameters
+            ----------
+            data: int, list(int)
+                The data to be transformed
+            data_length: int
+                The number of registers used to code the data. For these motors
+                the value can only be either 1 or 2.
+            
+            Returns
+            -------
+            list(data): list()
+                the correctly formatted data
+            
+            """
         if data_length not in (1, 2):
             raise ValueError('Unsupported size of data (%d)' % (data_length))
         
@@ -1014,6 +1153,23 @@ class DynamixelIO:
         return list(data)
     
     def _decode_data(self, data, data_length):
+        """
+            This transforms the data received in a packet into a useable format.
+            
+            Parameters
+            ----------
+            data: bytes, list(bytes)
+                The data to be transformed
+            data_length: int
+                The number of registers used to code the data. For these motors
+                the value can only be either 1 or 2.
+            
+            Returns
+            -------
+            list(data): list()
+                the correctly formatted data 
+            
+            """
         if data_length not in (1, 2):
             raise ValueError('Unsupported size of data (%d)' % (data_length))
         
