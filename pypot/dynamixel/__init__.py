@@ -20,4 +20,4 @@ def get_available_ports():
     elif op_system == 'Linux':
         return glob.glob('/dev/ttyACM*') + glob.glob('/dev/ttyUSB*')
 
-    raise NotImplementedError('Unknown operating system')
+    raise NotImplementedError('Unknown operating system: %s' % (op_system))

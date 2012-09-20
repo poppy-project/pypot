@@ -11,17 +11,12 @@ class DynamixelPacketHeader(object):
         The header of all Dynamixel packets (instruction or status) are
         constructed as follows: [OxFF, OxFF, ID, LENGTH].
         
-        In the case of an instruction packet:
-        ID: It is the ID of the Dynamixel motor which will receive the packet.
-        LENGTH: It is the length of the instruction packet.
-        In the case of a status packet:
-        ID: It is the ID of the motor which sent the status packet.
-        LENGTH: It is the length of the status packet.
-        
-        Exception
-        ---------
-        DynamixelInconsistentPacketError:
-        raised when tried to create a header with inconsistent data bytes.
+            * In the case of an instruction packet:
+                * ID: It is the ID of the Dynamixel motor which will receive the packet.
+                * LENGTH: It is the length of the instruction packet.
+            * In the case of a status packet:
+                * ID: It is the ID of the motor which sent the status packet.
+                * LENGTH: It is the length of the status packet.
         
         """
     LENGTH = 4
@@ -39,10 +34,9 @@ class DynamixelPacketHeader(object):
         """
             Creates a new header instance from bytes.
             
-            Exception
-            ---------
-            DynamixelInconsistentPacketError: raised if the given bytes do not
-            correspond to a standard dynamixel packet header.
+            :param string bytes: a raw header string
+            :raises: DynamixelInconsistentPacketError if the given bytes do not correspond to a standard dynamixel packet header.
+            
             """
         header = list(bytes)
         
@@ -126,9 +120,7 @@ class DynamixelPingPacket(DynamixelInstructionPacket):
             A PING packet is constructed as follows:
             [0xFF, 0xFF, ID, 2, 0x01, CHECKSUM]
             
-            Parameters
-            ----------
-            motor_id : int
+            :param int motor_id: motor id [0-253]
             
             """
         DynamixelInstructionPacket.__init__(self,
@@ -145,15 +137,8 @@ class DynamixelReadDataPacket(DynamixelInstructionPacket):
             A READ_DATA packet is constructed as follows:
             [0xFF, 0xFF, ID, 4, 0x02, ADDRESS, LENGTH_OF_DATA, CHECKSUM]
             
-            
-            Parameters
-            ----------
-            motor_id : int
-            
-            control_name : string
-            The name of the control to read must be provided. It must correspond
-            to one of the values provided by the DXL_CONTROLS dictionary presents
-            in the protocol.py file.
+            :param int motor_id: motor id [0-253]
+            :param string control_name: The name of the control to read must be provided. It must correspond to one of the values provided by the DXL_CONTROLS dictionary presents in the :py:mod:`~/pypot.dynamixel.protocol` file.
             
             """
         parameters = (REG_ADDRESS(control_name), REG_LENGTH(control_name))
@@ -173,7 +158,7 @@ class DynamixelSyncReadDataPacket(DynamixelInstructionPacket):
         
         Instead of providing a motor id, you can here provide a list of motor ids.
         
-        :warn SYNC_READ packets only works with the USB2AX controller.
+        .. note:: SYNC_READ packets only works with the USB2AX controller.
         
         """
     def __init__(self, motor_ids, control_name):
@@ -183,15 +168,10 @@ class DynamixelSyncReadDataPacket(DynamixelInstructionPacket):
             A SYNC_READ packet is constructed as follows:
             [0xFF, 0xFF, BROADCAST, LEN(MOTORS) + 4, 0x84, ADDRESS, LENGTH_OF_DATA,
             ID 1, ID 2, ..., ID N, CHECKSUM]
-            
-            Parameters
-            ----------
-            motor_ids : list<int>
-            
-            control_name : string
-            The name of the control to read must be provided. It must correspond
-            to one of the values provided by the DXL_CONTROLS dictionary presents
-            in the protocol.py file.
+
+            :param motor_ids: motor ids [0-253]
+            :type motor_ids: list of int
+            :param string control_name: The name of the control to read must be provided. It must correspond to one of the values provided by the DXL_CONTROLS dictionary presents in the :py:mod:`~pypot.dynamixel.protocol` file.
             
             """
         parameters = [REG_ADDRESS(control_name), REG_LENGTH(control_name)] + list(motor_ids)
@@ -207,7 +187,7 @@ class DynamixelWriteDataPacket(DynamixelInstructionPacket):
         
         The name of the control to write must be provided. It must correspond to
         one of the values provided by the DXL_CONTROLS dictionary presents in the
-        protocol.py file.
+        :py:mod:`~pypot.dynamixel.protocol` file.
         
         The data to write must also be provided and match the required data length.
         
@@ -219,17 +199,10 @@ class DynamixelWriteDataPacket(DynamixelInstructionPacket):
             A WRITE_DATA packet is constructed as follows:
             [0xFF, 0xFF, ID, LEN(DATA) + 3, 0x03, ADDRESS, DATA, CHECKSUM]
             
-            Parameters
-            ----------
-            motor_id : int
-            
-            control_name : string
-            The name of the control to read must be provided. It must correspond
-            to one of the values provided by the DXL_CONTROLS dictionary presents
-            in the protocol.py file.
-            
-            data : list<int>
-            The length of the data must match the control length.
+            :param int motor_id: motor id [0-253]
+            :param string control_name: The name of the control to read must be provided. It must correspond to one of the values provided by the DXL_CONTROLS dictionary presents in the :py:mod:`~pypot.dynamixel.protocol` file.
+            :param data: data to write, the length of the data must match the control length
+            :type data: list of int
             
             """
         parameters = [REG_ADDRESS(control_name)] + list(data)
@@ -249,7 +222,7 @@ class DynamixelSyncWriteDataPacket(DynamixelInstructionPacket):
         
         The name of the control to read must be provided. It must correspond to
         one of the values provided by the DXL_CONTROLS dictionary presents in the
-        protocol.py file.
+        :py:mod:`~pypot.dynamixel.protocol` file.
         
         Instead of providing a motor id, you can here provide a list of motor ids.
         
@@ -268,16 +241,9 @@ class DynamixelSyncWriteDataPacket(DynamixelInstructionPacket):
             ID N, DATA 1, DATA 2, ...,
             CHECKSUM]
             
-            Parameters
-            ----------
-            control_name : string
-            The name of the control to read must be provided. It must correspond
-            to one of the values provided by the DXL_CONTROLS dictionary presents
-            in the protocol.py file.
-            
-            data : list<int>
-            The length of the data must match the control length * the number of motors.
-            The motor ids are directly given in the data for convenience.
+            :param string control_name: The name of the control to read must be provided. It must correspond to one of the values provided by the DXL_CONTROLS dictionary presents in the :py:mod:`~pypot.dynamixel.protocol` file.
+            :param data: data to be written. The length of the data must match the control length * the number of motors. The motor ids are directly given in the data for convenience.
+            :type data: list of (id, data 1, data 2, ..., data N)
             
             """
         # TODO: verifier la taille des donnees envoyees
@@ -314,11 +280,6 @@ class DynamixelStatusPacket(DynamixelPacket):
         
         (for more details, see
         http://support.robotis.com/en/product/dynamixel/communication/dxl_packet.htm)
-        
-        Exception
-        ---------
-        DynamixelInconsistentPacketError:
-        raised when tried to create a status packet with inconsistent data bytes.
         
         """
     def __init__(self, motor_id, error, parameters):

@@ -1,4 +1,4 @@
-# coding=utf-8
+# -*- coding: utf-8 -*-
 
 import array
 import serial
@@ -12,58 +12,26 @@ from pypot.dynamixel.packet import *
 
 
 class DynamixelIO:
-    """
+    """ 
         This class handles the low-level communication with robotis motors.
-        
+
         Using a USB communication device such as USB2DYNAMIXEL or USB2AX,
         you can open serial communication with robotis motors (MX, RX, AX)
         using communication protocols TTL or RS485.
-        
+
         This class handles low-level IO communication by providing access to the
         different registers in the motors.
         Users can use high-level access such as position, load, torque to control
         the motors.
         
-        Methods
-        -------
+        You can access two different area space of the dynamixel registers: 
+            * the EEPROM area
+            * the RAM area
         
-        For a complete list of all available methods use introspection.
+        When values are written to the EEPROM, they are conserved after cycling the power.
+        The values written to the RAM are lost when cycling the power.
         
-        Discovering motors:
-        ping
-        scan
-        
-        Controlling individual motors (get/set):
-        angle_limits
-        max_torque
-        torque_enabled
-        pid
-        compliance_margins / compliance_slopes
-        position
-        speed
-        torque
-        load
-        
-        Controlling groups of motors (sync):
-        position
-        speed
-        torque
-        load
-        
-        Exceptions
-        ----------
-        
-        DynamixelCommunicationError:
-        raised when the serial communication failed
-        
-        DynamixelTimeoutError:
-        raised when no status packet is returned.
-        
-        DynamixelUnsupportedFunctionForMotorError:
-        raised when calling a method that is unsupported by the motor model
-        
-        DynamixelMotorError:
-        raised when a motor returns an error code
+        .. warning:: When accessing EEPROM registers the motor enters a "busy" mode and should not be accessed before about 100ms.
         
         """
     
@@ -71,22 +39,16 @@ class DynamixelIO:
     
     
     def __init__(self, port, baudrate=1000000, timeout=1.0):
-        """
-            Opens the serial port and sets the communication parameters.
+        """ 
+            At instanciation, it opens the serial port and sets the communication parameters.
             
-            The port can only be accessed by a single DynamixelIO.
+            .. warning:: The port can only be accessed by a single DynamixelIO instance.
             
-            Parameters
-            ----------
-            port : string
-            (e.g. Unix (/dev/tty...), Windows (COM...))
+            :param string port: the serial port to use (e.g. Unix (/dev/tty...), Windows (COM...)).
+            :param int baudrate: default for new motors: 57600, for PyPot motors: 1000000
+            :param float timeout: read timeout in seconds
             
-            baudrate : int (optional)
-            default for new motors : 57600
-            for PyPot motors : 1000000
-            
-            timeout : float (optional)
-            read timeout in seconds
+            :raises: ValueError (when port is already used)
             
             Exception
             ---------
@@ -118,10 +80,9 @@ class DynamixelIO:
     
     def flush_serial_communication(self):
         """
-            Flush the serial communication.
+            Flush the serial communication (both input and output).
             
-            Use this method after a communication issue (such as a timeout) to
-            refresh the communication bus.
+            .. note:: You can use this method after a communication issue (such as a timeout) to refresh the communication bus.
             
             """
         self._serial.flushInput()
@@ -134,14 +95,9 @@ class DynamixelIO:
         """
             Pings the motor with the specified id.
             
-            Parameters
-            ----------
-            motor_id : int
-            The motor ID [0-253]
-            
-            Returns
-            -------
-            bool
+            :param int motor_id: specified motor id [0-253]
+            :return: bool
+            :raises: ValueError if the motor id is out of the possible ids range.
             
             """
         if not (0 <= motor_id <= 253):
@@ -157,18 +113,12 @@ class DynamixelIO:
             return False
     
     
-    def scan(self, possible_ids=range(254)):
-        """
+    def scan(self, ids=xrange(254)):
+        """             
             Finds the ids of all the motors connected to the bus.
             
-            Parameters
-            ----------
-            possible_ids : list (optional)
-            Specify the range of ids to search
-            
-            Returns
-            -------
-            list : found motor ids
+            :param list ids: the range of ids to search
+            :return: list of ids found
             
             """
         return filter(self.ping, possible_ids)
@@ -180,15 +130,11 @@ class DynamixelIO:
         """
             Synchronizes the getting of positions in degrees of all motors specified.
             
-            : warn This method only works with the USB2AX.
+            :param motor_ids: specified motor ids [0-253]
+            :type motor_ids: list of ids
+            :return: list of position in degrees
             
-            Parameters
-            ----------
-            motor_id : list<int>
-            
-            Returns
-            -------
-            list of position in degrees
+            .. warning:: This method only works with the USB2AX.
             
             """
         motor_models = [self._lazy_get_model(mid) for mid in motor_ids]
@@ -200,9 +146,8 @@ class DynamixelIO:
         """
             Synchronizes the setting of the specified positions (in degrees) to the motors.
             
-            Parameters
-            ----------
-            id_pos_pairs : list<motor_id, degree>
+            :param id_pos_pairs: position is expressed in degrees.
+            :type id_pos_pairs: list of couple (motor id, position)
             
             """
         ids, degrees = zip(*id_pos_pairs)
@@ -214,17 +159,13 @@ class DynamixelIO:
     
     def get_sync_speeds(self, motor_ids):
         """
-            Synchronizes the getting of speeds of all motors specified.
+            Synchronizes the getting of speed in rpm of all motors specified.
             
-            : warn This method only works with the USB2AX.
+            :param motor_ids: specified motor ids [0-253]
+            :type motor_ids: list of ids
+            :return: list of speed in rpm (positive values correspond to clockwise)
             
-            Parameters
-            ----------
-            motor_id : list<int>
-            
-            Returns
-            -------
-            list of speed in rpm (positive values correspond to clockwise)
+            .. warning:: This method only works with the USB2AX.
             
             """
         return map(speed_to_rpm,
@@ -232,11 +173,10 @@ class DynamixelIO:
     
     def set_sync_speeds(self, id_speed_pairs):
         """
-            Synchronizes the setting of the specified speeds to the specified motors.
+            Synchronizes the setting of the specified speeds (in rpm) to the motors.
             
-            Parameters
-            ----------
-            id_speed_pairs : list<motor_id, rpm>
+            :param id_speed_pairs: speed is expressed in rpm (positive values correspond to clockwise).
+            :type id_speed_pairs: list of couple (motor id, speed)
             
             """
         ids, speeds = zip(*id_speed_pairs)
@@ -246,17 +186,13 @@ class DynamixelIO:
     
     def get_sync_loads(self, motor_ids):
         """
-            Synchronizes the getting of internal loads of all motors specified.
+            Synchronizes the getting of load in percentage of all motors specified.
             
-            : warn This method only works with the USB2AX.
+            :param motor_ids: specified motor ids [0-253]
+            :type motor_ids: list of ids
+            :return: list of load in percentage
             
-            Parameters
-            ----------
-            motor_id : list<int>
-            
-            Returns
-            -------
-            list of load
+            .. warning:: This method only works with the USB2AX.
             
             """
         return map(load_to_percent,
@@ -264,12 +200,10 @@ class DynamixelIO:
     
     def set_sync_torque_limits(self, id_torque_pairs):
         """
-            Synchronizes the setting of the specified torque limits to the specified motors.
+            Synchronizes the setting of the specified torque limits (in percentage) to the motors.
             
-            Parameters
-            ----------
-            id_speed_pairs : list<motor_id, torque limit>
-            The torque limit is a percentage of the max torque.
+            :param id_speed_pairs: torque limit is expressed as a percentage of the maximum torque.
+            :type id_torque_pairs: list of couple (motor id, torque)
             
             """
         ids, torques = zip(*id_torque_pairs)
@@ -280,17 +214,13 @@ class DynamixelIO:
     
     def get_sync_positions_speeds_loads(self, motor_ids):
         """
-            Synchronizes the getting of positions, speeds, loads of all motors specified.
+            Synchronizes the getting of positions, speeds, load in their respective units of all motors specified.
             
-            : warn This method only works with the USB2AX.
+            :param motor_ids: specified motor ids [0-253]
+            :type motor_ids: list of ids
+            :return: list of (position, speed, load)
             
-            Parameters
-            ----------
-            motor_id : list<int>
-            
-            Returns
-            -------
-            list of (position, speed, load)
+            .. warning:: This method only works with the USB2AX.
             
             """
         motor_models = [self._lazy_get_model(mid) for mid in motor_ids]
@@ -305,11 +235,14 @@ class DynamixelIO:
     
     def set_sync_positions_speeds_torque_limits(self, id_pos_speed_torque_tuples):
         """
-            Synchronizes the setting of the specified positions, speeds and torque limits to the motors.
+            Synchronizes the setting of the specified positions, speeds and torque limits (in their respective units) to the motors.
             
-            Parameters
-            ----------
-            id_speed_pairs : list<motor_id, position, speed, torque limit>
+            * The position is expressed in degrees.
+            * The speed is expressed in rpm (positive values correspond to clockwise).
+            * The torque limit is expressed as a percentage of the maximum torque.
+            
+            :param id_pos_speed_torque_tuples: each value must be expressed in its own units.
+            :type id_pos_speed_torque_tuples: list of (motor id, position, speed, torque)
             
             """
         ids, pos, speed, torque = zip(*id_pos_speed_torque_tuples)
@@ -363,16 +296,9 @@ class DynamixelIO:
             Each motor must have a unique id on the bus.
             The range of possible ids is [0, 253].
             
-            Parameters
-            ----------
-            motor_id : int
-            current motor id
-            new_motor_id : int
-            new motor id
-            
-            Exceptions
-            ----------
-            ValueError : Raised when the id is already taken
+            :param int motor_id: current motor id
+            :param int new_motor_id: new motor id
+            :raises: ValueError when the id is already taken
             
             """
         if self.ping(new_motor_id):
@@ -385,31 +311,32 @@ class DynamixelIO:
         """
             Changes the baudrate of a specified motor.
             
-            :warn the baudrate of the motor must match the baudrate of the
-            port. When the baurate is changed for the motor, it will be necessary to
-            open a new port with the new baurate to re-establish communication.
+            :param int motor_id: specified motor id [0-253]
+            :param int baudrate: for a list of possible values see http://support.robotis.com/en/product/dxl_main.htm
             
-            Parameters
-            ----------
-            motor_id : int
-            the specified motor
-            baurate : int
-            see http://support.robotis.com/en/product/dxl_main.htm for possible values
+            .. warning:: The baudrate of the motor must match the baudrate of the port. When the baurate is changed for the motor, it will be necessary to open a new port with the new baurate to re-establish communication.
             
             """
         self._send_write_packet(motor_id, 'BAUDRATE', baudrate)
     
     
     def get_return_delay_time(self, motor_id):
-        """ Returns the current delay time in µs. """
+        """ 
+            Returns the current delay time.
+            
+            :param int motor_id: specified motor id [0-253]
+            :return: return delay time in µs
+            
+            """
         return self._send_read_packet(motor_id, 'RETURN_DELAY_TIME') * 2
     
     def set_return_delay_time(self, motor_id, return_delay_time):
         """
-            Sets a new return delay time in µs (the value must be in [0, 508]).
+            Sets a new return delay time in µs.
             
-            This delay is the time the motor waits to return the status packet.
-            For optimal performance set this to 0µs.
+            :param int motor_id: specified motor id [0-253]
+            :param int return_delay_time: new return delay time in µs [0-508]
+            :raises: ValueError if the return delay time is out of the specified range.
             
             """
         if not (0 <= return_delay_time <= 508):
@@ -422,11 +349,11 @@ class DynamixelIO:
         """
             Gets the lower and upper angle limits of the motor.
             
-            Returns
-            -------
-            (lower_limit, upper_limit) : tuple
-            The limits are in degrees.
-            
+            .. note:: If you try to set a position to a motor outside of these angle limits, the motor will stop at the limit and an alarm will be triggered.
+
+            :param int motor_id: specified motor id [0-253]
+            :return: (lower_limit, upper_limit) in degrees
+                        
             """
         return map(lambda pos: position_to_degree(pos, self._lazy_get_model(motor_id)),
                    self._send_read_packet(motor_id, 'ANGLE_LIMITS'))
@@ -436,19 +363,15 @@ class DynamixelIO:
         """
             Sets the lower and upper angle limits of the motor.
             
-            These values are written to the EEPROM and therefore conserved
-            after cycling the power.
+            .. note:: If you try to set a position to a motor outside of these angle limits, the motor will stop at the limit and an alarm will be triggered.
+
+            :param int motor_id: specified motor id [0-253]
+            :param float lower_limit: the lower angle limit
+            :param float upper_limit: the upper angle limit
+            :raises: ValueError if the lower limit is greater or equal than the upper limit
             
-            Parameters
-            ----------
-            lower_limit : float
-            upper_limit : float
-            
-            The limits are in degrees.
-            The hardware upper limit depends on the motor model.
-            MX : [0, 360]
-            AX, RX : [0, 300]
-            
+            .. note:: The angle limits must belong to the hardware limits of the motor (e.g. (-150, 150) for an AX-12 motor or (-180, 180) for a MX-28 motor).
+                        
             """
         if lower_limit >= upper_limit:
             raise ValueError('The lower limit (%d) must be less than the upper limit (%d).'
@@ -481,11 +404,14 @@ class DynamixelIO:
     
     def get_limit_temperature(self, motor_id):
         """
-            Returns the motor highest limit of operating temperature (in Celsius).
+            Returns the motor highest limit of operating temperature.
             
             If the internal temperature of a motor exceeds this limit, it sets
             the Over Heating Error Bit of Status Packet to True and triggers an
             alarm (LED and shutdown).
+            
+            :param int motor_id: specified motor id [0-253]
+            :return: limit of operating temperature in celsius
             
             """
         return self._send_read_packet(motor_id, 'HIGHEST_LIMIT_TEMPERATURE')
@@ -494,15 +420,12 @@ class DynamixelIO:
         """
             Sets the highest limit of operating temperature.
             
-            : warn Do not set the temperature lower/higher than the default value.
-            Using the motor when the temperature is high may and can cause damage.
+            :param int motor_id: specified motor id [0-253]
+            :param int limit_temperature: new limit of operating temperature [10-99]
+            :raises: ValueError if the new temperature is outside of the allowed range
             
-            Parameters
-            ----------
-            motor_id : int
-            The motor ID [0-253]
-            limit_temperature : int
-            Celcius degrees in range [10-99]
+            .. warning:: Do not set the temperature lower/higher than the default value. Using the motor when the temperature is high may and can cause damage.
+            
             """
         if not (10 <= limit_temperature <= 99):
             raise ValueError('The temperature limit must be in [10,99]')
@@ -517,6 +440,10 @@ class DynamixelIO:
             If present voltage is out of the range, Voltage Range Error
             of Status Packet is returned as '1' and Alarm is triggered as set
             in the Alarm LED and Alarm Shutdown.
+            
+            :param int motor_id: specified motor id [0-253]
+            :return: (lowest_limit_voltage, highest_limit_voltage) in Volts
+            
             """
         return map(lambda v: v * 0.1,
                    self._send_read_packet(motor_id, 'VOLTAGE_LIMITS'))
@@ -530,14 +457,10 @@ class DynamixelIO:
             of Status Packet is returned as '1' and Alarm is triggered as set
             in the Alarm LED and Alarm Shutdown.
             
-            Parameters
-            ----------
-            motor_id : int
-            The motor ID [0-253]
-            lowest_limit_voltage : float
-            Lowest operating voltage limit in volt [5V-25V]
-            highest_limit_voltage : float
-            Highest operating voltage limit in volt [5V-25V]
+            :param int motor_id: specified motor id [0-253]
+            :param float lowest_limit_voltage: lowest operating voltage limit [5-25]
+            :param float highest_limit_voltage: highest operating voltage limit [5-25]
+            :raises: ValueError if the limit are out of range or if the lowest limit is greater than the highest limit
             
             """
         if not (5 <= lowest_limit_voltage <= 25) or not (5 <= highest_limit_voltage <= 25):
@@ -659,11 +582,11 @@ class DynamixelIO:
     
     
     def is_led_on(self, motor_id):
-        """ Check if the led is on for the specified motor. """
+        """ Checks if the led is on for the specified motor. """
         return bool(self._send_read_packet(motor_id, 'LED'))
     
     def turn_on_led(self, motor_id):
-        """ Turn on the led of the specified motor. """
+        """ Turns on the led of the specified motor. """
         self._set_led(motor_id, True)
     
     def turn_off_led(self, motor_id):
@@ -678,21 +601,15 @@ class DynamixelIO:
         """
             Gets the PID gains for the specified motor.
             
-            The P gain refers to the value of proportional band.
-            The I gain refers to the value of integral action.
-            The D gain refers to the value of derivative action.
+                * The P gain refers to the value of proportional band.
+                * The I gain refers to the value of integral action.
+                * The D gain refers to the value of derivative action.
+            
             Gains values are in between [0-254].
             
-            Returns
-            -------
-            [D gain, I gain, P gain]
+            :return: (D gain, I gain, P gain)
             
-            
-            This method only exists for MX motors.
-            
-            See Also
-            --------
-            get_compliance_margins, get_compliance_slopes
+            .. note:: This method only exists for MX motors. For other kinds of motors, see :py:meth:`get_compliance_margins` and :py:meth:`get_compliance_slopes`
             
             """
         motor_model = self._lazy_get_model(motor_id)
@@ -704,27 +621,16 @@ class DynamixelIO:
         return self._send_read_packet(motor_id, 'GAINS')
     
     def set_pid_gains(self, motor_id,
-                      derivative_gain, integral_gain, proportional_gain):
+                      D_gain, I_gain, P_gain):
         """
             Sets the PID gains for the specified motor.
             
-            Parameters
-            ----------
-            motor_id : int
-            The motor ID [0-253]
-            derivative_gain : int
-            The D gain refers to the value of derivative action [0-254].
-            integral_gain : int
-            The I gain refers to the value of integral action [0-254].
-            proportional_gain : int
-            The P gain refers to the value of proportional band [0-254].
-            
-            
-            This method only exists for MX motors.
-            
-            See Also
-            --------
-            set_compliance_margins, set_compliance_slopes
+            :param int motor_id: specified motor id [0-253]
+            :param int D_gain: refers to the value of derivative action [0-254]
+            :param int I_gain: refers to the value of integral action [0-254]
+            :param int P_gain: refers to the value of proportional band [0-254]
+
+            .. note:: This method only exists for MX motors. For other kinds of motors, see :py:meth:`set_compliance_margins` and :py:meth:`set_compliance_slopes`
             
             """
         motor_model = self._lazy_get_model(motor_id)
@@ -746,15 +652,10 @@ class DynamixelIO:
             means the error between goal position and present position.
             The greater the value, the more difference occurs.
             
-            Returns
-            -------
-            (cw margin, ccw margin)
+            :param int motor_id: specified motor id [0-253]
+            :return: (cw margin, ccw margin)
             
-            This method has been replaced for MX motors.
-            
-            See Also
-            --------
-            get_pid_gains
+            .. note:: For MX motors, this method has been replaced by :py:meth:`get_pid_gains`.
             
             """
         motor_model = self._lazy_get_model(motor_id)
@@ -774,16 +675,10 @@ class DynamixelIO:
             means the error between goal position and present position.
             The greater the value, the more difference occurs.
             
-            Parameters
-            ----------
-            clockwise_margin : int [0, 255]
-            counterclockwise_margin : int [0, 255]
+            :param int clockwise_margin: clockwise margin [0-255]
+            :param int counterclockwise_margin: counter clockwise margin [0-255]
             
-            This method has been replaced for MX motors.
-            
-            See Also
-            --------
-            set_pid_gains
+            .. note:: For MX motors, this method has been replaced by :py:meth:`set_pid_gains`.
             
             """
         motor_model = self._lazy_get_model(motor_id)
@@ -802,15 +697,10 @@ class DynamixelIO:
             sets the level of torque near the goal position.
             The higher the value, the more flexibility is obtained.
             
-            Returns
-            -------
-            (cw slope, ccw slope)
+            :param int motor_id: specified motor id [0-253]
+            :return: (cw slope, ccw slope)
             
-            This method has been replaced for MX motors.
-            
-            See Also
-            --------
-            get_pid_gains
+            .. note:: For MX motors, this method has been replaced by :py:meth:`get_pid_gains`.
             
             """
         motor_model = self._lazy_get_model(motor_id)
@@ -830,17 +720,12 @@ class DynamixelIO:
             sets the level of torque near the goal position.
             The higher the value, the more flexibility is obtained.
             
-            Parameters
-            ----------
-            clockwise_slope : int [0, 255]
-            counterclockwise_slope : int [0, 255]
+            :param int motor_id: specified motor id [0-253]
+            :param int clockwise_slope: clockwise slope [0-255]
+            :param int counterclockwise_slope: counter clockwise slope [0-255]
             
-            This method has been replaced for MX motors.
-            
-            See Also
-            --------
-            set_pid_gains
-            
+            .. note:: For MX motors, this method has been replaced by :py:meth:`set_pid_gains`.
+
             """
         motor_model = self._lazy_get_model(motor_id)
         if not (motor_model.startswith('AX') or motor_model.startswith('RX')):
@@ -898,7 +783,7 @@ class DynamixelIO:
     
     
     def get_voltage(self, motor_id):
-        """ Returns the current voltage supplied (V). """
+        """ Returns the current voltage supplied (in Volt). """
         return self._send_read_packet(motor_id, 'PRESENT_VOLTAGE') * 0.1
     
     
