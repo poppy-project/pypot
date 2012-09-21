@@ -16,7 +16,7 @@ def get_available_ports():
             * Linux : /dev/ttyACM* and /dev/ttyUSB*
             * Mac OS : /dev/tty.usb*
         
-        :raises: NotImplementedError if your OS is not one of the currently supported (Linux, Mac OS).
+        :raises: :py:exc:`NotImplementedError` if your OS is not one of the currently supported (Linux, Mac OS).
         
     """
     # TODO: windows ?

@@ -489,19 +489,21 @@ class DynamixelIO:
             :return: level of status return
             
             """
-        status_return_level = self._send_read_packet(motor_id, 'STATUS_RETURN_LEVEL')
-        self._motor_return_level[motor_id] = status_return_level
-        return status_return_level    
-            
+        return self._lazy_get_status_return_level(motor_id)
+
     def _lazy_get_status_return_level(self, motor_id):
         """ Finds the motor status return level if it is not already known. """
         if not self._motor_return_level.has_key(motor_id):
             self._motor_return_level[motor_id] = 2
             try:
-                self.get_status_return_level(motor_id)
+                status_return_level = self._send_read_packet(motor_id, 'STATUS_RETURN_LEVEL')
+                self._motor_return_level[motor_id] = status_return_level
             except DynamixelTimeoutError as e:
-                del self._motor_return_level[motor_id]
-                raise e
+                if self.ping(motor_id):
+                    self._motor_return_level[motor_id] = 0
+                else:
+                    del self._motor_return_level[motor_id]
+                    raise e
                 
         return self._motor_return_level[motor_id]
     
@@ -521,9 +523,9 @@ class DynamixelIO:
         if status_return_level not in (0, 1, 2):
             raise ValueError('Status level must be one of the following (0, 1, 2)')
                 
-        self._motor_return_level[motor_id] = status_return_level
         self._send_write_packet(motor_id, 'STATUS_RETURN_LEVEL', status_return_level)
-    
+        self._motor_return_level[motor_id] = status_return_level
+
     
     def get_alarm_led(self, motor_id):
         return self._send_read_packet(motor_id, 'ALARM_LED')
@@ -914,7 +916,7 @@ class DynamixelIO:
                 packet sent from the motor.
             """
         if self._lazy_get_status_return_level(motor_id) == 0:
-            raise DynamixelCommunicationError('Try to get a value from motor with a level of status return of 0')
+            raise IOError('Try to get a value from motor with a level of status return of 0')
         
         packet = DynamixelReadDataPacket(motor_id, control_name)
         status_packet = self._send_packet(packet)
