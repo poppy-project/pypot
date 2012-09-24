@@ -92,3 +92,12 @@ DXL_MODEL_NUMBER = {
     310: 'MX-64',
     320: 'MX-106',
 }
+
+DXL_ALARMS = ('NONE',
+              'INSTRUCTION ERROR',
+              'OVERLOAD ERROR',
+              'CHECKSUM ERROR',
+              'RANGE ERROR',
+              'OVER HEATING ERROR',
+              'ANGLE LIMIT ERROR',
+              'INPUT VOLTAGE ERROR')

@@ -38,7 +38,7 @@ class DynamixelIO:
     __open_ports = []
     
     
-    def __init__(self, port, baudrate=1000000, timeout=1.0):
+    def __init__(self, port, baudrate=1000000, timeout=1.0, blacklist_alarms=()):
         """ 
             At instanciation, it opens the serial port and sets the communication parameters.
             
@@ -47,6 +47,8 @@ class DynamixelIO:
             :param string port: the serial port to use (e.g. Unix (/dev/tty...), Windows (COM...)).
             :param int baudrate: default for new motors: 57600, for PyPot motors: 1000000
             :param float timeout: read timeout in seconds
+            :param blacklist_alarms: list of blacklisted alarms that will not be triggered as :py:exc:`DynamixelMotorError`
+            :type blacklist_alarms: list of elements of :py:const:`~pypot.dynamixel.protocol.DXL_ALARMS`
             
             :raises: IOError (when port is already used)
             
@@ -56,6 +58,8 @@ class DynamixelIO:
         
         self._serial = serial.Serial(port, baudrate, timeout=timeout)
         self.__open_ports.append(port)
+    
+        self.blacklist_alarms = blacklist_alarms
         
         self._lock = threading.RLock()
         
@@ -528,17 +532,19 @@ class DynamixelIO:
 
     
     def get_alarm_led(self, motor_id):
-        return self._send_read_packet(motor_id, 'ALARM_LED')
+        return byte_to_alarms(self._send_read_packet(motor_id, 'ALARM_LED'))
     
     def set_alarm_led(self, motor_id, alarm_led):
-        self._send_write_packet(motor_id, 'ALARM_LED', int(alarm_led))
+        self._send_write_packet(motor_id, 'ALARM_LED',
+                                alarms_to_byte(alarm_led))
     
     
     def get_alarm_shutdown(self, motor_id):
-        return self._send_read_packet(motor_id, 'ALARM_SHUTDOWN')
+        return byte_to_alarms(self._send_read_packet(motor_id, 'ALARM_SHUTDOWN'))
     
     def set_alarm_shutdown(self, motor_id, alarm_shutdown):
-        self._send_write_packet(motor_id, 'ALARM_SHUTDOWN', int(alarm_shutdown))
+        self._send_write_packet(motor_id, 'ALARM_SHUTDOWN',
+                                alarms_to_byte(alarm_shutdown))
     
     
     # MARK: - Dxl Motor RAM Access
@@ -893,8 +899,11 @@ class DynamixelIO:
                                                   read_bytes)
         
             if status_packet.error != 0:
-                raise DynamixelMotorError(status_packet.motor_id,
-                                          status_packet.error)
+                alarms = byte_to_alarms(status_packet.error)
+                alarms = filter(lambda a: a not in self.blacklist_alarms, alarms)
+                
+                if len(alarms):
+                    raise DynamixelMotorError(status_packet.motor_id, alarms)
             
             return status_packet
     
@@ -1074,12 +1083,14 @@ class DynamixelTimeoutError(DynamixelCommunicationError):
 
 
 class DynamixelMotorError(Exception):
-    def __init__(self, motor_id, error_code):
+    def __init__(self, motor_id, alarms):
         self.motor_id = motor_id
-        self.error_code = error_code
+        self.alarms = alarms
     
     def __str__(self):
-        return 'Motor %d returned error code %d' % (self.motor_id, self.error_code)
+        return 'Motor %d triggered alarm%s: %s' % (self.motor_id,
+                                                   's' if len(self.alarms) > 1 else '',
+                                                   self.alarms if len(self.alarms) > 1 else self.alarms[0])
 
 class DynamixelUnsupportedMotorError(Exception):
     def __init__(self, motor_id, model_number):

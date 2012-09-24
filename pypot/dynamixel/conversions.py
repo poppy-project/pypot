@@ -1,4 +1,8 @@
 import math
+import numpy
+
+from pypot.dynamixel.protocol import DXL_ALARMS
+
 
 # for details, see http://support.robotis.com/en/product/dynamixel/
 
@@ -87,6 +91,21 @@ def percent_to_torque_limit(percent):
         raise ValueError('Percent must be in [0, 100]')
     
     return int(round(percent * (MAX_TORQUE / 100.0), 0))
+
+# MARK: - Alarm conversions
+
+def byte_to_alarms(alarm_code):
+    if not (0 <= alarm_code <= 255):
+        raise ValueError('alarm code must be in [0, 255]')
+    
+    byte = numpy.unpackbits(numpy.asarray(alarm_code, dtype=numpy.uint8))
+    return tuple(numpy.array(DXL_ALARMS)[byte == 1])
+
+def alarms_to_byte(alarms):
+    b = 0
+    for a in alarms:
+        b += 2 ** (7 - DXL_ALARMS.index(a))
+    return b
 
 
 # MARK: - Byte conversions
