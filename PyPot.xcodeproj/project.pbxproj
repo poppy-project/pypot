@@ -8,6 +8,7 @@
 
 /* Begin PBXFileReference section */
 		A8103E94160B199700D490C9 /* poppy.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = poppy.xml; sourceTree = "<group>"; };
+		A82289D2161070C3004A2E73 /* test.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = test.xml; sourceTree = "<group>"; };
 		A82D52C615F2598500ED73DC /* utils.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = utils.py; sourceTree = "<group>"; };
 		A82D52C815F2599E00ED73DC /* io.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = io.py; sourceTree = "<group>"; };
 		A82D52C915F259B200ED73DC /* protocol.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = protocol.py; sourceTree = "<group>"; };
@@ -100,6 +101,7 @@
 			children = (
 				A82F6C7215F89D6100AFBA1E /* torso.xml */,
 				A8103E94160B199700D490C9 /* poppy.xml */,
+				A82289D2161070C3004A2E73 /* test.xml */,
 			);
 			path = resources;
 			sourceTree = SOURCE_ROOT;

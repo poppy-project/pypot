@@ -6,7 +6,10 @@
     </EEPROM>
     
     <DynamixelController type="USB2DXL" port="/dev/ttyACM0">
-        
+        <AlarmBlackList>
+            <ANGLE_LIMIT_ERROR />
+        </AlarmBlackList>
+            
         <!-- Left Leg -->
         <DynamixelMotor name="left_hip_x" id="11" type="MX-28" orientation="direct">
             <angle_limits>(-11, 37)</angle_limits>

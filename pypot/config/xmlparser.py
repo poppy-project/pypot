@@ -34,11 +34,16 @@ def _handle_controller(controller_node):
     controller_type = controller_node.getAttribute("type")
     controller_port = controller_node.getAttribute("port")
 
+    alarm_node = controller_node.getElementsByTagName("AlarmBlackList")[0]
+    alarms = map(lambda node: node.tagName,
+                 filter(lambda child: child.nodeType == alarm_node.ELEMENT_NODE, alarm_node.childNodes))
+    
     motor_nodes = controller_node.getElementsByTagName("DynamixelMotor")
     motors = [_handle_motor(m) for m in motor_nodes]
     
-    controller = pypot.dynamixel.DynamixelController(controller_port, controller_type, motors)
-        
+    controller = pypot.dynamixel.DynamixelController(controller_port, controller_type, motors,
+                                                     blacklisted_alarms=alarms)
+    
     return controller
 
 

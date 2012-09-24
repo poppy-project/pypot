@@ -38,7 +38,7 @@ class DynamixelIO:
     __open_ports = []
     
     
-    def __init__(self, port, baudrate=1000000, timeout=1.0, blacklist_alarms=()):
+    def __init__(self, port, baudrate=1000000, timeout=1.0, blacklisted_alarms=()):
         """ 
             At instanciation, it opens the serial port and sets the communication parameters.
             
@@ -47,8 +47,8 @@ class DynamixelIO:
             :param string port: the serial port to use (e.g. Unix (/dev/tty...), Windows (COM...)).
             :param int baudrate: default for new motors: 57600, for PyPot motors: 1000000
             :param float timeout: read timeout in seconds
-            :param blacklist_alarms: list of blacklisted alarms that will not be triggered as :py:exc:`DynamixelMotorError`
-            :type blacklist_alarms: list of elements of :py:const:`~pypot.dynamixel.protocol.DXL_ALARMS`
+            :param blacklisted_alarms: list of blacklisted alarms that will not be triggered as :py:exc:`DynamixelMotorError`
+            :type blacklisted_alarms: list of elements of :py:const:`~pypot.dynamixel.protocol.DXL_ALARMS`
             
             :raises: IOError (when port is already used)
             
@@ -59,7 +59,7 @@ class DynamixelIO:
         self._serial = serial.Serial(port, baudrate, timeout=timeout)
         self.__open_ports.append(port)
     
-        self.blacklist_alarms = blacklist_alarms
+        self.blacklisted_alarms = blacklisted_alarms
         
         self._lock = threading.RLock()
         
@@ -159,28 +159,28 @@ class DynamixelIO:
     
     def get_sync_speeds(self, motor_ids):
         """
-            Synchronizes the getting of speed in rpm of all motors specified.
+            Synchronizes the getting of speed in dps of all motors specified.
             
             :param motor_ids: specified motor ids [0-253]
             :type motor_ids: list of ids
-            :return: list of speed in rpm (positive values correspond to clockwise)
+            :return: list of speed in degree per second (positive values correspond to clockwise)
             
             .. warning:: This method only works with the USB2AX.
             
             """
-        return map(speed_to_rpm,
+        return map(speed_to_dps,
                    self._send_sync_read_packet(motor_ids, 'PRESENT_SPEED'))
     
     def set_sync_speeds(self, id_speed_pairs):
         """
-            Synchronizes the setting of the specified speeds (in rpm) to the motors.
+            Synchronizes the setting of the specified speeds (in dps) to the motors.
             
-            :param id_speed_pairs: speed is expressed in rpm (positive values correspond to clockwise).
+            :param id_speed_pairs: speed is expressed in degree per second (positive values correspond to clockwise).
             :type id_speed_pairs: list of couple (motor id, speed)
             
             """
         ids, speeds = zip(*id_speed_pairs)
-        speeds = map(rpm_to_speed, speeds)
+        speeds = map(dps_to_speed, speeds)
         self._send_sync_write_packet('MOVING_SPEED', zip(ids, speeds))
     
     
@@ -228,7 +228,7 @@ class DynamixelIO:
         pos, speed, load = zip(*self._send_sync_read_packet(motor_ids, 'PRESENT_POS_SPEED_LOAD'))
         
         pos = [position_to_degree(pos, model) for pos, model in zip(pos, motor_models)]
-        speed = map(speed_to_rpm, speed)
+        speed = map(speed_to_dps, speed)
         load = map(load_to_percent, load)
         
         return zip(pos, speed, load)
@@ -238,7 +238,7 @@ class DynamixelIO:
             Synchronizes the setting of the specified positions, speeds and torque limits (in their respective units) to the motors.
             
             * The position is expressed in degrees.
-            * The speed is expressed in rpm (positive values correspond to clockwise).
+            * The speed is expressed in dps (positive values correspond to clockwise).
             * The torque limit is expressed as a percentage of the maximum torque.
             
             :param id_pos_speed_torque_tuples: each value must be expressed in its own units.
@@ -249,7 +249,7 @@ class DynamixelIO:
         motor_models = [self._lazy_get_model(mid) for mid in ids]
         
         pos = [degree_to_position(rad, model) for rad, model in zip(pos, motor_models)]
-        speed = map(rpm_to_speed, speed)
+        speed = map(dps_to_speed, speed)
         torque = map(percent_to_torque_limit, torque)
         
         self._send_sync_write_packet('GOAL_POS_SPEED_TORQUE', zip(ids, pos, speed, torque))
@@ -750,13 +750,13 @@ class DynamixelIO:
     
     
     def get_speed(self, motor_id):
-        """ Returns the speed in rpm (positive values correspond to clockwise) of the specified motor. """
-        return speed_to_rpm(self._send_read_packet(motor_id, 'PRESENT_SPEED'))
+        """ Returns the speed in dps (positive values correspond to clockwise) of the specified motor. """
+        return speed_to_dps(self._send_read_packet(motor_id, 'PRESENT_SPEED'))
     
     def set_speed(self, motor_id, speed):
-        """ Sets the speed in rpm (positive values correspond to clockwise) of the specified motor. """
+        """ Sets the speed in dps (positive values correspond to clockwise) of the specified motor. """
         self._send_write_packet(motor_id, 'MOVING_SPEED',
-                                rpm_to_speed(speed))
+                                dps_to_speed(speed))
     
     
     def get_torque_limit(self, motor_id):
@@ -777,7 +777,7 @@ class DynamixelIO:
         pos, speed, load = self._send_read_packet(motor_id, 'PRESENT_POS_SPEED_LOAD')
         
         return (position_to_degree(pos, self._lazy_get_model(motor_id)),
-                speed_to_rpm(speed),
+                speed_to_dps(speed),
                 load_to_percent(load))
     
     
@@ -900,7 +900,7 @@ class DynamixelIO:
         
             if status_packet.error != 0:
                 alarms = byte_to_alarms(status_packet.error)
-                alarms = filter(lambda a: a not in self.blacklist_alarms, alarms)
+                alarms = filter(lambda a: a not in self.blacklisted_alarms, alarms)
                 
                 if len(alarms):
                     raise DynamixelMotorError(status_packet.motor_id, alarms)

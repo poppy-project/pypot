@@ -8,7 +8,9 @@ class DynamixelController(threading.Thread):
     
     TYPE = ("USB2DXL", "USB2AX")
     
-    def __init__(self, port, connection_type, motors):
+    def __init__(self,
+                 port, connection_type, motors,
+                 blacklisted_alarms=()):
         """
             :param string port: The serial port to control.
             
@@ -29,7 +31,7 @@ class DynamixelController(threading.Thread):
         
         self.type = connection_type
     
-        self.io = pypot.dynamixel.DynamixelIO(port)
+        self.io = pypot.dynamixel.DynamixelIO(port, blacklisted_alarms=blacklisted_alarms)
         self.motors = motors
         for m in self.motors:
             m.io = self.io

@@ -94,10 +94,10 @@ DXL_MODEL_NUMBER = {
 }
 
 DXL_ALARMS = ('NONE',
-              'INSTRUCTION ERROR',
-              'OVERLOAD ERROR',
-              'CHECKSUM ERROR',
-              'RANGE ERROR',
-              'OVER HEATING ERROR',
-              'ANGLE LIMIT ERROR',
-              'INPUT VOLTAGE ERROR')
+              'INSTRUCTION_ERROR',
+              'OVERLOAD_ERROR',
+              'CHECKSUM_ERROR',
+              'RANGE_ERROR',
+              'OVER_HEATING_ERROR',
+              'ANGLE_LIMIT_ERROR',
+              'INPUT_VOLTAGE_ERROR')

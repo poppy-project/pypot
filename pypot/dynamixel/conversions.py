@@ -60,6 +60,12 @@ def rpm_to_speed(rpm):
     
     return int(round(speed, 0))
 
+def speed_to_dps(speed):
+    return speed_to_rpm(speed) * 6
+
+def dps_to_speed(dps):
+    return rpm_to_speed(dps / 6.0)
+
 
 LOAD_MAX = 2048
 LOAD_TO_PERCENT = 100.0 / ((LOAD_MAX / 2) - 1)
