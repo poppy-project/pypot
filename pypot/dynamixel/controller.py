@@ -34,7 +34,7 @@ class DynamixelController(threading.Thread):
         self.io = pypot.dynamixel.DynamixelIO(port, blacklisted_alarms=blacklisted_alarms)
         self.motors = motors
         for m in self.motors:
-            m.io = self.io
+            m._io = self.io
         
         [self._get_initial_position_motor(m) for m in self.motors]
 
@@ -66,8 +66,16 @@ class DynamixelController(threading.Thread):
         eeprom = dict(default_eeprom_values)
         eeprom.update(motor.custom_eeprom_values)
         
-        if not motor.direct and eeprom.has_key('angle_limits'):
-            eeprom['angle_limits'] = (-eeprom['angle_limits'][1], -eeprom['angle_limits'][0])
+        
+        
+        if eeprom.has_key('angle_limits'):
+            if motor.offset:
+                eeprom['angle_limits'] = (eeprom['angle_limits'][0] + motor.offset,
+                                          eeprom['angle_limits'][1] + motor.offset)
+
+            if not motor.direct:
+                eeprom['angle_limits'] = (-eeprom['angle_limits'][1],
+                                          -eeprom['angle_limits'][0])
         
         for key, value in eeprom.items():
             getter = getattr(self.io, 'get_' + key)

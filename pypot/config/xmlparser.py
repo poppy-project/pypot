@@ -54,10 +54,12 @@ def _handle_motor(motor_node):
     motor_type = motor_node.getAttribute("type")
     motor_orientation = motor_node.getAttribute("orientation")
     motor_is_direct = True if motor_orientation == "direct" else False
+    motor_offset = float(motor_node.getAttribute("offset"))
     
     custom_eeprom = _handle_eeprom(motor_node)
     
-    motor = pypot.dynamixel.DynamixelMotor(motor_id, motor_name, motor_type, motor_is_direct,
+    motor = pypot.dynamixel.DynamixelMotor(motor_id, motor_name, motor_type,
+                                           motor_is_direct, motor_offset,
                                            **custom_eeprom)
 
     return motor
