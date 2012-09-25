@@ -117,7 +117,7 @@ def alarms_to_byte(alarms):
 # MARK: - Byte conversions
 
 def integer_to_two_bytes(value):
-    return (int(value % 256), int(value >> 8))
+    return (int(value) % 256, int(value) >> 8)
 
 def two_bytes_to_integer(value):
     return int(value[0] + (value[1] << 8))

@@ -64,7 +64,10 @@ class DynamixelIO:
         self._lock = threading.RLock()
         
         self._motor_models = {}
+        self._motor_angle_limits = {}
         self._motor_return_level = {}
+        self._motor_modes = {}
+    
     
     def __del__(self):
         """ Automatically closes the serial communication on destruction. """
@@ -89,7 +92,7 @@ class DynamixelIO:
         self._serial.flushOutput()
     
     
-    # MARK: - Motor discovery
+    # MARK: - Motor general functions
     
     def ping(self, motor_id):
         """
@@ -123,6 +126,47 @@ class DynamixelIO:
             """
         return filter(self.ping, possible_ids)
   
+    
+    def set_to_wheel_mode(self, motor_id):
+        if self.get_mode(motor_id) == 'WHEEL':
+            return
+
+        self._motor_angle_limits[motor_id] = self.get_angle_limits(motor_id)
+                
+        self._send_write_packet(motor_id, 'ANGLE_LIMITS', (0, 0))
+
+        self._motor_modes[motor_id] = 'WHEEL'
+    
+    
+    def set_to_joint_mode(self, motor_id):
+        if self.get_mode(motor_id) == 'JOINT':
+            return
+        
+        self._motor_modes[motor_id] = 'JOINT'       
+       
+        if self._motor_angle_limits.has_key(motor_id):
+            angle_limits = self._motor_angle_limits[motor_id]
+        else:
+            model = 'MX' if self._lazy_get_model(motor_id).startswith('MX') else '*'
+            angle_limits = (-position_range[model][1] / 2,
+                            position_range[model][1] / 2)
+                
+        self.set_angle_limits(motor_id, *angle_limits)
+
+
+    def get_mode(self, motor_id):
+        if not self._motor_modes.has_key(motor_id):
+            self._motor_modes[motor_id] = 'JOINT'
+            
+            model = 'MX' if self._lazy_get_model(motor_id).startswith('MX') else '*'
+            angle_limits = (-position_range[model][1] / 2,
+                            -position_range[model][1] / 2)
+        
+            if tuple(self.get_angle_limits(motor_id)) == angle_limits:
+                self._motor_modes[motor_id] = 'WHEEL'
+        
+        return self._motor_modes[motor_id]
+    
     
     # MARK: - Sync Read/Write
     
@@ -179,6 +223,11 @@ class DynamixelIO:
             :type id_speed_pairs: list of couple (motor id, speed)
             
             """
+        
+        for mid, speed in id_speed_pairs:
+            if self.get_mode(mid) == 'JOINT' and speed < 0:
+                raise ValueError('Speed must always be positive in joint mode (motor %d)' % (motor_id))
+        
         ids, speeds = zip(*id_speed_pairs)
         speeds = map(dps_to_speed, speeds)
         self._send_sync_write_packet('MOVING_SPEED', zip(ids, speeds))
@@ -247,6 +296,10 @@ class DynamixelIO:
             """
         ids, pos, speed, torque = zip(*id_pos_speed_torque_tuples)
         motor_models = [self._lazy_get_model(mid) for mid in ids]
+        
+        for mid, speed in zip(ids, speed):
+            if self.get_mode(mid) == 'JOINT' and speed < 0:
+                raise ValueError('Speed must always be positive in joint mode (motor %d)' % (motor_id))
         
         pos = [degree_to_position(rad, model) for rad, model in zip(pos, motor_models)]
         speed = map(dps_to_speed, speed)
@@ -350,6 +403,9 @@ class DynamixelIO:
             :return: (lower_limit, upper_limit) in degrees
                         
             """
+        if self.get_mode(motor_id) == 'WHEEL':
+            return (0, 0)
+        
         return map(lambda pos: position_to_degree(pos, self._lazy_get_model(motor_id)),
                    self._send_read_packet(motor_id, 'ANGLE_LIMITS'))
     
@@ -366,8 +422,11 @@ class DynamixelIO:
             :raises: ValueError if the lower limit is greater or equal than the upper limit
             
             .. note:: The angle limits must belong to the hardware limits of the motor (e.g. (-150, 150) for an AX-12 motor or (-180, 180) for a MX-28 motor).
-                        
+            
             """
+        if self.get_mode(motor_id) == 'WHEEL':
+            raise ValueError('Cannot change the angle limits in wheel mode (motor %d)' % (motor_id))
+        
         if lower_limit >= upper_limit:
             raise ValueError('The lower limit (%d) must be less than the upper limit (%d).'
                              % (lower_limit, upper_limit))
@@ -755,6 +814,9 @@ class DynamixelIO:
     
     def set_speed(self, motor_id, speed):
         """ Sets the speed in dps (positive values correspond to clockwise) of the specified motor. """
+        if self.get_mode(motor_id) == 'JOINT' and speed < 0:
+            raise ValueError('Speed must always be positive in joint mode (motor %d)' % (motor_id))
+        
         self._send_write_packet(motor_id, 'MOVING_SPEED',
                                 dps_to_speed(speed))
     
