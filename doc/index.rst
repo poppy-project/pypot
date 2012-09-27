@@ -12,9 +12,11 @@ Contents:
     :maxdepth: 2
 
     intro
+    quickstart
     tutorial
     dynamixel
     FAQ
+    knownissues
 
 Indices and tables
 ==================

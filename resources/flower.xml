@@ -1,0 +1,32 @@
+<Robot name="Violette">
+    
+    <EEPROM>
+        <return_delay_time>0</return_delay_time>
+        <status_return_level>2</status_return_level>
+    </EEPROM>
+    
+    <DynamixelController type="USB2DXL" port="/dev/ttyACM0">
+        <AlarmBlackList>
+            <ANGLE_LIMIT_ERROR />
+        </AlarmBlackList>
+        
+        <!-- stem -->
+        <DynamixelMotor name="base_pan" id="91" type="RX-64" orientation="direct" offset=0.0>
+        </DynamixelMotor>
+        <DynamixelMotor name="base_tilt_lower" id="92" type="RX-64" orientation="indirect" offset=0.0>
+            <angle_limits>(-90, 90)</angle_limits>
+        </DynamixelMotor>
+        <DynamixelMotor name="base_tilt_upper" id="93" type="RX-64" orientation="indirect" offset=0.0>
+            <angle_limits>(-90, 90)</angle_limits>
+        </DynamixelMotor>
+        <DynamixelMotor name="head_pan" id="94" type="RX-28" orientation="direct" offset=0.0>
+        </DynamixelMotor>
+        <DynamixelMotor name="head_tilt_lower" id="95" type="RX-28" orientation="indirect" offset=0.0>
+            <angle_limits>(-90, 90)</angle_limits>
+        </DynamixelMotor>
+        <DynamixelMotor name="head_tilt_upper" id="96" type="RX-28" orientation="indirect" offset=0.0>
+            <angle_limits>(-90, 90)</angle_limits>
+        </DynamixelMotor>
+    </DynamixelController>
+    
+</Robot>

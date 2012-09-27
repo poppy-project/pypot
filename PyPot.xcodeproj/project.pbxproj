@@ -8,6 +8,17 @@
 
 /* Begin PBXFileReference section */
 		A8103E94160B199700D490C9 /* poppy.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = poppy.xml; sourceTree = "<group>"; };
+		A812C6B416132D3A0007269F /* conf.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = conf.py; sourceTree = "<group>"; };
+		A812C6B516132D3A0007269F /* dynamixel.rst */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = dynamixel.rst; sourceTree = "<group>"; };
+		A812C6B616132D3A0007269F /* FAQ.rst */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = FAQ.rst; sourceTree = "<group>"; };
+		A812C6B716132D3A0007269F /* index.rst */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = index.rst; sourceTree = "<group>"; };
+		A812C6B816132D3A0007269F /* intro.rst */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = intro.rst; sourceTree = "<group>"; };
+		A812C6B916132D3A0007269F /* make.bat */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = make.bat; sourceTree = "<group>"; };
+		A812C6BA16132D3A0007269F /* Makefile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.make; path = Makefile; sourceTree = "<group>"; };
+		A812C6BB16132D3A0007269F /* tutorial.rst */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = tutorial.rst; sourceTree = "<group>"; };
+		A812C6BD16132D550007269F /* quickstart.rst */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = quickstart.rst; sourceTree = "<group>"; };
+		A812C6BE161331350007269F /* knownissues.rst */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = knownissues.rst; sourceTree = "<group>"; };
+		A812C6BF161351860007269F /* flower.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = flower.xml; sourceTree = "<group>"; };
 		A82D52C615F2598500ED73DC /* utils.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = utils.py; sourceTree = "<group>"; };
 		A82D52C815F2599E00ED73DC /* io.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = io.py; sourceTree = "<group>"; };
 		A82D52C915F259B200ED73DC /* protocol.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = protocol.py; sourceTree = "<group>"; };
@@ -31,6 +42,23 @@
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
+		A812C6B316132D3A0007269F /* doc */ = {
+			isa = PBXGroup;
+			children = (
+				A812C6B416132D3A0007269F /* conf.py */,
+				A812C6B516132D3A0007269F /* dynamixel.rst */,
+				A812C6B616132D3A0007269F /* FAQ.rst */,
+				A812C6B716132D3A0007269F /* index.rst */,
+				A812C6B816132D3A0007269F /* intro.rst */,
+				A812C6BD16132D550007269F /* quickstart.rst */,
+				A812C6B916132D3A0007269F /* make.bat */,
+				A812C6BA16132D3A0007269F /* Makefile */,
+				A812C6BB16132D3A0007269F /* tutorial.rst */,
+				A812C6BE161331350007269F /* knownissues.rst */,
+			);
+			path = doc;
+			sourceTree = SOURCE_ROOT;
+		};
 		A82D52CC15F25A3F00ED73DC /* samples */ = {
 			isa = PBXGroup;
 			children = (
@@ -43,6 +71,7 @@
 			isa = PBXGroup;
 			children = (
 				A861048415BF3D62005F6573 /* pypot */,
+				A812C6B316132D3A0007269F /* doc */,
 				A8C7D0DA15F76574007C5E66 /* resources */,
 				A82D52CC15F25A3F00ED73DC /* samples */,
 				A861048615BF3D62005F6573 /* test */,
@@ -100,6 +129,7 @@
 			children = (
 				A82F6C7215F89D6100AFBA1E /* torso.xml */,
 				A8103E94160B199700D490C9 /* poppy.xml */,
+				A812C6BF161351860007269F /* flower.xml */,
 			);
 			path = resources;
 			sourceTree = SOURCE_ROOT;
