@@ -10,6 +10,28 @@
             <ANGLE_LIMIT_ERROR />
         </AlarmBlackList>
         
+        <SyncLoop>
+            <Loop frequency='50'>
+
+                <current_position access='r' />
+                <goal_position access='w' />
+                
+                <current_speed access='r' />
+                <max_speed access='w' />
+                
+                <current_load access='r' />
+                <max_load access='w' />
+
+                <pid_gains access='w' />
+            </Loop>
+            
+            <Loop frequency='1'>
+                <temperature access='r' />
+            </Loop>
+            
+        </SyncLoop>
+        
+        
         <!-- stem -->
         <DynamixelMotor name="base_pan" id="91" type="RX-64" orientation="direct" offset=0.0>
         </DynamixelMotor>
