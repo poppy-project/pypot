@@ -73,6 +73,7 @@ class DynamixelIO:
     def __del__(self):
         """ Automatically closes the serial communication on destruction. """
         if hasattr(self, '_serial'):
+            self._lock.acquire()
             self.__open_ports.remove(self._serial.port)
             self._serial.close()
     
@@ -797,16 +798,27 @@ class DynamixelIO:
     
     
     
-    def get_position(self, motor_id):
-        """ Returns the position in degrees of the specified motor. """
+    def get_current_position(self, motor_id):
+        """ Returns the current position in degrees of the specified motor. """
         return position_to_degree(self._send_read_packet(motor_id, 'PRESENT_POSITION'),
                                   self._lazy_get_model(motor_id))
     
-    def set_position(self, motor_id, position):
+    def get_goal_position(self, motor_id):
+        """ Returns the goal position in degrees of the specified motor. """
+        return position_to_degree(self._send_read_packet(motor_id, 'GOAL_POSITION'),
+                                  self._lazy_get_model(motor_id))
+    
+    def get_position(self, motor_id):
+        return self.get_current_position(motor_id)
+    
+    def set_goal_position(self, motor_id, position):
         """ Sets the position in degrees of the specified motor. """
         self._send_write_packet(motor_id, 'GOAL_POSITION',
                                 degree_to_position(position,
                                                    self._lazy_get_model(motor_id)))
+    
+    def set_position(self, motor_id, position):
+        self.set_goal_position(motor_id, position)
     
     
     def get_speed(self, motor_id):

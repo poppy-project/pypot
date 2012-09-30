@@ -1,6 +1,48 @@
 
 
-class DynamixelMotor(object):
+class _DynamixelMotor(object):
+    @classmethod
+    def _generate_accessor(cls, varname, readonly):
+        prefix = '__sync_read_' if readonly else '__sync_write_'
+        
+        def lazy_getter(self, varname):
+            lazy_varname = prefix + varname
+    
+            if hasattr(self, lazy_varname):
+                return getattr(self, lazy_varname)
+
+            else:
+                return getattr(self._io, 'get_' + varname)(self.id)
+
+        def lazy_setter(self, varname, value):
+            lazy_varname = prefix + varname
+                
+            if hasattr(self, lazy_varname):
+                setattr(self, lazy_varname, value)
+                
+            else:
+                getattr(self._io, 'set_' + varname)(self.id, value)
+
+        getter = lambda self: lazy_getter(self, varname)
+        setter = lambda self, value: lazy_setter(self, varname, value)
+
+        if readonly:
+            setattr(cls, varname, property(getter))
+        else:
+            setattr(cls, varname, property(getter, setter))
+            
+            
+    @classmethod
+    def _generate_read_accessor(cls, varname):
+        cls._generate_accessor(varname, True)
+    
+    @classmethod
+    def _generate_write_accessor(cls, varname):
+        cls._generate_accessor(varname, False)
+
+
+
+class DynamixelMotor(_DynamixelMotor):
     """ Creates access to the possible values that can be read from/written to the motors.
         
         :param kwargs: You can specify custom eeprom values via keyword argument.
@@ -17,16 +59,11 @@ class DynamixelMotor(object):
         self.id = id
         self.name = name
         self.model = model
-        
         self._direct = is_direct
         self._offset = offset
 
         self._io = io
-        self._current_position = self._goal_position = 0
-        
-        self.synced = True
-        self._compliant = False
-        
+
         self.custom_eeprom_values = kwargs
         
     def __repr__(self):
@@ -35,19 +72,7 @@ class DynamixelMotor(object):
                                                           self.model,
                                                           self.current_position)
     
-    @property
-    def current_position(self):
-        return (self._current_position if self.direct else -self._current_position) - self.offset
-    
-    @property
-    def goal_position(self):
-        return (self._goal_position if self.direct else -self._goal_position) - self.offset
-    
-    @goal_position.setter
-    def goal_position(self, value):
-        self._goal_position = (value if self.direct else -value) + \
-                                (self.offset if self.direct else -self.offset)
-
+    # MARK: - Orientation and offset
     
     @property
     def direct(self):
@@ -59,19 +84,18 @@ class DynamixelMotor(object):
     
     
     @property
-    def compliant(self):
-        return self._compliant
+    def current_position(self):
+        pos = _DynamixelMotor.current_position.fget(self)
+        return (pos if self.direct else -pos) - self.offset
 
-    @compliant.setter
-    def compliant(self, value):
-        self._compliant = value
-        
-        if value:
-            self._io.disable_torque(self.id)
-            self.synced = False
-        else:
-            self.goal_position = self.current_position
-            self._io.enable_torque(self.id)
-            self.synced = True
-        
-            
+    @property
+    def goal_position(self):
+        pos = _DynamixelMotor.goal_position.fget(self)
+        return (pos if self.direct else -pos) - self.offset
+
+    @goal_position.setter
+    def goal_position(self, value):
+        value = (value if self.direct else -value)
+        value = value + (self.offset if self.direct else -self.offset)
+
+        _DynamixelMotor.goal_position.fset(self, value)

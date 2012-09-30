@@ -1,11 +1,16 @@
 import os
 import glob
 
-
 from pypot.dynamixel.io import DynamixelIO
-from pypot.dynamixel.motor import DynamixelMotor
+from pypot.dynamixel.motor import _DynamixelMotor, DynamixelMotor
 from pypot.dynamixel.controller import DynamixelController
 
+
+for name in ('current_position', ):
+    _DynamixelMotor._generate_read_accessor(name)
+
+for name in ('goal_position', ):
+    _DynamixelMotor._generate_write_accessor(name)
 
 
 def get_available_ports():

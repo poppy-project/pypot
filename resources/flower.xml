@@ -12,7 +12,6 @@
         
         <SyncLoop>
             <Loop frequency='50'>
-
                 <current_position access='r' />
                 <goal_position access='w' />
                 

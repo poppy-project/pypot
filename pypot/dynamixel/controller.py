@@ -3,13 +3,14 @@ import time
 
 import pypot.dynamixel
 
-class DynamixelController(threading.Thread):
+class DynamixelController(object):
     """ Creates a bus control system which synchronizes the reading/writing of values of motors. """
     
     TYPE = ("USB2DXL", "USB2AX")
     
     def __init__(self,
-                 port, connection_type, motors,
+                 port, connection_type,
+                 motors,
                  blacklisted_alarms=()):
         """
             :param string port: The serial port to control.
@@ -22,10 +23,7 @@ class DynamixelController(threading.Thread):
             
             :raises: ValueError if the connection type is unknown.
             
-            """        
-        threading.Thread.__init__(self)
-        self.daemon = True
-        
+            """                
         if connection_type not in DynamixelController.TYPE:
             raise ValueError('Unknown controller type: %s' % (connection_type))
         
@@ -35,18 +33,73 @@ class DynamixelController(threading.Thread):
         self.motors = motors
         for m in self.motors:
             m._io = self.io
-        
-        [self._get_initial_position_motor(m) for m in self.motors]
+            
+        self.sync_loops = []
+        self.sync_loops.append(DynamixelController._Loop(50,
+                                                         self.io, self.motors,
+                                                         var_read=('current_position', ),
+                                                         var_write=('goal_position', )))
 
+        self.sync_loops.append(DynamixelController._Loop(1,
+                                                         self.io, self.motors,
+                                                         var_read=('temperature', )))
+    
     def __repr__(self):
         return '<Controller io=%s motors=%s>' % (self.io, ''.join([repr(m) for m in self.motors]))
     
     
-    def _get_initial_position_motor(self, motor):
-        """ Retrieves the initial motor position to avoid uncontrolled movement of motors. """
-        pos = self.io.get_position(motor.id)
-        motor._current_position = motor._goal_position = pos
+    # MARK: - Synchronization loops
     
+    def start_sync(self):
+        """ Starts the synchronization thread. """
+        [loop.start() for loop in self.sync_loops]
+    
+    
+    class _Loop(threading.Thread):
+        def __init__(self,
+                     frequency,
+                     io, motors,
+                     var_read=(), var_write=()):
+            
+            threading.Thread.__init__(self)
+            self.daemon = True
+            
+            self.period = 1.0 / frequency
+            
+            self.motors = motors
+        
+            self.getters = [(getattr(io, 'get_' + var), '__sync_read_' + var) for var in var_read]
+            self.setters = [(getattr(io, 'set_' + var), '__sync_write_' + var) for var in var_write]
+      
+        
+        def run(self):
+            # Before running the sync loop,
+            # we first get the initial values to avoid "jumping" behavior.
+            for _, varname in self.setters:
+                for m in self.motors:
+                    setattr(m, varname,
+                            getattr(pypot.dynamixel._DynamixelMotor, varname.replace('__sync_write_', '')).fget(m))
+        
+            while True:
+                start = time.time()
+
+                for m in self.motors:
+                    for getter, varname in self.getters:
+                        setattr(m, varname, getter(m.id))
+    
+                    for setter, varname in self.setters:
+                        setter(m.id, getattr(m, varname))
+                    
+                end = time.time()
+            
+                elapsed_time = end - start
+                sleep_time = self.period - elapsed_time
+                if sleep_time > 0:
+                    time.sleep(sleep_time)
+    
+    
+    
+    # MARK: - Motor configuration at start
     
     def configure_motors(self, default_eeprom_values):
         """ Sets up the required eeprom values for each of the motors.
@@ -65,8 +118,6 @@ class DynamixelController(threading.Thread):
     def _configure_motor(self, motor, default_eeprom_values):
         eeprom = dict(default_eeprom_values)
         eeprom.update(motor.custom_eeprom_values)
-        
-        
         
         if eeprom.has_key('angle_limits'):
             if motor.offset:
@@ -98,33 +149,4 @@ class DynamixelController(threading.Thread):
                 time.sleep(0.5)
     
 
-    def start_sync(self):
-        """ Starts the synchronization thread. """
-        self.start()
-    
-    
-    def run(self):
-        """ Sets up the read/write loop. """
-        # TODO: v2 possibility of choosing wihch values to sync
-        # TODO: v2 choose the refresh frequency (per value ?)
-        while True:
-            start = time.time()
-            
-            if self.type == 'USB2AX':
-                positions = self.io.get_sync_positions([m.id for m in self.motors])
-            
-            elif self.type == 'USB2DXL':
-                positions = [self.io.get_position(m.id) for m in self.motors]
-                
-            for (m, p) in zip(self.motors, positions):
-                    m._current_position = p
 
-            # TODO: pb si on change la compliance en meme tps qu'on set les pos                        
-            self.io.set_sync_positions(map(lambda m: (m.id, m._goal_position),
-                                           filter(lambda m: m.synced, self.motors)))
-        
-            end = time.time()
-        
-            dt = 0.020 - (end - start)
-            if dt > 0:
-                time.sleep(dt)

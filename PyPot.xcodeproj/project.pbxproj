@@ -71,8 +71,8 @@
 			isa = PBXGroup;
 			children = (
 				A861048415BF3D62005F6573 /* pypot */,
-				A812C6B316132D3A0007269F /* doc */,
 				A8C7D0DA15F76574007C5E66 /* resources */,
+				A812C6B316132D3A0007269F /* doc */,
 				A82D52CC15F25A3F00ED73DC /* samples */,
 				A861048615BF3D62005F6573 /* test */,
 				A861048215BF3ADC005F6573 /* setup.py */,
