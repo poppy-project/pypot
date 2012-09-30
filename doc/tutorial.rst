@@ -130,7 +130,7 @@ Now lets get a flower and start creating our own simple xml configuration file. 
         
         #TODO: make alarm blacklist optional in the code
     
-    #. Finally we add the motors that belong on this bus. The attributes are no optional and describe how the motors can be used in the software. The name and id are used to access the motor specifically. Orientation describes whether the motor will act in an anti-clockwise fashion (direct) or clockwise (indirect).
+    #. Finally we add the motors that belong on this bus. The attributes are not optional and describe how the motors can be used in the software. The name and id are used to access the motor specifically. Orientation describes whether the motor will act in an anti-clockwise fashion (direct) or clockwise (indirect).
     
             <!-- stem -->
             <DynamixelMotor name="base_pan" id="91" type="RX-64" orientation="direct" offset=0.0>
@@ -150,7 +150,30 @@ Now lets get a flower and start creating our own simple xml configuration file. 
                 <angle_limits>(-90, 90)</angle_limits>
             </DynamixelMotor>
         
+    #. This is all you need to create and interact with your robot. All that remains is to connect your robot to your computer. To create your robot, you need to send it the location of your xml file in a string so that it can convert all the custom settings you have placed here and create you a robot. Here is an example of how to create your first robot and start using it::
+    
+            import pypot.robot
+        
+            file = './resources/flower.xml'
+            robot = pypot.robot.Robot.from_configuration(file)
+        
+            robot.base_pan.model
+            >>>'RX-64'
+        
+            robot.base_pan.current_position
+            >>> 79.4
+        
+            robot.base_pan.goal_position = 0
+    
+Now you have a robot that is reading and writing values to each motor in a continual loop. Whenever you access these values, you are accessing the most recent version of this value that has been read within the frequency of the loop. This parallelises the procedure, reducing the need to wait for a read procedure of the motors in order to access data (this can take some time) so that algorithms with heavy computation do not encounter a bottleneck when values from motors must be known. 
+    
+Now you are ready to create your some behaviours for your robot.
     
 
-Creating your first robot
-*************************
+Making Robot Behaviours
+-----------------------
+
+Making a Robot Primitive
+************************
+
+
