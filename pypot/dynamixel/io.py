@@ -58,6 +58,7 @@ class DynamixelIO:
         
         self._serial = serial.Serial(port, baudrate, timeout=timeout)
         self.__open_ports.append(port)
+        self.flush_serial_communication()
     
         self.blacklisted_alarms = blacklisted_alarms
         
@@ -124,7 +125,7 @@ class DynamixelIO:
             :return: list of ids found
             
             """
-        return filter(self.ping, possible_ids)
+        return filter(self.ping, ids)
   
     
     def set_to_wheel_mode(self, motor_id):
