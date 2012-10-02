@@ -202,6 +202,7 @@ class DynamixelIO:
         
         self._send_sync_write_packet('GOAL_POSITION', zip(ids, positions))
     
+    set_sync_goal_position = set_sync_positions
     
     def get_sync_speeds(self, motor_ids):
         """

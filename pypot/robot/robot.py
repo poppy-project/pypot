@@ -30,7 +30,7 @@ class Robot(object):
         self.controllers = controllers
         
         [c.configure_motors(eeprom_values) for c in self.controllers]
-        [c.start_sync() for c in self.controllers]
+
     
     @classmethod
     def from_configuration(cls, configuration_file):

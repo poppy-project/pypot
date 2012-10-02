@@ -5,7 +5,7 @@
         <status_return_level>2</status_return_level>
     </EEPROM>
     
-    <DynamixelController type="USB2DXL" port="/dev/ttyACM0">
+    <DynamixelController type="USB2DXL" port="/dev/ttyUSB1">
         <AlarmBlackList>
             <ANGLE_LIMIT_ERROR />
         </AlarmBlackList>
@@ -14,38 +14,28 @@
             <Loop frequency='50'>
                 <current_position access='r' />
                 <goal_position access='w' />
-                
-                <current_speed access='r' />
-                <max_speed access='w' />
-                
-                <current_load access='r' />
-                <max_load access='w' />
-
-                <pid_gains access='w' />
             </Loop>
             
             <Loop frequency='1'>
                 <temperature access='r' />
             </Loop>
-            
         </SyncLoop>
         
-        
         <!-- stem -->
-        <DynamixelMotor name="base_pan" id="91" type="RX-64" orientation="direct" offset=0.0>
+        <DynamixelMotor name="base_pan" id="91" type="RX-64" orientation="direct" offset="20.0">
         </DynamixelMotor>
-        <DynamixelMotor name="base_tilt_lower" id="92" type="RX-64" orientation="indirect" offset=0.0>
+        <DynamixelMotor name="base_tilt_lower" id="92" type="RX-64" orientation="indirect" offset="0.0">
             <angle_limits>(-90, 90)</angle_limits>
         </DynamixelMotor>
-        <DynamixelMotor name="base_tilt_upper" id="93" type="RX-64" orientation="indirect" offset=0.0>
+        <DynamixelMotor name="base_tilt_upper" id="93" type="RX-64" orientation="indirect" offset="0.0">
             <angle_limits>(-90, 90)</angle_limits>
         </DynamixelMotor>
-        <DynamixelMotor name="head_pan" id="94" type="RX-28" orientation="direct" offset=0.0>
+        <DynamixelMotor name="head_pan" id="94" type="RX-28" orientation="direct" offset="20.0">
         </DynamixelMotor>
-        <DynamixelMotor name="head_tilt_lower" id="95" type="RX-28" orientation="indirect" offset=0.0>
+        <DynamixelMotor name="head_tilt_lower" id="95" type="RX-28" orientation="indirect" offset="0.0">
             <angle_limits>(-90, 90)</angle_limits>
         </DynamixelMotor>
-        <DynamixelMotor name="head_tilt_upper" id="96" type="RX-28" orientation="indirect" offset=0.0>
+        <DynamixelMotor name="head_tilt_upper" id="96" type="RX-28" orientation="indirect" offset="0.0">
             <angle_limits>(-90, 90)</angle_limits>
         </DynamixelMotor>
     </DynamixelController>

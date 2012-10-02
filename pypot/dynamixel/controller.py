@@ -27,7 +27,7 @@ class DynamixelController(object):
         if connection_type not in DynamixelController.TYPE:
             raise ValueError('Unknown controller type: %s' % (connection_type))
         
-        self.type = connection_type
+        self.loop_factory = DynamixelController._AXLoop if type == 'USB2AX' else DynamixelController._Loop
     
         self.io = pypot.dynamixel.DynamixelIO(port, blacklisted_alarms=blacklisted_alarms)
         self.motors = motors
@@ -35,26 +35,24 @@ class DynamixelController(object):
             m._io = self.io
             
         self.sync_loops = []
-        self.sync_loops.append(DynamixelController._Loop(50,
-                                                         self.io, self.motors,
-                                                         var_read=('current_position', ),
-                                                         var_write=('goal_position', )))
-
-        self.sync_loops.append(DynamixelController._Loop(1,
-                                                         self.io, self.motors,
-                                                         var_read=('temperature', )))
     
+
     def __repr__(self):
         return '<Controller io=%s motors=%s>' % (self.io, ''.join([repr(m) for m in self.motors]))
     
     
     # MARK: - Synchronization loops
-    
-    def start_sync(self):
-        """ Starts the synchronization thread. """
-        [loop.start() for loop in self.sync_loops]
-    
-    
+                
+    def add_sync_loop(self, frequency, var_read=(), var_write=()):
+        loop = self.loop_factory(frequency,
+                                 self.io, self.motors,
+                                 var_read=var_read,
+                                 var_write=var_write)
+                
+        loop.start()
+        self.sync_loops.append(loop)
+            
+              
     class _Loop(threading.Thread):
         def __init__(self,
                      frequency,
@@ -69,27 +67,34 @@ class DynamixelController(object):
             self.motors = motors
         
             self.getters = [(getattr(io, 'get_' + var), '__sync_read_' + var) for var in var_read]
-            self.setters = [(getattr(io, 'set_' + var), '__sync_write_' + var) for var in var_write]
-      
+            self.setters = [(getattr(io, 'set_sync_' + var), '__sync_write_' + var) for var in var_write]
         
-        def run(self):
-            # Before running the sync loop,
-            # we first get the initial values to avoid "jumping" behavior.
+        def initialize_value(self):
             for _, varname in self.setters:
                 for m in self.motors:
                     setattr(m, varname,
-                            getattr(pypot.dynamixel._DynamixelMotor, varname.replace('__sync_write_', '')).fget(m))
+                            getattr(pypot.dynamixel._DynamixelMotor,
+                                    varname.replace('__sync_write_', '')).fget(m))
+    
+        def get(self):
+            for m in self.motors:
+                for getter, varname in self.getters:
+                    setattr(m, varname, getter(m.id))
+    
+        def set(self):
+            for setter, varname in self.setters:
+                setter([(m.id, getattr(m, varname)) for m in self.motors])
+        
+        
+        def run(self):
+            self.initialize_value()
         
             while True:
                 start = time.time()
 
-                for m in self.motors:
-                    for getter, varname in self.getters:
-                        setattr(m, varname, getter(m.id))
-    
-                    for setter, varname in self.setters:
-                        setter(m.id, getattr(m, varname))
-                    
+                self.get()
+                self.set()
+                
                 end = time.time()
             
                 elapsed_time = end - start
@@ -97,6 +102,22 @@ class DynamixelController(object):
                 if sleep_time > 0:
                     time.sleep(sleep_time)
     
+    class _AXLoop(_Loop):
+        def __init__(self,
+                     frequency,
+                     io, motors,
+                     var_read=(), var_write=()):
+            _Loop.__init__(self, frequency, io, motors, var_read, var_write)
+    
+            self.getters = [(getattr(io, 'get_sync_' + var), '__sync_read_' + var) for var in var_read]
+
+
+        def get(self):
+            for getter, varname in self.getters:
+                values = getter([m.id for m in self.motors])
+
+                for m, v in zip(self.motors, values):
+                    m.varname = v
     
     
     # MARK: - Motor configuration at start

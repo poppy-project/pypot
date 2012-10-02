@@ -44,6 +44,10 @@ def _handle_controller(controller_node):
     controller = pypot.dynamixel.DynamixelController(controller_port, controller_type, motors,
                                                      blacklisted_alarms=alarms)
     
+    sync_nodes = controller_node.getElementsByTagName("Loop")
+    loops = [_handle_sync_loop(l) for l in sync_nodes]
+    [controller.add_sync_loop(*l) for l in loops]
+    
     return controller
 
 
@@ -69,4 +73,16 @@ def _handle_eeprom(node):
     elements = filter(lambda child: child.nodeType == node.ELEMENT_NODE,
                       node.childNodes)
     
-    return dict([(el.tagName, eval(el.firstChild.data)) for el in elements])   
+    return dict([(el.tagName, eval(el.firstChild.data)) for el in elements])
+
+def _handle_sync_loop(node):
+    frequency = float(node.getAttribute("frequency"))
+    elements = filter(lambda child: child.nodeType == node.ELEMENT_NODE,
+                      node.childNodes)
+
+    var_read, var_write = [], []
+    
+    for e in elements:
+        (var_read if e.getAttribute("access") == 'r' else var_write).append(e.tagName)
+    
+    return frequency, var_read, var_write
