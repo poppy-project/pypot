@@ -61,7 +61,8 @@ class DynamixelMotor(_DynamixelMotor):
         self.model = model
         self._direct = is_direct
         self._offset = offset
-
+        self._compliant = False
+        
         self._io = io
 
         self.custom_eeprom_values = kwargs
@@ -99,3 +100,20 @@ class DynamixelMotor(_DynamixelMotor):
         value = value + (self.offset if self.direct else -self.offset)
 
         _DynamixelMotor.goal_position.fset(self, value)
+
+
+    # MARK: - Compliancy
+
+    @property
+    def compliant(self):
+        return self._compliant
+
+    @compliant.setter
+    def compliant(self, value):
+        self._compliant = value
+        if value:
+            self._io.disable_torque(self.id)
+        else:
+            self.goal_position = self.current_position
+            self._io.enable_torque(self.id)
+

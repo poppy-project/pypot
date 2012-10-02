@@ -1,7 +1,15 @@
+# -*- coding: utf-8 -*-
+
 import threading
 import time
 
 import pypot.dynamixel
+
+# TODO:
+#class BasicController(DynamixelController):
+#def __init__ (sefl...)
+#    DynamixelController.__init__
+#    self.add_sync_loop(20, var_read = 'position', 'speed', 'load')
 
 class DynamixelController(object):
     """ Creates a bus control system which synchronizes the reading/writing of values of motors. """
@@ -65,9 +73,17 @@ class DynamixelController(object):
             self.period = 1.0 / frequency
             
             self.motors = motors
-        
+            
+            # TODO:
+            # si ds var_read/var_write il y a au moins deux éléments parmi (position, speed, load)
+            # les remplacer par un seul appel à get_pos_speed_load
+            # et set un bool a True
+            
             self.getters = [(getattr(io, 'get_' + var), '__sync_read_' + var) for var in var_read]
             self.setters = [(getattr(io, 'set_sync_' + var), '__sync_write_' + var) for var in var_write]
+        
+        # si on a pos, ou speed ou load ds getters ou setters
+        # remplacer les occ par le get/set des trois
         
         def initialize_value(self):
             for _, varname in self.setters:
@@ -75,6 +91,10 @@ class DynamixelController(object):
                     setattr(m, varname,
                             getattr(pypot.dynamixel._DynamixelMotor,
                                     varname.replace('__sync_write_', '')).fget(m))
+        # TODO:
+        # ajouter un get special pour pos/speed/load
+        # ajouter un set special pour pos/speed/load
+        # tester si le bool est True et si non pass
     
         def get(self):
             for m in self.motors:
@@ -82,16 +102,20 @@ class DynamixelController(object):
                     setattr(m, varname, getter(m.id))
     
         def set(self):
+            motors = filter(lambda m: not m.compliant, self.motors)
+            
+            if not motors:
+                return
+            
             for setter, varname in self.setters:
-                setter([(m.id, getattr(m, varname)) for m in self.motors])
-        
+                setter([(m.id, getattr(m, varname)) for m in motors])
         
         def run(self):
             self.initialize_value()
         
             while True:
                 start = time.time()
-
+                
                 self.get()
                 self.set()
                 
