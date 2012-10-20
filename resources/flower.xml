@@ -3,9 +3,10 @@
     <EEPROM>
         <return_delay_time>0</return_delay_time>
         <status_return_level>2</status_return_level>
+        <compliance_slopes>254, 254</compliance_slopes>
     </EEPROM>
     
-    <DynamixelController type="USB2DXL" port="/dev/ttyUSB1">
+    <DynamixelController type="USB2DXL" port="/dev/ttyUSB0">
         <AlarmBlackList>
             <ANGLE_LIMIT_ERROR />
         </AlarmBlackList>

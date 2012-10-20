@@ -91,6 +91,9 @@ class DynamixelController(object):
                     setattr(m, varname,
                             getattr(pypot.dynamixel._DynamixelMotor,
                                     varname.replace('__sync_write_', '')).fget(m))
+    
+            for m in self.motors:
+                m.compliant = False
         # TODO:
         # ajouter un get special pour pos/speed/load
         # ajouter un set special pour pos/speed/load

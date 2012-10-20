@@ -61,7 +61,7 @@ class DynamixelMotor(_DynamixelMotor):
         self.model = model
         self._direct = is_direct
         self._offset = offset
-        self._compliant = False
+        self._compliant = True
         
         self._io = io
 

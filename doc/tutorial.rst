@@ -130,7 +130,7 @@ Now lets get a flower and start creating our own simple xml configuration file. 
         
         #TODO: make alarm blacklist optional in the code
     
-    #. Finally we add the motors that belong on this bus. The attributes are not optional and describe how the motors can be used in the software. The name and id are used to access the motor specifically. Orientation describes whether the motor will act in an anti-clockwise fashion (direct) or clockwise (indirect).
+    #. Finally we add the motors that belong on this bus. The attributes are not optional and describe how the motors can be used in the software. The name and id are used to access the motor specifically. Orientation describes whether the motor will act in an anti-clockwise fashion (direct) or clockwise (indirect)::
     
             <!-- stem -->
             <DynamixelMotor name="base_pan" id="91" type="RX-64" orientation="direct" offset=0.0>

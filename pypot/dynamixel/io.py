@@ -53,6 +53,8 @@ class DynamixelIO:
             :raises: IOError (when port is already used)
             
             """
+        self._serial = None
+        
         if port in self.__open_ports:
             raise IOError('Port already used (%s)!' % (port))
         
@@ -72,10 +74,17 @@ class DynamixelIO:
     
     def __del__(self):
         """ Automatically closes the serial communication on destruction. """
-        if hasattr(self, '_serial'):
-            self._lock.acquire()
-            self.__open_ports.remove(self._serial.port)
-            self._serial.close()
+        if self.is_open():
+            self.close()
+
+    def is_open(self):
+        return (self._serial and self._serial.isOpen())
+
+    def close(self):
+        self._lock.acquire()
+        self.flush_serial_communication()
+        self._serial.close()
+        self.__open_ports.remove(self._serial.port)
     
     def __repr__(self):
         return "<DXL IO: port='%s' baudrate=%d timeout=%.g>" % (self._serial.port,
@@ -168,7 +177,11 @@ class DynamixelIO:
                 self._motor_modes[motor_id] = 'WHEEL'
         
         return self._motor_modes[motor_id]
-    
+
+            
+    def get_firmware_version(self, motor_id):
+        return self._send_read_packet(motor_id, 'VERSION')
+
     
     # MARK: - Sync Read/Write
     
@@ -368,7 +381,8 @@ class DynamixelIO:
             .. warning:: The baudrate of the motor must match the baudrate of the port. When the baurate is changed for the motor, it will be necessary to open a new port with the new baurate to re-establish communication.
             
             """
-        self._send_write_packet(motor_id, 'BAUDRATE', baudrate)
+        data = int((2000000. / baudrate) - 1)
+        self._send_write_packet(motor_id, 'BAUD_RATE', data)
     
     
     def get_return_delay_time(self, motor_id):

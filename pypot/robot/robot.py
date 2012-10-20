@@ -29,7 +29,19 @@ class Robot(object):
         self.motors = motors
         self.controllers = controllers
         
-        [c.configure_motors(eeprom_values) for c in self.controllers]
+        #for m in self.motors:
+        #    class Holder:
+        #        p = property(lambda x: self.motors[m])
+        #    setattr(self, m, Holder().p)
+        
+        # TODO: add properties corr. to motors name
+        # To add them only to the current instance and not the class
+        # We use the following trick
+        #   class Holder:
+        #       p = property(lambda x: vs[i])
+        #   setattr(self, 'p', Holder().p)
+    
+        # [c.configure_motors(eeprom_values) for c in self.controllers]
 
     
     @classmethod
