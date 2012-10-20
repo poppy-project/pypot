@@ -33,7 +33,6 @@
 		A861048215BF3ADC005F6573 /* setup.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = setup.py; sourceTree = "<group>"; };
 		A861048315BF3AE8005F6573 /* README */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README; sourceTree = "<group>"; };
 		A86F483D16300775007836D6 /* timeout.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = timeout.py; sourceTree = "<group>"; };
-		A87F7D201632C7FA00A00490 /* bob.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = bob.xml; sourceTree = "<group>"; };
 		A87F7D221632C9C200A00490 /* bob.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = bob.py; sourceTree = "<group>"; };
 		A89F23B415F602E8007590EC /* packet.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = packet.py; sourceTree = "<group>"; };
 		A8A891AA15F8C4AF009483EB /* test_connection.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = test_connection.py; sourceTree = "<group>"; };
@@ -45,6 +44,8 @@
 		A8C7D0DF15F79E6A007C5E66 /* controller.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = controller.py; sourceTree = "<group>"; };
 		A8C7D0E015F7A39C007C5E66 /* motor.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = motor.py; sourceTree = "<group>"; };
 		A8C7D0E115F7A926007C5E66 /* robot.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = robot.py; sourceTree = "<group>"; };
+		A8F34CBD1632E57500BA7DF0 /* herborist.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = herborist.py; sourceTree = "<group>"; };
+		A8F34CBE1632E5DE00BA7DF0 /* herborist.ui */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = herborist.ui; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -93,6 +94,7 @@
 				A812C6B316132D3A0007269F /* doc */,
 				A82D52CC15F25A3F00ED73DC /* samples */,
 				A861048615BF3D62005F6573 /* test */,
+				A8F34CBC1632E55C00BA7DF0 /* tools */,
 				A861048215BF3ADC005F6573 /* setup.py */,
 				A861048315BF3AE8005F6573 /* README */,
 			);
@@ -149,7 +151,6 @@
 				A82F6C7215F89D6100AFBA1E /* torso.xml */,
 				A8103E94160B199700D490C9 /* poppy.xml */,
 				A812C6BF161351860007269F /* flower.xml */,
-				A87F7D201632C7FA00A00490 /* bob.xml */,
 			);
 			path = resources;
 			sourceTree = SOURCE_ROOT;
@@ -170,6 +171,15 @@
 				A8C7D0E115F7A926007C5E66 /* robot.py */,
 			);
 			path = robot;
+			sourceTree = "<group>";
+		};
+		A8F34CBC1632E55C00BA7DF0 /* tools */ = {
+			isa = PBXGroup;
+			children = (
+				A8F34CBD1632E57500BA7DF0 /* herborist.py */,
+				A8F34CBE1632E5DE00BA7DF0 /* herborist.ui */,
+			);
+			path = tools;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
