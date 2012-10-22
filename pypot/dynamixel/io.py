@@ -31,7 +31,7 @@ class DynamixelIO:
         When values are written to the EEPROM, they are conserved after cycling the power.
         The values written to the RAM are lost when cycling the power.
         
-        .. warning:: When accessing EEPROM registers the motor enters a "busy" mode and should not be accessed before about 100ms.
+        .. warning:: When accessing EEPROM registers the motor (only the MX?) enters a "busy" mode and should not be accessed before a certain amount of time (not really determined).
         
         """
     
@@ -815,8 +815,10 @@ class DynamixelIO:
     
     def get_current_position(self, motor_id):
         """ Returns the current position in degrees of the specified motor. """
-        return position_to_degree(self._send_read_packet(motor_id, 'PRESENT_POSITION'),
-                                  self._lazy_get_model(motor_id))
+        pos = self._send_read_packet(motor_id, 'PRESENT_POSITION')
+
+        if pos:
+            return position_to_degree(pos, self._lazy_get_model(motor_id))
     
     def get_goal_position(self, motor_id):
         """ Returns the goal position in degrees of the specified motor. """
@@ -941,6 +943,14 @@ class DynamixelIO:
     
     # MARK: - Low level communication
     
+    def _unsafe_send_packet(self, instruction_packet, receive_status_packet=True):
+        try:
+            return self._send_packet(instruction_packet, receive_status_packet)
+        
+        except (DynamixelTimeoutError, DynamixelCommunicationError) as e:
+            print 'merde', e.message
+            return
+    
     def _send_packet(self, instruction_packet, receive_status_packet=True):
         """ 
             Sends a specified instruction packet to the serial port.
@@ -965,6 +975,8 @@ class DynamixelIO:
             
             """
         with self._lock:
+            self.flush_serial_communication()
+            
             nbytes = self._serial.write(instruction_packet.to_bytes())
             if nbytes != len(instruction_packet):
                 raise DynamixelCommunicationError('Packet not correctly sent',
@@ -980,10 +992,16 @@ class DynamixelIO:
             
             try:
                 header = DynamixelPacketHeader.from_bytes(read_bytes)
-                read_bytes += self._serial.read(header.packet_length)
+                new_bytes = self._serial.read(header.packet_length)
+                if not new_bytes:
+                    raise DynamixelTimeoutError(instruction_packet)
+                
+                read_bytes += new_bytes                
                 status_packet = DynamixelStatusPacket.from_bytes(read_bytes)
                     
             except DynamixelInconsistentPacketError as e:
+                self.flush_serial_communication()
+                
                 raise DynamixelCommunicationError(e.message,
                                                   instruction_packet,
                                                   read_bytes)
@@ -994,7 +1012,19 @@ class DynamixelIO:
                 
                 if len(alarms):
                     raise DynamixelMotorError(status_packet.motor_id, alarms)
-            
+
+            if self._serial.inWaiting() > 0:
+                self.flush_serial_communication()
+                
+                raise DynamixelCommunicationError('still some bullshit on the bus',
+                                                 instruction_packet,
+                                                 read_bytes)
+                    
+            if status_packet.motor_id != instruction_packet.motor_id:
+                raise DynamixelCommunicationError('receive someone else packet',
+                                                  instruction_packet,
+                                                  read_bytes)
+        
             return status_packet
     
     
@@ -1018,7 +1048,7 @@ class DynamixelIO:
             raise IOError('Try to get a value from motor with a level of status return of 0')
         
         packet = DynamixelReadDataPacket(motor_id, control_name)
-        status_packet = self._send_packet(packet)
+        status_packet = self._unsafe_send_packet(packet)
              
         if status_packet:
             return self._decode_data(status_packet.parameters,
@@ -1045,7 +1075,7 @@ class DynamixelIO:
 
             """
         packet = DynamixelSyncReadDataPacket(motor_ids, control_name)
-        status_packet = self._send_packet(packet)
+        status_packet = self._unsafe_send_packet(packet)
 
         answer = reshape_list(status_packet.parameters, REG_LENGTH(control_name))
 

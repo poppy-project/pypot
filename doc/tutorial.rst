@@ -58,7 +58,7 @@ Finding and Connecting Motors
 
 Pypot has been designed to work specifically with the Robotis range of motors. These motors use two different protocols to communicate: TTL (3 wire bus) and RS485 (4 wire Bus). The motors can be daisey chained together with other types of motors on the same bus *as long as the bus communicates using the same protocol*. This means that MX-28 and AX-12 can communicate on the same bus, but cannot be connected to a RX-28.
 
-All motors work sufficiently well with a 12V supply. Some motors can use more than 12V but you must be careful not to connect an 18V supply on a bus that contains motors that can only use 12V! Connect this 12V SMPS supply (switch mode power supply) to a Robotis SMPS2Dynamixel  device which regulates the voltage coming from the SMPS. Connect your controller device and a single motor to this SMPS2Dynamixel. 
+All motors work sufficiently well with a 12V supply. Some motors can use more than 12V but you must be careful not to connect an 18V supply on a bus that contains motors that can only use 12V! Connect this 12V SMPS supply (switch mode power supply) to a Robotis SMPS2Dynamixel device which regulates the voltage coming from the SMPS. Connect your controller device and a single motor to this SMPS2Dynamixel. 
 
 Open your python terminal and create your controller as described in the above section :ref:`open_connection`.
     
@@ -100,7 +100,7 @@ The configuration file contains several important features that help build both 
         * <DynamixelController> - This tag holds the information pertaining to a controller and all the items connected to its bus.
             * <AlarmBlackList> - Here we can list any alarms that we are *not* interested in receiving messages from. For example we may have our own special method of handling 'out of bounds' error messages and may not want the motors to handle this.
             * <DynamixelMotor> - This is a description of all the custom setup values for each motor. Meta information, such as the motor access name or orientation, is also included here.
-            * #TODO: add sync options here
+            * <SyncLoop> - This contains information about how you want to access values of the motors inside your robot. You can describe loops that obtains certain values at a given frequency.
 
 Now lets get a flower and start creating our own simple xml configuration file. An example file has already been provided in the 'resources' folder of your installation of PyPot.
 
@@ -129,6 +129,20 @@ Now lets get a flower and start creating our own simple xml configuration file. 
             </AlarmBlackList>
         
         #TODO: make alarm blacklist optional in the code
+    
+    #. Now you have to start thinking a little about how you want to start using your robot. In most cases interaction with the robot will be limited to the reading of current positions of the motors and also the moving of these motors by setting their goal position. You can describe this access in a sync loop that includes the frequency of the read or write cycle and also a list of the motor registers and whether you wish to read 'r' or write 'w' values to them. Each time through the loop the robot will update all the registered that need to be read and will write any new values that need to be updated. This means that the frequency describes the maximum amount of time between changing a value and having it written to the motor or the delay between the current of value of the motor and the value that has been read. Below is an example of two such loops::
+            
+            <SyncLoop>
+                <Loop frequency='50'>
+                    <position access='r' />
+                    <goal_position access='w' />
+                </Loop>
+            
+                <Loop frequency='1'>
+                    <temperature access='r' />
+                </Loop>
+            </SyncLoop>
+
     
     #. Finally we add the motors that belong on this bus. The attributes are not optional and describe how the motors can be used in the software. The name and id are used to access the motor specifically. Orientation describes whether the motor will act in an anti-clockwise fashion (direct) or clockwise (indirect)::
     
