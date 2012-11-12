@@ -1,41 +1,60 @@
-<Robot name="Torsettia">
+<Robot name="Torso">
+    
     <EEPROM>
-        <return_delay_time>0</return_delay_time>
-        <max_torque>100</max_torque>
-        <status_return_level>2</status_return_level>
     </EEPROM>
     
     <DynamixelController type="USB2DXL" port="/dev/ttyUSB0">
-        <DynamixelMotor name="left_torso_bend" id="14" type="RX-64" orientation="direct">
-            <angle_limits>(-50, 50)</angle_limits>
+        <AlarmBlackList>
+            <ANGLE_LIMIT_ERROR />
+        </AlarmBlackList>
+        
+        <SyncLoop>
+            <Loop frequency='15'>
+                <current_position access='r' />
+                <goal_position access='w' />
+            </Loop>
+            
+        </SyncLoop>
+        
+        <DynamixelMotor name="left_shoulder_lift" id="11" type="RX-64" orientation="indirect" offset="0.0">
         </DynamixelMotor>
-      
-        <DynamixelMotor name="left_shoulder_shrug" id="13" type="RX-64" orientation="indirect">
-            <angle_limits>(-30, 130)</angle_limits>
+        <DynamixelMotor name="right_shoulder_twist" id="12" type="RX-64" orientation="direct" offset="0.0">
+        </DynamixelMotor>
+        <DynamixelMotor name="left_shoulder_shrug" id="13" type="RX-64" orientation="direct" offset="65.0">
+        </DynamixelMotor>
+        <DynamixelMotor name="left_torso_lift" id="14" type="RX-64" orientation="direct" offset="0.0">
+        </DynamixelMotor>
+        <DynamixelMotor name="right_elbow_twist" id="15" type="RX-28" orientation="direct" offset="0.0">
+        </DynamixelMotor>
+        <DynamixelMotor name="right_elbow_lift" id="16" type="RX-28" orientation="indirect" offset="0.0">
+        </DynamixelMotor>
+        <DynamixelMotor name="right_wrist_twist" id="17" type="RX-28" orientation="direct" offset="20.0">
+        </DynamixelMotor>
+        <DynamixelMotor name="right_gripper" id="18" type="RX-28" orientation="direct" offset="0.0">
         </DynamixelMotor>
         
-        <DynamixelMotor name="left_shoulder_rotate" id="21" type="RX-64" orientation="direct">
-            <angle_limits>(-30, 130)</angle_limits>
+        <DynamixelMotor name="left_shoulder_twist" id="21" type="RX-64" orientation="direct" offset="0.0">
+        </DynamixelMotor>
+        <DynamixelMotor name="right_shoulder_shrug" id="22" type="RX-64" orientation="direct" offset="-45.0">
+        </DynamixelMotor>
+        <DynamixelMotor name="right_shoulder_lift" id="23" type="RX-64" orientation="indirect" offset="0.0">
+        </DynamixelMotor>
+        <DynamixelMotor name="right_torso_lift" id="24" type="RX-64" orientation="indirect" offset="0.0">
+        </DynamixelMotor>
+        <DynamixelMotor name="left_elbow_twist" id="25" type="RX-28" orientation="direct" offset="0.0">
+        </DynamixelMotor>
+        <DynamixelMotor name="left_elbow_lift" id="26" type="RX-28" orientation="indirect" offset="0.0">
+        </DynamixelMotor>
+        <DynamixelMotor name="left_wrist_twist" id="27" type="RX-28" orientation="direct" offset="25.0">
+        </DynamixelMotor>
+        <DynamixelMotor name="left_gripper" id="28" type="RX-28" orientation="indirect" offset="0.0">
         </DynamixelMotor>
         
-        <DynamixelMotor name="left_shoulder_raise" id="11" type="RX-64" orientation="direct">
-            <angle_limits>(-100, 100)</angle_limits>
+        <DynamixelMotor name="head_twist" id="31" type="RX-28" orientation="direct" offset="-20.0">
         </DynamixelMotor>
-        
-        <DynamixelMotor name="left_elbow_rotate" id="25" type="RX-28" orientation="indirect">
-            <angle_limits>(-150, 150)</angle_limits>
+        <DynamixelMotor name="head_lift" id="32" type="RX-28" orientation="direct" offset="0.0">
         </DynamixelMotor>
-        
-        <DynamixelMotor name="left_elbow_raise" id="26" type="RX-28" orientation="indirect">
-            <angle_limits>(-50, 90)</angle_limits>
-        </DynamixelMotor>
-        
-        <DynamixelMotor name="left_wrist_rotate" id="27" type="RX-28" orientation="indirect">
-            <angle_limits>(-150, 30)</angle_limits>
-        </DynamixelMotor>
-        
-        <DynamixelMotor name="left_claw_close" id="28" type="RX-28" orientation="direct">
-        </DynamixelMotor>
-        
+
     </DynamixelController>
+    
 </Robot>
