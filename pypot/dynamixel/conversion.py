@@ -16,6 +16,7 @@
 
 import numpy
 import numbers
+import itertools
 
 
 # MARK: - Position 
@@ -72,6 +73,21 @@ def dxl_to_oriented_load(value, model):
     direction = 2 * cw - 1
     
     return dxl_to_torque(load, model) * direction
+
+def dxl_to_degree_speed_load(value, model):
+    return (dxl_to_degree(value[0], model),
+            dxl_to_speed(value[1], model),
+            dxl_to_load(value[2], model))
+
+def dxl_to_oriented_degree_speed_load(value, model):
+    return (dxl_to_degree(value[0], model),
+            dxl_to_oriented_speed(value[1], model),
+            dxl_to_oriented_load(value[2], model))
+
+def degree_speed_load_to_dxl(value, model):
+    return (degree_to_dxl(value[0], model),
+            speed_to_dxl(value[1], model),
+            torque_to_dxl(value[2], model))
 
 
 # MARK: - Model 
@@ -201,7 +217,13 @@ def dxl_decode(data):
     
     if len(data) == 2:
         return data[0] + (data[1] << 8)
-    
+
+def dxl_decode_all(data, nb_elem):
+    if nb_elem > 1:
+        data = list(itertools.izip(*([iter(data)] * (len(data) / nb_elem))))
+        return tuple(map(dxl_decode, data))
+    else:
+        return dxl_decode(data)
     
 def dxl_code(value, length):
     if length not in (1, 2):
@@ -212,3 +234,14 @@ def dxl_code(value, length):
 
     if length == 2:
         return (value % 256, value >> 8)
+
+def dxl_code_all(value, length, nb_elem):
+    if nb_elem > 1:
+        return list(itertools.chain(*(dxl_code(v, length) for v in value)))
+    else:
+        return dxl_code(value, length)
+
+
+
+
+

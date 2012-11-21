@@ -156,7 +156,7 @@ class _DynamixelIO(object):
 
 
 DynamixelControl = namedtuple('DynamixelControl', ('name',
-                                                   'address', 'length',
+                                                   'address', 'length', 'nb_elem',
                                                    'access',
                                                    'models',
                                                    'dxl_to_si', 'si_to_dxl'))
@@ -279,7 +279,7 @@ class DynamixelIO(_DynamixelIO):
             sp = _DynamixelIO.send_packet(self, instruction_packet, wait_for_status_packet)
                 
             if sp and sp.error:
-                errors = decode_errors(sp.error)
+                errors = decode_error(sp.error)
                 for e in errors:
                     handler_name = 'handle_{}'.format(e.lower().replace(' ', '_'))
                     f = operator.methodcaller(handler_name, instruction_packet)
@@ -317,13 +317,13 @@ class DynamixelIO(_DynamixelIO):
             self._control_exists_for_model(control, model)
             self._check_motor_id(motor_id)
         
-            rp = DynamixelReadDataPacket(motor_id, control.address, control.length)
+            rp = DynamixelReadDataPacket(motor_id, control.address, control.length * control.nb_elem)
             sp = self.send_packet(rp)
                 
             if not sp:
                 return
 
-            value = dxl_decode(sp.parameters)
+            value = dxl_decode_all(sp.parameters, control.nb_elem)
             return control.dxl_to_si(value, model)
 
         func_name = 'get_{}'.format(control.name.replace(' ', '_'))
@@ -341,17 +341,17 @@ class DynamixelIO(_DynamixelIO):
             [self._control_exists_for_model(control, model) for model in set(models)]
             [self._check_motor_id(motor_id) for motor_id in ids]
 
-            srp = DynamixelSyncReadPacket(ids, control.address, control.length)
+            srp = DynamixelSyncReadPacket(ids, control.address, control.length * control.nb_elem)
             sp = self.send_packet(srp)
     
             if not sp:
                 return
 
-            values = list(itertools.izip(*([iter(sp.parameters)] * control.length)))
-            values = map(dxl_decode, values)
+            values = list(itertools.izip(*([iter(sp.parameters)] * control.length * control.nb_elem)))
+            values = [dxl_decode_all(value, control.nb_elem) for value in values]
             values = [control.dxl_to_si(value, model) for value, model in zip(values, models)]
 
-            return values
+            return tuple(values)
 
         func_name = 'get_sync_{}'.format(control.name.replace(' ', '_'))
         func_name = '_{}'.format(func_name) if hasattr(cls, func_name) else func_name
@@ -369,8 +369,8 @@ class DynamixelIO(_DynamixelIO):
             self._check_motor_id(motor_id)
                   
             value = control.si_to_dxl(value, model)
-            value = dxl_code(value, control.length)
-            
+            value = dxl_code_all(value, control.length, control.nb_elem)
+                    
             wp = DynamixelWriteDataPacket(motor_id, control.address, value)
             sp = self.send_packet(wp)
             
@@ -396,9 +396,9 @@ class DynamixelIO(_DynamixelIO):
             data = []
             for motor_id, value in zip(ids, values):
                     data.extend(itertools.chain((motor_id, ),
-                                                dxl_code(value, control.length)))
-            
-            swp = DynamixelSyncWritePacket(control.address, control.length, data)
+                                                dxl_code_all(value, control.length, control.nb_elem)))
+                    
+            swp = DynamixelSyncWritePacket(control.address, control.length * control.nb_elem, data)
             self.send_packet(swp, wait_for_status_packet=False)
         
         func_name = 'set_sync_{}'.format(control.name.replace(' ', '_'))
@@ -444,14 +444,14 @@ class DynamixelTimeoutError(DynamixelCommunicationError):
 # MARK: - Generate the accessors
 
 def add_register(name,
-                 address, length=2,
+                 address, length=2, nb_elem=1,
                  access=DynamixelAccess.readwrite,
                  models=set(dynamixelModels.values()),
                  dxl_to_si=lambda val, model: val,
                  si_to_dxl=lambda val, model: val):
     
     control = DynamixelControl(name,
-                               address, length,
+                               address, length, nb_elem,
                                access,
                                models,
                                dxl_to_si, si_to_dxl)
@@ -480,30 +480,44 @@ add_register('return delay time',
              dxl_to_si=dxl_to_rdt,
              si_to_dxl=rdt_to_dxl)
 
-add_register('cw angle limit',
-             address=0x06,
-             dxl_to_si=dxl_to_degree,
-             si_to_dxl=degree_to_dxl)
+#add_register('cw angle limit',
+#             address=0x06,
+#             dxl_to_si=dxl_to_degree,
+#             si_to_dxl=degree_to_dxl)
 
-add_register('ccw angle limit',
-             address=0x08,
-             dxl_to_si=dxl_to_degree,
-             si_to_dxl=degree_to_dxl)
+#add_register('ccw angle limit',
+#             address=0x08,
+#             dxl_to_si=dxl_to_degree,
+#             si_to_dxl=degree_to_dxl)
+
+add_register('angle limit',
+             address=0x06, nb_elem=2,
+             dxl_to_si=lambda value, model: (dxl_to_degree(value[0], model),
+                                             dxl_to_degree(value[1], model)),
+             si_to_dxl=lambda value, model: (degree_to_dxl(value[0], model),
+                                             degree_to_dxl(value[1], model)))
 
 add_register('highest limit temperature',
              address=0x0B, length=1,
              dxl_to_si=dxl_to_temperature,
              si_to_dxl=temperature_to_dxl)
 
-add_register('lowest limit voltage',
-             address=0x0C, length=1,
-             dxl_to_si=dxl_to_voltage,
-             si_to_dxl=voltage_to_dxl)
+#add_register('lowest limit voltage',
+#             address=0x0C, length=1,
+#             dxl_to_si=dxl_to_voltage,
+#             si_to_dxl=voltage_to_dxl)
 
-add_register('highest limit voltage',
-             address=0x0D, length=1,
-             dxl_to_si=dxl_to_voltage,
-             si_to_dxl=voltage_to_dxl)
+#add_register('highest limit voltage',
+#             address=0x0D, length=1,
+#             dxl_to_si=dxl_to_voltage,
+#             si_to_dxl=voltage_to_dxl)
+
+add_register('limit voltage',
+             address=0x0C, length=1, nb_elem=2,
+             dxl_to_si=lambda value, model: (dxl_to_voltage(value[0], model),
+                                             dxl_to_voltage(value[1], model)),
+             si_to_dxl=lambda value, model: (voltage_to_dxl(value[0], model),
+                                             voltage_to_dxl(value[1], model)))
 
 add_register('max torque',
              address=0x0E,
@@ -535,16 +549,20 @@ add_register('LED',
              dxl_to_si=dxl_to_bool,
              si_to_dxl=bool_to_dxl)
 
-add_register('D gain',
-             address=0x1A, length=1,
-             models=('MX-28',))
+#add_register('D gain',
+#             address=0x1A, length=1,
+#             models=('MX-28',))
 
-add_register('I gain',
-             address=0x1B, length=1,
-             models=('MX-28', ))
+#add_register('I gain',
+#             address=0x1B, length=1,
+#             models=('MX-28', ))
 
-add_register('P gain',
-             address=0x1C, length=1,
+#add_register('P gain',
+#             address=0x1C, length=1,
+#             models=('MX-28', ))
+
+add_register('pid gain',
+             address=0x1A, length=1, nb_elem=3,
              models=('MX-28', ))
 
 add_register('cw compliance margin',
@@ -578,6 +596,11 @@ add_register('torque limit',
              dxl_to_si=dxl_to_torque,
              si_to_dxl=torque_to_dxl)
 
+add_register('goal position speed load',
+             address=0x1E, nb_elem=3,
+             dxl_to_si=dxl_to_degree_speed_load,
+             si_to_dxl=degree_speed_load_to_dxl)
+
 add_register('present position',
              address=0x24,
              access=DynamixelAccess.readonly,
@@ -592,6 +615,11 @@ add_register('present load',
              address=0x28,
              access=DynamixelAccess.readonly,
              dxl_to_si=dxl_to_oriented_load)
+
+add_register('present position speed load',
+             address=0x24, nb_elem=3,
+             access=DynamixelAccess.readonly,
+             dxl_to_si=dxl_to_oriented_degree_speed_load)
 
 add_register('present voltage',
              address=0x2A,
