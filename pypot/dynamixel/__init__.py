@@ -1,51 +1,38 @@
-import os
+import numpy
 import glob
+import platform
+
 
 from pypot.dynamixel.io import DynamixelIO
-from pypot.dynamixel.motor import _DynamixelMotor, DynamixelMotor
-from pypot.dynamixel.controller import DynamixelController
 
 
-for name in ('angle_limits', 'current_position', 'temperature', 'load', 'max_torque'):
-    _DynamixelMotor._generate_read_accessor(name)
 
-for name in ('goal_position', 'mode', 'speed', 'torque_limit'):
-    _DynamixelMotor._generate_write_accessor(name)
+if platform.system() == 'Darwin':
+    def safe_connect(port, max_trials=numpy.inf):
+        """ Tries to connect to port until it succeeds to ping any motor on the bus.
+
+            .. note:: This is only used to circumvent a bug with the driver for the USB2AX on Mac.
+            
+            """
+        trials = 1
+
+        while trials <= max_trials:
+            dxl_io = DynamixelIO(port)
+
+            if dxl_io.ping_any():
+                return dxl_io
+
+            dxl_io.close()
+
+            trials += 1
+
 
 def get_available_ports():
-    """
-        Returns the available ports found.
-        
-        The available ports are looked for in the following path depending on the OS:
-            * Linux : /dev/ttyACM* and /dev/ttyUSB*
-            * Mac OS : /dev/tty.usb*
-        
-        :raises: :py:exc:`NotImplementedError` if your OS is not one of the currently supported (Linux, Mac OS).
-        
-    """
+    """ Tries to find the available port (only works for Mac and Linux). """
+    if platform.system() == 'Darwin':
+        return glob.glob('/dev/tty.usb*')
 
-    import platform
-    s = platform.system()
-    
-    try:
-        import serial.tools.list_ports
+    elif platform.system() == 'Linux':
+        return glob.glob('/dev/ttyACM*') + glob.glob('/dev/ttyUSB*')
 
-        if s == 'Linux':
-            return serial.tools.list_ports.glob.glob('/dev/ttyACM*') + \
-                    serial.tools.list_ports.glob.glob('/dev/ttyUSB*')
-        
-        elif s == 'Darwin':
-            return serial.tools.list_ports.glob.glob('/dev/tty.usbserial-*')
-
-        elif s == 'Windows':
-            return serial.tools.list_ports.grep('COM*')
-            
-    except ImportError:
-        if s == 'Darwin':
-            return glob.glob('/dev/tty.usb*')
-    
-        elif s == 'Linux':
-            return glob.glob('/dev/ttyACM*') + glob.glob('/dev/ttyUSB*')
-
-
-    raise NotImplementedError('Unknown operating system: %s' % (s))
+    return []

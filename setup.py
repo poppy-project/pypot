@@ -8,6 +8,6 @@ setup(name='PyPot',
       author_email='pierre.rouanet@gmail.com',
       url='https://bitbucket.org/pierrerouanet/pypot',
       description='Python Library for Robot Control',
-      requires=['serial'],
+      requires=['numpy', 'serial'],
       packages=['pypot', 'pypot.robot', 'pypot.config', 'pypot.dynamixel'],
       )
