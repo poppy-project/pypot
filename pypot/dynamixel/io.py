@@ -179,9 +179,14 @@ class DynamixelIO(_DynamixelIO):
         """
     __controls = {}
 
-    def __init__(self, port, baudrate=1000000, timeout=0.05, error_handler_cls=BaseErrorHandler):
+    def __init__(self,
+                 port, baudrate=1000000, timeout=0.05,
+                 error_handler_cls=BaseErrorHandler,
+                 sync_read=True):
+        
         _DynamixelIO.__init__(self, port, baudrate, timeout)
         self.error_handler = error_handler_cls()
+        self.sync_read = sync_read
     
     
     # MARK: - Motor discovery
@@ -238,32 +243,21 @@ class DynamixelIO(_DynamixelIO):
 
     # MARK: Specific controls
     
-    def set_id(self, motor_id, new_id):
-        """ Changes the id of a motor (each id must be unique on the bus). """
-        if self.ping(new_id):
-            raise ValueError('id {} is already used.'.format(new_id))
+    def set_id(self, new_id_for_id):
+        """ Changes the id of motors (each id must be unique on the bus). """
+        if list(set(new_id_for_id.values())) != new_id_for_id.values():
+            raise ValueError('each id must be unique.')
 
-        DynamixelIO._set_id(self, motor_id, new_id)
-        
-        if motor_id in self._known_models:
-            self._known_models[new_id] = self._known_models[motor_id]
-            del self._known_models[motor_id]
-
-    def set_sync_id(self, *id_new_id_couples):
-        """ Synchronously changes the ids of motors (each id must be unique on the bus). """
-        _, new_ids = zip(*id_new_id_couples)
-
-        for new_id in new_ids:
+        for new_id in new_id_for_id.itervalues():
             if self.ping(new_id):
                 raise ValueError('id {} is already used.'.format(new_id))
-                    
-        DynamixelIO._set_sync_id(self, *id_new_id_couples)
-            
-        for old_id, new_id in id_new_id_couples:
-            if old_id in self._known_models:
-                self._known_models[new_id] = self._known_models[old_id]
-                del self._known_models[old_id]
 
+        DynamixelIO._set_id(self, new_id_for_id)
+        
+        for motor_id, new_id in new_id_for_id.iteritems():
+            if motor_id in self._known_models:
+                self._known_models[new_id] = self._known_models[motor_id]
+                del self._known_models[motor_id]
 
     # MARK: - Override sending method to handle errors
 
@@ -302,29 +296,46 @@ class DynamixelIO(_DynamixelIO):
         
         if control.access in (DynamixelAccess.readonly, DynamixelAccess.readwrite):
             cls._generate_getter(control)
-            cls._generate_sync_getter(control)
 
         if control.access in (DynamixelAccess.writeonly, DynamixelAccess.readwrite):
             cls._generate_setter(control)
-            cls._generate_sync_setter(control)
+
 
     @classmethod
     def _generate_getter(cls, control):
-        def getter(self, motor_id):
-            model = self._lazy_get_model(motor_id)
-            if not model:
-                return
-            self._control_exists_for_model(control, model)
-            self._check_motor_id(motor_id)
-        
-            rp = DynamixelReadDataPacket(motor_id, control.address, control.length * control.nb_elem)
-            sp = self.send_packet(rp)
-                
-            if not sp:
+        def getter(self, *ids):
+            models = map(self._lazy_get_model, ids)
+            if None in models:
                 return
 
-            value = dxl_decode_all(sp.parameters, control.nb_elem)
-            return control.dxl_to_si(value, model)
+            [self._control_exists_for_model(control, model) for model in set(models)]
+            [self._check_motor_id(motor_id) for motor_id in ids]
+                    
+            if self.sync_read and len(ids) > 1:
+                rp = DynamixelSyncReadPacket(ids, control.address, control.length * control.nb_elem)
+                sp = self.send_packet(rp)
+                    
+                if not sp:
+                    return
+                
+                values = sp.parameters
+        
+            else:
+                values = []
+                for motor_id in ids:
+                    rp = DynamixelReadDataPacket(motor_id, control.address, control.length * control.nb_elem)
+                    sp = self.send_packet(rp)
+                
+                    if not sp:
+                        return
+
+                    values.extend(sp.parameters)
+    
+            values = list(itertools.izip(*([iter(values)] * control.length * control.nb_elem)))
+            values = [dxl_decode_all(value, control.nb_elem) for value in values]
+            values = [control.dxl_to_si(value, model) for value, model in zip(values, models)]
+                
+            return tuple(values) if len(values) > 1 else values[0]
 
         func_name = 'get_{}'.format(control.name.replace(' ', '_'))
         func_name = '_{}'.format(func_name) if hasattr(cls, func_name) else func_name
@@ -332,58 +343,11 @@ class DynamixelIO(_DynamixelIO):
         getter.func_name = func_name
         setattr(cls, func_name, getter)
 
-    @classmethod
-    def _generate_sync_getter(cls, control):
-        def sync_getter(self, *ids):
-            models = map(self._lazy_get_model, ids)
-            if None in models:
-                return
-            [self._control_exists_for_model(control, model) for model in set(models)]
-            [self._check_motor_id(motor_id) for motor_id in ids]
-
-            srp = DynamixelSyncReadPacket(ids, control.address, control.length * control.nb_elem)
-            sp = self.send_packet(srp)
-    
-            if not sp:
-                return
-
-            values = list(itertools.izip(*([iter(sp.parameters)] * control.length * control.nb_elem)))
-            values = [dxl_decode_all(value, control.nb_elem) for value in values]
-            values = [control.dxl_to_si(value, model) for value, model in zip(values, models)]
-
-            return tuple(values)
-
-        func_name = 'get_sync_{}'.format(control.name.replace(' ', '_'))
-        func_name = '_{}'.format(func_name) if hasattr(cls, func_name) else func_name
-        sync_getter.func_doc = 'Synchronously retrives {} from the motors with the specified ids.'.format(control.name)
-        sync_getter.func_name = func_name
-        setattr(cls, func_name, sync_getter)
 
     @classmethod
     def _generate_setter(cls, control):
-        def setter(self, motor_id, value):
-            model = self._lazy_get_model(motor_id)
-            if not model:
-                return
-            self._control_exists_for_model(control, model)
-            self._check_motor_id(motor_id)
-                  
-            value = control.si_to_dxl(value, model)
-            value = dxl_code_all(value, control.length, control.nb_elem)
-                    
-            wp = DynamixelWriteDataPacket(motor_id, control.address, value)
-            sp = self.send_packet(wp)
-            
-        func_name = 'set_{}'.format(control.name.replace(' ', '_'))
-        func_name = '_{}'.format(func_name) if hasattr(cls, func_name) else func_name
-        setter.func_doc = 'Sets {} to the motor with the specified id.'.format(control.name)
-        setter.func_name = func_name
-        setattr(cls, func_name, setter)
-
-    @classmethod
-    def _generate_sync_setter(cls, control):
-        def sync_setter(self, *id_value_couples):
-            ids, values = zip(*id_value_couples)
+        def setter(self, value_for_id):
+            ids, values = zip(*value_for_id.items())
             
             models = map(self._lazy_get_model, ids)
             if None in models:
@@ -392,21 +356,21 @@ class DynamixelIO(_DynamixelIO):
             [self._check_motor_id(motor_id) for motor_id in ids]
 
             values = map(control.si_to_dxl, values, models)
-                    
             data = []
             for motor_id, value in zip(ids, values):
-                    data.extend(itertools.chain((motor_id, ),
-                                                dxl_code_all(value, control.length, control.nb_elem)))
-                    
-            swp = DynamixelSyncWritePacket(control.address, control.length * control.nb_elem, data)
-            self.send_packet(swp, wait_for_status_packet=False)
-        
-        func_name = 'set_sync_{}'.format(control.name.replace(' ', '_'))
-        func_name = '_{}'.format(func_name) if hasattr(cls, func_name) else func_name
-        sync_setter.func_doc = 'Synchronously sets {} to the motors with the specified ids.'.format(control.name)
-        sync_setter.func_name = func_name
-        setattr(cls, func_name, sync_setter)
+                data.extend(itertools.chain((motor_id, ),
+                                            dxl_code_all(value, control.length, control.nb_elem)))
 
+            wp = DynamixelSyncWritePacket(control.address, control.length * control.nb_elem, data)
+            sp = self.send_packet(wp, wait_for_status_packet=False)
+            
+        func_name = 'set_{}'.format(control.name.replace(' ', '_'))
+        func_name = '_{}'.format(func_name) if hasattr(cls, func_name) else func_name
+        setter.func_doc = 'Sets {} to the motor with the specified id.'.format(control.name)
+        setter.func_name = func_name
+        setattr(cls, func_name, setter)
+            
+            
     # MARK: - Various checking
     
     def _control_exists_for_model(self, control, model):

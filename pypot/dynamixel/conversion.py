@@ -77,7 +77,7 @@ def dxl_to_oriented_load(value, model):
 def dxl_to_degree_speed_load(value, model):
     return (dxl_to_degree(value[0], model),
             dxl_to_speed(value[1], model),
-            dxl_to_load(value[2], model))
+            dxl_to_torque(value[2], model))
 
 def dxl_to_oriented_degree_speed_load(value, model):
     return (dxl_to_degree(value[0], model),
