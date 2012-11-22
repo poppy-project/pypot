@@ -4,6 +4,7 @@ import time
 import array
 import serial
 import operator
+import itertools
 import threading
 
 from collections import namedtuple
@@ -120,7 +121,7 @@ class _DynamixelIO(object):
 
     # MARK: - Send/Receive packet
 
-    def send_packet(self, instruction_packet, wait_for_status_packet=True):
+    def _send_packet(self, instruction_packet, wait_for_status_packet=True):
         """ Sends an instruction packet and receives the status packet. """
         if self.closed:
             raise DynamixelError('try to send a packet on a closed serial communication')
@@ -159,7 +160,8 @@ DynamixelControl = namedtuple('DynamixelControl', ('name',
                                                    'address', 'length', 'nb_elem',
                                                    'access',
                                                    'models',
-                                                   'dxl_to_si', 'si_to_dxl'))
+                                                   'dxl_to_si', 'si_to_dxl',
+                                                   'getter_name', 'setter_name'))
 
 class DynamixelAccess(object):
     readonly, writeonly, readwrite = range(3)
@@ -185,8 +187,8 @@ class DynamixelIO(_DynamixelIO):
                  sync_read=True):
         
         _DynamixelIO.__init__(self, port, baudrate, timeout)
-        self.error_handler = error_handler_cls()
-        self.sync_read = sync_read
+        self._error_handler = error_handler_cls()
+        self._sync_read = sync_read
     
     
     # MARK: - Motor discovery
@@ -197,7 +199,7 @@ class DynamixelIO(_DynamixelIO):
         
         pp = DynamixelPingPacket(motor_id)
         try:
-            _DynamixelIO.send_packet(self, pp)
+            _DynamixelIO._send_packet(self, pp)
             return True
         except DynamixelTimeoutError:
             return False
@@ -206,7 +208,7 @@ class DynamixelIO(_DynamixelIO):
         """ Ping the broadcast address to find the id of any motor on the bus. """
         pp = DynamixelPingPacket(DynamixelBroadcast)
         try:
-            sp = _DynamixelIO.send_packet(self, pp)
+            sp = _DynamixelIO._send_packet(self, pp)
 
             # As all motors on the bus will answer, we force a flush
             # to clean all remaining messages.
@@ -231,7 +233,7 @@ class DynamixelIO(_DynamixelIO):
             control = self.__controls['model']
             
             rp = DynamixelReadDataPacket(motor_id, control.address, control.length)
-            sp = self.send_packet(rp)
+            sp = self._send_packet(rp)
                 
             if not sp:
                 return
@@ -243,7 +245,7 @@ class DynamixelIO(_DynamixelIO):
 
     # MARK: Specific controls
     
-    def set_id(self, new_id_for_id):
+    def change_id(self, new_id_for_id):
         """ Changes the id of motors (each id must be unique on the bus). """
         if list(set(new_id_for_id.values())) != new_id_for_id.values():
             raise ValueError('each id must be unique.')
@@ -252,16 +254,40 @@ class DynamixelIO(_DynamixelIO):
             if self.ping(new_id):
                 raise ValueError('id {} is already used.'.format(new_id))
 
-        DynamixelIO._set_id(self, new_id_for_id)
+        DynamixelIO._change_id(self, new_id_for_id)
         
         for motor_id, new_id in new_id_for_id.iteritems():
             if motor_id in self._known_models:
                 self._known_models[new_id] = self._known_models[motor_id]
                 del self._known_models[motor_id]
 
+    def switch_led_on(self, *ids):
+        """ Switch on the LED of the motors with the specified ids. """
+        DynamixelIO._set_LED(self, dict(itertools.izip(ids, itertools.repeat(True))))
+                    
+    def switch_led_off(self, *ids):
+        """ Switch off the LED of the motors with the specified ids. """
+        DynamixelIO._set_LED(self, dict(itertools.izip(ids, itertools.repeat(False))))
+                    
+    def enable_torque(self, *ids):
+        """ Enable torque of the motors with the specified ids. """
+        DynamixelIO._set_torque_enable(self, dict(itertools.izip(ids, itertools.repeat(True))))
+                    
+    def disable_torque(self, *ids):
+        """ Disable torque of the motors with the specified ids. """
+        DynamixelIO._set_torque_enable(self, dict(itertools.izip(ids, itertools.repeat(False))))
+                    
+    #    def lock_EEPROM(self, *ids):
+    #        """ Lock EEPROM for the motors with the specifeid ids.
+    #
+    #            .. note:: To unlock the EEPROM again, you need to cycle the power.
+    #
+    #            """
+    #        DynamixelIO._lock_EEPROM(self, dict(itertools.izip(ids, itertools.repeat(True))))
+
     # MARK: - Override sending method to handle errors
 
-    def send_packet(self, instruction_packet, wait_for_status_packet=True):
+    def _send_packet(self, instruction_packet, wait_for_status_packet=True):
         """ Sends an instruction packet and receives the status packet. 
             
             The possible errors (such as communication or motor errors) are transmitted to the error handler.
@@ -270,22 +296,22 @@ class DynamixelIO(_DynamixelIO):
             
             """
         try:
-            sp = _DynamixelIO.send_packet(self, instruction_packet, wait_for_status_packet)
+            sp = _DynamixelIO._send_packet(self, instruction_packet, wait_for_status_packet)
                 
             if sp and sp.error:
                 errors = decode_error(sp.error)
                 for e in errors:
                     handler_name = 'handle_{}'.format(e.lower().replace(' ', '_'))
                     f = operator.methodcaller(handler_name, instruction_packet)
-                    f(self.error_handler)
+                    f(self._error_handler)
     
             return sp
 
         except DynamixelTimeoutError as e:
-            self.error_handler.handle_timeout(e)
+            self._error_handler.handle_timeout(e)
 
         except DynamixelCommunicationError as e:
-            self.error_handler.handle_communication_error(e)
+            self._error_handler.handle_communication_error(e)
 
 
     # MARK: - Accessor Generation
@@ -311,9 +337,9 @@ class DynamixelIO(_DynamixelIO):
             [self._control_exists_for_model(control, model) for model in set(models)]
             [self._check_motor_id(motor_id) for motor_id in ids]
                     
-            if self.sync_read and len(ids) > 1:
+            if self._sync_read and len(ids) > 1:
                 rp = DynamixelSyncReadPacket(ids, control.address, control.length * control.nb_elem)
-                sp = self.send_packet(rp)
+                sp = self._send_packet(rp)
                     
                 if not sp:
                     return
@@ -324,7 +350,7 @@ class DynamixelIO(_DynamixelIO):
                 values = []
                 for motor_id in ids:
                     rp = DynamixelReadDataPacket(motor_id, control.address, control.length * control.nb_elem)
-                    sp = self.send_packet(rp)
+                    sp = self._send_packet(rp)
                 
                     if not sp:
                         return
@@ -337,7 +363,7 @@ class DynamixelIO(_DynamixelIO):
                 
             return tuple(values) if len(values) > 1 else values[0]
 
-        func_name = 'get_{}'.format(control.name.replace(' ', '_'))
+        func_name = control.getter_name if control.getter_name else 'get_{}'.format(control.name.replace(' ', '_'))
         func_name = '_{}'.format(func_name) if hasattr(cls, func_name) else func_name
         getter.func_doc = 'Retrives {} from the motor with the specified id.'.format(control.name)
         getter.func_name = func_name
@@ -362,9 +388,9 @@ class DynamixelIO(_DynamixelIO):
                                             dxl_code_all(value, control.length, control.nb_elem)))
 
             wp = DynamixelSyncWritePacket(control.address, control.length * control.nb_elem, data)
-            sp = self.send_packet(wp, wait_for_status_packet=False)
+            sp = self._send_packet(wp, wait_for_status_packet=False)
             
-        func_name = 'set_{}'.format(control.name.replace(' ', '_'))
+        func_name = control.setter_name if control.setter_name else 'set_{}'.format(control.name.replace(' ', '_'))
         func_name = '_{}'.format(func_name) if hasattr(cls, func_name) else func_name
         setter.func_doc = 'Sets {} to the motor with the specified id.'.format(control.name)
         setter.func_name = func_name
@@ -412,13 +438,16 @@ def add_register(name,
                  access=DynamixelAccess.readwrite,
                  models=set(dynamixelModels.values()),
                  dxl_to_si=lambda val, model: val,
-                 si_to_dxl=lambda val, model: val):
+                 si_to_dxl=lambda val, model: val,
+                 getter_name=None,
+                 setter_name=None):
     
     control = DynamixelControl(name,
                                address, length, nb_elem,
                                access,
                                models,
-                               dxl_to_si, si_to_dxl)
+                               dxl_to_si, si_to_dxl,
+                               getter_name, setter_name)
     
     DynamixelIO._generate_accessors(control)
 
@@ -432,7 +461,9 @@ add_register('firmware',
              access=DynamixelAccess.readonly)
 
 add_register('id',
-             address=0x03, length=1)
+             address=0x03, length=1,
+             access=DynamixelAccess.writeonly,
+             setter_name='change_id')
 
 add_register('baudrate',
              address=0x04, length=1,
@@ -444,16 +475,6 @@ add_register('return delay time',
              dxl_to_si=dxl_to_rdt,
              si_to_dxl=rdt_to_dxl)
 
-#add_register('cw angle limit',
-#             address=0x06,
-#             dxl_to_si=dxl_to_degree,
-#             si_to_dxl=degree_to_dxl)
-
-#add_register('ccw angle limit',
-#             address=0x08,
-#             dxl_to_si=dxl_to_degree,
-#             si_to_dxl=degree_to_dxl)
-
 add_register('angle limit',
              address=0x06, nb_elem=2,
              dxl_to_si=lambda value, model: (dxl_to_degree(value[0], model),
@@ -461,22 +482,12 @@ add_register('angle limit',
              si_to_dxl=lambda value, model: (degree_to_dxl(value[0], model),
                                              degree_to_dxl(value[1], model)))
 
-add_register('highest limit temperature',
+add_register('highest temperature limit',
              address=0x0B, length=1,
              dxl_to_si=dxl_to_temperature,
              si_to_dxl=temperature_to_dxl)
 
-#add_register('lowest limit voltage',
-#             address=0x0C, length=1,
-#             dxl_to_si=dxl_to_voltage,
-#             si_to_dxl=voltage_to_dxl)
-
-#add_register('highest limit voltage',
-#             address=0x0D, length=1,
-#             dxl_to_si=dxl_to_voltage,
-#             si_to_dxl=voltage_to_dxl)
-
-add_register('limit voltage',
+add_register('voltage limit',
              address=0x0C, length=1, nb_elem=2,
              dxl_to_si=lambda value, model: (dxl_to_voltage(value[0], model),
                                              dxl_to_voltage(value[1], model)),
@@ -506,43 +517,27 @@ add_register('alarm shutdown',
 add_register('torque_enable',
              address=0x18, length=1,
              dxl_to_si=dxl_to_bool,
-             si_to_dxl=bool_to_dxl)
+             si_to_dxl=bool_to_dxl,
+             getter_name='is_torque_enabled',
+             setter_name='_set_torque_enable')
 
 add_register('LED',
              address=0x19, length=1,
              dxl_to_si=dxl_to_bool,
-             si_to_dxl=bool_to_dxl)
-
-#add_register('D gain',
-#             address=0x1A, length=1,
-#             models=('MX-28',))
-
-#add_register('I gain',
-#             address=0x1B, length=1,
-#             models=('MX-28', ))
-
-#add_register('P gain',
-#             address=0x1C, length=1,
-#             models=('MX-28', ))
+             si_to_dxl=bool_to_dxl,
+             setter_name='_set_LED',
+             getter_name='is_led_on')
 
 add_register('pid gain',
              address=0x1A, length=1, nb_elem=3,
              models=('MX-28', ))
 
-add_register('cw compliance margin',
-             address=0x1A, length=1,
+add_register('compliance margin',
+             address=0x1A, length=1, nb_elem=2,
              models=('AX-12', 'RX-28', 'RX-64'))
 
-add_register('ccw compliance margin',
-             address=0x1B, length=1,
-             models=('AX-12', 'RX-28', 'RX-64'))
-
-add_register('cw compliance slope',
-             address=0x1C, length=1,
-             models=('AX-12', 'RX-28', 'RX-64'))
-
-add_register('ccw compliance slope',
-             address=0x1D, length=1,
+add_register('compliance slope',
+             address=0x1C, length=1, nb_elem=2,
              models=('AX-12', 'RX-28', 'RX-64'))
 
 add_register('goal position',
@@ -598,12 +593,15 @@ add_register('present temperature',
 add_register('moving',
              address=0x2E,
              access=DynamixelAccess.readonly,
-             dxl_to_si=dxl_to_bool)
-
-add_register('lock',
-             address=0x2F,
              dxl_to_si=dxl_to_bool,
-             si_to_dxl=bool_to_dxl)
+             getter_name='is_moving')
+
+#add_register('lock',
+#             address=0x2F,
+#             dxl_to_si=dxl_to_bool,
+#             si_to_dxl=bool_to_dxl,
+#             getter_name='is_EEPROM_locked',
+#             setter_name='lock_EEPROM')
 
 
 
