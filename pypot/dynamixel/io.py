@@ -300,6 +300,55 @@ class DynamixelIO(_DynamixelIO):
             if motor_id in self._known_models:
                 del self._known_models[motor_id]
 
+    def get_status_return_level(self, *ids):
+        """ Retrieves the status level for the motors with the specified ids. """
+        # If one motor can not be ping,
+        # we send the message just to "correctly" receive the timeout.
+        if not all(map(self.ping, ids)):
+            self._get_status_return_level(*ids)
+            return
+        
+        srl = []
+        control = self.__controls['status return level']
+        for motor_id in ids:
+            try:
+                rp = DynamixelReadDataPacket(motor_id, control.address, control.length)
+                sp = _DynamixelIO._send_packet(self, rp)
+            
+                if not sp:
+                    return
+            
+                value = dxl_decode(sp.parameters)
+                srl.append(control.dxl_to_si(value, '*'))
+            
+            except DynamixelTimeoutError:
+                srl.append('never')
+                    
+        return tuple(srl)
+
+    def set_status_return_level(self, srl_for_ids):
+        """ Sets status return level for motors with specified ids.
+            
+            .. warn:: Setting the status return level to "never" will prevent the reception of any message!
+            
+            """
+        # If one motor can not be ping,
+        # we send the message just to "correctly" receive the timeout.
+        if not all(map(self.ping, srl_for_ids.iterkeys())):
+            self._set_status_return_level(srl_for_ids)
+            return
+        
+        control = self.__controls['status return level']
+
+        data = []
+        for motor_id, srl in srl_for_ids.iteritems():
+            srl = control.si_to_dxl(srl, '*')
+            data.extend(itertools.chain((motor_id, ),
+                                        dxl_code_all(srl, control.length, control.nb_elem)))
+
+        sp = DynamixelSyncWritePacket(control.address, control.length * control.nb_elem, data)
+        self._send_packet(sp, wait_for_status_packet=False)
+
     def switch_led_on(self, *ids):
         """ Switch on the LED of the motors with the specified ids. """
         DynamixelIO._set_LED(self, dict(itertools.izip(ids, itertools.repeat(True))))
@@ -621,17 +670,17 @@ add_register('present position speed load',
              dxl_to_si=dxl_to_oriented_degree_speed_load)
 
 add_register('present voltage',
-             address=0x2A,
+             address=0x2A, length=1,
              access=_DynamixelAccess.readonly,
              dxl_to_si=dxl_to_voltage)
 
 add_register('present temperature',
-             address=0x2B,
+             address=0x2B, length=1,
              access=_DynamixelAccess.readonly,
              dxl_to_si=dxl_to_temperature)
 
 add_register('moving',
-             address=0x2E,
+             address=0x2E, length=1,
              access=_DynamixelAccess.readonly,
              dxl_to_si=dxl_to_bool,
              getter_name='is_moving')
