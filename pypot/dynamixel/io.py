@@ -4,6 +4,7 @@ import time
 import array
 import serial
 import operator
+import platform
 import itertools
 import threading
 
@@ -46,10 +47,11 @@ class _DynamixelIO(object):
         if port in self.__used_ports:
             raise DynamixelError('port already used {}'.format(port))
         
-        self._serial = serial.Serial(port, baudrate, timeout=timeout)
         self._serial_lock = threading.Lock()
-        
+        self.open(port, baudrate, timeout)
+
         self.__used_ports.add(port)
+
 
     def __del__(self):
         self.close()
@@ -61,6 +63,14 @@ class _DynamixelIO(object):
                 'timeout={self.timeout}>').format(self=self)
 
 
+    def open(self, port, baudrate=1000000, timeout=0.05):
+        with self._serial_lock:
+            if not self.closed:
+                self._serial.close()
+        
+            self._serial = serial.Serial(port, baudrate, timeout=timeout)
+
+    
     def close(self):
         """ Closes the serial communication if opened. """
         if not self.closed:
@@ -99,8 +109,7 @@ class _DynamixelIO(object):
         if self.closed:
             raise DynamixelError('attempt to change baudrate on a closed serial communication')
 
-        with self._serial_lock:
-            self._serial.baudrate = value
+        self.open(self.port, value, self.timeout)
             
     @property
     def timeout(self):
@@ -111,8 +120,7 @@ class _DynamixelIO(object):
         if self.closed:
             raise DynamixelError('attempt to change timeout on a closed serial communication')
 
-        with self._serial_lock:
-            self._serial.timeout = value
+        self.open(self.port, self.baudrate, value)
             
     @property
     def closed(self):
@@ -156,14 +164,14 @@ class _DynamixelIO(object):
 
 
 
-DynamixelControl = namedtuple('DynamixelControl', ('name',
-                                                   'address', 'length', 'nb_elem',
-                                                   'access',
-                                                   'models',
-                                                   'dxl_to_si', 'si_to_dxl',
-                                                   'getter_name', 'setter_name'))
+_DynamixelControl = namedtuple('DynamixelControl', ('name',
+                                                    'address', 'length', 'nb_elem',
+                                                    'access',
+                                                    'models',
+                                                    'dxl_to_si', 'si_to_dxl',
+                                                    'getter_name', 'setter_name'))
 
-class DynamixelAccess(object):
+class _DynamixelAccess(object):
     readonly, writeonly, readwrite = range(3)
 
 
@@ -187,9 +195,35 @@ class DynamixelIO(_DynamixelIO):
                  sync_read=True):
         
         _DynamixelIO.__init__(self, port, baudrate, timeout)
+
+        self._known_models = {}
         self._error_handler = error_handler_cls()
         self._sync_read = sync_read
     
+    if platform.system() == 'Darwin':
+        def open(self, port, baudrate=1000000, timeout=0.05):
+            """ Tries to connect to port until it succeeds to ping any motor on the bus.
+                
+                This is  used to circumvent a bug with the driver for the USB2AX on Mac.
+                
+                .. warn:: If no motor is connected on the bus, this will run forever!!!
+                
+                """
+            while True:
+                _DynamixelIO.open(self, port, baudrate, timeout)
+                
+                if self.ping_any():
+                    break
+    
+    @property
+    def baudrate(self):
+        return _DynamixelIO.baudrate.fget(self)
+                        
+    @baudrate.setter
+    def baudrate(self, value):
+        _DynamixelIO.baudrate.fset(self, value)
+        self._known_models.clear()
+
     
     # MARK: - Motor discovery
     
@@ -205,7 +239,7 @@ class DynamixelIO(_DynamixelIO):
             return False
 
     def ping_any(self):
-        """ Ping the broadcast address to find the id of any motor on the bus. """
+        """ Pings the broadcast address to find the id of any motor on the bus. """
         pp = DynamixelPingPacket(DynamixelBroadcast)
         try:
             sp = _DynamixelIO._send_packet(self, pp)
@@ -222,13 +256,10 @@ class DynamixelIO(_DynamixelIO):
             pass
 
     def scan(self, ids=range(254)):
-        """ Pings all motor ids (by default, finds all motors on the bus). """
+        """ Pings all motor ids (by default it finds all motors on the bus). """
         return filter(self.ping, ids)
     
     def _lazy_get_model(self, motor_id):
-        if not hasattr(self, '_known_models'):
-            self._known_models = {}
-        
         if not motor_id in self._known_models:
             control = self.__controls['model']
             
@@ -259,6 +290,14 @@ class DynamixelIO(_DynamixelIO):
         for motor_id, new_id in new_id_for_id.iteritems():
             if motor_id in self._known_models:
                 self._known_models[new_id] = self._known_models[motor_id]
+                del self._known_models[motor_id]
+
+    def change_baudrate(self, baudrate_for_ids):
+        """ Changes the baudrate of motors. """
+        DynamixelIO._change_baudrate(self, baudrate_for_ids)
+        
+        for motor_id in baudrate_for_ids.iterkeys():
+            if motor_id in self._known_models:
                 del self._known_models[motor_id]
 
     def switch_led_on(self, *ids):
@@ -320,10 +359,10 @@ class DynamixelIO(_DynamixelIO):
     def _generate_accessors(cls, control):
         cls.__controls[control.name] = control
         
-        if control.access in (DynamixelAccess.readonly, DynamixelAccess.readwrite):
+        if control.access in (_DynamixelAccess.readonly, _DynamixelAccess.readwrite):
             cls._generate_getter(control)
 
-        if control.access in (DynamixelAccess.writeonly, DynamixelAccess.readwrite):
+        if control.access in (_DynamixelAccess.writeonly, _DynamixelAccess.readwrite):
             cls._generate_setter(control)
 
 
@@ -435,14 +474,14 @@ class DynamixelTimeoutError(DynamixelCommunicationError):
 
 def add_register(name,
                  address, length=2, nb_elem=1,
-                 access=DynamixelAccess.readwrite,
+                 access=_DynamixelAccess.readwrite,
                  models=set(dynamixelModels.values()),
                  dxl_to_si=lambda val, model: val,
                  si_to_dxl=lambda val, model: val,
                  getter_name=None,
                  setter_name=None):
     
-    control = DynamixelControl(name,
+    control = _DynamixelControl(name,
                                address, length, nb_elem,
                                access,
                                models,
@@ -453,21 +492,22 @@ def add_register(name,
 
 add_register('model',
              address=0x00,
-             access=DynamixelAccess.readonly,
+             access=_DynamixelAccess.readonly,
              dxl_to_si=dxl_to_model)
 
 add_register('firmware',
              address=0x02, length=1,
-             access=DynamixelAccess.readonly)
+             access=_DynamixelAccess.readonly)
 
 add_register('id',
              address=0x03, length=1,
-             access=DynamixelAccess.writeonly,
+             access=_DynamixelAccess.writeonly,
              setter_name='change_id')
 
 add_register('baudrate',
              address=0x04, length=1,
-             dxl_to_si=dxl_to_baudrate,
+             access=_DynamixelAccess.writeonly,
+             setter_name='change_baudrate',
              si_to_dxl=baudrate_to_dxl)
 
 add_register('return delay time',
@@ -562,37 +602,37 @@ add_register('goal position speed load',
 
 add_register('present position',
              address=0x24,
-             access=DynamixelAccess.readonly,
+             access=_DynamixelAccess.readonly,
              dxl_to_si=dxl_to_degree)
 
 add_register('present speed',
              address=0x26,
-             access=DynamixelAccess.readonly,
+             access=_DynamixelAccess.readonly,
              dxl_to_si=dxl_to_oriented_speed)
 
 add_register('present load',
              address=0x28,
-             access=DynamixelAccess.readonly,
+             access=_DynamixelAccess.readonly,
              dxl_to_si=dxl_to_oriented_load)
 
 add_register('present position speed load',
              address=0x24, nb_elem=3,
-             access=DynamixelAccess.readonly,
+             access=_DynamixelAccess.readonly,
              dxl_to_si=dxl_to_oriented_degree_speed_load)
 
 add_register('present voltage',
              address=0x2A,
-             access=DynamixelAccess.readonly,
+             access=_DynamixelAccess.readonly,
              dxl_to_si=dxl_to_voltage)
 
 add_register('present temperature',
              address=0x2B,
-             access=DynamixelAccess.readonly,
+             access=_DynamixelAccess.readonly,
              dxl_to_si=dxl_to_temperature)
 
 add_register('moving',
              address=0x2E,
-             access=DynamixelAccess.readonly,
+             access=_DynamixelAccess.readonly,
              dxl_to_si=dxl_to_bool,
              getter_name='is_moving')
 
@@ -602,6 +642,3 @@ add_register('moving',
 #             si_to_dxl=bool_to_dxl,
 #             getter_name='is_EEPROM_locked',
 #             setter_name='lock_EEPROM')
-
-
-

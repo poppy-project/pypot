@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
 
 
-"""
-    This module describes all the conversion method used to transform value
+""" This module describes all the conversion method used to transform value
     from the representation used by the dynamixel motor to a more standard form.
     
     For compatibility issue all comparison method should be written in the
