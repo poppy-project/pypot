@@ -47,8 +47,14 @@ class _DynamixelIO(object):
             """
         self._serial_lock = threading.Lock()
         self.open(port, baudrate, timeout)
+    
+    def __enter__(self):
+        return self
 
     def __del__(self):
+        self.close()
+    
+    def __exit__(self, exc_type, exc_value, traceback):
         self.close()
 
     def __repr__(self):
@@ -312,10 +318,6 @@ class DynamixelIO(_DynamixelIO):
             try:
                 rp = DynamixelReadDataPacket(motor_id, control.address, control.length)
                 sp = _DynamixelIO._send_packet(self, rp)
-            
-                if not sp:
-                    return
-            
                 value = dxl_decode(sp.parameters)
                 srl.append(control.dxl_to_si(value, '*'))
             
