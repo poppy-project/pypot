@@ -9,6 +9,7 @@ import itertools
 import threading
 
 from collections import namedtuple
+from contextlib import contextmanager
 
 
 from pypot.dynamixel.error import BaseErrorHandler
@@ -44,14 +45,8 @@ class _DynamixelIO(object):
             :raises: DynamixelError (when port is already used)
             
             """
-        if port in self.__used_ports:
-            raise DynamixelError('port already used {}'.format(port))
-        
         self._serial_lock = threading.Lock()
         self.open(port, baudrate, timeout)
-
-        self.__used_ports.add(port)
-
 
     def __del__(self):
         self.close()
@@ -65,24 +60,23 @@ class _DynamixelIO(object):
 
     def open(self, port, baudrate=1000000, timeout=0.05):
         with self._serial_lock:
-            if not self.closed:
-                self._serial.close()
+            self.close(_force_lock=True)
+
+            if port in self.__used_ports:
+                raise DynamixelError('port already used {}'.format(port))            
         
             self._serial = serial.Serial(port, baudrate, timeout=timeout)
+            self.__used_ports.add(port)
 
     
-    def close(self):
+    def close(self, _force_lock=False):
         """ Closes the serial communication if opened. """
         if not self.closed:
-            with self._serial_lock:
+            with self.__force_lock(_force_lock) or self._serial_lock:
                 self._serial.close()
                 self.__used_ports.remove(self.port)
 
-    def _flush(self):
-        self._serial.flushInput()
-        self._serial.flushOutput()
-
-    def flush(self):
+    def flush(self, _force_lock=False):
         """ Flushes the serial communication (both input and output).
             
             .. note:: You can use this method after a communication issue, such as a timeout, to refresh the bus.
@@ -91,14 +85,26 @@ class _DynamixelIO(object):
         if self.closed:
             raise DynamixelError('attempt to flush a closed serial communication')
         
-        with self._serial_lock:
-            self._flush()
+        with self.__force_lock(_force_lock) or self._serial_lock:
+            self._serial.flushInput()
+            self._serial.flushOutput()
+                
+    def __force_lock(self, condition):
+        @contextmanager
+        def with_True():
+            yield True
+                
+        return with_True() if condition else False
 
     # MARK: Properties of the serial communication
 
     @property
     def port(self):
         return self._serial.port
+    
+    @port.setter
+    def port(self, value):
+        self.open(value, self.baudrate, self.timeout)
             
     @property
     def baudrate(self):
@@ -106,9 +112,6 @@ class _DynamixelIO(object):
             
     @baudrate.setter
     def baudrate(self, value):
-        if self.closed:
-            raise DynamixelError('attempt to change baudrate on a closed serial communication')
-
         self.open(self.port, value, self.timeout)
             
     @property
@@ -117,9 +120,6 @@ class _DynamixelIO(object):
             
     @timeout.setter
     def timeout(self, value):
-        if self.closed:
-            raise DynamixelError('attempt to change timeout on a closed serial communication')
-
         self.open(self.port, self.baudrate, value)
             
     @property
@@ -129,13 +129,15 @@ class _DynamixelIO(object):
 
     # MARK: - Send/Receive packet
 
-    def _send_packet(self, instruction_packet, wait_for_status_packet=True):
+    def _send_packet(self,
+                     instruction_packet, wait_for_status_packet=True,
+                     _force_lock=False):
         """ Sends an instruction packet and receives the status packet. """
         if self.closed:
             raise DynamixelError('try to send a packet on a closed serial communication')
     
-        with self._serial_lock:
-            self._flush()
+        with self.__force_lock(_force_lock) or self._serial_lock:
+            self.flush(_force_lock=True)
 
             data = instruction_packet.to_string()
             nbytes = self._serial.write(data)
@@ -180,7 +182,7 @@ class DynamixelIO(_DynamixelIO):
     """ This class handles the higher-level communication with robotis motors.
         
         More precisely, you can use it to:
-            * discover motors (ping, ping_any or scan)
+            * discover motors (ping or scan)
             * access the different control (read, sync read, write and sync write)
         
         This class also transmit the errors (communication, timeout or motor errors)
@@ -209,11 +211,28 @@ class DynamixelIO(_DynamixelIO):
                 .. warn:: If no motor is connected on the bus, this will run forever!!!
                 
                 """
+            pp = DynamixelPingPacket(DynamixelBroadcast)
+
             while True:
                 _DynamixelIO.open(self, port, baudrate, timeout)
-                
-                if self.ping_any():
-                    break
+                try:
+                    sp = _DynamixelIO._send_packet(self, pp)
+                    if sp:
+                        break
+                except DynamixelTimeoutError:
+                    pass
+            time.sleep(self.timeout)
+            self.flush()
+
+    
+    @property
+    def port(self):
+        return _DynamixelIO.port.fget(self)
+    
+    @port.setter
+    def port(self, value):
+        _DynamixelIO.port.fset(self, value)
+        self._known_models.clear()    
     
     @property
     def baudrate(self):
@@ -238,43 +257,22 @@ class DynamixelIO(_DynamixelIO):
         except DynamixelTimeoutError:
             return False
 
-    def ping_any(self):
-        """ Pings the broadcast address to find the id of any motor on the bus. """
-        pp = DynamixelPingPacket(DynamixelBroadcast)
-        try:
-            sp = _DynamixelIO._send_packet(self, pp)
-
-            # As all motors on the bus will answer, we force a flush
-            # to clean all remaining messages.
-            time.sleep(self.timeout)
-            self.flush()
-            
-            if sp:
-                return sp.id
-
-        except DynamixelTimeoutError:
-            pass
-
     def scan(self, ids=range(254)):
         """ Pings all motor ids (by default it finds all motors on the bus). """
         return filter(self.ping, ids)
-    
-    def _lazy_get_model(self, motor_id):
-        if not motor_id in self._known_models:
-            control = self.__controls['model']
-            
-            rp = DynamixelReadDataPacket(motor_id, control.address, control.length)
-            sp = self._send_packet(rp)
-                
-            if not sp:
-                return
-                
-            value = dxl_decode(sp.parameters)
-            self._known_models[motor_id] = control.dxl_to_si(value, None)
-
-        return self._known_models[motor_id]
 
     # MARK: Specific controls
+            
+    def get_model(self, *ids):
+        """ Retrieves the model of the specified motors. """
+        for motor_id in ids:
+            if not motor_id in self._known_models:
+                # This allows to circumvent an endless recursion of
+                # calls of get_model
+                self._known_models[motor_id] = '*'
+                self._known_models[motor_id] = self._get_model(motor_id)
+        models = tuple(self._known_models[motor_id] for motor_id in ids)
+        return models if len(models) > 1 else models[0]
     
     def change_id(self, new_id_for_id):
         """ Changes the id of motors (each id must be unique on the bus). """
@@ -303,7 +301,7 @@ class DynamixelIO(_DynamixelIO):
     def get_status_return_level(self, *ids):
         """ Retrieves the status level for the motors with the specified ids. """
         # If one motor can not be ping,
-        # we send the message just to "correctly" receive the timeout.
+        # we send the basic message just to "correctly" receive the timeout.
         if not all(map(self.ping, ids)):
             self._get_status_return_level(*ids)
             return
@@ -418,8 +416,8 @@ class DynamixelIO(_DynamixelIO):
     @classmethod
     def _generate_getter(cls, control):
         def getter(self, *ids):
-            models = map(self._lazy_get_model, ids)
-            if None in models:
+            models = self.get_model(*ids)
+            if not models or (len(models) > 1 and None in models):
                 return
 
             [self._control_exists_for_model(control, model) for model in set(models)]
@@ -463,8 +461,8 @@ class DynamixelIO(_DynamixelIO):
         def setter(self, value_for_id):
             ids, values = zip(*value_for_id.items())
             
-            models = map(self._lazy_get_model, ids)
-            if None in models:
+            models = self.get_model(*ids)
+            if not models or (len(models) > 1 and None in models):
                 return
             [self._control_exists_for_model(control, model) for model in set(models)]
             [self._check_motor_id(motor_id) for motor_id in ids]
@@ -480,7 +478,7 @@ class DynamixelIO(_DynamixelIO):
             
         func_name = control.setter_name if control.setter_name else 'set_{}'.format(control.name.replace(' ', '_'))
         func_name = '_{}'.format(func_name) if hasattr(cls, func_name) else func_name
-        setter.func_doc = 'Sets {} to the motor with the specified id.'.format(control.name)
+        setter.func_doc = 'Sets {} to the motors with the specified id.'.format(control.name)
         setter.func_name = func_name
         setattr(cls, func_name, setter)
             
@@ -488,7 +486,7 @@ class DynamixelIO(_DynamixelIO):
     # MARK: - Various checking
     
     def _control_exists_for_model(self, control, model):
-        if model not in control.models:
+        if model not in control.models and model != '*':
             raise DynamixelError('try to access {} that does not exist on model {}'.format(control.name, model))
     
     def _check_motor_id(self, motor_id):

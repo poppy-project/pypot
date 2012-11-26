@@ -3,7 +3,7 @@
 import logging
 
 class DynamixelErrorHandler(object):
-    """ This class is used to represent all the error that a handler should handle. 
+    """ This class is used to represent all the error that you can/should handle. 
         
         You should write your own handler by subclassing this class.
         
@@ -46,7 +46,7 @@ class DynamixelErrorHandler(object):
 
 
 class BaseErrorHandler(DynamixelErrorHandler):
-    """ This class is a basic handler that can directly be used. """
+    """ This class is a basic handler that just skip most errors. """
     def handle_timeout(self, timeout_error):
         logging.warning('timeout occured after sending {}'.format(timeout_error.instruction_packet))
 
