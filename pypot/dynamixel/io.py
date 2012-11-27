@@ -138,7 +138,7 @@ class _DynamixelIO(object):
     def _send_packet(self,
                      instruction_packet, wait_for_status_packet=True,
                      _force_lock=False):
-        """ Sends an instruction packet and receives the status packet. """
+        """ Sends an instruction packet and waits for the status packet. """
         if self.closed:
             raise DynamixelError('try to send a packet on a closed serial communication')
     
@@ -202,21 +202,22 @@ class DynamixelIO(_DynamixelIO):
                  error_handler_cls=BaseErrorHandler,
                  sync_read=True):
         
-        _DynamixelIO.__init__(self, port, baudrate, timeout)
-
         self._known_models = {}
+        self._known_mode = {}
+
+        _DynamixelIO.__init__(self, port, baudrate, timeout)
+        
         self._error_handler = error_handler_cls()
         self._sync_read = sync_read
     
-    if platform.system() == 'Darwin':
-        def open(self, port, baudrate=1000000, timeout=0.05):
-            """ Tries to connect to port until it succeeds to ping any motor on the bus.
-                
-                This is  used to circumvent a bug with the driver for the USB2AX on Mac.
-                
-                .. warn:: If no motor is connected on the bus, this will run forever!!!
-                
-                """
+    def open(self, port, baudrate=1000000, timeout=0.05):
+        self._known_mode.clear()
+        self._known_models.clear()
+        
+        if platform.system() == 'Darwin':
+            # Tries to connect to port until it succeeds to ping any motor on the bus.
+            # This is  used to circumvent a bug with the driver for the USB2AX on Mac.
+            # Warning: If no motor is connected on the bus, this will run forever!!!
             pp = DynamixelPingPacket(DynamixelBroadcast)
 
             while True:
@@ -229,26 +230,8 @@ class DynamixelIO(_DynamixelIO):
                     pass
             time.sleep(self.timeout)
             self.flush()
-
-    
-    @property
-    def port(self):
-        return _DynamixelIO.port.fget(self)
-    
-    @port.setter
-    def port(self, value):
-        _DynamixelIO.port.fset(self, value)
-        self._known_models.clear()    
-    
-    @property
-    def baudrate(self):
-        return _DynamixelIO.baudrate.fget(self)
-                        
-    @baudrate.setter
-    def baudrate(self, value):
-        _DynamixelIO.baudrate.fset(self, value)
-        self._known_models.clear()
-
+        else:
+            _DynamixelIO.open(self, port, baudrate, timeout)
     
     # MARK: - Motor discovery
     
@@ -276,7 +259,11 @@ class DynamixelIO(_DynamixelIO):
                 # This allows to circumvent an endless recursion of
                 # calls of get_model
                 self._known_models[motor_id] = '*'
-                self._known_models[motor_id] = self._get_model(motor_id)
+                model = self._get_model(motor_id)
+                if not model:
+                    del self._known_models[motor_id]
+                    return
+                self._known_models[motor_id] = model
         models = tuple(self._known_models[motor_id] for motor_id in ids)
         return models if len(models) > 1 else models[0]
     
@@ -349,6 +336,67 @@ class DynamixelIO(_DynamixelIO):
         sp = DynamixelSyncWritePacket(control.address, control.length * control.nb_elem, data)
         self._send_packet(sp, wait_for_status_packet=False)
 
+    def get_mode(self, *ids):
+        conv = self.__controls['angle limit'].si_to_dxl
+        
+        to_get = filter(lambda mid: mid not in self._known_mode, ids)
+        if to_get:
+            models = self.get_model(*to_get)
+            limits = self.get_angle_limit(*to_get)
+            if not isinstance(models, tuple):
+                models = (models, )
+                limits = (limits, )
+
+            modes = tuple('wheel' if conv(limit, model) == (0, 0) else 'joint'
+                          for limit, model in zip(limits, models))
+        
+            for mid, mode in zip(to_get, modes):
+                self._known_mode[mid] = mode
+        
+        modes = tuple(self._known_mode[mid] for mid in ids)
+        return modes if len(modes) > 1 else modes[0]
+    
+    def _set_to_mode(self, mode, *ids):
+        self.get_mode(*ids)
+    
+        ids = filter(lambda mid: self._known_mode[mid] != mode, ids)
+        if not ids:
+            return
+
+        models = self.get_model(*ids)
+        d = {}
+        for motor_id, model in zip(ids, models):
+            model = 'MX' if model.startswith('MX') else '*'
+            max_deg = position_range[model][1]
+            if mode == 'joint':
+                d[motor_id] = (-max_deg / 2, max_deg / 2)
+            else:
+                d[motor_id] = (-max_deg / 2, -max_deg / 2)
+                    
+            self._known_mode[motor_id] = mode
+                
+        self._set_angle_limit(d)
+
+    def set_angle_limit(self, limit_for_ids):
+        if 'wheel' in self.get_mode(*limit_for_ids.keys()):
+            raise ValueError('can not set angle limit to a motor in wheel mode')
+        
+        for limit in limit_for_ids.itervalues():
+            if limit[0] == limit[1]:
+                raise ValueError('can not have lower and upper limit equal')
+            
+        self._set_angle_limit(limit_for_ids)
+    
+    def set_to_joint_mode(self, *ids):
+        self._set_to_mode('joint', *ids)
+            
+    def set_to_wheel_mode(self, *ids):
+        self._set_to_mode('wheel', *ids)
+
+    #    def set_moving_speed(self, speed_for_id):
+    #    def set_goal_position_speed_load(self, psl_for_id):
+    #       we should check depending on the mode if speed is > 0 or not
+
     def switch_led_on(self, *ids):
         """ Switch on the LED of the motors with the specified ids. """
         DynamixelIO._set_LED(self, dict(itertools.izip(ids, itertools.repeat(True))))
@@ -419,7 +467,9 @@ class DynamixelIO(_DynamixelIO):
     def _generate_getter(cls, control):
         def getter(self, *ids):
             models = self.get_model(*ids)
-            if not models or (len(models) > 1 and None in models):
+            if not isinstance(models, tuple):
+                models = (models, )
+            if None in models:
                 return
 
             [self._control_exists_for_model(control, model) for model in set(models)]
@@ -462,12 +512,14 @@ class DynamixelIO(_DynamixelIO):
     def _generate_setter(cls, control):
         def setter(self, value_for_id):
             ids, values = zip(*value_for_id.items())
-            
+            [self._check_motor_id(motor_id) for motor_id in ids]
+
             models = self.get_model(*ids)
-            if not models or (len(models) > 1 and None in models):
+            if not isinstance(models, tuple):
+                models = (models, )
+            if None in models:
                 return
             [self._control_exists_for_model(control, model) for model in set(models)]
-            [self._check_motor_id(motor_id) for motor_id in ids]
 
             values = map(control.si_to_dxl, values, models)
             data = []

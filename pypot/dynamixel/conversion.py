@@ -50,12 +50,19 @@ def dxl_to_oriented_speed(value, model):
     return dxl_to_speed(speed, model) * direction
 
 def dxl_to_speed(value, model):
-    check_range(value, 0, 1023)
-    return (value * 0.114) * 6
+    check_range(value, 0, 2047)
+    
+    cw, speed = divmod(value, 1024)
+    direction = -1 * (2 * cw - 1)
+    
+    return direction * (speed * 0.114) * 6
 
 def speed_to_dxl(value, model):
-    check_range(value, 0, 700)
-    return int(value / (6 * 0.114))
+    check_range(value, -700, 700)
+    
+    direction = 1024 if value < 0 else 0
+    
+    return direction + int(abs(value) / (6 * 0.114))
 
 # MARK: - Torque
 
