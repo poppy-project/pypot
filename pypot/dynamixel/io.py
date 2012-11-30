@@ -1,10 +1,7 @@
 # -*- coding: utf-8 -*-
 
-import time
-import array
 import serial
 import operator
-import platform
 import itertools
 import threading
 
@@ -12,12 +9,24 @@ from collections import namedtuple
 from contextlib import contextmanager
 
 
-from pypot.dynamixel.error import BaseErrorHandler
 from pypot.dynamixel.conversion import *
 from pypot.dynamixel.packet import *
 
 
-class _DynamixelIO(object):
+
+_DynamixelControl = namedtuple('_DynamixelControl', ('name',
+                                                     'address', 'length', 'nb_elem',
+                                                     'access',
+                                                     'models',
+                                                     'dxl_to_si', 'si_to_dxl',
+                                                     'getter_name', 'setter_name'))
+
+class _DynamixelAccess(object):
+    readonly, writeonly, readwrite = range(3)
+
+
+
+class DynamixelIO(object):
     """ This class handles the low-level communication with robotis motors.
         
         Using a USB communication device such as USB2DYNAMIXEL or USB2AX,
@@ -26,14 +35,20 @@ class _DynamixelIO(object):
         
         More precisely, this class can be used to:
             * open/close the communication
-            * send (resp. receive) instruction (resp. status) packets
+            * discover motors (ping or scan)
+            * access the different control (read and write)
+        
+        .. note:: This class can be used as a context manager (e.g. with DynamixelIO(...) as dxl_io:)
     
         """
     __used_ports = set()
     
-    # MARK: - Open/Close and Flush the communication
+    # MARK: - Open, Close and Flush the communication
     
-    def __init__(self, port, baudrate=1000000, timeout=0.05):
+    def __init__(self,
+                 port, baudrate=1000000, timeout=0.05,
+                 use_sync_read=True,
+                 error_handler=None):
         """ At instanciation, it opens the serial port and sets the communication parameters.
             
             .. warning:: The port can only be accessed by a single DynamixelIO instance.
@@ -41,10 +56,16 @@ class _DynamixelIO(object):
             :param string port: the serial port to use (e.g. Unix (/dev/tty...), Windows (COM...)).
             :param int baudrate: default for new motors: 57600, for PyPot motors: 1000000
             :param float timeout: read timeout in seconds
-            
-            :raises: DynamixelError (when port is already used)
-            
+            :param bool use_sync_read: whether or not to use the SYNC_READ instruction
+            :param DynamixelErrorHandler error_handler: set a handler that will receive the different errors
+                        
             """
+        self._known_models = {}
+        self._known_mode = {}
+
+        self._sync_read = use_sync_read
+        self._error_handler = error_handler
+
         self._serial_lock = threading.Lock()
         self.open(port, baudrate, timeout)
     
@@ -62,9 +83,15 @@ class _DynamixelIO(object):
                 'port="{self.port}", '
                 'baudrate={self.baudrate}, '
                 'timeout={self.timeout}>').format(self=self)
-
-
+    
     def open(self, port, baudrate=1000000, timeout=0.05):
+        """ Opens a new serial communication (closes the previous communication if needed).
+            
+            .. note:: Only a single communication can be opened to a port (raises DynamixelError if the port is already used).
+            """
+        self._known_models.clear()
+        self._known_mode.clear()
+
         with self._serial_lock:
             self.close(_force_lock=True)
 
@@ -74,6 +101,19 @@ class _DynamixelIO(object):
             self._serial = serial.Serial(port, baudrate, timeout=timeout)
             self.__used_ports.add(port)
 
+        # Tries to connect to port until it succeeds to ping any motor on the bus.
+        # This is  used to circumvent a bug with the driver for the USB2AX on Mac.
+        # Warning: If no motor is connected on the bus, this will run forever!!!
+        import platform
+        if platform.system() == 'Darwin':
+            import time
+            
+            if not self.ping(DynamixelBroadcast):
+                self.close()
+                self.open(port, baudrate, timeout)
+            else:
+                time.sleep(self.timeout)
+                self.flush()
     
     def close(self, _force_lock=False):
         """ Closes the serial communication if opened. """
@@ -111,7 +151,7 @@ class _DynamixelIO(object):
     @port.setter
     def port(self, value):
         self.open(value, self.baudrate, self.timeout)
-            
+    
     @property
     def baudrate(self):
         return self._serial.baudrate
@@ -132,13 +172,224 @@ class _DynamixelIO(object):
     def closed(self):
         return not (hasattr(self, '_serial') and self._serial.isOpen())
 
+    # MARK: - Motor discovery
+    
+    def ping(self, id):
+        """ Pings the motor with the specified id. """
+        pp = DynamixelPingPacket(id)
+        try:
+            self._send_packet(pp, error_handler=None)
+            return True
+        except DynamixelTimeoutError:
+            return False
+
+    def scan(self, ids=range(254)):
+        """ Pings all ids, by default it finds all the motors connected to the bus. """
+        return filter(self.ping, ids)
+    
+    # MARK: - Specific Getter / Setter
+    
+    def get_model(self, *ids):
+        """ Retrieves the model of the specified motors. """
+        to_get_ids = filter(lambda id: id not in self._known_models, ids)
+        
+        models = map(dxl_to_model, self._get_model(*to_get_ids, convert=False))
+        self._known_models.update(zip(to_get_ids, models))
+        
+        return tuple(self._known_models[id] for id in ids)
+
+    def change_id(self, new_id_for_id):
+        """ Changes the id of the specified motors (each id must be unique on the bus). """
+        if len(set(new_id_for_id.values())) < len(new_id_for_id):
+            raise ValueError('each id must be unique.')
+        
+        for new_id in new_id_for_id.itervalues():
+            if self.ping(new_id):
+                raise ValueError('id {} is already used.'.format(new_id))
+        
+        self._change_id(new_id_for_id)
+        
+        for motor_id, new_id in new_id_for_id.iteritems():
+            if motor_id in self._known_models:
+                self._known_models[new_id] = self._known_models[motor_id]
+                del self._known_models[motor_id]
+            if motor_id in self._known_mode:
+                self._known_mode[new_id] = self._known_mode[motor_id]
+                del self._known_mode[motor_id]
+
+    def change_baudrate(self, baudrate_for_ids):
+        """ Changes the baudrate of the specified motors. """
+        self._change_baudrate(baudrate_for_ids)
+
+        for motor_id in baudrate_for_ids.iterkeys():
+            if motor_id in self._known_models:
+                del self._known_models[motor_id]
+            if motor_id in self._known_mode:
+                del self._known_mode[motor_id]
+
+    def get_status_return_level(self, *ids):
+        """ Retrieves the status level for the specified motors. """
+        srl = []
+        for id in ids:
+            try:
+                srl.extend(self._get_status_return_level(id, error_handler=None))
+            except DynamixelTimeoutError as e:
+                if self.ping(id):
+                    srl.append('never')
+                else:
+                    if self._error_handler:
+                        self._error_handler.handle_timeout(e)
+                        return ()
+                    else:
+                        raise e
+
+        return tuple(srl)
+    
+    def set_status_return_level(self, srl_for_id):
+        srl_for_id = dict(zip(srl_for_id.keys(),
+                              map(lambda s: ('never', 'read', 'always').index(s), srl_for_id.values())))
+        self._set_status_return_level(srl_for_id, convert=False)
+    
+    def get_mode(self, *ids):
+        """ Retrieves the mode ('joint' or 'wheel' of the specified motors. """
+        to_get_ids = filter(lambda id: id not in self._known_mode, ids)
+        limits = self.get_angle_limit(*to_get_ids, convert=False)
+        modes = ('wheel' if limit == (0, 0) else 'joint' for limit in limits)
+        
+        self._known_mode.update(zip(to_get_ids, modes))
+            
+        return tuple(self._known_mode[id] for id in ids)
+
+    def set_mode(self, mode_for_id):
+        """ Sets the mode ('joint' or 'wheel') of the specified ids. """
+        models = map(lambda m: 'MX' if m.startswith('MX') else '*',
+                     self.get_model(*mode_for_id.keys()))
+        pos_max = map(lambda m: position_range[m][0], models)
+        limits = ((0, 0) if mode == 'wheel' else (0, pos_max[i] - 1)
+                  for i, mode in enumerate(mode_for_id.itervalues()))
+
+        self._set_angle_limit(dict(zip(mode_for_id.keys(), limits)), convert=False)
+        self._known_mode.update(mode_for_id.items())
+
+    def set_angle_limit(self, limit_for_id):
+        if 'wheel' in self.get_mode(*limit_for_id.keys()):
+            raise ValueError('can not change the angle limit of a motor in wheel mode')
+        
+        if (0, 0) in limit_for_id.values():
+            raise ValueError('can not set limit to (0, 0)')
+        
+        self._set_angle_limit(limit_for_id)
+
+    def switch_led_on(self, *ids):
+        """ Switch on the LED of the motors with the specified ids. """
+        self._set_LED(dict(itertools.izip(ids, itertools.repeat(True))))
+            
+    def switch_led_off(self, *ids):
+        """ Switch off the LED of the motors with the specified ids. """
+        self._set_LED(dict(itertools.izip(ids, itertools.repeat(False))))
+            
+    def enable_torque(self, *ids):
+        """ Enable torque of the motors with the specified ids. """
+        self._set_torque_enable(dict(itertools.izip(ids, itertools.repeat(True))))
+            
+    def disable_torque(self, *ids):
+        """ Disable torque of the motors with the specified ids. """
+        self._set_torque_enable(dict(itertools.izip(ids, itertools.repeat(False))))
+            
+
+    # MARK: - Generic Getter / Setter
+
+    @classmethod
+    def _generate_accessors(cls, control):        
+        if control.access in (_DynamixelAccess.readonly, _DynamixelAccess.readwrite):
+            def my_getter(self, *ids, **kwargs):                    
+                return self._get_control_value(control, *ids, **kwargs)
+            
+            func_name = control.getter_name if control.getter_name else 'get_{}'.format(control.name.replace(' ', '_'))
+            func_name = '_{}'.format(func_name) if hasattr(cls, func_name) else func_name
+            my_getter.func_doc = 'Retrives {} from the specified motors.'.format(control.name)
+            my_getter.func_name = func_name
+            setattr(cls, func_name, my_getter)
+
+        if control.access in (_DynamixelAccess.writeonly, _DynamixelAccess.readwrite):
+            def my_setter(self, value_for_id, **kwargs):
+                self._set_control_value(control, value_for_id, **kwargs)
+
+            func_name = control.setter_name if control.setter_name else 'set_{}'.format(control.name.replace(' ', '_'))
+            func_name = '_{}'.format(func_name) if hasattr(cls, func_name) else func_name
+            my_setter.func_doc = 'Sets {} to the specified motors.'.format(control.name)
+            my_setter.func_name = func_name
+            setattr(cls, func_name, my_setter)
+                    
+    def _get_control_value(self, control, *ids, **kwargs):
+        error_handler = kwargs['error_handler'] if ('error_handler' in kwargs) else self._error_handler
+        convert = kwargs['convert'] if ('convert' in kwargs) else True
+
+        if self._sync_read and len(ids) > 1:
+            rp = DynamixelSyncReadPacket(ids, control.address, control.length * control.nb_elem)
+            sp = self._send_packet(rp, error_handler=error_handler)
+            
+            if not sp:
+                return ()
+            
+            values = sp.parameters
+        
+        else:
+            values = []
+            for motor_id in ids:
+                rp = DynamixelReadDataPacket(motor_id, control.address, control.length * control.nb_elem)
+                sp = self._send_packet(rp, error_handler=error_handler)
+                
+                if not sp:
+                    return ()
+                
+                values.extend(sp.parameters)
+
+        values = list(itertools.izip(*([iter(values)] * control.length * control.nb_elem)))
+        values = [dxl_decode_all(value, control.nb_elem) for value in values]
+
+        # when using SYNC_READ a non existing motor will "return" the maximum value
+        if self._sync_read:
+            max_val = 2 ** (8 * control.length) - 1
+            if max_val in (itertools.chain(*values) if control.nb_elem > 1 else values):
+                e = DynamixelTimeoutError(rp)
+                if self._error_handler:
+                    self._error_handler.handle_timeout(e)
+                else:
+                    raise e
+    
+        if convert:
+            models = self.get_model(*ids)
+            if not models:
+                return ()
+
+            values = map(control.dxl_to_si, values, models)
+    
+        return tuple(values)
+
+    def _set_control_value(self, control, value_for_id, **kwargs):
+        convert = kwargs['convert'] if ('convert' in kwargs) else True
+
+        if convert:
+            models = self.get_model(*value_for_id.keys())
+            if not models:
+                return
+                
+            value_for_id = dict(zip(value_for_id.keys(),
+                                    map(control.si_to_dxl, value_for_id.values(), models)))
+    
+        data = []
+        for motor_id, value in value_for_id.iteritems():
+            data.extend(itertools.chain((motor_id, ),
+                                        dxl_code_all(value, control.length, control.nb_elem)))
+    
+        wp = DynamixelSyncWritePacket(control.address, control.length * control.nb_elem, data)
+        sp = self._send_packet(wp, wait_for_status_packet=False)
+
 
     # MARK: - Send/Receive packet
 
-    def _send_packet(self,
-                     instruction_packet, wait_for_status_packet=True,
-                     _force_lock=False):
-        """ Sends an instruction packet and waits for the status packet. """
+    def __real_send(self, instruction_packet, wait_for_status_packet, _force_lock):
         if self.closed:
             raise DynamixelError('try to send a packet on a closed serial communication')
     
@@ -170,382 +421,40 @@ class _DynamixelIO(object):
             return status_packet
 
 
-
-
-_DynamixelControl = namedtuple('DynamixelControl', ('name',
-                                                    'address', 'length', 'nb_elem',
-                                                    'access',
-                                                    'models',
-                                                    'dxl_to_si', 'si_to_dxl',
-                                                    'getter_name', 'setter_name'))
-
-class _DynamixelAccess(object):
-    readonly, writeonly, readwrite = range(3)
-
-
-
-class DynamixelIO(_DynamixelIO):
-    """ This class handles the higher-level communication with robotis motors.
-        
-        More precisely, you can use it to:
-            * discover motors (ping or scan)
-            * access the different control (read, sync read, write and sync write)
-        
-        This class also transmit the errors (communication, timeout or motor errors)
-        to a DynamixelErrorHandler.
-        
-        """
-    __controls = {}
-
-    def __init__(self,
-                 port, baudrate=1000000, timeout=0.05,
-                 error_handler_cls=BaseErrorHandler,
-                 sync_read=True):
-        
-        self._known_models = {}
-        self._known_mode = {}
-
-        _DynamixelIO.__init__(self, port, baudrate, timeout)
-        
-        self._error_handler = error_handler_cls()
-        self._sync_read = sync_read
-    
-    def open(self, port, baudrate=1000000, timeout=0.05):
-        self._known_mode.clear()
-        self._known_models.clear()
-        
-        if platform.system() == 'Darwin':
-            # Tries to connect to port until it succeeds to ping any motor on the bus.
-            # This is  used to circumvent a bug with the driver for the USB2AX on Mac.
-            # Warning: If no motor is connected on the bus, this will run forever!!!
-            pp = DynamixelPingPacket(DynamixelBroadcast)
-
-            while True:
-                _DynamixelIO.open(self, port, baudrate, timeout)
-                try:
-                    sp = _DynamixelIO._send_packet(self, pp)
-                    if sp:
-                        break
-                except DynamixelTimeoutError:
-                    pass
-            time.sleep(self.timeout)
-            self.flush()
-        else:
-            _DynamixelIO.open(self, port, baudrate, timeout)
-    
-    # MARK: - Motor discovery
-    
-    def ping(self, motor_id):
-        """ Pings the motor with the specified id. """
-        self._check_motor_id(motor_id)
-        
-        pp = DynamixelPingPacket(motor_id)
-        try:
-            _DynamixelIO._send_packet(self, pp)
-            return True
-        except DynamixelTimeoutError:
-            return False
-
-    def scan(self, ids=range(254)):
-        """ Pings all motor ids (by default it finds all motors on the bus). """
-        return filter(self.ping, ids)
-
-    # MARK: Specific controls
+    def _send_packet(self,
+                    instruction_packet, wait_for_status_packet=True,
+                    error_handler=None,
+                    _force_lock=False):
+        """ Sends an instruction packet and receives the status packet.
             
-    def get_model(self, *ids):
-        """ Retrieves the model of the specified motors. """
-        for motor_id in ids:
-            if not motor_id in self._known_models:
-                # This allows to circumvent an endless recursion of
-                # calls of get_model
-                self._known_models[motor_id] = '*'
-                model = self._get_model(motor_id)
-                if not model:
-                    del self._known_models[motor_id]
-                    return
-                self._known_models[motor_id] = model
-        models = tuple(self._known_models[motor_id] for motor_id in ids)
-        return models if len(models) > 1 else models[0]
-    
-    def change_id(self, new_id_for_id):
-        """ Changes the id of motors (each id must be unique on the bus). """
-        if list(set(new_id_for_id.values())) != new_id_for_id.values():
-            raise ValueError('each id must be unique.')
-
-        for new_id in new_id_for_id.itervalues():
-            if self.ping(new_id):
-                raise ValueError('id {} is already used.'.format(new_id))
-
-        DynamixelIO._change_id(self, new_id_for_id)
-        
-        for motor_id, new_id in new_id_for_id.iteritems():
-            if motor_id in self._known_models:
-                self._known_models[new_id] = self._known_models[motor_id]
-                del self._known_models[motor_id]
-
-    def change_baudrate(self, baudrate_for_ids):
-        """ Changes the baudrate of motors. """
-        DynamixelIO._change_baudrate(self, baudrate_for_ids)
-        
-        for motor_id in baudrate_for_ids.iterkeys():
-            if motor_id in self._known_models:
-                del self._known_models[motor_id]
-
-    def get_status_return_level(self, *ids):
-        """ Retrieves the status level for the motors with the specified ids. """
-        # If one motor can not be ping,
-        # we send the basic message just to "correctly" receive the timeout.
-        if not all(map(self.ping, ids)):
-            self._get_status_return_level(*ids)
-            return
-        
-        srl = []
-        control = self.__controls['status return level']
-        for motor_id in ids:
-            try:
-                rp = DynamixelReadDataPacket(motor_id, control.address, control.length)
-                sp = _DynamixelIO._send_packet(self, rp)
-                value = dxl_decode(sp.parameters)
-                srl.append(control.dxl_to_si(value, '*'))
+            The possible errors (such as communication or motor errors) are 
+            transmitted to the error handler if gave as a parameters, otherwise 
+            the corresponding exception will be raised.
             
-            except DynamixelTimeoutError:
-                srl.append('never')
-                    
-        return tuple(srl)
-
-    def set_status_return_level(self, srl_for_ids):
-        """ Sets status return level for motors with specified ids.
-            
-            .. warn:: Setting the status return level to "never" will prevent the reception of any message!
+            .. note:: In case of communication errors for instance, this method may not return anything. So, you should always check if a status packet has been returned.
             
             """
-        # If one motor can not be ping,
-        # we send the message just to "correctly" receive the timeout.
-        if not all(map(self.ping, srl_for_ids.iterkeys())):
-            self._set_status_return_level(srl_for_ids)
-            return
+        if not error_handler:
+            return self.__real_send(instruction_packet, wait_for_status_packet, _force_lock)
         
-        control = self.__controls['status return level']
-
-        data = []
-        for motor_id, srl in srl_for_ids.iteritems():
-            srl = control.si_to_dxl(srl, '*')
-            data.extend(itertools.chain((motor_id, ),
-                                        dxl_code_all(srl, control.length, control.nb_elem)))
-
-        sp = DynamixelSyncWritePacket(control.address, control.length * control.nb_elem, data)
-        self._send_packet(sp, wait_for_status_packet=False)
-
-    def get_mode(self, *ids):
-        conv = self.__controls['angle limit'].si_to_dxl
-        
-        to_get = filter(lambda mid: mid not in self._known_mode, ids)
-        if to_get:
-            models = self.get_model(*to_get)
-            limits = self.get_angle_limit(*to_get)
-            if not isinstance(models, tuple):
-                models = (models, )
-                limits = (limits, )
-
-            modes = tuple('wheel' if conv(limit, model) == (0, 0) else 'joint'
-                          for limit, model in zip(limits, models))
-        
-            for mid, mode in zip(to_get, modes):
-                self._known_mode[mid] = mode
-        
-        modes = tuple(self._known_mode[mid] for mid in ids)
-        return modes if len(modes) > 1 else modes[0]
-    
-    def _set_to_mode(self, mode, *ids):
-        self.get_mode(*ids)
-    
-        ids = filter(lambda mid: self._known_mode[mid] != mode, ids)
-        if not ids:
-            return
-
-        models = self.get_model(*ids)
-        d = {}
-        for motor_id, model in zip(ids, models):
-            model = 'MX' if model.startswith('MX') else '*'
-            max_deg = position_range[model][1]
-            if mode == 'joint':
-                d[motor_id] = (-max_deg / 2, max_deg / 2)
-            else:
-                d[motor_id] = (-max_deg / 2, -max_deg / 2)
-                    
-            self._known_mode[motor_id] = mode
-                
-        self._set_angle_limit(d)
-
-    def set_angle_limit(self, limit_for_ids):
-        if 'wheel' in self.get_mode(*limit_for_ids.keys()):
-            raise ValueError('can not set angle limit to a motor in wheel mode')
-        
-        for limit in limit_for_ids.itervalues():
-            if limit[0] == limit[1]:
-                raise ValueError('can not have lower and upper limit equal')
-            
-        self._set_angle_limit(limit_for_ids)
-    
-    def set_to_joint_mode(self, *ids):
-        self._set_to_mode('joint', *ids)
-            
-    def set_to_wheel_mode(self, *ids):
-        self._set_to_mode('wheel', *ids)
-
-    #    def set_moving_speed(self, speed_for_id):
-    #    def set_goal_position_speed_load(self, psl_for_id):
-    #       we should check depending on the mode if speed is > 0 or not
-
-    def switch_led_on(self, *ids):
-        """ Switch on the LED of the motors with the specified ids. """
-        DynamixelIO._set_LED(self, dict(itertools.izip(ids, itertools.repeat(True))))
-                    
-    def switch_led_off(self, *ids):
-        """ Switch off the LED of the motors with the specified ids. """
-        DynamixelIO._set_LED(self, dict(itertools.izip(ids, itertools.repeat(False))))
-                    
-    def enable_torque(self, *ids):
-        """ Enable torque of the motors with the specified ids. """
-        DynamixelIO._set_torque_enable(self, dict(itertools.izip(ids, itertools.repeat(True))))
-                    
-    def disable_torque(self, *ids):
-        """ Disable torque of the motors with the specified ids. """
-        DynamixelIO._set_torque_enable(self, dict(itertools.izip(ids, itertools.repeat(False))))
-                    
-    #    def lock_EEPROM(self, *ids):
-    #        """ Lock EEPROM for the motors with the specifeid ids.
-    #
-    #            .. note:: To unlock the EEPROM again, you need to cycle the power.
-    #
-    #            """
-    #        DynamixelIO._lock_EEPROM(self, dict(itertools.izip(ids, itertools.repeat(True))))
-
-    # MARK: - Override sending method to handle errors
-
-    def _send_packet(self, instruction_packet, wait_for_status_packet=True):
-        """ Sends an instruction packet and receives the status packet. 
-            
-            The possible errors (such as communication or motor errors) are transmitted to the error handler.
-            
-            .. note:: In case of communication errors for instance, this method will not return anything. So, you should always check if a status packet has been returned.
-            
-            """
         try:
-            sp = _DynamixelIO._send_packet(self, instruction_packet, wait_for_status_packet)
+            sp = self.__real_send(instruction_packet, wait_for_status_packet, _force_lock)
                 
             if sp and sp.error:
                 errors = decode_error(sp.error)
                 for e in errors:
                     handler_name = 'handle_{}'.format(e.lower().replace(' ', '_'))
                     f = operator.methodcaller(handler_name, instruction_packet)
-                    f(self._error_handler)
-    
-            return sp
-
+                    f(error_handler)
+                    
+                return sp
+                
         except DynamixelTimeoutError as e:
-            self._error_handler.handle_timeout(e)
-
+            error_handler.handle_timeout(e)
+                
         except DynamixelCommunicationError as e:
-            self._error_handler.handle_communication_error(e)
+            error_handler.handle_communication_error(e)
 
-
-    # MARK: - Accessor Generation
-
-    @classmethod
-    def _generate_accessors(cls, control):
-        cls.__controls[control.name] = control
-        
-        if control.access in (_DynamixelAccess.readonly, _DynamixelAccess.readwrite):
-            cls._generate_getter(control)
-
-        if control.access in (_DynamixelAccess.writeonly, _DynamixelAccess.readwrite):
-            cls._generate_setter(control)
-
-
-    @classmethod
-    def _generate_getter(cls, control):
-        def getter(self, *ids):
-            models = self.get_model(*ids)
-            if not isinstance(models, tuple):
-                models = (models, )
-            if None in models:
-                return
-
-            [self._control_exists_for_model(control, model) for model in set(models)]
-            [self._check_motor_id(motor_id) for motor_id in ids]
-                    
-            if self._sync_read and len(ids) > 1:
-                rp = DynamixelSyncReadPacket(ids, control.address, control.length * control.nb_elem)
-                sp = self._send_packet(rp)
-                    
-                if not sp:
-                    return
-                
-                values = sp.parameters
-        
-            else:
-                values = []
-                for motor_id in ids:
-                    rp = DynamixelReadDataPacket(motor_id, control.address, control.length * control.nb_elem)
-                    sp = self._send_packet(rp)
-                
-                    if not sp:
-                        return
-
-                    values.extend(sp.parameters)
-    
-            values = list(itertools.izip(*([iter(values)] * control.length * control.nb_elem)))
-            values = [dxl_decode_all(value, control.nb_elem) for value in values]
-            values = [control.dxl_to_si(value, model) for value, model in zip(values, models)]
-                
-            return tuple(values) if len(values) > 1 else values[0]
-
-        func_name = control.getter_name if control.getter_name else 'get_{}'.format(control.name.replace(' ', '_'))
-        func_name = '_{}'.format(func_name) if hasattr(cls, func_name) else func_name
-        getter.func_doc = 'Retrives {} from the motor with the specified id.'.format(control.name)
-        getter.func_name = func_name
-        setattr(cls, func_name, getter)
-
-
-    @classmethod
-    def _generate_setter(cls, control):
-        def setter(self, value_for_id):
-            ids, values = zip(*value_for_id.items())
-            [self._check_motor_id(motor_id) for motor_id in ids]
-
-            models = self.get_model(*ids)
-            if not isinstance(models, tuple):
-                models = (models, )
-            if None in models:
-                return
-            [self._control_exists_for_model(control, model) for model in set(models)]
-
-            values = map(control.si_to_dxl, values, models)
-            data = []
-            for motor_id, value in zip(ids, values):
-                data.extend(itertools.chain((motor_id, ),
-                                            dxl_code_all(value, control.length, control.nb_elem)))
-
-            wp = DynamixelSyncWritePacket(control.address, control.length * control.nb_elem, data)
-            sp = self._send_packet(wp, wait_for_status_packet=False)
-            
-        func_name = control.setter_name if control.setter_name else 'set_{}'.format(control.name.replace(' ', '_'))
-        func_name = '_{}'.format(func_name) if hasattr(cls, func_name) else func_name
-        setter.func_doc = 'Sets {} to the motors with the specified id.'.format(control.name)
-        setter.func_name = func_name
-        setattr(cls, func_name, setter)
-            
-            
-    # MARK: - Various checking
-    
-    def _control_exists_for_model(self, control, model):
-        if model not in control.models and model != '*':
-            raise DynamixelError('try to access {} that does not exist on model {}'.format(control.name, model))
-    
-    def _check_motor_id(self, motor_id):
-        if not (isinstance(motor_id, int) and 0 <= motor_id <= 253):
-            raise ValueError('motor id should be in [0, 253]')
 
 
 
@@ -590,6 +499,7 @@ def add_register(name,
                                getter_name, setter_name)
     
     DynamixelIO._generate_accessors(control)
+
 
 add_register('model',
              address=0x00,

@@ -105,7 +105,7 @@ dynamixelModels = {
     29: 'MX-28'
 }
 
-def dxl_to_model(value, _):
+def dxl_to_model(value):
     return dynamixelModels[value]
 
 # MARK: - Baudrate 
