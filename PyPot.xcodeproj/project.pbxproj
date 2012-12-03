@@ -42,7 +42,6 @@
 		A8C7D0DF15F79E6A007C5E66 /* controller.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = controller.py; sourceTree = "<group>"; };
 		A8C7D0E015F7A39C007C5E66 /* motor.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = motor.py; sourceTree = "<group>"; };
 		A8C7D0E115F7A926007C5E66 /* robot.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = robot.py; sourceTree = "<group>"; };
-		A8D420551635879300BBD6DA /* timeout.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = timeout.py; sourceTree = "<group>"; };
 		A8F34CBD1632E57500BA7DF0 /* herborist.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = herborist.py; sourceTree = "<group>"; };
 		A8F34CBE1632E5DE00BA7DF0 /* herborist.ui */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = herborist.ui; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -69,7 +68,6 @@
 			isa = PBXGroup;
 			children = (
 				A82D52CD15F25A5700ED73DC /* motor-sinus.py */,
-				A8D420551635879300BBD6DA /* timeout.py */,
 			);
 			path = samples;
 			sourceTree = "<group>";
