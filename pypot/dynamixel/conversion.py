@@ -95,6 +95,18 @@ def degree_speed_load_to_dxl(value, model):
             speed_to_dxl(value[1], model),
             torque_to_dxl(value[2], model))
 
+# PID Gains
+
+def dxl_to_pid(value, model):
+    return (value[0] * 0.004,
+            value[1] * 2.048,
+            value[2] * 0.125)
+
+def pid_to_dxl(value, model):
+    return (int(value[0] * 250),
+            int(value[1] * 0.48828125),
+            int(value[2] * 8.0))
+
 
 # MARK: - Model 
 

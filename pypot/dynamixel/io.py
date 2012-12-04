@@ -310,7 +310,15 @@ class DynamixelIO(object):
     def disable_torque(self, *ids):
         """ Disable torque of the motors with the specified ids. """
         self._set_torque_enable(dict(itertools.izip(ids, itertools.repeat(False))))
-            
+    
+    def get_pid_gain(self, *ids, **kwargs):
+        return tuple(map(lambda t: tuple(reversed(t)),
+                         self._get_pid_gain(*ids, **kwargs)))
+    
+    def set_pid_gain(self, pid_for_id, **kwargs):
+        pid_for_id = dict(itertools.izip(pid_for_id.iterkeys(),
+                                         map(lambda t: tuple(reversed(t)), pid_for_id.itervalues())))
+        self._set_pid_gain(pid_for_id, **kwargs)    
 
     # MARK: - Generic Getter / Setter
 
@@ -588,7 +596,9 @@ add_control('LED',
 
 add_control('pid gain',
             address=0x1A, length=1, nb_elem=3,
-            models=('MX-28', ))
+            models=('MX-28', ),
+            dxl_to_si=dxl_to_pid,
+            si_to_dxl=pid_to_dxl)
 
 add_control('compliance margin',
             address=0x1A, length=1, nb_elem=2,
