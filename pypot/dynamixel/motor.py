@@ -43,3 +43,12 @@ class DxlMotor(Motor):
     def position(self, value):
         self.goal_position = value
 
+    @property
+    def compliant(self):
+        return self._compliant
+
+    @compliant.setter
+    def compliant(self, value):
+        self.goal_position = self.present_position
+        self._compliant = value
+

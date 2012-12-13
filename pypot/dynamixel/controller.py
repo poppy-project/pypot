@@ -57,13 +57,18 @@ class BaseDxlController(DxlController):
 
         self.add_read_loop(1, 'present_voltage')
         self.add_read_loop(1, 'present_temperature')
-    
+        
         values = self._dxl_io.get_goal_position_speed_load(*self._ids)
         positions, speeds, loads = zip(*values)
         for m, p, s, l in zip(self._motors, positions, speeds, loads):
             m._values['goal_position'] = p
             m._values['moving_speed'] = s
             m._values['torque_limit'] = l
+        
+        torques = self._dxl_io.is_torque_enabled(*self._ids)
+        for m, c in zip(self._motors, torques):
+            m.compliant = not c                
+        self._old_torques = torques
 
     def _get_pos_speed_load(self):
         values = self._dxl_io.get_present_position_speed_load(*self._ids)
@@ -75,11 +80,23 @@ class BaseDxlController(DxlController):
             m._values['present_load'] = l
 
     def _set_pos_speed_load(self):
+        change_torque = {}
+        torques = map(lambda m: not m.compliant, self._motors)
+        for m, t, old_t in zip(self._motors, torques, self._old_torques):
+            if t != old_t:
+                change_torque[m.id] = t
+        self._old_torques = torques
+        if change_torque:
+            self._dxl_io._set_torque_enable(change_torque)
+    
+        rigid_motors = filter(lambda m: not m.compliant, self._motors)
+        ids = tuple(m.id for m in rigid_motors)
+        
         values = ((m._values['goal_position'],
                    m._values['moving_speed'],
-                   m._values['torque_limit']) for m in self._motors)
+                   m._values['torque_limit']) for m in rigid_motors)
         
-        self._dxl_io.set_goal_position_speed_load(dict(zip(self._ids, values)))
+        self._dxl_io.set_goal_position_speed_load(dict(zip(ids, values)))
 
 
 class _RepeatedTimer(threading.Thread):
