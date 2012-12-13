@@ -7,8 +7,13 @@ from pypot.robot.motor import Motor
 
 
 class DxlMotor(Motor):
-    def __init__(self, id):
+    def __init__(self, id,
+                 direct=True, offset=0.0):
         self._id = id
+
+        self._direct = direct
+        self._offset = offset
+    
         self._values = defaultdict(int)
     
     def __repr__(self):
@@ -22,11 +27,9 @@ class DxlMotor(Motor):
     def id(self):
         return self._id
 
-    present_position = _make_accessor('present_position')
     present_speed = _make_accessor('present_speed')
     present_load = _make_accessor('present_load')
 
-    goal_position = _make_accessor('goal_position', rw=True)
     moving_speed = _make_accessor('moving_speed', rw=True)
     torque_limit = _make_accessor('torque_limit', rw=True)
 
@@ -34,6 +37,22 @@ class DxlMotor(Motor):
 
     present_voltage = _make_accessor('present_voltage')
     present_temperature = _make_accessor('present_temperature')
+    
+    
+    @property
+    def present_position(self):
+        pos = self._values['present_position']
+        return (pos if self.direct else -pos) - self.offset
+    
+    @property
+    def goal_position(self):
+        pos = self._values['goal_position']
+        return (pos if self.direct else -pos) - self.offset
+    
+    @goal_position.setter
+    def goal_position(self, value):
+        value = (value + self.offset) if self.direct else -(value + self.offset)
+        self._values['goal_position'] = value
 
     @property
     def position(self):
@@ -51,4 +70,12 @@ class DxlMotor(Motor):
     def compliant(self, value):
         self.goal_position = self.present_position
         self._compliant = value
+
+    @property
+    def direct(self):
+        return self._direct
+
+    @property
+    def offset(self):
+        return self._offset
 
