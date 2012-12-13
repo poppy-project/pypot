@@ -6,9 +6,9 @@ import itertools
 from collections import namedtuple
 
 
-DynamixelBroadcast = 254
+DxlBroadcast = 254
 
-class DynamixelInstruction(object):
+class DxlInstruction(object):
     PING = 0x01
     READ_DATA = 0x02
     WRITE_DATA = 0x03
@@ -18,8 +18,8 @@ class DynamixelInstruction(object):
 
 # MARK: - Packet Header
 
-class DynamixelPacketHeader(namedtuple('DynamixelPacketHeader', ('id', 'packet_length'))):
-    """ This class represents the header of a Dynamixel Packet.
+class DxlPacketHeader(namedtuple('DxlPacketHeader', ('id', 'packet_length'))):
+    """ This class represents the header of a Dxl Packet.
         
         They are constructed as follows [0xFF, 0xFF, ID, LENGTH] where :
             * ID represents the ID of the motor who received (resp. sent) the intruction (resp. status) packet.
@@ -41,7 +41,7 @@ class DynamixelPacketHeader(namedtuple('DynamixelPacketHeader', ('id', 'packet_l
 
 # MARK: - Instruction Packet
 
-class DynamixelInstructionPacket(namedtuple('DynamixelInstructionPacket', ('id', 'instruction', 'parameters'))):
+class DxlInstructionPacket(namedtuple('DxlInstructionPacket', ('id', 'instruction', 'parameters'))):
     """ This class is used to represent a dynamixel instruction packet.
         
         An instruction packet is constructed as follows:
@@ -52,7 +52,7 @@ class DynamixelInstructionPacket(namedtuple('DynamixelInstructionPacket', ('id',
         """
     def to_array(self):
         return array.array('B',
-                           itertools.chain(DynamixelPacketHeader.marker,
+                           itertools.chain(DxlPacketHeader.marker,
                                            (self.id, self.length, self.instruction),
                                            self.parameters,
                                            (self.checksum, )))
@@ -69,43 +69,43 @@ class DynamixelInstructionPacket(namedtuple('DynamixelInstructionPacket', ('id',
         return int(255 - ((self.id + self.length + self.instruction + sum(self.parameters)) % 256))
 
 
-class DynamixelPingPacket(DynamixelInstructionPacket):
+class DxlPingPacket(DxlInstructionPacket):
     """ This class is used to represent ping packet. """
     def __new__(cls, id):
-        return DynamixelInstructionPacket.__new__(cls, id, DynamixelInstruction.PING, ())
+        return DxlInstructionPacket.__new__(cls, id, DxlInstruction.PING, ())
 
-class DynamixelReadDataPacket(DynamixelInstructionPacket):
+class DxlReadDataPacket(DxlInstructionPacket):
     """ This class is used to represent read data packet (to read value). """
     def __new__(cls, id, address, length):
-        return DynamixelInstructionPacket.__new__(cls, id,
-                                                  DynamixelInstruction.READ_DATA,
+        return DxlInstructionPacket.__new__(cls, id,
+                                                  DxlInstruction.READ_DATA,
                                                   (address, length))
 
-class DynamixelSyncReadPacket(DynamixelInstructionPacket):
+class DxlSyncReadPacket(DxlInstructionPacket):
     """ This class is used to represent sync read packet (to synchronously read values). """
     def __new__(cls, ids, address, length):
-        return DynamixelInstructionPacket.__new__(cls, DynamixelBroadcast,
-                                                  DynamixelInstruction.SYNC_READ,
+        return DxlInstructionPacket.__new__(cls, DxlBroadcast,
+                                                  DxlInstruction.SYNC_READ,
                                                   tuple(itertools.chain((address, length), ids)))
 
-class DynamixelWriteDataPacket(DynamixelInstructionPacket):
+class DxlWriteDataPacket(DxlInstructionPacket):
     """ This class is used to reprensent write data packet (to write value). """
     def __new__(cls, id, address, coded_value):
-        return DynamixelInstructionPacket.__new__(cls, id,
-                                                  DynamixelInstruction.WRITE_DATA,
+        return DxlInstructionPacket.__new__(cls, id,
+                                                  DxlInstruction.WRITE_DATA,
                                                   tuple(itertools.chain((address,), coded_value)))
 
-class DynamixelSyncWritePacket(DynamixelInstructionPacket):
+class DxlSyncWritePacket(DxlInstructionPacket):
     """ This class is used to represent sync write packet (to synchronously write values). """
     def __new__(cls, address, length, id_value_couples):
-        return DynamixelInstructionPacket.__new__(cls, DynamixelBroadcast,
-                                                  DynamixelInstruction.SYNC_WRITE,
+        return DxlInstructionPacket.__new__(cls, DxlBroadcast,
+                                                  DxlInstruction.SYNC_WRITE,
                                                   tuple(itertools.chain((address, length), id_value_couples)))
 
 
 # MARK: - Status Packet
 
-class DynamixelStatusPacket(namedtuple('DynamixelStatusPacket', ('id', 'error', 'parameters'))):
+class DxlStatusPacket(namedtuple('DxlStatusPacket', ('id', 'error', 'parameters'))):
     """ This class is used to represent a dynamixel status packet.
         
         A status packet is constructed as follows:
@@ -118,9 +118,9 @@ class DynamixelStatusPacket(namedtuple('DynamixelStatusPacket', ('id', 'error', 
     def from_string(cls, data):
         packet = array.array('B', data)
         
-        header = DynamixelPacketHeader.from_string(packet[:4])
+        header = DxlPacketHeader.from_string(packet[:4])
         
-        if len(packet) != DynamixelPacketHeader.length + header.packet_length \
+        if len(packet) != DxlPacketHeader.length + header.packet_length \
             or cls._checksum(packet) != packet[-1]:
             raise ValueError('try to parse corrupted data ({})'.format(packet))
         

@@ -14,19 +14,19 @@ from pypot.dynamixel.packet import *
 
 
 
-_DynamixelControl = namedtuple('_DynamixelControl', ('name',
-                                                     'address', 'length', 'nb_elem',
-                                                     'access',
-                                                     'models',
-                                                     'dxl_to_si', 'si_to_dxl',
-                                                     'getter_name', 'setter_name'))
+_DxlControl = namedtuple('_DxlControl', ('name',
+                                         'address', 'length', 'nb_elem',
+                                         'access',
+                                         'models',
+                                         'dxl_to_si', 'si_to_dxl',
+                                         'getter_name', 'setter_name'))
 
-class _DynamixelAccess(object):
+class _DxlAccess(object):
     readonly, writeonly, readwrite = range(3)
 
 
 
-class DynamixelIO(object):
+class DxlIO(object):
     """ This class handles the low-level communication with robotis motors.
         
         Using a USB communication device such as USB2DYNAMIXEL or USB2AX,
@@ -38,7 +38,7 @@ class DynamixelIO(object):
             * discover motors (ping or scan)
             * access the different control (read and write)
         
-        .. note:: This class can be used as a context manager (e.g. with DynamixelIO(...) as dxl_io:)
+        .. note:: This class can be used as a context manager (e.g. with DxlIO(...) as dxl_io:)
     
         """
     __used_ports = set()
@@ -52,13 +52,13 @@ class DynamixelIO(object):
                  convert=True):
         """ At instanciation, it opens the serial port and sets the communication parameters.
             
-            .. warning:: The port can only be accessed by a single DynamixelIO instance.
+            .. warning:: The port can only be accessed by a single DxlIO instance.
                 
             :param string port: the serial port to use (e.g. Unix (/dev/tty...), Windows (COM...)).
             :param int baudrate: default for new motors: 57600, for PyPot motors: 1000000
             :param float timeout: read timeout in seconds
             :param bool use_sync_read: whether or not to use the SYNC_READ instruction
-            :param DynamixelErrorHandler error_handler: set a handler that will receive the different errors
+            :param DxlErrorHandler error_handler: set a handler that will receive the different errors
             :param bool convert: whether or not convert values to si
                         
             """
@@ -90,7 +90,7 @@ class DynamixelIO(object):
     def open(self, port, baudrate=1000000, timeout=0.05):
         """ Opens a new serial communication (closes the previous communication if needed).
             
-            .. note:: Only a single communication can be opened to a port (raises DynamixelError if the port is already used).
+            .. note:: Only a single communication can be opened to a port (raises DxlError if the port is already used).
             """
         self._known_models.clear()
         self._known_mode.clear()
@@ -99,7 +99,7 @@ class DynamixelIO(object):
             self.close(_force_lock=True)
 
             if port in self.__used_ports:
-                raise DynamixelError('port already used {}'.format(port))            
+                raise DxlError('port already used {}'.format(port))            
         
             self._serial = serial.Serial(port, baudrate, timeout=timeout)
             self.__used_ports.add(port)
@@ -111,7 +111,7 @@ class DynamixelIO(object):
         if platform.system() == 'Darwin':
             import time
             
-            if not self.ping(DynamixelBroadcast):
+            if not self.ping(DxlBroadcast):
                 self.close()
                 self.open(port, baudrate, timeout)
             else:
@@ -132,7 +132,7 @@ class DynamixelIO(object):
             
             """
         if self.closed:
-            raise DynamixelError('attempt to flush a closed serial communication')
+            raise DxlError('attempt to flush a closed serial communication')
         
         with self.__force_lock(_force_lock) or self._serial_lock:
             self._serial.flushInput()
@@ -179,11 +179,11 @@ class DynamixelIO(object):
     
     def ping(self, id):
         """ Pings the motor with the specified id. """
-        pp = DynamixelPingPacket(id)
+        pp = DxlPingPacket(id)
         try:
             self._send_packet(pp, error_handler=None)
             return True
-        except DynamixelTimeoutError:
+        except DxlTimeoutError:
             return False
 
     def scan(self, ids=range(254)):
@@ -237,7 +237,7 @@ class DynamixelIO(object):
         for id in ids:
             try:
                 srl.extend(self._get_status_return_level(id, error_handler=None, convert=convert))
-            except DynamixelTimeoutError as e:
+            except DxlTimeoutError as e:
                 if self.ping(id):
                     srl.append('never' if convert else 0)
                 else:
@@ -324,7 +324,7 @@ class DynamixelIO(object):
 
     @classmethod
     def _generate_accessors(cls, control):        
-        if control.access in (_DynamixelAccess.readonly, _DynamixelAccess.readwrite):
+        if control.access in (_DxlAccess.readonly, _DxlAccess.readwrite):
             def my_getter(self, *ids, **kwargs):                    
                 return self._get_control_value(control, *ids, **kwargs)
             
@@ -334,7 +334,7 @@ class DynamixelIO(object):
             my_getter.func_name = func_name
             setattr(cls, func_name, my_getter)
 
-        if control.access in (_DynamixelAccess.writeonly, _DynamixelAccess.readwrite):
+        if control.access in (_DxlAccess.writeonly, _DxlAccess.readwrite):
             def my_setter(self, value_for_id, **kwargs):
                 self._set_control_value(control, value_for_id, **kwargs)
 
@@ -349,7 +349,7 @@ class DynamixelIO(object):
         convert = kwargs['convert'] if ('convert' in kwargs) else self._convert
 
         if self._sync_read and len(ids) > 1:
-            rp = DynamixelSyncReadPacket(ids, control.address, control.length * control.nb_elem)
+            rp = DxlSyncReadPacket(ids, control.address, control.length * control.nb_elem)
             sp = self._send_packet(rp, error_handler=error_handler)
             
             if not sp:
@@ -360,7 +360,7 @@ class DynamixelIO(object):
         else:
             values = []
             for motor_id in ids:
-                rp = DynamixelReadDataPacket(motor_id, control.address, control.length * control.nb_elem)
+                rp = DxlReadDataPacket(motor_id, control.address, control.length * control.nb_elem)
                 sp = self._send_packet(rp, error_handler=error_handler)
                 
                 if not sp:
@@ -376,7 +376,7 @@ class DynamixelIO(object):
         if self._sync_read:
             max_val = 2 ** (8 * control.length) - 1
             if max_val in (itertools.chain(*values) if control.nb_elem > 1 else values):
-                e = DynamixelTimeoutError(rp)
+                e = DxlTimeoutError(rp)
                 if self._error_handler:
                     self._error_handler.handle_timeout(e)
                 else:
@@ -407,7 +407,7 @@ class DynamixelIO(object):
             data.extend(itertools.chain((motor_id, ),
                                         dxl_code_all(value, control.length, control.nb_elem)))
     
-        wp = DynamixelSyncWritePacket(control.address, control.length * control.nb_elem, data)
+        wp = DxlSyncWritePacket(control.address, control.length * control.nb_elem, data)
         sp = self._send_packet(wp, wait_for_status_packet=False)
 
 
@@ -415,7 +415,7 @@ class DynamixelIO(object):
 
     def __real_send(self, instruction_packet, wait_for_status_packet, _force_lock):
         if self.closed:
-            raise DynamixelError('try to send a packet on a closed serial communication')
+            raise DxlError('try to send a packet on a closed serial communication')
     
         with self.__force_lock(_force_lock) or self._serial_lock:
             self.flush(_force_lock=True)
@@ -423,23 +423,23 @@ class DynamixelIO(object):
             data = instruction_packet.to_string()
             nbytes = self._serial.write(data)
             if len(data) != nbytes:
-                raise DynamixelCommunicationError('instruction packet not entirely sent',
+                raise DxlCommunicationError('instruction packet not entirely sent',
                                                   instruction_packet)
 
             if not wait_for_status_packet:
                 return
 
-            data = self._serial.read(DynamixelPacketHeader.length)
+            data = self._serial.read(DxlPacketHeader.length)
             if not data:
-                raise DynamixelTimeoutError(instruction_packet)
+                raise DxlTimeoutError(instruction_packet)
         
             try:
-                header = DynamixelPacketHeader.from_string(data)
+                header = DxlPacketHeader.from_string(data)
                 data += self._serial.read(header.packet_length)
-                status_packet = DynamixelStatusPacket.from_string(data)
+                status_packet = DxlStatusPacket.from_string(data)
                     
             except ValueError:
-                raise DynamixelCommunicationError('could not parse received data {}'.format(map(ord, data)),
+                raise DxlCommunicationError('could not parse received data {}'.format(map(ord, data)),
                                                   instruction_packet)
 
             return status_packet
@@ -464,21 +464,21 @@ class DynamixelIO(object):
                     
                 return sp
                 
-        except DynamixelTimeoutError as e:
+        except DxlTimeoutError as e:
             error_handler.handle_timeout(e)
                 
-        except DynamixelCommunicationError as e:
+        except DxlCommunicationError as e:
             error_handler.handle_communication_error(e)
 
 
 
 
-# MARK: - Dynamixel Errors
+# MARK: - Dxl Errors
 
-class DynamixelError(Exception):
+class DxlError(Exception):
     pass
 
-class DynamixelCommunicationError(DynamixelError):
+class DxlCommunicationError(DxlError):
     def __init__(self, message, instruction_packet):
         self.message = message
         self.instruction_packet = instruction_packet
@@ -487,9 +487,9 @@ class DynamixelCommunicationError(DynamixelError):
         return '{self.message} after sending {self.instruction_packet}'.format(self=self)
 
 
-class DynamixelTimeoutError(DynamixelCommunicationError):
+class DxlTimeoutError(DxlCommunicationError):
     def __init__(self, instruction_packet):
-        DynamixelCommunicationError.__init__(self, 'timeout occured', instruction_packet)
+        DxlCommunicationError.__init__(self, 'timeout occured', instruction_packet)
 
     def __str__(self):
         return 'after sending {}'.format(self.instruction_packet)
@@ -499,40 +499,40 @@ class DynamixelTimeoutError(DynamixelCommunicationError):
 
 def add_control(name,
                  address, length=2, nb_elem=1,
-                 access=_DynamixelAccess.readwrite,
+                 access=_DxlAccess.readwrite,
                  models=set(dynamixelModels.values()),
                  dxl_to_si=lambda val, model: val,
                  si_to_dxl=lambda val, model: val,
                  getter_name=None,
                  setter_name=None):
     
-    control = _DynamixelControl(name,
+    control = _DxlControl(name,
                                address, length, nb_elem,
                                access,
                                models,
                                dxl_to_si, si_to_dxl,
                                getter_name, setter_name)
     
-    DynamixelIO._generate_accessors(control)
+    DxlIO._generate_accessors(control)
 
 
 add_control('model',
             address=0x00,
-            access=_DynamixelAccess.readonly,
+            access=_DxlAccess.readonly,
             dxl_to_si=dxl_to_model)
 
 add_control('firmware',
             address=0x02, length=1,
-            access=_DynamixelAccess.readonly)
+            access=_DxlAccess.readonly)
 
 add_control('id',
             address=0x03, length=1,
-            access=_DynamixelAccess.writeonly,
+            access=_DxlAccess.writeonly,
             setter_name='change_id')
 
 add_control('baudrate',
             address=0x04, length=1,
-            access=_DynamixelAccess.writeonly,
+            access=_DxlAccess.writeonly,
             setter_name='change_baudrate',
             si_to_dxl=baudrate_to_dxl)
 
@@ -630,43 +630,36 @@ add_control('goal position speed load',
 
 add_control('present position',
             address=0x24,
-            access=_DynamixelAccess.readonly,
+            access=_DxlAccess.readonly,
             dxl_to_si=dxl_to_degree)
 
 add_control('present speed',
             address=0x26,
-            access=_DynamixelAccess.readonly,
+            access=_DxlAccess.readonly,
             dxl_to_si=dxl_to_oriented_speed)
 
 add_control('present load',
             address=0x28,
-            access=_DynamixelAccess.readonly,
+            access=_DxlAccess.readonly,
             dxl_to_si=dxl_to_oriented_load)
 
 add_control('present position speed load',
             address=0x24, nb_elem=3,
-            access=_DynamixelAccess.readonly,
+            access=_DxlAccess.readonly,
             dxl_to_si=dxl_to_oriented_degree_speed_load)
 
 add_control('present voltage',
             address=0x2A, length=1,
-            access=_DynamixelAccess.readonly,
+            access=_DxlAccess.readonly,
             dxl_to_si=dxl_to_voltage)
 
 add_control('present temperature',
             address=0x2B, length=1,
-            access=_DynamixelAccess.readonly,
+            access=_DxlAccess.readonly,
             dxl_to_si=dxl_to_temperature)
 
 add_control('moving',
             address=0x2E, length=1,
-            access=_DynamixelAccess.readonly,
+            access=_DxlAccess.readonly,
             dxl_to_si=dxl_to_bool,
             getter_name='is_moving')
-
-#add_control('lock',
-#            address=0x2F,
-#            dxl_to_si=dxl_to_bool,
-#            si_to_dxl=bool_to_dxl,
-#            getter_name='is_EEPROM_locked',
-#            setter_name='lock_EEPROM')

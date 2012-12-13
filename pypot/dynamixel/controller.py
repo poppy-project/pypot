@@ -2,7 +2,7 @@ import threading
 import time
 
 
-class DynamixelController(object):
+class DxlController(object):
     def __init__(self, dxl_io, dxl_motors):
         self._dxl_io = dxl_io
         
@@ -46,9 +46,9 @@ class DynamixelController(object):
         getattr(self._dxl_io, 'set_{}'.format(regname))(dict(zip(self._ids, values)))
 
 
-class BaseDynamixelController(DynamixelController):
+class BaseDxlController(DxlController):
     def __init__(self, dxl_io, dxl_motors):
-        DynamixelController.__init__(self, dxl_io, dxl_motors)
+        DxlController.__init__(self, dxl_io, dxl_motors)
         
         self.add_sync_loop(50, self._get_pos_speed_load, 'Thread-get_pos_speed_load')
         self.add_sync_loop(50, self._set_pos_speed_load, 'Thread-set_pos_speed_load')

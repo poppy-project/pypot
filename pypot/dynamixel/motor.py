@@ -6,7 +6,7 @@ from pypot.robot.motor import Motor
 
 
 
-class DynamixelMotor(Motor):
+class DxlMotor(Motor):
     def __init__(self, id):
         self._id = id
         self._values = defaultdict(int)

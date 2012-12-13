@@ -2,7 +2,7 @@ import platform
 import numpy
 import glob
 
-from pypot.dynamixel.io import DynamixelIO
+from pypot.dynamixel.io import DxlIO
 
 
 
