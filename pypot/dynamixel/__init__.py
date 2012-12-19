@@ -3,7 +3,7 @@ import numpy
 import glob
 
 from pypot.dynamixel.io import DxlIO
-
+from pypot.dynamixel.motor import DxlMotor
 
 
 def get_available_ports():
