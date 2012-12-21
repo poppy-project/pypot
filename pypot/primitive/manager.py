@@ -1,68 +1,51 @@
-import time
-import numpy
 import threading
+import numpy
+import time
 
-from pypot.utils import camel_case_to_lower_case
+from collections import defaultdict
 
 class PrimitiveManager(threading.Thread):
-    def __init__(self, robot, filter=numpy.mean):
+    def __init__(self, motors, freq=50, filter=numpy.mean):
         threading.Thread.__init__(self)
         self.daemon = True
         
-        self.primitives = {}
-        self.filter = filter
-        
-        self.frequency = 50
-        self.robot = robot
-    
+        self._prim = []
+        self._period = 1.0 / freq
+        self._motors = motors
+        self._filter = filter
+        self._running = threading.Event()
+        self._running.set()
 
-    def add(self, primitive_cls, *args, **kwargs):
-        if 'name' in kwargs:
-            name = kwargs['name']
-        else:
-            name = camel_case_to_lower_case(primitive_cls.__name__)
-        
-        if name in self.primitives:
-            raise ValueError('A primitive with the name {} already exists !'.format(name))
+    def add(self, p):
+        self._prim.append(p)
 
-        self.primitives[name] = primitive_cls(*args)
+    def remove(self, p):
+        self._prim.remove(p)
     
-        class Holder:
-            p = property(lambda x: self.primitives[name])
-    
-        setattr(self, name, Holder().p)
-    
-    def remove(self, name):
-        delattr(self, name)
-        del self.primitives[name]
+    @property
+    def primitives(self):
+        return self._prim
 
-    
     def run(self):
-        while True:
-            changes = {}
+        while self._running.is_set():
+            start = time.time()
             
-            for p in self.primitives.values():
-                dm = p.get_modified_values()
+            for m in self._motors:
+                to_set = defaultdict(list)
 
-                for m, d in dm.iteritems():
-                    if m not in changes:
-                        changes[m] = {}
-                    
-                    for k, v in d.iteritems():
-                        if k not in changes[m]:
-                            changes[m][k] = []
+                for p in self._prim:
+                    for key, val in getattr(p.robot, m.name).to_set.iteritems():
+                        to_set[key].append(val)
         
-                        changes[m][k].append(v)
-    
-            for motor, motor_changes in changes.iteritems():
-                for register, values in motor_changes.iteritems():
-                    filtred_value = self.filter(values)
-                    
-                    m = getattr(self.robot, motor)
-                    setattr(m, register, filtred_value)
-                        
-            time.sleep(1.0 / self.frequency)
+                for key, val in to_set.iteritems():
+                    filtred_val = self._filter(val)
+                    setattr(m, key, filtred_val)
+            
+            end = time.time()
+            
+            dt = self._period - (end - start)
+            if dt > 0:
+                time.sleep(dt)
 
-
-
-
+    def stop(self):
+        self._running.clear()

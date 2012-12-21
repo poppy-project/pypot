@@ -1,95 +1,90 @@
 import threading
-import time
+
+import pypot.dynamixel
+
 
 
 class Primitive(object):
-    def __init__(self, frequency):
-        self.thread = None
+    def __init__(self, robot, *args, **kwargs):
+        self.robot = MockupRobot(robot)
+        self.robot._primitive_manager.add(self)
         
-        self._running = False
-        self._paused = False
-
-        self.period = 1.0 / frequency
+        self.args = args
+        self.kwargs = kwargs
+        
+        self._thread = threading.Thread(target=self._wrapped_run)
+        self._thread.daemon = True
     
-        self._modified_values = {}
-    
-    
-    # MARK: - Event handling
+    def run(self, *args, **kwargs):
+        pass
     
     def start(self):
-        if self.is_running():
-            self.stop()
-        
-        self._running = True
+        self._thread.start()
 
-        self.thread = threading.Thread(target=self.run)
-        self.thread.daemon = True
-        self.thread.start()
+    def _wrapped_run(self):
+        self.on_start()
+        self.run(*self.args, **self.kwargs)
+        self.on_stop()
 
-    
-    def stop(self):
-        self._running = False
-
-    def pause(self):
-        self._paused = True
-
-    def resume(self):
-        self._paused = False
-
-    def is_running(self):
-        return self._running
-    
-
-    # MARK: - Main Loop
-
-    def run(self):
-        self.set_up()
-        
-        while self._running:
-            dt = self.period
-            
-            if not self._paused:
-                start = time.time()
-                self.update()
-                end = time.time()
-            
-                dt -= (end - start)
-
-            if dt > 0:
-                time.sleep(dt)
-
-        self.tear_down()
-
-    # MARK: - 
-    
-    def set_up(self):
+    def on_start(self):
         pass
 
-    def update(self):
-        pass
-
-    def tear_down(self):
-        pass
-
-    def get_modified_values(self):
-        return self._modified_values
+    def on_stop(self):
+        self.robot._primitive_manager.remove(self)
 
 
-class PlayMotion(Primitive):
-    def __init__(self, frequency, motion):
-        Primitive.__init__(self, frequency)
-        self.motion = motion
-        self.i = 0
-
-    def set_up(self):
-        self.i = 0
-        self._modified_values['motor_1'] = {}
-
-    def update(self):
-        x = self.motion[self.i]
-        self.i += 1
+class MockupRobot(object):
+    def __init__(self, robot):
+        self._robot = robot
+        self._motors = []
         
-        self._modified_values['motor_1']['goal_position'] = x
+        for m in robot.motors:
+            mockup_motor = MockupMotor(m)
+            self._motors.append(mockup_motor)
+            setattr(self, m.name, mockup_motor)
+    
+    def __getattr__(self, attr):
+        return getattr(self._robot, attr)
+    
+    @property
+    def motors(self):
+        return self._motors
 
-        if self.i >= len(self.motion):
-            self.stop()
+
+class MockupMotor(pypot.dynamixel.DxlMotor):
+    def __init__(self, m):
+        pypot.dynamixel.DxlMotor.__init__(self, m.id, m.name, m.direct, m.offset)
+        self._values = m._values
+        self.to_set = {}
+    
+    @property
+    def goal_position(self):
+        return pypot.dynamixel.DxlMotor.goal_position.fget(self)
+    
+    @goal_position.setter
+    def goal_position(self, value):
+        self.to_set['goal_position'] = value
+    
+    @property
+    def moving_speed(self):
+        return pypot.dynamixel.DxlMotor.moving_speed.fget(self)
+    
+    @moving_speed.setter
+    def moving_speed(self, value):
+        self.to_set['moving_speed'] = value
+    
+    @property
+    def torque_limit(self):
+        return pypot.dynamixel.DxlMotor.torque_limit.fget(self)
+    
+    @torque_limit.setter
+    def torque_limit(self, value):
+        self.to_set['torque_limit'] = value
+    
+    @property
+    def pid(self):
+        return pypot.dynamixel.DxlMotor.pid.fget(self)
+    
+    @pid.setter
+    def pid(self, value):
+        self.to_set['pid'] = pid
