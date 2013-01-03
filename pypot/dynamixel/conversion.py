@@ -55,14 +55,18 @@ def dxl_to_speed(value, model):
     cw, speed = divmod(value, 1024)
     direction = -1 * (2 * cw - 1)
     
-    return direction * (speed * 0.114) * 6
+    speed_factor = 0.114 if model.startswith('MX') else 0.111
+    
+    return direction * (speed * speed_factor) * 6
 
 def speed_to_dxl(value, model):
     check_range(value, -700, 700)
     
     direction = 1024 if value < 0 else 0
     
-    return direction + int(abs(value) / (6 * 0.114))
+    speed_factor = 0.114 if model.startswith('MX') else 0.111
+    
+    return direction + int(abs(value) / (6 * speed_factor))
 
 # MARK: - Torque
 

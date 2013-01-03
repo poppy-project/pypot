@@ -27,20 +27,6 @@ class _DxlAccess(object):
 
 
 class DxlIO(object):
-    """ This class handles the low-level communication with robotis motors.
-        
-        Using a USB communication device such as USB2DYNAMIXEL or USB2AX,
-        you can open serial communication with robotis motors (MX, RX, AX)
-        using communication protocols TTL or RS485.
-        
-        More precisely, this class can be used to:
-            * open/close the communication
-            * discover motors (ping or scan)
-            * access the different control (read and write)
-        
-        .. note:: This class can be used as a context manager (e.g. with DxlIO(...) as dxl_io:)
-    
-        """
     __used_ports = set()
     
     # MARK: - Open, Close and Flush the communication
@@ -52,15 +38,15 @@ class DxlIO(object):
                  convert=True):
         """ At instanciation, it opens the serial port and sets the communication parameters.
             
-            .. warning:: The port can only be accessed by a single DxlIO instance.
-                
             :param string port: the serial port to use (e.g. Unix (/dev/tty...), Windows (COM...)).
             :param int baudrate: default for new motors: 57600, for PyPot motors: 1000000
             :param float timeout: read timeout in seconds
             :param bool use_sync_read: whether or not to use the SYNC_READ instruction
             :param DxlErrorHandler error_handler: set a handler that will receive the different errors
-            :param bool convert: whether or not convert values to si
-                        
+            :param bool convert: whether or not convert values to units expressed in the standard system
+            
+            :raises: :py:exc:`~pypot.dynamixel.io.DxlError` if the port is already used.
+
             """
         self._known_models = {}
         self._known_mode = {}
@@ -88,10 +74,7 @@ class DxlIO(object):
                 'timeout={self.timeout}>').format(self=self)
     
     def open(self, port, baudrate=1000000, timeout=0.05):
-        """ Opens a new serial communication (closes the previous communication if needed).
-            
-            .. note:: Only a single communication can be opened to a port (raises DxlError if the port is already used).
-            """
+        """ Opens a new serial communication (closes the previous communication if needed). """
         self._known_models.clear()
         self._known_mode.clear()
 
@@ -149,6 +132,7 @@ class DxlIO(object):
 
     @property
     def port(self):
+        """ Port used by the DxlIO. If set, will re-open a new connection. """
         return self._serial.port
     
     @port.setter
@@ -157,6 +141,7 @@ class DxlIO(object):
     
     @property
     def baudrate(self):
+        """ Baudrate used by the DxlIO. If set, will re-open a new connection. """
         return self._serial.baudrate
             
     @baudrate.setter
@@ -165,6 +150,7 @@ class DxlIO(object):
             
     @property
     def timeout(self):
+        """ Timeout used by the DxlIO. If set, will re-open a new connection. """
         return self._serial.timeout
             
     @timeout.setter
@@ -173,12 +159,17 @@ class DxlIO(object):
             
     @property
     def closed(self):
+        """ Check if the connection is closed. """
         return not (hasattr(self, '_serial') and self._serial.isOpen())
 
     # MARK: - Motor discovery
     
     def ping(self, id):
-        """ Pings the motor with the specified id. """
+        """ Pings the motor with the specified id.
+            
+            .. note:: The motor id is always included in [0, 253].
+            
+            """
         pp = DxlPingPacket(id)
         try:
             self._send_packet(pp, error_handler=None)
@@ -186,14 +177,14 @@ class DxlIO(object):
         except DxlTimeoutError:
             return False
 
-    def scan(self, ids=range(254)):
+    def scan(self, ids=xrange(254)):
         """ Pings all ids, by default it finds all the motors connected to the bus. """
         return filter(self.ping, ids)
     
     # MARK: - Specific Getter / Setter
     
     def get_model(self, *ids):
-        """ Retrieves the model of the specified motors. """
+        """ Gets the model for the specified motors. """
         to_get_ids = filter(lambda id: id not in self._known_models, ids)
         
         models = map(dxl_to_model, self._get_model(*to_get_ids, convert=False))
@@ -231,7 +222,7 @@ class DxlIO(object):
                 del self._known_mode[motor_id]
 
     def get_status_return_level(self, *ids, **kwargs):
-        """ Retrieves the status level for the specified motors. """
+        """ Gets the status level for the specified motors. """
         convert = kwargs['convert'] if 'convert' in kwargs else self._convert
         srl = []
         for id in ids:
@@ -257,7 +248,7 @@ class DxlIO(object):
         self._set_status_return_level(srl_for_id, convert=False)
     
     def get_mode(self, *ids):
-        """ Retrieves the mode ('joint' or 'wheel') of the specified motors. """
+        """ Gets the mode ('joint' or 'wheel') for the specified motors. """
         to_get_ids = filter(lambda id: id not in self._known_mode, ids)
         limits = self.get_angle_limit(*to_get_ids, convert=False)
         modes = ('wheel' if limit == (0, 0) else 'joint' for limit in limits)
@@ -285,6 +276,7 @@ class DxlIO(object):
         self._known_mode.update(mode_for_id.items())
 
     def set_angle_limit(self, limit_for_id, **kwargs):
+        """ Sets the angle limit to the specified motors. """
         convert = kwargs['convert'] if 'convert' in kwargs else self._convert
 
         if 'wheel' in self.get_mode(*limit_for_id.keys()):
@@ -312,10 +304,12 @@ class DxlIO(object):
         self._set_torque_enable(dict(itertools.izip(ids, itertools.repeat(False))))
     
     def get_pid_gain(self, *ids, **kwargs):
+        """ Gets the pid gain for the specified motors. """
         return tuple(map(lambda t: tuple(reversed(t)),
                          self._get_pid_gain(*ids, **kwargs)))
     
     def set_pid_gain(self, pid_for_id, **kwargs):
+        """ Sets the pid gain to the specified motors. """
         pid_for_id = dict(itertools.izip(pid_for_id.iterkeys(),
                                          map(lambda t: tuple(reversed(t)), pid_for_id.itervalues())))
         self._set_pid_gain(pid_for_id, **kwargs)    
@@ -330,7 +324,7 @@ class DxlIO(object):
             
             func_name = control.getter_name if control.getter_name else 'get_{}'.format(control.name.replace(' ', '_'))
             func_name = '_{}'.format(func_name) if hasattr(cls, func_name) else func_name
-            my_getter.func_doc = 'Retrives {} from the specified motors.'.format(control.name)
+            my_getter.func_doc = 'Gets {} from the specified motors.'.format(control.name)
             my_getter.func_name = func_name
             setattr(cls, func_name, my_getter)
 

@@ -16,7 +16,7 @@ def parse_robot_node(robot_node):
     controllers_node = robot_node.getElementsByTagName('DxlController')
     for c in controllers_node:
         dxl_io, dxl_motors = parse_controller_node(c)
-        robot._attach_motors(dxl_io, dxl_motors)
+        robot._attach_dxl_motors(dxl_io, dxl_motors)
 
     return robot
 

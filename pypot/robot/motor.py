@@ -1,4 +1,0 @@
-
-
-class Motor(object):
-    pass

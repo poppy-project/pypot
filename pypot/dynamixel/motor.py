@@ -2,35 +2,31 @@ from collections import defaultdict
 from operator import getitem, setitem
 
 
-from pypot.robot.motor import Motor
-
-
-
-class DxlMotor(Motor):
+class DxlMotor(object):
     def __init__(self, id, name=None,
                  direct=True, offset=0.0):
         self._id = id
         self._name = name if name else 'motor_{}'.format(id)
-
+        
         self._direct = direct
         self._offset = offset
     
         self._values = defaultdict(int)
     
     def __repr__(self):
-        return '<Motor name={self.name} id={self.id} pos={self.position}>'.format(self=self)
+        return '<DxlMotor name={self.name} id={self.id} pos={self.position}>'.format(self=self)
 
     def _make_accessor(name, rw=False):
         return property(fget=lambda self: getitem(self._values, name),
                         fset=(lambda self, value: setitem(self._values, name, value)) if rw else None)
     
     @property
-    def name(self):
-        return self._name
-
-    @property
     def id(self):
         return self._id
+    
+    @property
+    def name(self):
+        return self._name
 
     present_speed = _make_accessor('present_speed')
     present_load = _make_accessor('present_load')

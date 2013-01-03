@@ -4,6 +4,7 @@ import glob
 
 from pypot.dynamixel.io import DxlIO
 from pypot.dynamixel.motor import DxlMotor
+from pypot.dynamixel.controller import DxlController
 
 
 def get_available_ports():
