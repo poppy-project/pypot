@@ -1,3 +1,5 @@
+.. _dynamixel:
+
 Communication with the dynamixel motors
 =======================================
 

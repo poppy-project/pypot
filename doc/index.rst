@@ -6,17 +6,14 @@
 Welcome to PyPot's documentation!
 =================================
 
-Contents:
-
 .. toctree::
-    :maxdepth: 2
+    :maxdepth: 4
 
     intro
-    quickstart
     tutorial
-    dynamixel
     FAQ
     knownissues
+    api
 
 Indices and tables
 ==================
