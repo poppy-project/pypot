@@ -11,6 +11,7 @@ Welcome to PyPot's documentation!
 
     intro
     tutorial
+    herborist
     FAQ
     knownissues
     api

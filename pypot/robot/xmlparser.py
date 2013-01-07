@@ -18,7 +18,21 @@ def parse_robot_node(robot_node):
         dxl_io, dxl_motors = parse_controller_node(c)
         robot._attach_dxl_motors(dxl_io, dxl_motors)
 
+    motors_group_node = robot_node.getElementsByTagName('DxlMotorGroup')
+    for g in motors_group_node:
+        group_name, motor_names = parse_motor_group_node(g)
+        motors = [getattr(robot, name) for name in motor_names]
+        setattr(robot, group_name, motors)
+
     return robot
+
+def parse_motor_group_node(motor_group_node):
+    name = motor_group_node.getAttribute('name')
+
+    motors_node = motor_group_node.getElementsByTagName('DxlMotor')
+    motors_name = [m.getAttribute('name') for m in motors_node]
+
+    return name, motors_name
 
 def parse_controller_node(controller_node):
     sync_read = bool(controller_node.getAttribute('sync_read'))

@@ -16,6 +16,8 @@
 		A812C6BB16132D3A0007269F /* tutorial.rst */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = tutorial.rst; sourceTree = "<group>"; };
 		A812C6BE161331350007269F /* knownissues.rst */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = knownissues.rst; sourceTree = "<group>"; };
 		A812C6BF161351860007269F /* flower.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = flower.xml; sourceTree = "<group>"; };
+		A827869B16972736004D4D50 /* ergo_robot.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = ergo_robot.xml; sourceTree = "<group>"; };
+		A827869D16972971004D4D50 /* herborist.rst */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = herborist.rst; sourceTree = "<group>"; };
 		A82D52C815F2599E00ED73DC /* io.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = io.py; sourceTree = "<group>"; };
 		A82D52CA15F259C800ED73DC /* conversion.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = conversion.py; sourceTree = "<group>"; };
 		A82D52CD15F25A5700ED73DC /* motor-sinus.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = "motor-sinus.py"; sourceTree = "<group>"; };
@@ -52,6 +54,7 @@
 				A812C6B816132D3A0007269F /* intro.rst */,
 				A812C6BB16132D3A0007269F /* tutorial.rst */,
 				A812C6B516132D3A0007269F /* dynamixel.rst */,
+				A827869D16972971004D4D50 /* herborist.rst */,
 				A812C6B616132D3A0007269F /* FAQ.rst */,
 				A812C6BE161331350007269F /* knownissues.rst */,
 				A85047431696062500EF5AB8 /* api.rst */,
@@ -141,6 +144,7 @@
 				A8103E94160B199700D490C9 /* poppy.xml */,
 				A812C6BF161351860007269F /* flower.xml */,
 				A8FBA9BB1682039200394467 /* tmp.xml */,
+				A827869B16972736004D4D50 /* ergo_robot.xml */,
 			);
 			path = resources;
 			sourceTree = SOURCE_ROOT;

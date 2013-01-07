@@ -1,0 +1,28 @@
+<Robot>
+    <DxlController port"***" sync_read="True">
+        <DxlMotorGroup name="base">
+            <DxlMotor name="base_pan" id="***" orientation="direct" offset="0.0">
+                <angle_limits>(-180, 180)</angle_limits>
+            </DxlMotor>
+            <DxlMotor name="base_tilt_lower" id="***" orientation="direct" offset="0.0">
+                <angle_limits>(-180, 180)</angle_limits>
+            </DxlMotor>
+            <DxlMotor name="base_tilt_upper" id="***" orientation="direct" offset="0.0">
+                <angle_limits>(-180, 180)</angle_limits>
+            </DxlMotor>
+        </DxlMotorGroup>
+        
+        <DxlMotorGroup name="head">
+            <DxlMotor name="head_pan" id="***" orientation="direct" offset="0.0">
+                <angle_limits>(-180, 180)</angle_limits>
+            </DxlMotor>
+            <DxlMotor name="head_tilt_lower" id="***" orientation="direct" offset="0.0">
+                <angle_limits>(-180, 180)</angle_limits>
+            </DxlMotor>
+            <DxlMotor name="head_tilt_upper" id="***" orientation="direct" offset="0.0">
+                <angle_limits>(-180, 180)</angle_limits>
+            </DxlMotor>
+        </DxlMotorGroup>
+        
+    </DxlController>
+</Robot>
