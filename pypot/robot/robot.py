@@ -36,11 +36,11 @@ class Robot(object):
         """ Returs all the motors attached to the robot. """
         return self._motors
 
-    def goto_position(position_for_motors, duration):
+    def goto_position(self, position_for_motors, duration):
         for motor_name, position in position_for_motors.iteritems():
             m = getattr(self, motor_name)
             dp = abs(m.present_position - position)
-            speed = dp / duration
+            speed = dp / float(duration)
 
-            m.speed = speed
+            m.moving_speed = speed
             m.goal_position = position
