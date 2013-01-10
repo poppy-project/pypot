@@ -84,8 +84,8 @@ class DxlIO(object):
             if port in self.__used_ports:
                 raise DxlError('port already used {}'.format(port))            
         
-            self._serial = serial.Serial(port, baudrate, timeout=timeout)
             self.__used_ports.add(port)
+            self._serial = serial.Serial(port, baudrate, timeout=timeout)
 
         # Tries to connect to port until it succeeds to ping any motor on the bus.
         # This is  used to circumvent a bug with the driver for the USB2AX on Mac.

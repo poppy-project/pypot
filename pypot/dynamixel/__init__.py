@@ -2,7 +2,7 @@ import platform
 import numpy
 import glob
 
-from pypot.dynamixel.io import DxlIO
+from pypot.dynamixel.io import DxlIO, DxlTimeoutError
 from pypot.dynamixel.motor import DxlMotor
 from pypot.dynamixel.controller import DxlController
 

@@ -40,8 +40,8 @@
 		A8C7D0DF15F79E6A007C5E66 /* controller.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = controller.py; sourceTree = "<group>"; };
 		A8C7D0E015F7A39C007C5E66 /* motor.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = motor.py; sourceTree = "<group>"; };
 		A8C7D0E115F7A926007C5E66 /* robot.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = robot.py; sourceTree = "<group>"; };
-		A8F34CBD1632E57500BA7DF0 /* herborist.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = herborist.py; sourceTree = "<group>"; };
-		A8F34CBE1632E5DE00BA7DF0 /* herborist.ui */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = herborist.ui; sourceTree = "<group>"; };
+		A8FA8A02169B104E00344B75 /* herborist.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = herborist.py; sourceTree = "<group>"; };
+		A8FA8A03169B110600344B75 /* herborist.ui */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = herborist.ui; sourceTree = "<group>"; };
 		A8FBA9BB1682039200394467 /* tmp.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = tmp.xml; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -162,10 +162,18 @@
 		A8F34CBC1632E55C00BA7DF0 /* tools */ = {
 			isa = PBXGroup;
 			children = (
-				A8F34CBD1632E57500BA7DF0 /* herborist.py */,
-				A8F34CBE1632E5DE00BA7DF0 /* herborist.ui */,
+				A8FA8A00169B104500344B75 /* herborist */,
 			);
 			path = tools;
+			sourceTree = "<group>";
+		};
+		A8FA8A00169B104500344B75 /* herborist */ = {
+			isa = PBXGroup;
+			children = (
+				A8FA8A02169B104E00344B75 /* herborist.py */,
+				A8FA8A03169B110600344B75 /* herborist.ui */,
+			);
+			path = herborist;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
