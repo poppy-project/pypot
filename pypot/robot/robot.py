@@ -39,8 +39,4 @@ class Robot(object):
     def goto_position(self, position_for_motors, duration):
         for motor_name, position in position_for_motors.iteritems():
             m = getattr(self, motor_name)
-            dp = abs(m.present_position - position)
-            speed = dp / float(duration)
-
-            m.moving_speed = speed
-            m.goal_position = position
+            m.goto_position(position, duration)

@@ -80,3 +80,10 @@ class DxlMotor(object):
     def offset(self):
         return self._offset
 
+    def goto_positio(self, position, duration):
+        dp = abs(self.present_position - position)
+        speed = dp / float(duration)
+        
+        self.moving_speed = speed
+        self.goal_position = position
+
