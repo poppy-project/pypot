@@ -54,6 +54,27 @@ class Primitive(object):
     def wait_to_resume(self):
         self._resume.wait()
 
+class LoopPrimitive(Primitive):
+    def __init__(self, robot, freq, *args, **kwargs):
+        Primitive.__init__(robot, *args, **kwargs)
+        self.period = 1.0 / freq
+
+    def run(self, **args, **kwargs):
+        while not self.should_stop():
+            if self.should_pause():
+                self.wait_to_resume()
+
+            start = time.time()
+            self.update(*self.args, **self.kwargs)
+            end = time.time()
+
+            dt = self.period - (end - start)
+            if dt > 0:
+                time.sleep(dt)    
+
+    def update(self, *args, **kwargs):
+        raise NotImplementedError
+
 
 class MockupRobot(object):
     def __init__(self, robot):
