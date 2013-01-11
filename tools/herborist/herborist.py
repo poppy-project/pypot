@@ -9,8 +9,7 @@ import PyQt4.uic
 
 from collections import defaultdict
 
-# TMP
-sys.path.append('../../')
+
 import pypot.dynamixel
 
 

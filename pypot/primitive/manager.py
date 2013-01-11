@@ -6,7 +6,7 @@ from collections import defaultdict
 
 class PrimitiveManager(threading.Thread):
     def __init__(self, motors, freq=50, filter=numpy.mean):
-        threading.Thread.__init__(self)
+        threading.Thread.__init__(self, name='Primitive Manager')
         self.daemon = True
         
         self._prim = []

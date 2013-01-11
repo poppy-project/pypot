@@ -15,22 +15,44 @@ class Primitive(object):
         self._thread = threading.Thread(target=self._wrapped_run)
         self._thread.daemon = True
     
+        self._stop = threading.Event()
+        self._resume = threading.Event()
+        self._resume.set()        
+    
+    def _wrapped_run(self):
+        self.run(*self.args, **self.kwargs)
+        self.robot._primitive_manager.remove(self)
+
     def run(self, *args, **kwargs):
         pass
+
+    # MARK: - Start/Stop handling
     
     def start(self):
         self._thread.start()
+    
+    def stop(self):
+        self._stop.set()
+    
+    def should_stop(self):
+        return self._stop.is_set()
+    
+    def is_alive(self):
+        return self._thread.is_alive()
+    
+    # MARK: - Pause/Resume handling
+    
+    def pause(self):
+        self._resume.clear()
+    
+    def resume(self):
+        self._resume.set()
+    
+    def should_pause(self):
+        return not self._resume.is_set()
 
-    def _wrapped_run(self):
-        self.on_start()
-        self.run(*self.args, **self.kwargs)
-        self.on_stop()
-
-    def on_start(self):
-        pass
-
-    def on_stop(self):
-        self.robot._primitive_manager.remove(self)
+    def wait_to_resume(self):
+        self._resume.wait()
 
 
 class MockupRobot(object):
