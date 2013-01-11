@@ -1,3 +1,5 @@
+import time
+
 from collections import defaultdict
 from operator import getitem, setitem
 
@@ -80,10 +82,13 @@ class DxlMotor(object):
     def offset(self):
         return self._offset
 
-    def goto_positio(self, position, duration):
+    def goto_position(self, position, duration, wait=False):
         dp = abs(self.present_position - position)
         speed = dp / float(duration)
         
         self.moving_speed = speed
         self.goal_position = position
+
+        if wait:
+            time.sleep(duration)
 

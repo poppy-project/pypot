@@ -1,3 +1,5 @@
+import time
+
 import pypot.robot.xmlparser
 import pypot.primitive.manager
 import pypot.dynamixel.controller
@@ -36,7 +38,10 @@ class Robot(object):
         """ Returs all the motors attached to the robot. """
         return self._motors
 
-    def goto_position(self, position_for_motors, duration):
+    def goto_position(self, position_for_motors, duration, wait=False):
         for motor_name, position in position_for_motors.iteritems():
             m = getattr(self, motor_name)
             m.goto_position(position, duration)
+
+        if wait:
+            time.sleep(duration)
