@@ -1,3 +1,4 @@
+import time
 import threading
 
 import pypot.dynamixel
@@ -56,10 +57,10 @@ class Primitive(object):
 
 class LoopPrimitive(Primitive):
     def __init__(self, robot, freq, *args, **kwargs):
-        Primitive.__init__(robot, *args, **kwargs)
+        Primitive.__init__(self, robot, *args, **kwargs)
         self.period = 1.0 / freq
 
-    def run(self, **args, **kwargs):
+    def run(self, *args, **kwargs):
         while not self.should_stop():
             if self.should_pause():
                 self.wait_to_resume()

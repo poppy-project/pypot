@@ -23,6 +23,7 @@
 		A82D52CD15F25A5700ED73DC /* motor-sinus.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = "motor-sinus.py"; sourceTree = "<group>"; };
 		A82F6C7215F89D6100AFBA1E /* torso.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = torso.xml; sourceTree = "<group>"; };
 		A82F6C7515F89EC000AFBA1E /* __init__.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = __init__.py; sourceTree = "<group>"; };
+		A83B159816A41B5000832522 /* sinus.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = sinus.py; sourceTree = "<group>"; };
 		A842F7A61682095D00BF235B /* xmlparser.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = xmlparser.py; sourceTree = "<group>"; };
 		A85047431696062500EF5AB8 /* api.rst */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = api.rst; sourceTree = "<group>"; };
 		A851D2011631E327009FFACA /* __init__.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = __init__.py; sourceTree = "<group>"; };
@@ -76,6 +77,7 @@
 				A851D2011631E327009FFACA /* __init__.py */,
 				A851D2021631E335009FFACA /* primitive.py */,
 				A851D2041631E353009FFACA /* manager.py */,
+				A83B159816A41B5000832522 /* sinus.py */,
 			);
 			path = primitive;
 			sourceTree = "<group>";

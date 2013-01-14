@@ -1,1 +1,1 @@
-from primitive import Primitive
+from primitive import Primitive, LoopPrimitive
