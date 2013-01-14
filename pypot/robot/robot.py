@@ -32,6 +32,10 @@ class Robot(object):
     
     def attach_primitive(self, primitive, name):
         setattr(self, name, primitive)
+    
+    def attach_move(self, move, name):
+        move_player = pypot.robot.MovePlayer(self, move)
+        setattr(self, name, move_player)
 
     @property
     def motors(self):

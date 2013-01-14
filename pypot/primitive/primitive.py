@@ -8,28 +8,39 @@ import pypot.dynamixel
 class Primitive(object):
     def __init__(self, robot, *args, **kwargs):
         self.robot = MockupRobot(robot)
-        self.robot._primitive_manager.add(self)
         
         self.args = args
         self.kwargs = kwargs
         
-        self._thread = threading.Thread(target=self._wrapped_run)
-        self._thread.daemon = True
-    
         self._stop = threading.Event()
         self._resume = threading.Event()
-        self._resume.set()        
     
     def _wrapped_run(self):
+        self.t0 = time.time()
         self.run(*self.args, **self.kwargs)
         self.robot._primitive_manager.remove(self)
 
     def run(self, *args, **kwargs):
         pass
+    
+    @property
+    def elapsed_time(self):
+        return time.time() - self.t0
 
     # MARK: - Start/Stop handling
     
     def start(self):
+        if self.is_alive():
+            self.stop()
+            self._thread.join()
+
+        self._resume.set()
+        self._stop.clear()
+
+        self.robot._primitive_manager.add(self)
+
+        self._thread = threading.Thread(target=self._wrapped_run)
+        self._thread.daemon = True
         self._thread.start()
     
     def stop(self):
@@ -39,7 +50,7 @@ class Primitive(object):
         return self._stop.is_set()
     
     def is_alive(self):
-        return self._thread.is_alive()
+        return hasattr(self, '_thread') and self._thread.is_alive()
     
     # MARK: - Pause/Resume handling
     
@@ -60,7 +71,7 @@ class LoopPrimitive(Primitive):
         Primitive.__init__(self, robot, *args, **kwargs)
         self.period = 1.0 / freq
 
-    def run(self, *args, **kwargs):
+    def run(self, *args, **kwargs):        
         while not self.should_stop():
             if self.should_pause():
                 self.wait_to_resume()
@@ -73,7 +84,7 @@ class LoopPrimitive(Primitive):
             if dt > 0:
                 time.sleep(dt)    
 
-    def update(self, *args, **kwargs):
+    def update(self, t, *args, **kwargs):
         raise NotImplementedError
 
 

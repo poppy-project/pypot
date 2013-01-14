@@ -34,7 +34,7 @@ class MoveRecorder(pypot.primitive.Primitive):
     def __init__(self, robot, tracked_motors, compliant=False):
         pypot.primitive.Primitive.__init__(self, robot)
         
-        self.tracked_motors = [getattr(robot, name) for name in tracked_motors]
+        self.tracked_motors = tracked_motors
         self._move = Move()
         self.compliant = compliant
         
@@ -66,8 +66,8 @@ class MoveRecorder(pypot.primitive.Primitive):
 
 class LoopMoveRecorder(pypot.primitive.LoopPrimitive):
     def __init__(self, robot, freq, tracked_motors, compliant=False):
-        pypot.primitive.LoopPrimitive.__init__(self, robot, freq, compliant)
-        self.move_recorder = MoveRecorder(robot, tracked_motors)
+        pypot.primitive.LoopPrimitive.__init__(self, robot, freq)
+        self.move_recorder = MoveRecorder(robot, tracked_motors, compliant)
 
     def start(self):
         pypot.primitive.LoopPrimitive.start(self)
@@ -85,6 +85,9 @@ class MovePlayer(pypot.primitive.Primitive):
     def __init__(self, robot, move):
         pypot.primitive.Primitive.__init__(self, robot)
         self.move = move
+    
+    def play(self):
+        self.start()
     
     def run(self):
         last_t = 0
