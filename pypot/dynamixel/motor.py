@@ -1,4 +1,5 @@
 import time
+import numpy
 
 from collections import defaultdict
 from operator import getitem, setitem
@@ -84,7 +85,7 @@ class DxlMotor(object):
 
     def goto_position(self, position, duration, wait=False):
         dp = abs(self.present_position - position)
-        speed = dp / float(duration)
+        speed = (dp / float(duration)) if duration > 0 else numpy.inf
         
         self.moving_speed = speed
         self.goal_position = position

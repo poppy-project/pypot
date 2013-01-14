@@ -24,6 +24,7 @@
 		A82F6C7215F89D6100AFBA1E /* torso.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = torso.xml; sourceTree = "<group>"; };
 		A82F6C7515F89EC000AFBA1E /* __init__.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = __init__.py; sourceTree = "<group>"; };
 		A83B159816A41B5000832522 /* sinus.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = sinus.py; sourceTree = "<group>"; };
+		A83B159A16A44DB300832522 /* move.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = move.py; sourceTree = "<group>"; };
 		A842F7A61682095D00BF235B /* xmlparser.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = xmlparser.py; sourceTree = "<group>"; };
 		A85047431696062500EF5AB8 /* api.rst */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = api.rst; sourceTree = "<group>"; };
 		A851D2011631E327009FFACA /* __init__.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = __init__.py; sourceTree = "<group>"; };
@@ -156,6 +157,7 @@
 			children = (
 				A82F6C7515F89EC000AFBA1E /* __init__.py */,
 				A8C7D0E115F7A926007C5E66 /* robot.py */,
+				A83B159A16A44DB300832522 /* move.py */,
 				A842F7A61682095D00BF235B /* xmlparser.py */,
 			);
 			path = robot;

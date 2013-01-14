@@ -62,6 +62,12 @@ def dxl_to_speed(value, model):
 def speed_to_dxl(value, model):
     check_range(value, -700, 700)
     
+    # MARK: mais merde quoi
+    if value < -700:
+        value = -700
+    elif value > 700:
+        value = 0
+    
     direction = 1024 if value < 0 else 0
     
     speed_factor = 0.114 if model.startswith('MX') else 0.111
@@ -220,8 +226,9 @@ def alarm_to_dxl(value, model):
 # MARK: - Various utility functions
 
 def check_range(val, min, max):
-    if not (isinstance(val, numbers.Number) and min <= val <= max):
-        raise ValueError('{} not in range [{}, {}]'.format(val, min, max))
+    pass
+    #if not (isinstance(val, numbers.Number) and min <= val <= max):
+    #    raise ValueError('{} not in range [{}, {}]'.format(val, min, max))
 
 def dxl_to_bool(value, model):
     check_range(value, 0, 1)
