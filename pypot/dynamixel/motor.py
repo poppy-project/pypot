@@ -15,6 +15,7 @@ class DxlMotor(object):
         self._offset = offset
     
         self._values = defaultdict(int)
+        self._compliant = True
     
     def __repr__(self):
         return '<DxlMotor name={self.name} id={self.id} pos={self.position}>'.format(self=self)
@@ -72,7 +73,9 @@ class DxlMotor(object):
 
     @compliant.setter
     def compliant(self, value):
-        self.goal_position = self.present_position
+        # Change the goal_position only if you switch from compliant to not compliant mode
+        if not value and self._compliant:
+            self.goal_position = self.present_position
         self._compliant = value
 
     @property
@@ -92,4 +95,3 @@ class DxlMotor(object):
 
         if wait:
             time.sleep(duration)
-

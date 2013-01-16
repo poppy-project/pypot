@@ -42,6 +42,14 @@ class Robot(object):
         """ Returs all the motors attached to the robot. """
         return self._motors
 
+    @property
+    def compliant(self):
+        return filter(lambda m: m.compliant, self.motors)
+
+    def compliant(self, is_compliant):
+        for m in self.motors:
+            m.compliant = is_compliant
+
     def goto_position(self, position_for_motors, duration, wait=False):
         for motor_name, position in position_for_motors.iteritems():
             m = getattr(self, motor_name)
@@ -49,3 +57,11 @@ class Robot(object):
 
         if wait:
             time.sleep(duration)
+
+    def power_up(self):
+        for m in self.motors:
+            m.compliant = False
+            m.moving_speed = 0
+            m.torque_limit = 100.0
+
+# TODO Smooth compliant

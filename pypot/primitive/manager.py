@@ -3,9 +3,10 @@ import numpy
 import time
 
 from collections import defaultdict
+from functools import partial
 
 class PrimitiveManager(threading.Thread):
-    def __init__(self, motors, freq=50, filter=numpy.mean):
+    def __init__(self, motors, freq=50, filter=partial(numpy.mean, axis=0)):
         threading.Thread.__init__(self, name='Primitive Manager')
         self.daemon = True
         

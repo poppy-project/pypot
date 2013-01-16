@@ -109,14 +109,20 @@ def degree_speed_load_to_dxl(value, model):
 
 def dxl_to_pid(value, model):
     return (value[0] * 0.004,
-            value[1] * 2.048,
+            value[1] * 0.48828125,
             value[2] * 0.125)
 
 def pid_to_dxl(value, model):
-    return (int(value[0] * 250),
-            int(value[1] * 0.48828125),
-            int(value[2] * 8.0))
-
+    """
+        Gains values in dynamixel motors are in between 0~254
+        P [0 ... ~31]
+        I [0 ... ~124]
+        D [0 ... ~1]
+    """
+    
+    truncate = lambda x: int(max(0, min(x, 254)))
+    
+    return map(lambda x, y: truncate(x * y), value, (250, 2.048, 8.0))
 
 # MARK: - Model 
 
