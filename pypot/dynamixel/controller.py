@@ -12,7 +12,9 @@ class DxlController(object):
         self._loops = []
 
     def start(self):
-        map(_RepeatedTimer.start, self._loops)
+        for l in self._loops:
+            l.start()
+            l._started.wait()    
 
     def stop(self):
         map(_RepeatedTimer.stop, self._loops)
@@ -109,11 +111,18 @@ class _RepeatedTimer(threading.Thread):
 
         self._running = threading.Event()
         self._running.set()
+    
+        self._started = threading.Event()
 
     def run(self):
         while self._running.is_set():
             start = time.time()
+            
             self.function()
+            
+            if not self._started.is_set():
+                self._started.set()
+            
             end = time.time()
 
             st = self.period - (end - start)
