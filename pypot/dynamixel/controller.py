@@ -75,6 +75,10 @@ class BaseDxlController(DxlController):
 
     def _get_pos_speed_load(self):
         values = self._dxl_io.get_present_position_speed_load(*self._ids)
+
+        if not values:
+            return
+
         positions, speeds, loads = zip(*values)
 
         for m, p, s, l in zip(self._motors, positions, speeds, loads):
@@ -94,6 +98,9 @@ class BaseDxlController(DxlController):
     
         rigid_motors = filter(lambda m: not m.compliant, self._motors)
         ids = tuple(m.id for m in rigid_motors)
+
+        if not ids:
+            return
         
         values = ((m._values['goal_position'],
                    m._values['moving_speed'],

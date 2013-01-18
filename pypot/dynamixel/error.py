@@ -50,3 +50,10 @@ class BaseErrorHandler(DynamixelErrorHandler):
     def handle_timeout(self, timeout_error):
         logging.warning('timeout occured after sending {}'.format(timeout_error.instruction_packet))
 
+    def handle_communication_error(self, communication_error):
+        logging.warning('communication error after sending {}'.format(communication_error.instruction_packet))
+
+    def handle_overheating_error(self, instruction_packet):
+        logging.error('overheating after sending {}'.format(instruction_packet))
+        import sys
+        sys.exit(1)

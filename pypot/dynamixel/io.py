@@ -34,7 +34,7 @@ class DxlIO(object):
     def __init__(self,
                  port, baudrate=1000000, timeout=0.05,
                  use_sync_read=True,
-                 error_handler=None,
+                 error_handler_cls=None,
                  convert=True):
         """ At instanciation, it opens the serial port and sets the communication parameters.
             
@@ -52,7 +52,7 @@ class DxlIO(object):
         self._known_mode = {}
 
         self._sync_read = use_sync_read
-        self._error_handler = error_handler
+        self._error_handler = error_handler_cls() if error_handler_cls else None
         self._convert = convert
 
         self._serial_lock = threading.Lock()
@@ -187,8 +187,9 @@ class DxlIO(object):
         """ Gets the model for the specified motors. """
         to_get_ids = filter(lambda id: id not in self._known_models, ids)
         
-        models = map(dxl_to_model, self._get_model(*to_get_ids, convert=False))
-        self._known_models.update(zip(to_get_ids, models))
+        if to_get_ids:
+            models = map(dxl_to_model, self._get_model(*to_get_ids, convert=False))
+            self._known_models.update(zip(to_get_ids, models))
         
         return tuple(self._known_models[id] for id in ids)
 
@@ -339,6 +340,9 @@ class DxlIO(object):
             setattr(cls, func_name, my_setter)
                     
     def _get_control_value(self, control, *ids, **kwargs):
+        if not ids:
+            raise ValueError('you have to provide at least one id.')
+
         error_handler = kwargs['error_handler'] if ('error_handler' in kwargs) else self._error_handler
         convert = kwargs['convert'] if ('convert' in kwargs) else self._convert
 
@@ -373,19 +377,22 @@ class DxlIO(object):
                 e = DxlTimeoutError(rp)
                 if self._error_handler:
                     self._error_handler.handle_timeout(e)
+                    return ()
                 else:
                     raise e
-    
+
         if convert:
             models = self.get_model(*ids)
             if not models:
                 return ()
-
             values = map(control.dxl_to_si, values, models)
-    
+
         return tuple(values)
 
     def _set_control_value(self, control, value_for_id, **kwargs):
+        if not value_for_id:
+            raise ValueError('you have to provide at least one value.')
+
         convert = kwargs['convert'] if ('convert' in kwargs) else self._convert
 
         if convert:
@@ -456,7 +463,7 @@ class DxlIO(object):
                     f = operator.methodcaller(handler_name, instruction_packet)
                     f(error_handler)
                     
-                return sp
+            return sp
                 
         except DxlTimeoutError as e:
             error_handler.handle_timeout(e)

@@ -38,7 +38,7 @@ def parse_controller_node(controller_node):
     sync_read = bool(controller_node.getAttribute('sync_read'))
     port = controller_node.getAttribute('port')
     
-    dxl_io = pypot.dynamixel.DxlIO(port, use_sync_read=sync_read)
+    dxl_io = pypot.dynamixel.DxlIO(port, use_sync_read=sync_read, error_handler_cls=pypot.dynamixel.BaseErrorHandler)
 
     changed_angle_limits = {}
     
@@ -46,7 +46,7 @@ def parse_controller_node(controller_node):
     dxl_motors = []
     for motor_node in motors_node:
         m, angle_limit = parse_motor_node(motor_node)
-        old_limits = dxl_io.get_angle_limit(m.id)[0]
+        old_limits = dxl_io.get_angle_limit(m.id)[0] # Suppose qu'il n'y a pas de timeout
 
         d = abs(sum(map(lambda l1, l2: l1 - l2, old_limits, angle_limit)))
         if d > 1:

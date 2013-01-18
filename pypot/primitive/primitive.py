@@ -142,4 +142,4 @@ class MockupMotor(pypot.dynamixel.DxlMotor):
     
     @pid.setter
     def pid(self, value):
-        self.to_set['pid'] = pid
+        self.to_set['pid'] = value
