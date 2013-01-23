@@ -32,8 +32,8 @@ class Primitive(object):
     def start(self):
         if self.is_alive():
             self.stop()
-            self._thread.join()
-
+            self.wait_to_stop()
+        
         self._resume.set()
         self._stop.clear()
 
@@ -48,6 +48,9 @@ class Primitive(object):
     
     def should_stop(self):
         return self._stop.is_set()
+    
+    def wait_to_stop(self):
+        self._thread.join()
     
     def is_alive(self):
         return hasattr(self, '_thread') and self._thread.is_alive()

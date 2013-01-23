@@ -23,6 +23,9 @@
 		A82D52CD15F25A5700ED73DC /* motor-sinus.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = "motor-sinus.py"; sourceTree = "<group>"; };
 		A82F6C7215F89D6100AFBA1E /* torso.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = torso.xml; sourceTree = "<group>"; };
 		A82F6C7515F89EC000AFBA1E /* __init__.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = __init__.py; sourceTree = "<group>"; };
+		A83A7D7716AFF2820009BA91 /* server.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = server.py; sourceTree = "<group>"; };
+		A83A7D7916AFF3380009BA91 /* sensor.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = sensor.py; sourceTree = "<group>"; };
+		A83A7D7A16AFF9D80009BA91 /* utils.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = utils.py; sourceTree = "<group>"; };
 		A83B159816A41B5000832522 /* sinus.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = sinus.py; sourceTree = "<group>"; };
 		A83B159A16A44DB300832522 /* move.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = move.py; sourceTree = "<group>"; };
 		A842F7A61682095D00BF235B /* xmlparser.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = xmlparser.py; sourceTree = "<group>"; };
@@ -72,6 +75,15 @@
 			path = samples;
 			sourceTree = "<group>";
 		};
+		A83A7D7616AFF2820009BA91 /* kinect */ = {
+			isa = PBXGroup;
+			children = (
+				A83A7D7716AFF2820009BA91 /* server.py */,
+				A83A7D7916AFF3380009BA91 /* sensor.py */,
+			);
+			path = kinect;
+			sourceTree = "<group>";
+		};
 		A851D1FF1631E2D7009FFACA /* primitive */ = {
 			isa = PBXGroup;
 			children = (
@@ -103,7 +115,9 @@
 				A8BED67515BFFFAA00229A79 /* __init__.py */,
 				A8C7D0DE15F79E07007C5E66 /* robot */,
 				A851D1FF1631E2D7009FFACA /* primitive */,
+				A83A7D7616AFF2820009BA91 /* kinect */,
 				A8BED67315BFFF9B00229A79 /* dynamixel */,
+				A83A7D7A16AFF9D80009BA91 /* utils.py */,
 			);
 			path = pypot;
 			sourceTree = "<group>";
