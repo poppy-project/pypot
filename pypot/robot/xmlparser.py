@@ -1,5 +1,6 @@
 import xml.dom.minidom
 import logging
+import numpy
 import time
 
 import pypot.robot
@@ -35,7 +36,7 @@ def parse_motor_group_node(motor_group_node):
     return name, motors_name
 
 def parse_controller_node(controller_node):
-    sync_read = bool(controller_node.getAttribute('sync_read'))
+    sync_read = True if controller_node.getAttribute('sync_read') == 'True' else False
     port = controller_node.getAttribute('port')
     
     dxl_io = pypot.dynamixel.DxlIO(port, use_sync_read=sync_read, error_handler_cls=pypot.dynamixel.BaseErrorHandler)
@@ -47,8 +48,8 @@ def parse_controller_node(controller_node):
     for motor_node in motors_node:
         m, angle_limit = parse_motor_node(motor_node)
         old_limits = dxl_io.get_angle_limit(m.id)[0] # Suppose qu'il n'y a pas de timeout
-
-        d = abs(sum(map(lambda l1, l2: l1 - l2, old_limits, angle_limit)))
+        d = numpy.linalg.norm(numpy.asarray(angle_limit) - numpy.asarray(old_limits))
+        
         if d > 1:
             logging.warning('changes angle limit of motor {} to {}'.format(m.id, angle_limit))
             changed_angle_limits[m.id] = angle_limit

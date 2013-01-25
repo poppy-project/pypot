@@ -374,7 +374,11 @@ class DxlIO(object):
         if self._sync_read:
             max_val = 2 ** (8 * control.length) - 1
             if max_val in (itertools.chain(*values) if control.nb_elem > 1 else values):
-                e = DxlTimeoutError(rp)
+                lost_ids = []
+                for i, v in enumerate(itertools.chain(*values) if control.nb_elem > 1 else values):
+                    if v == max_val:
+                        lost_ids.append(i)
+                e = DxlTimeoutError(rp, ids)
                 if self._error_handler:
                     self._error_handler.handle_timeout(e)
                     return ()
@@ -432,7 +436,7 @@ class DxlIO(object):
 
             data = self._serial.read(DxlPacketHeader.length)
             if not data:
-                raise DxlTimeoutError(instruction_packet)
+                raise DxlTimeoutError(instruction_packet, instruction_packet.id)
         
             try:
                 header = DxlPacketHeader.from_string(data)
@@ -489,11 +493,12 @@ class DxlCommunicationError(DxlError):
 
 
 class DxlTimeoutError(DxlCommunicationError):
-    def __init__(self, instruction_packet):
+    def __init__(self, instruction_packet, ids):
         DxlCommunicationError.__init__(self, 'timeout occured', instruction_packet)
+        self.ids = ids
 
     def __str__(self):
-        return 'after sending {}'.format(self.instruction_packet)
+        return 'motors {} did not respond after sending {}'.format(self.ids, self.instruction_packet)
 
 
 # MARK: - Generate the accessors

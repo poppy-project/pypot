@@ -1,60 +1,72 @@
-<Robot name="Torso">
-    
-    <EEPROM>
-    </EEPROM>
-    
-    <DynamixelController type="USB2DXL" port="/dev/ttyUSB0">
-        <AlarmBlackList>
-            <ANGLE_LIMIT_ERROR />
-        </AlarmBlackList>
+<Robot>
+    <DxlController port="/dev/tty.usbserial-A4008aCD" sync_read="False">
+        <DxlMotorGroup name="head">
+            <DxlMotor name="head_pan" id="31" orientation="direct" offset="-22.5">
+                <angle_limits>(-80, 45)</angle_limits>
+            </DxlMotor>
+            <DxlMotor name="head_tilt" id="32" orientation="direct" offset="0.0">
+                <angle_limits>(-50, 50)</angle_limits>
+            </DxlMotor>
+        </DxlMotorGroup>
         
-        <SyncLoop>
-            <Loop frequency='15'>
-                <current_position access='r' />
-                <goal_position access='w' />
-            </Loop>
+        <DxlMotorGroup name="trunk_lift">
+            <DxlMotor name="left_trunk_lift" id="11" orientation="indirect" offset="0.0">
+                <angle_limits>(-30, 30)</angle_limits>
+            </DxlMotor>
+            <DxlMotor name="right_trunk_lift" id="21" orientation="direct" offset="0.0">
+                <angle_limits>(-30, 30)</angle_limits>
+            </DxlMotor>
+        </DxlMotorGroup>
             
-        </SyncLoop>
-        
-        <DynamixelMotor name="left_shoulder_lift" id="11" type="RX-64" orientation="indirect" offset="0.0">
-        </DynamixelMotor>
-        <DynamixelMotor name="right_shoulder_twist" id="12" type="RX-64" orientation="direct" offset="0.0">
-        </DynamixelMotor>
-        <DynamixelMotor name="left_shoulder_shrug" id="13" type="RX-64" orientation="direct" offset="65.0">
-        </DynamixelMotor>
-        <DynamixelMotor name="left_torso_lift" id="14" type="RX-64" orientation="direct" offset="0.0">
-        </DynamixelMotor>
-        <DynamixelMotor name="right_elbow_twist" id="15" type="RX-28" orientation="direct" offset="0.0">
-        </DynamixelMotor>
-        <DynamixelMotor name="right_elbow_lift" id="16" type="RX-28" orientation="indirect" offset="0.0">
-        </DynamixelMotor>
-        <DynamixelMotor name="right_wrist_twist" id="17" type="RX-28" orientation="direct" offset="20.0">
-        </DynamixelMotor>
-        <DynamixelMotor name="right_gripper" id="18" type="RX-28" orientation="direct" offset="0.0">
-        </DynamixelMotor>
-        
-        <DynamixelMotor name="left_shoulder_twist" id="21" type="RX-64" orientation="direct" offset="0.0">
-        </DynamixelMotor>
-        <DynamixelMotor name="right_shoulder_shrug" id="22" type="RX-64" orientation="direct" offset="-45.0">
-        </DynamixelMotor>
-        <DynamixelMotor name="right_shoulder_lift" id="23" type="RX-64" orientation="indirect" offset="0.0">
-        </DynamixelMotor>
-        <DynamixelMotor name="right_torso_lift" id="24" type="RX-64" orientation="indirect" offset="0.0">
-        </DynamixelMotor>
-        <DynamixelMotor name="left_elbow_twist" id="25" type="RX-28" orientation="direct" offset="0.0">
-        </DynamixelMotor>
-        <DynamixelMotor name="left_elbow_lift" id="26" type="RX-28" orientation="indirect" offset="0.0">
-        </DynamixelMotor>
-        <DynamixelMotor name="left_wrist_twist" id="27" type="RX-28" orientation="direct" offset="25.0">
-        </DynamixelMotor>
-        <DynamixelMotor name="left_gripper" id="28" type="RX-28" orientation="indirect" offset="0.0">
-        </DynamixelMotor>
-        
-        <DynamixelMotor name="head_twist" id="31" type="RX-28" orientation="direct" offset="-20.0">
-        </DynamixelMotor>
-        <DynamixelMotor name="head_lift" id="32" type="RX-28" orientation="direct" offset="0.0">
-        </DynamixelMotor>
+        <DxlMotorGroup name="arms">
+            <DxlMotorGroup name="left_arm">
+                <DxlMotor name="left_shoulder_pan" id="12" orientation="indirect" offset="-67.5">
+                    <angle_limits>(-22.5, 100)</angle_limits>
+                </DxlMotor>
+                <DxlMotor name="left_shoulder_twist" id="13" orientation="direct" offset="0.0">
+                    <angle_limits>(-50, 50)</angle_limits>
+                </DxlMotor>
+                <DxlMotor name="left_shoulder_lift" id="14" orientation="direct" offset="0.0">
+                    <angle_limits>(-45, 90)</angle_limits>
+                </DxlMotor>
+                <DxlMotor name="left_elbow_twist" id="15" orientation="direct" offset="0.0">
+                    <angle_limits>(-100, 100)</angle_limits>
+                </DxlMotor>
+                <DxlMotor name="left_elbow_lift" id="16" orientation="indirect" offset="0.0">
+                    <angle_limits>(-120, 45)</angle_limits>
+                </DxlMotor>
+                <DxlMotor name="left_wrist" id="17" orientation="direct" offset="-22.5">
+                    <angle_limits>(-100, 100)</angle_limits>
+                </DxlMotor>
+                <DxlMotor name="left_hand" id="18" orientation="direct" offset="45.0">
+                    <angle_limits>(-70, 40)</angle_limits>
+                </DxlMotor>
+            </DxlMotorGroup>
+            
+            <DxlMotorGroup name="right_arm">
+                <DxlMotor name="right_shoulder_pan" id="22" orientation="direct" offset="-45.0">
+                    <angle_limits>(-70, 22.5)</angle_limits>
+                </DxlMotor>
+                <DxlMotor name="right_shoulder_twist" id="23" orientation="indirect" offset="0.0">
+                    <angle_limits>(-50, 50)</angle_limits>
+                </DxlMotor>
+                <DxlMotor name="right_shoulder_lift" id="24" orientation="indirect" offset="0.0">
+                    <angle_limits>(-90, 45)</angle_limits>
+                </DxlMotor>
+                <DxlMotor name="right_elbow_twist" id="25" orientation="indirect" offset="0.0">
+                    <angle_limits>(-100, 100)</angle_limits>
+                </DxlMotor>
+                <DxlMotor name="right_elbow_lift" id="26" orientation="direct" offset="0.0">
+                    <angle_limits>(-120, 45)</angle_limits>
+                </DxlMotor>
+                <DxlMotor name="right_wrist" id="27" orientation="indirect" offset="22.5">
+                    <angle_limits>(-100, 100)</angle_limits>
+                </DxlMotor>
+                <DxlMotor name="right_hand" id="28" orientation="direct" offset="45.0">
+                    <angle_limits>(-70, 40)</angle_limits>
+                </DxlMotor>
+            </DxlMotorGroup>
 
-    </DynamixelController>
-    
+        </DxlMotorGroup>
+    </DxlController>
 </Robot>

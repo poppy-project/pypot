@@ -48,7 +48,8 @@ class DynamixelErrorHandler(object):
 class BaseErrorHandler(DynamixelErrorHandler):
     """ This class is a basic handler that just skip most errors. """
     def handle_timeout(self, timeout_error):
-        logging.warning('timeout occured after sending {}'.format(timeout_error.instruction_packet))
+        logging.warning('timeout occured in motors {} after sending {}'.format(timeout_error.ids,
+                                                                               timeout_error.instruction_packet))
 
     def handle_communication_error(self, communication_error):
         logging.warning('communication error after sending {}'.format(communication_error.instruction_packet))
