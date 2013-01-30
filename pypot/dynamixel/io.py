@@ -378,7 +378,7 @@ class DxlIO(object):
                 for i, v in enumerate(itertools.chain(*values) if control.nb_elem > 1 else values):
                     if v == max_val:
                         lost_ids.append(i)
-                e = DxlTimeoutError(rp, ids)
+                e = DxlTimeoutError(rp, lost_ids)
                 if self._error_handler:
                     self._error_handler.handle_timeout(e)
                     return ()
