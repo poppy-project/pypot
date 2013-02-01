@@ -1,14 +1,15 @@
 import time
 import cPickle
+import scipy.io
 import threading
 
-
+from itertools import cycle
 import pypot.primitive
 
 
 class Move(object):
     def __init__(self):
-        self.pos = []
+        self._pos = []
     
     def __iter__(self):
         return self.pos.__iter__()
@@ -16,12 +17,8 @@ class Move(object):
     def next(self):
         return self.pos.next()
     
-    def add_position(self, position):
-        if not hasattr(self, 't0'):
-            self.t0 = time.time()
-        
-        dt = time.time() - self.t0
-        self.pos.append((dt, position))
+    def add_position(self, dt, position):
+        self._pos.append((dt, position))
     
     def save(self, filename):
         cPickle.dump(self, open(filename, 'w'))
@@ -30,16 +27,26 @@ class Move(object):
     def load(cls, filename):
         return cPickle.load(open(filename))
 
+    @property
+    def pos(self):
+        return self._pos
+
 class MoveRecorder(pypot.primitive.Primitive):
     def __init__(self, robot, tracked_motors, compliant=False):
         pypot.primitive.Primitive.__init__(self, robot)
         
-        self.tracked_motors = tracked_motors
+        self.tracked_motors = map(self._get_mockup_motor, tracked_motors)
         self._move = Move()
         self.compliant = compliant
         
         self.should_snap = threading.Event()
     
+    def start(self):
+        if hasattr(self, 't0'):
+            del self.t0
+        self._move = Move()
+        pypot.primitive.Primitive.start(self)
+
     def add_keyframe(self):
         self.should_snap.set()
     
@@ -52,7 +59,12 @@ class MoveRecorder(pypot.primitive.Primitive):
             self.should_snap.wait()
             
             pos = dict((m.name, m.present_position) for m in self.tracked_motors)
-            self._move.add_position(pos)
+
+            if not hasattr(self, 't0'):
+                self.t0 = time.time()
+        
+            dt = time.time() - self.t0
+            self._move.add_position(dt, pos)
             
             self.should_snap.clear()
 
