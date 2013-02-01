@@ -73,7 +73,7 @@ class KinectSensor(object):
 if __name__ == '__main__':
     import cv2
     
-    kinect = KinectSensor('193.50.110.91', 9999)
+    kinect = KinectSensor('193.50.110.60', 9999)
     
     while True:
         img = numpy.zeros((480, 640, 3))

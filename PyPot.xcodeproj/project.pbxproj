@@ -16,6 +16,11 @@
 		A812C6BB16132D3A0007269F /* tutorial.rst */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = tutorial.rst; sourceTree = "<group>"; };
 		A812C6BE161331350007269F /* knownissues.rst */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = knownissues.rst; sourceTree = "<group>"; };
 		A812C6BF161351860007269F /* flower.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = flower.xml; sourceTree = "<group>"; };
+		A81E655716BC066F00955D06 /* recorder.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = recorder.py; sourceTree = "<group>"; };
+		A81E655816BC066F00955D06 /* recorder.ui */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = recorder.ui; sourceTree = "<group>"; };
+		A81E655916BC06AD00955D06 /* server.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = server.py; sourceTree = "<group>"; };
+		A81E655A16BC29B700955D06 /* __init__.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = __init__.py; sourceTree = "<group>"; };
+		A81E655B16BC29C000955D06 /* __init__.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = __init__.py; sourceTree = "<group>"; };
 		A827869B16972736004D4D50 /* ergo_robot.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = ergo_robot.xml; sourceTree = "<group>"; };
 		A827869D16972971004D4D50 /* herborist.rst */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = herborist.rst; sourceTree = "<group>"; };
 		A82D52C815F2599E00ED73DC /* io.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = io.py; sourceTree = "<group>"; };
@@ -24,7 +29,7 @@
 		A82F6C7215F89D6100AFBA1E /* torso.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = torso.xml; sourceTree = "<group>"; };
 		A82F6C7515F89EC000AFBA1E /* __init__.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = __init__.py; sourceTree = "<group>"; };
 		A83A7D7A16AFF9D80009BA91 /* utils.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = utils.py; sourceTree = "<group>"; };
-		A83B159816A41B5000832522 /* sinus.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = sinus.py; sourceTree = "<group>"; };
+		A83B159816A41B5000832522 /* utils.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = utils.py; sourceTree = "<group>"; };
 		A83B159A16A44DB300832522 /* move.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = move.py; sourceTree = "<group>"; };
 		A842F7A61682095D00BF235B /* xmlparser.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = xmlparser.py; sourceTree = "<group>"; };
 		A85047431696062500EF5AB8 /* api.rst */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = api.rst; sourceTree = "<group>"; };
@@ -68,6 +73,15 @@
 			path = doc;
 			sourceTree = SOURCE_ROOT;
 		};
+		A81E655616BC066F00955D06 /* recorder */ = {
+			isa = PBXGroup;
+			children = (
+				A81E655716BC066F00955D06 /* recorder.py */,
+				A81E655816BC066F00955D06 /* recorder.ui */,
+			);
+			path = recorder;
+			sourceTree = "<group>";
+		};
 		A82D52CC15F25A3F00ED73DC /* samples */ = {
 			isa = PBXGroup;
 			children = (
@@ -82,7 +96,8 @@
 				A851D2011631E327009FFACA /* __init__.py */,
 				A851D2021631E335009FFACA /* primitive.py */,
 				A851D2041631E353009FFACA /* manager.py */,
-				A83B159816A41B5000832522 /* sinus.py */,
+				A83B159816A41B5000832522 /* utils.py */,
+				A81E655916BC06AD00955D06 /* server.py */,
 			);
 			path = primitive;
 			sourceTree = "<group>";
@@ -126,6 +141,7 @@
 		A8A7D86A16B9743600AD00B5 /* sensor */ = {
 			isa = PBXGroup;
 			children = (
+				A81E655A16BC29B700955D06 /* __init__.py */,
 				A8A7D86C16B974FF00AD00B5 /* kinect */,
 				A8A7D86B16B974DB00AD00B5 /* optitrack.py */,
 			);
@@ -135,6 +151,7 @@
 		A8A7D86C16B974FF00AD00B5 /* kinect */ = {
 			isa = PBXGroup;
 			children = (
+				A81E655B16BC29C000955D06 /* __init__.py */,
 				A8A7D86D16B974FF00AD00B5 /* sensor.py */,
 				A8A7D86E16B974FF00AD00B5 /* server.py */,
 			);
@@ -191,6 +208,7 @@
 			isa = PBXGroup;
 			children = (
 				A8FA8A00169B104500344B75 /* herborist */,
+				A81E655616BC066F00955D06 /* recorder */,
 			);
 			path = tools;
 			sourceTree = "<group>";
