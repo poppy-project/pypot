@@ -69,6 +69,11 @@ class Primitive(object):
     def wait_to_resume(self):
         self._resume.wait()
 
+    def _get_mockup_motor(self, motor):
+        for m in self.robot.motors:
+            if m.name == motor.name:
+                return m
+
 class LoopPrimitive(Primitive):
     def __init__(self, robot, freq, *args, **kwargs):
         Primitive.__init__(self, robot, *args, **kwargs)
@@ -87,7 +92,7 @@ class LoopPrimitive(Primitive):
             if dt > 0:
                 time.sleep(dt)    
 
-    def update(self, t, *args, **kwargs):
+    def update(self, *args, **kwargs):
         raise NotImplementedError
 
 
@@ -103,6 +108,14 @@ class MockupRobot(object):
     
     def __getattr__(self, attr):
         return getattr(self._robot, attr)
+
+    def goto_position(self, position_for_motors, duration, wait=False):
+        for motor_name, position in position_for_motors.iteritems():
+            m = getattr(self, motor_name)
+            m.goto_position(position, duration)
+
+        if wait:
+            time.sleep(duration)
     
     @property
     def motors(self):
@@ -114,6 +127,17 @@ class MockupMotor(pypot.dynamixel.DxlMotor):
         pypot.dynamixel.DxlMotor.__init__(self, m.id, m.name, m.direct, m.offset)
         self._values = m._values
         self.to_set = {}
+
+    def __repr__(self):
+        return 'MockupMotor'
+
+    @property
+    def compliant(self):
+        return pypot.dynamixel.DxlMotor.compliant.fget(self)
+
+    @compliant.setter
+    def compliant(self, value):
+        self.to_set['compliant'] = value
     
     @property
     def goal_position(self):
