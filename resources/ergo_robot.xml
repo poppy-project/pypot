@@ -1,26 +1,26 @@
 <Robot>
-    <DxlController port"***" sync_read="True">
+    <DxlController port="***" sync_read="False">
         <DxlMotorGroup name="base">
-            <DxlMotor name="base_pan" id="***" orientation="direct" offset="0.0">
-                <angle_limits>(-180, 180)</angle_limits>
+            <DxlMotor name="base_pan" id="***" type="RX-64" orientation="direct" offset="22.5">
+                <angle_limits>(-67.5, 112.5)</angle_limits>
             </DxlMotor>
-            <DxlMotor name="base_tilt_lower" id="***" orientation="direct" offset="0.0">
-                <angle_limits>(-180, 180)</angle_limits>
+            <DxlMotor name="base_tilt_lower" id="***" type="RX-64" orientation="direct" offset="0.0">
+                <angle_limits>(-90, 90)</angle_limits>
             </DxlMotor>
-            <DxlMotor name="base_tilt_upper" id="***" orientation="direct" offset="0.0">
-                <angle_limits>(-180, 180)</angle_limits>
+            <DxlMotor name="base_tilt_upper" id="***" type="RX-64" orientation="direct" offset="0.0">
+                <angle_limits>(-90, 90)</angle_limits>
             </DxlMotor>
         </DxlMotorGroup>
         
         <DxlMotorGroup name="head">
-            <DxlMotor name="head_pan" id="***" orientation="direct" offset="0.0">
-                <angle_limits>(-180, 180)</angle_limits>
+            <DxlMotor name="head_pan" id="***" type="RX-28" orientation="direct" offset="22.5">
+                <angle_limits>(-67.5, 112.5)</angle_limits>
             </DxlMotor>
-            <DxlMotor name="head_tilt_lower" id="***" orientation="direct" offset="0.0">
-                <angle_limits>(-180, 180)</angle_limits>
+            <DxlMotor name="head_tilt_lower" id="***" type="RX-28" orientation="indirect" offset="0.0">
+                <angle_limits>(-90, 90)</angle_limits>
             </DxlMotor>
-            <DxlMotor name="head_tilt_upper" id="***" orientation="direct" offset="0.0">
-                <angle_limits>(-180, 180)</angle_limits>
+            <DxlMotor name="head_tilt_upper" id="***" type="RX-28" orientation="indirect" offset="0.0">
+                <angle_limits>(-90, 90)</angle_limits>
             </DxlMotor>
         </DxlMotorGroup>
         

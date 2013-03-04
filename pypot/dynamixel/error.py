@@ -2,10 +2,17 @@
 
 import logging
 
-class DynamixelErrorHandler(object):
+class DxlErrorHandler(object):
     """ This class is used to represent all the error that you can/should handle. 
         
-        You should write your own handler by subclassing this class.
+        The errors can be of two types:
+        
+        * communication error (timeout, communication)
+        * motor error (voltage, limit, overload...)
+        
+        This class was designed as an abstract class and so you should write your own handler by subclassing this class and defining the apropriate behavior for your program.
+        
+        .. warning:: The motor error should be overload carrefuly as they can indicate important mechanical issue.
         
         """
     # MARK: - Communication errors
@@ -45,8 +52,8 @@ class DynamixelErrorHandler(object):
 
 
 
-class BaseErrorHandler(DynamixelErrorHandler):
-    """ This class is a basic handler that just skip most errors. """
+class BaseErrorHandler(DxlErrorHandler):
+    """ This class is a basic handler that just skip the communication errors. """
     def handle_timeout(self, timeout_error):
         logging.warning('timeout occured in motors {} after sending {}'.format(timeout_error.ids,
                                                                                timeout_error.instruction_packet))
@@ -56,5 +63,4 @@ class BaseErrorHandler(DynamixelErrorHandler):
 
     def handle_overheating_error(self, instruction_packet):
         logging.error('overheating after sending {}'.format(instruction_packet))
-        import sys
-        sys.exit(1)
+

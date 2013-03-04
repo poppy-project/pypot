@@ -3,154 +3,190 @@
 Tutorial
 ********
 
-Installation
-============
+Communication with robotis motors
+=================================
 
-Low-level communication with robotis motors
-===========================================
+PyPot handles the communication with dynamixel motors from robotis. Using a USB communication device such as USB2DYNAMIXEL or USB2AX, you can open serial communication with robotis motors (MX, RX, AX) using communication protocols TTL or RS485. More specifically, it allows easy access (both reading and writing) to the different registers of any dynamixel motors. Those registers includes values such as position, speed or torque. The whole list of registers can directly be found on the robotis website http://support.robotis.com/en/product/dxl_main.htm.
+    
+You can access the register of the motors through two different ways:
+    
+* **Low-level API:** In the first case, you can get or set a value to a motor by directly sending a request and waiting for the motor to answer. Here, you only use the low level API to communicate with the motor (refer to section :ref:`lowlevel` for more details).
 
-usb2serial Controller
----------------------
+* **Controller API:** In the second case, you define requests which will automatically be sent at a predefined frequency. The values obtained from the requests are stored in a local copy that you can freely access at any time. However, you can only access the last synchronized value. This second method encapsulate the first approach to prevent you from writing repetitive request (refer to section :ref:`sync_loop` for further details).
+    
+While the second approach allows the writing of simpler code without detailed knowledge of how the communication with robotis motor works, the first approach may allow for more performance through fine tuning of the communication needed in  particular applications. Examples of both approaches will be provided in the next sections.
+
+
+.. _lowlevel:
+
+Low-level API
+=============
+
+The low-level API almost directly encapsulates the communication protocol used by dynamixel motors. This protocol can be used to access any register of these motors. The :py:class:`~pypot.dynamixel.io.DxlIO` class is used to handle the communication with a particular port.
+
+.. note:: The port can only be accessed by a single DxlIO instance.
+
+More precisely, this class can be used to:
+
+* open/close the communication
+* discover motors (ping or scan)
+* access the different control (read and write)
+
+The communication is thread-safe to avoid collision in the communication buses.
+
+
+As an example, you can write::
+
+    with DxlIO('/dev/USB0') as dxl_io:
+        ids = dxl_io.scan([1, 2, 3, 4, 5])
+        
+        print dxl_io.get_present_position(ids)            
+        dxl_io.set_goal_position(dict(zip(ids, itertools.repeat(0))))
+
+.. _open_connection:
 
 Opening/Closing a communication port
 ------------------------------------
 
+In order to open a connection with the device, you will need to know what port it is connected to. PyPot has a function named :func:`~pypot.dynamixel.get_available_ports` which will try to auto-discover any compatible devices connected to the communication ports. 
+
+To create a connection, open up a python terminal and type the following code::
+
+    import pypot.dynamixel
+    
+    ports = pypot.dynamixel.get_available_ports()
+    
+    if not ports:
+        raise IOError('no port found!')
+
+    print 'connecting on the first available port:', ports[0]
+    dxl_io = pypot.dynamixel.DxlIO(ports[0])
+    
+This should open a connection through a virtual communication port to your device.
+
+.. warning:: It is important to note that it will open a connection using a default baud rate. By default your motors are set up to work on the robotis default baud rate (57140) while PyPot is set up to work with a 1000000 baud rate. To communicate with your motors, you must ensure that this baud rate is the same baud rate that the motors are configure to use. So, you will need to change either the configuration of your motors (see :ref:`Herborist <herborist>` section) or change the default baudrate of your connection.
+
+To set up a connection with another baud rate you can write::
+
+    dxl_io = pypot.dynamixel.DxlIO(port, baudrate=57140)
+    
+The communication can be closed using the :meth:`~pypot.dynamixel.io.DxlIO.close` method.
+
+.. note:: The class :class:`~pypot.dynamixel.io.DxlIO` can also be used as a `Context Manager <http://docs.python.org/2/library/contextlib.html>`_ (the :meth:`~pypot.dynamixel.io.DxlIO.close` method will automatically be called at the end). 
+    For instance::
+    
+        with pypot.dynamixel.DxlIO('/dev/ttyUSB0') as dxl_io:
+            ...
+
 Finding motors
 --------------
+
+Pypot has been designed to work specifically with the Robotis range of motors. These motors use two different protocols to communicate: TTL (3 wire bus) and RS485 (4 wire Bus). The motors can be daisey chained together with other types of motors on the same bus *as long as the bus communicates using the same protocol*. This means that MX-28 and AX-12 can communicate on the same bus, but cannot be connected to a RX-28.
+
+All motors work sufficiently well with a 12V supply. Some motors can use more than 12V but you must be careful not to connect an 18V supply on a bus that contains motors that can only use 12V! Connect this 12V SMPS supply (switch mode power supply) to a Robotis SMPS2Dynamixel device which regulates the voltage coming from the SMPS. Connect your controller device and a single motor to this SMPS2Dynamixel. 
+
+Open your python terminal and create your :class:`~pypot.dynamixel.io.DxlIO` as described in the above section :ref:`open_connection`.
+    
+To detect the motors and find their id you can scan the bus. To avoid spending a long time searching all possible values, you can add a list of values to test::
+
+    dxl_io.scan()
+    >>> [4, 23, 24, 25]
+
+    dxl_io.scan([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
+    >>> [4]
+    
+Or, you can use the shorthand::
+
+    dxl_io.scan(range(10))
+    >>> [4]
+
+This should produce a list of the ids of the motors that are connected to the bus. Each motor on the bus must have a unique id. This means that unless your motors have been configured in advance, it is better to connect them one by one to ensure they all have unique ids first.
+
 
 Low-level control
 -----------------
 
-Defining your custom robot
-==========================
+Now we have the id of the motors connected, we can begin to access their functions by using their id. Try to find out the present position (in degrees) of the motor by typing the following::
 
-Finding the angle limit
------------------------
+    dxl_io.get_present_position((4, ))
+    >>> (67.8, )
+    
+You can also write a goal position (in degrees) to the motor using the following::
 
-Creating a configuration file
------------------------------
+    dxl_io.set_goal_position({4: 0})
+    
+The motors are handled in degrees where 0 is considered the central point of the motor turn. For the MX motors, the end points are -180° and 180°. For the AX and RX motors, these end points are -150° to 150°.
 
-Dynamixel controller and SyncLoop
----------------------------------
+.. warning:: As you can see on the example above, you should always pass the id parameter as a list. This is intended as getting a value from several motors takes the same time as getting a value from a single motor (thanks to the SYNC_READ instruction). Similarly, we use dictionnary with pairs of (id, value) to set value to a specific register of motors and benefit from the SYNC_WRITE instruction.
 
-Controlling your robot
-----------------------
+As an example of what you can do with the low-level API, we are going to apply a sinusoid on two motors (make sure that the motion will not damage your robot before running the example!). Here is a complete listing of the code needed::
 
-Primitive
-=========
+    import itertools
+    import numpy
+    import time
 
-What do we call "Primitive"?
+    import pypot.dynamixel
+    
+    AMP = 30
+    FREQ = 0.5
+    
+    if __name__ == '__main__':
+        ports = pypot.dynamixel.get_available_ports()
+        print 'available ports:', ports
+    
+        if not ports:
+            raise IOError('No port available.')
+
+        port = ports[0]
+        print 'Using the first on the list', port
+    
+        dxl_io = pypot.dynamixel.DxlIO(port)
+        print 'Connected!'
+    
+        found_ids = dxl_io.scan()
+        print 'Found ids:', found_ids
+    
+        if len(found_ids) < 2:
+            raise IOError('You should connect at least two motors on the bus for this test.')
+
+        ids = found_ids[:2]
+
+        dxl_io.enable_torque(ids)
+
+        speed = dict(zip(ids, itertools.repeat(200)))
+        dxl_io.set_moving_speed(speed)
+    
+        pos = dict(zip(ids, itertools.repeat(0)))
+        dxl_io.set_goal_position(pos)
+    
+    
+        t0 = time.time()
+        while True:
+            t = time.time()
+            if (t - t0) > 5:
+                break
+                
+            pos = AMP * numpy.sin(2 * numpy.pi * FREQ * t)
+            dxl_io.set_goal_position(dict(zip(ids, itertools.repeat(pos))))
+            
+            time.sleep(0.02)
+
+    
+    
+Thanks to PyPot, you can access all registers of your motors using the same syntax (e.g. :meth:`~pypot.dynamixel.io.DxlIO.get_present_speed`, :meth:`~pypot.dynamixel.io.DxlIO.set_max_torque`, :meth:`~pypot.dynamixel.io.DxlIO.get_pid_gain`). Some shortcuts have been provided to make the code more readable (e.g. :meth:`~pypot.dynamixel.io.DxlIO.enable_torque` instead of set_torque_enabled). You can refer to the documentation of :class:`~pypot.dynamixel.io.DxlIO` for a complete list of all the available methods.
+
+
+
+.. note:: PyPot provides an easy way to extend the code and automatically create methods to access new registers added by robotis.
+
+
+Using the robot abstraction
+===========================
+
+
+
+Writing a configuration file
 ----------------------------
-
-Starting/pausing primitives
----------------------------
-
-Combining primitives
---------------------
-
-Attaching a primitive to the robot
-----------------------------------
-
-Writing your own primitive
---------------------------
-
-.. .. _tutorial:
-
-.. Tutorial
-.. ========
-
-.. Installation
-.. ------------
-
-.. Installation of PyPot
-.. *********************
-
-.. Before you start, you need to make sure that the following packages are already installed on your computer:
-..     * Python 2.7
-..     * pyserial 2.6 (at least)
-..     * numpy 
-
-.. Open a terminal on your operating system and run the following command::
-
-..     python setup.py install
-
-
-.. Installation of controller device
-.. *********************************
-
-.. There are two devices that have been tested with PyPot that could be used:
-..     * USB2AX - this device is designed to manage TTL communication only
-..     * USB2Dynamixel - this device can manage both TTL and RS485 communication.
-
-.. On Windows and Mac, it will be necessary to download and install a FTDI (VCP) driver to run the USB2Dynamixel, you can find it here: http://www.ftdichip.com/Drivers/VCP.htm. Linux distributions should already come with an appropriate driver. The USB2AX device should not require a driver installation under MAC or Linux, it should already exist. For Windows XP, it should automatically install the correct driver. See :doc:`Known Issues </knownissues>` for more information on these devices.
-
-.. On the side of the USB2Dynamixel there is a switch. This is used to select the bus you wish to communicate on. This means that you cannot control two different bus protocols at the same time.
-
-
-
-.. Making Connections
-.. ------------------
-
-.. .. _open_connection:
-
-.. Opening a Connection
-.. ********************
-
-.. In order to open a connection with the device, you will need to know what port it is connected to. PyPot has a function :func:`~pypot.dynamixel.get_available_ports` which will try to auto-discover any compatible devices connected to the communication ports. 
-
-.. # TODO: write the exact explanation here
-
-.. To create a connection, open up a python terminal and type the following code::
-
-..     import pypot.dynamixel
-    
-..     port = pypot.dynamixel.get_available_ports()[0]
-..     dxl_io = pypot.dynamixel.DynamixelIO(port)
-    
-.. This should open a connection through a virtual communication port to your device. 
-.. In fact, when you open a connection with your device as above, it is important to note that it will open a connection using a default baud rate and timeout; see :class:`pypot.dynamixel.DynamixelIO` for more details. To communicate with the motors, you must ensure that this baud rate is the same baud rate that the motors are configure to use. New motors may not be automatically configured to the default baud rate, please see http://support.robotis.com/en/product/dxl_main.htm to find out what the default baud configuration is.
-
-
-.. Finding and Connecting Motors
-.. *****************************
-
-.. Pypot has been designed to work specifically with the Robotis range of motors. These motors use two different protocols to communicate: TTL (3 wire bus) and RS485 (4 wire Bus). The motors can be daisey chained together with other types of motors on the same bus *as long as the bus communicates using the same protocol*. This means that MX-28 and AX-12 can communicate on the same bus, but cannot be connected to a RX-28.
-
-.. All motors work sufficiently well with a 12V supply. Some motors can use more than 12V but you must be careful not to connect an 18V supply on a bus that contains motors that can only use 12V! Connect this 12V SMPS supply (switch mode power supply) to a Robotis SMPS2Dynamixel device which regulates the voltage coming from the SMPS. Connect your controller device and a single motor to this SMPS2Dynamixel. 
-
-.. Open your python terminal and create your controller as described in the above section :ref:`open_connection`.
-    
-.. To detect the motor and find its id you can scan the bus. To avoid spending a long time searching all possible values, you can add a list of values to test::
-
-..     dxl_io.scan([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
-..     >>> [4]
-    
-.. Or, you can use the shorthand::
-
-..     dxl_io.scan(range(10))
-..     >>> [4]
-
-.. This should produce a list of the ids of the motors that are connected to the bus. Each motor on the bus must have a unique id. This means that unless your motors have been configured in advance, it is better to connect them one by one to ensure they all have unique ids first.
-
-.. Now we have the id of the motor connected, we can begin to access its functions by using this id. Try to find out the present position (in degrees) of the motor by typing the following::
-
-..     dxl_io.get_position(4)
-..     >>> 67.8
-    
-.. You can also write a goal position (in degrees) to the motor using the following::
-
-..     dxl_io.set_position(4, 0) 
-
-.. The motors are handled in degrees where 0 is considered the central point of the motor turn. For the MX motors, the end points are -180° and 180°. For the AX and RX motors, these end points are -150° to 150°. 
-
-.. In Pypot, to handle the low level set-up of the controllers, motors and structure of the robot, we use configuration files.
-
-
-.. Making Robots!!!!!
-.. ------------------
-
-.. Creating a Configuration File
-.. *****************************
 
 .. The configuration file contains several important features that help build both your robot and the software to manage you robot written in xml. The important features are listed below:
 ..     * <Robot> 
@@ -242,10 +278,30 @@ Writing your own primitive
 .. Now you are ready to create your some behaviours for your robot.
     
 
-.. Making Robot Behaviours
-.. -----------------------
-
-.. Making a Robot Primitive
-.. ************************
 
 
+.. _sync_loop:
+
+Dynamixel controller and Sync Loop
+----------------------------------
+
+Controlling your robot
+----------------------
+
+.. Primitive
+.. =========
+
+.. What do we call "Primitive"?
+.. ----------------------------
+
+.. Starting/pausing primitives
+.. ---------------------------
+
+.. Combining primitives
+.. --------------------
+
+.. Attaching a primitive to the robot
+.. ----------------------------------
+
+.. Writing your own primitive
+.. --------------------------

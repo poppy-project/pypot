@@ -1,11 +1,10 @@
 # -*- coding: utf-8 -*-
 
 
-""" This module describes all the conversion method used to transform value
-    from the representation used by the dynamixel motor to a more standard form.
+""" 
+    This module describes all the conversion method used to transform value from the representation used by the dynamixel motor to a more standard form (e.g. degrees, volt...).
     
-    For compatibility issue all comparison method should be written in the
-    following form (even if the model is not actually used):
+    For compatibility issue all comparison method should be written in the following form (even if the model is not actually used):
         * def my_conversion_from_dxl_to_si(value, model): ...
         * def my_conversion_from_si_to_dxl(value, model): ...
     
@@ -14,7 +13,6 @@
     """
 
 import numpy
-import numbers
 import itertools
 
 
@@ -29,47 +27,35 @@ def dxl_to_degree(value, model):
     model = 'MX' if model.startswith('MX') else '*'
     max_pos, max_deg = position_range[model]
 
-    check_range(value, 0, max_pos)
-
     return round(((max_deg * float(value)) / (max_pos - 1)) - (max_deg / 2), 2)
 
 def degree_to_dxl(value, model):
     model = 'MX' if model.startswith('MX') else '*'
     max_pos, max_deg = position_range[model]
 
-    check_range(value, -max_deg / 2, max_deg / 2)
-
-    return int(round((max_pos - 1) * ((max_deg / 2 + float(value)) / max_deg), 0))
+    pos = int(round((max_pos - 1) * ((max_deg / 2 + float(value)) / max_deg), 0))
+    pos = min(max(pos, 0), max_pos - 1)
+    
+    return pos
 
 # MARK: - Speed
 
-def dxl_to_oriented_speed(value, model):
-    cw, speed = divmod(value, 1024)
-    direction = 2 * cw - 1
-    
-    return dxl_to_speed(speed, model) * direction
-
 def dxl_to_speed(value, model):
-    check_range(value, 0, 2047)
-    
     cw, speed = divmod(value, 1024)
-    direction = -1 * (2 * cw - 1)
+    direction = (-2 * cw + 1)
     
     speed_factor = 0.114 if model.startswith('MX') else 0.111
     
     return direction * (speed * speed_factor) * 6
 
 def speed_to_dxl(value, model):
-    check_range(value, -700, 700)
-    
-    # MARK: mais merde quoi
     if value < -700:
         value = -700
+    
     elif value > 700:
-        value = 0
+        value = 700
     
     direction = 1024 if value < 0 else 0
-    
     speed_factor = 0.114 if model.startswith('MX') else 0.111
     
     return direction + int(abs(value) / (6 * speed_factor))
@@ -77,33 +63,16 @@ def speed_to_dxl(value, model):
 # MARK: - Torque
 
 def dxl_to_torque(value, model):
-    check_range(value, 0, 1023)
     return round(value / 10.23, 1)
 
 def torque_to_dxl(value, model):
-    check_range(value, 0, 100)
     return int(round(value * 10.23, 0))
 
-def dxl_to_oriented_load(value, model):
+def dxl_to_load(value, model):
     cw, load = divmod(value, 1024)
-    direction = 2 * cw - 1
+    direction = -2 * cw + 1
     
     return dxl_to_torque(load, model) * direction
-
-def dxl_to_degree_speed_load(value, model):
-    return (dxl_to_degree(value[0], model),
-            dxl_to_speed(value[1], model),
-            dxl_to_torque(value[2], model))
-
-def dxl_to_oriented_degree_speed_load(value, model):
-    return (dxl_to_degree(value[0], model),
-            dxl_to_oriented_speed(value[1], model),
-            dxl_to_oriented_load(value[2], model))
-
-def degree_speed_load_to_dxl(value, model):
-    return (degree_to_dxl(value[0], model),
-            speed_to_dxl(value[1], model),
-            torque_to_dxl(value[2], model))
 
 # PID Gains
 
@@ -113,15 +82,7 @@ def dxl_to_pid(value, model):
             value[2] * 0.125)
 
 def pid_to_dxl(value, model):
-    """
-        Gains values in dynamixel motors are in between 0~254
-        P [0 ... ~31]
-        I [0 ... ~124]
-        D [0 ... ~1]
-    """
-    
     truncate = lambda x: int(max(0, min(x, 254)))
-    
     return map(lambda x, y: truncate(x * y), value, (250, 2.048, 8.0))
 
 # MARK: - Model 
@@ -173,7 +134,6 @@ def rdt_to_dxl(value, model):
 # MARK: - Temperature
 
 def dxl_to_temperature(value, model):
-    check_range(value, 10, 99)
     return value
 
 temperature_to_dxl = dxl_to_temperature
@@ -181,11 +141,9 @@ temperature_to_dxl = dxl_to_temperature
 # MARK: - Voltage
 
 def dxl_to_voltage(value, model):
-    check_range(value, 50, 250)
     return value * 0.1
 
 def voltage_to_dxl(value, model):
-    check_range(value, 5, 25)
     return int(value * 10)
 
 # MARK: - Status Return Level
@@ -193,7 +151,6 @@ def voltage_to_dxl(value, model):
 status_level = ('never', 'read', 'always')
 
 def dxl_to_status(value, model):
-    check_range(value, 0, len(status_level) - 1)
     return status_level[value]
 
 def status_to_dxl(value, model):
@@ -215,9 +172,7 @@ dynamixelErrors = ['None Error',
 def dxl_to_alarm(value, model):
     return decode_error(value)
 
-def decode_error(error_code):
-    check_range(error_code, 0, 255)
-    
+def decode_error(error_code):    
     bits = numpy.unpackbits(numpy.asarray(error_code, dtype=numpy.uint8))
     return tuple(numpy.array(dynamixelErrors)[bits == 1])
 
@@ -231,13 +186,7 @@ def alarm_to_dxl(value, model):
 
 # MARK: - Various utility functions
 
-def check_range(val, min, max):
-    pass
-    #if not (isinstance(val, numbers.Number) and min <= val <= max):
-    #    raise ValueError('{} not in range [{}, {}]'.format(val, min, max))
-
 def dxl_to_bool(value, model):
-    check_range(value, 0, 1)
     return bool(value)
 
 def bool_to_dxl(value, model):
@@ -275,8 +224,3 @@ def dxl_code_all(value, length, nb_elem):
         return list(itertools.chain(*(dxl_code(v, length) for v in value)))
     else:
         return dxl_code(value, length)
-
-
-
-
-

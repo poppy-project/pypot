@@ -6,8 +6,15 @@ import time
 import pypot.robot
 import pypot.dynamixel
 
+from pypot.dynamixel.motor import DxlAXRXMotor, DxlMXMotor
 
 def from_configuration(filename):
+    """ Returns a Robot instance created from the configuration file. 
+        
+        For details on how to write such a configuration file, you should directly
+        use one of the provided example as a template.
+        
+        """
     dom = xml.dom.minidom.parse(filename)
     return parse_robot_node(dom.firstChild)
 
@@ -47,7 +54,8 @@ def parse_controller_node(controller_node):
     dxl_motors = []
     for motor_node in motors_node:
         m, angle_limit = parse_motor_node(motor_node)
-        old_limits = dxl_io.get_angle_limit(m.id)[0] # Suppose qu'il n'y a pas de timeout
+        # We suppose here that they won't be any timeout
+        old_limits = dxl_io.get_angle_limit((m.id, ))[0]
         d = numpy.linalg.norm(numpy.asarray(angle_limit) - numpy.asarray(old_limits))
         
         if d > 1:
@@ -67,7 +75,12 @@ def parse_motor_node(motor_node):
     id = int(motor_node.getAttribute('id'))
     direct = True if motor_node.getAttribute('orientation') == 'direct' else False
     offset = float(motor_node.getAttribute('offset'))
-    motor = pypot.dynamixel.DxlMotor(id, name, direct, offset)
+    
+    type = str(motor_node.getAttribute('type'))
+    if type.startswith('MX'):
+        motor = DxlMXMotor(id, name, direct, offset)
+    else:
+        motor = DxlAXRXMotor(id, name, direct, offset)
 
     angle_limit_node = motor_node.getElementsByTagName('angle_limits')[0]
     angle_limit = eval(angle_limit_node.firstChild.data)

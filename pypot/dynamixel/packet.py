@@ -21,7 +21,7 @@ class DxlInstruction(object):
 class DxlPacketHeader(namedtuple('DxlPacketHeader', ('id', 'packet_length'))):
     """ This class represents the header of a Dxl Packet.
         
-        They are constructed as follows [0xFF, 0xFF, ID, LENGTH] where :
+        They are constructed as follows [0xFF, 0xFF, ID, LENGTH] where:
             * ID represents the ID of the motor who received (resp. sent) the intruction (resp. status) packet.
             * LENGTH represents the length of the rest of the packet
         

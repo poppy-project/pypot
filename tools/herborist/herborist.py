@@ -127,7 +127,7 @@ class HerboristApp(PyQt4.QtGui.QApplication):
             baud_root.setFlags(PyQt4.QtCore.Qt.ItemFlags(f))
 
             dxl_io = get_dxl_connection(self.port, b)
-            models = dxl_io.get_model(*ids)
+            models = dxl_io.get_model(ids)
             release_dxl_connection()
             
             for id, model in zip(ids, models):
@@ -200,7 +200,7 @@ class HerboristApp(PyQt4.QtGui.QApplication):
                         break
             
                     if dxl_io.ping(id):
-                        model = dxl_io.get_model(id)[0]
+                        model = dxl_io.get_model((id, ))[0]
                         PyQt4.QtGui.QTreeWidgetItem(baud_root, ['', str(id), model])
 
                     self.part_done.emit(self.scan_progress.value() + 1)
@@ -235,15 +235,15 @@ class HerboristApp(PyQt4.QtGui.QApplication):
                 getattr(self.window, widget_name).setEnabled(False)
 
         dxl_io = get_dxl_connection(self.port, self.baudrate)
-        srl = dxl_io.get_status_return_level(self.id, convert=False)[0]
+        srl = dxl_io.get_status_return_level((self.id, ), convert=False)[0]
         if srl != 0:
-            model = dxl_io.get_model(self.id)[0]
-            rdt = dxl_io.get_return_delay_time(self.id)[0]
-            firmware = dxl_io.get_firmware(self.id)[0]
-            torque_max = dxl_io.get_max_torque(self.id)[0]
-            angle_limit = dxl_io.get_angle_limit(self.id)[0]
-            goal_pos = dxl_io.get_goal_position(self.id)[0]
-            torque_enable = dxl_io.is_torque_enabled(self.id)[0]
+            model = dxl_io.get_model((self.id, ))[0]
+            rdt = dxl_io.get_return_delay_time((self.id, ))[0]
+            firmware = dxl_io.get_firmware((self.id, ))[0]
+            torque_max = dxl_io.get_max_torque((self.id, ))[0]
+            angle_limit = dxl_io.get_angle_limit((self.id, ))[0]
+            goal_pos = dxl_io.get_goal_position((self.id, ))[0]
+            torque_enable = dxl_io.is_torque_enabled((self.id, ))[0]
         release_dxl_connection()
 
         self.window.id_spinbox.setValue(self.id)
@@ -295,7 +295,7 @@ class HerboristApp(PyQt4.QtGui.QApplication):
         
         for b, ids in self.selected_motors.iteritems():
             dxl_io = get_dxl_connection(self.port, b)
-            (dxl_io.enable_torque if torque_enable else dxl_io.disable_torque)(*ids)
+            (dxl_io.enable_torque if torque_enable else dxl_io.disable_torque)(ids)
             time.sleep(0.05)
             release_dxl_connection()
     

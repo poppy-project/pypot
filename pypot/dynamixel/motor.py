@@ -15,12 +15,13 @@ class DxlMotor(object):
         self._offset = offset
     
         self._values = defaultdict(int)
-        self._compliant = True
+        self._values['compliant'] = True
     
     def __repr__(self):
-        return '<DxlMotor name={self.name} id={self.id} pos={self.position}>'.format(self=self)
+        return '<DxlMotor name={self.name} id={self.id} pos={self.present_position}>'.format(self=self)
 
-    def _make_accessor(name, rw=False):
+    @classmethod
+    def _make_accessor(cls, name, rw=False):
         return property(fget=lambda self: getitem(self._values, name),
                         fset=(lambda self, value: setitem(self._values, name, value)) if rw else None)
     
@@ -32,18 +33,6 @@ class DxlMotor(object):
     def name(self):
         return self._name
 
-    present_speed = _make_accessor('present_speed')
-    present_load = _make_accessor('present_load')
-
-    moving_speed = _make_accessor('moving_speed', rw=True)
-    torque_limit = _make_accessor('torque_limit', rw=True)
-
-    pid = _make_accessor('pid', rw=True)
-
-    present_voltage = _make_accessor('present_voltage')
-    present_temperature = _make_accessor('present_temperature')
-    
-    
     @property
     def present_position(self):
         pos = self._values['present_position']
@@ -58,25 +47,27 @@ class DxlMotor(object):
     def goal_position(self, value):
         value = (value + self.offset) if self.direct else -(value + self.offset)
         self._values['goal_position'] = value
-
+    
     @property
-    def position(self):
-        return self.present_position
-
-    @position.setter
-    def position(self, value):
-        self.goal_position = value
+    def present_speed(self):
+        speed = self._values['present_speed']
+        return (speed if self.direct else -speed)
+    
+    @property
+    def present_load(self):
+        load = self._values['present_load']
+        return (load if self.direct else -load)
 
     @property
     def compliant(self):
-        return self._compliant
+        return bool(self._values['compliant'])
 
     @compliant.setter
     def compliant(self, value):
         # Change the goal_position only if you switch from compliant to not compliant mode
-        if not value and self._compliant:
+        if not value and self.compliant:
             self.goal_position = self.present_position
-        self._compliant = value
+        self._values['compliant'] = value
 
     @property
     def direct(self):
@@ -95,3 +86,30 @@ class DxlMotor(object):
 
         if wait:
             time.sleep(duration)
+
+    
+DxlMotor.moving_speed = DxlMotor._make_accessor('moving_speed', rw=True)
+DxlMotor.torque_limit = DxlMotor._make_accessor('torque_limit', rw=True)
+    
+DxlMotor.present_voltage = DxlMotor._make_accessor('present_voltage')
+DxlMotor.present_temperature = DxlMotor._make_accessor('present_temperature')
+
+
+class DxlAXRXMotor(DxlMotor):
+    def __init__(self, id, name=None,
+                 direct=True, offset=0.0):
+        DxlMotor.__init__(self, id, name, direct, offset)
+        self.max_pos = 150
+
+
+DxlAXRXMotor.compliance_margin = DxlAXRXMotor._make_accessor('compliance_margin', rw=True)
+DxlAXRXMotor.compliance_slope = DxlAXRXMotor._make_accessor('compliance_slope', rw=True)
+
+
+class DxlMXMotor(DxlMotor):
+    def __init__(self, id, name=None,
+                 direct=True, offset=0.0):
+        DxlMotor.__init__(self, id, name, direct, offset)
+        self.max_pos = 180
+
+DxlMXMotor.pid = DxlMXMotor._make_accessor('pid', rw=True)

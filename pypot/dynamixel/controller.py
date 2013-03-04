@@ -30,8 +30,13 @@ class DxlController(object):
                            'Thread-get_{}'.format(regname))
     
     def _get_register(self, regname, varname):
-        values = getattr(self._dxl_io, 'get_{}'.format(regname))(*self._ids)
-        for m, val in zip(self._motors, values):
+        motors = filter(lambda m: hasattr(m, varname), self._motors)
+        if not motors:
+            return
+        ids = [m.id for m in motors]
+        
+        values = getattr(self._dxl_io, 'get_{}'.format(regname))(ids)
+        for m, val in zip(motors, values):
             m._values[varname] = val
 
     def add_write_loop(self, freq, regname, varname=None):
@@ -44,8 +49,13 @@ class DxlController(object):
                            'Thread-set_{}'.format(regname))
 
     def _set_register(self, regname, varname):
-        values = (m._values[varname] for m in self._motors)
-        getattr(self._dxl_io, 'set_{}'.format(regname))(dict(zip(self._ids, values)))
+        motors = filter(lambda m: hasattr(m, varname), self._motors)
+        if not motors:
+            return
+        ids = [m.id for m in motors]
+        
+        values = (m._values[varname] for m in motors)
+        getattr(self._dxl_io, 'set_{}'.format(regname))(dict(zip(ids, values)))
 
 
 class BaseDxlController(DxlController):
@@ -56,16 +66,18 @@ class BaseDxlController(DxlController):
         self.add_sync_loop(50, self._set_pos_speed_load, 'Thread-set_pos_speed_load')
 
         self.add_write_loop(10, 'pid_gain', 'pid')
+        self.add_write_loop(10, 'compliance_margin')
+        self.add_write_loop(10, 'compliance_slope')
 
         self.add_read_loop(1, 'present_voltage')
         self.add_read_loop(1, 'present_temperature')
         
-        torques = self._dxl_io.is_torque_enabled(*self._ids)
+        torques = self._dxl_io.is_torque_enabled(self._ids)
         for m, c in zip(self._motors, torques):
             m.compliant = not c
         self._old_torques = torques
 
-        values = self._dxl_io.get_goal_position_speed_load(*self._ids)
+        values = self._dxl_io.get_goal_position_speed_load(self._ids)
         positions, speeds, loads = zip(*values)
         for m, p, s, l in zip(self._motors, positions, speeds, loads):
             m._values['goal_position'] = p
@@ -74,7 +86,7 @@ class BaseDxlController(DxlController):
 
 
     def _get_pos_speed_load(self):
-        values = self._dxl_io.get_present_position_speed_load(*self._ids)
+        values = self._dxl_io.get_present_position_speed_load(self._ids)
 
         if not values:
             return

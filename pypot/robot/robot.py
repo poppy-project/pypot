@@ -1,14 +1,29 @@
 import time
 
 import pypot.robot.xmlparser
-import pypot.primitive.manager
 import pypot.dynamixel.controller
 
+
 class Robot(object):
+    """
+        This class is used to regroup all motors (and soon sensors) of your robots.
+        
+        Most of the time, you do not want to directly instantiate this class, 
+        but you rather want to use the factory which creates a robot instance 
+        from a configuration file (currently a xml file) (LINK!!!).
+        
+        This class encapsulates the different controllers (such as dynamixel ones)
+        that automatically synchronize the virtual sensors/effectors instances held
+        by the robot class with the real devices. By doing so, each sensor/efector 
+        can be synchronized at a different frequency.
+        
+        This class also provides a generic motors accessor in order to (more or less)
+        easily extends this class to other types of motor.
+        
+        """
     def __init__(self):
         self._motors = []
         self._dxl_controllers = []    
-        self._primitive_manager = pypot.primitive.manager.PrimitiveManager(self.motors)
     
     def __repr__(self):
         return '<Robot motors={}>'.format(self.motors)
@@ -23,34 +38,39 @@ class Robot(object):
         self._motors.extend(dxl_motors)
 
     def start_sync(self):
-        self._primitive_manager.start()
+        """ Starts all the synchonization loop (sensor/effector controllers). """
         map(lambda c: c.start(), self._dxl_controllers)
 
     def stop_sync(self):
-        self._primitive_manager.stop()
+        """ Stops all the synchonization loop (sensor/effector controllers). """
         map(lambda c: c.stop(), self._dxl_controllers)
-    
-    def attach_primitive(self, primitive, name):
-        setattr(self, name, primitive)
-    
-    def attach_move(self, move, name):
-        move_player = pypot.robot.MovePlayer(self, move)
-        setattr(self, name, move_player)
 
     @property
     def motors(self):
-        """ Returs all the motors attached to the robot. """
+        """ Returns all the motors attached to the robot. """
         return self._motors
 
     @property
     def compliant(self):
+        """ Returns a list of all the compliant motors. """
         return filter(lambda m: m.compliant, self.motors)
 
+    @compliant.setter
     def compliant(self, is_compliant):
+        """ Switches all motors to compliant (resp. non compliant) mode. """
         for m in self.motors:
             m.compliant = is_compliant
 
     def goto_position(self, position_for_motors, duration, wait=False):
+        """ Moves a subset of the motors to a position within a specific duration.
+            
+            :param dict position_for_motors: which motors you want to move {motor_name: pos, motor_name: pos,...}
+            :param float duration: duration of the move
+            :param bool wait: whether or not to wait for the end of the move
+            
+            .. note::In case of dynamixel motors, the speed is automatically adjusted so the goal position is reached after the chosen duration.
+            
+            """
         for motor_name, position in position_for_motors.iteritems():
             m = getattr(self, motor_name)
             m.goto_position(position, duration)
@@ -59,9 +79,9 @@ class Robot(object):
             time.sleep(duration)
 
     def power_up(self):
+        """ Changes all settings to guarantee the motors will be used at their maximum power. """
         for m in self.motors:
             m.compliant = False
             m.moving_speed = 0
             m.torque_limit = 100.0
 
-# TODO Smooth compliant
