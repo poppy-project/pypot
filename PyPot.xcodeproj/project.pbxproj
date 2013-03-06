@@ -15,6 +15,8 @@
 		A812C6B816132D3A0007269F /* intro.rst */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = intro.rst; sourceTree = "<group>"; };
 		A812C6BB16132D3A0007269F /* tutorial.rst */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = tutorial.rst; sourceTree = "<group>"; };
 		A812C6BE161331350007269F /* knownissues.rst */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = knownissues.rst; sourceTree = "<group>"; };
+		A820BEB816E4B022006ECF66 /* tuto_low_level.rst */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = tuto_low_level.rst; sourceTree = "<group>"; };
+		A820BEB916E4B02D006ECF66 /* tuto_controller.rst */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = tuto_controller.rst; sourceTree = "<group>"; };
 		A827869B16972736004D4D50 /* ergo_robot.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = ergo_robot.xml; sourceTree = "<group>"; };
 		A827869D16972971004D4D50 /* tools.rst */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = tools.rst; sourceTree = "<group>"; };
 		A82D52C815F2599E00ED73DC /* io.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = io.py; sourceTree = "<group>"; };
@@ -46,6 +48,8 @@
 				A812C6B716132D3A0007269F /* index.rst */,
 				A812C6B816132D3A0007269F /* intro.rst */,
 				A812C6BB16132D3A0007269F /* tutorial.rst */,
+				A820BEB816E4B022006ECF66 /* tuto_low_level.rst */,
+				A820BEB916E4B02D006ECF66 /* tuto_controller.rst */,
 				A827869D16972971004D4D50 /* tools.rst */,
 				A812C6B616132D3A0007269F /* FAQ.rst */,
 				A812C6BE161331350007269F /* knownissues.rst */,

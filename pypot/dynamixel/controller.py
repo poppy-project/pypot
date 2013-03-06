@@ -4,6 +4,13 @@ import time
 
 class DxlController(object):
     def __init__(self, dxl_io, dxl_motors):
+        """ Synchronizes the reading/writing of :class:`~pypot.dynamixel.motor.DxlMotor` with the real motors.
+            
+            This class handles synchronization loops that automatically read/write values from the "software" :class:`~pypot.dynamixel.motor.DxlMotor` with their "hardware" equivalent. Those loops shared a same :class:`~pypot.dynamixel.io.DxlIO` connection to avoid collision in the bus. Each loop run within its own thread at its own frequency.
+            
+            .. warning:: As all the loop attached to a controller shared the same bus, you should make sure that they can run without slowing down the other ones.
+            
+            """
         self._dxl_io = dxl_io
         
         self._motors = dxl_motors
@@ -12,19 +19,23 @@ class DxlController(object):
         self._loops = []
 
     def start(self):
+        """ Starts all the synchronization loops. """
         for l in self._loops:
             l.start()
             l._started.wait()    
 
     def stop(self):
+        """ Stops al the synchronization loops (they can not be started again). """
         map(_RepeatedTimer.stop, self._loops)
     
             
     def add_sync_loop(self, freq, function, name):
+        """ Adds a synchronization loop that will run a function at a predefined freq. """
         sl = _RepeatedTimer(freq, function, name)
         self._loops.append(sl)
 
     def add_read_loop(self, freq, regname, varname=None):
+        """ Adds a read loop that will get the value from the specified register and set it to the :class:`~pypot.dynamixel.motor.DxlMotor`. """
         varname = varname if varname else regname
         self.add_sync_loop(freq, lambda: self._get_register(regname, varname),
                            'Thread-get_{}'.format(regname))
@@ -40,6 +51,7 @@ class DxlController(object):
             m._values[varname] = val
 
     def add_write_loop(self, freq, regname, varname=None):
+        """ Adds a write loop that will get the value from :class:`~pypot.dynamixel.motor.DxlMotor` and set it to the specified register. """
         varname = varname if varname else regname
 
         # We force a get to initalize the synced var to their current values
@@ -59,6 +71,15 @@ class DxlController(object):
 
 
 class BaseDxlController(DxlController):
+    """ Implements a basic controller that synchronized the most frequently used values.
+        
+        More precisely, this controller:
+            * reads the present position, speed, load at 50Hz
+            * writes the goal position, moving speed and torque limit at 50Hz
+            * writes the pid gains (or compliance margin and slope) at 10Hz
+            * reads the present voltage and temperature at 1Hz
+        
+        """
     def __init__(self, dxl_io, dxl_motors):
         DxlController.__init__(self, dxl_io, dxl_motors)
         

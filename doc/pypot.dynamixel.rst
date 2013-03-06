@@ -10,24 +10,25 @@
     :members:
     :undoc-members:
     :show-inheritance:
+
+
+:mod:`motor` Module
+-------------------
+
+.. automodule:: pypot.dynamixel.motor
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
     
-.. :mod:`controller` Module
-.. ------------------------
+:mod:`controller` Module
+------------------------
 
-.. .. automodule:: pypot.dynamixel.controller
-..     :members:
-..     :undoc-members:
-..     :show-inheritance:
-
-
-.. :mod:`motor` Module
-.. -------------------
-
-.. .. automodule:: pypot.dynamixel.motor
-..     :members:
-..     :undoc-members:
-..     :show-inheritance:
-
+.. automodule:: pypot.dynamixel.controller
+    :members:
+    :undoc-members:
+    :show-inheritance:
+    
     
 :mod:`error` Module
 -------------------

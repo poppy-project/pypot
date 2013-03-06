@@ -1,8 +1,6 @@
-robot Package
-=============
-
 :mod:`robot` Package
---------------------
+====================
+
 
 .. automodule:: pypot.robot
     :members:
