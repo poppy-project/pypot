@@ -612,7 +612,7 @@ _add_control('LED',
 
 _add_control('pid gain',
              address=0x1A, length=1, nb_elem=3,
-             models=('MX-28', ),
+             models=('MX-28', 'MX-64', 'MX-106'),
              dxl_to_si=dxl_to_pid,
              si_to_dxl=pid_to_dxl)
 
