@@ -537,6 +537,13 @@ _add_control('model',
              access=_DxlAccess.readonly,
              dxl_to_si=dxl_to_model)
 
+_add_control('drive mode',
+             address=0x0A, length=1,
+             access=_DxlAccess.readwrite,
+             models=('MX-64', 'MX-106'), #@warning maybe better to update dynamixelModel with extra filter.
+             dxl_to_si=dxl_to_drive_mode,
+             si_to_dxl=drive_mode_to_dxl)
+
 _add_control('firmware',
              address=0x02, length=1,
              access=_DxlAccess.readonly)

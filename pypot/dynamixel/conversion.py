@@ -99,6 +99,18 @@ dynamixelModels = {
 def dxl_to_model(value):
     return dynamixelModels[value]
 
+# MARK: - Drive Mode
+
+def check_bit(value, offset):
+    return bool(value & (1 << offset))
+
+def dxl_to_drive_mode(value, model):
+    return ('reverse' if check_bit(value, 0) else 'normal',
+            'slave' if check_bit(value, 1) else 'master')
+
+def drive_mode_to_dxl(value, model):
+    return (int('slave' in value) << 1 | int('reverse' in value))
+
 # MARK: - Baudrate 
 
 dynamixelBaudrates = {
