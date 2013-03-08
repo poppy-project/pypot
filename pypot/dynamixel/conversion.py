@@ -99,6 +99,89 @@ dynamixelModels = {
 def dxl_to_model(value):
     return dynamixelModels[value]
 
+# MARK: - Control Table
+
+def dxl_to_control_table(value, model):
+    if len(value) == 50:
+        return (
+            ('MODEL NUMBER' , str(value[0] + (value[1] << 8))),
+            ('VERSION' , str(value[2])),
+            ('ID' , str(value[3])),
+            ('BAUD RATE' , str(value[4])),
+            ('RETURN DELAY TIME' , str(value[5])),
+            ('CW ANGLE LIMIT' , str(value[6] + (value[7] << 8))),
+            ('CCW ANGLE LIMIT' , str(value[8] + (value[9] << 8))),
+            ('LIMIT TEMPERATURE' , str(value[11])),
+            ('LOW LIMIT VOLTAGE' , str(value[12])),
+            ('HIGH LIMIT VOLTAGE' , str(value[13])),
+            ('MAX TORQUE' , str(value[14] + (value[15] << 8))),
+            ('RETURN LEVEL' , str(value[16])),
+            ('ALARM LED' , str(value[17])),
+            ('ALARM SHUTDOWN' , str(value[18])),
+            ('DOWN CALIBRATION' , str(value[20] + (value[21] << 8))),
+            ('UP CALIBRATION' , str(value[22] + (value[23] << 8))),
+            ('TORQUE ENABLE' , str(value[24])),
+            ('LED' , str(value[25])),
+            ('CW COMPLIANCE MARGIN' , str(value[26])),
+            ('CCW COMPLIANCE MARGIN' , str(value[27])),
+            ('CW COMPLIANCE SLOPE' , str(value[28])),
+            ('CCW COMPLIANCE SLOPE' , str(value[29])),
+            ('GOAL POSITION' , str(value[30] + (value[31] << 8))),
+            ('GOAL SPEED' , str(value[32] + (value[33] << 8))),
+            ('TORQUE LIMIT' , str(value[34] + (value[35] << 8))),
+            ('PRESENT POSITION' , str(value[36] + (value[37] << 8))),
+            ('PRESENT SPEED' , str(value[38] + (value[39] << 8))),
+            ('PRESENT LOAD' , str(value[40] + (value[41] << 8))),
+            ('PRESENT VOLTAGE' , str(value[42])),
+            ('PRESENT TEMPERATURE' , str(value[43])),
+            ('REGISTERED INSTRUCTION' , str(value[44])),
+            ('MOVING' , str(value[46])),
+            ('LOCK' , str(value[47])),
+            ('PUNCH' , str(value[48] + (value[49] << 8)))
+        )
+    elif len(value) == 74:
+        return (
+            ('MODEL NUMBER' , str(value[0] + (value[1] << 8))),
+            ('VERSION' , str(value[2])),
+            ('ID' , str(value[3])),
+            ('BAUD RATE' , str(value[4])),
+            ('RETURN DELAY TIME' , str(value[5])),
+            ('CW ANGLE LIMIT' , str(value[6] + (value[7] << 8))),
+            ('CCW ANGLE LIMIT' , str(value[8] + (value[9] << 8))),
+            ('LIMIT TEMPERATURE' , str(value[11])),
+            ('LOW LIMIT VOLTAGE' , str(value[12])),
+            ('HIGH LIMIT VOLTAGE' , str(value[13])),
+            ('MAX TORQUE' , str(value[14] + (value[15] << 8))),
+            ('RETURN LEVEL' , str(value[16])),
+            ('ALARM LED' , str(value[17])),
+            ('ALARM SHUTDOWN' , str(value[18])),
+            ('DOWN CALIBRATION' , str(value[20] + (value[21] << 8))),
+            ('UP CALIBRATION' , str(value[22] + (value[23] << 8))),
+            ('TORQUE ENABLE' , str(value[24])),
+            ('LED' , str(value[25])),
+            ('D GAIN' , str(value[26])),
+            ('I GAIN' , str(value[27])),
+            ('P GAIN' , str(value[28])),
+            ('GOAL POSITION' , str(value[30] + (value[31] << 8))),
+            ('GOAL SPEED' , str(value[32] + (value[33] << 8))),
+            ('TORQUE LIMIT' , str(value[34] + (value[35] << 8))),
+            ('PRESENT POSITION' , str(value[36] + (value[37] << 8))),
+            ('PRESENT SPEED' , str(value[38] + (value[39] << 8))),
+            ('PRESENT LOAD' , str(value[40] + (value[41] << 8))),
+            ('PRESENT VOLTAGE' , str(value[42])),
+            ('PRESENT TEMPERATURE' , str(value[43])),
+            ('REGISTERED INSTRUCTION' , str(value[44])),
+            ('MOVING' , str(value[46])),
+            ('LOCK' , str(value[47])),
+            ('PUNCH' , str(value[48] + (value[49] << 8))),
+            ('CURRENT' , str(value[68] + (value[69] << 8))),
+            ('TORQUE CONTROL MODE' , str(value[70])),
+            ('GOAL TORQUE' , str(value[71] + (value[72] << 8))),
+            ('GOAL ACCELERATION' , str(value[73]))
+        )
+    else:
+        return value
+
 # MARK: - Drive Mode
 
 def check_bit(value, offset):
