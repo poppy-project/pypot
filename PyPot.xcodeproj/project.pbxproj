@@ -36,6 +36,12 @@
 		A8A0399316D661D10004BB6A /* ErgoRobots.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = ErgoRobots.jpg; sourceTree = "<group>"; };
 		A8BED67515BFFFAA00229A79 /* __init__.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = __init__.py; sourceTree = "<group>"; };
 		A8BED67615BFFFB900229A79 /* __init__.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = __init__.py; sourceTree = "<group>"; };
+		A8C16FB61713195C007B8903 /* __init__.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = __init__.py; sourceTree = "<group>"; };
+		A8C16FB81713195C007B8903 /* manager.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = manager.py; sourceTree = "<group>"; };
+		A8C16FB91713195C007B8903 /* primitive.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = primitive.py; sourceTree = "<group>"; };
+		A8C16FBB1713195C007B8903 /* server.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = server.py; sourceTree = "<group>"; };
+		A8C16FBC1713195C007B8903 /* utils.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = utils.py; sourceTree = "<group>"; };
+		A8C16FBD17131DA1007B8903 /* tmp.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = tmp.xml; sourceTree = "<group>"; };
 		A8C7D0DF15F79E6A007C5E66 /* controller.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = controller.py; sourceTree = "<group>"; };
 		A8C7D0E015F7A39C007C5E66 /* motor.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = motor.py; sourceTree = "<group>"; };
 		A8C7D0E115F7A926007C5E66 /* robot.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = robot.py; sourceTree = "<group>"; };
@@ -89,6 +95,7 @@
 			children = (
 				A82103B2170B2FAF00A1913F /* ergo_robot.xml */,
 				A82103B4170B2FAF00A1913F /* torso.xml */,
+				A8C16FBD17131DA1007B8903 /* tmp.xml */,
 			);
 			path = configuration;
 			sourceTree = "<group>";
@@ -108,6 +115,7 @@
 			children = (
 				A8BED67515BFFFAA00229A79 /* __init__.py */,
 				A8C7D0DE15F79E07007C5E66 /* robot */,
+				A8C16FB51713195C007B8903 /* primitive */,
 				A8BED67315BFFF9B00229A79 /* dynamixel */,
 				A82103AB170B2A3A00A1913F /* tools */,
 				A83A7D7A16AFF9D80009BA91 /* utils.py */,
@@ -127,6 +135,18 @@
 				A8656EE0165BC43C006B73F3 /* error.py */,
 			);
 			path = dynamixel;
+			sourceTree = "<group>";
+		};
+		A8C16FB51713195C007B8903 /* primitive */ = {
+			isa = PBXGroup;
+			children = (
+				A8C16FB61713195C007B8903 /* __init__.py */,
+				A8C16FB81713195C007B8903 /* manager.py */,
+				A8C16FB91713195C007B8903 /* primitive.py */,
+				A8C16FBB1713195C007B8903 /* server.py */,
+				A8C16FBC1713195C007B8903 /* utils.py */,
+			);
+			path = primitive;
 			sourceTree = "<group>";
 		};
 		A8C7D0DE15F79E07007C5E66 /* robot */ = {

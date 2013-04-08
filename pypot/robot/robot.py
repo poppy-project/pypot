@@ -1,6 +1,7 @@
 import time
 
 import pypot.robot.xmlparser
+import pypot.primitive.manager
 import pypot.dynamixel.controller
 
 
@@ -23,7 +24,8 @@ class Robot(object):
         """
     def __init__(self):
         self._motors = []
-        self._dxl_controllers = []    
+        self._dxl_controllers = []
+        self._primitive_manager = pypot.primitive.manager.PrimitiveManager(self.motors)
     
     def __repr__(self):
         return '<Robot motors={}>'.format(self.motors)
@@ -39,11 +41,17 @@ class Robot(object):
 
     def start_sync(self):
         """ Starts all the synchonization loop (sensor/effector controllers). """
+        self._primitive_manager.start()
         map(lambda c: c.start(), self._dxl_controllers)
 
     def stop_sync(self):
         """ Stops all the synchonization loop (sensor/effector controllers). """
+        self._primitive_manager.stop()
         map(lambda c: c.stop(), self._dxl_controllers)
+    
+    def attach_primitive(self, primitive, name):
+        setattr(self, name, primitive)
+    
 
     @property
     def motors(self):
