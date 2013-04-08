@@ -10,7 +10,7 @@ class Robot(object):
         
         Most of the time, you do not want to directly instantiate this class, 
         but you rather want to use the factory which creates a robot instance 
-        from a configuration file (currently a xml file) (LINK!!!).
+        from a configuration file, currently a xml file (see :ref:`config_file`).
         
         This class encapsulates the different controllers (such as dynamixel ones)
         that automatically synchronize the virtual sensors/effectors instances held

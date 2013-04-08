@@ -1,13 +1,34 @@
 #!/usr/bin/env python
 
-from distutils.core import setup
+from setuptools import setup, find_packages
 
-setup(name='PyPot',
+
+setup(name='pypot',
       version='1.0.0',
-      author='Haylee Fogg, Matthieu Lapeyre, Pierre Rouanet',
+      packages=find_packages(),
+      
+      install_requires=['numpy', 'pyserial'],
+      
+      extras_require={
+        'tools': [], # Extras require: PyQt4 (not a PyPi packet)
+        'doc': ['sphinx', 'sphinx-bootstrap-theme'],
+      },
+      
+      entry_points={
+        'gui_scripts': [
+                      'herborist = pypot.tools.herborist.herborist:main [tools]',
+                      ],
+      },
+      
+      setup_requires = ['setuptools_git >= 0.3',],
+      
+      include_package_data=True,
+      exclude_package_data={'': ['README', '.gitignore']},
+      
+      zip_safe=True,
+      
+      author='Pierre Rouanet, Matthieu Lapeyre, Haylee Fogg',
       author_email='pierre.rouanet@gmail.com',
-      url='https://bitbucket.org/pierrerouanet/pypot',
       description='Python Library for Robot Control',
-      requires=['numpy', 'serial'],
-      packages=['pypot', 'pypot.robot', 'pypot.dynamixel'],
+      url='https://bitbucket.org/pierrerouanet/pypot',
       )

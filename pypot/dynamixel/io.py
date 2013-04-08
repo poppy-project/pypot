@@ -27,6 +27,8 @@ class _DxlAccess(object):
 
 
 class DxlIO(object):
+    """ Low-level class to handle the serial communication with the robotis motors. """
+    
     __used_ports = set()
     
     # MARK: - Open, Close and Flush the communication
@@ -140,7 +142,7 @@ class DxlIO(object):
 
     @property
     def port(self):
-        """ Port used by the DxlIO. If set, will re-open a new connection. """
+        """ Port used by the :class:`~pypot.dynamixel.io.DxlIO`. If set, will re-open a new connection. """
         return self._serial.port
     
     @port.setter
@@ -149,7 +151,7 @@ class DxlIO(object):
     
     @property
     def baudrate(self):
-        """ Baudrate used by the DxlIO. If set, will re-open a new connection. """
+        """ Baudrate used by the :class:`~pypot.dynamixel.io.DxlIO`. If set, will re-open a new connection. """
         return self._serial.baudrate
             
     @baudrate.setter
@@ -158,7 +160,7 @@ class DxlIO(object):
             
     @property
     def timeout(self):
-        """ Timeout used by the DxlIO. If set, will re-open a new connection. """
+        """ Timeout used by the :class:`~pypot.dynamixel.io.DxlIO`. If set, will re-open a new connection. """
         return self._serial.timeout
             
     @timeout.setter
@@ -175,7 +177,7 @@ class DxlIO(object):
     def ping(self, id):
         """ Pings the motor with the specified id.
             
-            .. note:: The motor id should always be included in [0, 253].
+            .. note:: The motor id should always be included in [0, 253]. 254 is used for broadcast.
             
             """
         pp = DxlPingPacket(id)
@@ -186,7 +188,7 @@ class DxlIO(object):
             return False
 
     def scan(self, ids=xrange(254)):
-        """ Pings all ids, by default it finds all the motors connected to the bus. """
+        """ Pings all ids within the specified list, by default it finds all the motors connected to the bus. """
         return filter(self.ping, ids)
     
     # MARK: - Specific Getter / Setter
@@ -296,19 +298,19 @@ class DxlIO(object):
         self._set_angle_limit(limit_for_id, convert=convert)
 
     def switch_led_on(self, ids):
-        """ Switch on the LED of the motors with the specified ids. """
+        """ Switches on the LED of the motors with the specified ids. """
         self._set_LED(dict(zip(ids, itertools.repeat(True))))
             
     def switch_led_off(self, ids):
-        """ Switch off the LED of the motors with the specified ids. """
+        """ Switches off the LED of the motors with the specified ids. """
         self._set_LED(dict(zip(ids, itertools.repeat(False))))
             
     def enable_torque(self, ids):
-        """ Enable torque of the motors with the specified ids. """
+        """ Enables torque of the motors with the specified ids. """
         self._set_torque_enable(dict(zip(ids, itertools.repeat(True))))
             
     def disable_torque(self, ids):
-        """ Disable torque of the motors with the specified ids. """
+        """ Disables torque of the motors with the specified ids. """
         self._set_torque_enable(dict(zip(ids, itertools.repeat(False))))
     
     def get_pid_gain(self, ids, **kwargs):
@@ -491,9 +493,11 @@ class DxlIO(object):
 # MARK: - Dxl Errors
 
 class DxlError(Exception):
+    """ Base class for all errors encountered using :class:`~pypot.dynamixel.io.DxlIO`. """
     pass
 
 class DxlCommunicationError(DxlError):
+    """ Base error for communication error encountered when using :class:`~pypot.dynamixel.io.DxlIO`. """
     def __init__(self, message, instruction_packet):
         self.message = message
         self.instruction_packet = instruction_packet
@@ -503,6 +507,7 @@ class DxlCommunicationError(DxlError):
 
 
 class DxlTimeoutError(DxlCommunicationError):
+    """ Timeout error encountered when using :class:`~pypot.dynamixel.io.DxlIO`. """
     def __init__(self, instruction_packet, ids):
         DxlCommunicationError.__init__(self, 'timeout occured', instruction_packet)
         self.ids = ids

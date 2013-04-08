@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*
+
 import time
 import numpy
 
@@ -6,6 +8,22 @@ from operator import getitem, setitem
 
 
 class DxlMotor(object):
+    """ High-level class used to represent and control a generic dynamixel motor.
+        
+        This class provides all level access to:
+            * motor id
+            * motor name
+            * position/speed/load (read and write)
+            * compliant
+            * motor orientation and offset
+            * temperature
+            * voltage
+        
+        This class represents a generic robotis motor and you define your own subclass for specific motors (see :class:`~pypot.dynamixel.motor.DxlMXMotor` or :class:`~pypot.dynamixel.motor.DxlAXRXMotor`).
+        
+        Those properties are synchronized with the real motors values thanks to a :class:`~pypot.dynamixel.controller.DxlController`.
+        
+        """
     def __init__(self, id, name=None,
                  direct=True, offset=0.0):
         self._id = id
@@ -21,25 +39,30 @@ class DxlMotor(object):
         return '<DxlMotor name={self.name} id={self.id} pos={self.present_position}>'.format(self=self)
 
     @classmethod
-    def _make_accessor(cls, name, rw=False):
+    def _make_accessor(cls, name, rw=False, doc=None):
         return property(fget=lambda self: getitem(self._values, name),
-                        fset=(lambda self, value: setitem(self._values, name, value)) if rw else None)
+                        fset=(lambda self, value: setitem(self._values, name, value)) if rw else None,
+                        doc=doc)
     
     @property
     def id(self):
+        """ Id of the motor (readonly). """
         return self._id
     
     @property
     def name(self):
+        """ Name of the motor (readonly). """
         return self._name
 
     @property
     def present_position(self):
+        """ Present position (in degrees) of the motor (readonly). """
         pos = self._values['present_position']
         return (pos if self.direct else -pos) - self.offset
     
     @property
     def goal_position(self):
+        """ Goal position (in degrees) of th motor. """
         pos = self._values['goal_position']
         return (pos if self.direct else -pos) - self.offset
     
@@ -50,16 +73,19 @@ class DxlMotor(object):
     
     @property
     def present_speed(self):
+        """ Present speed (in degrees per second) of the motor (readonly). """
         speed = self._values['present_speed']
         return (speed if self.direct else -speed)
     
     @property
     def present_load(self):
+        """ Present load (in percentage of max load) of the motor (readonly). """
         load = self._values['present_load']
         return (load if self.direct else -load)
 
     @property
     def compliant(self):
+        """ Compliancy of the motor. """
         return bool(self._values['compliant'])
 
     @compliant.setter
@@ -71,13 +97,16 @@ class DxlMotor(object):
 
     @property
     def direct(self):
+        """ Orientation of the motor. """
         return self._direct
 
     @property
     def offset(self):
+        """ Offset of the zero of the motor (in degrees). """
         return self._offset
 
     def goto_position(self, position, duration, wait=False):
+        """ Automatically sets the goal position and the moving speed to reach the desired position within the duration. """
         dp = abs(self.present_position - position)
         speed = (dp / float(duration)) if duration > 0 else numpy.inf
         
@@ -88,28 +117,47 @@ class DxlMotor(object):
             time.sleep(duration)
 
     
-DxlMotor.moving_speed = DxlMotor._make_accessor('moving_speed', rw=True)
-DxlMotor.torque_limit = DxlMotor._make_accessor('torque_limit', rw=True)
+DxlMotor.moving_speed = DxlMotor._make_accessor('moving_speed', rw=True,
+                                                doc='Moving speed (in degrees per second) of the motor.')
+DxlMotor.torque_limit = DxlMotor._make_accessor('torque_limit', rw=True,
+                                                doc='Torque limit (in percentage of max torque) of the motor.')
     
-DxlMotor.present_voltage = DxlMotor._make_accessor('present_voltage')
-DxlMotor.present_temperature = DxlMotor._make_accessor('present_temperature')
+DxlMotor.present_voltage = DxlMotor._make_accessor('present_voltage',
+                                                   doc='Present voltage (in V) of the motor.')
+DxlMotor.present_temperature = DxlMotor._make_accessor('present_temperature',
+                                                       doc='Present temperature (in °C) of the motor.')
 
 
 class DxlAXRXMotor(DxlMotor):
+    """ This class represents the AX robotis motor.
+        
+        This class adds access to:
+            * compliance margin/slope (see the robotis website for details)
+        
+        """
     def __init__(self, id, name=None,
                  direct=True, offset=0.0):
         DxlMotor.__init__(self, id, name, direct, offset)
         self.max_pos = 150
 
 
-DxlAXRXMotor.compliance_margin = DxlAXRXMotor._make_accessor('compliance_margin', rw=True)
-DxlAXRXMotor.compliance_slope = DxlAXRXMotor._make_accessor('compliance_slope', rw=True)
+DxlAXRXMotor.compliance_margin = DxlAXRXMotor._make_accessor('compliance_margin', rw=True,
+                                                             doc='Compliance margin of the motor (see robotis website).')
+DxlAXRXMotor.compliance_slope = DxlAXRXMotor._make_accessor('compliance_slope', rw=True,
+                                                            doc='Compliance slope of the motor (see robotis website).')
 
 
 class DxlMXMotor(DxlMotor):
     def __init__(self, id, name=None,
                  direct=True, offset=0.0):
+        """ This class represents the RX and MX robotis motor.
+            
+            This class adds access to:
+                * PID gains (see the robotis website for details)
+            
+            """
         DxlMotor.__init__(self, id, name, direct, offset)
         self.max_pos = 180
 
-DxlMXMotor.pid = DxlMXMotor._make_accessor('pid', rw=True)
+DxlMXMotor.pid = DxlMXMotor._make_accessor('pid', rw=True,
+                                           doc='PID gains of the motors (see robotis website).')

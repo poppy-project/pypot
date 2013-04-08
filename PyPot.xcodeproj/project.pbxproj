@@ -15,13 +15,15 @@
 		A812C6B816132D3A0007269F /* intro.rst */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = intro.rst; sourceTree = "<group>"; };
 		A812C6BB16132D3A0007269F /* tutorial.rst */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = tutorial.rst; sourceTree = "<group>"; };
 		A812C6BE161331350007269F /* knownissues.rst */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = knownissues.rst; sourceTree = "<group>"; };
-		A820BEB816E4B022006ECF66 /* tuto_low_level.rst */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = tuto_low_level.rst; sourceTree = "<group>"; };
-		A820BEB916E4B02D006ECF66 /* tuto_controller.rst */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = tuto_controller.rst; sourceTree = "<group>"; };
-		A827869B16972736004D4D50 /* ergo_robot.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = ergo_robot.xml; sourceTree = "<group>"; };
+		A82103AD170B2A3A00A1913F /* herborist.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = herborist.py; sourceTree = "<group>"; };
+		A82103AE170B2A3A00A1913F /* herborist.ui */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = herborist.ui; sourceTree = "<group>"; };
+		A82103AF170B2AA400A1913F /* __init__.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = __init__.py; sourceTree = "<group>"; };
+		A82103B0170B2AAD00A1913F /* __init__.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = __init__.py; sourceTree = "<group>"; };
+		A82103B2170B2FAF00A1913F /* ergo_robot.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = ergo_robot.xml; sourceTree = "<group>"; };
+		A82103B4170B2FAF00A1913F /* torso.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = torso.xml; sourceTree = "<group>"; };
 		A827869D16972971004D4D50 /* tools.rst */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = tools.rst; sourceTree = "<group>"; };
 		A82D52C815F2599E00ED73DC /* io.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = io.py; sourceTree = "<group>"; };
 		A82D52CA15F259C800ED73DC /* conversion.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = conversion.py; sourceTree = "<group>"; };
-		A82F6C7215F89D6100AFBA1E /* torso.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = torso.xml; sourceTree = "<group>"; };
 		A82F6C7515F89EC000AFBA1E /* __init__.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = __init__.py; sourceTree = "<group>"; };
 		A83A7D7A16AFF9D80009BA91 /* utils.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = utils.py; sourceTree = "<group>"; };
 		A842F7A61682095D00BF235B /* xmlparser.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = xmlparser.py; sourceTree = "<group>"; };
@@ -29,27 +31,28 @@
 		A861048215BF3ADC005F6573 /* setup.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = setup.py; sourceTree = "<group>"; };
 		A861048315BF3AE8005F6573 /* README */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README; sourceTree = "<group>"; };
 		A8656EE0165BC43C006B73F3 /* error.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = error.py; sourceTree = "<group>"; };
+		A86752EF1712F9750053EA30 /* herborist.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = herborist.png; sourceTree = "<group>"; };
 		A89F23B415F602E8007590EC /* packet.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = packet.py; sourceTree = "<group>"; };
-		A8A0399016D661790004BB6A /* herborist.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = herborist.py; sourceTree = "<group>"; };
-		A8A0399116D661790004BB6A /* herborist.ui */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = herborist.ui; sourceTree = "<group>"; };
 		A8A0399316D661D10004BB6A /* ErgoRobots.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = ErgoRobots.jpg; sourceTree = "<group>"; };
 		A8BED67515BFFFAA00229A79 /* __init__.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = __init__.py; sourceTree = "<group>"; };
 		A8BED67615BFFFB900229A79 /* __init__.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = __init__.py; sourceTree = "<group>"; };
 		A8C7D0DF15F79E6A007C5E66 /* controller.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = controller.py; sourceTree = "<group>"; };
 		A8C7D0E015F7A39C007C5E66 /* motor.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = motor.py; sourceTree = "<group>"; };
 		A8C7D0E115F7A926007C5E66 /* robot.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = robot.py; sourceTree = "<group>"; };
+		A8C80802170DC09400918946 /* layout.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = layout.html; sourceTree = "<group>"; };
+		A8C80803170DCAE800918946 /* my-css.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = "my-css.css"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
 		A812C6B316132D3A0007269F /* doc */ = {
 			isa = PBXGroup;
 			children = (
+				A8C80800170DC08A00918946 /* _static */,
+				A8C80801170DC08B00918946 /* _templates */,
 				A812C6B416132D3A0007269F /* conf.py */,
 				A812C6B716132D3A0007269F /* index.rst */,
 				A812C6B816132D3A0007269F /* intro.rst */,
 				A812C6BB16132D3A0007269F /* tutorial.rst */,
-				A820BEB816E4B022006ECF66 /* tuto_low_level.rst */,
-				A820BEB916E4B02D006ECF66 /* tuto_controller.rst */,
 				A827869D16972971004D4D50 /* tools.rst */,
 				A812C6B616132D3A0007269F /* FAQ.rst */,
 				A812C6BE161331350007269F /* knownissues.rst */,
@@ -57,17 +60,44 @@
 				A80D6D0116DE2AF2009D2E81 /* pypot.dynamixel.rst */,
 				A80D6D0216DE2AF2009D2E81 /* pypot.robot.rst */,
 				A8A0399316D661D10004BB6A /* ErgoRobots.jpg */,
+				A86752EF1712F9750053EA30 /* herborist.png */,
 			);
 			path = doc;
 			sourceTree = SOURCE_ROOT;
+		};
+		A82103AB170B2A3A00A1913F /* tools */ = {
+			isa = PBXGroup;
+			children = (
+				A82103AF170B2AA400A1913F /* __init__.py */,
+				A82103AC170B2A3A00A1913F /* herborist */,
+			);
+			path = tools;
+			sourceTree = "<group>";
+		};
+		A82103AC170B2A3A00A1913F /* herborist */ = {
+			isa = PBXGroup;
+			children = (
+				A82103B0170B2AAD00A1913F /* __init__.py */,
+				A82103AD170B2A3A00A1913F /* herborist.py */,
+				A82103AE170B2A3A00A1913F /* herborist.ui */,
+			);
+			path = herborist;
+			sourceTree = "<group>";
+		};
+		A82103B1170B2FAF00A1913F /* configuration */ = {
+			isa = PBXGroup;
+			children = (
+				A82103B2170B2FAF00A1913F /* ergo_robot.xml */,
+				A82103B4170B2FAF00A1913F /* torso.xml */,
+			);
+			path = configuration;
+			sourceTree = "<group>";
 		};
 		A861046F15BF06DC005F6573 = {
 			isa = PBXGroup;
 			children = (
 				A861048415BF3D62005F6573 /* pypot */,
-				A8C7D0DA15F76574007C5E66 /* resources */,
 				A812C6B316132D3A0007269F /* doc */,
-				A8F34CBC1632E55C00BA7DF0 /* tools */,
 				A861048215BF3ADC005F6573 /* setup.py */,
 				A861048315BF3AE8005F6573 /* README */,
 			);
@@ -79,18 +109,10 @@
 				A8BED67515BFFFAA00229A79 /* __init__.py */,
 				A8C7D0DE15F79E07007C5E66 /* robot */,
 				A8BED67315BFFF9B00229A79 /* dynamixel */,
+				A82103AB170B2A3A00A1913F /* tools */,
 				A83A7D7A16AFF9D80009BA91 /* utils.py */,
 			);
 			path = pypot;
-			sourceTree = "<group>";
-		};
-		A8A0398F16D661790004BB6A /* herborist */ = {
-			isa = PBXGroup;
-			children = (
-				A8A0399016D661790004BB6A /* herborist.py */,
-				A8A0399116D661790004BB6A /* herborist.ui */,
-			);
-			path = herborist;
 			sourceTree = "<group>";
 		};
 		A8BED67315BFFF9B00229A79 /* dynamixel */ = {
@@ -107,31 +129,31 @@
 			path = dynamixel;
 			sourceTree = "<group>";
 		};
-		A8C7D0DA15F76574007C5E66 /* resources */ = {
-			isa = PBXGroup;
-			children = (
-				A82F6C7215F89D6100AFBA1E /* torso.xml */,
-				A827869B16972736004D4D50 /* ergo_robot.xml */,
-			);
-			path = resources;
-			sourceTree = SOURCE_ROOT;
-		};
 		A8C7D0DE15F79E07007C5E66 /* robot */ = {
 			isa = PBXGroup;
 			children = (
 				A82F6C7515F89EC000AFBA1E /* __init__.py */,
 				A8C7D0E115F7A926007C5E66 /* robot.py */,
 				A842F7A61682095D00BF235B /* xmlparser.py */,
+				A82103B1170B2FAF00A1913F /* configuration */,
 			);
 			path = robot;
 			sourceTree = "<group>";
 		};
-		A8F34CBC1632E55C00BA7DF0 /* tools */ = {
+		A8C80800170DC08A00918946 /* _static */ = {
 			isa = PBXGroup;
 			children = (
-				A8A0398F16D661790004BB6A /* herborist */,
+				A8C80803170DCAE800918946 /* my-css.css */,
 			);
-			path = tools;
+			path = _static;
+			sourceTree = "<group>";
+		};
+		A8C80801170DC08B00918946 /* _templates */ = {
+			isa = PBXGroup;
+			children = (
+				A8C80802170DC09400918946 /* layout.html */,
+			);
+			path = _templates;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

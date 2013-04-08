@@ -8,7 +8,7 @@ from pypot.dynamixel.error import BaseErrorHandler
 
 
 def get_available_ports():
-    """ Tries to find the available port on your system. """
+    """ Tries to find the available usb2serial port on your system. """
     if platform.system() == 'Darwin':
         return glob.glob('/dev/tty.usb*')
 

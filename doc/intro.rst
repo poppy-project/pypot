@@ -4,17 +4,16 @@ Introduction
 What is PyPot?
 ==============
 
-PyPot is a framework developed in the `INRIA FLOWERS <https://flowers.inria.fr/>`_ team to make it easy and fast to control custom robots based on dynamixel motors. This framework provides different level of abstraction corresponding to different types of use. More precisely, you can use PyPot to:
+PyPot is a framework developed in the `Inria FLOWERS <https://flowers.inria.fr/>`_ team to make it easy and fast to control custom robots based on dynamixel motors. This framework provides different level of abstraction corresponding to different types of use. More precisely, you can use PyPot to:
 
 * directly control robotis motors through a USB2serial device,
-* define the structure of your particular robot and control it through high-level command.
+* define the structure of your particular robot and control it through high-level commands.
 
-.. * define primitives and easily combine them to create complex behaviors.
+.. * define primitives and easily combine them to create complex behavior.
 
-PyPot has been entirely written in Python to allow for fast development, easy deployment and quick scripting by non-necessary expert developers. The serial communication is handled through the standard library and thus achieve rather high performance (10ms sensorimotor loop). It is crossed-platform and has been tested on Linux, Windows and Mac OS.
+PyPot has been entirely written in Python to allow for fast development, easy deployment and quick scripting by non-necessary expert developers. The serial communication is handled through the standard library and thus allows for rather high performance (10ms sensorimotor loop). It is crossed-platform and has been tested on Linux, Windows and Mac OS.
 
 The next sections describe how to :ref:`install <installation>` PyPot on your system and then the :ref:`first steps to control an Ergo-Robot <quickstart>`. If you decide to use PyPot and want more details on what you can do with this framework, you can refer to the :doc:`tutorial </tutorial>`.
-
 
 .. _installation:
 
@@ -39,6 +38,10 @@ Once it is done, you can build and install PyPot with the classical::
     cd PyPot
     python setup.py build
     python setup.py install
+    
+You can test if the installation went well with::
+
+    python -m "import pypot"
 
 You will also have to install the driver for the USB2serial port. There are two devices that have been tested with PyPot that could be used:
 
@@ -47,7 +50,7 @@ You will also have to install the driver for the USB2serial port. There are two 
 
 On Windows and Mac, it will be necessary to download and install a FTDI (VCP) driver to run the USB2Dynamixel, you can find it `here <http://www.ftdichip.com/Drivers/VCP.htm>`__. Linux distributions should already come with an appropriate driver. The USB2AX device should not require a driver installation under MAC or Linux, it should already exist. For Windows XP, it should automatically install the correct driver.
 
-On the side of the USB2Dynamixel there is a switch. This is used to select the bus you wish to communicate on. This means that you cannot control two different bus protocols at the same time.
+.. note:: On the side of the USB2Dynamixel there is a switch. This is used to select the bus you wish to communicate on. This means that you cannot control two different bus protocols at the same time.
 
 At this point you should have a PyPot ready to be used! In the extremely unlikely case where anything went wrong during the installation, please refer to the :doc:`Known Issues </knownissues>`.
 
@@ -57,7 +60,7 @@ At this point you should have a PyPot ready to be used! In the extremely unlikel
 QuickStart: playing with an Ergo-Robot
 ======================================
 
-To let you discover what you can do with PyPot, we describe in this section the few steps required to make a robot build from robotis motor dance. This short introduction will in particular describe you:
+To let you discover what you can do with PyPot, in this section we describe the few steps required to make a robot build from robotis motor dance. This short introduction will in particular describe you:
 
 * how to define your robot within the software,
 * how to connect it to your computer,
@@ -77,7 +80,7 @@ Ergo-Robots have been developed for an art exhibition in Fondation Cartier: `Mat
     :height: 400
     :align: center
     
-If you want to build your own Ergo-Robot, you can follow the construction instructions `here <https://wiki.bordeaux.inria.fr/flowers/doku.php?id=robot:ergorobot:construction>`__.
+The complete instructions to build your own Ergo-Robot are available `here <https://wiki.bordeaux.inria.fr/flowers/doku.php?id=robot:ergorobot:construction>`__.
 
 Connecting the robot to your computer
 -------------------------------------
@@ -110,12 +113,12 @@ Once you have edited the configuration file, you should be able to instantiate y
     
     ergo_robot = pypot.robot.from_configuration(path_to_my_configuration_file)
     
-At this point, if you have not seen any errors it means that you have successfully connected to your robot!
+At this point, if you have not seen any errors it means that you are successfully connected to your robot! You can find details on how to write more complex configuration file in the :ref:`config_file` section.
 
 Controlling your Ergo-Robot
 ---------------------------
 
-Now let's write a very simple program to make the Ergo-Robot dances a bit. 
+Now that you are connected to your Ergo-Robot, let's write a very simple program to make it dance a bit. 
 
 First, write the following lines to start you robot (we assume that your python script and the configuration file are in the same folder)::
 
@@ -131,7 +134,7 @@ Now, we are going to put the robot in its initial position::
     for m in ergo_robot.motors:
         m.compliant = False
         
-        # Go to the position 0 with 2 seconds.
+        # Go to the position 0 within 2 seconds.
         # Note that the position is expressed in degrees.
         m.goto_position(0, 2)
         
@@ -145,7 +148,7 @@ The robot should raise and smoothly go to its base position. Now, we are going t
     # You can directly set new positions to motors by providing  
     # the Robot goto_position method with a dictionary such as
     # {motor_name: position, motor_name: position...}
-    ergo_robot.goto_position(rest_pos, 1, wait=True) 
+    ergo_robot.goto_position(rest_pos, duration=1, wait=True) 
     
 We will now create a very simple dance just by applying two sinus with opposite phases on the base and head motors of the robot::
 
@@ -157,7 +160,7 @@ We will now create a very simple dance just by applying two sinus with opposite 
     
     # As you can notice, property to access the motors defined 
     # in the configuration file are automatically created.
-    ergo_robot.base_pan.moving_speed = 0
+    ergo_robot.base_pan.moving_speed = 0 # 0 corresponds to the max speed
     ergo_robot.head_pan.moving_speed = 0
 
     t0 = time.time()
@@ -173,7 +176,7 @@ We will now create a very simple dance just by applying two sinus with opposite 
         time.sleep(0.02)
         
         
-Your robot should start dancing for ten seconds! Now, that you have seen the very basic things that you can do with PyPot. It is time to jump on the :doc:`tutorial </tutorial>` to get a complete overview of what you can do.
+Your robot should start dancing for ten seconds. Now, that you have seen the very basic things that you can do with PyPot. It is time to jump on the :doc:`tutorial </tutorial>` to get a complete overview of the possibility.
 
     
 

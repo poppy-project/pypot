@@ -8,7 +8,7 @@ import PyQt4.QtGui
 import PyQt4.uic
 
 from collections import defaultdict
-
+from pkg_resources import resource_filename
 
 import pypot.dynamixel
 
@@ -33,7 +33,7 @@ def release_dxl_connection():
 class HerboristApp(PyQt4.QtGui.QApplication):
     def __init__(self, argv):
         PyQt4.QtGui.QApplication.__init__(self, argv)
-        self.window =  PyQt4.uic.loadUi('herborist.ui')
+        self.window =  PyQt4.uic.loadUi(resource_filename('pypot', '/tools/herborist/herborist.ui'))
      
         self.enable_motor_view(False)
 
@@ -358,7 +358,7 @@ class HerboristApp(PyQt4.QtGui.QApplication):
         def run(self):
             while self.running.is_set():
                 dxl_io = get_dxl_connection(self.port, self.baudrate)
-                pos = dxl_io.get_present_position(self.mid)[0]
+                pos = dxl_io.get_present_position((self.mid, ))[0]
                 release_dxl_connection()
                 
                 self.position_updated.emit(pos)
@@ -412,10 +412,12 @@ class HerboristApp(PyQt4.QtGui.QApplication):
                     
         return ids
     
-
-if __name__ == '__main__':
+def main():
     app = HerboristApp(sys.argv)
     app.window.show()
     sys.exit(app.exec_())
     
     __lock.acquire()
+
+if __name__ == '__main__':
+    main()

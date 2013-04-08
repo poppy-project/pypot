@@ -12,6 +12,7 @@
 # serve to show the default.
 
 import sys, os
+import sphinx_bootstrap_theme
 
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
@@ -41,7 +42,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'PyPot'
-copyright = u'2012, Pierre Rouanet, Haylee Fogg, Matthieu Lapeyre'
+copyright = u'2012, Pierre Rouanet, Matthieu Lapeyre, Haylee Fogg'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -93,16 +94,25 @@ autodoc_member_order = 'bysource'
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
-html_theme = 'sphinxdoc'
+#html_theme = 'sphinxdoc'
+html_theme = 'bootstrap'
 
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
 # documentation.
 #html_theme_options = {}
+html_theme_options = {
+    'navbar_title': 'PyPot',
+    'globaltoc_depth': -1,
+#    'navbar_class': 'navbar navbar-inverse',
+#'bootswatch_theme': '',
+}
+
 
 # Add any paths that contain custom themes here, relative to this directory.
 #html_theme_path = []
+html_theme_path = sphinx_bootstrap_theme.get_html_theme_path()
 
 # The name for this set of Sphinx documents.  If None, it defaults to
 # "<project> v<release> documentation".
@@ -123,7 +133,7 @@ html_theme = 'sphinxdoc'
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
-# html_static_path = ['_static']
+html_static_path = ['_static']
 
 # If not '', a 'Last updated on:' timestamp is inserted at every page bottom,
 # using the given strftime format.
@@ -217,7 +227,7 @@ latex_documents = [
 # (source start file, name, description, authors, manual section).
 man_pages = [
     ('index', 'pypot', u'PyPot Documentation',
-     [u'Pierre Rouanet, Haylee Fogg, Matthieu Lapeyre'], 1)
+     [u'Pierre Rouanet, Matthieu Lapeyre, Haylee Fogg'], 1)
 ]
 
 # If true, show URL addresses after external links.
@@ -231,7 +241,7 @@ man_pages = [
 #  dir menu entry, description, category)
 texinfo_documents = [
   ('index', 'PyPot', u'PyPot Documentation',
-   u'Pierre Rouanet, Haylee Fogg, Matthieu Lapeyre', 'PyPot', 'One line description of project.',
+   u'Pierre Rouanet, Matthieu Lapeyre, Haylee Fogg', 'PyPot', 'One line description of project.',
    'Miscellaneous'),
 ]
 
