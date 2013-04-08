@@ -36,6 +36,11 @@
 		A8A0399316D661D10004BB6A /* ErgoRobots.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = ErgoRobots.jpg; sourceTree = "<group>"; };
 		A8BED67515BFFFAA00229A79 /* __init__.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = __init__.py; sourceTree = "<group>"; };
 		A8BED67615BFFFB900229A79 /* __init__.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = __init__.py; sourceTree = "<group>"; };
+		A8C16FA6171312D6007B8903 /* __init__.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = __init__.py; sourceTree = "<group>"; };
+		A8C16FA8171312D6007B8903 /* __init__.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = __init__.py; sourceTree = "<group>"; };
+		A8C16FA9171312D6007B8903 /* sensor.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = sensor.py; sourceTree = "<group>"; };
+		A8C16FAA171312D6007B8903 /* server.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = server.py; sourceTree = "<group>"; };
+		A8C16FAB171312D6007B8903 /* optitrack.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = optitrack.py; sourceTree = "<group>"; };
 		A8C7D0DF15F79E6A007C5E66 /* controller.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = controller.py; sourceTree = "<group>"; };
 		A8C7D0E015F7A39C007C5E66 /* motor.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = motor.py; sourceTree = "<group>"; };
 		A8C7D0E115F7A926007C5E66 /* robot.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = robot.py; sourceTree = "<group>"; };
@@ -109,6 +114,7 @@
 				A8BED67515BFFFAA00229A79 /* __init__.py */,
 				A8C7D0DE15F79E07007C5E66 /* robot */,
 				A8BED67315BFFF9B00229A79 /* dynamixel */,
+				A8C16FA5171312D6007B8903 /* sensor */,
 				A82103AB170B2A3A00A1913F /* tools */,
 				A83A7D7A16AFF9D80009BA91 /* utils.py */,
 			);
@@ -127,6 +133,26 @@
 				A8656EE0165BC43C006B73F3 /* error.py */,
 			);
 			path = dynamixel;
+			sourceTree = "<group>";
+		};
+		A8C16FA5171312D6007B8903 /* sensor */ = {
+			isa = PBXGroup;
+			children = (
+				A8C16FA6171312D6007B8903 /* __init__.py */,
+				A8C16FA7171312D6007B8903 /* kinect */,
+				A8C16FAB171312D6007B8903 /* optitrack.py */,
+			);
+			path = sensor;
+			sourceTree = "<group>";
+		};
+		A8C16FA7171312D6007B8903 /* kinect */ = {
+			isa = PBXGroup;
+			children = (
+				A8C16FA8171312D6007B8903 /* __init__.py */,
+				A8C16FA9171312D6007B8903 /* sensor.py */,
+				A8C16FAA171312D6007B8903 /* server.py */,
+			);
+			path = kinect;
 			sourceTree = "<group>";
 		};
 		A8C7D0DE15F79E07007C5E66 /* robot */ = {
