@@ -299,6 +299,9 @@ Now you are ready to create some behaviors for your robot.
 Controlling your robot
 ----------------------
 
+Controlling in position
++++++++++++++++++++++++
+
 As shown in the examples above, the robot class let you directly access the different motors. For instance, let's assume we are working with an Ergo-robot, you could then write::
 
     import pypot.robot
@@ -359,6 +362,33 @@ As an example of what you can easily do with the Robot API, we are going to writ
         # We want to run this loop at 50Hz.       
         time.sleep(0.02)
     
+
+Controlling in speed
+++++++++++++++++++++
+
+Thanks to the :attr:`~pypot.dynamixel.motor.DxlMotor.goal_speed` property you can also control your robot in speed. More precisely, by setting :attr:`~pypot.dynamixel.motor.DxlMotor.goal_speed` you will change the :attr:`~pypot.dynamixel.motor.DxlMotor.moving_speed` of your motor but you will also automatically change the :attr:`~pypot.dynamixel.motor.DxlMotor.goal_position` that will be set to the angle limit in the desired direction.
+
+
+.. note:: You could also use the wheel mode settings where you can directly change the :attr:`~pypot.dynamixel.motor.DxlMotor.moving_speed`. Nevertheless, while the motor will turn infinitely with the wheel mode, here with the :attr:`~pypot.dynamixel.motor.DxlMotor.goal_speed` the motor will still respect the angle limits.
+
+
+As an example, you could write::
+
+    t = numpy.arange(0, 10, 0.01)
+    speeds = amp * numpy.cos(2 * numpy.pi * freq * t)
+    
+    positions = []
+    
+    for s in speeds:
+        ergo_robot.head_pan.goal_speed = s
+        positions.append(ergo_robot.head_pan.present_position)
+        time.sleep(0.05)
+     
+    # By applying a cosinus on the speed
+    # You observe a sinusoid on the position
+    plot(positions)
+
+.. warning:: If you set both :attr:`~pypot.dynamixel.motor.DxlMotor.goal_speed` and :attr:`~pypot.dynamixel.motor.DxlMotor.goal_position` only the last command will be executed. Unless you know what you are doing, you should avoid to mix these both approaches.
 
 .. Primitive
 .. =========
