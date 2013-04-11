@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*
 
+import sys
 import time
 import numpy
 
@@ -82,6 +83,31 @@ class DxlMotor(object):
         """ Present load (in percentage of max load) of the motor (readonly). """
         load = self._values['present_load']
         return (load if self.direct else -load)
+    
+    @property
+    def goal_speed(self):
+        """ Goal speed (in degrees per second) of the motor.
+            
+            This property can be used to control your motor in speed. Setting a goal speed will automatically change the moving speed and sets the goal position as the angle limit.
+            
+            .. note:: The motor will turn until reaching the angle limit. But this is not a wheel mode, so the motor will stop at its limits.
+            
+            """
+        return numpy.sign(self.goal_position) * self.moving_speed
+    
+    @goal_speed.setter
+    def goal_speed(self, value):
+        if abs(value) < sys.float_info.epsilon:
+            self.goal_position = self.present_position
+        
+        else:
+            # 0.7 corresponds approx. to the min speed that will be converted into 0
+            # and as 0 corredsponds to setting the max speed, we have to check this case
+            value = numpy.sign(value) * 0.7 if abs(value) < 0.7 else value
+                
+            self.goal_position = numpy.sign(value) * self.max_pos
+            self.moving_speed = abs(value)
+    
 
     @property
     def compliant(self):
