@@ -325,7 +325,17 @@ class DxlIO(object):
         self._set_pid_gain(pid_for_id, **kwargs)    
 
     # MARK: - Generic Getter / Setter
-
+    
+    def get_control_table(self, ids, **kwargs):
+        """ Gets the full control table for the specified motors.
+            ..note::
+              This function requires the model for each motor to be known.
+              Querring this additional information might add some extra delay.
+            """
+        ids_for_mx = [ids[i] for i,model in enumerate(self.get_model(ids)) if 'MX' in model]
+        ids_for_axrx = set(ids).difference(ids_for_mx)
+        return tuple(self._get_axrx_based_control_table(ids_for_axrx, **kwargs)) + tuple(self._get_mx_based_control_table(ids_for_mx, **kwargs))
+        
     @classmethod
     def _generate_accessors(cls, control):        
         if control.access in (_DxlAccess.readonly, _DxlAccess.readwrite):
@@ -542,6 +552,27 @@ _add_control('model',
              access=_DxlAccess.readonly,
              dxl_to_si=dxl_to_model)
 
+_add_control('axrx based control table',
+             address=0x00, length=1, nb_elem=50,
+             access=_DxlAccess.readonly,
+             models=('AX-12', 'RX-28', 'RX-64'),
+             getter_name='_get_axrx_based_control_table',
+             dxl_to_si=dxl_to_control_table)
+
+_add_control('mx based control table',
+             address=0x00, length=1, nb_elem=74,
+             access=_DxlAccess.readonly,
+             models=('MX-64', 'MX-64', 'MX-106'),
+             getter_name='_get_mx_based_control_table',
+             dxl_to_si=dxl_to_control_table)
+
+_add_control('drive mode',
+             address=0x0A, length=1,
+             access=_DxlAccess.readwrite,
+             models=('MX-64', 'MX-106'), #@warning maybe better to update dynamixelModel with extra filter.
+             dxl_to_si=dxl_to_drive_mode,
+             si_to_dxl=drive_mode_to_dxl)
+
 _add_control('firmware',
              address=0x02, length=1,
              access=_DxlAccess.readonly)
@@ -617,7 +648,7 @@ _add_control('LED',
 
 _add_control('pid gain',
              address=0x1A, length=1, nb_elem=3,
-             models=('MX-28', ),
+             models=('MX-28', 'MX-64', 'MX-106'),
              dxl_to_si=dxl_to_pid,
              si_to_dxl=pid_to_dxl)
 
