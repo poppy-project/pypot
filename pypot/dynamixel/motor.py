@@ -79,12 +79,6 @@ class DxlMotor(object):
         return (speed if self.direct else -speed)
     
     @property
-    def present_load(self):
-        """ Present load (in percentage of max load) of the motor (readonly). """
-        load = self._values['present_load']
-        return (load if self.direct else -load)
-    
-    @property
     def goal_speed(self):
         """ Goal speed (in degrees per second) of the motor.
             
@@ -107,7 +101,13 @@ class DxlMotor(object):
                 
             self.goal_position = numpy.sign(value) * self.max_pos
             self.moving_speed = abs(value)
-    
+
+
+    @property
+    def present_load(self):
+        """ Present load (in percentage of max load) of the motor (readonly). """
+        load = self._values['present_load']
+        return (load if self.direct else -load)
 
     @property
     def compliant(self):

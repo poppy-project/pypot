@@ -20,7 +20,7 @@
             
         <DxlMotorGroup name="arms">
             <DxlMotorGroup name="left_arm">
-                <DxlMotor name="left_shoulder_pan" id="12" type="RX-28" orientation="indirect" offset="-67.5">
+                <DxlMotor name="left_shoulder_pan" id="12" type="RX-28" orientation="direct" offset="67.5">
                     <angle_limits>(-150, 150)</angle_limits>
                 </DxlMotor>
                 <DxlMotor name="left_shoulder_twist" id="13" type="RX-28" orientation="direct" offset="0.0">

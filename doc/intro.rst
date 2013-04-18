@@ -115,6 +115,8 @@ Once you have edited the configuration file, you should be able to instantiate y
     
 At this point, if you have not seen any errors it means that you are successfully connected to your robot! You can find details on how to write more complex configuration file in the :ref:`config_file` section.
 
+.. _dance_:
+
 Controlling your Ergo-Robot
 ---------------------------
 
