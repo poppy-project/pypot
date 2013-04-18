@@ -328,11 +328,10 @@ class DxlIO(object):
     
     def get_control_table(self, ids, **kwargs):
         """ Gets the full control table for the specified motors.
-            ..note::
-              This function requires the model for each motor to be known.
-              Querring this additional information might add some extra delay.
+            ..note:: This function requires the model for each motor to be known. Querring this additional information might add some extra delay.
+            
             """
-        ids_for_mx = [ids[i] for i,model in enumerate(self.get_model(ids)) if 'MX' in model]
+        ids_for_mx = [ids[i] for i, model in enumerate(self.get_model(ids)) if 'MX' in model]
         ids_for_axrx = set(ids).difference(ids_for_mx)
         return tuple(self._get_axrx_based_control_table(ids_for_axrx, **kwargs)) + tuple(self._get_mx_based_control_table(ids_for_mx, **kwargs))
         
