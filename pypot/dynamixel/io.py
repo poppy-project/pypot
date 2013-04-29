@@ -5,7 +5,7 @@ import operator
 import itertools
 import threading
 
-from collections import namedtuple
+from collections import namedtuple, OrderedDict
 from contextlib import contextmanager
 
 
@@ -30,6 +30,7 @@ class DxlIO(object):
     """ Low-level class to handle the serial communication with the robotis motors. """
     
     __used_ports = set()
+    __controls = []
     
     # MARK: - Open, Close and Flush the communication
     
@@ -328,15 +329,43 @@ class DxlIO(object):
     
     def get_control_table(self, ids, **kwargs):
         """ Gets the full control table for the specified motors.
+            
             ..note:: This function requires the model for each motor to be known. Querring this additional information might add some extra delay.
             
             """
-        ids_for_mx = [ids[i] for i, model in enumerate(self.get_model(ids)) if 'MX' in model]
-        ids_for_axrx = set(ids).difference(ids_for_mx)
-        return tuple(self._get_axrx_based_control_table(ids_for_axrx, **kwargs)) + tuple(self._get_mx_based_control_table(ids_for_mx, **kwargs))
+        error_handler = kwargs['error_handler'] if ('error_handler' in kwargs) else self._error_handler
+        convert = kwargs['convert'] if ('convert' in kwargs) else self._convert
+    
+        bl = ('goal position speed load', 'present position speed load')
+        controls = filter(lambda c: c.name not in bl, self._DxlIO__controls)
         
+        res = []
+
+        for id, model in zip(ids, self.get_model(ids)):
+            controls = filter(lambda c: model in c.models, controls)
+        
+            controls = sorted(controls, key=lambda c: c.address)
+
+            address = controls[0].address
+            length = controls[-1].address + controls[-1].nb_elem * controls[-1].length
+
+            rp = DxlReadDataPacket(id, address, length)
+            sp = self._send_packet(rp, error_handler=error_handler)
+
+            d = OrderedDict()
+            for c in controls:
+                v = dxl_decode_all(sp.parameters[c.address:c.address+c.nb_elem*c.length], c.nb_elem)
+                d[c.name] = c.dxl_to_si(v, model) if convert else v
+
+            res.append(d)
+    
+        return tuple(res)
+
+    
     @classmethod
-    def _generate_accessors(cls, control):        
+    def _generate_accessors(cls, control):
+        cls.__controls.append(control)
+        
         if control.access in (_DxlAccess.readonly, _DxlAccess.readwrite):
             def my_getter(self, ids, **kwargs):                    
                 return self._get_control_value(control, ids, **kwargs)
@@ -551,27 +580,6 @@ _add_control('model',
              access=_DxlAccess.readonly,
              dxl_to_si=dxl_to_model)
 
-_add_control('axrx based control table',
-             address=0x00, length=1, nb_elem=50,
-             access=_DxlAccess.readonly,
-             models=('AX-12', 'RX-28', 'RX-64'),
-             getter_name='_get_axrx_based_control_table',
-             dxl_to_si=dxl_to_control_table)
-
-_add_control('mx based control table',
-             address=0x00, length=1, nb_elem=74,
-             access=_DxlAccess.readonly,
-             models=('MX-64', 'MX-64', 'MX-106'),
-             getter_name='_get_mx_based_control_table',
-             dxl_to_si=dxl_to_control_table)
-
-_add_control('drive mode',
-             address=0x0A, length=1,
-             access=_DxlAccess.readwrite,
-             models=('MX-64', 'MX-106'), #@warning maybe better to update dynamixelModel with extra filter.
-             dxl_to_si=dxl_to_drive_mode,
-             si_to_dxl=drive_mode_to_dxl)
-
 _add_control('firmware',
              address=0x02, length=1,
              access=_DxlAccess.readonly)
@@ -598,6 +606,13 @@ _add_control('angle limit',
                                              dxl_to_degree(value[1], model)),
              si_to_dxl=lambda value, model: (degree_to_dxl(value[0], model),
                                              degree_to_dxl(value[1], model)))
+
+_add_control('drive mode',
+             address=0x0A, length=1,
+             access=_DxlAccess.readwrite,
+             models=('MX-106', ),
+             dxl_to_si=dxl_to_drive_mode,
+             si_to_dxl=drive_mode_to_dxl)
 
 _add_control('highest temperature limit',
              address=0x0B, length=1,
