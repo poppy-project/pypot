@@ -90,6 +90,7 @@ class BaseDxlController(DxlController):
         self.add_write_loop(10, 'compliance_margin')
         self.add_write_loop(10, 'compliance_slope')
 
+        self.add_read_loop(1, 'angle_limit')
         self.add_read_loop(1, 'present_voltage')
         self.add_read_loop(1, 'present_temperature')
         

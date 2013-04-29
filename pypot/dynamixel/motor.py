@@ -17,6 +17,7 @@ class DxlMotor(object):
             * position/speed/load (read and write)
             * compliant
             * motor orientation and offset
+            * angle limit
             * temperature
             * voltage
         
@@ -147,7 +148,9 @@ DxlMotor.moving_speed = DxlMotor._make_accessor('moving_speed', rw=True,
                                                 doc='Moving speed (in degrees per second) of the motor.')
 DxlMotor.torque_limit = DxlMotor._make_accessor('torque_limit', rw=True,
                                                 doc='Torque limit (in percentage of max torque) of the motor.')
-    
+
+DxlMotor.angle_limit = DxlMotor._make_accessor('angle_limit',
+                                               doc='Angle limit (in degrees) of the motor.')
 DxlMotor.present_voltage = DxlMotor._make_accessor('present_voltage',
                                                    doc='Present voltage (in V) of the motor.')
 DxlMotor.present_temperature = DxlMotor._make_accessor('present_temperature',
