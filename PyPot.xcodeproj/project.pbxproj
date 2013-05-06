@@ -32,6 +32,7 @@
 		A861048315BF3AE8005F6573 /* README */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README; sourceTree = "<group>"; };
 		A8656EE0165BC43C006B73F3 /* error.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = error.py; sourceTree = "<group>"; };
 		A86752EF1712F9750053EA30 /* herborist.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = herborist.png; sourceTree = "<group>"; };
+		A87A331B172EA080000D9902 /* server.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = server.py; sourceTree = "<group>"; };
 		A87CECD317180C41007A8199 /* pypot.primitive.rst */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = pypot.primitive.rst; sourceTree = "<group>"; };
 		A89F23B415F602E8007590EC /* packet.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = packet.py; sourceTree = "<group>"; };
 		A8A0399316D661D10004BB6A /* ErgoRobots.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = ErgoRobots.jpg; sourceTree = "<group>"; };
@@ -40,7 +41,6 @@
 		A8C16FB61713195C007B8903 /* __init__.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = __init__.py; sourceTree = "<group>"; };
 		A8C16FB81713195C007B8903 /* manager.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = manager.py; sourceTree = "<group>"; };
 		A8C16FB91713195C007B8903 /* primitive.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = primitive.py; sourceTree = "<group>"; };
-		A8C16FBB1713195C007B8903 /* server.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = server.py; sourceTree = "<group>"; };
 		A8C16FBC1713195C007B8903 /* utils.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = utils.py; sourceTree = "<group>"; };
 		A8C16FBD17131DA1007B8903 /* tmp.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = tmp.xml; sourceTree = "<group>"; };
 		A8C7D0DF15F79E6A007C5E66 /* controller.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = controller.py; sourceTree = "<group>"; };
@@ -48,6 +48,7 @@
 		A8C7D0E115F7A926007C5E66 /* robot.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = robot.py; sourceTree = "<group>"; };
 		A8C80802170DC09400918946 /* layout.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = layout.html; sourceTree = "<group>"; };
 		A8C80803170DCAE800918946 /* my-css.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = "my-css.css"; sourceTree = "<group>"; };
+		A8DB277A1737ADD50079B65D /* my_ergo.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = my_ergo.xml; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -98,6 +99,7 @@
 				A82103B2170B2FAF00A1913F /* ergo_robot.xml */,
 				A82103B4170B2FAF00A1913F /* torso.xml */,
 				A8C16FBD17131DA1007B8903 /* tmp.xml */,
+				A8DB277A1737ADD50079B65D /* my_ergo.xml */,
 			);
 			path = configuration;
 			sourceTree = "<group>";
@@ -145,8 +147,8 @@
 				A8C16FB61713195C007B8903 /* __init__.py */,
 				A8C16FB91713195C007B8903 /* primitive.py */,
 				A8C16FB81713195C007B8903 /* manager.py */,
-				A8C16FBB1713195C007B8903 /* server.py */,
 				A8C16FBC1713195C007B8903 /* utils.py */,
+				A87A331B172EA080000D9902 /* server.py */,
 			);
 			path = primitive;
 			sourceTree = "<group>";

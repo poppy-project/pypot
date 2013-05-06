@@ -131,6 +131,10 @@ class DxlMotor(object):
     def offset(self):
         """ Offset of the zero of the motor (in degrees). """
         return self._offset
+    
+    @property
+    def registers(self):
+        return filter(lambda r: not r.startswith('_'), dir(self))
 
     def goto_position(self, position, duration, wait=False):
         """ Automatically sets the goal position and the moving speed to reach the desired position within the duration. """

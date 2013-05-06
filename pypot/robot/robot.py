@@ -24,6 +24,7 @@ class Robot(object):
         """
     def __init__(self):
         self._motors = []
+        self._attached_primitives = {}
         self._dxl_controllers = []
         self._primitive_manager = pypot.primitive.manager.PrimitiveManager(self.motors)
     
@@ -51,12 +52,22 @@ class Robot(object):
     
     def attach_primitive(self, primitive, name):
         setattr(self, name, primitive)
-    
+        self._attached_primitives[name] = primitive
 
     @property
     def motors(self):
         """ Returns all the motors attached to the robot. """
         return self._motors
+    
+    @property
+    def primitives(self):
+        """ Returns all the primitives attached to the robot. """
+        return self._attached_primitives.values()
+    
+    @property
+    def primitives_name(self):
+        """ Returns all the primitives name attached to the robot. """
+        return self._attached_primitives.keys()
 
     @property
     def compliant(self):
