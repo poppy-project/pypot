@@ -39,6 +39,10 @@ class DxlMotor(object):
     
     def __repr__(self):
         return '<DxlMotor name={self.name} id={self.id} pos={self.present_position}>'.format(self=self)
+    
+    @property
+    def json(self):
+        return self.name
 
     @classmethod
     def _make_accessor(cls, name, rw=False, doc=None):
