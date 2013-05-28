@@ -31,6 +31,7 @@ def parse_robot_node(robot_node):
         group_name, motor_names = parse_motor_group_node(g)
         motors = [getattr(robot, name) for name in motor_names]
         setattr(robot, group_name, motors)
+        robot.alias.append(group_name)
 
     return robot
 

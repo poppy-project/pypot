@@ -24,6 +24,7 @@ class Robot(object):
         """
     def __init__(self):
         self._motors = []
+        self.alias = []
         self._attached_primitives = {}
         self._dxl_controllers = []
         self._primitive_manager = pypot.primitive.manager.PrimitiveManager(self.motors)

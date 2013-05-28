@@ -1,4 +1,5 @@
 import time
+import numpy
 import threading
 
 import pypot.dynamixel
@@ -170,10 +171,17 @@ class MockupRobot(object):
         self._robot = robot
         self._motors = []
         
+        for a in robot.alias:
+            setattr(self, a, [])
+        
         for m in robot.motors:
             mockup_motor = MockupMotor(m)
             self._motors.append(mockup_motor)
             setattr(self, m.name, mockup_motor)
+
+            for a in filter(lambda a: m in getattr(robot, a), robot.alias):
+                getattr(self, a).append(mockup_motor)            
+    
     
     def __getattr__(self, attr):
         return getattr(self._robot, attr)
@@ -191,6 +199,12 @@ class MockupRobot(object):
         """ List of all attached :class:`~pypot.primitive.primitive.MockupMotor`. """
         return self._motors
 
+    def power_max(self):
+        for m in self.motors:
+            m.compliant = False
+            m.moving_speed = 0
+            m.torque_limit = 100.0
+
 class MockupMotor(object):
     """ Fake Motor used by the primitive to ensure sandboxing:
         
@@ -207,3 +221,14 @@ class MockupMotor(object):
     
     def __setattr__(self, attr, val):
         self._to_set[attr] = val
+
+    def goto_position(self, position, duration, wait=False):
+        """ Automatically sets the goal position and the moving speed to reach the desired position within the duration. """
+        dp = abs(self.present_position - position)
+        speed = (dp / float(duration)) if duration > 0 else numpy.inf
+        self.moving_speed = speed
+        self.goal_position = position
+
+        if wait:
+            time.sleep(duration)
+        
