@@ -1,11 +1,11 @@
 :mod:`robot` Package
 ====================
 
-
 .. automodule:: pypot.robot
     :members:
     :undoc-members:
     :show-inheritance:
+    
 
 :mod:`robot` Module
 -------------------
@@ -22,4 +22,3 @@
     :members:
     :undoc-members:
     :show-inheritance:
-

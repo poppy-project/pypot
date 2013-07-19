@@ -147,9 +147,10 @@ def rdt_to_dxl(value, model):
 # MARK: - Temperature
 
 def dxl_to_temperature(value, model):
-    return value
+    return float(value)
 
-temperature_to_dxl = dxl_to_temperature
+def temperature_to_dxl(value, model):
+    return int(value)
 
 # MARK: - Voltage
 

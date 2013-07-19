@@ -5,5 +5,4 @@ PyPot's API
     pypot.dynamixel
     pypot.primitive
     pypot.robot
-
-
+    pypot.server
