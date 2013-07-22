@@ -1,2 +1,7 @@
 *.pyc
+*.egg
+*.egg-info
+
+doc/_build
+
 .DS_Store

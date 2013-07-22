@@ -1,4 +1,4 @@
-Todo List : 
+Todo List: 
   ☐ bridge ROS
   ☐ fonction de PID ?
   ☐ documenter la partie client/serveur et particulièrement le protocole
@@ -6,5 +6,5 @@ Todo List :
     ☐ drag and drop pour choisir les moteurs ou registers à surveiller
 
 
-Bugs : 
+Bugs: 
  ☐ pid sur moteurs non MX
