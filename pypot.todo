@@ -4,6 +4,7 @@ Todo List:
   ☐ documenter la partie client/serveur et particulièrement le protocole
   ☐ interface Web
     ☐ drag and drop pour choisir les moteurs ou registers à surveiller
+  ☐ inclure le DH dans le xml
 
 
 Bugs: 

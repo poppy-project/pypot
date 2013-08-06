@@ -59,10 +59,16 @@ class Chain(namedtuple('Chain', ('links', 'base', 'tool'))):
         
         tr = self.base.copy()
 
+        l = []
+
         for link, theta in zip(self.links, q):
             tr = tr * link.get_transformation_matrix(theta)
+
+            l.append(tr)
                 
-        return tr * self.tool
+        tr = tr * self.tool
+        l.append(tr)
+        return tr, numpy.asarray(l)
     
     def inverse_kinematics(self, end_effector_transformation,
                            q=None,
@@ -160,12 +166,12 @@ def components_from_transf(tm):
 def transf_from_components(R, T):
     return numpy.matrix(numpy.vstack((numpy.hstack((R, T.reshape(3, 1))), (0, 0, 0, 1))))
 
-def translation(x, y, z):
+def transl(x, y, z):
     M = numpy.matrix(numpy.identity(4))
     M[0:3, 3] = numpy.matrix([x, y, z]).T
     return M
 
-def rotx(theta):
+def trotx(theta):
     ct = numpy.cos(theta)
     st = numpy.sin(theta)
 
@@ -175,7 +181,7 @@ def rotx(theta):
 
     return transf_from_components(R, numpy.zeros(3))
 
-def roty(theta):
+def troty(theta):
     ct = numpy.cos(theta)
     st = numpy.sin(theta)
 
@@ -186,7 +192,7 @@ def roty(theta):
     return transf_from_components(R, numpy.zeros(3))
 
 
-def rotz(theta):
+def trotz(theta):
     ct = numpy.cos(theta)
     st = numpy.sin(theta)
 
