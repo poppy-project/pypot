@@ -16,7 +16,7 @@ Do not hesitate to contact us if you want to get involved!
 
 ## Documentation ##
 
-The full PyPot documentation on a html format can be found [here](http://www.google.fr). It provides tutorials, examples and a complete API.
+The full PyPot documentation on a html format can be found [here](http://pierrerouanet.bitbucket.org/pypot/). It provides tutorials, examples and a complete API.
 
 ## Installation ##
 
@@ -36,4 +36,4 @@ You will also have to install the driver for the USB2serial port. There are two 
 * USB2AX - this device is designed to manage TTL communication only
 * USB2Dynamixel - this device can manage both TTL and RS485 communication.
 
-For more details on the installation procedure, please refer to the [installation section](http://www.google.fr) of the documentation.
+For more details on the installation procedure, please refer to the [installation section](http://pierrerouanet.bitbucket.org/pypot/intro.html#installation) of the documentation.
