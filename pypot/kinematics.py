@@ -94,7 +94,7 @@ class Chain(namedtuple('Chain', ('links', 'base', 'tool'))):
         alpha = 1.0
                 
         for _ in range(max_iter):
-            e = numpy.multiply(transform_difference(self.forward_kinematics(q), end_effector_transformation), mask)
+            e = numpy.multiply(transform_difference(self.forward_kinematics(q)[0], end_effector_transformation), mask)
             d = numpy.linalg.norm(e)
 
             if d < numpy.linalg.norm(best_e):
@@ -121,7 +121,7 @@ class Chain(namedtuple('Chain', ('links', 'base', 'tool'))):
 
     def _jacob0(self, q):
         Jn = self._jacobn(q)
-        Rn = rotation_from_transf(self.forward_kinematics(q))
+        Rn = rotation_from_transf(self.forward_kinematics(q)[0])
 
         return numpy.concatenate((numpy.concatenate((Rn, numpy.zeros((3, 3))), axis=1),
                                   numpy.concatenate((numpy.zeros((3, 3)), Rn), 1))) * Jn
