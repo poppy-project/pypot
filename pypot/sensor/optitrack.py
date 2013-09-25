@@ -1,5 +1,6 @@
 import vrpn
 import time
+import datetime
 import threading
 
 from collections import namedtuple
@@ -7,7 +8,7 @@ from collections import namedtuple
 from pypot.utils import Point, Quaternion
 
 
-TrackedObject = namedtuple('TrackedObject', ('position', 'orientation'))
+TrackedObject = namedtuple('TrackedObject', ('position', 'orientation', 'timestamp'))
 
 
 class OptiTrackClient(threading.Thread):
@@ -32,9 +33,17 @@ class OptiTrackClient(threading.Thread):
     def tracked_objects(self):
         return self._tracked_objects
 
+    @property
+    def recent_tracked_objects(self):
+        """ Only returns the objects that have been tracked less than 20ms ago. """
+        dt = 0.02
+        f = lambda name: (datetime.datetime.now() - self.tracked_objects[name].timestamp).total_seconds()
+        return dict([(k, v) for k, v in self.tracked_objects.iteritems() if f(k) < dt])
+
     def handler(self, obj, data):
         self.tracked_objects[obj] = TrackedObject(Point(*data['position']),
-                                                  Quaternion(*data['quaternion']))
+                                                  Quaternion(*data['quaternion']),
+                                                  datetime.datetime.now())
 
     def serve_forever(self):
         self.start()
