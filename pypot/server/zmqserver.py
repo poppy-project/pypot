@@ -1,4 +1,5 @@
 import zmq
+import json
 
 from pypot.server.server import AbstractServer, MyJSONEncoder
 
