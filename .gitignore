@@ -5,9 +5,3 @@
 doc/_build
 
 .DS_Store
-PyPot.xcodeproj/project.xcworkspace/contents.xcworkspacedata
-PyPot.xcodeproj/project.xcworkspace/xcshareddata/PyPot.xccheckout
-PyPot.xcodeproj/project.xcworkspace/xcuserdata/pierrerouanet.xcuserdatad/UserInterfaceState.xcuserstate
-PyPot.xcodeproj/project.xcworkspace/xcuserdata/pierrerouanet.xcuserdatad/WorkspaceSettings.xcsettings
-PyPot.xcodeproj/xcuserdata/pierrerouanet.xcuserdatad/xcschemes/PyPot.xcscheme
-PyPot.xcodeproj/xcuserdata/pierrerouanet.xcuserdatad/xcschemes/xcschememanagement.plist

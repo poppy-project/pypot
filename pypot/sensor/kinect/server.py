@@ -1,4 +1,3 @@
-import pykinect
 import numpy
 import Queue
 import time
@@ -27,7 +26,7 @@ class KinectServer(object):
         print 'Server started, waiting for connection...'
         
         while True:
-            request = self.socket.recv()
+            self.socket.recv()
             
             msg = self.msg.get()
             self.send_skeleton(msg[0], msg[1])

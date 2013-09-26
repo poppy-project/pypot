@@ -2,9 +2,6 @@ import time
 import numpy
 import threading
 
-import pypot.dynamixel
-import pypot.dynamixel.motor
-
 
 class Primitive(object):
     """ A Primitive is an elementary behavior that can easily be combined to create more complex behaviors.

@@ -1,5 +1,4 @@
 import numpy
-import itertools
 
 import pypot.robot
 import pypot.primitive

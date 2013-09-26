@@ -14,15 +14,6 @@
     :members:
     :undoc-members:
     :show-inheritance:
-
-    
-:mod:`webserver` Module
------------------------
-
-.. automodule:: pypot.server.webserver
-    :members:
-    :undoc-members:
-    :show-inheritance:
     
 
 :mod:`zmqserver` Module
