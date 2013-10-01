@@ -5,7 +5,7 @@
     :members:
     :undoc-members:
     :show-inheritance:
-    
+
 
 :mod:`request` Module
 ---------------------
@@ -14,7 +14,15 @@
     :members:
     :undoc-members:
     :show-inheritance:
-    
+
+:mod:`httpserver` Module
+---------------------
+
+.. automodule:: pypot.server.httpserver
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 
 :mod:`zmqserver` Module
 -----------------------

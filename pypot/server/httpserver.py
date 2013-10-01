@@ -32,8 +32,8 @@ class HTTPServer(AbstractServer):
             }
             return self.request_handler.handle_request(req)['get']['']
 
-        @self.app.get('/motor/<name>/register.json')
         @self.app.get('/<name>/register.json')
+        @self.app.get('/motor/<name>/register.json')
         def get_motor_register(name):
             req = {
                 'get': {
