@@ -1,22 +1,22 @@
 # -*- coding: utf-8 -*-
 
 
-""" 
+"""
     This module describes all the conversion method used to transform value from the representation used by the dynamixel motor to a more standard form (e.g. degrees, volt...).
-    
+
     For compatibility issue all comparison method should be written in the following form (even if the model is not actually used):
         * def my_conversion_from_dxl_to_si(value, model): ...
         * def my_conversion_from_si_to_dxl(value, model): ...
-    
+
     .. note:: If the control is readonly you only need to write the dxl_to_si conversion.
-    
+
     """
 
 import numpy
 import itertools
 
 
-# MARK: - Position 
+# MARK: - Position
 
 position_range = {
     'MX': (4096, 360.0),
@@ -35,7 +35,7 @@ def degree_to_dxl(value, model):
 
     pos = int(round((max_pos - 1) * ((max_deg / 2 + float(value)) / max_deg), 0))
     pos = min(max(pos, 0), max_pos - 1)
-    
+
     return pos
 
 # MARK: - Speed
@@ -43,22 +43,19 @@ def degree_to_dxl(value, model):
 def dxl_to_speed(value, model):
     cw, speed = divmod(value, 1024)
     direction = (-2 * cw + 1)
-    
+
     speed_factor = 0.114 if model.startswith('MX') else 0.111
-    
+
     return direction * (speed * speed_factor) * 6
 
 def speed_to_dxl(value, model):
-    if value < -700:
-        value = -700
-    
-    elif value > 700:
-        value = 700
-    
     direction = 1024 if value < 0 else 0
     speed_factor = 0.114 if model.startswith('MX') else 0.111
-    
-    return direction + int(abs(value) / (6 * speed_factor))
+
+    max_value = 1023 * speed_factor * 6
+    value = min(max(value, -max_value), max_value)
+
+    return int(round(direction + abs(value) / (6 * speed_factor), 0))
 
 # MARK: - Torque
 
@@ -71,7 +68,7 @@ def torque_to_dxl(value, model):
 def dxl_to_load(value, model):
     cw, load = divmod(value, 1024)
     direction = -2 * cw + 1
-    
+
     return dxl_to_torque(load, model) * direction
 
 # PID Gains
@@ -85,7 +82,7 @@ def pid_to_dxl(value, model):
     truncate = lambda x: int(max(0, min(x, 254)))
     return map(lambda x, y: truncate(x * y), value, (250, 2.048, 8.0))
 
-# MARK: - Model 
+# MARK: - Model
 
 dynamixelModels = {
     12: 'AX-12',    # 12 + (0<<8)
@@ -110,7 +107,7 @@ def dxl_to_drive_mode(value, model):
 def drive_mode_to_dxl(value, model):
     return (int('slave' in value) << 1 | int('reverse' in value))
 
-# MARK: - Baudrate 
+# MARK: - Baudrate
 
 dynamixelBaudrates = {
     1: 1000000.0,
@@ -186,14 +183,14 @@ dynamixelErrors = ['None Error',
 def dxl_to_alarm(value, model):
     return decode_error(value)
 
-def decode_error(error_code):    
+def decode_error(error_code):
     bits = numpy.unpackbits(numpy.asarray(error_code, dtype=numpy.uint8))
     return tuple(numpy.array(dynamixelErrors)[bits == 1])
 
 def alarm_to_dxl(value, model):
     if not set(value).issubset(dynamixelErrors):
         raise ValueError('should only contains error among {}'.format(dynamixelErrors))
-    
+
     indices = [len(dynamixelErrors) - 1 - dynamixelErrors.index(e) for e in value]
     return sum(2 ** i for i in indices)
 
@@ -209,10 +206,10 @@ def bool_to_dxl(value, model):
 def dxl_decode(data):
     if len(data) not in (1, 2):
         raise ValueError('try to decode incorrect data {}'.format(data))
-        
+
     if len(data) == 1:
         return data[0]
-    
+
     if len(data) == 2:
         return data[0] + (data[1] << 8)
 
@@ -222,7 +219,7 @@ def dxl_decode_all(data, nb_elem):
         return tuple(map(dxl_decode, data))
     else:
         return dxl_decode(data)
-    
+
 def dxl_code(value, length):
     if length not in (1, 2):
         raise ValueError('try to code value with an incorrect length {}'.format(length))
