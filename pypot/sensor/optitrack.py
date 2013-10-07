@@ -1,26 +1,40 @@
 import vrpn
 import time
+import numpy
 import datetime
 import threading
 
 from collections import namedtuple
 
-from pypot.utils import Point, Quaternion
+from pypot.utils import Point
 
 
 TrackedObject = namedtuple('TrackedObject', ('position', 'orientation', 'timestamp'))
 
 
+def quat2euler(q):
+    qx, qy, qz, qw = q
+    sqx, sqy, sqz, sqw = q ** 2
+    invs = 1.0 / (sqx + sqy + sqz + sqw)
+
+    yaw = numpy.arctan2(2.0 * (qx * qz + qy * qw) * invs, (sqx - sqy - sqz + sqw) * invs)
+    pitch = -numpy.arcsin(2.0 * (qx * qy - qz * qw) * invs)
+    roll = numpy.arctan2(2.0 * (qy * qz + qx * qw) * invs, (-sqx + sqy - sqz + sqw) * invs)
+
+    return numpy.array((yaw, pitch, roll))
+
+
 class OptiTrackClient(threading.Thread):
-    """
-        
+    """ Retrieves position, orientation, and timestamp of each tracked object.
+
         The position is expressed in meters (X is left, Y is up, and Z is depth).
-        
+        The orientation is expressed in radians (yaw, pitch, roll).
+
         """
     def __init__(self, addr, port, obj_names):
         threading.Thread.__init__(self)
         self.daemon = True
-    
+
         self.trackers = []
         for obj in obj_names:
             t = vrpn.receiver.Tracker('{}@{}:{}'.format(obj, addr, port))
@@ -28,7 +42,7 @@ class OptiTrackClient(threading.Thread):
             self.trackers.append(t)
 
         self._tracked_objects = {}
-    
+
     @property
     def tracked_objects(self):
         return self._tracked_objects
@@ -42,7 +56,7 @@ class OptiTrackClient(threading.Thread):
 
     def handler(self, obj, data):
         self.tracked_objects[obj] = TrackedObject(Point(*data['position']),
-                                                  Quaternion(*data['quaternion']),
+                                                  quat2euler(numpy.array(data['quaternion'])),
                                                   datetime.datetime.now())
 
     def serve_forever(self):
