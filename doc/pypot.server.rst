@@ -15,8 +15,16 @@
     :undoc-members:
     :show-inheritance:
 
+:mod:`server` Module
+--------------------
+
+.. automodule:: pypot.server.server
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 :mod:`httpserver` Module
----------------------
+------------------------
 
 .. automodule:: pypot.server.httpserver
     :members:

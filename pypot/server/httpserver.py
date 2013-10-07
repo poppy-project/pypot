@@ -4,6 +4,19 @@ import json
 from pypot.server.server import AbstractServer, MyJSONEncoder
 
 class HTTPServer(AbstractServer):
+    """ Bottle based HTTPServer used to remote access a robot.
+
+        The server answers to the following requests:
+
+        * GET /motor/list.json
+        * GET /primitive/list.json
+        * GET /motor/<name>/register.json (or GET /<name>/register.json)
+        * GET /motor/<name>/<register> (or GET /<name>/<register>)
+        * POST /motor/<name>/<register> (or POST /<name>/<register>)
+        * POST /primitive/<prim_name>/call/<meth_name> (or GET /<prim_name>/call/<meth_name>)
+        * POST /request.json
+
+     """
     def __init__(self, robot, host='localhost', port=8080):
         AbstractServer.__init__(self, robot)
 
@@ -79,6 +92,7 @@ class HTTPServer(AbstractServer):
             return self.request_handler.handle_request(bottle.request.json)
 
     def run(self):
+        """ Start the bottle server, run forever. """
         bottle.run(self.app,
                    host=self.host, port=self.port,
                    quiet=True,

@@ -9,6 +9,7 @@ from pypot.server.request import BaseRequestHandler
 
 
 class AbstractServer(pypot.primitive.Primitive):
+    """ Abstract Server which mostly delegate the work to a request handler. """
     def __init__(self, robot, handler=BaseRequestHandler):
         pypot.primitive.Primitive.__init__(self, robot)
 
@@ -17,5 +18,6 @@ class AbstractServer(pypot.primitive.Primitive):
 
 
 class MyJSONEncoder(json.JSONEncoder):
+    """ JSONEncoder which tries to call a json property before using the enconding default function. """
     def default(self, obj):
         return obj.json if hasattr(obj, 'json') else json.JSONEncoder.default(self, obj)

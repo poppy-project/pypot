@@ -7,7 +7,7 @@ class ZMQServer(AbstractServer):
     def __init__(self, robot, host='127.0.0.1', port=8080):
         """ A ZMQServer allowing remote access of a robot instance.
 
-        The server used the REQ/REP zmq pattern. So you should always first send a request and then read the answer.
+        The server used the REQ/REP zmq pattern. You should always first send a request and then read the answer.
 
         """
         AbstractServer.__init__(self, robot)
@@ -17,6 +17,7 @@ class ZMQServer(AbstractServer):
         self.socket.bind('tcp://{}:{}'.format(host, port))
 
     def run(self):
+        """ Run an infinite REQ/REP loop. """
         while True:
             req = self.socket.recv_json()
 
