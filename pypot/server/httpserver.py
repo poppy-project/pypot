@@ -40,7 +40,7 @@ class HTTPServer(AbstractServer):
         def get_primitive_list():
             req = {
                 'get': {
-                    '': ['primitives_name',]
+                    '': ['attached_primitives_name',]
                 }
             }
             return self.request_handler.handle_request(req)['get']['']
