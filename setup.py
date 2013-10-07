@@ -19,6 +19,7 @@ setup(name='pypot',
       extras_require={
         'tools': [], # Extras require: PyQt4 (not a PyPi packet)
         'doc': ['sphinx', 'sphinx-bootstrap-theme'],
+        'server': ['bottle', 'tornado', 'zmq']
       },
 
       entry_points={
