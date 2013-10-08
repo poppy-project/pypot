@@ -27,5 +27,5 @@ def get_available_ports():
                 ports.append(str(_winreg.EnumValue(key, i)[1]))
             except WindowsError:
                 return ports
-    
+
     return []

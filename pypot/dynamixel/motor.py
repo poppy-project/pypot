@@ -10,7 +10,7 @@ from operator import getitem, setitem
 
 class DxlMotor(object):
     """ High-level class used to represent and control a generic dynamixel motor.
-        
+
         This class provides all level access to:
             * motor id
             * motor name
@@ -20,26 +20,26 @@ class DxlMotor(object):
             * angle limit
             * temperature
             * voltage
-        
+
         This class represents a generic robotis motor and you define your own subclass for specific motors (see :class:`~pypot.dynamixel.motor.DxlMXMotor` or :class:`~pypot.dynamixel.motor.DxlAXRXMotor`).
-        
+
         Those properties are synchronized with the real motors values thanks to a :class:`~pypot.dynamixel.controller.DxlController`.
-        
+
         """
     def __init__(self, id, name=None,
                  direct=True, offset=0.0):
         self._id = id
         self._name = name if name else 'motor_{}'.format(id)
-        
+
         self._direct = direct
         self._offset = offset
-    
+
         self._values = defaultdict(int)
         self._values['compliant'] = True
-    
+
     def __repr__(self):
         return '<DxlMotor name={self.name} id={self.id} pos={self.present_position}>'.format(self=self)
-    
+
     @property
     def json(self):
         return self.name
@@ -49,12 +49,12 @@ class DxlMotor(object):
         return property(fget=lambda self: getitem(self._values, name),
                         fset=(lambda self, value: setitem(self._values, name, value)) if rw else None,
                         doc=doc)
-    
+
     @property
     def id(self):
         """ Id of the motor (readonly). """
         return self._id
-    
+
     @property
     def name(self):
         """ Name of the motor (readonly). """
@@ -65,45 +65,45 @@ class DxlMotor(object):
         """ Present position (in degrees) of the motor (readonly). """
         pos = self._values['present_position']
         return (pos if self.direct else -pos) - self.offset
-    
+
     @property
     def goal_position(self):
         """ Goal position (in degrees) of th motor. """
         pos = self._values['goal_position']
         return (pos if self.direct else -pos) - self.offset
-    
+
     @goal_position.setter
     def goal_position(self, value):
         value = (value + self.offset) if self.direct else -(value + self.offset)
         self._values['goal_position'] = value
-    
+
     @property
     def present_speed(self):
         """ Present speed (in degrees per second) of the motor (readonly). """
         speed = self._values['present_speed']
         return (speed if self.direct else -speed)
-    
+
     @property
     def goal_speed(self):
         """ Goal speed (in degrees per second) of the motor.
-            
+
             This property can be used to control your motor in speed. Setting a goal speed will automatically change the moving speed and sets the goal position as the angle limit.
-            
+
             .. note:: The motor will turn until reaching the angle limit. But this is not a wheel mode, so the motor will stop at its limits.
-            
+
             """
         return numpy.sign(self.goal_position) * self.moving_speed
-    
+
     @goal_speed.setter
     def goal_speed(self, value):
         if abs(value) < sys.float_info.epsilon:
             self.goal_position = self.present_position
-        
+
         else:
             # 0.7 corresponds approx. to the min speed that will be converted into 0
             # and as 0 corredsponds to setting the max speed, we have to check this case
             value = numpy.sign(value) * 0.7 if abs(value) < 0.7 else value
-                
+
             self.goal_position = numpy.sign(value) * self.max_pos
             self.moving_speed = abs(value)
 
@@ -135,7 +135,7 @@ class DxlMotor(object):
     def offset(self):
         """ Offset of the zero of the motor (in degrees). """
         return self._offset
-    
+
     @property
     def registers(self):
         return filter(lambda r: not r.startswith('_'), dir(self))
@@ -144,14 +144,14 @@ class DxlMotor(object):
         """ Automatically sets the goal position and the moving speed to reach the desired position within the duration. """
         dp = abs(self.present_position - position)
         speed = (dp / float(duration)) if duration > 0 else numpy.inf
-        
+
         self.moving_speed = speed
         self.goal_position = position
 
         if wait:
             time.sleep(duration)
 
-    
+
 DxlMotor.moving_speed = DxlMotor._make_accessor('moving_speed', rw=True,
                                                 doc='Moving speed (in degrees per second) of the motor.')
 DxlMotor.torque_limit = DxlMotor._make_accessor('torque_limit', rw=True,
@@ -167,10 +167,10 @@ DxlMotor.present_temperature = DxlMotor._make_accessor('present_temperature',
 
 class DxlAXRXMotor(DxlMotor):
     """ This class represents the AX robotis motor.
-        
+
         This class adds access to:
             * compliance margin/slope (see the robotis website for details)
-        
+
         """
     def __init__(self, id, name=None,
                  direct=True, offset=0.0):
@@ -188,10 +188,10 @@ class DxlMXMotor(DxlMotor):
     def __init__(self, id, name=None,
                  direct=True, offset=0.0):
         """ This class represents the RX and MX robotis motor.
-            
+
             This class adds access to:
                 * PID gains (see the robotis website for details)
-            
+
             """
         DxlMotor.__init__(self, id, name, direct, offset)
         self.max_pos = 180
