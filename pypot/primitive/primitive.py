@@ -214,10 +214,6 @@ class MockupMotor(object):
         object.__setattr__(self, '_m', motor)
         object.__setattr__(self, '_to_set', {})
 
-    @property
-    def json(self):
-        return self._m.json
-
     def __getattr__(self, attr):
         return getattr(self._m, attr)
 
