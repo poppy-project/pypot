@@ -4,7 +4,7 @@ from setuptools import setup, find_packages
 
 
 setup(name='pypot',
-      version='1.4.2',
+      version='1.4.4',
       packages=find_packages(),
 
       install_requires=['numpy', 'pyserial'],
