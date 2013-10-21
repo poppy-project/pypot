@@ -10,7 +10,7 @@ PyPot has been entirely written in Python to allow for fast development, easy de
 
 ## The Poppy-project: open source ##
 
-PyPot is part of the [Poppy project](http://flowers.inria.fr/poppy) aiming at releasing an integrated humanoid platform under an open source license. Poppy is a kid-size humanoid robot designed for biped locomotion and physical human-robot interaction. It is based on a combination of standard dynamixel actuators, 3D printed parts and open-source electronics such as Arduino boards. Both the hardware (3D models, electronics...) and software can be freely used, modified and duplicated.
+PyPot is part of the [Poppy project](http://flowers.inria.fr/poppy) aiming at releasing an integrated humanoid platform under an open source license GPL V3. Poppy is a kid-size humanoid robot designed for biped locomotion and physical human-robot interaction. It is based on a combination of standard dynamixel actuators, 3D printed parts and open-source electronics such as Arduino boards. Both the hardware (3D models, electronics...) and software can be freely used, modified and duplicated.
 
 Do not hesitate to contact us if you want to get involved!
 
