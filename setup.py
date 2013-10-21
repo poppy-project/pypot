@@ -39,4 +39,5 @@ setup(name='pypot',
       author_email='pierre.rouanet@gmail.com',
       description='Python Library for Robot Control',
       url='https://bitbucket.org/pierrerouanet/pypot',
+      license='GNU GENERAL PUBLIC LICENSE Version 3'
       )
