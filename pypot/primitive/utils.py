@@ -13,7 +13,7 @@ class Sinus(pypot.primitive.LoopPrimitive):
         pypot.primitive.LoopPrimitive.__init__(self, robot, refresh_freq,
                                                amp, freq, offset, phase)
 
-        self.motor_list = map(self._get_mockup_motor, motor_list)
+        self.motor_list = [self._get_mockup_motor(m) for m in motor_list]
 
 
     def update(self, amp, freq, phase, offset):

@@ -30,7 +30,7 @@ class BaseRequestHandler(object):
             """
         answer = {}
 
-        for meth in filter(lambda meth: meth in request, ('get', 'set', 'call')):
+        for meth in [meth for meth in ('get', 'set', 'call') if meth in request]:
             f = getattr(self, 'handle_{}'.format(meth))
             answer[meth] = f(request[meth])
 

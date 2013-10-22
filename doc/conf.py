@@ -41,8 +41,8 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u'PyPot'
-copyright = u'2012, Pierre Rouanet, Matthieu Lapeyre, Haylee Fogg'
+project = 'PyPot'
+copyright = '2012, Pierre Rouanet, Matthieu Lapeyre, Haylee Fogg'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -202,8 +202,8 @@ latex_elements = {
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title, author, documentclass [howto/manual]).
 latex_documents = [
-  ('index', 'PyPot.tex', u'PyPot Documentation',
-   u'Pierre Rouanet, Haylee Fogg, Matthieu Lapeyre', 'manual'),
+  ('index', 'PyPot.tex', 'PyPot Documentation',
+   'Pierre Rouanet, Haylee Fogg, Matthieu Lapeyre', 'manual'),
 ]
 
 # The name of an image file (relative to this directory) to place at the top of
@@ -232,8 +232,8 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    ('index', 'pypot', u'PyPot Documentation',
-     [u'Pierre Rouanet, Matthieu Lapeyre, Haylee Fogg'], 1)
+    ('index', 'pypot', 'PyPot Documentation',
+     ['Pierre Rouanet, Matthieu Lapeyre, Haylee Fogg'], 1)
 ]
 
 # If true, show URL addresses after external links.
@@ -246,8 +246,8 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-  ('index', 'PyPot', u'PyPot Documentation',
-   u'Pierre Rouanet, Matthieu Lapeyre, Haylee Fogg', 'PyPot', 'One line description of project.',
+  ('index', 'PyPot', 'PyPot Documentation',
+   'Pierre Rouanet, Matthieu Lapeyre, Haylee Fogg', 'PyPot', 'One line description of project.',
    'Miscellaneous'),
 ]
 

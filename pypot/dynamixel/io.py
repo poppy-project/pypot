@@ -190,14 +190,14 @@ class DxlIO(object):
 
     def scan(self, ids=xrange(254)):
         """ Pings all ids within the specified list, by default it finds all the motors connected to the bus. """
-        return filter(self.ping, ids)
+        return [id for id in ids if self.ping(id)]
 
     # MARK: - Specific Getter / Setter
 
     def get_model(self, ids):
         """ Gets the model for the specified motors. """
-        to_get_ids = filter(lambda id: id not in self._known_models, ids)
-        models = map(dxl_to_model, self._get_model(to_get_ids, convert=False))
+        to_get_ids = [i for i in ids if i not in self._known_models]
+        models = [dxl_to_model(m) for m in self._get_model(to_get_ids, convert=False)]
         self._known_models.update(zip(to_get_ids, models))
 
         return tuple(self._known_models[id] for id in ids)
@@ -255,12 +255,12 @@ class DxlIO(object):
         convert = kwargs['convert'] if 'convert' in kwargs else self._convert
         if convert:
             srl_for_id = dict(zip(srl_for_id.keys(),
-                                  map(lambda s: ('never', 'read', 'always').index(s), srl_for_id.values())))
+                              [('never', 'read', 'always').index(s) for s in srl_for_id.values()]))
         self._set_status_return_level(srl_for_id, convert=False)
 
     def get_mode(self, ids):
         """ Gets the mode ('joint' or 'wheel') for the specified motors. """
-        to_get_ids = filter(lambda id: id not in self._known_mode, ids)
+        to_get_ids = [id for id in ids if id not in self._known_mode]
         limits = self.get_angle_limit(to_get_ids, convert=False)
         modes = ('wheel' if limit == (0, 0) else 'joint' for limit in limits)
 
@@ -277,9 +277,8 @@ class DxlIO(object):
         self._set_mode(dict(zip(ids, itertools.repeat('joint'))))
 
     def _set_mode(self, mode_for_id):
-        models = map(lambda m: 'MX' if m.startswith('MX') else '*',
-                     self.get_model(mode_for_id.keys()))
-        pos_max = map(lambda m: position_range[m][0], models)
+        models = ['MX' if m.startswith('MX') else '*' for m in self.get_model(list(mode_for_id.keys()))]
+        pos_max = [position_range[m][0] for m in models]
         limits = ((0, 0) if mode == 'wheel' else (0, pos_max[i] - 1)
                   for i, mode in enumerate(mode_for_id.itervalues()))
 
@@ -316,13 +315,12 @@ class DxlIO(object):
 
     def get_pid_gain(self, ids, **kwargs):
         """ Gets the pid gain for the specified motors. """
-        return tuple(map(lambda t: tuple(reversed(t)),
-                         self._get_pid_gain(ids, **kwargs)))
+        return tuple([tuple(reversed(t)) for t in self._get_pid_gain(ids, **kwargs)])
 
     def set_pid_gain(self, pid_for_id, **kwargs):
         """ Sets the pid gain to the specified motors. """
         pid_for_id = dict(itertools.izip(pid_for_id.iterkeys(),
-                                         map(lambda t: tuple(reversed(t)), pid_for_id.itervalues())))
+                                         [tuple(reversed(t)) for t in pid_for_id.values()]))
         self._set_pid_gain(pid_for_id, **kwargs)
 
     # MARK: - Generic Getter / Setter
@@ -337,12 +335,12 @@ class DxlIO(object):
         convert = kwargs['convert'] if ('convert' in kwargs) else self._convert
 
         bl = ('goal position speed load', 'present position speed load')
-        controls = filter(lambda c: c.name not in bl, self._DxlIO__controls)
+        controls = [c for c in self._DxlIO__controls if c.name not in bl]
 
         res = []
 
         for id, model in zip(ids, self.get_model(ids)):
-            controls = filter(lambda c: model in c.models, controls)
+            controls = [c for c in controls if model in c.models]
 
             controls = sorted(controls, key=lambda c: c.address)
 
@@ -372,8 +370,8 @@ class DxlIO(object):
 
             func_name = control.getter_name if control.getter_name else 'get_{}'.format(control.name.replace(' ', '_'))
             func_name = '_{}'.format(func_name) if hasattr(cls, func_name) else func_name
-            my_getter.func_doc = 'Gets {} from the specified motors.'.format(control.name)
-            my_getter.func_name = func_name
+            my_getter.__doc__ = 'Gets {} from the specified motors.'.format(control.name)
+            my_getter.__name__ = func_name
             setattr(cls, func_name, my_getter)
 
         if control.access in (_DxlAccess.writeonly, _DxlAccess.readwrite):
@@ -382,8 +380,8 @@ class DxlIO(object):
 
             func_name = control.setter_name if control.setter_name else 'set_{}'.format(control.name.replace(' ', '_'))
             func_name = '_{}'.format(func_name) if hasattr(cls, func_name) else func_name
-            my_setter.func_doc = 'Sets {} to the specified motors.'.format(control.name)
-            my_setter.func_name = func_name
+            my_setter.__doc__ = 'Sets {} to the specified motors.'.format(control.name)
+            my_setter.__name__ = func_name
             setattr(cls, func_name, my_setter)
 
     def _get_control_value(self, control, ids, **kwargs):
@@ -427,7 +425,7 @@ class DxlIO(object):
                 lost_ids = []
                 for i, v in enumerate(itertools.chain(*values) if control.nb_elem > 1 else values):
                     if v == max_val:
-                        lost_ids.append(ids[i / control.nb_elem])
+                        lost_ids.append(ids[i // control.nb_elem])
                 e = DxlTimeoutError(rp, list(set(lost_ids)))
                 if self._error_handler:
                     self._error_handler.handle_timeout(e)
@@ -439,7 +437,7 @@ class DxlIO(object):
             models = self.get_model(ids)
             if not models:
                 return ()
-            values = map(control.dxl_to_si, values, models)
+            values = [control.dxl_to_si(v, m) for v, m in zip(values, models)]
 
         return tuple(values)
 

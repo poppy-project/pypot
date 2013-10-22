@@ -44,12 +44,12 @@ class Robot(object):
     def start_sync(self):
         """ Starts all the synchonization loop (sensor/effector controllers). """
         self._primitive_manager.start()
-        map(lambda c: c.start(), self._dxl_controllers)
+        [c.start() for c in self._dxl_controllers]
 
     def stop_sync(self):
         """ Stops all the synchonization loop (sensor/effector controllers). """
         self._primitive_manager.stop()
-        map(lambda c: c.stop(), self._dxl_controllers)
+        [c.stop() for c in self._dxl_controllers]
 
     def attach_primitive(self, primitive, name):
         setattr(self, name, primitive)
@@ -78,7 +78,7 @@ class Robot(object):
     @property
     def compliant(self):
         """ Returns a list of all the compliant motors. """
-        return filter(lambda m: m.compliant, self.motors)
+        return [m for m in self.motors if m.compliant]
 
     @compliant.setter
     def compliant(self, is_compliant):

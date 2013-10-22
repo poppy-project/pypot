@@ -1,1 +1,1 @@
-from sensor import KinectSensor
+from .sensor import KinectSensor

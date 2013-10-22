@@ -138,7 +138,7 @@ class DxlMotor(object):
 
     @property
     def registers(self):
-        return filter(lambda r: not r.startswith('_'), dir(self))
+        return [r for r in dir(self) if not r.startswith('_')]
 
     def goto_position(self, position, duration, wait=False):
         """ Automatically sets the goal position and the moving speed to reach the desired position within the duration. """

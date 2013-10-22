@@ -26,7 +26,7 @@ class DxlController(object):
 
     def stop(self):
         """ Stops al the synchronization loops (they can not be started again). """
-        map(_RepeatedTimer.stop, self._loops)
+        [_RepeatedTimer.stop(l) for l in self._loops]
 
 
     def add_sync_loop(self, freq, function, name):
@@ -41,7 +41,7 @@ class DxlController(object):
                            'Thread-get_{}'.format(regname))
 
     def _get_register(self, regname, varname):
-        motors = filter(lambda m: hasattr(m, varname), self._motors)
+        motors = [m for m in self._motors if hasattr(m, varname)]
         if not motors:
             return
         ids = [m.id for m in motors]
@@ -61,7 +61,8 @@ class DxlController(object):
                            'Thread-set_{}'.format(regname))
 
     def _set_register(self, regname, varname):
-        motors = filter(lambda m: hasattr(m, varname), self._motors)
+        motors = [m for m in self._motors if hasattr(m, varname)]
+
         if not motors:
             return
         ids = [m.id for m in motors]
@@ -122,7 +123,7 @@ class BaseDxlController(DxlController):
 
     def _set_pos_speed_load(self):
         change_torque = {}
-        torques = map(lambda m: not m.compliant, self._motors)
+        torques = [not m.compliant for m in self._motors]
         for m, t, old_t in zip(self._motors, torques, self._old_torques):
             if t != old_t:
                 change_torque[m.id] = t
@@ -130,7 +131,7 @@ class BaseDxlController(DxlController):
         if change_torque:
             self._dxl_io._set_torque_enable(change_torque)
 
-        rigid_motors = filter(lambda m: not m.compliant, self._motors)
+        rigid_motors = [m for m in self._motors if not m.compliant]
         ids = tuple(m.id for m in rigid_motors)
 
         if not ids:

@@ -12,5 +12,5 @@
 
     """
 
-from zmqserver import ZMQServer
-from httpserver import HTTPServer
+from .zmqserver import ZMQServer
+from .httpserver import HTTPServer

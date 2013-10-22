@@ -385,7 +385,7 @@ class HerboristApp(PyQt4.QtGui.QApplication):
         motors = defaultdict(list)
 
         selected_items = self.window.motor_tree.selectedItems()
-        selected_items = filter(lambda item: item.parent(), selected_items)
+        selected_items = [item for item in selected_items if item.parent()]
 
         for item in selected_items:
             motors[int(item.parent().text(0))].append(int(item.text(1)))

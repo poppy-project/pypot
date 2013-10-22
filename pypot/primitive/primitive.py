@@ -177,7 +177,7 @@ class MockupRobot(object):
             self._motors.append(mockup_motor)
             setattr(self, m.name, mockup_motor)
 
-            for a in filter(lambda a: m in getattr(robot, a), robot.alias):
+            for a in [a for a in robot.alias if m in getattr(robot, a)]:
                 getattr(self, a).append(mockup_motor)
 
 

@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import re
+import sys
 
 from setuptools import setup, find_packages
 
@@ -9,6 +10,9 @@ def version():
   with open('pypot/_version.py') as f:
     return re.search(r"^__version__ = ['\"]([^'\"]*)['\"]", f.read()).group(1)
 
+extra = {}
+if sys.version_info >= (3,):
+    extra['use_2to3'] = True
 
 setup(name='pypot',
       version=version(),
@@ -39,5 +43,6 @@ setup(name='pypot',
       author_email='pierre.rouanet@gmail.com',
       description='Python Library for Robot Control',
       url='https://bitbucket.org/pierrerouanet/pypot',
-      license='GNU GENERAL PUBLIC LICENSE Version 3'
+      license='GNU GENERAL PUBLIC LICENSE Version 3',
+      **extra
       )
