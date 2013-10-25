@@ -215,7 +215,7 @@ def dxl_decode(data):
 
 def dxl_decode_all(data, nb_elem):
     if nb_elem > 1:
-        data = list(itertools.izip(*([iter(data)] * len(data) // nb_elem)))
+        data = list(itertools.izip(*([iter(data)] * (len(data) // nb_elem))))
         return tuple(map(dxl_decode, data))
     else:
         return dxl_decode(data)
