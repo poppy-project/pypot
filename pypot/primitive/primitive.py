@@ -3,6 +3,7 @@ import time
 import numpy
 import threading
 
+from collections import deque
 
 class Primitive(object):
     """ A Primitive is an elementary behavior that can easily be combined to create more complex behaviors.
@@ -139,9 +140,20 @@ class LoopPrimitive(Primitive):
     def __init__(self, robot, freq, *args, **kwargs):
         Primitive.__init__(self, robot, *args, **kwargs)
         self._period = 1.0 / freq
+        self._recent_updates = deque([], 11)
+
+    @property
+    def recent_update_frequencies(self):
+        """ Returns the 10 most recent update frequencies.
+
+        The given frequencies are computed as short-term frequencies!
+        The 0th element of the list corresponds to the most recent frequency.
+        """
+        return list(reversed([(1.0 / p) for p in numpy.diff(self._recent_updates)]))
 
     def run(self, *args, **kwargs):
         """ Calls the :meth:`~pypot.primitive.primitive.Primitive.update` method at a predefined frequency (runs until stopped). """
+
         while not self.should_stop():
             if self.should_pause():
                 self.wait_to_resume()
@@ -149,6 +161,8 @@ class LoopPrimitive(Primitive):
             start = time.time()
             self.update(*self.args, **self.kwargs)
             end = time.time()
+
+            self._recent_updates.append(start)
 
             dt = self._period - (end - start)
             if dt > 0:
