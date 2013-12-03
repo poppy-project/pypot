@@ -97,7 +97,8 @@ class Primitive(object):
 
     def wait_to_stop(self):
         """ Wait until the primitive actually stops. """
-        self._thread.join()
+        if hasattr(self, '_thread'):
+            self._thread.join()
 
     def is_alive(self):
         """ Determines whether the primitive is running or not.
