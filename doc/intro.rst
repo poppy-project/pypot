@@ -87,16 +87,16 @@ Connecting the robot to your computer
 
 Now that you have your own robot, let's start writing the code necessary to control it.
 
-First, create a work folder wherever you want on your filesystem::
+The first step is to setup the configuration for your robot. It will describe the motor configuration of your robot, the USB2serial controller used and make the initialization really easy. Configurations are described as Python dictionaries. Yet, they can be quite repetitive to write. Luckily, the PyPot package comes with an example of a configuration for an Ergo-Robot. You can first import it, so you can modify it::
 
-    mkdir my_first_pypot_example
+    from pypot.robot.config import ergo_robot_config
 
-The first step is to create the configuration file for your robot. This file will describe the motor configuration of your robot and the USB2serial controller used. It makes the initialization really easy. Writing this configuration file can be repetitive. Luckily, the PyPot package comes with some examples of configuration file and in particular with a "template" of a configuration file for an Ergo-Robot. Copy this file to your work folder, so you can modify it::
+If you do some introspection on this object, you will see that it is just a regular Python dictionary. So you can directly edit it like you will do with any other dict. You can also copy the one provided with PyPot and work with your own copy::
 
-    cd my_first_pypot_example
-    cp $(PYPOT_SRC)/resources/ergo_robot.xml .
+    my_config = dict(ergo_robot_config)
+    my_config['controllers']['port'] = 'COM6' # For Windows' users
 
-Open the configuration file with your favorite editor (so emacs...). You only have to modify the USB2serial port and the id of the motors so they correspond to your robot (replace the \*\*\* in the file by the correct values). If you do not know how to get this information, you can refer to the documentation on the :ref:`Herborist tool <herborist>`. Alternatively, you can directly use PyPot::
+You will only have to modify the USB2serial port and the id of the motors so they correspond to your robot. If you do not know how to get this information, you can refer to the documentation on the :ref:`Herborist tool <herborist>`. Alternatively, you can directly ask PyPot::
 
     import pypot.dynamixel
 
@@ -107,11 +107,13 @@ Open the configuration file with your favorite editor (so emacs...). You only ha
     print dxl_io.scan()
     [11, 12, 13, 14, 15, 16]
 
-Once you have edited the configuration file, you should be able to instantiate your robot directly with PyPot::
+.. note:: You can save/load configurations from any format that can be written/read as a Python dictionary. A wrapper for loading json configuration file is provided (see :func:`~pypot.robot.config.from_json`).
+
+Once you have edited the configuration dictionary, you should be able to instantiate your robot directly like this::
 
     import pypot.robot
 
-    ergo_robot = pypot.robot.from_configuration(path_to_my_configuration_file)
+    ergo_robot = pypot.robot.from_config(my_config)
 
 At this point, if you have not seen any errors it means that you are successfully connected to your robot! You can find details on how to write more complex configuration file in the :ref:`config_file` section.
 
@@ -122,11 +124,11 @@ Controlling your Ergo-Robot
 
 Now that you are connected to your Ergo-Robot, let's write a very simple program to make it dance a bit.
 
-First, write the following lines to start you robot (we assume that your python script and the configuration file are in the same folder)::
+First, write the following lines to start you robot (we assume that you have correctly setup your configuration)::
 
     import pypot.robot
 
-    ergo_robot = pypot.robot.from_configuration('ergo_robot.xml')
+    ergo_robot = pypot.robot.from_config(my_config)
     ergo_robot.start_sync()
 
 Except from the last line, everything should be clear now. This new line starts the synchronization between the "software" robot and the real one, i.e. all commands that you will send in python code will automatically be sent to the physical Ergo-Robot (for details on the underlying mechanisms, see :ref:`Sync Loop <sync_loop>`).
