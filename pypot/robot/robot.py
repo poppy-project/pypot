@@ -1,6 +1,5 @@
 import time
 
-import pypot.robot.xmlparser
 import pypot.primitive.manager
 import pypot.dynamixel.controller
 

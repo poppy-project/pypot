@@ -1,2 +1,2 @@
 from .robot import Robot
-from .xmlparser import from_configuration
+from .config import from_config, from_json

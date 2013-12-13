@@ -1,7 +1,8 @@
-import itertools
+import warnings
 import logging
 import numpy
 import time
+import json
 
 import pypot.robot
 import pypot.dynamixel
@@ -68,8 +69,6 @@ ergo_robot_config = {
     },
 }
 
-
-
 def from_config(config):
     """ Returns a Robot instance created from a configuration dictionnary.
 
@@ -78,6 +77,8 @@ def from_config(config):
         """
     robot = pypot.robot.Robot()
 
+    alias = config['motorgroups']
+
     # Instatiate the different controllers
     for c_name, c_params in config['controllers'].items():
         dxl_io = pypot.dynamixel.DxlIO(port=c_params['port'],
@@ -85,7 +86,7 @@ def from_config(config):
                                        error_handler_cls=pypot.dynamixel.BaseErrorHandler)
 
         dxl_motors = []
-        motor_names = _extract_motors_fullist(config, c_params['attached_motors'])
+        motor_names = sum([_motor_extractor(alias, name) for name in c_params['attached_motors']], [])
         motor_nodes = map(lambda m: (m, config['motors'][m]), motor_names)
         changed_angle_limits = {}
 
@@ -116,15 +117,58 @@ def from_config(config):
         robot._attach_dxl_motors(dxl_io, dxl_motors)
 
     # Create the alias for the motorgroups
-    for alias, motor_names in config['motorgroups'].items():
-        motors = [getattr(robot, name) for name in motor_names]
-        setattr(robot, alias, motors)
-        robot.alias.append(alias)
+    for alias_name in alias.keys():
+        motors = [getattr(robot, name) for name in _motor_extractor(alias, alias_name)]
+        setattr(robot, alias_name, motors)
+        robot.alias.append(alias_name)
 
     return robot
 
-def _extract_motors_fullist(config, attached_motors):
-    groups = config['motorgroups']
+def from_json(json_file):
+    with open(json_file) as f:
+        config = json.load(f)
 
-    motors = [groups[name] if name in groups else [name] for name in attached_motors]
-    return list(itertools.chain(*motors))
+    return from_config(config)
+
+def _oldxml_to_config(xml_file):
+    warnings.warn('Using XML file as configuration is deprecated, you should switch to Python dictionnary. You can save them as any format that can directly be transformed into a dictionnary (e.g. json).', DeprecationWarning)
+
+    import xml.dom.minidom
+
+    config = {}
+
+    dom = xml.dom.minidom.parse(xml_file)
+    robot_node = dom.firstChild
+
+    config['controllers'] = {}
+    for i, controller_node in enumerate(robot_node.getElementsByTagName('DxlController')):
+        name = 'controller_{}'.format(i + 1)
+        motors_node = controller_node.getElementsByTagName('DxlMotor')
+        config['controllers'][name] = {'port': str(controller_node.getAttribute('port')),
+                                       'sync_read': True if controller_node.getAttribute('sync_read') == 'True' else False,
+                                       'attached_motors': [m.getAttribute('name') for m in motors_node]}
+
+    config['motorgroups'] = {}
+    for motor_group_node in robot_node.getElementsByTagName('DxlMotorGroup'):
+        name = str(motor_group_node.getAttribute('name'))
+        motors_node = motor_group_node.getElementsByTagName('DxlMotor')
+        config['motorgroups'][name] = [str(m.getAttribute('name')) for m in motors_node]
+
+    config['motors'] = {}
+    for motor_node in robot_node.getElementsByTagName('DxlMotor'):
+        name = str(motor_node.getAttribute('name'))
+        angle_limit_node = motor_node.getElementsByTagName('angle_limits')[0]
+        angle_limit = eval(angle_limit_node.firstChild.data)
+        config['motors'][name] = {'id': int(motor_node.getAttribute('id')),
+                                  'type': str(motor_node.getAttribute('type')),
+                                  'orientation': str(motor_node.getAttribute('orientation')),
+                                  'offset': float(motor_node.getAttribute('offset')),
+                                  'angle_limit': angle_limit}
+
+    return config
+
+def _motor_extractor(alias, name):
+    l = []
+    for key in alias[name]:
+        l += _motor_extractor(alias, key) if key in alias else [key]
+    return l
