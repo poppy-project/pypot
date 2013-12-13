@@ -5,7 +5,7 @@
     :members:
     :undoc-members:
     :show-inheritance:
-    
+
 
 :mod:`robot` Module
 -------------------
@@ -15,10 +15,10 @@
     :undoc-members:
     :show-inheritance:
 
-:mod:`xmlparser` Module
------------------------
+:mod:`config` Module
+--------------------
 
-.. automodule:: pypot.robot.xmlparser
+.. automodule:: pypot.robot.config
     :members:
     :undoc-members:
     :show-inheritance:

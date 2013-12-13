@@ -1,3 +1,13 @@
+"""
+The config module allows the definition of the structure of your robot.
+
+Configuration are written as Python dictionary so you can define/modify them programmatically. You can also import them form file such as JSON formatted file. In the configuration you have to define:
+
+* controllers: For each defined controller, you can specify the port name, the attached motors and the synchronization mode.
+* motors: You specify all motors belonging to your robot. You have to define their id, type, orientation, offset and angle_limit.
+* motorgroups: It allows to define alias of group of motors. They can be nested.
+
+"""
 import warnings
 import logging
 import numpy
@@ -70,9 +80,9 @@ ergo_robot_config = {
 }
 
 def from_config(config):
-    """ Returns a Robot instance created from a configuration dictionnary.
+    """ Returns a :class:`~pypot.robot.robot.Robot` instance created from a configuration dictionnary.
 
-        For details on how to write such a configuration dictionnary, you should refer to the section TODO:BLABLABLA.
+        For details on how to write such a configuration dictionnary, you should refer to the section :ref:`config_file`.
 
         """
     robot = pypot.robot.Robot()
@@ -125,6 +135,11 @@ def from_config(config):
     return robot
 
 def from_json(json_file):
+    """ Returns a :class:`~pypot.robot.robot.Robot` instance created from a JSON configuration file.
+
+    For details on how to write such a configuration file, you should refer to the section :ref:`config_file`.
+
+    """
     with open(json_file) as f:
         config = json.load(f)
 
