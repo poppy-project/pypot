@@ -18,12 +18,14 @@ import pypot.dynamixel
 __dxl_io = None
 __lock = threading.Lock()
 
+
 def get_dxl_connection(port, baudrate):
     global __dxl_io
 
     __lock.acquire()
     __dxl_io = pypot.dynamixel.DxlIO(port, baudrate, use_sync_read=False)
     return __dxl_io
+
 
 def release_dxl_connection():
     __dxl_io.close()
@@ -33,7 +35,7 @@ def release_dxl_connection():
 class HerboristApp(PyQt4.QtGui.QApplication):
     def __init__(self, argv):
         PyQt4.QtGui.QApplication.__init__(self, argv)
-        self.window =  PyQt4.uic.loadUi(resource_filename('pypot', '/tools/herborist/herborist.ui'))
+        self.window = PyQt4.uic.loadUi(resource_filename('pypot', '/tools/herborist/herborist.ui'))
 
         self.enable_motor_view(False)
 
@@ -116,7 +118,6 @@ class HerboristApp(PyQt4.QtGui.QApplication):
                 self.window.scan_button.setEnabled(True)
 
     # MARK: - Motor Scan
-
     def update_motor_tree(self, baud_for_ids):
         self.window.motor_tree.clear()
 
@@ -156,7 +157,6 @@ class HerboristApp(PyQt4.QtGui.QApplication):
         self.scan_thread.done.connect(self.done_scanning)
         self.scan_thread.part_done.connect(self.window.scan_progress.setValue)
         self.scan_thread.start()
-
 
     def abort_scanning(self):
         self.scan_thread.abort()
@@ -214,7 +214,6 @@ class HerboristApp(PyQt4.QtGui.QApplication):
             self.running.clear()
 
     # MARK: - Motor View
-
     def update_motor_view(self):
         if self.refresh_motor_thread:
             self.refresh_motor_thread.stop()
@@ -313,6 +312,7 @@ class HerboristApp(PyQt4.QtGui.QApplication):
         torque_max = self.window.torque_max_slider.value()
         lower_limit = self.window.lower_limit_dial.value()
         upper_limit = self.window.upper_limit_dial.value()
+        new_id = self.window.id_spinbox.value()
 
         for b, ids in self.selected_motors.iteritems():
             dxl_io = get_dxl_connection(self.port, b)
@@ -324,6 +324,25 @@ class HerboristApp(PyQt4.QtGui.QApplication):
             release_dxl_connection()
 
         new_ids = self.ids.copy()
+
+        old_ids = self.selected_motors.values()
+        if len(old_ids) == 1 and len(old_ids[0]) == 1 and new_id != old_ids[0][0]:
+            b, old_id = self.selected_motors.keys()[0], old_ids[0][0]
+            dxl_io = get_dxl_connection(self.port, b)
+            try:
+                dxl_io.change_id({old_id: new_id})
+
+                l = new_ids[b]
+                l[l.index(old_id)] = new_id
+                new_ids[b] = l
+
+            except ValueError:
+                PyQt4.QtGui.QMessageBox.about(self.window,
+                                              '',
+                                              'This id is already used.')
+                pass
+
+            release_dxl_connection()
 
         for b, ids in self.selected_motors.iteritems():
             new_b = int(self.window.baud_combobox.currentText())
@@ -365,9 +384,7 @@ class HerboristApp(PyQt4.QtGui.QApplication):
 
                 time.sleep(0.05)
 
-
     # MARK: - Shortcut properties
-
     @property
     def port(self):
         return str(self.window.port_box.currentText())
@@ -411,6 +428,7 @@ class HerboristApp(PyQt4.QtGui.QApplication):
                 ids[b].append(int(id_node.text(1)))
 
         return ids
+
 
 def main():
     app = HerboristApp(sys.argv)
