@@ -13,7 +13,7 @@ class OptiBridgeServer(threading.Thread):
         self.daemon = True
 
         c = zmq.Context()
-        self.s = c.socket(zmq.REP)
+        self.s = c.socket(zmq.PUB)
         self.s.bind('tcp://{}:{}'.format(bridge_host, bridge_port))
 
         self.optitrack = opti.OptiTrackClient(opti_addr, opti_port, obj_name)
@@ -30,8 +30,9 @@ class OptiBridgeServer(threading.Thread):
 class OptiTrackClient(object):
     def __init__(self, bridge_host, bridge_port, obj_name):
         c = zmq.Context()
-        self.s = c.socket(zmq.REQ)
+        self.s = c.socket(zmq.SUB)
         self.s.connect('tcp://{}:{}'.format(bridge_host, bridge_port))
+        self.s.setsockopt(zmq.SUBSCRIBE, '')
 
         self.obj_name = obj_name
 

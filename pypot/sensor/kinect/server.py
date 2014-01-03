@@ -11,7 +11,7 @@ class KinectServer(object):
     def __init__(self, addr, port):
         context = zmq.Context()
 
-        self.socket = context.socket(zmq.REP)
+        self.socket = context.socket(zmq.PUB)
         self.socket.bind('tcp://{}:{}'.format(addr, port))
 
         self.msg = Queue.Queue(2)
@@ -20,7 +20,6 @@ class KinectServer(object):
 
         self.kinect.skeleton_frame_ready += self.skeleton_frame_ready
         self.kinect.skeleton_engine.enabled = True
-
 
     def serve_forever(self):
         print 'Server started, waiting for connection...'
@@ -33,13 +32,13 @@ class KinectServer(object):
 
     def send_skeleton(self, user_index, skeleton_array, flags=0, copy=True, track=False):
         md = dict(
-            user_index = user_index,
-            timestamp = time.time(),
-            dtype = str(skeleton_array.dtype),
-            shape = skeleton_array.shape,
+            user_index=user_index,
+            timestamp=time.time(),
+            dtype=str(skeleton_array.dtype),
+            shape=skeleton_array.shape,
             )
 
-        self.socket.send_json(md, flags|zmq.SNDMORE)
+        self.socket.send_json(md, flags | zmq.SNDMORE)
         return self.socket.send(skeleton_array, flags, copy=copy, track=track)
 
     def skeleton_frame_ready(self, frame):
@@ -62,8 +61,8 @@ class KinectServer(object):
 
             skeleton_array = numpy.concatenate((pos.T, rot.T)).T.copy()
 
-            if not (numpy.all(skeleton_array[:,0:9] == 0) and
-                    numpy.all(skeleton_array[:,9] == 1)):
+            if not (numpy.all(skeleton_array[:, 0:9] == 0) and
+                    numpy.all(skeleton_array[:, 9] == 1)):
                 self.msg.put(('{}'.format(data.dwUserIndex), skeleton_array.copy()))
 
 
@@ -73,4 +72,3 @@ if __name__ == '__main__':
 
     kinect_server = KinectServer(host, 9999)
     kinect_server.serve_forever()
-
