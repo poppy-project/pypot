@@ -22,9 +22,9 @@ from pypot.dynamixel.motor import DxlAXRXMotor, DxlMXMotor
 ergo_robot_config = {
     'controllers': {
         'my_dxl_controller': {
-            'port': '/dev/ttyUSB0', # Depends on your OS
+            'port': '/dev/ttyUSB0',  # Depends on your OS
             'sync_read': False,
-            'attached_motors': ['base', 'head'], # You can mix motorgroups or individual motors
+            'attached_motors': ['base', 'head'],  # You can mix motorgroups or individual motors
         },
     },
 
@@ -78,6 +78,7 @@ ergo_robot_config = {
         },
     },
 }
+
 
 def from_config(config):
     """ Returns a :class:`~pypot.robot.robot.Robot` instance created from a configuration dictionnary.
@@ -134,6 +135,7 @@ def from_config(config):
 
     return robot
 
+
 def from_json(json_file):
     """ Returns a :class:`~pypot.robot.robot.Robot` instance created from a JSON configuration file.
 
@@ -144,6 +146,7 @@ def from_json(json_file):
         config = json.load(f)
 
     return from_config(config)
+
 
 def _oldxml_to_config(xml_file):
     warnings.warn('Using XML file as configuration is deprecated, you should switch to Python dictionnary. You can save them as any format that can directly be transformed into a dictionnary (e.g. json).', DeprecationWarning)
@@ -182,8 +185,13 @@ def _oldxml_to_config(xml_file):
 
     return config
 
+
 def _motor_extractor(alias, name):
     l = []
+
+    if name not in alias:
+        return [name]
+
     for key in alias[name]:
         l += _motor_extractor(alias, key) if key in alias else [key]
     return l
