@@ -49,8 +49,6 @@ class KinectSensor(object):
 
     def get_skeleton(self):
         while True:
-            self.socket.send('Hello')
-
             md = self.socket.recv_json()
             msg = self.socket.recv()
 
