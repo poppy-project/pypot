@@ -77,5 +77,3 @@ class OptiTrackClient(threading.Thread):
 if __name__ == '__main__':
     c = OptiTrackClient('193.50.110.176', 3883, ('obj_1', ))
     c.serve_forever()
-
-

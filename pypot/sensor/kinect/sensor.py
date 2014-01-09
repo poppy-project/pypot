@@ -8,7 +8,6 @@ from collections import namedtuple
 from pypot.utils import Point3D, Point2D, Quaternion
 
 
-
 torso_joints = ('hip_center', 'spine', 'shoulder_center', 'head')
 left_arm_joints = ('shoulder_left', 'elbow_left', 'wrist_left', 'hand_left')
 right_arm_joints = ('shoulder_right', 'elbow_right', 'wrist_right', 'hand_right')
@@ -30,13 +29,13 @@ class KinectSensor(object):
         self._skeleton = None
 
         context = zmq.Context()
-        self.socket = context.socket(zmq.REQ)
+        self.socket = context.socket(zmq.SUB)
         self.socket.connect('tcp://{}:{}'.format(addr, port))
+        self.socket.setsockopt(zmq.SUBSCRIBE, '')
 
         t = threading.Thread(target=self.get_skeleton)
         t.daemon = True
         t.start()
-
 
     @property
     def tracked_skeleton(self):
@@ -50,8 +49,6 @@ class KinectSensor(object):
 
     def get_skeleton(self):
         while True:
-            self.socket.send('Hello')
-
             md = self.socket.recv_json()
             msg = self.socket.recv()
 
@@ -67,7 +64,6 @@ class KinectSensor(object):
                 joints.append(Joint(position, orientation, pixel_coord))
 
             self.tracked_skeleton = Skeleton(md['timestamp'], md['user_index'], *joints)
-
 
 
 if __name__ == '__main__':
@@ -88,4 +84,3 @@ if __name__ == '__main__':
 
         cv2.imshow('Skeleton', img)
         cv2.waitKey(50)
-
