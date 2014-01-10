@@ -5,6 +5,7 @@ import time
 from collections import defaultdict
 from functools import partial
 
+
 class PrimitiveManager(threading.Thread):
     """ Combines all :class:`~pypot.primitive.primitive.Primitive` orders and affect them to the real motors.
 
@@ -47,7 +48,7 @@ class PrimitiveManager(threading.Thread):
     def run(self):
         """ Combined at a predefined frequency the request orders and affect them to the real motors.
 
-            .. note:: Should not be called directly but launch through the thread start method.
+            .. note:: Should not be called directly but launched through the thread start method.
 
             """
         while self._running.is_set():
@@ -63,6 +64,8 @@ class PrimitiveManager(threading.Thread):
                 for key, val in to_set.iteritems():
                     filtred_val = self._filter(val)
                     setattr(m, key, filtred_val)
+
+                [p._synced.set() for p in self._prim]
 
             end = time.time()
 

@@ -5,6 +5,7 @@ import threading
 
 from collections import deque
 
+
 class Primitive(object):
     """ A Primitive is an elementary behavior that can easily be combined to create more complex behaviors.
 
@@ -48,9 +49,14 @@ class Primitive(object):
         self._stop = threading.Event()
         self._resume = threading.Event()
 
+        self._synced = threading.Event()
+
     def _wrapped_run(self):
         self.t0 = time.time()
+
         self.run(*self.args, **self.kwargs)
+
+        self._synced.wait()
         self.robot._primitive_manager.remove(self)
 
     def run(self, *args, **kwargs):
@@ -81,6 +87,7 @@ class Primitive(object):
 
         self._resume.set()
         self._stop.clear()
+        self._synced.clear()
 
         self.robot._primitive_manager.add(self)
 
@@ -130,6 +137,7 @@ class Primitive(object):
     def get_mockup_motor(self, motor):
         """ Gets the equivalent :class:`~pypot.primitive.primitive.MockupMotor`. """
         return next((m for m in self.robot.motors if m.name == motor.name), None)
+
 
 class LoopPrimitive(Primitive):
     """ Simple primitive that call an update method at a predefined frequency.
@@ -195,7 +203,6 @@ class MockupRobot(object):
             for a in [a for a in robot.alias if m in getattr(robot, a)]:
                 getattr(self, a).append(mockup_motor)
 
-
     def __getattr__(self, attr):
         return getattr(self._robot, attr)
 
@@ -217,6 +224,7 @@ class MockupRobot(object):
             m.compliant = False
             m.moving_speed = 0
             m.torque_limit = 100.0
+
 
 class MockupMotor(object):
     """ Fake Motor used by the primitive to ensure sandboxing:
