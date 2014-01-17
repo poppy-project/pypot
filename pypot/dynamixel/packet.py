@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import array
+import numpy
 import itertools
 
 from collections import namedtuple
@@ -75,6 +76,9 @@ class DxlPingPacket(DxlInstructionPacket):
     def __new__(cls, id):
         return DxlInstructionPacket.__new__(cls, id, DxlInstruction.PING, ())
 
+    def __repr__(self):
+        return 'DxlPingPacket(id={})'.format(self.id)
+
 
 class DxlReadDataPacket(DxlInstructionPacket):
     """ This class is used to represent read data packet (to read value). """
@@ -82,6 +86,11 @@ class DxlReadDataPacket(DxlInstructionPacket):
         return DxlInstructionPacket.__new__(cls, id,
                                             DxlInstruction.READ_DATA,
                                             (address, length))
+
+    def __repr__(self):
+        return 'DxlReadDataPacket(id={}, address={}, length={})'.format(self.id,
+                                                                        self.parameters[0],
+                                                                        self.parameters[1])
 
 
 class DxlSyncReadPacket(DxlInstructionPacket):
@@ -91,6 +100,11 @@ class DxlSyncReadPacket(DxlInstructionPacket):
                                             DxlInstruction.SYNC_READ,
                                             tuple(itertools.chain((address, length), ids)))
 
+    def __repr__(self):
+        return 'DxlSyncReadDataPacket(ids={}, address={}, length={})'.format(self.parameters[2:],
+                                                                             self.parameters[0],
+                                                                             self.parameters[1])
+
 
 class DxlWriteDataPacket(DxlInstructionPacket):
     """ This class is used to reprensent write data packet (to write value). """
@@ -98,6 +112,11 @@ class DxlWriteDataPacket(DxlInstructionPacket):
         return DxlInstructionPacket.__new__(cls, id,
                                             DxlInstruction.WRITE_DATA,
                                             tuple(itertools.chain((address,), coded_value)))
+
+    def __repr__(self):
+        return 'DxlWriteDataPacket(id={}, address={}, value={})'.format(self.id,
+                                                                        self.parameters[0],
+                                                                        self.parameters[1:])
 
 
 class DxlSyncWritePacket(DxlInstructionPacket):
@@ -108,9 +127,21 @@ class DxlSyncWritePacket(DxlInstructionPacket):
                                             tuple(itertools.chain((address, length),
                                                   id_value_couples)))
 
+    def __repr__(self):
+        address = self.parameters[0]
+        length = self.parameters[1]
+
+        a = numpy.array(self.parameters[length:]).reshape((-1, length+1))
+        ids = a[:, 0]
+        values = [tuple(v) for v in a[:, 1:]]
+
+        return 'DxlSyncWriteDataPacket(ids={}, address={}, length={}, values={})'.format(ids,
+                                                                                         address,
+                                                                                         length,
+                                                                                         values)
+
 
 # MARK: - Status Packet
-
 class DxlStatusPacket(namedtuple('DxlStatusPacket', ('id', 'error', 'parameters'))):
     """ This class is used to represent a dynamixel status packet.
 
