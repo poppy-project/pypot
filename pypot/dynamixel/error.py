@@ -2,6 +2,7 @@
 
 import logging
 
+
 class DxlErrorHandler(object):
     """ This class is used to represent all the error that you can/should handle.
 
@@ -51,7 +52,6 @@ class DxlErrorHandler(object):
         raise NotImplementedError
 
 
-
 class BaseErrorHandler(DxlErrorHandler):
     """ This class is a basic handler that just skip the communication errors. """
     def handle_timeout(self, timeout_error):
@@ -63,4 +63,3 @@ class BaseErrorHandler(DxlErrorHandler):
 
     def handle_overheating_error(self, instruction_packet):
         logging.error('overheating after sending {}'.format(instruction_packet))
-

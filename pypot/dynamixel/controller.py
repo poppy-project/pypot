@@ -28,7 +28,6 @@ class DxlController(object):
         """ Stops al the synchronization loops (they can not be started again). """
         [_RepeatedTimer.stop(l) for l in self._loops]
 
-
     def add_sync_loop(self, freq, function, name):
         """ Adds a synchronization loop that will run a function at a predefined freq. """
         sl = _RepeatedTimer(freq, function, name)
@@ -106,7 +105,6 @@ class BaseDxlController(DxlController):
             m._values['goal_position'] = p
             m._values['moving_speed'] = s
             m._values['torque_limit'] = l
-
 
     def _get_pos_speed_load(self):
         values = self._dxl_io.get_present_position_speed_load(self._ids)

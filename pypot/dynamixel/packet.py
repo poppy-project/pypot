@@ -8,6 +8,7 @@ from collections import namedtuple
 
 DxlBroadcast = 254
 
+
 class DxlInstruction(object):
     PING = 0x01
     READ_DATA = 0x02
@@ -74,33 +75,38 @@ class DxlPingPacket(DxlInstructionPacket):
     def __new__(cls, id):
         return DxlInstructionPacket.__new__(cls, id, DxlInstruction.PING, ())
 
+
 class DxlReadDataPacket(DxlInstructionPacket):
     """ This class is used to represent read data packet (to read value). """
     def __new__(cls, id, address, length):
         return DxlInstructionPacket.__new__(cls, id,
-                                                  DxlInstruction.READ_DATA,
-                                                  (address, length))
+                                            DxlInstruction.READ_DATA,
+                                            (address, length))
+
 
 class DxlSyncReadPacket(DxlInstructionPacket):
     """ This class is used to represent sync read packet (to synchronously read values). """
     def __new__(cls, ids, address, length):
         return DxlInstructionPacket.__new__(cls, DxlBroadcast,
-                                                  DxlInstruction.SYNC_READ,
-                                                  tuple(itertools.chain((address, length), ids)))
+                                            DxlInstruction.SYNC_READ,
+                                            tuple(itertools.chain((address, length), ids)))
+
 
 class DxlWriteDataPacket(DxlInstructionPacket):
     """ This class is used to reprensent write data packet (to write value). """
     def __new__(cls, id, address, coded_value):
         return DxlInstructionPacket.__new__(cls, id,
-                                                  DxlInstruction.WRITE_DATA,
-                                                  tuple(itertools.chain((address,), coded_value)))
+                                            DxlInstruction.WRITE_DATA,
+                                            tuple(itertools.chain((address,), coded_value)))
+
 
 class DxlSyncWritePacket(DxlInstructionPacket):
     """ This class is used to represent sync write packet (to synchronously write values). """
     def __new__(cls, address, length, id_value_couples):
         return DxlInstructionPacket.__new__(cls, DxlBroadcast,
-                                                  DxlInstruction.SYNC_WRITE,
-                                                  tuple(itertools.chain((address, length), id_value_couples)))
+                                            DxlInstruction.SYNC_WRITE,
+                                            tuple(itertools.chain((address, length),
+                                                  id_value_couples)))
 
 
 # MARK: - Status Packet
@@ -121,7 +127,7 @@ class DxlStatusPacket(namedtuple('DxlStatusPacket', ('id', 'error', 'parameters'
         header = DxlPacketHeader.from_string(packet[:4])
 
         if len(packet) != DxlPacketHeader.length + header.packet_length \
-            or cls._checksum(packet) != packet[-1]:
+                or cls._checksum(packet) != packet[-1]:
             raise ValueError('try to parse corrupted data ({})'.format(packet))
 
         return cls(header.id, packet[4], tuple(packet[5:-1]))
@@ -129,4 +135,3 @@ class DxlStatusPacket(namedtuple('DxlStatusPacket', ('id', 'error', 'parameters'
     @classmethod
     def _checksum(cls, packet):
         return int(255 - (sum(packet[2:-1]) % 256))
-
