@@ -3,9 +3,13 @@
 import sys
 import time
 import numpy
+import logging
 
 from collections import defaultdict
 from operator import getitem, setitem
+
+
+logger = logging.getLogger(__name__)
 
 
 class DxlMotor(object):
@@ -44,10 +48,21 @@ class DxlMotor(object):
     def json(self):
         return self.name
 
+    def _setter(self, name, value):
+        setitem(self._values, name, value)
+        logger.info("Setting '%s.%s' to %s",
+                    self.name, name, value)
+
     @classmethod
     def _make_accessor(cls, name, rw=False, doc=None):
-        return property(fget=lambda self: getitem(self._values, name),
-                        fset=(lambda self, value: setitem(self._values, name, value)) if rw else None,
+        def getter(self):
+            return getitem(self._values, name)
+
+        def setter(self, value):
+            self._setter(name, value)
+
+        return property(fget=getter,
+                        fset=setter if rw else None,
                         doc=doc)
 
     @property
@@ -74,8 +89,11 @@ class DxlMotor(object):
 
     @goal_position.setter
     def goal_position(self, value):
-        value = (value + self.offset) if self.direct else -(value + self.offset)
-        self._values['goal_position'] = value
+        framed_value = (value + self.offset) if self.direct else -(value + self.offset)
+        self._values['goal_position'] = framed_value
+
+        logger.info("Setting '%s.goal_position' to %s (%s)",
+                    self.name, value, framed_value)
 
     @property
     def present_speed(self):
@@ -107,7 +125,6 @@ class DxlMotor(object):
             self.goal_position = numpy.sign(value) * self.max_pos
             self.moving_speed = abs(value)
 
-
     @property
     def present_load(self):
         """ Present load (in percentage of max load) of the motor (readonly). """
@@ -124,7 +141,8 @@ class DxlMotor(object):
         # Change the goal_position only if you switch from compliant to not compliant mode
         if not value and self.compliant:
             self.goal_position = self.present_position
-        self._values['compliant'] = value
+        #self._values['compliant'] = value
+        self._setter('compliant', value)
 
     @property
     def direct(self):

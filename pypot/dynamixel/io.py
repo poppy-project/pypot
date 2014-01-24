@@ -146,9 +146,6 @@ class DxlIO(object):
             self._serial.flushInput()
             self._serial.flushOutput()
 
-        # logger.info("Flushing port '{}'".format(self.port),
-        #             extra={'baudrate': self.baudrate, 'timeout': self.timeout})
-
     def __force_lock(self, condition):
         @contextmanager
         def with_True():
