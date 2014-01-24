@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-import logging
+from .io import logger
 
 
 class DxlErrorHandler(object):
@@ -24,9 +24,7 @@ class DxlErrorHandler(object):
     def handle_communication_error(self, communication_error):
         raise NotImplementedError
 
-
     # MARK: - Motor errors
-
     def handle_input_voltage_error(self, instruction_packet):
         raise NotImplementedError
 
@@ -55,11 +53,17 @@ class DxlErrorHandler(object):
 class BaseErrorHandler(DxlErrorHandler):
     """ This class is a basic handler that just skip the communication errors. """
     def handle_timeout(self, timeout_error):
-        logging.warning('timeout occured in motors {} after sending {}'.format(timeout_error.ids,
-                                                                               timeout_error.instruction_packet))
+        msg = 'Timeout after sending {} to motors {}'.format(timeout_error.instruction_packet,
+                                                             timeout_error.ids)
+        logger.warning(msg,
+                       extra={'port': timeout_error.dxl_io.port,
+                              'baudrate': timeout_error.dxl_io.baudrate,
+                              'timeout': timeout_error.dxl_io.timeout})
 
-    def handle_communication_error(self, communication_error):
-        logging.warning('communication error after sending {}'.format(communication_error.instruction_packet))
+    def handle_communication_error(self, com_error):
+        msg = 'Communication error after sending {}'.format(com_error.instruction_packet)
 
-    def handle_overheating_error(self, instruction_packet):
-        logging.error('overheating after sending {}'.format(instruction_packet))
+        logger.warning(msg,
+                       extra={'port': com_error.dxl_io.port,
+                              'baudrate': com_error.dxl_io.baudrate,
+                              'timeout': com_error.dxl_io.timeout})
