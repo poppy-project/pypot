@@ -1,0 +1,1353 @@
+
+
+
+
+  
+  
+ 
+  
+  
+ 
+
+
+<!DOCTYPE html>
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>dynamixel Package &mdash; PyPot 1.4.8 documentation</title>
+    
+    <link rel="stylesheet" href="_static/basic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/bootstrap-3.0.0/css/bootstrap.min.css" type="text/css" />
+    <link rel="stylesheet" href="_static/my-css.css" type="text/css" />
+    <link rel="stylesheet" href="_static/bootstrap-3.0.0/css/bootstrap-theme.min.css" type="text/css" />
+    <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '1.4.8',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-1.9.1.min.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-3.0.0/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
+    <link rel="top" title="PyPot 1.4.8 documentation" href="index.html" />
+    <link rel="up" title="PyPot’s API" href="api.html" />
+    <link rel="next" title="primitive Package" href="pypot.primitive.html" />
+    <link rel="prev" title="PyPot’s API" href="api.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+  </head>
+  <body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="index.html">PyPot</a>
+        <span class="navbar-text navbar-version pull-left"><b>1.4.8</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            <li class="divider-vertical"></li>
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a href="index.html"
+     class="dropdown-toggle"
+     data-toggle="dropdown">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+    ><ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="intro.html#what-is-pypot">What is PyPot?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="intro.html#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="intro.html#quickstart-playing-with-an-ergo-robot">QuickStart: playing with an Ergo-Robot</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="intro.html#building-your-own-ergo-robot">Building your own Ergo-Robot</a></li>
+<li class="toctree-l3"><a class="reference internal" href="intro.html#connecting-the-robot-to-your-computer">Connecting the robot to your computer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="intro.html#controlling-your-ergo-robot">Controlling your Ergo-Robot</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial.html">Tutorial</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="tutorial.html#low-level-api">Low-level API</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="tutorial.html#opening-closing-a-communication-port">Opening/Closing a communication port</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tutorial.html#finding-motors">Finding motors</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tutorial.html#low-level-control">Low-level control</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial.html#robot-controller">Robot Controller</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="tutorial.html#using-the-robot-abstraction">Using the robot abstraction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tutorial.html#writing-the-configuration">Writing the configuration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tutorial.html#dynamixel-controller-and-synchronization-loop">Dynamixel controller and Synchronization Loop</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tutorial.html#controlling-your-robot">Controlling your robot</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tutorial.html#controlling-in-position">Controlling in position</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tutorial.html#controlling-in-speed">Controlling in speed</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial.html#primitive">Primitive</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="tutorial.html#what-do-we-call-primitive">What do we call &#8220;Primitive&#8221;?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tutorial.html#writing-your-own-primitive">Writing your own primitive</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tutorial.html#starting-pausing-primitives">Starting/pausing primitives</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tutorial.html#attaching-a-primitive-to-the-robot">Attaching a primitive to the robot</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial.html#remote-access">Remote Access</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="tutorial.html#protocol">Protocol</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tutorial.html#get-request">Get Request</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tutorial.html#set-request">Set Request</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tutorial.html#call-request">Call Request</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="tutorial.html#zmq-server">Zmq Server</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tutorial.html#http-server">Http Server</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="tools.html">Tools</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="tools.html#herborist-the-configuration-tool">Herborist: the configuration tool</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="FAQ.html">FAQ</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="FAQ.html#why-is-the-default-baud-rate-different-for-robotis-and-for-pypot">Why is the default baud rate different for robotis and for PyPot ?</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="knownissues.html">Known Issues</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="knownissues.html#issue-with-usb2ax-driver-on-mac-os">Issue with USB2AX driver on Mac OS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="knownissues.html#usb2dynamixel-driver-performance-on-mac-os">USB2Dynamixel driver performance on Mac OS</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="api.html">PyPot&#8217;s API</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href=""><tt class="docutils literal"><span class="pre">dynamixel</span></tt> Package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#module-pypot.dynamixel.io"><tt class="docutils literal"><span class="pre">io</span></tt> Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-pypot.dynamixel.motor"><tt class="docutils literal"><span class="pre">motor</span></tt> Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-pypot.dynamixel.controller"><tt class="docutils literal"><span class="pre">controller</span></tt> Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-pypot.dynamixel.error"><tt class="docutils literal"><span class="pre">error</span></tt> Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-pypot.dynamixel.conversion"><tt class="docutils literal"><span class="pre">conversion</span></tt> Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-pypot.dynamixel.packet"><tt class="docutils literal"><span class="pre">packet</span></tt> Module</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pypot.primitive.html"><tt class="docutils literal"><span class="pre">primitive</span></tt> Package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pypot.primitive.html#module-pypot.primitive.primitive"><tt class="docutils literal"><span class="pre">primitive</span></tt> Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pypot.primitive.html#module-pypot.primitive.manager"><tt class="docutils literal"><span class="pre">manager</span></tt> Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pypot.primitive.html#module-pypot.primitive.utils"><tt class="docutils literal"><span class="pre">utils</span></tt> Module</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pypot.robot.html"><tt class="docutils literal"><span class="pre">robot</span></tt> Package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pypot.robot.html#module-pypot.robot.robot"><tt class="docutils literal"><span class="pre">robot</span></tt> Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pypot.robot.html#module-pypot.robot.config"><tt class="docutils literal"><span class="pre">config</span></tt> Module</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pypot.server.html"><tt class="docutils literal"><span class="pre">server</span></tt> Package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pypot.server.html#module-pypot.server.request"><tt class="docutils literal"><span class="pre">request</span></tt> Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pypot.server.html#module-pypot.server.server"><tt class="docutils literal"><span class="pre">server</span></tt> Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pypot.server.html#module-pypot.server.httpserver"><tt class="docutils literal"><span class="pre">httpserver</span></tt> Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pypot.server.html#module-pypot.server.zmqserver"><tt class="docutils literal"><span class="pre">zmqserver</span></tt> Module</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"><ul>
+<li><a class="reference internal" href="#"><tt class="docutils literal"><span class="pre">dynamixel</span></tt> Package</a><ul>
+<li><a class="reference internal" href="#module-pypot.dynamixel.io"><tt class="docutils literal"><span class="pre">io</span></tt> Module</a></li>
+<li><a class="reference internal" href="#module-pypot.dynamixel.motor"><tt class="docutils literal"><span class="pre">motor</span></tt> Module</a></li>
+<li><a class="reference internal" href="#module-pypot.dynamixel.controller"><tt class="docutils literal"><span class="pre">controller</span></tt> Module</a></li>
+<li><a class="reference internal" href="#module-pypot.dynamixel.error"><tt class="docutils literal"><span class="pre">error</span></tt> Module</a></li>
+<li><a class="reference internal" href="#module-pypot.dynamixel.conversion"><tt class="docutils literal"><span class="pre">conversion</span></tt> Module</a></li>
+<li><a class="reference internal" href="#module-pypot.dynamixel.packet"><tt class="docutils literal"><span class="pre">packet</span></tt> Module</a></li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+  <li><a href="api.html"
+         title="Previous Chapter: PyPot’s API">&laquo; PyPot’s API</a></li>
+  <li><a href="pypot.primitive.html"
+         title="Next Chapter: primitive Package">primitive Packag... &raquo;</a></li>
+              
+            
+            
+            
+            
+              <li>
+<div id="sourcelink">
+  <a href="_sources/pypot.dynamixel.txt"
+     rel="nofollow">Source</a>
+</div></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      
+  <div class="section" id="dynamixel-package">
+<h1><tt class="xref py py-mod docutils literal"><span class="pre">dynamixel</span></tt> Package<a class="headerlink" href="#dynamixel-package" title="Permalink to this headline">¶</a></h1>
+<dl class="function">
+<dt id="pypot.dynamixel.get_available_ports">
+<tt class="descclassname">pypot.dynamixel.</tt><tt class="descname">get_available_ports</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/pypot/dynamixel.html#get_available_ports"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.get_available_ports" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tries to find the available usb2serial port on your system.</p>
+</dd></dl>
+
+<div class="section" id="module-pypot.dynamixel.io">
+<span id="io-module"></span><h2><a class="reference internal" href="#module-pypot.dynamixel.io" title="pypot.dynamixel.io"><tt class="xref py py-mod docutils literal"><span class="pre">io</span></tt></a> Module<a class="headerlink" href="#module-pypot.dynamixel.io" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pypot.dynamixel.io.DxlIO">
+<em class="property">class </em><tt class="descclassname">pypot.dynamixel.io.</tt><tt class="descname">DxlIO</tt><big>(</big><em>port</em>, <em>baudrate=1000000</em>, <em>timeout=0.05</em>, <em>use_sync_read=False</em>, <em>error_handler_cls=None</em>, <em>convert=True</em><big>)</big><a class="reference internal" href="_modules/pypot/dynamixel/io.html#DxlIO"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.io.DxlIO" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>Low-level class to handle the serial communication with the robotis motors.</p>
+<p>At instanciation, it opens the serial port and sets the communication parameters.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>port</strong> (<a class="reference external" href="http://docs.python.org/library/string.html#string" title="(in Python v2.7)"><em>string</em></a>) &#8211; the serial port to use (e.g. Unix (/dev/tty...), Windows (COM...)).</li>
+<li><strong>baudrate</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; default for new motors: 57600, for PyPot motors: 1000000</li>
+<li><strong>timeout</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) &#8211; read timeout in seconds</li>
+<li><strong>use_sync_read</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; whether or not to use the SYNC_READ instruction</li>
+<li><strong>error_handler</strong> (<a class="reference internal" href="#pypot.dynamixel.error.DxlErrorHandler" title="pypot.dynamixel.error.DxlErrorHandler"><tt class="xref py py-class docutils literal"><span class="pre">DxlErrorHandler</span></tt></a>) &#8211; set a handler that will receive the different errors</li>
+<li><strong>convert</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; whether or not convert values to units expressed in the standard system</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises :</th><td class="field-body"><p class="first last"><a class="reference internal" href="#pypot.dynamixel.io.DxlError" title="pypot.dynamixel.io.DxlError"><tt class="xref py py-exc docutils literal"><span class="pre">DxlError</span></tt></a> if the port is already used.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="pypot.dynamixel.io.DxlIO.open">
+<tt class="descname">open</tt><big>(</big><em>port</em>, <em>baudrate=1000000</em>, <em>timeout=0.05</em><big>)</big><a class="reference internal" href="_modules/pypot/dynamixel/io.html#DxlIO.open"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.io.DxlIO.open" title="Permalink to this definition">¶</a></dt>
+<dd><p>Opens a new serial communication (closes the previous communication if needed).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Raises :</th><td class="field-body"><a class="reference internal" href="#pypot.dynamixel.io.DxlError" title="pypot.dynamixel.io.DxlError"><tt class="xref py py-exc docutils literal"><span class="pre">DxlError</span></tt></a> if the port is already used.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.io.DxlIO.close">
+<tt class="descname">close</tt><big>(</big><em>_force_lock=False</em><big>)</big><a class="reference internal" href="_modules/pypot/dynamixel/io.html#DxlIO.close"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.io.DxlIO.close" title="Permalink to this definition">¶</a></dt>
+<dd><p>Closes the serial communication if opened.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.io.DxlIO.flush">
+<tt class="descname">flush</tt><big>(</big><em>_force_lock=False</em><big>)</big><a class="reference internal" href="_modules/pypot/dynamixel/io.html#DxlIO.flush"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.io.DxlIO.flush" title="Permalink to this definition">¶</a></dt>
+<dd><p>Flushes the serial communication (both input and output).</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pypot.dynamixel.io.DxlIO.port">
+<tt class="descname">port</tt><a class="reference internal" href="_modules/pypot/dynamixel/io.html#DxlIO.port"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.io.DxlIO.port" title="Permalink to this definition">¶</a></dt>
+<dd><p>Port used by the <a class="reference internal" href="#pypot.dynamixel.io.DxlIO" title="pypot.dynamixel.io.DxlIO"><tt class="xref py py-class docutils literal"><span class="pre">DxlIO</span></tt></a>. If set, will re-open a new connection.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pypot.dynamixel.io.DxlIO.baudrate">
+<tt class="descname">baudrate</tt><a class="reference internal" href="_modules/pypot/dynamixel/io.html#DxlIO.baudrate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.io.DxlIO.baudrate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Baudrate used by the <a class="reference internal" href="#pypot.dynamixel.io.DxlIO" title="pypot.dynamixel.io.DxlIO"><tt class="xref py py-class docutils literal"><span class="pre">DxlIO</span></tt></a>. If set, will re-open a new connection.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pypot.dynamixel.io.DxlIO.timeout">
+<tt class="descname">timeout</tt><a class="reference internal" href="_modules/pypot/dynamixel/io.html#DxlIO.timeout"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.io.DxlIO.timeout" title="Permalink to this definition">¶</a></dt>
+<dd><p>Timeout used by the <a class="reference internal" href="#pypot.dynamixel.io.DxlIO" title="pypot.dynamixel.io.DxlIO"><tt class="xref py py-class docutils literal"><span class="pre">DxlIO</span></tt></a>. If set, will re-open a new connection.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pypot.dynamixel.io.DxlIO.closed">
+<tt class="descname">closed</tt><a class="reference internal" href="_modules/pypot/dynamixel/io.html#DxlIO.closed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.io.DxlIO.closed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks if the connection is closed.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.io.DxlIO.ping">
+<tt class="descname">ping</tt><big>(</big><em>id</em><big>)</big><a class="reference internal" href="_modules/pypot/dynamixel/io.html#DxlIO.ping"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.io.DxlIO.ping" title="Permalink to this definition">¶</a></dt>
+<dd><p>Pings the motor with the specified id.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The motor id should always be included in [0, 253]. 254 is used for broadcast.</p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.io.DxlIO.scan">
+<tt class="descname">scan</tt><big>(</big><em>ids=xrange(254)</em><big>)</big><a class="reference internal" href="_modules/pypot/dynamixel/io.html#DxlIO.scan"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.io.DxlIO.scan" title="Permalink to this definition">¶</a></dt>
+<dd><p>Pings all ids within the specified list, by default it finds all the motors connected to the bus.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.io.DxlIO.get_model">
+<tt class="descname">get_model</tt><big>(</big><em>ids</em><big>)</big><a class="reference internal" href="_modules/pypot/dynamixel/io.html#DxlIO.get_model"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.io.DxlIO.get_model" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the model for the specified motors.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.io.DxlIO.change_id">
+<tt class="descname">change_id</tt><big>(</big><em>new_id_for_id</em><big>)</big><a class="reference internal" href="_modules/pypot/dynamixel/io.html#DxlIO.change_id"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.io.DxlIO.change_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>Changes the id of the specified motors (each id must be unique on the bus).</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.io.DxlIO.change_baudrate">
+<tt class="descname">change_baudrate</tt><big>(</big><em>baudrate_for_ids</em><big>)</big><a class="reference internal" href="_modules/pypot/dynamixel/io.html#DxlIO.change_baudrate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.io.DxlIO.change_baudrate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Changes the baudrate of the specified motors.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.io.DxlIO.get_status_return_level">
+<tt class="descname">get_status_return_level</tt><big>(</big><em>ids</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/pypot/dynamixel/io.html#DxlIO.get_status_return_level"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.io.DxlIO.get_status_return_level" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the status level for the specified motors.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.io.DxlIO.set_status_return_level">
+<tt class="descname">set_status_return_level</tt><big>(</big><em>srl_for_id</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/pypot/dynamixel/io.html#DxlIO.set_status_return_level"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.io.DxlIO.set_status_return_level" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets status return level to the specified motors.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.io.DxlIO.get_mode">
+<tt class="descname">get_mode</tt><big>(</big><em>ids</em><big>)</big><a class="reference internal" href="_modules/pypot/dynamixel/io.html#DxlIO.get_mode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.io.DxlIO.get_mode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the mode (&#8216;joint&#8217; or &#8216;wheel&#8217;) for the specified motors.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.io.DxlIO.set_wheel_mode">
+<tt class="descname">set_wheel_mode</tt><big>(</big><em>ids</em><big>)</big><a class="reference internal" href="_modules/pypot/dynamixel/io.html#DxlIO.set_wheel_mode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.io.DxlIO.set_wheel_mode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the specified motors to wheel mode.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.io.DxlIO.set_joint_mode">
+<tt class="descname">set_joint_mode</tt><big>(</big><em>ids</em><big>)</big><a class="reference internal" href="_modules/pypot/dynamixel/io.html#DxlIO.set_joint_mode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.io.DxlIO.set_joint_mode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the specified motors to joint mode.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.io.DxlIO.set_angle_limit">
+<tt class="descname">set_angle_limit</tt><big>(</big><em>limit_for_id</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/pypot/dynamixel/io.html#DxlIO.set_angle_limit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.io.DxlIO.set_angle_limit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the angle limit to the specified motors.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.io.DxlIO.switch_led_on">
+<tt class="descname">switch_led_on</tt><big>(</big><em>ids</em><big>)</big><a class="reference internal" href="_modules/pypot/dynamixel/io.html#DxlIO.switch_led_on"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.io.DxlIO.switch_led_on" title="Permalink to this definition">¶</a></dt>
+<dd><p>Switches on the LED of the motors with the specified ids.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.io.DxlIO.switch_led_off">
+<tt class="descname">switch_led_off</tt><big>(</big><em>ids</em><big>)</big><a class="reference internal" href="_modules/pypot/dynamixel/io.html#DxlIO.switch_led_off"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.io.DxlIO.switch_led_off" title="Permalink to this definition">¶</a></dt>
+<dd><p>Switches off the LED of the motors with the specified ids.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.io.DxlIO.enable_torque">
+<tt class="descname">enable_torque</tt><big>(</big><em>ids</em><big>)</big><a class="reference internal" href="_modules/pypot/dynamixel/io.html#DxlIO.enable_torque"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.io.DxlIO.enable_torque" title="Permalink to this definition">¶</a></dt>
+<dd><p>Enables torque of the motors with the specified ids.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.io.DxlIO.disable_torque">
+<tt class="descname">disable_torque</tt><big>(</big><em>ids</em><big>)</big><a class="reference internal" href="_modules/pypot/dynamixel/io.html#DxlIO.disable_torque"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.io.DxlIO.disable_torque" title="Permalink to this definition">¶</a></dt>
+<dd><p>Disables torque of the motors with the specified ids.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.io.DxlIO.get_pid_gain">
+<tt class="descname">get_pid_gain</tt><big>(</big><em>ids</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/pypot/dynamixel/io.html#DxlIO.get_pid_gain"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.io.DxlIO.get_pid_gain" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the pid gain for the specified motors.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.io.DxlIO.set_pid_gain">
+<tt class="descname">set_pid_gain</tt><big>(</big><em>pid_for_id</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/pypot/dynamixel/io.html#DxlIO.set_pid_gain"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.io.DxlIO.set_pid_gain" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the pid gain to the specified motors.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.io.DxlIO.get_control_table">
+<tt class="descname">get_control_table</tt><big>(</big><em>ids</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/pypot/dynamixel/io.html#DxlIO.get_control_table"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.io.DxlIO.get_control_table" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the full control table for the specified motors.</p>
+<p>..note:: This function requires the model for each motor to be known. Querring this additional information might add some extra delay.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.io.DxlIO.get_alarm_LED">
+<tt class="descname">get_alarm_LED</tt><big>(</big><em>ids</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#pypot.dynamixel.io.DxlIO.get_alarm_LED" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets alarm LED from the specified motors.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.io.DxlIO.get_alarm_shutdown">
+<tt class="descname">get_alarm_shutdown</tt><big>(</big><em>ids</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#pypot.dynamixel.io.DxlIO.get_alarm_shutdown" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets alarm shutdown from the specified motors.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.io.DxlIO.get_angle_limit">
+<tt class="descname">get_angle_limit</tt><big>(</big><em>ids</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#pypot.dynamixel.io.DxlIO.get_angle_limit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets angle limit from the specified motors.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.io.DxlIO.get_compliance_margin">
+<tt class="descname">get_compliance_margin</tt><big>(</big><em>ids</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#pypot.dynamixel.io.DxlIO.get_compliance_margin" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets compliance margin from the specified motors.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.io.DxlIO.get_compliance_slope">
+<tt class="descname">get_compliance_slope</tt><big>(</big><em>ids</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#pypot.dynamixel.io.DxlIO.get_compliance_slope" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets compliance slope from the specified motors.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.io.DxlIO.get_drive_mode">
+<tt class="descname">get_drive_mode</tt><big>(</big><em>ids</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#pypot.dynamixel.io.DxlIO.get_drive_mode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets drive mode from the specified motors.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.io.DxlIO.get_firmware">
+<tt class="descname">get_firmware</tt><big>(</big><em>ids</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#pypot.dynamixel.io.DxlIO.get_firmware" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets firmware from the specified motors.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.io.DxlIO.get_goal_position">
+<tt class="descname">get_goal_position</tt><big>(</big><em>ids</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#pypot.dynamixel.io.DxlIO.get_goal_position" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets goal position from the specified motors.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.io.DxlIO.get_goal_position_speed_load">
+<tt class="descname">get_goal_position_speed_load</tt><big>(</big><em>ids</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#pypot.dynamixel.io.DxlIO.get_goal_position_speed_load" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets goal position speed load from the specified motors.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.io.DxlIO.get_highest_temperature_limit">
+<tt class="descname">get_highest_temperature_limit</tt><big>(</big><em>ids</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#pypot.dynamixel.io.DxlIO.get_highest_temperature_limit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets highest temperature limit from the specified motors.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.io.DxlIO.get_max_torque">
+<tt class="descname">get_max_torque</tt><big>(</big><em>ids</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#pypot.dynamixel.io.DxlIO.get_max_torque" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets max torque from the specified motors.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.io.DxlIO.get_moving_speed">
+<tt class="descname">get_moving_speed</tt><big>(</big><em>ids</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#pypot.dynamixel.io.DxlIO.get_moving_speed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets moving speed from the specified motors.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.io.DxlIO.get_present_load">
+<tt class="descname">get_present_load</tt><big>(</big><em>ids</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#pypot.dynamixel.io.DxlIO.get_present_load" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets present load from the specified motors.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.io.DxlIO.get_present_position">
+<tt class="descname">get_present_position</tt><big>(</big><em>ids</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#pypot.dynamixel.io.DxlIO.get_present_position" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets present position from the specified motors.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.io.DxlIO.get_present_position_speed_load">
+<tt class="descname">get_present_position_speed_load</tt><big>(</big><em>ids</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#pypot.dynamixel.io.DxlIO.get_present_position_speed_load" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets present position speed load from the specified motors.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.io.DxlIO.get_present_speed">
+<tt class="descname">get_present_speed</tt><big>(</big><em>ids</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#pypot.dynamixel.io.DxlIO.get_present_speed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets present speed from the specified motors.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.io.DxlIO.get_present_temperature">
+<tt class="descname">get_present_temperature</tt><big>(</big><em>ids</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#pypot.dynamixel.io.DxlIO.get_present_temperature" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets present temperature from the specified motors.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.io.DxlIO.get_present_voltage">
+<tt class="descname">get_present_voltage</tt><big>(</big><em>ids</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#pypot.dynamixel.io.DxlIO.get_present_voltage" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets present voltage from the specified motors.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.io.DxlIO.get_return_delay_time">
+<tt class="descname">get_return_delay_time</tt><big>(</big><em>ids</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#pypot.dynamixel.io.DxlIO.get_return_delay_time" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets return delay time from the specified motors.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.io.DxlIO.get_torque_limit">
+<tt class="descname">get_torque_limit</tt><big>(</big><em>ids</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#pypot.dynamixel.io.DxlIO.get_torque_limit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets torque limit from the specified motors.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.io.DxlIO.get_voltage_limit">
+<tt class="descname">get_voltage_limit</tt><big>(</big><em>ids</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#pypot.dynamixel.io.DxlIO.get_voltage_limit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets voltage limit from the specified motors.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.io.DxlIO.is_led_on">
+<tt class="descname">is_led_on</tt><big>(</big><em>ids</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#pypot.dynamixel.io.DxlIO.is_led_on" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets LED from the specified motors.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.io.DxlIO.is_moving">
+<tt class="descname">is_moving</tt><big>(</big><em>ids</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#pypot.dynamixel.io.DxlIO.is_moving" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets moving from the specified motors.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.io.DxlIO.is_torque_enabled">
+<tt class="descname">is_torque_enabled</tt><big>(</big><em>ids</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#pypot.dynamixel.io.DxlIO.is_torque_enabled" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets torque_enable from the specified motors.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.io.DxlIO.set_alarm_LED">
+<tt class="descname">set_alarm_LED</tt><big>(</big><em>value_for_id</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#pypot.dynamixel.io.DxlIO.set_alarm_LED" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets alarm LED to the specified motors.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.io.DxlIO.set_alarm_shutdown">
+<tt class="descname">set_alarm_shutdown</tt><big>(</big><em>value_for_id</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#pypot.dynamixel.io.DxlIO.set_alarm_shutdown" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets alarm shutdown to the specified motors.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.io.DxlIO.set_compliance_margin">
+<tt class="descname">set_compliance_margin</tt><big>(</big><em>value_for_id</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#pypot.dynamixel.io.DxlIO.set_compliance_margin" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets compliance margin to the specified motors.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.io.DxlIO.set_compliance_slope">
+<tt class="descname">set_compliance_slope</tt><big>(</big><em>value_for_id</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#pypot.dynamixel.io.DxlIO.set_compliance_slope" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets compliance slope to the specified motors.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.io.DxlIO.set_drive_mode">
+<tt class="descname">set_drive_mode</tt><big>(</big><em>value_for_id</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#pypot.dynamixel.io.DxlIO.set_drive_mode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets drive mode to the specified motors.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.io.DxlIO.set_goal_position">
+<tt class="descname">set_goal_position</tt><big>(</big><em>value_for_id</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#pypot.dynamixel.io.DxlIO.set_goal_position" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets goal position to the specified motors.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.io.DxlIO.set_goal_position_speed_load">
+<tt class="descname">set_goal_position_speed_load</tt><big>(</big><em>value_for_id</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#pypot.dynamixel.io.DxlIO.set_goal_position_speed_load" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets goal position speed load to the specified motors.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.io.DxlIO.set_highest_temperature_limit">
+<tt class="descname">set_highest_temperature_limit</tt><big>(</big><em>value_for_id</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#pypot.dynamixel.io.DxlIO.set_highest_temperature_limit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets highest temperature limit to the specified motors.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.io.DxlIO.set_max_torque">
+<tt class="descname">set_max_torque</tt><big>(</big><em>value_for_id</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#pypot.dynamixel.io.DxlIO.set_max_torque" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets max torque to the specified motors.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.io.DxlIO.set_moving_speed">
+<tt class="descname">set_moving_speed</tt><big>(</big><em>value_for_id</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#pypot.dynamixel.io.DxlIO.set_moving_speed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets moving speed to the specified motors.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.io.DxlIO.set_return_delay_time">
+<tt class="descname">set_return_delay_time</tt><big>(</big><em>value_for_id</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#pypot.dynamixel.io.DxlIO.set_return_delay_time" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets return delay time to the specified motors.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.io.DxlIO.set_torque_limit">
+<tt class="descname">set_torque_limit</tt><big>(</big><em>value_for_id</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#pypot.dynamixel.io.DxlIO.set_torque_limit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets torque limit to the specified motors.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.io.DxlIO.set_voltage_limit">
+<tt class="descname">set_voltage_limit</tt><big>(</big><em>value_for_id</em>, <em>**kwargs</em><big>)</big><a class="headerlink" href="#pypot.dynamixel.io.DxlIO.set_voltage_limit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets voltage limit to the specified motors.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="exception">
+<dt id="pypot.dynamixel.io.DxlError">
+<em class="property">exception </em><tt class="descclassname">pypot.dynamixel.io.</tt><tt class="descname">DxlError</tt><a class="reference internal" href="_modules/pypot/dynamixel/io.html#DxlError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.io.DxlError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">exceptions.Exception</span></tt></p>
+<p>Base class for all errors encountered using <a class="reference internal" href="#pypot.dynamixel.io.DxlIO" title="pypot.dynamixel.io.DxlIO"><tt class="xref py py-class docutils literal"><span class="pre">DxlIO</span></tt></a>.</p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="pypot.dynamixel.io.DxlCommunicationError">
+<em class="property">exception </em><tt class="descclassname">pypot.dynamixel.io.</tt><tt class="descname">DxlCommunicationError</tt><big>(</big><em>message</em>, <em>instruction_packet</em><big>)</big><a class="reference internal" href="_modules/pypot/dynamixel/io.html#DxlCommunicationError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.io.DxlCommunicationError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pypot.dynamixel.io.DxlError" title="pypot.dynamixel.io.DxlError"><tt class="xref py py-class docutils literal"><span class="pre">pypot.dynamixel.io.DxlError</span></tt></a></p>
+<p>Base error for communication error encountered when using <a class="reference internal" href="#pypot.dynamixel.io.DxlIO" title="pypot.dynamixel.io.DxlIO"><tt class="xref py py-class docutils literal"><span class="pre">DxlIO</span></tt></a>.</p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="pypot.dynamixel.io.DxlTimeoutError">
+<em class="property">exception </em><tt class="descclassname">pypot.dynamixel.io.</tt><tt class="descname">DxlTimeoutError</tt><big>(</big><em>instruction_packet</em>, <em>ids</em><big>)</big><a class="reference internal" href="_modules/pypot/dynamixel/io.html#DxlTimeoutError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.io.DxlTimeoutError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pypot.dynamixel.io.DxlCommunicationError" title="pypot.dynamixel.io.DxlCommunicationError"><tt class="xref py py-class docutils literal"><span class="pre">pypot.dynamixel.io.DxlCommunicationError</span></tt></a></p>
+<p>Timeout error encountered when using <a class="reference internal" href="#pypot.dynamixel.io.DxlIO" title="pypot.dynamixel.io.DxlIO"><tt class="xref py py-class docutils literal"><span class="pre">DxlIO</span></tt></a>.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-pypot.dynamixel.motor">
+<span id="motor-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">motor</span></tt> Module<a class="headerlink" href="#module-pypot.dynamixel.motor" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pypot.dynamixel.motor.DxlMotor">
+<em class="property">class </em><tt class="descclassname">pypot.dynamixel.motor.</tt><tt class="descname">DxlMotor</tt><big>(</big><em>id</em>, <em>name=None</em>, <em>direct=True</em>, <em>offset=0.0</em><big>)</big><a class="reference internal" href="_modules/pypot/dynamixel/motor.html#DxlMotor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.motor.DxlMotor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>High-level class used to represent and control a generic dynamixel motor.</p>
+<dl class="docutils">
+<dt>This class provides all level access to:</dt>
+<dd><ul class="first last simple">
+<li>motor id</li>
+<li>motor name</li>
+<li>position/speed/load (read and write)</li>
+<li>compliant</li>
+<li>motor orientation and offset</li>
+<li>angle limit</li>
+<li>temperature</li>
+<li>voltage</li>
+</ul>
+</dd>
+</dl>
+<p>This class represents a generic robotis motor and you define your own subclass for specific motors (see <a class="reference internal" href="#pypot.dynamixel.motor.DxlMXMotor" title="pypot.dynamixel.motor.DxlMXMotor"><tt class="xref py py-class docutils literal"><span class="pre">DxlMXMotor</span></tt></a> or <a class="reference internal" href="#pypot.dynamixel.motor.DxlAXRXMotor" title="pypot.dynamixel.motor.DxlAXRXMotor"><tt class="xref py py-class docutils literal"><span class="pre">DxlAXRXMotor</span></tt></a>).</p>
+<p>Those properties are synchronized with the real motors values thanks to a <a class="reference internal" href="#pypot.dynamixel.controller.DxlController" title="pypot.dynamixel.controller.DxlController"><tt class="xref py py-class docutils literal"><span class="pre">DxlController</span></tt></a>.</p>
+<dl class="attribute">
+<dt id="pypot.dynamixel.motor.DxlMotor.json">
+<tt class="descname">json</tt><a class="reference internal" href="_modules/pypot/dynamixel/motor.html#DxlMotor.json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.motor.DxlMotor.json" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pypot.dynamixel.motor.DxlMotor.id">
+<tt class="descname">id</tt><a class="reference internal" href="_modules/pypot/dynamixel/motor.html#DxlMotor.id"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.motor.DxlMotor.id" title="Permalink to this definition">¶</a></dt>
+<dd><p>Id of the motor (readonly).</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pypot.dynamixel.motor.DxlMotor.name">
+<tt class="descname">name</tt><a class="reference internal" href="_modules/pypot/dynamixel/motor.html#DxlMotor.name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.motor.DxlMotor.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Name of the motor (readonly).</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pypot.dynamixel.motor.DxlMotor.present_position">
+<tt class="descname">present_position</tt><a class="reference internal" href="_modules/pypot/dynamixel/motor.html#DxlMotor.present_position"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.motor.DxlMotor.present_position" title="Permalink to this definition">¶</a></dt>
+<dd><p>Present position (in degrees) of the motor (readonly).</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pypot.dynamixel.motor.DxlMotor.goal_position">
+<tt class="descname">goal_position</tt><a class="reference internal" href="_modules/pypot/dynamixel/motor.html#DxlMotor.goal_position"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.motor.DxlMotor.goal_position" title="Permalink to this definition">¶</a></dt>
+<dd><p>Goal position (in degrees) of th motor.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pypot.dynamixel.motor.DxlMotor.present_speed">
+<tt class="descname">present_speed</tt><a class="reference internal" href="_modules/pypot/dynamixel/motor.html#DxlMotor.present_speed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.motor.DxlMotor.present_speed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Present speed (in degrees per second) of the motor (readonly).</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pypot.dynamixel.motor.DxlMotor.goal_speed">
+<tt class="descname">goal_speed</tt><a class="reference internal" href="_modules/pypot/dynamixel/motor.html#DxlMotor.goal_speed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.motor.DxlMotor.goal_speed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Goal speed (in degrees per second) of the motor.</p>
+<p>This property can be used to control your motor in speed. Setting a goal speed will automatically change the moving speed and sets the goal position as the angle limit.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The motor will turn until reaching the angle limit. But this is not a wheel mode, so the motor will stop at its limits.</p>
+</div>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pypot.dynamixel.motor.DxlMotor.present_load">
+<tt class="descname">present_load</tt><a class="reference internal" href="_modules/pypot/dynamixel/motor.html#DxlMotor.present_load"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.motor.DxlMotor.present_load" title="Permalink to this definition">¶</a></dt>
+<dd><p>Present load (in percentage of max load) of the motor (readonly).</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pypot.dynamixel.motor.DxlMotor.compliant">
+<tt class="descname">compliant</tt><a class="reference internal" href="_modules/pypot/dynamixel/motor.html#DxlMotor.compliant"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.motor.DxlMotor.compliant" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compliancy of the motor.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pypot.dynamixel.motor.DxlMotor.direct">
+<tt class="descname">direct</tt><a class="reference internal" href="_modules/pypot/dynamixel/motor.html#DxlMotor.direct"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.motor.DxlMotor.direct" title="Permalink to this definition">¶</a></dt>
+<dd><p>Orientation of the motor.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pypot.dynamixel.motor.DxlMotor.offset">
+<tt class="descname">offset</tt><a class="reference internal" href="_modules/pypot/dynamixel/motor.html#DxlMotor.offset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.motor.DxlMotor.offset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Offset of the zero of the motor (in degrees).</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pypot.dynamixel.motor.DxlMotor.registers">
+<tt class="descname">registers</tt><a class="reference internal" href="_modules/pypot/dynamixel/motor.html#DxlMotor.registers"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.motor.DxlMotor.registers" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.motor.DxlMotor.goto_position">
+<tt class="descname">goto_position</tt><big>(</big><em>position</em>, <em>duration</em>, <em>wait=False</em><big>)</big><a class="reference internal" href="_modules/pypot/dynamixel/motor.html#DxlMotor.goto_position"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.motor.DxlMotor.goto_position" title="Permalink to this definition">¶</a></dt>
+<dd><p>Automatically sets the goal position and the moving speed to reach the desired position within the duration.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pypot.dynamixel.motor.DxlMotor.angle_limit">
+<tt class="descname">angle_limit</tt><a class="headerlink" href="#pypot.dynamixel.motor.DxlMotor.angle_limit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Angle limit (in degrees) of the motor.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pypot.dynamixel.motor.DxlMotor.moving_speed">
+<tt class="descname">moving_speed</tt><a class="headerlink" href="#pypot.dynamixel.motor.DxlMotor.moving_speed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Moving speed (in degrees per second) of the motor.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pypot.dynamixel.motor.DxlMotor.present_temperature">
+<tt class="descname">present_temperature</tt><a class="headerlink" href="#pypot.dynamixel.motor.DxlMotor.present_temperature" title="Permalink to this definition">¶</a></dt>
+<dd><p>Present temperature (in °C) of the motor.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pypot.dynamixel.motor.DxlMotor.present_voltage">
+<tt class="descname">present_voltage</tt><a class="headerlink" href="#pypot.dynamixel.motor.DxlMotor.present_voltage" title="Permalink to this definition">¶</a></dt>
+<dd><p>Present voltage (in V) of the motor.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pypot.dynamixel.motor.DxlMotor.torque_limit">
+<tt class="descname">torque_limit</tt><a class="headerlink" href="#pypot.dynamixel.motor.DxlMotor.torque_limit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Torque limit (in percentage of max torque) of the motor.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pypot.dynamixel.motor.DxlAXRXMotor">
+<em class="property">class </em><tt class="descclassname">pypot.dynamixel.motor.</tt><tt class="descname">DxlAXRXMotor</tt><big>(</big><em>id</em>, <em>name=None</em>, <em>direct=True</em>, <em>offset=0.0</em><big>)</big><a class="reference internal" href="_modules/pypot/dynamixel/motor.html#DxlAXRXMotor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.motor.DxlAXRXMotor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pypot.dynamixel.motor.DxlMotor" title="pypot.dynamixel.motor.DxlMotor"><tt class="xref py py-class docutils literal"><span class="pre">pypot.dynamixel.motor.DxlMotor</span></tt></a></p>
+<p>This class represents the AX robotis motor.</p>
+<dl class="docutils">
+<dt>This class adds access to:</dt>
+<dd><ul class="first last simple">
+<li>compliance margin/slope (see the robotis website for details)</li>
+</ul>
+</dd>
+</dl>
+<dl class="attribute">
+<dt id="pypot.dynamixel.motor.DxlAXRXMotor.compliance_margin">
+<tt class="descname">compliance_margin</tt><a class="headerlink" href="#pypot.dynamixel.motor.DxlAXRXMotor.compliance_margin" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compliance margin of the motor (see robotis website).</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pypot.dynamixel.motor.DxlAXRXMotor.compliance_slope">
+<tt class="descname">compliance_slope</tt><a class="headerlink" href="#pypot.dynamixel.motor.DxlAXRXMotor.compliance_slope" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compliance slope of the motor (see robotis website).</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pypot.dynamixel.motor.DxlMXMotor">
+<em class="property">class </em><tt class="descclassname">pypot.dynamixel.motor.</tt><tt class="descname">DxlMXMotor</tt><big>(</big><em>id</em>, <em>name=None</em>, <em>direct=True</em>, <em>offset=0.0</em><big>)</big><a class="reference internal" href="_modules/pypot/dynamixel/motor.html#DxlMXMotor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.motor.DxlMXMotor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pypot.dynamixel.motor.DxlMotor" title="pypot.dynamixel.motor.DxlMotor"><tt class="xref py py-class docutils literal"><span class="pre">pypot.dynamixel.motor.DxlMotor</span></tt></a></p>
+<p>This class represents the RX and MX robotis motor.</p>
+<dl class="docutils">
+<dt>This class adds access to:</dt>
+<dd><ul class="first last simple">
+<li>PID gains (see the robotis website for details)</li>
+</ul>
+</dd>
+</dl>
+<dl class="attribute">
+<dt id="pypot.dynamixel.motor.DxlMXMotor.pid">
+<tt class="descname">pid</tt><a class="headerlink" href="#pypot.dynamixel.motor.DxlMXMotor.pid" title="Permalink to this definition">¶</a></dt>
+<dd><p>PID gains of the motors (see robotis website).</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-pypot.dynamixel.controller">
+<span id="controller-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">controller</span></tt> Module<a class="headerlink" href="#module-pypot.dynamixel.controller" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pypot.dynamixel.controller.DxlController">
+<em class="property">class </em><tt class="descclassname">pypot.dynamixel.controller.</tt><tt class="descname">DxlController</tt><big>(</big><em>dxl_io</em>, <em>dxl_motors</em><big>)</big><a class="reference internal" href="_modules/pypot/dynamixel/controller.html#DxlController"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.controller.DxlController" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>Synchronizes the reading/writing of <a class="reference internal" href="#pypot.dynamixel.motor.DxlMotor" title="pypot.dynamixel.motor.DxlMotor"><tt class="xref py py-class docutils literal"><span class="pre">DxlMotor</span></tt></a> with the real motors.</p>
+<p>This class handles synchronization loops that automatically read/write values from the &#8220;software&#8221; <a class="reference internal" href="#pypot.dynamixel.motor.DxlMotor" title="pypot.dynamixel.motor.DxlMotor"><tt class="xref py py-class docutils literal"><span class="pre">DxlMotor</span></tt></a> with their &#8220;hardware&#8221; equivalent. Those loops shared a same <a class="reference internal" href="#pypot.dynamixel.io.DxlIO" title="pypot.dynamixel.io.DxlIO"><tt class="xref py py-class docutils literal"><span class="pre">DxlIO</span></tt></a> connection to avoid collision in the bus. Each loop run within its own thread at its own frequency.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">As all the loop attached to a controller shared the same bus, you should make sure that they can run without slowing down the other ones.</p>
+</div>
+<dl class="method">
+<dt id="pypot.dynamixel.controller.DxlController.start">
+<tt class="descname">start</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/pypot/dynamixel/controller.html#DxlController.start"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.controller.DxlController.start" title="Permalink to this definition">¶</a></dt>
+<dd><p>Starts all the synchronization loops.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.controller.DxlController.stop">
+<tt class="descname">stop</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/pypot/dynamixel/controller.html#DxlController.stop"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.controller.DxlController.stop" title="Permalink to this definition">¶</a></dt>
+<dd><p>Stops al the synchronization loops (they can not be started again).</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.controller.DxlController.add_sync_loop">
+<tt class="descname">add_sync_loop</tt><big>(</big><em>freq</em>, <em>function</em>, <em>name</em><big>)</big><a class="reference internal" href="_modules/pypot/dynamixel/controller.html#DxlController.add_sync_loop"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.controller.DxlController.add_sync_loop" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds a synchronization loop that will run a function at a predefined freq.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.controller.DxlController.add_read_loop">
+<tt class="descname">add_read_loop</tt><big>(</big><em>freq</em>, <em>regname</em>, <em>varname=None</em><big>)</big><a class="reference internal" href="_modules/pypot/dynamixel/controller.html#DxlController.add_read_loop"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.controller.DxlController.add_read_loop" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds a read loop that will get the value from the specified register and set it to the <a class="reference internal" href="#pypot.dynamixel.motor.DxlMotor" title="pypot.dynamixel.motor.DxlMotor"><tt class="xref py py-class docutils literal"><span class="pre">DxlMotor</span></tt></a>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.controller.DxlController.add_write_loop">
+<tt class="descname">add_write_loop</tt><big>(</big><em>freq</em>, <em>regname</em>, <em>varname=None</em><big>)</big><a class="reference internal" href="_modules/pypot/dynamixel/controller.html#DxlController.add_write_loop"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.controller.DxlController.add_write_loop" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds a write loop that will get the value from <a class="reference internal" href="#pypot.dynamixel.motor.DxlMotor" title="pypot.dynamixel.motor.DxlMotor"><tt class="xref py py-class docutils literal"><span class="pre">DxlMotor</span></tt></a> and set it to the specified register.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pypot.dynamixel.controller.BaseDxlController">
+<em class="property">class </em><tt class="descclassname">pypot.dynamixel.controller.</tt><tt class="descname">BaseDxlController</tt><big>(</big><em>dxl_io</em>, <em>dxl_motors</em><big>)</big><a class="reference internal" href="_modules/pypot/dynamixel/controller.html#BaseDxlController"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.controller.BaseDxlController" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pypot.dynamixel.controller.DxlController" title="pypot.dynamixel.controller.DxlController"><tt class="xref py py-class docutils literal"><span class="pre">pypot.dynamixel.controller.DxlController</span></tt></a></p>
+<p>Implements a basic controller that synchronized the most frequently used values.</p>
+<dl class="docutils">
+<dt>More precisely, this controller:</dt>
+<dd><ul class="first last simple">
+<li>reads the present position, speed, load at 50Hz</li>
+<li>writes the goal position, moving speed and torque limit at 50Hz</li>
+<li>writes the pid gains (or compliance margin and slope) at 10Hz</li>
+<li>reads the present voltage and temperature at 1Hz</li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-pypot.dynamixel.error">
+<span id="error-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">error</span></tt> Module<a class="headerlink" href="#module-pypot.dynamixel.error" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pypot.dynamixel.error.DxlErrorHandler">
+<em class="property">class </em><tt class="descclassname">pypot.dynamixel.error.</tt><tt class="descname">DxlErrorHandler</tt><a class="reference internal" href="_modules/pypot/dynamixel/error.html#DxlErrorHandler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.error.DxlErrorHandler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>This class is used to represent all the error that you can/should handle.</p>
+<p>The errors can be of two types:</p>
+<ul class="simple">
+<li>communication error (timeout, communication)</li>
+<li>motor error (voltage, limit, overload...)</li>
+</ul>
+<p>This class was designed as an abstract class and so you should write your own handler by subclassing this class and defining the apropriate behavior for your program.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">The motor error should be overload carrefuly as they can indicate important mechanical issue.</p>
+</div>
+<dl class="method">
+<dt id="pypot.dynamixel.error.DxlErrorHandler.handle_timeout">
+<tt class="descname">handle_timeout</tt><big>(</big><em>timeout_error</em><big>)</big><a class="reference internal" href="_modules/pypot/dynamixel/error.html#DxlErrorHandler.handle_timeout"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.error.DxlErrorHandler.handle_timeout" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.error.DxlErrorHandler.handle_communication_error">
+<tt class="descname">handle_communication_error</tt><big>(</big><em>communication_error</em><big>)</big><a class="reference internal" href="_modules/pypot/dynamixel/error.html#DxlErrorHandler.handle_communication_error"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.error.DxlErrorHandler.handle_communication_error" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.error.DxlErrorHandler.handle_input_voltage_error">
+<tt class="descname">handle_input_voltage_error</tt><big>(</big><em>instruction_packet</em><big>)</big><a class="reference internal" href="_modules/pypot/dynamixel/error.html#DxlErrorHandler.handle_input_voltage_error"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.error.DxlErrorHandler.handle_input_voltage_error" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.error.DxlErrorHandler.handle_angle_limit_error">
+<tt class="descname">handle_angle_limit_error</tt><big>(</big><em>instruction_packet</em><big>)</big><a class="reference internal" href="_modules/pypot/dynamixel/error.html#DxlErrorHandler.handle_angle_limit_error"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.error.DxlErrorHandler.handle_angle_limit_error" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.error.DxlErrorHandler.handle_overheating_error">
+<tt class="descname">handle_overheating_error</tt><big>(</big><em>instruction_packet</em><big>)</big><a class="reference internal" href="_modules/pypot/dynamixel/error.html#DxlErrorHandler.handle_overheating_error"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.error.DxlErrorHandler.handle_overheating_error" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.error.DxlErrorHandler.handle_range_error">
+<tt class="descname">handle_range_error</tt><big>(</big><em>instruction_packet</em><big>)</big><a class="reference internal" href="_modules/pypot/dynamixel/error.html#DxlErrorHandler.handle_range_error"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.error.DxlErrorHandler.handle_range_error" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.error.DxlErrorHandler.handle_checksum_error">
+<tt class="descname">handle_checksum_error</tt><big>(</big><em>instruction_packet</em><big>)</big><a class="reference internal" href="_modules/pypot/dynamixel/error.html#DxlErrorHandler.handle_checksum_error"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.error.DxlErrorHandler.handle_checksum_error" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.error.DxlErrorHandler.handle_overload_error">
+<tt class="descname">handle_overload_error</tt><big>(</big><em>instruction_packet</em><big>)</big><a class="reference internal" href="_modules/pypot/dynamixel/error.html#DxlErrorHandler.handle_overload_error"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.error.DxlErrorHandler.handle_overload_error" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.error.DxlErrorHandler.handle_instruction_error">
+<tt class="descname">handle_instruction_error</tt><big>(</big><em>instruction_packet</em><big>)</big><a class="reference internal" href="_modules/pypot/dynamixel/error.html#DxlErrorHandler.handle_instruction_error"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.error.DxlErrorHandler.handle_instruction_error" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.error.DxlErrorHandler.handle_none_error">
+<tt class="descname">handle_none_error</tt><big>(</big><em>instruction_packet</em><big>)</big><a class="reference internal" href="_modules/pypot/dynamixel/error.html#DxlErrorHandler.handle_none_error"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.error.DxlErrorHandler.handle_none_error" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pypot.dynamixel.error.BaseErrorHandler">
+<em class="property">class </em><tt class="descclassname">pypot.dynamixel.error.</tt><tt class="descname">BaseErrorHandler</tt><a class="reference internal" href="_modules/pypot/dynamixel/error.html#BaseErrorHandler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.error.BaseErrorHandler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pypot.dynamixel.error.DxlErrorHandler" title="pypot.dynamixel.error.DxlErrorHandler"><tt class="xref py py-class docutils literal"><span class="pre">pypot.dynamixel.error.DxlErrorHandler</span></tt></a></p>
+<p>This class is a basic handler that just skip the communication errors.</p>
+<dl class="method">
+<dt id="pypot.dynamixel.error.BaseErrorHandler.handle_timeout">
+<tt class="descname">handle_timeout</tt><big>(</big><em>timeout_error</em><big>)</big><a class="reference internal" href="_modules/pypot/dynamixel/error.html#BaseErrorHandler.handle_timeout"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.error.BaseErrorHandler.handle_timeout" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.error.BaseErrorHandler.handle_communication_error">
+<tt class="descname">handle_communication_error</tt><big>(</big><em>communication_error</em><big>)</big><a class="reference internal" href="_modules/pypot/dynamixel/error.html#BaseErrorHandler.handle_communication_error"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.error.BaseErrorHandler.handle_communication_error" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.error.BaseErrorHandler.handle_overheating_error">
+<tt class="descname">handle_overheating_error</tt><big>(</big><em>instruction_packet</em><big>)</big><a class="reference internal" href="_modules/pypot/dynamixel/error.html#BaseErrorHandler.handle_overheating_error"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.error.BaseErrorHandler.handle_overheating_error" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-pypot.dynamixel.conversion">
+<span id="conversion-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">conversion</span></tt> Module<a class="headerlink" href="#module-pypot.dynamixel.conversion" title="Permalink to this headline">¶</a></h2>
+<p>This module describes all the conversion method used to transform value from the representation used by the dynamixel motor to a more standard form (e.g. degrees, volt...).</p>
+<dl class="docutils">
+<dt>For compatibility issue all comparison method should be written in the following form (even if the model is not actually used):</dt>
+<dd><ul class="first last simple">
+<li>def my_conversion_from_dxl_to_si(value, model): ...</li>
+<li>def my_conversion_from_si_to_dxl(value, model): ...</li>
+</ul>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If the control is readonly you only need to write the dxl_to_si conversion.</p>
+</div>
+<dl class="function">
+<dt id="pypot.dynamixel.conversion.dxl_to_degree">
+<tt class="descclassname">pypot.dynamixel.conversion.</tt><tt class="descname">dxl_to_degree</tt><big>(</big><em>value</em>, <em>model</em><big>)</big><a class="reference internal" href="_modules/pypot/dynamixel/conversion.html#dxl_to_degree"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.conversion.dxl_to_degree" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pypot.dynamixel.conversion.degree_to_dxl">
+<tt class="descclassname">pypot.dynamixel.conversion.</tt><tt class="descname">degree_to_dxl</tt><big>(</big><em>value</em>, <em>model</em><big>)</big><a class="reference internal" href="_modules/pypot/dynamixel/conversion.html#degree_to_dxl"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.conversion.degree_to_dxl" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pypot.dynamixel.conversion.dxl_to_speed">
+<tt class="descclassname">pypot.dynamixel.conversion.</tt><tt class="descname">dxl_to_speed</tt><big>(</big><em>value</em>, <em>model</em><big>)</big><a class="reference internal" href="_modules/pypot/dynamixel/conversion.html#dxl_to_speed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.conversion.dxl_to_speed" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pypot.dynamixel.conversion.speed_to_dxl">
+<tt class="descclassname">pypot.dynamixel.conversion.</tt><tt class="descname">speed_to_dxl</tt><big>(</big><em>value</em>, <em>model</em><big>)</big><a class="reference internal" href="_modules/pypot/dynamixel/conversion.html#speed_to_dxl"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.conversion.speed_to_dxl" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pypot.dynamixel.conversion.dxl_to_torque">
+<tt class="descclassname">pypot.dynamixel.conversion.</tt><tt class="descname">dxl_to_torque</tt><big>(</big><em>value</em>, <em>model</em><big>)</big><a class="reference internal" href="_modules/pypot/dynamixel/conversion.html#dxl_to_torque"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.conversion.dxl_to_torque" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pypot.dynamixel.conversion.torque_to_dxl">
+<tt class="descclassname">pypot.dynamixel.conversion.</tt><tt class="descname">torque_to_dxl</tt><big>(</big><em>value</em>, <em>model</em><big>)</big><a class="reference internal" href="_modules/pypot/dynamixel/conversion.html#torque_to_dxl"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.conversion.torque_to_dxl" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pypot.dynamixel.conversion.dxl_to_load">
+<tt class="descclassname">pypot.dynamixel.conversion.</tt><tt class="descname">dxl_to_load</tt><big>(</big><em>value</em>, <em>model</em><big>)</big><a class="reference internal" href="_modules/pypot/dynamixel/conversion.html#dxl_to_load"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.conversion.dxl_to_load" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pypot.dynamixel.conversion.dxl_to_pid">
+<tt class="descclassname">pypot.dynamixel.conversion.</tt><tt class="descname">dxl_to_pid</tt><big>(</big><em>value</em>, <em>model</em><big>)</big><a class="reference internal" href="_modules/pypot/dynamixel/conversion.html#dxl_to_pid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.conversion.dxl_to_pid" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pypot.dynamixel.conversion.pid_to_dxl">
+<tt class="descclassname">pypot.dynamixel.conversion.</tt><tt class="descname">pid_to_dxl</tt><big>(</big><em>value</em>, <em>model</em><big>)</big><a class="reference internal" href="_modules/pypot/dynamixel/conversion.html#pid_to_dxl"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.conversion.pid_to_dxl" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pypot.dynamixel.conversion.dxl_to_model">
+<tt class="descclassname">pypot.dynamixel.conversion.</tt><tt class="descname">dxl_to_model</tt><big>(</big><em>value</em>, <em>dummy=None</em><big>)</big><a class="reference internal" href="_modules/pypot/dynamixel/conversion.html#dxl_to_model"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.conversion.dxl_to_model" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pypot.dynamixel.conversion.check_bit">
+<tt class="descclassname">pypot.dynamixel.conversion.</tt><tt class="descname">check_bit</tt><big>(</big><em>value</em>, <em>offset</em><big>)</big><a class="reference internal" href="_modules/pypot/dynamixel/conversion.html#check_bit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.conversion.check_bit" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pypot.dynamixel.conversion.dxl_to_drive_mode">
+<tt class="descclassname">pypot.dynamixel.conversion.</tt><tt class="descname">dxl_to_drive_mode</tt><big>(</big><em>value</em>, <em>model</em><big>)</big><a class="reference internal" href="_modules/pypot/dynamixel/conversion.html#dxl_to_drive_mode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.conversion.dxl_to_drive_mode" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pypot.dynamixel.conversion.drive_mode_to_dxl">
+<tt class="descclassname">pypot.dynamixel.conversion.</tt><tt class="descname">drive_mode_to_dxl</tt><big>(</big><em>value</em>, <em>model</em><big>)</big><a class="reference internal" href="_modules/pypot/dynamixel/conversion.html#drive_mode_to_dxl"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.conversion.drive_mode_to_dxl" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pypot.dynamixel.conversion.dxl_to_baudrate">
+<tt class="descclassname">pypot.dynamixel.conversion.</tt><tt class="descname">dxl_to_baudrate</tt><big>(</big><em>value</em>, <em>model</em><big>)</big><a class="reference internal" href="_modules/pypot/dynamixel/conversion.html#dxl_to_baudrate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.conversion.dxl_to_baudrate" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pypot.dynamixel.conversion.baudrate_to_dxl">
+<tt class="descclassname">pypot.dynamixel.conversion.</tt><tt class="descname">baudrate_to_dxl</tt><big>(</big><em>value</em>, <em>model</em><big>)</big><a class="reference internal" href="_modules/pypot/dynamixel/conversion.html#baudrate_to_dxl"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.conversion.baudrate_to_dxl" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pypot.dynamixel.conversion.dxl_to_rdt">
+<tt class="descclassname">pypot.dynamixel.conversion.</tt><tt class="descname">dxl_to_rdt</tt><big>(</big><em>value</em>, <em>model</em><big>)</big><a class="reference internal" href="_modules/pypot/dynamixel/conversion.html#dxl_to_rdt"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.conversion.dxl_to_rdt" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pypot.dynamixel.conversion.rdt_to_dxl">
+<tt class="descclassname">pypot.dynamixel.conversion.</tt><tt class="descname">rdt_to_dxl</tt><big>(</big><em>value</em>, <em>model</em><big>)</big><a class="reference internal" href="_modules/pypot/dynamixel/conversion.html#rdt_to_dxl"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.conversion.rdt_to_dxl" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pypot.dynamixel.conversion.dxl_to_temperature">
+<tt class="descclassname">pypot.dynamixel.conversion.</tt><tt class="descname">dxl_to_temperature</tt><big>(</big><em>value</em>, <em>model</em><big>)</big><a class="reference internal" href="_modules/pypot/dynamixel/conversion.html#dxl_to_temperature"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.conversion.dxl_to_temperature" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pypot.dynamixel.conversion.temperature_to_dxl">
+<tt class="descclassname">pypot.dynamixel.conversion.</tt><tt class="descname">temperature_to_dxl</tt><big>(</big><em>value</em>, <em>model</em><big>)</big><a class="reference internal" href="_modules/pypot/dynamixel/conversion.html#temperature_to_dxl"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.conversion.temperature_to_dxl" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pypot.dynamixel.conversion.dxl_to_voltage">
+<tt class="descclassname">pypot.dynamixel.conversion.</tt><tt class="descname">dxl_to_voltage</tt><big>(</big><em>value</em>, <em>model</em><big>)</big><a class="reference internal" href="_modules/pypot/dynamixel/conversion.html#dxl_to_voltage"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.conversion.dxl_to_voltage" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pypot.dynamixel.conversion.voltage_to_dxl">
+<tt class="descclassname">pypot.dynamixel.conversion.</tt><tt class="descname">voltage_to_dxl</tt><big>(</big><em>value</em>, <em>model</em><big>)</big><a class="reference internal" href="_modules/pypot/dynamixel/conversion.html#voltage_to_dxl"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.conversion.voltage_to_dxl" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pypot.dynamixel.conversion.dxl_to_status">
+<tt class="descclassname">pypot.dynamixel.conversion.</tt><tt class="descname">dxl_to_status</tt><big>(</big><em>value</em>, <em>model</em><big>)</big><a class="reference internal" href="_modules/pypot/dynamixel/conversion.html#dxl_to_status"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.conversion.dxl_to_status" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pypot.dynamixel.conversion.status_to_dxl">
+<tt class="descclassname">pypot.dynamixel.conversion.</tt><tt class="descname">status_to_dxl</tt><big>(</big><em>value</em>, <em>model</em><big>)</big><a class="reference internal" href="_modules/pypot/dynamixel/conversion.html#status_to_dxl"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.conversion.status_to_dxl" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pypot.dynamixel.conversion.dxl_to_alarm">
+<tt class="descclassname">pypot.dynamixel.conversion.</tt><tt class="descname">dxl_to_alarm</tt><big>(</big><em>value</em>, <em>model</em><big>)</big><a class="reference internal" href="_modules/pypot/dynamixel/conversion.html#dxl_to_alarm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.conversion.dxl_to_alarm" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pypot.dynamixel.conversion.decode_error">
+<tt class="descclassname">pypot.dynamixel.conversion.</tt><tt class="descname">decode_error</tt><big>(</big><em>error_code</em><big>)</big><a class="reference internal" href="_modules/pypot/dynamixel/conversion.html#decode_error"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.conversion.decode_error" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pypot.dynamixel.conversion.alarm_to_dxl">
+<tt class="descclassname">pypot.dynamixel.conversion.</tt><tt class="descname">alarm_to_dxl</tt><big>(</big><em>value</em>, <em>model</em><big>)</big><a class="reference internal" href="_modules/pypot/dynamixel/conversion.html#alarm_to_dxl"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.conversion.alarm_to_dxl" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pypot.dynamixel.conversion.dxl_to_bool">
+<tt class="descclassname">pypot.dynamixel.conversion.</tt><tt class="descname">dxl_to_bool</tt><big>(</big><em>value</em>, <em>model</em><big>)</big><a class="reference internal" href="_modules/pypot/dynamixel/conversion.html#dxl_to_bool"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.conversion.dxl_to_bool" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pypot.dynamixel.conversion.bool_to_dxl">
+<tt class="descclassname">pypot.dynamixel.conversion.</tt><tt class="descname">bool_to_dxl</tt><big>(</big><em>value</em>, <em>model</em><big>)</big><a class="reference internal" href="_modules/pypot/dynamixel/conversion.html#bool_to_dxl"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.conversion.bool_to_dxl" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pypot.dynamixel.conversion.dxl_decode">
+<tt class="descclassname">pypot.dynamixel.conversion.</tt><tt class="descname">dxl_decode</tt><big>(</big><em>data</em><big>)</big><a class="reference internal" href="_modules/pypot/dynamixel/conversion.html#dxl_decode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.conversion.dxl_decode" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pypot.dynamixel.conversion.dxl_decode_all">
+<tt class="descclassname">pypot.dynamixel.conversion.</tt><tt class="descname">dxl_decode_all</tt><big>(</big><em>data</em>, <em>nb_elem</em><big>)</big><a class="reference internal" href="_modules/pypot/dynamixel/conversion.html#dxl_decode_all"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.conversion.dxl_decode_all" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pypot.dynamixel.conversion.dxl_code">
+<tt class="descclassname">pypot.dynamixel.conversion.</tt><tt class="descname">dxl_code</tt><big>(</big><em>value</em>, <em>length</em><big>)</big><a class="reference internal" href="_modules/pypot/dynamixel/conversion.html#dxl_code"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.conversion.dxl_code" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pypot.dynamixel.conversion.dxl_code_all">
+<tt class="descclassname">pypot.dynamixel.conversion.</tt><tt class="descname">dxl_code_all</tt><big>(</big><em>value</em>, <em>length</em>, <em>nb_elem</em><big>)</big><a class="reference internal" href="_modules/pypot/dynamixel/conversion.html#dxl_code_all"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.conversion.dxl_code_all" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-pypot.dynamixel.packet">
+<span id="packet-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">packet</span></tt> Module<a class="headerlink" href="#module-pypot.dynamixel.packet" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pypot.dynamixel.packet.DxlInstruction">
+<em class="property">class </em><tt class="descclassname">pypot.dynamixel.packet.</tt><tt class="descname">DxlInstruction</tt><a class="reference internal" href="_modules/pypot/dynamixel/packet.html#DxlInstruction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.packet.DxlInstruction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<dl class="attribute">
+<dt id="pypot.dynamixel.packet.DxlInstruction.PING">
+<tt class="descname">PING</tt><em class="property"> = 1</em><a class="headerlink" href="#pypot.dynamixel.packet.DxlInstruction.PING" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pypot.dynamixel.packet.DxlInstruction.READ_DATA">
+<tt class="descname">READ_DATA</tt><em class="property"> = 2</em><a class="headerlink" href="#pypot.dynamixel.packet.DxlInstruction.READ_DATA" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pypot.dynamixel.packet.DxlInstruction.WRITE_DATA">
+<tt class="descname">WRITE_DATA</tt><em class="property"> = 3</em><a class="headerlink" href="#pypot.dynamixel.packet.DxlInstruction.WRITE_DATA" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pypot.dynamixel.packet.DxlInstruction.SYNC_WRITE">
+<tt class="descname">SYNC_WRITE</tt><em class="property"> = 131</em><a class="headerlink" href="#pypot.dynamixel.packet.DxlInstruction.SYNC_WRITE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pypot.dynamixel.packet.DxlInstruction.SYNC_READ">
+<tt class="descname">SYNC_READ</tt><em class="property"> = 132</em><a class="headerlink" href="#pypot.dynamixel.packet.DxlInstruction.SYNC_READ" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pypot.dynamixel.packet.DxlPacketHeader">
+<em class="property">class </em><tt class="descclassname">pypot.dynamixel.packet.</tt><tt class="descname">DxlPacketHeader</tt><a class="reference internal" href="_modules/pypot/dynamixel/packet.html#DxlPacketHeader"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.packet.DxlPacketHeader" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pypot.dynamixel.packet.DxlPacketHeader" title="pypot.dynamixel.packet.DxlPacketHeader"><tt class="xref py py-class docutils literal"><span class="pre">pypot.dynamixel.packet.DxlPacketHeader</span></tt></a></p>
+<p>This class represents the header of a Dxl Packet.</p>
+<dl class="docutils">
+<dt>They are constructed as follows [0xFF, 0xFF, ID, LENGTH] where:</dt>
+<dd><ul class="first last simple">
+<li>ID represents the ID of the motor who received (resp. sent) the intruction (resp. status) packet.</li>
+<li>LENGTH represents the length of the rest of the packet</li>
+</ul>
+</dd>
+</dl>
+<dl class="attribute">
+<dt id="pypot.dynamixel.packet.DxlPacketHeader.length">
+<tt class="descname">length</tt><em class="property"> = 4</em><a class="headerlink" href="#pypot.dynamixel.packet.DxlPacketHeader.length" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pypot.dynamixel.packet.DxlPacketHeader.marker">
+<tt class="descname">marker</tt><em class="property"> = array('B', [255, 255])</em><a class="headerlink" href="#pypot.dynamixel.packet.DxlPacketHeader.marker" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="classmethod">
+<dt id="pypot.dynamixel.packet.DxlPacketHeader.from_string">
+<em class="property">classmethod </em><tt class="descname">from_string</tt><big>(</big><em>data</em><big>)</big><a class="reference internal" href="_modules/pypot/dynamixel/packet.html#DxlPacketHeader.from_string"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.packet.DxlPacketHeader.from_string" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pypot.dynamixel.packet.DxlInstructionPacket">
+<em class="property">class </em><tt class="descclassname">pypot.dynamixel.packet.</tt><tt class="descname">DxlInstructionPacket</tt><a class="reference internal" href="_modules/pypot/dynamixel/packet.html#DxlInstructionPacket"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.packet.DxlInstructionPacket" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pypot.dynamixel.packet.DxlInstructionPacket" title="pypot.dynamixel.packet.DxlInstructionPacket"><tt class="xref py py-class docutils literal"><span class="pre">pypot.dynamixel.packet.DxlInstructionPacket</span></tt></a></p>
+<p>This class is used to represent a dynamixel instruction packet.</p>
+<p>An instruction packet is constructed as follows:
+[0xFF, 0xFF, ID, LENGTH, INSTRUCTION, PARAM 1, PARAM 2, ..., PARAM N, CHECKSUM]</p>
+<p>(for more details see <a class="reference external" href="http://support.robotis.com/en/product/dxl_main.htm">http://support.robotis.com/en/product/dxl_main.htm</a>)</p>
+<dl class="method">
+<dt id="pypot.dynamixel.packet.DxlInstructionPacket.to_array">
+<tt class="descname">to_array</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/pypot/dynamixel/packet.html#DxlInstructionPacket.to_array"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.packet.DxlInstructionPacket.to_array" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.packet.DxlInstructionPacket.to_string">
+<tt class="descname">to_string</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/pypot/dynamixel/packet.html#DxlInstructionPacket.to_string"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.packet.DxlInstructionPacket.to_string" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pypot.dynamixel.packet.DxlInstructionPacket.length">
+<tt class="descname">length</tt><a class="reference internal" href="_modules/pypot/dynamixel/packet.html#DxlInstructionPacket.length"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.packet.DxlInstructionPacket.length" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pypot.dynamixel.packet.DxlInstructionPacket.checksum">
+<tt class="descname">checksum</tt><a class="reference internal" href="_modules/pypot/dynamixel/packet.html#DxlInstructionPacket.checksum"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.packet.DxlInstructionPacket.checksum" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pypot.dynamixel.packet.DxlPingPacket">
+<em class="property">class </em><tt class="descclassname">pypot.dynamixel.packet.</tt><tt class="descname">DxlPingPacket</tt><a class="reference internal" href="_modules/pypot/dynamixel/packet.html#DxlPingPacket"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.packet.DxlPingPacket" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pypot.dynamixel.packet.DxlInstructionPacket" title="pypot.dynamixel.packet.DxlInstructionPacket"><tt class="xref py py-class docutils literal"><span class="pre">pypot.dynamixel.packet.DxlInstructionPacket</span></tt></a></p>
+<p>This class is used to represent ping packet.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="pypot.dynamixel.packet.DxlReadDataPacket">
+<em class="property">class </em><tt class="descclassname">pypot.dynamixel.packet.</tt><tt class="descname">DxlReadDataPacket</tt><a class="reference internal" href="_modules/pypot/dynamixel/packet.html#DxlReadDataPacket"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.packet.DxlReadDataPacket" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pypot.dynamixel.packet.DxlInstructionPacket" title="pypot.dynamixel.packet.DxlInstructionPacket"><tt class="xref py py-class docutils literal"><span class="pre">pypot.dynamixel.packet.DxlInstructionPacket</span></tt></a></p>
+<p>This class is used to represent read data packet (to read value).</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="pypot.dynamixel.packet.DxlSyncReadPacket">
+<em class="property">class </em><tt class="descclassname">pypot.dynamixel.packet.</tt><tt class="descname">DxlSyncReadPacket</tt><a class="reference internal" href="_modules/pypot/dynamixel/packet.html#DxlSyncReadPacket"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.packet.DxlSyncReadPacket" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pypot.dynamixel.packet.DxlInstructionPacket" title="pypot.dynamixel.packet.DxlInstructionPacket"><tt class="xref py py-class docutils literal"><span class="pre">pypot.dynamixel.packet.DxlInstructionPacket</span></tt></a></p>
+<p>This class is used to represent sync read packet (to synchronously read values).</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="pypot.dynamixel.packet.DxlWriteDataPacket">
+<em class="property">class </em><tt class="descclassname">pypot.dynamixel.packet.</tt><tt class="descname">DxlWriteDataPacket</tt><a class="reference internal" href="_modules/pypot/dynamixel/packet.html#DxlWriteDataPacket"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.packet.DxlWriteDataPacket" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pypot.dynamixel.packet.DxlInstructionPacket" title="pypot.dynamixel.packet.DxlInstructionPacket"><tt class="xref py py-class docutils literal"><span class="pre">pypot.dynamixel.packet.DxlInstructionPacket</span></tt></a></p>
+<p>This class is used to reprensent write data packet (to write value).</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="pypot.dynamixel.packet.DxlSyncWritePacket">
+<em class="property">class </em><tt class="descclassname">pypot.dynamixel.packet.</tt><tt class="descname">DxlSyncWritePacket</tt><a class="reference internal" href="_modules/pypot/dynamixel/packet.html#DxlSyncWritePacket"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.packet.DxlSyncWritePacket" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pypot.dynamixel.packet.DxlInstructionPacket" title="pypot.dynamixel.packet.DxlInstructionPacket"><tt class="xref py py-class docutils literal"><span class="pre">pypot.dynamixel.packet.DxlInstructionPacket</span></tt></a></p>
+<p>This class is used to represent sync write packet (to synchronously write values).</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="pypot.dynamixel.packet.DxlStatusPacket">
+<em class="property">class </em><tt class="descclassname">pypot.dynamixel.packet.</tt><tt class="descname">DxlStatusPacket</tt><a class="reference internal" href="_modules/pypot/dynamixel/packet.html#DxlStatusPacket"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.packet.DxlStatusPacket" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pypot.dynamixel.packet.DxlStatusPacket" title="pypot.dynamixel.packet.DxlStatusPacket"><tt class="xref py py-class docutils literal"><span class="pre">pypot.dynamixel.packet.DxlStatusPacket</span></tt></a></p>
+<p>This class is used to represent a dynamixel status packet.</p>
+<p>A status packet is constructed as follows:
+[0xFF, 0xFF, ID, LENGTH, ERROR, PARAM 1, PARAM 2, ..., PARAM N, CHECKSUM]</p>
+<p>(for more details see <a class="reference external" href="http://support.robotis.com/en/product/dxl_main.htm">http://support.robotis.com/en/product/dxl_main.htm</a>)</p>
+<dl class="classmethod">
+<dt id="pypot.dynamixel.packet.DxlStatusPacket.from_string">
+<em class="property">classmethod </em><tt class="descname">from_string</tt><big>(</big><em>data</em><big>)</big><a class="reference internal" href="_modules/pypot/dynamixel/packet.html#DxlStatusPacket.from_string"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.packet.DxlStatusPacket.from_string" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2012, Pierre Rouanet, Matthieu Lapeyre, Haylee Fogg.<br/>
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

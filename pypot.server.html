@@ -1,0 +1,485 @@
+
+
+
+
+  
+  
+ 
+  
+  
+ 
+
+
+<!DOCTYPE html>
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>server Package &mdash; PyPot 1.4.8 documentation</title>
+    
+    <link rel="stylesheet" href="_static/basic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/bootstrap-3.0.0/css/bootstrap.min.css" type="text/css" />
+    <link rel="stylesheet" href="_static/my-css.css" type="text/css" />
+    <link rel="stylesheet" href="_static/bootstrap-3.0.0/css/bootstrap-theme.min.css" type="text/css" />
+    <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '1.4.8',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-1.9.1.min.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-3.0.0/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
+    <link rel="top" title="PyPot 1.4.8 documentation" href="index.html" />
+    <link rel="up" title="PyPot’s API" href="api.html" />
+    <link rel="prev" title="robot Package" href="pypot.robot.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+  </head>
+  <body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="index.html">PyPot</a>
+        <span class="navbar-text navbar-version pull-left"><b>1.4.8</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            <li class="divider-vertical"></li>
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a href="index.html"
+     class="dropdown-toggle"
+     data-toggle="dropdown">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+    ><ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="intro.html#what-is-pypot">What is PyPot?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="intro.html#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="intro.html#quickstart-playing-with-an-ergo-robot">QuickStart: playing with an Ergo-Robot</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="intro.html#building-your-own-ergo-robot">Building your own Ergo-Robot</a></li>
+<li class="toctree-l3"><a class="reference internal" href="intro.html#connecting-the-robot-to-your-computer">Connecting the robot to your computer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="intro.html#controlling-your-ergo-robot">Controlling your Ergo-Robot</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial.html">Tutorial</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="tutorial.html#low-level-api">Low-level API</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="tutorial.html#opening-closing-a-communication-port">Opening/Closing a communication port</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tutorial.html#finding-motors">Finding motors</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tutorial.html#low-level-control">Low-level control</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial.html#robot-controller">Robot Controller</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="tutorial.html#using-the-robot-abstraction">Using the robot abstraction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tutorial.html#writing-the-configuration">Writing the configuration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tutorial.html#dynamixel-controller-and-synchronization-loop">Dynamixel controller and Synchronization Loop</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tutorial.html#controlling-your-robot">Controlling your robot</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tutorial.html#controlling-in-position">Controlling in position</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tutorial.html#controlling-in-speed">Controlling in speed</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial.html#primitive">Primitive</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="tutorial.html#what-do-we-call-primitive">What do we call &#8220;Primitive&#8221;?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tutorial.html#writing-your-own-primitive">Writing your own primitive</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tutorial.html#starting-pausing-primitives">Starting/pausing primitives</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tutorial.html#attaching-a-primitive-to-the-robot">Attaching a primitive to the robot</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial.html#remote-access">Remote Access</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="tutorial.html#protocol">Protocol</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tutorial.html#get-request">Get Request</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tutorial.html#set-request">Set Request</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tutorial.html#call-request">Call Request</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="tutorial.html#zmq-server">Zmq Server</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tutorial.html#http-server">Http Server</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="tools.html">Tools</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="tools.html#herborist-the-configuration-tool">Herborist: the configuration tool</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="FAQ.html">FAQ</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="FAQ.html#why-is-the-default-baud-rate-different-for-robotis-and-for-pypot">Why is the default baud rate different for robotis and for PyPot ?</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="knownissues.html">Known Issues</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="knownissues.html#issue-with-usb2ax-driver-on-mac-os">Issue with USB2AX driver on Mac OS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="knownissues.html#usb2dynamixel-driver-performance-on-mac-os">USB2Dynamixel driver performance on Mac OS</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="reference internal" href="api.html">PyPot&#8217;s API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="pypot.dynamixel.html"><tt class="docutils literal"><span class="pre">dynamixel</span></tt> Package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pypot.dynamixel.html#module-pypot.dynamixel.io"><tt class="docutils literal"><span class="pre">io</span></tt> Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pypot.dynamixel.html#module-pypot.dynamixel.motor"><tt class="docutils literal"><span class="pre">motor</span></tt> Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pypot.dynamixel.html#module-pypot.dynamixel.controller"><tt class="docutils literal"><span class="pre">controller</span></tt> Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pypot.dynamixel.html#module-pypot.dynamixel.error"><tt class="docutils literal"><span class="pre">error</span></tt> Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pypot.dynamixel.html#module-pypot.dynamixel.conversion"><tt class="docutils literal"><span class="pre">conversion</span></tt> Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pypot.dynamixel.html#module-pypot.dynamixel.packet"><tt class="docutils literal"><span class="pre">packet</span></tt> Module</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pypot.primitive.html"><tt class="docutils literal"><span class="pre">primitive</span></tt> Package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pypot.primitive.html#module-pypot.primitive.primitive"><tt class="docutils literal"><span class="pre">primitive</span></tt> Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pypot.primitive.html#module-pypot.primitive.manager"><tt class="docutils literal"><span class="pre">manager</span></tt> Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pypot.primitive.html#module-pypot.primitive.utils"><tt class="docutils literal"><span class="pre">utils</span></tt> Module</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pypot.robot.html"><tt class="docutils literal"><span class="pre">robot</span></tt> Package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pypot.robot.html#module-pypot.robot.robot"><tt class="docutils literal"><span class="pre">robot</span></tt> Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pypot.robot.html#module-pypot.robot.config"><tt class="docutils literal"><span class="pre">config</span></tt> Module</a></li>
+</ul>
+</li>
+<li class="toctree-l2 current"><a class="current reference internal" href=""><tt class="docutils literal"><span class="pre">server</span></tt> Package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#module-pypot.server.request"><tt class="docutils literal"><span class="pre">request</span></tt> Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-pypot.server.server"><tt class="docutils literal"><span class="pre">server</span></tt> Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-pypot.server.httpserver"><tt class="docutils literal"><span class="pre">httpserver</span></tt> Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-pypot.server.zmqserver"><tt class="docutils literal"><span class="pre">zmqserver</span></tt> Module</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"><ul>
+<li><a class="reference internal" href="#"><tt class="docutils literal"><span class="pre">server</span></tt> Package</a><ul>
+<li><a class="reference internal" href="#module-pypot.server.request"><tt class="docutils literal"><span class="pre">request</span></tt> Module</a></li>
+<li><a class="reference internal" href="#module-pypot.server.server"><tt class="docutils literal"><span class="pre">server</span></tt> Module</a></li>
+<li><a class="reference internal" href="#module-pypot.server.httpserver"><tt class="docutils literal"><span class="pre">httpserver</span></tt> Module</a></li>
+<li><a class="reference internal" href="#module-pypot.server.zmqserver"><tt class="docutils literal"><span class="pre">zmqserver</span></tt> Module</a></li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+  <li><a href="pypot.robot.html"
+         title="Previous Chapter: robot Package">&laquo; robot Package</a></li>
+              
+            
+            
+            
+            
+              <li>
+<div id="sourcelink">
+  <a href="_sources/pypot.server.txt"
+     rel="nofollow">Source</a>
+</div></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      
+  <div class="section" id="module-pypot.server">
+<span id="server-package"></span><h1><tt class="xref py py-mod docutils literal"><span class="pre">server</span></tt> Package<a class="headerlink" href="#module-pypot.server" title="Permalink to this headline">¶</a></h1>
+<p>Server provides a remote control of a robot through a primitive.</p>
+<p>The client can access (get or set) all motors, sensors, primitives attached to the robot (as any primitive). The communication between the server and the client follows a predefined JSON protocol (see <a class="reference internal" href="#module-pypot.server.request" title="pypot.server.request"><tt class="xref py py-mod docutils literal"><span class="pre">request</span></tt></a> for details).</p>
+<p>So far, two types of server have been implemented:</p>
+<ul class="simple">
+<li>a zmq based server (see <a class="reference internal" href="#module-pypot.server.zmqserver" title="pypot.server.zmqserver"><tt class="xref py py-mod docutils literal"><span class="pre">zmqserver</span></tt></a>) and</li>
+<li>a html based server (see <a class="reference internal" href="#module-pypot.server.httpserver" title="pypot.server.httpserver"><tt class="xref py py-mod docutils literal"><span class="pre">httpserver</span></tt></a>)</li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">All clients lives in the same primitive, so their requests are automatically combined. In future version, each client will spawn its own primitive.</p>
+</div>
+<div class="section" id="module-pypot.server.request">
+<span id="request-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">request</span></tt> Module<a class="headerlink" href="#module-pypot.server.request" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pypot.server.request.BaseRequestHandler">
+<em class="property">class </em><tt class="descclassname">pypot.server.request.</tt><tt class="descname">BaseRequestHandler</tt><big>(</big><em>robot</em><big>)</big><a class="reference internal" href="_modules/pypot/server/request.html#BaseRequestHandler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.server.request.BaseRequestHandler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>JSON request (get, set or call) handler.</p>
+<dl class="method">
+<dt id="pypot.server.request.BaseRequestHandler.handle_request">
+<tt class="descname">handle_request</tt><big>(</big><em>request</em><big>)</big><a class="reference internal" href="_modules/pypot/server/request.html#BaseRequestHandler.handle_request"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.server.request.BaseRequestHandler.handle_request" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handles a JSON request from the client.</p>
+<p>The request can contain at the same time a get, a set and a call request. Each of these requests can retrieve (resp. affect and call) multiple values at the same time, so for instance you can get the position, speed, load and temperature of multiple motors and get the pressure value of a sensor in the same request.</p>
+<p>The request are constructed as follows:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">{</span>
+    <span class="s">&#39;get&#39;</span><span class="p">:</span> <span class="p">{</span> <span class="o">...</span> <span class="p">},</span>
+    <span class="s">&#39;set&#39;</span><span class="p">:</span> <span class="p">{</span> <span class="o">...</span> <span class="p">},</span>
+    <span class="s">&#39;call&#39;</span><span class="p">:</span> <span class="p">{</span> <span class="o">...</span> <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">It is not mandatory to give a get, a set and a call request, you can build a request with only a get field.</p>
+</div>
+<p>Each field of the request will be detailed in their respective handler.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.server.request.BaseRequestHandler.handle_get">
+<tt class="descname">handle_get</tt><big>(</big><em>request</em><big>)</big><a class="reference internal" href="_modules/pypot/server/request.html#BaseRequestHandler.handle_get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.server.request.BaseRequestHandler.handle_get" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handles the get field of a request.</p>
+<p>The get field is constructed as follows:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">{</span>
+    <span class="s">&#39;get&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">&#39;obj_name_1&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s">&#39;var_path_1&#39;</span><span class="p">,</span> <span class="s">&#39;var_path_2&#39;</span><span class="p">,</span> <span class="o">...</span><span class="p">),</span>
+        <span class="s">&#39;obj_name_2&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s">&#39;var_path_1&#39;</span><span class="p">,</span> <span class="s">&#39;var_path_2&#39;</span><span class="p">,</span> <span class="o">...</span><span class="p">),</span>
+        <span class="c"># ...</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+</pre></div>
+</div>
+<p>For each couple obj_name_1, var_path_1, the handler will get the value corresponding to self.robot.obj_name_1.var_path_1: i.e. if we want to get the present_position and present_speed of the motor named l_knee_y we would use:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">{</span>
+    <span class="s">&#39;get&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">&#39;l_knee_y&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s">&#39;present_position&#39;</span><span class="p">,</span> <span class="s">&#39;present_speed&#39;</span><span class="p">),</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The var_path could be complete path, e.g. &#8220;skeleton.left_foot.position.x&#8221;.</p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.server.request.BaseRequestHandler.handle_set">
+<tt class="descname">handle_set</tt><big>(</big><em>request</em><big>)</big><a class="reference internal" href="_modules/pypot/server/request.html#BaseRequestHandler.handle_set"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.server.request.BaseRequestHandler.handle_set" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handles the set field of a request.</p>
+<p>The set field is constructed as follows:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">{</span>
+    <span class="s">&#39;set&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">&#39;obj_name_1&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;var_path_1&#39;</span><span class="p">:</span> <span class="n">value</span><span class="p">,</span>
+                        <span class="s">&#39;var_path_2&#39;</span><span class="p">:</span> <span class="n">value</span><span class="p">,</span>
+                        <span class="c"># ...</span>
+                        <span class="p">},</span>
+        <span class="s">&#39;obj_name_2&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;var_path_1&#39;</span><span class="p">:</span> <span class="n">value</span><span class="p">,</span>
+                        <span class="s">&#39;var_path_2&#39;</span><span class="p">:</span> <span class="n">value</span><span class="p">,</span>
+                       <span class="c"># ...</span>
+                        <span class="p">},</span>
+        <span class="c"># ...</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>For each triple obj_name_1, var_path_1, value the handler will set the corresponding value to self.robot.obj_name_1.var_path_1: i.e. if we want to set the goal_position and goal_speed of the motor named l_knee_y to resp. 0 and 100 we would use:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">{</span>
+    <span class="s">&#39;set&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">&#39;l_knee_y&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;goal_position&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s">&#39;present_speed&#39;</span><span class="p">:</span> <span class="mi">100</span><span class="p">},</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The var_path could be complete path, e.g. &#8220;skeleton.left_foot.position.x&#8221;.</p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.server.request.BaseRequestHandler.handle_call">
+<tt class="descname">handle_call</tt><big>(</big><em>request</em><big>)</big><a class="reference internal" href="_modules/pypot/server/request.html#BaseRequestHandler.handle_call"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.server.request.BaseRequestHandler.handle_call" title="Permalink to this definition">¶</a></dt>
+<dd><p>Handles the call field of a request.</p>
+<p>The call field is constructed as follows:</p>
+<div class="highlight-python"><pre>'call': {
+    'obj_name_1': {'meth_path_1': (arg1, arg2, ...),
+                    'meth_path_2': (arg1, arg2, ...),
+                    ...
+                    },
+
+    'obj_name_2': {'meth_path_1': (arg1, arg2, ...),
+                    'meth_path_2': (arg1, arg2, ...),
+                    ...
+                    },
+        ...
+        }</pre>
+</div>
+<p>For each tuple obj_name_1, meth_path_1 and args  the handler will call the corresponding method of the object with the args: i.e. if we want to call the switch_mode method of a primitive named &#8216;balance&#8217; to switch to the third mode we would use:</p>
+<div class="highlight-python"><pre>'call': {
+    'balance': {'switch_mode': (3, )}
+    }</pre>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>To call a method without argument juste use an empty list as args:</p>
+<div class="last highlight-python"><pre>'call': {'balance': {'start': ()}}</pre>
+</div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-pypot.server.server">
+<span id="server-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">server</span></tt> Module<a class="headerlink" href="#module-pypot.server.server" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pypot.server.server.AbstractServer">
+<em class="property">class </em><tt class="descclassname">pypot.server.server.</tt><tt class="descname">AbstractServer</tt><big>(</big><em>robot</em>, <em>handler=&lt;class 'pypot.server.request.BaseRequestHandler'&gt;</em><big>)</big><a class="reference internal" href="_modules/pypot/server/server.html#AbstractServer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.server.server.AbstractServer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="pypot.primitive.html#pypot.primitive.primitive.Primitive" title="pypot.primitive.primitive.Primitive"><tt class="xref py py-class docutils literal"><span class="pre">pypot.primitive.primitive.Primitive</span></tt></a></p>
+<p>Abstract Server which mostly delegate the work to a request handler.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="pypot.server.server.MyJSONEncoder">
+<em class="property">class </em><tt class="descclassname">pypot.server.server.</tt><tt class="descname">MyJSONEncoder</tt><big>(</big><em>skipkeys=False</em>, <em>ensure_ascii=True</em>, <em>check_circular=True</em>, <em>allow_nan=True</em>, <em>sort_keys=False</em>, <em>indent=None</em>, <em>separators=None</em>, <em>encoding='utf-8'</em>, <em>default=None</em><big>)</big><a class="reference internal" href="_modules/pypot/server/server.html#MyJSONEncoder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.server.server.MyJSONEncoder" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">json.encoder.JSONEncoder</span></tt></p>
+<p>JSONEncoder which tries to call a json property before using the enconding default function.</p>
+<p>Constructor for JSONEncoder, with sensible defaults.</p>
+<p>If skipkeys is false, then it is a TypeError to attempt
+encoding of keys that are not str, int, long, float or None.  If
+skipkeys is True, such items are simply skipped.</p>
+<p>If <em>ensure_ascii</em> is true (the default), all non-ASCII
+characters in the output are escaped with uXXXX sequences,
+and the results are str instances consisting of ASCII
+characters only.  If ensure_ascii is False, a result may be a
+unicode instance.  This usually happens if the input contains
+unicode strings or the <em>encoding</em> parameter is used.</p>
+<p>If check_circular is true, then lists, dicts, and custom encoded
+objects will be checked for circular references during encoding to
+prevent an infinite recursion (which would cause an OverflowError).
+Otherwise, no such check takes place.</p>
+<p>If allow_nan is true, then NaN, Infinity, and -Infinity will be
+encoded as such.  This behavior is not JSON specification compliant,
+but is consistent with most JavaScript based encoders and decoders.
+Otherwise, it will be a ValueError to encode such floats.</p>
+<p>If sort_keys is true, then the output of dictionaries will be
+sorted by key; this is useful for regression tests to ensure
+that JSON serializations can be compared on a day-to-day basis.</p>
+<p>If indent is a non-negative integer, then JSON array
+elements and object members will be pretty-printed with that
+indent level.  An indent level of 0 will only insert newlines.
+None is the most compact representation.  Since the default
+item separator is &#8216;, &#8216;,  the output might include trailing
+whitespace when indent is specified.  You can use
+separators=(&#8216;,&#8217;, &#8216;: &#8216;) to avoid this.</p>
+<p>If specified, separators should be a (item_separator, key_separator)
+tuple.  The default is (&#8216;, &#8216;, &#8216;: &#8216;).  To get the most compact JSON
+representation you should specify (&#8216;,&#8217;, &#8216;:&#8217;) to eliminate whitespace.</p>
+<p>If specified, default is a function that gets called for objects
+that can&#8217;t otherwise be serialized.  It should return a JSON encodable
+version of the object or raise a <tt class="docutils literal"><span class="pre">TypeError</span></tt>.</p>
+<p>If encoding is not None, then all input strings will be
+transformed into unicode using that encoding prior to JSON-encoding.
+The default is UTF-8.</p>
+<dl class="method">
+<dt id="pypot.server.server.MyJSONEncoder.default">
+<tt class="descname">default</tt><big>(</big><em>obj</em><big>)</big><a class="reference internal" href="_modules/pypot/server/server.html#MyJSONEncoder.default"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.server.server.MyJSONEncoder.default" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-pypot.server.httpserver">
+<span id="httpserver-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">httpserver</span></tt> Module<a class="headerlink" href="#module-pypot.server.httpserver" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pypot.server.httpserver.HTTPServer">
+<em class="property">class </em><tt class="descclassname">pypot.server.httpserver.</tt><tt class="descname">HTTPServer</tt><big>(</big><em>robot</em>, <em>host='localhost'</em>, <em>port=8080</em><big>)</big><a class="reference internal" href="_modules/pypot/server/httpserver.html#HTTPServer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.server.httpserver.HTTPServer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pypot.server.server.AbstractServer" title="pypot.server.server.AbstractServer"><tt class="xref py py-class docutils literal"><span class="pre">pypot.server.server.AbstractServer</span></tt></a></p>
+<p>Bottle based HTTPServer used to remote access a robot.</p>
+<p>The server answers to the following requests:</p>
+<ul class="simple">
+<li>GET /motor/list.json</li>
+<li>GET /primitive/list.json</li>
+<li>GET /motor/&lt;name&gt;/register.json (or GET /&lt;name&gt;/register.json)</li>
+<li>GET /motor/&lt;name&gt;/&lt;register&gt; (or GET /&lt;name&gt;/&lt;register&gt;)</li>
+<li>POST /motor/&lt;name&gt;/&lt;register&gt; (or POST /&lt;name&gt;/&lt;register&gt;)</li>
+<li>POST /primitive/&lt;prim_name&gt;/call/&lt;meth_name&gt; (or GET /&lt;prim_name&gt;/call/&lt;meth_name&gt;)</li>
+<li>POST /request.json</li>
+</ul>
+<dl class="method">
+<dt id="pypot.server.httpserver.HTTPServer.run">
+<tt class="descname">run</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/pypot/server/httpserver.html#HTTPServer.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.server.httpserver.HTTPServer.run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Start the bottle server, run forever.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-pypot.server.zmqserver">
+<span id="zmqserver-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">zmqserver</span></tt> Module<a class="headerlink" href="#module-pypot.server.zmqserver" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pypot.server.zmqserver.ZMQServer">
+<em class="property">class </em><tt class="descclassname">pypot.server.zmqserver.</tt><tt class="descname">ZMQServer</tt><big>(</big><em>robot</em>, <em>host='127.0.0.1'</em>, <em>port=8080</em><big>)</big><a class="reference internal" href="_modules/pypot/server/zmqserver.html#ZMQServer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.server.zmqserver.ZMQServer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pypot.server.server.AbstractServer" title="pypot.server.server.AbstractServer"><tt class="xref py py-class docutils literal"><span class="pre">pypot.server.server.AbstractServer</span></tt></a></p>
+<p>A ZMQServer allowing remote access of a robot instance.</p>
+<p>The server used the REQ/REP zmq pattern. You should always first send a request and then read the answer.</p>
+<dl class="method">
+<dt id="pypot.server.zmqserver.ZMQServer.run">
+<tt class="descname">run</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/pypot/server/zmqserver.html#ZMQServer.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.server.zmqserver.ZMQServer.run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run an infinite REQ/REP loop.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2012, Pierre Rouanet, Matthieu Lapeyre, Haylee Fogg.<br/>
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

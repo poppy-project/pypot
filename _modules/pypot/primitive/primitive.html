@@ -1,0 +1,512 @@
+
+
+
+
+  
+  
+ 
+  
+  
+ 
+
+
+<!DOCTYPE html>
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>pypot.primitive.primitive &mdash; PyPot 1.4.8 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/basic.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/bootstrap-3.0.0/css/bootstrap.min.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/my-css.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/bootstrap-3.0.0/css/bootstrap-theme.min.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/bootstrap-sphinx.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '1.4.8',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/js/jquery-1.9.1.min.js"></script>
+    <script type="text/javascript" src="../../../_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="../../../_static/bootstrap-3.0.0/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../../../_static/bootstrap-sphinx.js"></script>
+    <link rel="top" title="PyPot 1.4.8 documentation" href="../../../index.html" />
+    <link rel="up" title="Module code" href="../../index.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+  </head>
+  <body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../../../index.html">PyPot</a>
+        <span class="navbar-text navbar-version pull-left"><b>1.4.8</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            <li class="divider-vertical"></li>
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a href="../../../index.html"
+     class="dropdown-toggle"
+     data-toggle="dropdown">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+    ><ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../intro.html">Introduction</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../intro.html#what-is-pypot">What is PyPot?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../intro.html#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../intro.html#quickstart-playing-with-an-ergo-robot">QuickStart: playing with an Ergo-Robot</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../intro.html#building-your-own-ergo-robot">Building your own Ergo-Robot</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../intro.html#connecting-the-robot-to-your-computer">Connecting the robot to your computer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../intro.html#controlling-your-ergo-robot">Controlling your Ergo-Robot</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorial.html">Tutorial</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../tutorial.html#low-level-api">Low-level API</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../tutorial.html#opening-closing-a-communication-port">Opening/Closing a communication port</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../tutorial.html#finding-motors">Finding motors</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../tutorial.html#low-level-control">Low-level control</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../tutorial.html#robot-controller">Robot Controller</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../tutorial.html#using-the-robot-abstraction">Using the robot abstraction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../tutorial.html#writing-the-configuration">Writing the configuration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../tutorial.html#dynamixel-controller-and-synchronization-loop">Dynamixel controller and Synchronization Loop</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../tutorial.html#controlling-your-robot">Controlling your robot</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../tutorial.html#controlling-in-position">Controlling in position</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../tutorial.html#controlling-in-speed">Controlling in speed</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../tutorial.html#primitive">Primitive</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../tutorial.html#what-do-we-call-primitive">What do we call &#8220;Primitive&#8221;?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../tutorial.html#writing-your-own-primitive">Writing your own primitive</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../tutorial.html#starting-pausing-primitives">Starting/pausing primitives</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../tutorial.html#attaching-a-primitive-to-the-robot">Attaching a primitive to the robot</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../tutorial.html#remote-access">Remote Access</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../tutorial.html#protocol">Protocol</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../tutorial.html#get-request">Get Request</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../tutorial.html#set-request">Set Request</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../tutorial.html#call-request">Call Request</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../tutorial.html#zmq-server">Zmq Server</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../tutorial.html#http-server">Http Server</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tools.html">Tools</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../tools.html#herborist-the-configuration-tool">Herborist: the configuration tool</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../FAQ.html">FAQ</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../FAQ.html#why-is-the-default-baud-rate-different-for-robotis-and-for-pypot">Why is the default baud rate different for robotis and for PyPot ?</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../knownissues.html">Known Issues</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../knownissues.html#issue-with-usb2ax-driver-on-mac-os">Issue with USB2AX driver on Mac OS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../knownissues.html#usb2dynamixel-driver-performance-on-mac-os">USB2Dynamixel driver performance on Mac OS</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api.html">PyPot&#8217;s API</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../pypot.dynamixel.html"><tt class="docutils literal"><span class="pre">dynamixel</span></tt> Package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../pypot.dynamixel.html#module-pypot.dynamixel.io"><tt class="docutils literal"><span class="pre">io</span></tt> Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../pypot.dynamixel.html#module-pypot.dynamixel.motor"><tt class="docutils literal"><span class="pre">motor</span></tt> Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../pypot.dynamixel.html#module-pypot.dynamixel.controller"><tt class="docutils literal"><span class="pre">controller</span></tt> Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../pypot.dynamixel.html#module-pypot.dynamixel.error"><tt class="docutils literal"><span class="pre">error</span></tt> Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../pypot.dynamixel.html#module-pypot.dynamixel.conversion"><tt class="docutils literal"><span class="pre">conversion</span></tt> Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../pypot.dynamixel.html#module-pypot.dynamixel.packet"><tt class="docutils literal"><span class="pre">packet</span></tt> Module</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../pypot.primitive.html"><tt class="docutils literal"><span class="pre">primitive</span></tt> Package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../pypot.primitive.html#module-pypot.primitive.primitive"><tt class="docutils literal"><span class="pre">primitive</span></tt> Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../pypot.primitive.html#module-pypot.primitive.manager"><tt class="docutils literal"><span class="pre">manager</span></tt> Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../pypot.primitive.html#module-pypot.primitive.utils"><tt class="docutils literal"><span class="pre">utils</span></tt> Module</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../pypot.robot.html"><tt class="docutils literal"><span class="pre">robot</span></tt> Package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../pypot.robot.html#module-pypot.robot.robot"><tt class="docutils literal"><span class="pre">robot</span></tt> Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../pypot.robot.html#module-pypot.robot.config"><tt class="docutils literal"><span class="pre">config</span></tt> Module</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../../pypot.server.html"><tt class="docutils literal"><span class="pre">server</span></tt> Package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../pypot.server.html#module-pypot.server.request"><tt class="docutils literal"><span class="pre">request</span></tt> Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../pypot.server.html#module-pypot.server.server"><tt class="docutils literal"><span class="pre">server</span></tt> Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../pypot.server.html#module-pypot.server.httpserver"><tt class="docutils literal"><span class="pre">httpserver</span></tt> Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../pypot.server.html#module-pypot.server.zmqserver"><tt class="docutils literal"><span class="pre">zmqserver</span></tt> Module</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"></ul>
+</li>
+              
+            
+            
+              
+                
+              
+            
+            
+            
+            
+              <li></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../../../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      
+  <h1>Source code for pypot.primitive.primitive</h1><div class="highlight"><pre>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">numpy</span>
+<span class="kn">import</span> <span class="nn">threading</span>
+
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">deque</span>
+
+
+<div class="viewcode-block" id="Primitive"><a class="viewcode-back" href="../../../pypot.primitive.html#pypot.primitive.primitive.Primitive">[docs]</a><span class="k">class</span> <span class="nc">Primitive</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; A Primitive is an elementary behavior that can easily be combined to create more complex behaviors.</span>
+
+<span class="sd">        A primitive is basically a thread with access to a &quot;fake&quot; robot to ensure a sort of sandboxing. More precisely, it means that the primitives will be able to:</span>
+
+<span class="sd">        * request values from the real robot (motor values, sensors or attached primitives)</span>
+<span class="sd">        * request modification of motor values (those calls will automatically be combined among all primitives by the :class:`~pypot.primitive.manager.PrimitiveManager`).</span>
+
+<span class="sd">        The syntax of those requests directly match the equivalent code that you could write from the :class:`~pypot.robot.robot.Robot`. For instance you can write::</span>
+
+<span class="sd">            class MyPrimitive(Primitive):</span>
+<span class="sd">                def run(self):</span>
+<span class="sd">                    while True:</span>
+<span class="sd">                        for m in self.robot.motors:</span>
+<span class="sd">                            m.goal_position = m.present_position + 10</span>
+
+<span class="sd">                    time.sleep(1)</span>
+
+<span class="sd">        .. warning:: In the example above, while it seems that you are setting a new goal_position, you are only requesting it. In particular, another primitive could request another goal_position and the result will be the combination of both request. For example, if you have two primitives: one setting the goal_position to 10 and the other setting the goal_position to -20, the real goal_position will be set to -5 (by default the mean of all request is used, see the :class:`~pypot.primitive.manager.PrimitiveManager` class for details).</span>
+
+<span class="sd">        Primitives were developed to allow for the creation of complex behaviors such as walking. You could imagine - and this is what is actually done on the Poppy robot - having one primitive for the walking gait, another for the balance and another for handling falls.</span>
+
+<span class="sd">        .. note:: This class should always be extended to define your particular behavior in the :meth:`~pypot.primitive.primitive.Primitive.run` method.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">robot</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; At instanciation, it automatically transforms the :class:`~pypot.robot.robot.Robot`</span>
+<span class="sd">            into a :class:`~pypot.primitive.primitive.MockupRobot`.</span>
+
+<span class="sd">            :param args: the arguments are automatically passed to the run method.</span>
+<span class="sd">            :param kwargs: the keywords arguments are automatically passed to the run method.</span>
+
+<span class="sd">            .. warning:: You should not directly pass motors as argument to the primitive. If you need to, use the method :meth:`~pypot.primitive.primitive.Primitive.get_mockup_motor` to transform them into &quot;fake&quot; motors. See the :ref:`write_own_prim` section for details.</span>
+
+<span class="sd">            &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">robot</span> <span class="o">=</span> <span class="n">MockupRobot</span><span class="p">(</span><span class="n">robot</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">args</span> <span class="o">=</span> <span class="n">args</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">kwargs</span> <span class="o">=</span> <span class="n">kwargs</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_stop</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Event</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_resume</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Event</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_synced</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Event</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">_wrapped_run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">t0</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_synced</span><span class="o">.</span><span class="n">wait</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">robot</span><span class="o">.</span><span class="n">_primitive_manager</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Primitive.run"><a class="viewcode-back" href="../../../pypot.primitive.html#pypot.primitive.primitive.Primitive.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Run method of the primitive thread. You should always overwrite this method.</span>
+
+<span class="sd">            :param args: the arguments passed to the constructor are automatically passed to this method</span>
+<span class="sd">            :param kwargs: the arguments passed to the constructor are automatically passed to this method</span>
+
+<span class="sd">            .. warning:: You are responsible of handling the :meth:`~primitive.primitive.Primitive.should_stop`, :meth:`~primitive.primitive.Primitive.should_pause` and :meth:`~primitive.primitive.Primitive.wait_to_resume` methods correctly so the code inside your run function matches the desired behavior. You can refer to the code of the :meth:`~primitive.primitive.LoopPrimitive.run` method of the :class:`~primitive.primitive.LoopPrimitive` as an example.</span>
+
+<span class="sd">            After termination of the run function, the primitive will automatically be removed from the list of active primitives of the :class:`~pypot.primitive.manager.PrimitiveManager`.</span>
+
+<span class="sd">            &quot;&quot;&quot;</span>
+        <span class="k">pass</span>
+</div>
+    <span class="nd">@property</span>
+<div class="viewcode-block" id="Primitive.elapsed_time"><a class="viewcode-back" href="../../../pypot.primitive.html#pypot.primitive.primitive.Primitive.elapsed_time">[docs]</a>    <span class="k">def</span> <span class="nf">elapsed_time</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Elapsed time (in seconds) since the primitive runs. &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">t0</span>
+
+    <span class="c"># MARK: - Start/Stop handling</span>
+</div>
+<div class="viewcode-block" id="Primitive.start"><a class="viewcode-back" href="../../../pypot.primitive.html#pypot.primitive.primitive.Primitive.start">[docs]</a>    <span class="k">def</span> <span class="nf">start</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Start or restart (the :meth:`~pypot.primitive.primitive.Primitive.stop` method will automatically be called) the primitive. &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_alive</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">wait_to_stop</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_resume</span><span class="o">.</span><span class="n">set</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_stop</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_synced</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">robot</span><span class="o">.</span><span class="n">_primitive_manager</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_thread</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_wrapped_run</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_thread</span><span class="o">.</span><span class="n">daemon</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_thread</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="Primitive.stop"><a class="viewcode-back" href="../../../pypot.primitive.html#pypot.primitive.primitive.Primitive.stop">[docs]</a>    <span class="k">def</span> <span class="nf">stop</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Requests the primitive to stop. &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_stop</span><span class="o">.</span><span class="n">set</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="Primitive.should_stop"><a class="viewcode-back" href="../../../pypot.primitive.html#pypot.primitive.primitive.Primitive.should_stop">[docs]</a>    <span class="k">def</span> <span class="nf">should_stop</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Signals if the primitive should be stopped or not. &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stop</span><span class="o">.</span><span class="n">is_set</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="Primitive.wait_to_stop"><a class="viewcode-back" href="../../../pypot.primitive.html#pypot.primitive.primitive.Primitive.wait_to_stop">[docs]</a>    <span class="k">def</span> <span class="nf">wait_to_stop</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Wait until the primitive actually stops. &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s">&#39;_thread&#39;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_thread</span><span class="o">.</span><span class="n">join</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="Primitive.is_alive"><a class="viewcode-back" href="../../../pypot.primitive.html#pypot.primitive.primitive.Primitive.is_alive">[docs]</a>    <span class="k">def</span> <span class="nf">is_alive</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Determines whether the primitive is running or not.</span>
+
+<span class="sd">            The value will be true only when the :meth:`~primitive.primitive.Primitive.run` function is executed.</span>
+
+<span class="sd">            &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s">&#39;_thread&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_thread</span><span class="o">.</span><span class="n">is_alive</span><span class="p">()</span>
+
+    <span class="c"># MARK: - Pause/Resume handling</span>
+</div>
+<div class="viewcode-block" id="Primitive.pause"><a class="viewcode-back" href="../../../pypot.primitive.html#pypot.primitive.primitive.Primitive.pause">[docs]</a>    <span class="k">def</span> <span class="nf">pause</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Requests the primitives to pause. &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_resume</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="Primitive.resume"><a class="viewcode-back" href="../../../pypot.primitive.html#pypot.primitive.primitive.Primitive.resume">[docs]</a>    <span class="k">def</span> <span class="nf">resume</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Requests the primitives to resume. &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_resume</span><span class="o">.</span><span class="n">set</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="Primitive.should_pause"><a class="viewcode-back" href="../../../pypot.primitive.html#pypot.primitive.primitive.Primitive.should_pause">[docs]</a>    <span class="k">def</span> <span class="nf">should_pause</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Signals if the primitive should be paused or not. &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_resume</span><span class="o">.</span><span class="n">is_set</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="Primitive.wait_to_resume"><a class="viewcode-back" href="../../../pypot.primitive.html#pypot.primitive.primitive.Primitive.wait_to_resume">[docs]</a>    <span class="k">def</span> <span class="nf">wait_to_resume</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Waits until the primitive is resumed. &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_resume</span><span class="o">.</span><span class="n">wait</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="Primitive.get_mockup_motor"><a class="viewcode-back" href="../../../pypot.primitive.html#pypot.primitive.primitive.Primitive.get_mockup_motor">[docs]</a>    <span class="k">def</span> <span class="nf">get_mockup_motor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">motor</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Gets the equivalent :class:`~pypot.primitive.primitive.MockupMotor`. &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">next</span><span class="p">((</span><span class="n">m</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">robot</span><span class="o">.</span><span class="n">motors</span> <span class="k">if</span> <span class="n">m</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">motor</span><span class="o">.</span><span class="n">name</span><span class="p">),</span> <span class="bp">None</span><span class="p">)</span>
+
+</div></div>
+<div class="viewcode-block" id="LoopPrimitive"><a class="viewcode-back" href="../../../pypot.primitive.html#pypot.primitive.primitive.LoopPrimitive">[docs]</a><span class="k">class</span> <span class="nc">LoopPrimitive</span><span class="p">(</span><span class="n">Primitive</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Simple primitive that call an update method at a predefined frequency.</span>
+
+<span class="sd">        You should write your own subclass where you only defined the :meth:`~pypot.primitive.primitive.Primitive.update` method.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">robot</span><span class="p">,</span> <span class="n">freq</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">Primitive</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">robot</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_period</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">freq</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_recent_updates</span> <span class="o">=</span> <span class="n">deque</span><span class="p">([],</span> <span class="mi">11</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+<div class="viewcode-block" id="LoopPrimitive.recent_update_frequencies"><a class="viewcode-back" href="../../../pypot.primitive.html#pypot.primitive.primitive.LoopPrimitive.recent_update_frequencies">[docs]</a>    <span class="k">def</span> <span class="nf">recent_update_frequencies</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Returns the 10 most recent update frequencies.</span>
+
+<span class="sd">        The given frequencies are computed as short-term frequencies!</span>
+<span class="sd">        The 0th element of the list corresponds to the most recent frequency.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="nb">reversed</span><span class="p">([(</span><span class="mf">1.0</span> <span class="o">/</span> <span class="n">p</span><span class="p">)</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">numpy</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_recent_updates</span><span class="p">)]))</span>
+</div>
+<div class="viewcode-block" id="LoopPrimitive.run"><a class="viewcode-back" href="../../../pypot.primitive.html#pypot.primitive.primitive.LoopPrimitive.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Calls the :meth:`~pypot.primitive.primitive.Primitive.update` method at a predefined frequency (runs until stopped). &quot;&quot;&quot;</span>
+
+        <span class="k">while</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">should_stop</span><span class="p">():</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">should_pause</span><span class="p">():</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">wait_to_resume</span><span class="p">()</span>
+
+            <span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">kwargs</span><span class="p">)</span>
+            <span class="n">end</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">_recent_updates</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">start</span><span class="p">)</span>
+
+            <span class="n">dt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_period</span> <span class="o">-</span> <span class="p">(</span><span class="n">end</span> <span class="o">-</span> <span class="n">start</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">dt</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">dt</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="LoopPrimitive.update"><a class="viewcode-back" href="../../../pypot.primitive.html#pypot.primitive.primitive.LoopPrimitive.update">[docs]</a>    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Update methods that will be called at a predefined frequency.</span>
+
+<span class="sd">            :param args: the arguments passed to the constructor are automatically passed to this method</span>
+<span class="sd">            :param kwargs: the arguments passed to the constructor are automatically passed to this method</span>
+
+<span class="sd">            &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+
+</div></div>
+<div class="viewcode-block" id="MockupRobot"><a class="viewcode-back" href="../../../pypot.primitive.html#pypot.primitive.primitive.MockupRobot">[docs]</a><span class="k">class</span> <span class="nc">MockupRobot</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Fake :class:`~pypot.robot.robot.Robot` used by the :class:`~pypot.primitive.primitive.Primitive` to ensure sandboxing. &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">robot</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_robot</span> <span class="o">=</span> <span class="n">robot</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_motors</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">robot</span><span class="o">.</span><span class="n">alias</span><span class="p">:</span>
+            <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="p">[])</span>
+
+        <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">robot</span><span class="o">.</span><span class="n">motors</span><span class="p">:</span>
+            <span class="n">mockup_motor</span> <span class="o">=</span> <span class="n">MockupMotor</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_motors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mockup_motor</span><span class="p">)</span>
+            <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">m</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">mockup_motor</span><span class="p">)</span>
+
+            <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="p">[</span><span class="n">a</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">robot</span><span class="o">.</span><span class="n">alias</span> <span class="k">if</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">robot</span><span class="p">,</span> <span class="n">a</span><span class="p">)]:</span>
+                <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mockup_motor</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__getattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_robot</span><span class="p">,</span> <span class="n">attr</span><span class="p">)</span>
+
+<div class="viewcode-block" id="MockupRobot.goto_position"><a class="viewcode-back" href="../../../pypot.primitive.html#pypot.primitive.primitive.MockupRobot.goto_position">[docs]</a>    <span class="k">def</span> <span class="nf">goto_position</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">position_for_motors</span><span class="p">,</span> <span class="n">duration</span><span class="p">,</span> <span class="n">wait</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">motor_name</span><span class="p">,</span> <span class="n">position</span> <span class="ow">in</span> <span class="n">position_for_motors</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+            <span class="n">m</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">motor_name</span><span class="p">)</span>
+            <span class="n">m</span><span class="o">.</span><span class="n">goto_position</span><span class="p">(</span><span class="n">position</span><span class="p">,</span> <span class="n">duration</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">wait</span><span class="p">:</span>
+            <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">duration</span><span class="p">)</span>
+</div>
+    <span class="nd">@property</span>
+<div class="viewcode-block" id="MockupRobot.motors"><a class="viewcode-back" href="../../../pypot.primitive.html#pypot.primitive.primitive.MockupRobot.motors">[docs]</a>    <span class="k">def</span> <span class="nf">motors</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; List of all attached :class:`~pypot.primitive.primitive.MockupMotor`. &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_motors</span>
+</div>
+<div class="viewcode-block" id="MockupRobot.power_max"><a class="viewcode-back" href="../../../pypot.primitive.html#pypot.primitive.primitive.MockupRobot.power_max">[docs]</a>    <span class="k">def</span> <span class="nf">power_max</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">motors</span><span class="p">:</span>
+            <span class="n">m</span><span class="o">.</span><span class="n">compliant</span> <span class="o">=</span> <span class="bp">False</span>
+            <span class="n">m</span><span class="o">.</span><span class="n">moving_speed</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">m</span><span class="o">.</span><span class="n">torque_limit</span> <span class="o">=</span> <span class="mf">100.0</span>
+
+</div></div>
+<div class="viewcode-block" id="MockupMotor"><a class="viewcode-back" href="../../../pypot.primitive.html#pypot.primitive.primitive.MockupMotor">[docs]</a><span class="k">class</span> <span class="nc">MockupMotor</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Fake Motor used by the primitive to ensure sandboxing:</span>
+
+<span class="sd">        * the read instructions are directly delegate to the real motor</span>
+<span class="sd">        * the write instructions are stored as request waiting to be combined by the primitive manager.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">motor</span><span class="p">):</span>
+        <span class="nb">object</span><span class="o">.</span><span class="n">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s">&#39;_m&#39;</span><span class="p">,</span> <span class="n">motor</span><span class="p">)</span>
+        <span class="nb">object</span><span class="o">.</span><span class="n">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s">&#39;_to_set&#39;</span><span class="p">,</span> <span class="p">{})</span>
+
+    <span class="k">def</span> <span class="nf">__getattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_m</span><span class="p">,</span> <span class="n">attr</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr</span><span class="p">,</span> <span class="n">val</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">attr</span> <span class="o">==</span> <span class="s">&#39;goal_speed&#39;</span><span class="p">:</span>
+            <span class="n">MockupMotor</span><span class="o">.</span><span class="n">goal_speed</span><span class="o">.</span><span class="n">fset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_to_set</span><span class="p">[</span><span class="n">attr</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span>
+
+<div class="viewcode-block" id="MockupMotor.goto_position"><a class="viewcode-back" href="../../../pypot.primitive.html#pypot.primitive.primitive.MockupMotor.goto_position">[docs]</a>    <span class="k">def</span> <span class="nf">goto_position</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">position</span><span class="p">,</span> <span class="n">duration</span><span class="p">,</span> <span class="n">wait</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Automatically sets the goal position and the moving speed to reach the desired position within the duration. &quot;&quot;&quot;</span>
+        <span class="n">dp</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">present_position</span> <span class="o">-</span> <span class="n">position</span><span class="p">)</span>
+        <span class="n">speed</span> <span class="o">=</span> <span class="p">(</span><span class="n">dp</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">duration</span><span class="p">))</span> <span class="k">if</span> <span class="n">duration</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="n">numpy</span><span class="o">.</span><span class="n">inf</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">moving_speed</span> <span class="o">=</span> <span class="n">speed</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">goal_position</span> <span class="o">=</span> <span class="n">position</span>
+
+        <span class="k">if</span> <span class="n">wait</span><span class="p">:</span>
+            <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">duration</span><span class="p">)</span>
+</div>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">goal_speed</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Goal speed (in degrees per second) of the motor.</span>
+
+<span class="sd">            This property can be used to control your motor in speed. Setting a goal speed will automatically change the moving speed and sets the goal position as the angle limit.</span>
+
+<span class="sd">            .. note:: The motor will turn until reaching the angle limit. But this is not a wheel mode, so the motor will stop at its limits.</span>
+
+<span class="sd">            &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">numpy</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">goal_position</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">moving_speed</span>
+
+    <span class="nd">@goal_speed.setter</span>
+<div class="viewcode-block" id="MockupMotor.goal_speed"><a class="viewcode-back" href="../../../pypot.primitive.html#pypot.primitive.primitive.MockupMotor.goal_speed">[docs]</a>    <span class="k">def</span> <span class="nf">goal_speed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">sys</span><span class="o">.</span><span class="n">float_info</span><span class="o">.</span><span class="n">epsilon</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">goal_position</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">present_position</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c"># 0.7 corresponds approx. to the min speed that will be converted into 0</span>
+            <span class="c"># and as 0 corredsponds to setting the max speed, we have to check this case</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="o">*</span> <span class="mf">0.7</span> <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mf">0.7</span> <span class="k">else</span> <span class="n">value</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">goal_position</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_pos</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">moving_speed</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">value</span><span class="p">)</span></div></div>
+</pre></div>
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2012, Pierre Rouanet, Matthieu Lapeyre, Haylee Fogg.<br/>
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

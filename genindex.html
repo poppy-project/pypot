@@ -1,0 +1,1421 @@
+
+
+
+
+
+
+  
+  
+ 
+  
+  
+ 
+
+
+<!DOCTYPE html>
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Index &mdash; PyPot 1.4.8 documentation</title>
+    
+    <link rel="stylesheet" href="_static/basic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/bootstrap-3.0.0/css/bootstrap.min.css" type="text/css" />
+    <link rel="stylesheet" href="_static/my-css.css" type="text/css" />
+    <link rel="stylesheet" href="_static/bootstrap-3.0.0/css/bootstrap-theme.min.css" type="text/css" />
+    <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '1.4.8',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-1.9.1.min.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-3.0.0/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
+    <link rel="top" title="PyPot 1.4.8 documentation" href="index.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+  </head>
+  <body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="index.html">PyPot</a>
+        <span class="navbar-text navbar-version pull-left"><b>1.4.8</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            <li class="divider-vertical"></li>
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a href="index.html"
+     class="dropdown-toggle"
+     data-toggle="dropdown">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+    ><ul>
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="intro.html#what-is-pypot">What is PyPot?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="intro.html#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="intro.html#quickstart-playing-with-an-ergo-robot">QuickStart: playing with an Ergo-Robot</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="intro.html#building-your-own-ergo-robot">Building your own Ergo-Robot</a></li>
+<li class="toctree-l3"><a class="reference internal" href="intro.html#connecting-the-robot-to-your-computer">Connecting the robot to your computer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="intro.html#controlling-your-ergo-robot">Controlling your Ergo-Robot</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial.html">Tutorial</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="tutorial.html#low-level-api">Low-level API</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="tutorial.html#opening-closing-a-communication-port">Opening/Closing a communication port</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tutorial.html#finding-motors">Finding motors</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tutorial.html#low-level-control">Low-level control</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial.html#robot-controller">Robot Controller</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="tutorial.html#using-the-robot-abstraction">Using the robot abstraction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tutorial.html#writing-the-configuration">Writing the configuration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tutorial.html#dynamixel-controller-and-synchronization-loop">Dynamixel controller and Synchronization Loop</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tutorial.html#controlling-your-robot">Controlling your robot</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tutorial.html#controlling-in-position">Controlling in position</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tutorial.html#controlling-in-speed">Controlling in speed</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial.html#primitive">Primitive</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="tutorial.html#what-do-we-call-primitive">What do we call &#8220;Primitive&#8221;?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tutorial.html#writing-your-own-primitive">Writing your own primitive</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tutorial.html#starting-pausing-primitives">Starting/pausing primitives</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tutorial.html#attaching-a-primitive-to-the-robot">Attaching a primitive to the robot</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial.html#remote-access">Remote Access</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="tutorial.html#protocol">Protocol</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="tutorial.html#get-request">Get Request</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tutorial.html#set-request">Set Request</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tutorial.html#call-request">Call Request</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="tutorial.html#zmq-server">Zmq Server</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tutorial.html#http-server">Http Server</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="tools.html">Tools</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="tools.html#herborist-the-configuration-tool">Herborist: the configuration tool</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="FAQ.html">FAQ</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="FAQ.html#why-is-the-default-baud-rate-different-for-robotis-and-for-pypot">Why is the default baud rate different for robotis and for PyPot ?</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="knownissues.html">Known Issues</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="knownissues.html#issue-with-usb2ax-driver-on-mac-os">Issue with USB2AX driver on Mac OS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="knownissues.html#usb2dynamixel-driver-performance-on-mac-os">USB2Dynamixel driver performance on Mac OS</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">PyPot&#8217;s API</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pypot.dynamixel.html"><tt class="docutils literal"><span class="pre">dynamixel</span></tt> Package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pypot.dynamixel.html#module-pypot.dynamixel.io"><tt class="docutils literal"><span class="pre">io</span></tt> Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pypot.dynamixel.html#module-pypot.dynamixel.motor"><tt class="docutils literal"><span class="pre">motor</span></tt> Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pypot.dynamixel.html#module-pypot.dynamixel.controller"><tt class="docutils literal"><span class="pre">controller</span></tt> Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pypot.dynamixel.html#module-pypot.dynamixel.error"><tt class="docutils literal"><span class="pre">error</span></tt> Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pypot.dynamixel.html#module-pypot.dynamixel.conversion"><tt class="docutils literal"><span class="pre">conversion</span></tt> Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pypot.dynamixel.html#module-pypot.dynamixel.packet"><tt class="docutils literal"><span class="pre">packet</span></tt> Module</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pypot.primitive.html"><tt class="docutils literal"><span class="pre">primitive</span></tt> Package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pypot.primitive.html#module-pypot.primitive.primitive"><tt class="docutils literal"><span class="pre">primitive</span></tt> Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pypot.primitive.html#module-pypot.primitive.manager"><tt class="docutils literal"><span class="pre">manager</span></tt> Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pypot.primitive.html#module-pypot.primitive.utils"><tt class="docutils literal"><span class="pre">utils</span></tt> Module</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pypot.robot.html"><tt class="docutils literal"><span class="pre">robot</span></tt> Package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pypot.robot.html#module-pypot.robot.robot"><tt class="docutils literal"><span class="pre">robot</span></tt> Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pypot.robot.html#module-pypot.robot.config"><tt class="docutils literal"><span class="pre">config</span></tt> Module</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pypot.server.html"><tt class="docutils literal"><span class="pre">server</span></tt> Package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pypot.server.html#module-pypot.server.request"><tt class="docutils literal"><span class="pre">request</span></tt> Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pypot.server.html#module-pypot.server.server"><tt class="docutils literal"><span class="pre">server</span></tt> Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pypot.server.html#module-pypot.server.httpserver"><tt class="docutils literal"><span class="pre">httpserver</span></tt> Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pypot.server.html#module-pypot.server.zmqserver"><tt class="docutils literal"><span class="pre">zmqserver</span></tt> Module</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"></ul>
+</li>
+              
+            
+            
+              
+                
+              
+            
+            
+            
+            
+              <li></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      
+
+<h1 id="index">Index</h1>
+
+<div class="genindex-jumpbox">
+ <a href="#A"><strong>A</strong></a>
+ | <a href="#B"><strong>B</strong></a>
+ | <a href="#C"><strong>C</strong></a>
+ | <a href="#D"><strong>D</strong></a>
+ | <a href="#E"><strong>E</strong></a>
+ | <a href="#F"><strong>F</strong></a>
+ | <a href="#G"><strong>G</strong></a>
+ | <a href="#H"><strong>H</strong></a>
+ | <a href="#I"><strong>I</strong></a>
+ | <a href="#J"><strong>J</strong></a>
+ | <a href="#L"><strong>L</strong></a>
+ | <a href="#M"><strong>M</strong></a>
+ | <a href="#N"><strong>N</strong></a>
+ | <a href="#O"><strong>O</strong></a>
+ | <a href="#P"><strong>P</strong></a>
+ | <a href="#R"><strong>R</strong></a>
+ | <a href="#S"><strong>S</strong></a>
+ | <a href="#T"><strong>T</strong></a>
+ | <a href="#U"><strong>U</strong></a>
+ | <a href="#V"><strong>V</strong></a>
+ | <a href="#W"><strong>W</strong></a>
+ | <a href="#Z"><strong>Z</strong></a>
+ 
+</div>
+<h2 id="A">A</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%" valign="top"><dl>
+      
+  <dt><a href="pypot.server.html#pypot.server.server.AbstractServer">AbstractServer (class in pypot.server.server)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.primitive.html#pypot.primitive.manager.PrimitiveManager.add">add() (pypot.primitive.manager.PrimitiveManager method)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.controller.DxlController.add_read_loop">add_read_loop() (pypot.dynamixel.controller.DxlController method)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.controller.DxlController.add_sync_loop">add_sync_loop() (pypot.dynamixel.controller.DxlController method)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.controller.DxlController.add_write_loop">add_write_loop() (pypot.dynamixel.controller.DxlController method)</a>
+  </dt>
+
+  </dl></td>
+  <td style="width: 33%" valign="top"><dl>
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.conversion.alarm_to_dxl">alarm_to_dxl() (in module pypot.dynamixel.conversion)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.motor.DxlMotor.angle_limit">angle_limit (pypot.dynamixel.motor.DxlMotor attribute)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.robot.html#pypot.robot.robot.Robot.attach_primitive">attach_primitive() (pypot.robot.robot.Robot method)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.robot.html#pypot.robot.robot.Robot.attached_primitives">attached_primitives (pypot.robot.robot.Robot attribute)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.robot.html#pypot.robot.robot.Robot.attached_primitives_name">attached_primitives_name (pypot.robot.robot.Robot attribute)</a>
+  </dt>
+
+  </dl></td>
+</tr></table>
+
+<h2 id="B">B</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%" valign="top"><dl>
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.controller.BaseDxlController">BaseDxlController (class in pypot.dynamixel.controller)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.error.BaseErrorHandler">BaseErrorHandler (class in pypot.dynamixel.error)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.server.html#pypot.server.request.BaseRequestHandler">BaseRequestHandler (class in pypot.server.request)</a>
+  </dt>
+
+  </dl></td>
+  <td style="width: 33%" valign="top"><dl>
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.io.DxlIO.baudrate">baudrate (pypot.dynamixel.io.DxlIO attribute)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.conversion.baudrate_to_dxl">baudrate_to_dxl() (in module pypot.dynamixel.conversion)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.conversion.bool_to_dxl">bool_to_dxl() (in module pypot.dynamixel.conversion)</a>
+  </dt>
+
+  </dl></td>
+</tr></table>
+
+<h2 id="C">C</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%" valign="top"><dl>
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.io.DxlIO.change_baudrate">change_baudrate() (pypot.dynamixel.io.DxlIO method)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.io.DxlIO.change_id">change_id() (pypot.dynamixel.io.DxlIO method)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.conversion.check_bit">check_bit() (in module pypot.dynamixel.conversion)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.packet.DxlInstructionPacket.checksum">checksum (pypot.dynamixel.packet.DxlInstructionPacket attribute)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.io.DxlIO.close">close() (pypot.dynamixel.io.DxlIO method)</a>
+  </dt>
+
+  </dl></td>
+  <td style="width: 33%" valign="top"><dl>
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.io.DxlIO.closed">closed (pypot.dynamixel.io.DxlIO attribute)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.motor.DxlAXRXMotor.compliance_margin">compliance_margin (pypot.dynamixel.motor.DxlAXRXMotor attribute)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.motor.DxlAXRXMotor.compliance_slope">compliance_slope (pypot.dynamixel.motor.DxlAXRXMotor attribute)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.motor.DxlMotor.compliant">compliant (pypot.dynamixel.motor.DxlMotor attribute)</a>
+  </dt>
+
+      <dd><dl>
+        
+  <dt><a href="pypot.robot.html#pypot.robot.robot.Robot.compliant">(pypot.robot.robot.Robot attribute)</a>
+  </dt>
+
+      </dl></dd>
+      
+  <dt><a href="pypot.primitive.html#pypot.primitive.utils.Cosinus">Cosinus (class in pypot.primitive.utils)</a>
+  </dt>
+
+  </dl></td>
+</tr></table>
+
+<h2 id="D">D</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%" valign="top"><dl>
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.conversion.decode_error">decode_error() (in module pypot.dynamixel.conversion)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.server.html#pypot.server.server.MyJSONEncoder.default">default() (pypot.server.server.MyJSONEncoder method)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.conversion.degree_to_dxl">degree_to_dxl() (in module pypot.dynamixel.conversion)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.motor.DxlMotor.direct">direct (pypot.dynamixel.motor.DxlMotor attribute)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.io.DxlIO.disable_torque">disable_torque() (pypot.dynamixel.io.DxlIO method)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.conversion.drive_mode_to_dxl">drive_mode_to_dxl() (in module pypot.dynamixel.conversion)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.conversion.dxl_code">dxl_code() (in module pypot.dynamixel.conversion)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.conversion.dxl_code_all">dxl_code_all() (in module pypot.dynamixel.conversion)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.conversion.dxl_decode">dxl_decode() (in module pypot.dynamixel.conversion)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.conversion.dxl_decode_all">dxl_decode_all() (in module pypot.dynamixel.conversion)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.conversion.dxl_to_alarm">dxl_to_alarm() (in module pypot.dynamixel.conversion)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.conversion.dxl_to_baudrate">dxl_to_baudrate() (in module pypot.dynamixel.conversion)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.conversion.dxl_to_bool">dxl_to_bool() (in module pypot.dynamixel.conversion)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.conversion.dxl_to_degree">dxl_to_degree() (in module pypot.dynamixel.conversion)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.conversion.dxl_to_drive_mode">dxl_to_drive_mode() (in module pypot.dynamixel.conversion)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.conversion.dxl_to_load">dxl_to_load() (in module pypot.dynamixel.conversion)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.conversion.dxl_to_model">dxl_to_model() (in module pypot.dynamixel.conversion)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.conversion.dxl_to_pid">dxl_to_pid() (in module pypot.dynamixel.conversion)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.conversion.dxl_to_rdt">dxl_to_rdt() (in module pypot.dynamixel.conversion)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.conversion.dxl_to_speed">dxl_to_speed() (in module pypot.dynamixel.conversion)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.conversion.dxl_to_status">dxl_to_status() (in module pypot.dynamixel.conversion)</a>
+  </dt>
+
+  </dl></td>
+  <td style="width: 33%" valign="top"><dl>
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.conversion.dxl_to_temperature">dxl_to_temperature() (in module pypot.dynamixel.conversion)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.conversion.dxl_to_torque">dxl_to_torque() (in module pypot.dynamixel.conversion)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.conversion.dxl_to_voltage">dxl_to_voltage() (in module pypot.dynamixel.conversion)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.motor.DxlAXRXMotor">DxlAXRXMotor (class in pypot.dynamixel.motor)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.io.DxlCommunicationError">DxlCommunicationError</a>
+  </dt>
+
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.controller.DxlController">DxlController (class in pypot.dynamixel.controller)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.io.DxlError">DxlError</a>
+  </dt>
+
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.error.DxlErrorHandler">DxlErrorHandler (class in pypot.dynamixel.error)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.packet.DxlInstruction">DxlInstruction (class in pypot.dynamixel.packet)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.packet.DxlInstructionPacket">DxlInstructionPacket (class in pypot.dynamixel.packet)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.io.DxlIO">DxlIO (class in pypot.dynamixel.io)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.motor.DxlMotor">DxlMotor (class in pypot.dynamixel.motor)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.motor.DxlMXMotor">DxlMXMotor (class in pypot.dynamixel.motor)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.packet.DxlPacketHeader">DxlPacketHeader (class in pypot.dynamixel.packet)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.packet.DxlPingPacket">DxlPingPacket (class in pypot.dynamixel.packet)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.packet.DxlReadDataPacket">DxlReadDataPacket (class in pypot.dynamixel.packet)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.packet.DxlStatusPacket">DxlStatusPacket (class in pypot.dynamixel.packet)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.packet.DxlSyncReadPacket">DxlSyncReadPacket (class in pypot.dynamixel.packet)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.packet.DxlSyncWritePacket">DxlSyncWritePacket (class in pypot.dynamixel.packet)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.io.DxlTimeoutError">DxlTimeoutError</a>
+  </dt>
+
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.packet.DxlWriteDataPacket">DxlWriteDataPacket (class in pypot.dynamixel.packet)</a>
+  </dt>
+
+  </dl></td>
+</tr></table>
+
+<h2 id="E">E</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%" valign="top"><dl>
+      
+  <dt><a href="pypot.primitive.html#pypot.primitive.primitive.Primitive.elapsed_time">elapsed_time (pypot.primitive.primitive.Primitive attribute)</a>
+  </dt>
+
+  </dl></td>
+  <td style="width: 33%" valign="top"><dl>
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.io.DxlIO.enable_torque">enable_torque() (pypot.dynamixel.io.DxlIO method)</a>
+  </dt>
+
+  </dl></td>
+</tr></table>
+
+<h2 id="F">F</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%" valign="top"><dl>
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.io.DxlIO.flush">flush() (pypot.dynamixel.io.DxlIO method)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.robot.html#pypot.robot.config.from_config">from_config() (in module pypot.robot.config)</a>
+  </dt>
+
+  </dl></td>
+  <td style="width: 33%" valign="top"><dl>
+      
+  <dt><a href="pypot.robot.html#pypot.robot.config.from_json">from_json() (in module pypot.robot.config)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.packet.DxlPacketHeader.from_string">from_string() (pypot.dynamixel.packet.DxlPacketHeader class method)</a>
+  </dt>
+
+      <dd><dl>
+        
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.packet.DxlStatusPacket.from_string">(pypot.dynamixel.packet.DxlStatusPacket class method)</a>
+  </dt>
+
+      </dl></dd>
+  </dl></td>
+</tr></table>
+
+<h2 id="G">G</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%" valign="top"><dl>
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.io.DxlIO.get_alarm_LED">get_alarm_LED() (pypot.dynamixel.io.DxlIO method)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.io.DxlIO.get_alarm_shutdown">get_alarm_shutdown() (pypot.dynamixel.io.DxlIO method)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.io.DxlIO.get_angle_limit">get_angle_limit() (pypot.dynamixel.io.DxlIO method)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.get_available_ports">get_available_ports() (in module pypot.dynamixel)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.io.DxlIO.get_compliance_margin">get_compliance_margin() (pypot.dynamixel.io.DxlIO method)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.io.DxlIO.get_compliance_slope">get_compliance_slope() (pypot.dynamixel.io.DxlIO method)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.io.DxlIO.get_control_table">get_control_table() (pypot.dynamixel.io.DxlIO method)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.io.DxlIO.get_drive_mode">get_drive_mode() (pypot.dynamixel.io.DxlIO method)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.io.DxlIO.get_firmware">get_firmware() (pypot.dynamixel.io.DxlIO method)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.io.DxlIO.get_goal_position">get_goal_position() (pypot.dynamixel.io.DxlIO method)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.io.DxlIO.get_goal_position_speed_load">get_goal_position_speed_load() (pypot.dynamixel.io.DxlIO method)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.io.DxlIO.get_highest_temperature_limit">get_highest_temperature_limit() (pypot.dynamixel.io.DxlIO method)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.io.DxlIO.get_max_torque">get_max_torque() (pypot.dynamixel.io.DxlIO method)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.primitive.html#pypot.primitive.primitive.Primitive.get_mockup_motor">get_mockup_motor() (pypot.primitive.primitive.Primitive method)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.io.DxlIO.get_mode">get_mode() (pypot.dynamixel.io.DxlIO method)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.io.DxlIO.get_model">get_model() (pypot.dynamixel.io.DxlIO method)</a>
+  </dt>
+
+  </dl></td>
+  <td style="width: 33%" valign="top"><dl>
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.io.DxlIO.get_moving_speed">get_moving_speed() (pypot.dynamixel.io.DxlIO method)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.io.DxlIO.get_pid_gain">get_pid_gain() (pypot.dynamixel.io.DxlIO method)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.io.DxlIO.get_present_load">get_present_load() (pypot.dynamixel.io.DxlIO method)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.io.DxlIO.get_present_position">get_present_position() (pypot.dynamixel.io.DxlIO method)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.io.DxlIO.get_present_position_speed_load">get_present_position_speed_load() (pypot.dynamixel.io.DxlIO method)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.io.DxlIO.get_present_speed">get_present_speed() (pypot.dynamixel.io.DxlIO method)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.io.DxlIO.get_present_temperature">get_present_temperature() (pypot.dynamixel.io.DxlIO method)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.io.DxlIO.get_present_voltage">get_present_voltage() (pypot.dynamixel.io.DxlIO method)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.io.DxlIO.get_return_delay_time">get_return_delay_time() (pypot.dynamixel.io.DxlIO method)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.io.DxlIO.get_status_return_level">get_status_return_level() (pypot.dynamixel.io.DxlIO method)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.io.DxlIO.get_torque_limit">get_torque_limit() (pypot.dynamixel.io.DxlIO method)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.io.DxlIO.get_voltage_limit">get_voltage_limit() (pypot.dynamixel.io.DxlIO method)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.motor.DxlMotor.goal_position">goal_position (pypot.dynamixel.motor.DxlMotor attribute)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.motor.DxlMotor.goal_speed">goal_speed (pypot.dynamixel.motor.DxlMotor attribute)</a>
+  </dt>
+
+      <dd><dl>
+        
+  <dt><a href="pypot.primitive.html#pypot.primitive.primitive.MockupMotor.goal_speed">(pypot.primitive.primitive.MockupMotor attribute)</a>
+  </dt>
+
+      </dl></dd>
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.motor.DxlMotor.goto_position">goto_position() (pypot.dynamixel.motor.DxlMotor method)</a>
+  </dt>
+
+      <dd><dl>
+        
+  <dt><a href="pypot.primitive.html#pypot.primitive.primitive.MockupMotor.goto_position">(pypot.primitive.primitive.MockupMotor method)</a>
+  </dt>
+
+        
+  <dt><a href="pypot.primitive.html#pypot.primitive.primitive.MockupRobot.goto_position">(pypot.primitive.primitive.MockupRobot method)</a>
+  </dt>
+
+        
+  <dt><a href="pypot.robot.html#pypot.robot.robot.Robot.goto_position">(pypot.robot.robot.Robot method)</a>
+  </dt>
+
+      </dl></dd>
+  </dl></td>
+</tr></table>
+
+<h2 id="H">H</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%" valign="top"><dl>
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.error.DxlErrorHandler.handle_angle_limit_error">handle_angle_limit_error() (pypot.dynamixel.error.DxlErrorHandler method)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.server.html#pypot.server.request.BaseRequestHandler.handle_call">handle_call() (pypot.server.request.BaseRequestHandler method)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.error.DxlErrorHandler.handle_checksum_error">handle_checksum_error() (pypot.dynamixel.error.DxlErrorHandler method)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.error.BaseErrorHandler.handle_communication_error">handle_communication_error() (pypot.dynamixel.error.BaseErrorHandler method)</a>
+  </dt>
+
+      <dd><dl>
+        
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.error.DxlErrorHandler.handle_communication_error">(pypot.dynamixel.error.DxlErrorHandler method)</a>
+  </dt>
+
+      </dl></dd>
+      
+  <dt><a href="pypot.server.html#pypot.server.request.BaseRequestHandler.handle_get">handle_get() (pypot.server.request.BaseRequestHandler method)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.error.DxlErrorHandler.handle_input_voltage_error">handle_input_voltage_error() (pypot.dynamixel.error.DxlErrorHandler method)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.error.DxlErrorHandler.handle_instruction_error">handle_instruction_error() (pypot.dynamixel.error.DxlErrorHandler method)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.error.DxlErrorHandler.handle_none_error">handle_none_error() (pypot.dynamixel.error.DxlErrorHandler method)</a>
+  </dt>
+
+  </dl></td>
+  <td style="width: 33%" valign="top"><dl>
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.error.BaseErrorHandler.handle_overheating_error">handle_overheating_error() (pypot.dynamixel.error.BaseErrorHandler method)</a>
+  </dt>
+
+      <dd><dl>
+        
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.error.DxlErrorHandler.handle_overheating_error">(pypot.dynamixel.error.DxlErrorHandler method)</a>
+  </dt>
+
+      </dl></dd>
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.error.DxlErrorHandler.handle_overload_error">handle_overload_error() (pypot.dynamixel.error.DxlErrorHandler method)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.error.DxlErrorHandler.handle_range_error">handle_range_error() (pypot.dynamixel.error.DxlErrorHandler method)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.server.html#pypot.server.request.BaseRequestHandler.handle_request">handle_request() (pypot.server.request.BaseRequestHandler method)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.server.html#pypot.server.request.BaseRequestHandler.handle_set">handle_set() (pypot.server.request.BaseRequestHandler method)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.error.BaseErrorHandler.handle_timeout">handle_timeout() (pypot.dynamixel.error.BaseErrorHandler method)</a>
+  </dt>
+
+      <dd><dl>
+        
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.error.DxlErrorHandler.handle_timeout">(pypot.dynamixel.error.DxlErrorHandler method)</a>
+  </dt>
+
+      </dl></dd>
+      
+  <dt><a href="pypot.server.html#pypot.server.httpserver.HTTPServer">HTTPServer (class in pypot.server.httpserver)</a>
+  </dt>
+
+  </dl></td>
+</tr></table>
+
+<h2 id="I">I</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%" valign="top"><dl>
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.motor.DxlMotor.id">id (pypot.dynamixel.motor.DxlMotor attribute)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.primitive.html#pypot.primitive.primitive.Primitive.is_alive">is_alive() (pypot.primitive.primitive.Primitive method)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.io.DxlIO.is_led_on">is_led_on() (pypot.dynamixel.io.DxlIO method)</a>
+  </dt>
+
+  </dl></td>
+  <td style="width: 33%" valign="top"><dl>
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.io.DxlIO.is_moving">is_moving() (pypot.dynamixel.io.DxlIO method)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.io.DxlIO.is_torque_enabled">is_torque_enabled() (pypot.dynamixel.io.DxlIO method)</a>
+  </dt>
+
+  </dl></td>
+</tr></table>
+
+<h2 id="J">J</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%" valign="top"><dl>
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.motor.DxlMotor.json">json (pypot.dynamixel.motor.DxlMotor attribute)</a>
+  </dt>
+
+  </dl></td>
+</tr></table>
+
+<h2 id="L">L</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%" valign="top"><dl>
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.packet.DxlInstructionPacket.length">length (pypot.dynamixel.packet.DxlInstructionPacket attribute)</a>
+  </dt>
+
+      <dd><dl>
+        
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.packet.DxlPacketHeader.length">(pypot.dynamixel.packet.DxlPacketHeader attribute)</a>
+  </dt>
+
+      </dl></dd>
+  </dl></td>
+  <td style="width: 33%" valign="top"><dl>
+      
+  <dt><a href="pypot.primitive.html#pypot.primitive.primitive.LoopPrimitive">LoopPrimitive (class in pypot.primitive.primitive)</a>
+  </dt>
+
+  </dl></td>
+</tr></table>
+
+<h2 id="M">M</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%" valign="top"><dl>
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.packet.DxlPacketHeader.marker">marker (pypot.dynamixel.packet.DxlPacketHeader attribute)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.primitive.html#pypot.primitive.primitive.MockupMotor">MockupMotor (class in pypot.primitive.primitive)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.primitive.html#pypot.primitive.primitive.MockupRobot">MockupRobot (class in pypot.primitive.primitive)</a>
+  </dt>
+
+  </dl></td>
+  <td style="width: 33%" valign="top"><dl>
+      
+  <dt><a href="pypot.primitive.html#pypot.primitive.primitive.MockupRobot.motors">motors (pypot.primitive.primitive.MockupRobot attribute)</a>
+  </dt>
+
+      <dd><dl>
+        
+  <dt><a href="pypot.robot.html#pypot.robot.robot.Robot.motors">(pypot.robot.robot.Robot attribute)</a>
+  </dt>
+
+      </dl></dd>
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.motor.DxlMotor.moving_speed">moving_speed (pypot.dynamixel.motor.DxlMotor attribute)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.server.html#pypot.server.server.MyJSONEncoder">MyJSONEncoder (class in pypot.server.server)</a>
+  </dt>
+
+  </dl></td>
+</tr></table>
+
+<h2 id="N">N</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%" valign="top"><dl>
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.motor.DxlMotor.name">name (pypot.dynamixel.motor.DxlMotor attribute)</a>
+  </dt>
+
+  </dl></td>
+</tr></table>
+
+<h2 id="O">O</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%" valign="top"><dl>
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.motor.DxlMotor.offset">offset (pypot.dynamixel.motor.DxlMotor attribute)</a>
+  </dt>
+
+  </dl></td>
+  <td style="width: 33%" valign="top"><dl>
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.io.DxlIO.open">open() (pypot.dynamixel.io.DxlIO method)</a>
+  </dt>
+
+  </dl></td>
+</tr></table>
+
+<h2 id="P">P</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%" valign="top"><dl>
+      
+  <dt><a href="pypot.primitive.html#pypot.primitive.primitive.Primitive.pause">pause() (pypot.primitive.primitive.Primitive method)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.motor.DxlMXMotor.pid">pid (pypot.dynamixel.motor.DxlMXMotor attribute)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.conversion.pid_to_dxl">pid_to_dxl() (in module pypot.dynamixel.conversion)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.packet.DxlInstruction.PING">PING (pypot.dynamixel.packet.DxlInstruction attribute)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.io.DxlIO.ping">ping() (pypot.dynamixel.io.DxlIO method)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.io.DxlIO.port">port (pypot.dynamixel.io.DxlIO attribute)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.primitive.html#pypot.primitive.primitive.MockupRobot.power_max">power_max() (pypot.primitive.primitive.MockupRobot method)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.robot.html#pypot.robot.robot.Robot.power_up">power_up() (pypot.robot.robot.Robot method)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.motor.DxlMotor.present_load">present_load (pypot.dynamixel.motor.DxlMotor attribute)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.motor.DxlMotor.present_position">present_position (pypot.dynamixel.motor.DxlMotor attribute)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.motor.DxlMotor.present_speed">present_speed (pypot.dynamixel.motor.DxlMotor attribute)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.motor.DxlMotor.present_temperature">present_temperature (pypot.dynamixel.motor.DxlMotor attribute)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.motor.DxlMotor.present_voltage">present_voltage (pypot.dynamixel.motor.DxlMotor attribute)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.primitive.html#pypot.primitive.primitive.Primitive">Primitive (class in pypot.primitive.primitive)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.primitive.html#pypot.primitive.manager.PrimitiveManager">PrimitiveManager (class in pypot.primitive.manager)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.primitive.html#pypot.primitive.manager.PrimitiveManager.primitives">primitives (pypot.primitive.manager.PrimitiveManager attribute)</a>
+  </dt>
+
+      <dd><dl>
+        
+  <dt><a href="pypot.robot.html#pypot.robot.robot.Robot.primitives">(pypot.robot.robot.Robot attribute)</a>
+  </dt>
+
+      </dl></dd>
+      
+  <dt><a href="pypot.dynamixel.html#module-pypot.dynamixel.controller">pypot.dynamixel.controller (module)</a>
+  </dt>
+
+  </dl></td>
+  <td style="width: 33%" valign="top"><dl>
+      
+  <dt><a href="pypot.dynamixel.html#module-pypot.dynamixel.conversion">pypot.dynamixel.conversion (module)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.dynamixel.html#module-pypot.dynamixel.error">pypot.dynamixel.error (module)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.dynamixel.html#module-pypot.dynamixel.io">pypot.dynamixel.io (module)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.dynamixel.html#module-pypot.dynamixel.motor">pypot.dynamixel.motor (module)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.dynamixel.html#module-pypot.dynamixel.packet">pypot.dynamixel.packet (module)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.primitive.html#module-pypot.primitive.manager">pypot.primitive.manager (module)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.primitive.html#module-pypot.primitive.primitive">pypot.primitive.primitive (module)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.primitive.html#module-pypot.primitive.utils">pypot.primitive.utils (module)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.robot.html#module-pypot.robot">pypot.robot (module)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.robot.html#module-pypot.robot.config">pypot.robot.config (module)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.robot.html#module-pypot.robot.robot">pypot.robot.robot (module)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.server.html#module-pypot.server">pypot.server (module)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.server.html#module-pypot.server.httpserver">pypot.server.httpserver (module)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.server.html#module-pypot.server.request">pypot.server.request (module)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.server.html#module-pypot.server.server">pypot.server.server (module)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.server.html#module-pypot.server.zmqserver">pypot.server.zmqserver (module)</a>
+  </dt>
+
+  </dl></td>
+</tr></table>
+
+<h2 id="R">R</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%" valign="top"><dl>
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.conversion.rdt_to_dxl">rdt_to_dxl() (in module pypot.dynamixel.conversion)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.packet.DxlInstruction.READ_DATA">READ_DATA (pypot.dynamixel.packet.DxlInstruction attribute)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.primitive.html#pypot.primitive.primitive.LoopPrimitive.recent_update_frequencies">recent_update_frequencies (pypot.primitive.primitive.LoopPrimitive attribute)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.motor.DxlMotor.registers">registers (pypot.dynamixel.motor.DxlMotor attribute)</a>
+  </dt>
+
+  </dl></td>
+  <td style="width: 33%" valign="top"><dl>
+      
+  <dt><a href="pypot.primitive.html#pypot.primitive.manager.PrimitiveManager.remove">remove() (pypot.primitive.manager.PrimitiveManager method)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.primitive.html#pypot.primitive.primitive.Primitive.resume">resume() (pypot.primitive.primitive.Primitive method)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.robot.html#pypot.robot.robot.Robot">Robot (class in pypot.robot.robot)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.primitive.html#pypot.primitive.manager.PrimitiveManager.run">run() (pypot.primitive.manager.PrimitiveManager method)</a>
+  </dt>
+
+      <dd><dl>
+        
+  <dt><a href="pypot.primitive.html#pypot.primitive.primitive.LoopPrimitive.run">(pypot.primitive.primitive.LoopPrimitive method)</a>
+  </dt>
+
+        
+  <dt><a href="pypot.primitive.html#pypot.primitive.primitive.Primitive.run">(pypot.primitive.primitive.Primitive method)</a>
+  </dt>
+
+        
+  <dt><a href="pypot.server.html#pypot.server.httpserver.HTTPServer.run">(pypot.server.httpserver.HTTPServer method)</a>
+  </dt>
+
+        
+  <dt><a href="pypot.server.html#pypot.server.zmqserver.ZMQServer.run">(pypot.server.zmqserver.ZMQServer method)</a>
+  </dt>
+
+      </dl></dd>
+  </dl></td>
+</tr></table>
+
+<h2 id="S">S</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%" valign="top"><dl>
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.io.DxlIO.scan">scan() (pypot.dynamixel.io.DxlIO method)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.io.DxlIO.set_alarm_LED">set_alarm_LED() (pypot.dynamixel.io.DxlIO method)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.io.DxlIO.set_alarm_shutdown">set_alarm_shutdown() (pypot.dynamixel.io.DxlIO method)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.io.DxlIO.set_angle_limit">set_angle_limit() (pypot.dynamixel.io.DxlIO method)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.io.DxlIO.set_compliance_margin">set_compliance_margin() (pypot.dynamixel.io.DxlIO method)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.io.DxlIO.set_compliance_slope">set_compliance_slope() (pypot.dynamixel.io.DxlIO method)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.io.DxlIO.set_drive_mode">set_drive_mode() (pypot.dynamixel.io.DxlIO method)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.io.DxlIO.set_goal_position">set_goal_position() (pypot.dynamixel.io.DxlIO method)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.io.DxlIO.set_goal_position_speed_load">set_goal_position_speed_load() (pypot.dynamixel.io.DxlIO method)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.io.DxlIO.set_highest_temperature_limit">set_highest_temperature_limit() (pypot.dynamixel.io.DxlIO method)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.io.DxlIO.set_joint_mode">set_joint_mode() (pypot.dynamixel.io.DxlIO method)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.io.DxlIO.set_max_torque">set_max_torque() (pypot.dynamixel.io.DxlIO method)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.io.DxlIO.set_moving_speed">set_moving_speed() (pypot.dynamixel.io.DxlIO method)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.io.DxlIO.set_pid_gain">set_pid_gain() (pypot.dynamixel.io.DxlIO method)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.io.DxlIO.set_return_delay_time">set_return_delay_time() (pypot.dynamixel.io.DxlIO method)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.io.DxlIO.set_status_return_level">set_status_return_level() (pypot.dynamixel.io.DxlIO method)</a>
+  </dt>
+
+  </dl></td>
+  <td style="width: 33%" valign="top"><dl>
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.io.DxlIO.set_torque_limit">set_torque_limit() (pypot.dynamixel.io.DxlIO method)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.io.DxlIO.set_voltage_limit">set_voltage_limit() (pypot.dynamixel.io.DxlIO method)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.io.DxlIO.set_wheel_mode">set_wheel_mode() (pypot.dynamixel.io.DxlIO method)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.primitive.html#pypot.primitive.primitive.Primitive.should_pause">should_pause() (pypot.primitive.primitive.Primitive method)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.primitive.html#pypot.primitive.primitive.Primitive.should_stop">should_stop() (pypot.primitive.primitive.Primitive method)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.primitive.html#pypot.primitive.utils.Sinus">Sinus (class in pypot.primitive.utils)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.conversion.speed_to_dxl">speed_to_dxl() (in module pypot.dynamixel.conversion)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.controller.DxlController.start">start() (pypot.dynamixel.controller.DxlController method)</a>
+  </dt>
+
+      <dd><dl>
+        
+  <dt><a href="pypot.primitive.html#pypot.primitive.primitive.Primitive.start">(pypot.primitive.primitive.Primitive method)</a>
+  </dt>
+
+      </dl></dd>
+      
+  <dt><a href="pypot.robot.html#pypot.robot.robot.Robot.start_sync">start_sync() (pypot.robot.robot.Robot method)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.conversion.status_to_dxl">status_to_dxl() (in module pypot.dynamixel.conversion)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.controller.DxlController.stop">stop() (pypot.dynamixel.controller.DxlController method)</a>
+  </dt>
+
+      <dd><dl>
+        
+  <dt><a href="pypot.primitive.html#pypot.primitive.manager.PrimitiveManager.stop">(pypot.primitive.manager.PrimitiveManager method)</a>
+  </dt>
+
+        
+  <dt><a href="pypot.primitive.html#pypot.primitive.primitive.Primitive.stop">(pypot.primitive.primitive.Primitive method)</a>
+  </dt>
+
+      </dl></dd>
+      
+  <dt><a href="pypot.robot.html#pypot.robot.robot.Robot.stop_sync">stop_sync() (pypot.robot.robot.Robot method)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.io.DxlIO.switch_led_off">switch_led_off() (pypot.dynamixel.io.DxlIO method)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.io.DxlIO.switch_led_on">switch_led_on() (pypot.dynamixel.io.DxlIO method)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.packet.DxlInstruction.SYNC_READ">SYNC_READ (pypot.dynamixel.packet.DxlInstruction attribute)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.packet.DxlInstruction.SYNC_WRITE">SYNC_WRITE (pypot.dynamixel.packet.DxlInstruction attribute)</a>
+  </dt>
+
+  </dl></td>
+</tr></table>
+
+<h2 id="T">T</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%" valign="top"><dl>
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.conversion.temperature_to_dxl">temperature_to_dxl() (in module pypot.dynamixel.conversion)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.io.DxlIO.timeout">timeout (pypot.dynamixel.io.DxlIO attribute)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.packet.DxlInstructionPacket.to_array">to_array() (pypot.dynamixel.packet.DxlInstructionPacket method)</a>
+  </dt>
+
+  </dl></td>
+  <td style="width: 33%" valign="top"><dl>
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.packet.DxlInstructionPacket.to_string">to_string() (pypot.dynamixel.packet.DxlInstructionPacket method)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.motor.DxlMotor.torque_limit">torque_limit (pypot.dynamixel.motor.DxlMotor attribute)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.conversion.torque_to_dxl">torque_to_dxl() (in module pypot.dynamixel.conversion)</a>
+  </dt>
+
+  </dl></td>
+</tr></table>
+
+<h2 id="U">U</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%" valign="top"><dl>
+      
+  <dt><a href="pypot.primitive.html#pypot.primitive.primitive.LoopPrimitive.update">update() (pypot.primitive.primitive.LoopPrimitive method)</a>
+  </dt>
+
+      <dd><dl>
+        
+  <dt><a href="pypot.primitive.html#pypot.primitive.utils.Sinus.update">(pypot.primitive.utils.Sinus method)</a>
+  </dt>
+
+      </dl></dd>
+  </dl></td>
+</tr></table>
+
+<h2 id="V">V</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%" valign="top"><dl>
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.conversion.voltage_to_dxl">voltage_to_dxl() (in module pypot.dynamixel.conversion)</a>
+  </dt>
+
+  </dl></td>
+</tr></table>
+
+<h2 id="W">W</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%" valign="top"><dl>
+      
+  <dt><a href="pypot.primitive.html#pypot.primitive.primitive.Primitive.wait_to_resume">wait_to_resume() (pypot.primitive.primitive.Primitive method)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.primitive.html#pypot.primitive.primitive.Primitive.wait_to_stop">wait_to_stop() (pypot.primitive.primitive.Primitive method)</a>
+  </dt>
+
+  </dl></td>
+  <td style="width: 33%" valign="top"><dl>
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.packet.DxlInstruction.WRITE_DATA">WRITE_DATA (pypot.dynamixel.packet.DxlInstruction attribute)</a>
+  </dt>
+
+  </dl></td>
+</tr></table>
+
+<h2 id="Z">Z</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%" valign="top"><dl>
+      
+  <dt><a href="pypot.server.html#pypot.server.zmqserver.ZMQServer">ZMQServer (class in pypot.server.zmqserver)</a>
+  </dt>
+
+  </dl></td>
+</tr></table>
+
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2012, Pierre Rouanet, Matthieu Lapeyre, Haylee Fogg.<br/>
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

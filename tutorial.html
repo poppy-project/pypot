@@ -1,0 +1,1057 @@
+
+
+
+
+  
+  
+ 
+  
+  
+ 
+
+
+<!DOCTYPE html>
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Tutorial &mdash; PyPot 1.4.8 documentation</title>
+    
+    <link rel="stylesheet" href="_static/basic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/bootstrap-3.0.0/css/bootstrap.min.css" type="text/css" />
+    <link rel="stylesheet" href="_static/my-css.css" type="text/css" />
+    <link rel="stylesheet" href="_static/bootstrap-3.0.0/css/bootstrap-theme.min.css" type="text/css" />
+    <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '1.4.8',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-1.9.1.min.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-3.0.0/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
+    <link rel="top" title="PyPot 1.4.8 documentation" href="index.html" />
+    <link rel="next" title="Tools" href="tools.html" />
+    <link rel="prev" title="Introduction" href="intro.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+  </head>
+  <body>
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="index.html">PyPot</a>
+        <span class="navbar-text navbar-version pull-left"><b>1.4.8</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            <li class="divider-vertical"></li>
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a href="index.html"
+     class="dropdown-toggle"
+     data-toggle="dropdown">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+    ><ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="intro.html#what-is-pypot">What is PyPot?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="intro.html#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="intro.html#quickstart-playing-with-an-ergo-robot">QuickStart: playing with an Ergo-Robot</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="intro.html#building-your-own-ergo-robot">Building your own Ergo-Robot</a></li>
+<li class="toctree-l3"><a class="reference internal" href="intro.html#connecting-the-robot-to-your-computer">Connecting the robot to your computer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="intro.html#controlling-your-ergo-robot">Controlling your Ergo-Robot</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">Tutorial</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#low-level-api">Low-level API</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#opening-closing-a-communication-port">Opening/Closing a communication port</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#finding-motors">Finding motors</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#low-level-control">Low-level control</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#robot-controller">Robot Controller</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#using-the-robot-abstraction">Using the robot abstraction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#writing-the-configuration">Writing the configuration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#dynamixel-controller-and-synchronization-loop">Dynamixel controller and Synchronization Loop</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#controlling-your-robot">Controlling your robot</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#controlling-in-position">Controlling in position</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#controlling-in-speed">Controlling in speed</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#primitive">Primitive</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#what-do-we-call-primitive">What do we call &#8220;Primitive&#8221;?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#writing-your-own-primitive">Writing your own primitive</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#starting-pausing-primitives">Starting/pausing primitives</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#attaching-a-primitive-to-the-robot">Attaching a primitive to the robot</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#remote-access">Remote Access</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#protocol">Protocol</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#get-request">Get Request</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#set-request">Set Request</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#call-request">Call Request</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#zmq-server">Zmq Server</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#http-server">Http Server</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="tools.html">Tools</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="tools.html#herborist-the-configuration-tool">Herborist: the configuration tool</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="FAQ.html">FAQ</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="FAQ.html#why-is-the-default-baud-rate-different-for-robotis-and-for-pypot">Why is the default baud rate different for robotis and for PyPot ?</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="knownissues.html">Known Issues</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="knownissues.html#issue-with-usb2ax-driver-on-mac-os">Issue with USB2AX driver on Mac OS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="knownissues.html#usb2dynamixel-driver-performance-on-mac-os">USB2Dynamixel driver performance on Mac OS</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">PyPot&#8217;s API</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pypot.dynamixel.html"><tt class="docutils literal"><span class="pre">dynamixel</span></tt> Package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pypot.dynamixel.html#module-pypot.dynamixel.io"><tt class="docutils literal"><span class="pre">io</span></tt> Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pypot.dynamixel.html#module-pypot.dynamixel.motor"><tt class="docutils literal"><span class="pre">motor</span></tt> Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pypot.dynamixel.html#module-pypot.dynamixel.controller"><tt class="docutils literal"><span class="pre">controller</span></tt> Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pypot.dynamixel.html#module-pypot.dynamixel.error"><tt class="docutils literal"><span class="pre">error</span></tt> Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pypot.dynamixel.html#module-pypot.dynamixel.conversion"><tt class="docutils literal"><span class="pre">conversion</span></tt> Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pypot.dynamixel.html#module-pypot.dynamixel.packet"><tt class="docutils literal"><span class="pre">packet</span></tt> Module</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pypot.primitive.html"><tt class="docutils literal"><span class="pre">primitive</span></tt> Package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pypot.primitive.html#module-pypot.primitive.primitive"><tt class="docutils literal"><span class="pre">primitive</span></tt> Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pypot.primitive.html#module-pypot.primitive.manager"><tt class="docutils literal"><span class="pre">manager</span></tt> Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pypot.primitive.html#module-pypot.primitive.utils"><tt class="docutils literal"><span class="pre">utils</span></tt> Module</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pypot.robot.html"><tt class="docutils literal"><span class="pre">robot</span></tt> Package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pypot.robot.html#module-pypot.robot.robot"><tt class="docutils literal"><span class="pre">robot</span></tt> Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pypot.robot.html#module-pypot.robot.config"><tt class="docutils literal"><span class="pre">config</span></tt> Module</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pypot.server.html"><tt class="docutils literal"><span class="pre">server</span></tt> Package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pypot.server.html#module-pypot.server.request"><tt class="docutils literal"><span class="pre">request</span></tt> Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pypot.server.html#module-pypot.server.server"><tt class="docutils literal"><span class="pre">server</span></tt> Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pypot.server.html#module-pypot.server.httpserver"><tt class="docutils literal"><span class="pre">httpserver</span></tt> Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pypot.server.html#module-pypot.server.zmqserver"><tt class="docutils literal"><span class="pre">zmqserver</span></tt> Module</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"><ul>
+<li><a class="reference internal" href="#">Tutorial</a><ul>
+<li><a class="reference internal" href="#low-level-api">Low-level API</a><ul>
+<li><a class="reference internal" href="#opening-closing-a-communication-port">Opening/Closing a communication port</a></li>
+<li><a class="reference internal" href="#finding-motors">Finding motors</a></li>
+<li><a class="reference internal" href="#low-level-control">Low-level control</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#robot-controller">Robot Controller</a><ul>
+<li><a class="reference internal" href="#using-the-robot-abstraction">Using the robot abstraction</a></li>
+<li><a class="reference internal" href="#writing-the-configuration">Writing the configuration</a></li>
+<li><a class="reference internal" href="#dynamixel-controller-and-synchronization-loop">Dynamixel controller and Synchronization Loop</a></li>
+<li><a class="reference internal" href="#controlling-your-robot">Controlling your robot</a><ul>
+<li><a class="reference internal" href="#controlling-in-position">Controlling in position</a></li>
+<li><a class="reference internal" href="#controlling-in-speed">Controlling in speed</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#primitive">Primitive</a><ul>
+<li><a class="reference internal" href="#what-do-we-call-primitive">What do we call &#8220;Primitive&#8221;?</a></li>
+<li><a class="reference internal" href="#writing-your-own-primitive">Writing your own primitive</a></li>
+<li><a class="reference internal" href="#starting-pausing-primitives">Starting/pausing primitives</a></li>
+<li><a class="reference internal" href="#attaching-a-primitive-to-the-robot">Attaching a primitive to the robot</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#remote-access">Remote Access</a><ul>
+<li><a class="reference internal" href="#protocol">Protocol</a><ul>
+<li><a class="reference internal" href="#get-request">Get Request</a></li>
+<li><a class="reference internal" href="#set-request">Set Request</a></li>
+<li><a class="reference internal" href="#call-request">Call Request</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#zmq-server">Zmq Server</a></li>
+<li><a class="reference internal" href="#http-server">Http Server</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+  <li><a href="intro.html"
+         title="Previous Chapter: Introduction">&laquo; Introduction</a></li>
+  <li><a href="tools.html"
+         title="Next Chapter: Tools">Tools &raquo;</a></li>
+              
+            
+            
+            
+            
+              <li>
+<div id="sourcelink">
+  <a href="_sources/tutorial.txt"
+     rel="nofollow">Source</a>
+</div></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      
+  <div class="section" id="tutorial">
+<span id="id1"></span><h1>Tutorial<a class="headerlink" href="#tutorial" title="Permalink to this headline">¶</a></h1>
+<p>PyPot handles the communication with dynamixel motors from robotis. Using a USB communication device such as USB2DYNAMIXEL or USB2AX, you can open serial communication with robotis motors (MX, RX, AX) using communication protocols TTL or RS485. More specifically, it allows easy access (both reading and writing) to the different registers of any dynamixel motors. Those registers includes values such as position, speed or torque. The whole list of registers can directly be found on the robotis website <a class="reference external" href="http://support.robotis.com/en/product/dxl_main.htm">http://support.robotis.com/en/product/dxl_main.htm</a>.</p>
+<p>You can access the register of the motors through two different ways:</p>
+<ul class="simple">
+<li><strong>Low-level API:</strong> In the first case, you can get or set a value to a motor by directly sending a request and waiting for the motor to answer. Here, you only use the low level API to communicate with the motor (refer to section <a class="reference internal" href="#low-level"><em>Low-level API</em></a> for more details).</li>
+<li><strong>Controller API:</strong> In the second case, you define requests which will automatically be sent at a predefined frequency. The values obtained from the requests are stored in a local copy that you can freely access at any time. However, you can only access the last synchronized value. This second method encapsulate the first approach to prevent you from writing repetitive request (refer to section <a class="reference internal" href="#controller"><em>Robot Controller</em></a> for further details).</li>
+</ul>
+<p>While the second approach allows the writing of simpler code without detailed knowledge of how the communication with robotis motor works, the first approach may allow for more performance through fine tuning of the communication needed in  particular applications. Examples of both approaches will be provided in the next sections.</p>
+<div class="section" id="low-level-api">
+<span id="low-level"></span><h2>Low-level API<a class="headerlink" href="#low-level-api" title="Permalink to this headline">¶</a></h2>
+<p>The low-level API almost directly encapsulates the communication protocol used by dynamixel motors. This protocol can be used to access any register of these motors. The <a class="reference internal" href="pypot.dynamixel.html#pypot.dynamixel.io.DxlIO" title="pypot.dynamixel.io.DxlIO"><tt class="xref py py-class docutils literal"><span class="pre">DxlIO</span></tt></a> class is used to handle the communication with a particular port.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The port can only be accessed by a single DxlIO instance.</p>
+</div>
+<p>More precisely, this class can be used to:</p>
+<ul class="simple">
+<li>open/close the communication</li>
+<li>discover motors (ping or scan)</li>
+<li>access the different control (read and write)</li>
+</ul>
+<p>The communication is thread-safe to avoid collision in the communication buses.</p>
+<p>As an example, you can write:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">with</span> <span class="n">DxlIO</span><span class="p">(</span><span class="s">&#39;/dev/USB0&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">dxl_io</span><span class="p">:</span>
+    <span class="n">ids</span> <span class="o">=</span> <span class="n">dxl_io</span><span class="o">.</span><span class="n">scan</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">])</span>
+
+    <span class="k">print</span> <span class="n">dxl_io</span><span class="o">.</span><span class="n">get_present_position</span><span class="p">(</span><span class="n">ids</span><span class="p">)</span>
+    <span class="n">dxl_io</span><span class="o">.</span><span class="n">set_goal_position</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">ids</span><span class="p">,</span> <span class="n">itertools</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="mi">0</span><span class="p">))))</span>
+</pre></div>
+</div>
+<div class="section" id="opening-closing-a-communication-port">
+<span id="open-connection"></span><h3>Opening/Closing a communication port<a class="headerlink" href="#opening-closing-a-communication-port" title="Permalink to this headline">¶</a></h3>
+<p>In order to open a connection with the device, you will need to know what port it is connected to. PyPot has a function named <a class="reference internal" href="pypot.dynamixel.html#pypot.dynamixel.get_available_ports" title="pypot.dynamixel.get_available_ports"><tt class="xref py py-func docutils literal"><span class="pre">get_available_ports()</span></tt></a> which will try to auto-discover any compatible devices connected to the communication ports.</p>
+<p>To create a connection, open up a python terminal and type the following code:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">pypot.dynamixel</span>
+
+<span class="n">ports</span> <span class="o">=</span> <span class="n">pypot</span><span class="o">.</span><span class="n">dynamixel</span><span class="o">.</span><span class="n">get_available_ports</span><span class="p">()</span>
+
+<span class="k">if</span> <span class="ow">not</span> <span class="n">ports</span><span class="p">:</span>
+    <span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s">&#39;no port found!&#39;</span><span class="p">)</span>
+
+<span class="k">print</span> <span class="s">&#39;ports found&#39;</span><span class="p">,</span> <span class="n">ports</span>
+
+<span class="k">print</span> <span class="s">&#39;connecting on the first available port:&#39;</span><span class="p">,</span> <span class="n">ports</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">dxl_io</span> <span class="o">=</span> <span class="n">pypot</span><span class="o">.</span><span class="n">dynamixel</span><span class="o">.</span><span class="n">DxlIO</span><span class="p">(</span><span class="n">ports</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>This should open a connection through a virtual communication port to your device.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">It is important to note that it will open a connection using a default baud rate. By default your motors are set up to work on the robotis default baud rate (57140) while PyPot is set up to work with a 1000000 baud rate. To communicate with your motors, you must ensure that this baud rate is the same baud rate that the motors are configure to use. So, you will need to change either the configuration of your motors (see <a class="reference internal" href="tools.html#herborist"><em>Herborist</em></a> section) or change the default baud rate of your connection.</p>
+</div>
+<p>To set up a connection with another baud rate you can write:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">dxl_io</span> <span class="o">=</span> <span class="n">pypot</span><span class="o">.</span><span class="n">dynamixel</span><span class="o">.</span><span class="n">DxlIO</span><span class="p">(</span><span class="n">port</span><span class="p">,</span> <span class="n">baudrate</span><span class="o">=</span><span class="mi">57140</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The communication can be closed using the <a class="reference internal" href="pypot.dynamixel.html#pypot.dynamixel.io.DxlIO.close" title="pypot.dynamixel.io.DxlIO.close"><tt class="xref py py-meth docutils literal"><span class="pre">close()</span></tt></a> method.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>The class <a class="reference internal" href="pypot.dynamixel.html#pypot.dynamixel.io.DxlIO" title="pypot.dynamixel.io.DxlIO"><tt class="xref py py-class docutils literal"><span class="pre">DxlIO</span></tt></a> can also be used as a <a class="reference external" href="http://docs.python.org/2/library/contextlib.html">Context Manager</a> (the <a class="reference internal" href="pypot.dynamixel.html#pypot.dynamixel.io.DxlIO.close" title="pypot.dynamixel.io.DxlIO.close"><tt class="xref py py-meth docutils literal"><span class="pre">close()</span></tt></a> method will automatically be called at the end).
+For instance:</p>
+<div class="last highlight-python"><div class="highlight"><pre><span class="k">with</span> <span class="n">pypot</span><span class="o">.</span><span class="n">dynamixel</span><span class="o">.</span><span class="n">DxlIO</span><span class="p">(</span><span class="s">&#39;/dev/ttyUSB0&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">dxl_io</span><span class="p">:</span>
+    <span class="o">...</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="finding-motors">
+<h3>Finding motors<a class="headerlink" href="#finding-motors" title="Permalink to this headline">¶</a></h3>
+<p>Pypot has been designed to work specifically with the Robotis range of motors. These motors use two different protocols to communicate: TTL (3 wire bus) and RS485 (4 wire Bus). The motors can be daisy chained together with other types of motors on the same bus <em>as long as the bus communicates using the same protocol</em>. This means that MX-28 and AX-12 can communicate on the same bus, but cannot be connected to a RX-28.</p>
+<p>All motors work sufficiently well with a 12V supply. Some motors can use more than 12V but you must be careful not to connect an 18V supply on a bus that contains motors that can only use 12V! Connect this 12V SMPS supply (switch mode power supply) to a Robotis SMPS2Dynamixel device which regulates the voltage coming from the SMPS. Connect your controller device and a single motor to this SMPS2Dynamixel.</p>
+<p>Open your python terminal and create your <a class="reference internal" href="pypot.dynamixel.html#pypot.dynamixel.io.DxlIO" title="pypot.dynamixel.io.DxlIO"><tt class="xref py py-class docutils literal"><span class="pre">DxlIO</span></tt></a> as described in the above section <a class="reference internal" href="#open-connection"><em>Opening/Closing a communication port</em></a>.</p>
+<p>To detect the motors and find their id you can scan the bus. To avoid spending a long time searching all possible values, you can add a list of values to test:</p>
+<div class="highlight-python"><pre>dxl_io.scan()
+&gt;&gt;&gt; [4, 23, 24, 25]
+
+dxl_io.scan([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
+&gt;&gt;&gt; [4]</pre>
+</div>
+<p>Or, you can use the shorthand:</p>
+<div class="highlight-python"><pre>dxl_io.scan(range(10))
+&gt;&gt;&gt; [4]</pre>
+</div>
+<p>This should produce a list of the ids of the motors that are connected to the bus. Each motor on the bus must have a unique id. This means that unless your motors have been configured in advance, it is better to connect them one by one to ensure they all have unique ids first.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">You also can modify the timeout to speed up the scanning. Be careful though, as this could result in loosing messages.</p>
+</div>
+</div>
+<div class="section" id="low-level-control">
+<h3>Low-level control<a class="headerlink" href="#low-level-control" title="Permalink to this headline">¶</a></h3>
+<p>Now we have the id of the motors connected, we can begin to access their functions by using their id. Try to find out the present position (in degrees) of the motor by typing the following:</p>
+<div class="highlight-python"><pre>dxl_io.get_present_position((4, ))
+&gt;&gt;&gt; (67.8, )</pre>
+</div>
+<p>You can also write a goal position (in degrees) to the motor using the following:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">dxl_io</span><span class="o">.</span><span class="n">set_goal_position</span><span class="p">({</span><span class="mi">4</span><span class="p">:</span> <span class="mi">0</span><span class="p">})</span>
+</pre></div>
+</div>
+<p>The motors are handled in degrees where 0 is considered the central point of the motor turn. For the MX motors, the end points are -180° and 180°. For the AX and RX motors, these end points are -150° to 150°.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">As you can see on the example above, you should always pass the id parameter as a list. This is intended as getting a value from several motors takes the same time as getting a value from a single motor (thanks to the SYNC_READ instruction). Similarly, we use dictionary with pairs of (id, value) to set value to a specific register of motors and benefit from the SYNC_WRITE instruction.</p>
+</div>
+<p>As an example of what you can do with the low-level API, we are going to apply a sinusoid on two motors (make sure that the motion will not damage your robot before running the example!). Here is a complete listing of the code needed:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">itertools</span>
+<span class="kn">import</span> <span class="nn">numpy</span>
+<span class="kn">import</span> <span class="nn">time</span>
+
+<span class="kn">import</span> <span class="nn">pypot.dynamixel</span>
+
+<span class="n">AMP</span> <span class="o">=</span> <span class="mi">30</span>
+<span class="n">FREQ</span> <span class="o">=</span> <span class="mf">0.5</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">ports</span> <span class="o">=</span> <span class="n">pypot</span><span class="o">.</span><span class="n">dynamixel</span><span class="o">.</span><span class="n">get_available_ports</span><span class="p">()</span>
+    <span class="k">print</span> <span class="s">&#39;available ports:&#39;</span><span class="p">,</span> <span class="n">ports</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">ports</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s">&#39;No port available.&#39;</span><span class="p">)</span>
+
+    <span class="n">port</span> <span class="o">=</span> <span class="n">ports</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">print</span> <span class="s">&#39;Using the first on the list&#39;</span><span class="p">,</span> <span class="n">port</span>
+
+    <span class="n">dxl_io</span> <span class="o">=</span> <span class="n">pypot</span><span class="o">.</span><span class="n">dynamixel</span><span class="o">.</span><span class="n">DxlIO</span><span class="p">(</span><span class="n">port</span><span class="p">)</span>
+    <span class="k">print</span> <span class="s">&#39;Connected!&#39;</span>
+
+    <span class="n">found_ids</span> <span class="o">=</span> <span class="n">dxl_io</span><span class="o">.</span><span class="n">scan</span><span class="p">()</span>
+    <span class="k">print</span> <span class="s">&#39;Found ids:&#39;</span><span class="p">,</span> <span class="n">found_ids</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">found_ids</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s">&#39;You should connect at least two motors on the bus for this test.&#39;</span><span class="p">)</span>
+
+    <span class="n">ids</span> <span class="o">=</span> <span class="n">found_ids</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span>
+
+    <span class="n">dxl_io</span><span class="o">.</span><span class="n">enable_torque</span><span class="p">(</span><span class="n">ids</span><span class="p">)</span>
+
+    <span class="n">speed</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">ids</span><span class="p">,</span> <span class="n">itertools</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="mi">200</span><span class="p">)))</span>
+    <span class="n">dxl_io</span><span class="o">.</span><span class="n">set_moving_speed</span><span class="p">(</span><span class="n">speed</span><span class="p">)</span>
+
+    <span class="n">pos</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">ids</span><span class="p">,</span> <span class="n">itertools</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="mi">0</span><span class="p">)))</span>
+    <span class="n">dxl_io</span><span class="o">.</span><span class="n">set_goal_position</span><span class="p">(</span><span class="n">pos</span><span class="p">)</span>
+
+
+    <span class="n">t0</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+    <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+        <span class="n">t</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">t</span> <span class="o">-</span> <span class="n">t0</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">5</span><span class="p">:</span>
+            <span class="k">break</span>
+
+        <span class="n">pos</span> <span class="o">=</span> <span class="n">AMP</span> <span class="o">*</span> <span class="n">numpy</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">numpy</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">FREQ</span> <span class="o">*</span> <span class="n">t</span><span class="p">)</span>
+        <span class="n">dxl_io</span><span class="o">.</span><span class="n">set_goal_position</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">ids</span><span class="p">,</span> <span class="n">itertools</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">pos</span><span class="p">))))</span>
+
+        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.02</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Thanks to PyPot, you can access all registers of your motors using the same syntax (e.g. <a class="reference internal" href="pypot.dynamixel.html#pypot.dynamixel.io.DxlIO.get_present_speed" title="pypot.dynamixel.io.DxlIO.get_present_speed"><tt class="xref py py-meth docutils literal"><span class="pre">get_present_speed()</span></tt></a>, <a class="reference internal" href="pypot.dynamixel.html#pypot.dynamixel.io.DxlIO.set_max_torque" title="pypot.dynamixel.io.DxlIO.set_max_torque"><tt class="xref py py-meth docutils literal"><span class="pre">set_max_torque()</span></tt></a>, <a class="reference internal" href="pypot.dynamixel.html#pypot.dynamixel.io.DxlIO.get_pid_gain" title="pypot.dynamixel.io.DxlIO.get_pid_gain"><tt class="xref py py-meth docutils literal"><span class="pre">get_pid_gain()</span></tt></a>). Some shortcuts have been provided to make the code more readable (e.g. <a class="reference internal" href="pypot.dynamixel.html#pypot.dynamixel.io.DxlIO.enable_torque" title="pypot.dynamixel.io.DxlIO.enable_torque"><tt class="xref py py-meth docutils literal"><span class="pre">enable_torque()</span></tt></a> instead of set_torque_enabled). All the getter functions takes a list of ids as argument and the setter takes a dictionary of (id: value) pairs. You can refer to the documentation of <a class="reference internal" href="pypot.dynamixel.html#pypot.dynamixel.io.DxlIO" title="pypot.dynamixel.io.DxlIO"><tt class="xref py py-class docutils literal"><span class="pre">DxlIO</span></tt></a> for a complete list of all the available methods.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">PyPot provides an easy way to extend the code and automatically create methods to access new registers added by robotis.</p>
+</div>
+</div>
+</div>
+<div class="section" id="robot-controller">
+<span id="controller"></span><h2>Robot Controller<a class="headerlink" href="#robot-controller" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="using-the-robot-abstraction">
+<h3>Using the robot abstraction<a class="headerlink" href="#using-the-robot-abstraction" title="Permalink to this headline">¶</a></h3>
+<p>While the <a class="reference internal" href="#low-level"><em>Low-level API</em></a> provides access to all functionalities of the dynamixel motors, it forces you to have synchronous calls which can take a non-negligible amount of time. In particular, most programs will need to have a really fast read/write synchronization loop, where we typically read all motor position, speed, load and set new values, while in parallel we would like to have higher level code that computes those new values. This is pretty much what the robot abstraction is doing for you. More precisely, through the use of the class <a class="reference internal" href="pypot.robot.html#pypot.robot.robot.Robot" title="pypot.robot.robot.Robot"><tt class="xref py py-class docutils literal"><span class="pre">Robot</span></tt></a> you can:</p>
+<ul class="simple">
+<li>automatically initialize all connections (make transparent the use of multiple USB2serial connections),</li>
+<li>define <a class="reference internal" href="pypot.dynamixel.html#pypot.dynamixel.motor.DxlMotor.offset" title="pypot.dynamixel.motor.DxlMotor.offset"><tt class="xref py py-attr docutils literal"><span class="pre">offset</span></tt></a> and <a class="reference internal" href="pypot.dynamixel.html#pypot.dynamixel.motor.DxlMotor.direct" title="pypot.dynamixel.motor.DxlMotor.direct"><tt class="xref py py-attr docutils literal"><span class="pre">direct</span></tt></a> attributes   for motors,</li>
+<li>automatically define accessor for motors and their most frequently used registers (such as <a class="reference internal" href="pypot.dynamixel.html#pypot.dynamixel.motor.DxlMotor.goal_position" title="pypot.dynamixel.motor.DxlMotor.goal_position"><tt class="xref py py-attr docutils literal"><span class="pre">goal_position</span></tt></a>, <a class="reference internal" href="pypot.dynamixel.html#pypot.dynamixel.motor.DxlMotor.present_speed" title="pypot.dynamixel.motor.DxlMotor.present_speed"><tt class="xref py py-attr docutils literal"><span class="pre">present_speed</span></tt></a>, <a class="reference internal" href="pypot.dynamixel.html#pypot.dynamixel.motor.DxlMotor.present_load" title="pypot.dynamixel.motor.DxlMotor.present_load"><tt class="xref py py-attr docutils literal"><span class="pre">present_load</span></tt></a>, <a class="reference internal" href="pypot.dynamixel.html#pypot.dynamixel.motor.DxlMXMotor.pid" title="pypot.dynamixel.motor.DxlMXMotor.pid"><tt class="xref py py-attr docutils literal"><span class="pre">pid</span></tt></a>, <a class="reference internal" href="pypot.dynamixel.html#pypot.dynamixel.motor.DxlMotor.compliant" title="pypot.dynamixel.motor.DxlMotor.compliant"><tt class="xref py py-attr docutils literal"><span class="pre">compliant</span></tt></a>),</li>
+<li>define read/write synchronization loop that will run in background.</li>
+</ul>
+<p>We will first see how to define your robot thanks to the writing of a <a class="reference internal" href="#config-file"><em>configuration</em></a>, then we will describe how to set up <a class="reference internal" href="#sync-loop"><em>synchronization loops</em></a>. Finally, we will show how to easily <a class="reference internal" href="#control-robot"><em>control this robot through asynchronous commands</em></a>.</p>
+</div>
+<div class="section" id="writing-the-configuration">
+<span id="config-file"></span><h3>Writing the configuration<a class="headerlink" href="#writing-the-configuration" title="Permalink to this headline">¶</a></h3>
+<p>The configuration, described as a Python dictionary, contains several important features that help build both your robot and the software to manage you robot. The important fields are listed below:</p>
+<ul class="simple">
+<li><strong>controllers</strong> - This key holds the information pertaining to a controller and all the items connected to its bus.</li>
+<li><strong>motors</strong> - This is a description of all the custom setup values for each motor. Meta information, such as the motor access name or orientation, is also included here. It is also there that you will set the angle limits of the motor.</li>
+<li><strong>motorgroups</strong> - This is used to define alias of a group of motors (e.g. left_leg).</li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The configuration can be written programmatically or can be loaded from any file that can be loaded as a dict (e.g. a JSON file).</p>
+</div>
+<p>Now let&#8217;s detail each section. To better understand how the configuration is structure it is probably easier to start from one of the example provided with PyPot and modify it (e.g. <tt class="xref py py-obj docutils literal"><span class="pre">pypot.robot.config.ergo_robot_config</span></tt>):</p>
+<ol class="arabic">
+<li><p class="first"><strong>controllers</strong>: You can have a single or multiple <a class="reference internal" href="pypot.dynamixel.html#pypot.dynamixel.controller.DxlController" title="pypot.dynamixel.controller.DxlController"><tt class="xref py py-class docutils literal"><span class="pre">DxlController</span></tt></a>. For each of them, you should indicate whether or not to use the SYNC_READ instruction (only the USB2AX device currently supported it). When you describe your controller, you must also include the port that the device is connected to (see <a class="reference internal" href="#open-connection"><em>Opening/Closing a communication port</em></a>). You also have to specify which motors are attached to this bus. You can either give individual motors or groups (see the sections below):</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">my_config</span><span class="p">[</span><span class="s">&#39;controllers&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="n">my_config</span><span class="p">[</span><span class="s">&#39;controllers&#39;</span><span class="p">][</span><span class="s">&#39;upper_body_controler&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s">&#39;port&#39;</span><span class="p">:</span> <span class="s">&#39;/dev/ttyUSB0&#39;</span><span class="p">,</span>
+    <span class="s">&#39;sync_read&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>
+    <span class="s">&#39;attached_motors&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s">&#39;torso&#39;</span><span class="p">,</span> <span class="s">&#39;head&#39;</span><span class="p">,</span> <span class="s">&#39;arms&#39;</span><span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first"><strong>motorgroups</strong>: Here, you can define the different motors group corresponding to the structure of your robot. It will automatically create an alias for the group. Groups can be nested, i.e. a group can be included inside another group, as in the example below:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">my_config</span><span class="p">[</span><span class="s">&#39;motorgroups&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s">&#39;torso&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s">&#39;arms&#39;</span><span class="p">,</span> <span class="s">&#39;head_x&#39;</span><span class="p">,</span> <span class="s">&#39;head_y&#39;</span><span class="p">],</span>
+    <span class="s">&#39;arms&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s">&#39;left_arm&#39;</span><span class="p">,</span> <span class="s">&#39;right_arm&#39;</span><span class="p">],</span>
+    <span class="s">&#39;left_arm&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s">&#39;l_shoulder_x&#39;</span><span class="p">,</span> <span class="s">&#39;l_shoulder_y&#39;</span><span class="p">,</span> <span class="s">&#39;l_elbow&#39;</span><span class="p">],</span>
+    <span class="s">&#39;right_arm&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s">&#39;r_shoulder_x&#39;</span><span class="p">,</span> <span class="s">&#39;r_shoulder_y&#39;</span><span class="p">,</span> <span class="s">&#39;r_elbow&#39;</span><span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first"><strong>motors</strong>: Then, you add all the motors. The attributes are not optional and describe how the motors can be used in the software. You have to specify the type of motor, it will change which attributes are available (e.g. compliance margin versus pid gains). The name and id are used to access the motor specifically. Orientation describes whether the motor will act in an anti-clockwise fashion (direct) or clockwise (indirect). You should also provide the angle limits of your motor. They will be checked automatically at every start up and changed if needed:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">my_config</span><span class="p">[</span><span class="s">&#39;motors&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="n">my_config</span><span class="p">[</span><span class="s">&#39;motors&#39;</span><span class="p">][</span><span class="s">&#39;l_hip_y&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s">&#39;id&#39;</span><span class="p">:</span> <span class="mi">11</span><span class="p">,</span>
+    <span class="s">&#39;type&#39;</span><span class="p">:</span> <span class="s">&#39;RX-64&#39;</span><span class="p">,</span>
+    <span class="s">&#39;orientation&#39;</span><span class="p">:</span> <span class="s">&#39;direct&#39;</span><span class="p">,</span>
+    <span class="s">&#39;offset&#39;</span><span class="p">:</span> <span class="mf">22.5</span><span class="p">,</span>
+    <span class="s">&#39;angle_limit&#39;</span><span class="p">:</span> <span class="p">(</span><span class="o">-</span><span class="mf">67.5</span><span class="p">,</span> <span class="mf">112.5</span><span class="p">),</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">This is all you need to create and interact with your robot. All that remains is to connect your robot to your computer. To create your robot use the <a class="reference internal" href="pypot.robot.html#pypot.robot.config.from_config" title="pypot.robot.config.from_config"><tt class="xref py py-func docutils literal"><span class="pre">from_config()</span></tt></a> function which takes your configuration as an argument. Here is an example of how to create your first robot and start using it:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">pypot.robot</span>
+
+<span class="n">robot</span> <span class="o">=</span> <span class="n">pypot</span><span class="o">.</span><span class="n">robot</span><span class="o">.</span><span class="n">from_config</span><span class="p">(</span><span class="n">my_config</span><span class="p">)</span>
+<span class="n">robot</span><span class="o">.</span><span class="n">start_sync</span><span class="p">()</span>
+
+<span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">robot</span><span class="o">.</span><span class="n">left_arm</span><span class="p">:</span>
+    <span class="k">print</span> <span class="n">m</span><span class="o">.</span><span class="n">present_position</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">(optional) If you prefer working with file, you can read/write your config to any format that can be transformed into a dictionary. For instance, you can easily use the JSON format:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">json</span>
+
+<span class="kn">import</span> <span class="nn">pypot.robot</span>
+
+<span class="kn">from</span> <span class="nn">pypot.robot.config</span> <span class="kn">import</span> <span class="n">ergo_robot_config</span>
+
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s">&#39;ergo.json&#39;</span><span class="p">,</span> <span class="s">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">ergo_robot_config</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="n">ergo</span> <span class="o">=</span> <span class="n">pypot</span><span class="o">.</span><span class="n">robot</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="s">&#39;ergo.json&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</li>
+</ol>
+<p>To give you a complete overview of what your config should look like, here is the listing of the Ergo-Robot config dictionary:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">ergo_robot_config</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s">&#39;controllers&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">&#39;my_dxl_controller&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&#39;port&#39;</span><span class="p">:</span> <span class="s">&#39;/dev/ttyUSB0&#39;</span><span class="p">,</span> <span class="c"># Depends on your OS</span>
+            <span class="s">&#39;sync_read&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>
+            <span class="s">&#39;attached_motors&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s">&#39;base&#39;</span><span class="p">,</span> <span class="s">&#39;head&#39;</span><span class="p">],</span> <span class="c"># You can mix motorgroups or individual motors</span>
+        <span class="p">},</span>
+    <span class="p">},</span>
+
+    <span class="s">&#39;motorgroups&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">&#39;base&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s">&#39;base_pan&#39;</span><span class="p">,</span> <span class="s">&#39;base_tilt_lower&#39;</span><span class="p">,</span> <span class="s">&#39;base_tilt_upper&#39;</span><span class="p">],</span>
+        <span class="s">&#39;head&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s">&#39;head_pan&#39;</span><span class="p">,</span> <span class="s">&#39;head_tilt_lower&#39;</span><span class="p">,</span> <span class="s">&#39;head_tilt_upper&#39;</span><span class="p">],</span>
+    <span class="p">},</span>
+
+    <span class="s">&#39;motors&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">&#39;base_pan&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&#39;id&#39;</span><span class="p">:</span> <span class="mi">11</span><span class="p">,</span>
+            <span class="s">&#39;type&#39;</span><span class="p">:</span> <span class="s">&#39;RX-64&#39;</span><span class="p">,</span>
+            <span class="s">&#39;orientation&#39;</span><span class="p">:</span> <span class="s">&#39;direct&#39;</span><span class="p">,</span>
+            <span class="s">&#39;offset&#39;</span><span class="p">:</span> <span class="mf">22.5</span><span class="p">,</span>
+            <span class="s">&#39;angle_limit&#39;</span><span class="p">:</span> <span class="p">(</span><span class="o">-</span><span class="mf">67.5</span><span class="p">,</span> <span class="mf">112.5</span><span class="p">),</span>
+        <span class="p">},</span>
+        <span class="s">&#39;base_tilt_lower&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&#39;id&#39;</span><span class="p">:</span> <span class="mi">12</span><span class="p">,</span>
+            <span class="s">&#39;type&#39;</span><span class="p">:</span> <span class="s">&#39;RX-64&#39;</span><span class="p">,</span>
+            <span class="s">&#39;orientation&#39;</span><span class="p">:</span> <span class="s">&#39;direct&#39;</span><span class="p">,</span>
+            <span class="s">&#39;offset&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+            <span class="s">&#39;angle_limit&#39;</span><span class="p">:</span> <span class="p">(</span><span class="o">-</span><span class="mf">90.0</span><span class="p">,</span> <span class="mf">90.0</span><span class="p">),</span>
+        <span class="p">},</span>
+        <span class="s">&#39;base_tilt_upper&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&#39;id&#39;</span><span class="p">:</span> <span class="mi">13</span><span class="p">,</span>
+            <span class="s">&#39;type&#39;</span><span class="p">:</span> <span class="s">&#39;RX-64&#39;</span><span class="p">,</span>
+            <span class="s">&#39;orientation&#39;</span><span class="p">:</span> <span class="s">&#39;direct&#39;</span><span class="p">,</span>
+            <span class="s">&#39;offset&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+            <span class="s">&#39;angle_limit&#39;</span><span class="p">:</span> <span class="p">(</span><span class="o">-</span><span class="mf">90.0</span><span class="p">,</span> <span class="mf">90.0</span><span class="p">),</span>
+        <span class="p">},</span>
+        <span class="s">&#39;head_pan&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&#39;id&#39;</span><span class="p">:</span> <span class="mi">14</span><span class="p">,</span>
+            <span class="s">&#39;type&#39;</span><span class="p">:</span> <span class="s">&#39;RX-28&#39;</span><span class="p">,</span>
+            <span class="s">&#39;orientation&#39;</span><span class="p">:</span> <span class="s">&#39;direct&#39;</span><span class="p">,</span>
+            <span class="s">&#39;offset&#39;</span><span class="p">:</span> <span class="mf">22.5</span><span class="p">,</span>
+            <span class="s">&#39;angle_limit&#39;</span><span class="p">:</span> <span class="p">(</span><span class="o">-</span><span class="mf">67.5</span><span class="p">,</span> <span class="mf">112.5</span><span class="p">),</span>
+        <span class="p">},</span>
+        <span class="s">&#39;head_tilt_lower&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&#39;id&#39;</span><span class="p">:</span> <span class="mi">15</span><span class="p">,</span>
+            <span class="s">&#39;type&#39;</span><span class="p">:</span> <span class="s">&#39;RX-28&#39;</span><span class="p">,</span>
+            <span class="s">&#39;orientation&#39;</span><span class="p">:</span> <span class="s">&#39;indirect&#39;</span><span class="p">,</span>
+            <span class="s">&#39;offset&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+            <span class="s">&#39;angle_limit&#39;</span><span class="p">:</span> <span class="p">(</span><span class="o">-</span><span class="mf">90.0</span><span class="p">,</span> <span class="mf">90.0</span><span class="p">),</span>
+        <span class="p">},</span>
+        <span class="s">&#39;head_tilt_upper&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&#39;id&#39;</span><span class="p">:</span> <span class="mi">16</span><span class="p">,</span>
+            <span class="s">&#39;type&#39;</span><span class="p">:</span> <span class="s">&#39;RX-28&#39;</span><span class="p">,</span>
+            <span class="s">&#39;orientation&#39;</span><span class="p">:</span> <span class="s">&#39;indirect&#39;</span><span class="p">,</span>
+            <span class="s">&#39;offset&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
+            <span class="s">&#39;angle_limit&#39;</span><span class="p">:</span> <span class="p">(</span><span class="o">-</span><span class="mf">90.0</span><span class="p">,</span> <span class="mf">90.0</span><span class="p">),</span>
+        <span class="p">},</span>
+    <span class="p">},</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="dynamixel-controller-and-synchronization-loop">
+<span id="sync-loop"></span><h3>Dynamixel controller and Synchronization Loop<a class="headerlink" href="#dynamixel-controller-and-synchronization-loop" title="Permalink to this headline">¶</a></h3>
+<p>As indicated above, the <a class="reference internal" href="pypot.robot.html#pypot.robot.robot.Robot" title="pypot.robot.robot.Robot"><tt class="xref py py-class docutils literal"><span class="pre">Robot</span></tt></a> held instances of <a class="reference internal" href="pypot.dynamixel.html#pypot.dynamixel.motor.DxlMotor" title="pypot.dynamixel.motor.DxlMotor"><tt class="xref py py-class docutils literal"><span class="pre">DxlMotor</span></tt></a>. Each of this instance represents a real motor of your physical robot. The attributes of those &#8220;software&#8221; motors are automatically synchronized with the real &#8220;hardware&#8221; motors. In order to do that, the <a class="reference internal" href="pypot.robot.html#pypot.robot.robot.Robot" title="pypot.robot.robot.Robot"><tt class="xref py py-class docutils literal"><span class="pre">Robot</span></tt></a> class uses a <a class="reference internal" href="pypot.dynamixel.html#pypot.dynamixel.controller.DxlController" title="pypot.dynamixel.controller.DxlController"><tt class="xref py py-class docutils literal"><span class="pre">DxlController</span></tt></a> which defines synchronization loops that will read/write the registers of dynamixel motors at a predefined frequency.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">The synchronization loops will try to run at the defined frequency, however don&#8217;t forget that you are limited by the bus bandwidth! For instance, depending on your robot you will not be able to read/write the position of all motors at 100Hz. Moreover, the loops are implemented as python thread and we can thus not guarantee the exact frequency of the loop.</p>
+</div>
+<p>If you looked closely at the example above, you could have noticed that even without defining any controller nor synchronization loop, you can already read the present position of the motors. Indeed, by default the class <a class="reference internal" href="pypot.robot.html#pypot.robot.robot.Robot" title="pypot.robot.robot.Robot"><tt class="xref py py-class docutils literal"><span class="pre">Robot</span></tt></a> uses a particular controller <a class="reference internal" href="pypot.dynamixel.html#pypot.dynamixel.controller.BaseDxlController" title="pypot.dynamixel.controller.BaseDxlController"><tt class="xref py py-class docutils literal"><span class="pre">BaseDxlController</span></tt></a> which already defines synchronization loops. More precisely, this controller:</p>
+<ul class="simple">
+<li>reads the present position, speed, load at 50Hz,</li>
+<li>writes the goal position, moving speed and torque limit at 50Hz,</li>
+<li>writes the pid or compliance margin/slope (depending on the type of motor) at 10Hz,</li>
+<li>reads the present temperature and voltage at 1Hz.</li>
+</ul>
+<p>So, in most case you should not have to worry about synchronization loop and it should directly work. Off course, if you want to synchronize other values than the ones listed above you will have to modify this default behavior.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">With the current version of PyPot, you can not indicate in the configuration which subclasses of <a class="reference internal" href="pypot.dynamixel.html#pypot.dynamixel.controller.DxlController" title="pypot.dynamixel.controller.DxlController"><tt class="xref py py-class docutils literal"><span class="pre">DxlController</span></tt></a> you want to use. This feature should be added in a future version. If you want to use your own controller, you should either modify the config parser, modify the <a class="reference internal" href="pypot.dynamixel.html#pypot.dynamixel.controller.BaseDxlController" title="pypot.dynamixel.controller.BaseDxlController"><tt class="xref py py-class docutils literal"><span class="pre">BaseDxlController</span></tt></a> class or directly instantiate the <a class="reference internal" href="pypot.robot.html#pypot.robot.robot.Robot" title="pypot.robot.robot.Robot"><tt class="xref py py-class docutils literal"><span class="pre">Robot</span></tt></a> class.</p>
+</div>
+<p>To start all the synchronization loops, you only need to call the <a class="reference internal" href="pypot.robot.html#pypot.robot.robot.Robot.start_sync" title="pypot.robot.robot.Robot.start_sync"><tt class="xref py py-meth docutils literal"><span class="pre">start_sync()</span></tt></a> method. You can also stop the synchronization if needed (see the <a class="reference internal" href="pypot.robot.html#pypot.robot.robot.Robot.stop_sync" title="pypot.robot.robot.Robot.stop_sync"><tt class="xref py py-meth docutils literal"><span class="pre">stop_sync()</span></tt></a> method):</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">pypot.robot</span>
+
+<span class="n">robot</span> <span class="o">=</span> <span class="n">pypot</span><span class="o">.</span><span class="n">robot</span><span class="o">.</span><span class="n">from_config</span><span class="p">(</span><span class="n">my_config</span><span class="p">)</span>
+<span class="n">robot</span><span class="o">.</span><span class="n">start_sync</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">You should never set values to motors before starting the synchronization loop.</p>
+</div>
+<p>Now you have a robot that is reading and writing values to each motor in an infinite loop. Whenever you access these values, you are accessing only their most recent versions that have been read at the frequency of the loop. This automatically make the synchronization loop run in background. You do not need to wait the answer of a read command to access data (this can take some time) so that algorithms with heavy computation do not encounter a bottleneck when values from motors must be known.</p>
+<p>Now you are ready to create some behaviors for your robot.</p>
+</div>
+<div class="section" id="controlling-your-robot">
+<span id="control-robot"></span><h3>Controlling your robot<a class="headerlink" href="#controlling-your-robot" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="controlling-in-position">
+<h4>Controlling in position<a class="headerlink" href="#controlling-in-position" title="Permalink to this headline">¶</a></h4>
+<p>As shown in the examples above, the robot class let you directly access the different motors. For instance, let&#8217;s assume we are working with an Ergo-robot, you could then write:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">pypot.robot</span>
+
+<span class="kn">from</span> <span class="nn">pypot.robot.config</span> <span class="kn">import</span> <span class="n">ergo_robot_config</span>
+
+<span class="n">robot</span> <span class="o">=</span> <span class="n">pypot</span><span class="o">.</span><span class="n">robot</span><span class="o">.</span><span class="n">from_config</span><span class="p">(</span><span class="n">ergo_robot_config</span><span class="p">)</span>
+<span class="n">ergo_start_sync</span><span class="p">()</span>
+
+<span class="c"># Note that all these calls will return immediately,</span>
+<span class="c"># and the orders will not be directly sent</span>
+<span class="c"># (they will be sent during the next write loop iteration).</span>
+<span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">ergo_robot</span><span class="o">.</span><span class="n">base</span><span class="p">:</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">compliant</span> <span class="o">=</span> <span class="bp">False</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">goal_position</span> <span class="o">=</span> <span class="mi">0</span>
+
+<span class="c"># This will return the last synchronized value</span>
+<span class="k">print</span> <span class="n">ergo_robot</span><span class="o">.</span><span class="n">base_pan</span><span class="o">.</span><span class="n">present_position</span>
+</pre></div>
+</div>
+<p>For a complete list of all the attributes that you can access, you should refer to the <a class="reference internal" href="pypot.dynamixel.html#pypot.dynamixel.motor.DxlMotor" title="pypot.dynamixel.motor.DxlMotor"><tt class="xref py py-class docutils literal"><span class="pre">DxlMotor</span></tt></a> API.</p>
+<p>As an example of what you can easily do with the Robot API, we are going to write a simple program that will make a robot with two motors move with sinusoidal motions. More precisely, we will apply a sinusoid to one motor and the other one will read the value of the first motor and use it as its own goal position. We will still use an Ergo-robot as example:</p>
+<div class="highlight-python"><pre>import time
+import numpy
+
+import pypot.robot
+
+from pypot.robot.config import ergo_robot_config
+
+amp = 30
+freq = 0.5
+
+robot = pypot.robot.from_config(ergo_robot_config)    ergo_robot.start_sync()
+
+# Put the robot in its initial position
+for m in ergo_robot.motors: # Note that we always provide an alias for all motors.
+    m.compliant = False
+    m.goal_position = 0
+
+# Wait for the robot to actually reach the base position.
+time.sleep(2)
+
+# Do the sinusoidal motions for 10 seconds
+t0 = time.time()
+
+while True:
+    t = time.time() - t0
+
+    if t &gt; 10:
+        break
+
+    pos = amp * numpy.sin(2 * numpy.pi * freq * t)
+
+    ergo_robot.base_pan.goal_position = pos
+
+    # In order to make the other sinus more visible,
+    # we apply it with an opposite phase and we increase the amplitude.
+    ergo_robot.head_pan.goal_position = -1.5 * ergo_robot.base_pan.present_position
+
+    # We want to run this loop at 50Hz.
+    time.sleep(0.02)</pre>
+</div>
+</div>
+<div class="section" id="controlling-in-speed">
+<h4>Controlling in speed<a class="headerlink" href="#controlling-in-speed" title="Permalink to this headline">¶</a></h4>
+<p>Thanks to the <a class="reference internal" href="pypot.dynamixel.html#pypot.dynamixel.motor.DxlMotor.goal_speed" title="pypot.dynamixel.motor.DxlMotor.goal_speed"><tt class="xref py py-attr docutils literal"><span class="pre">goal_speed</span></tt></a> property you can also control your robot in speed. More precisely, by setting <a class="reference internal" href="pypot.dynamixel.html#pypot.dynamixel.motor.DxlMotor.goal_speed" title="pypot.dynamixel.motor.DxlMotor.goal_speed"><tt class="xref py py-attr docutils literal"><span class="pre">goal_speed</span></tt></a> you will change the <a class="reference internal" href="pypot.dynamixel.html#pypot.dynamixel.motor.DxlMotor.moving_speed" title="pypot.dynamixel.motor.DxlMotor.moving_speed"><tt class="xref py py-attr docutils literal"><span class="pre">moving_speed</span></tt></a> of your motor but you will also automatically change the <a class="reference internal" href="pypot.dynamixel.html#pypot.dynamixel.motor.DxlMotor.goal_position" title="pypot.dynamixel.motor.DxlMotor.goal_position"><tt class="xref py py-attr docutils literal"><span class="pre">goal_position</span></tt></a> that will be set to the angle limit in the desired direction.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">You could also use the wheel mode settings where you can directly change the <a class="reference internal" href="pypot.dynamixel.html#pypot.dynamixel.motor.DxlMotor.moving_speed" title="pypot.dynamixel.motor.DxlMotor.moving_speed"><tt class="xref py py-attr docutils literal"><span class="pre">moving_speed</span></tt></a>. Nevertheless, while the motor will turn infinitely with the wheel mode, here with the <a class="reference internal" href="pypot.dynamixel.html#pypot.dynamixel.motor.DxlMotor.goal_speed" title="pypot.dynamixel.motor.DxlMotor.goal_speed"><tt class="xref py py-attr docutils literal"><span class="pre">goal_speed</span></tt></a> the motor will still respect the angle limits.</p>
+</div>
+<p>As an example, you could write:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">t</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">)</span>
+<span class="n">speeds</span> <span class="o">=</span> <span class="n">amp</span> <span class="o">*</span> <span class="n">numpy</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">numpy</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">freq</span> <span class="o">*</span> <span class="n">t</span><span class="p">)</span>
+
+<span class="n">positions</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">speeds</span><span class="p">:</span>
+    <span class="n">ergo_robot</span><span class="o">.</span><span class="n">head_pan</span><span class="o">.</span><span class="n">goal_speed</span> <span class="o">=</span> <span class="n">s</span>
+    <span class="n">positions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ergo_robot</span><span class="o">.</span><span class="n">head_pan</span><span class="o">.</span><span class="n">present_position</span><span class="p">)</span>
+    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.05</span><span class="p">)</span>
+
+<span class="c"># By applying a cosinus on the speed</span>
+<span class="c"># You observe a sinusoid on the position</span>
+<span class="n">plot</span><span class="p">(</span><span class="n">positions</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">If you set both <a class="reference internal" href="pypot.dynamixel.html#pypot.dynamixel.motor.DxlMotor.goal_speed" title="pypot.dynamixel.motor.DxlMotor.goal_speed"><tt class="xref py py-attr docutils literal"><span class="pre">goal_speed</span></tt></a> and <a class="reference internal" href="pypot.dynamixel.html#pypot.dynamixel.motor.DxlMotor.goal_position" title="pypot.dynamixel.motor.DxlMotor.goal_position"><tt class="xref py py-attr docutils literal"><span class="pre">goal_position</span></tt></a> only the last command will be executed. Unless you know what you are doing, you should avoid to mix these both approaches.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="primitive">
+<h2>Primitive<a class="headerlink" href="#primitive" title="Permalink to this headline">¶</a></h2>
+<p>In the previous sections, we have shown how to make a simple behavior thanks to the <tt class="xref py py-class docutils literal"><span class="pre">Robot</span></tt> abstraction. But how to combine those elementary behaviors into something more complex? You could use threads and do it manually, but we provide the <tt class="xref py py-class docutils literal"><span class="pre">Primitive</span></tt> to abstract most of the work for you.</p>
+<div class="section" id="what-do-we-call-primitive">
+<h3>What do we call &#8220;Primitive&#8221;?<a class="headerlink" href="#what-do-we-call-primitive" title="Permalink to this headline">¶</a></h3>
+<p>We call <a class="reference internal" href="pypot.primitive.html#pypot.primitive.primitive.Primitive" title="pypot.primitive.primitive.Primitive"><tt class="xref py py-class docutils literal"><span class="pre">Primitive</span></tt></a> any simple or complex behavior applied to a <a class="reference internal" href="pypot.robot.html#pypot.robot.robot.Robot" title="pypot.robot.robot.Robot"><tt class="xref py py-class docutils literal"><span class="pre">Robot</span></tt></a>. A primitive can access all sensors and effectors in the robot. A primitive is supposed to be independent of other primitives. In particular, a primitive is not aware of the other primitives running on the robot at the same time. We imagine those primitives as elementary blocks that can be combined to create more complex blocks in a hierarchical manner.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The independence of primitives is really important when you create complex behaviors - such as balance - where many primitives are needed. Adding another primitive - such as walking - should be direct and not force you to rewrite everything. Furthermore, the balance primitive could also be combined with another behavior - such as shoot a ball - without modifying it.</p>
+</div>
+<p>To ensure this independence, the primitive is running in a sort of sandbox. More precisely, this means that the primitive has not direct access to the robot. It can only request commands (e.g. set a new goal position of a motor) to a <a class="reference internal" href="pypot.primitive.html#pypot.primitive.manager.PrimitiveManager" title="pypot.primitive.manager.PrimitiveManager"><tt class="xref py py-class docutils literal"><span class="pre">PrimitiveManager</span></tt></a> which transmits them to the &#8220;real&#8221; robot. As multiple primitives can run on the robot at the same time, their request orders are combined by the manager.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The primitives all share the same manager. In further versions, we would like to move from this linear combination of all primitives to a hierarchical structure and have different layer of managers.</p>
+</div>
+<p>The manager uses a filter function to combine all orders sent by primitives. By default, this filter function is a simple mean but you can choose your own specific filter (e.g. add function).</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">You should not mix control through primitives and direct control through the <a class="reference internal" href="pypot.robot.html#pypot.robot.robot.Robot" title="pypot.robot.robot.Robot"><tt class="xref py py-class docutils literal"><span class="pre">Robot</span></tt></a>. Indeed, the primitive manager will overwrite your orders at its refresh frequency: i.e. it will look like only the commands send through primitives will be taken into account.</p>
+</div>
+</div>
+<div class="section" id="writing-your-own-primitive">
+<span id="write-own-prim"></span><h3>Writing your own primitive<a class="headerlink" href="#writing-your-own-primitive" title="Permalink to this headline">¶</a></h3>
+<p>To write you own primitive, you have to subclass the <a class="reference internal" href="pypot.primitive.html#pypot.primitive.primitive.Primitive" title="pypot.primitive.primitive.Primitive"><tt class="xref py py-class docutils literal"><span class="pre">Primitive</span></tt></a> class. It provides you with basic mechanisms (e.g. connection to the manager, setup of the thread) to allow you to directly &#8220;plug&#8221; your primitive to your robot and run it.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">You should always call the super constructor if you override the <tt class="xref py py-meth docutils literal"><span class="pre">__init__()</span></tt> method.</p>
+</div>
+<p>As an example, let&#8217;s write a simple primitive that recreate the dance behavior written in the <a class="reference internal" href="intro.html#dance"><em>Controlling your Ergo-Robot</em></a> section:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">time</span>
+
+<span class="kn">import</span> <span class="nn">pypot.primitive</span>
+
+<span class="k">class</span> <span class="nc">DancePrimitive</span><span class="p">(</span><span class="n">pypot</span><span class="o">.</span><span class="n">primitive</span><span class="o">.</span><span class="n">Primitive</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">amp</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="mf">0.5</span><span class="p">):</span>
+        <span class="c"># self.elapsed_time gives you the time (in s) since the primitive has been running</span>
+        <span class="k">while</span> <span class="bp">self</span><span class="o">.</span><span class="n">elapsed_time</span> <span class="o">&lt;</span> <span class="mi">30</span><span class="p">:</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="n">amp</span> <span class="o">*</span> <span class="n">numpy</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">numpy</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">freq</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">elapsed_time</span><span class="p">)</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">robot</span><span class="o">.</span><span class="n">base_pan</span><span class="o">.</span><span class="n">goal_position</span> <span class="o">=</span> <span class="n">x</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">robot</span><span class="o">.</span><span class="n">head_pan</span><span class="o">.</span><span class="n">goal_position</span> <span class="o">=</span> <span class="o">-</span><span class="n">x</span>
+
+            <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.02</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>To run this primitive on your robot, you simply have to do:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">ergo_robot</span> <span class="o">=</span> <span class="n">pypot</span><span class="o">.</span><span class="n">robot</span><span class="o">.</span><span class="n">from_config</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+<span class="n">ergo_robot</span><span class="o">.</span><span class="n">start_sync</span><span class="p">()</span>
+
+<span class="n">dance</span> <span class="o">=</span> <span class="n">DancePrimitive</span><span class="p">(</span><span class="n">ergo_robot</span><span class="p">)</span>
+<span class="n">dance</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>If you want to make the dance primitive infinite you can use the <a class="reference internal" href="pypot.primitive.html#pypot.primitive.primitive.LoopPrimitive" title="pypot.primitive.primitive.LoopPrimitive"><tt class="xref py py-class docutils literal"><span class="pre">LoopPrimitive</span></tt></a> class:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">LoopDancePrimitive</span><span class="p">(</span><span class="n">pypot</span><span class="o">.</span><span class="n">primitive</span><span class="o">.</span><span class="n">LoopPrimitive</span><span class="p">):</span>
+    <span class="c"># The update function is automatically called at the frequency given on the constructor</span>
+    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">amp</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="mf">0.5</span><span class="p">):</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">amp</span> <span class="o">*</span> <span class="n">numpy</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">numpy</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">freq</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">elapsed_time</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">robot</span><span class="o">.</span><span class="n">base_pan</span><span class="o">.</span><span class="n">goal_position</span> <span class="o">=</span> <span class="n">x</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">robot</span><span class="o">.</span><span class="n">head_pan</span><span class="o">.</span><span class="n">goal_position</span> <span class="o">=</span> <span class="o">-</span><span class="n">x</span>
+</pre></div>
+</div>
+<p>And then runs it with:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">ergo_robot</span> <span class="o">=</span> <span class="n">pypot</span><span class="o">.</span><span class="n">robot</span><span class="o">.</span><span class="n">from_config</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+<span class="n">ergo_robot</span><span class="o">.</span><span class="n">start_sync</span><span class="p">()</span>
+
+<span class="n">dance</span> <span class="o">=</span> <span class="n">LoopDancePrimitive</span><span class="p">(</span><span class="n">ergo_robot</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span>
+<span class="c"># The robot will dance until you call dance.stop()</span>
+<span class="n">dance</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p>When writing your own primitive, you should always keep in mind that you should never directly pass the robot or its motors as argument and access them directly. You have to access them through the self.robot and self.robot.motors properties. Indeed, at instantiation the <a class="reference internal" href="pypot.robot.html#pypot.robot.robot.Robot" title="pypot.robot.robot.Robot"><tt class="xref py py-class docutils literal"><span class="pre">Robot</span></tt></a> (resp. <a class="reference internal" href="pypot.dynamixel.html#pypot.dynamixel.motor.DxlMotor" title="pypot.dynamixel.motor.DxlMotor"><tt class="xref py py-class docutils literal"><span class="pre">DxlMotor</span></tt></a>) instance is transformed into a <a class="reference internal" href="pypot.primitive.html#pypot.primitive.primitive.MockupRobot" title="pypot.primitive.primitive.MockupRobot"><tt class="xref py py-class docutils literal"><span class="pre">MockupRobot</span></tt></a> (resp. <a class="reference internal" href="pypot.primitive.html#pypot.primitive.primitive.MockupMotor" title="pypot.primitive.primitive.MockupMotor"><tt class="xref py py-class docutils literal"><span class="pre">MockupMotor</span></tt></a>). Those class are used to intercept the orders sent and forward them to the <a class="reference internal" href="pypot.primitive.html#pypot.primitive.manager.PrimitiveManager" title="pypot.primitive.manager.PrimitiveManager"><tt class="xref py py-class docutils literal"><span class="pre">PrimitiveManager</span></tt></a> which will combine them. By directly accessing the &#8220;real&#8221; motor or robot you circumvent this mechanism and break the sandboxing. If you have to specify a list of motors to your primitive (e.g. apply the sinusoid primitive to the specified motors), you should either give the motors name and access the motors within the primitive or transform the list of <a class="reference internal" href="pypot.dynamixel.html#pypot.dynamixel.motor.DxlMotor" title="pypot.dynamixel.motor.DxlMotor"><tt class="xref py py-class docutils literal"><span class="pre">DxlMotor</span></tt></a> into <a class="reference internal" href="pypot.primitive.html#pypot.primitive.primitive.MockupMotor" title="pypot.primitive.primitive.MockupMotor"><tt class="xref py py-class docutils literal"><span class="pre">MockupMotor</span></tt></a> thanks to the <a class="reference internal" href="pypot.primitive.html#pypot.primitive.primitive.Primitive.get_mockup_motor" title="pypot.primitive.primitive.Primitive.get_mockup_motor"><tt class="xref py py-meth docutils literal"><span class="pre">get_mockup_motor()</span></tt></a> method.
+For instance:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">MyDummyPrimitive</span><span class="p">(</span><span class="n">pypot</span><span class="o">.</span><span class="n">primitive</span><span class="o">.</span><span class="n">Primitive</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">motors_name</span><span class="p">):</span>
+        <span class="n">motors</span> <span class="o">=</span> <span class="p">[</span><span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">robot</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">motors_name</span><span class="p">]</span>
+
+        <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">fake_motors</span><span class="p">:</span>
+                <span class="o">...</span>
+</pre></div>
+</div>
+<p>or:</p>
+<div class="last highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">MyDummyPrimitive</span><span class="p">(</span><span class="n">pypot</span><span class="o">.</span><span class="n">primitive</span><span class="o">.</span><span class="n">Primitive</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">motors</span><span class="p">):</span>
+        <span class="n">fake_motors</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">get_mockup_motor</span><span class="p">(</span><span class="n">m</span><span class="p">)</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">motors</span><span class="p">]</span>
+
+        <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">fake_motors</span><span class="p">:</span>
+                <span class="o">...</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="starting-pausing-primitives">
+<h3>Starting/pausing primitives<a class="headerlink" href="#starting-pausing-primitives" title="Permalink to this headline">¶</a></h3>
+<p>The primitive can be <a class="reference internal" href="pypot.primitive.html#pypot.primitive.primitive.Primitive.start" title="pypot.primitive.primitive.Primitive.start"><tt class="xref py py-meth docutils literal"><span class="pre">start()</span></tt></a>, <a class="reference internal" href="pypot.primitive.html#pypot.primitive.primitive.Primitive.stop" title="pypot.primitive.primitive.Primitive.stop"><tt class="xref py py-meth docutils literal"><span class="pre">stop()</span></tt></a>, <a class="reference internal" href="pypot.primitive.html#pypot.primitive.primitive.Primitive.pause" title="pypot.primitive.primitive.Primitive.pause"><tt class="xref py py-meth docutils literal"><span class="pre">pause()</span></tt></a> and <a class="reference internal" href="pypot.primitive.html#pypot.primitive.primitive.Primitive.resume" title="pypot.primitive.primitive.Primitive.resume"><tt class="xref py py-meth docutils literal"><span class="pre">resume()</span></tt></a>. Unlike regular python thread, primitive can be restart by calling again the <a class="reference internal" href="pypot.primitive.html#pypot.primitive.primitive.Primitive.start" title="pypot.primitive.primitive.Primitive.start"><tt class="xref py py-meth docutils literal"><span class="pre">start()</span></tt></a> method.</p>
+<p>When overriding the <a class="reference internal" href="pypot.primitive.html#pypot.primitive.primitive.Primitive" title="pypot.primitive.primitive.Primitive"><tt class="xref py py-class docutils literal"><span class="pre">Primitive</span></tt></a>, you are responsible for correctly handling those events. For instance, the stop method will only trigger the should stop event that you should watch in your run loop and break it when the event is set. In particular, you should check the <a class="reference internal" href="pypot.primitive.html#pypot.primitive.primitive.Primitive.should_stop" title="pypot.primitive.primitive.Primitive.should_stop"><tt class="xref py py-meth docutils literal"><span class="pre">should_stop()</span></tt></a> and <a class="reference internal" href="pypot.primitive.html#pypot.primitive.primitive.Primitive.should_pause" title="pypot.primitive.primitive.Primitive.should_pause"><tt class="xref py py-meth docutils literal"><span class="pre">should_pause()</span></tt></a> in your run loop. You can also use the <a class="reference internal" href="pypot.primitive.html#pypot.primitive.primitive.Primitive.wait_to_stop" title="pypot.primitive.primitive.Primitive.wait_to_stop"><tt class="xref py py-meth docutils literal"><span class="pre">wait_to_stop()</span></tt></a> and <a class="reference internal" href="pypot.primitive.html#pypot.primitive.primitive.Primitive.wait_to_resume" title="pypot.primitive.primitive.Primitive.wait_to_resume"><tt class="xref py py-meth docutils literal"><span class="pre">wait_to_resume()</span></tt></a> to wait until the commands have really been executed.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">You can refer to the source code of the <a class="reference internal" href="pypot.primitive.html#pypot.primitive.primitive.LoopPrimitive" title="pypot.primitive.primitive.LoopPrimitive"><tt class="xref py py-class docutils literal"><span class="pre">LoopPrimitive</span></tt></a> for an example of how to correctly handle all these events.</p>
+</div>
+</div>
+<div class="section" id="attaching-a-primitive-to-the-robot">
+<h3>Attaching a primitive to the robot<a class="headerlink" href="#attaching-a-primitive-to-the-robot" title="Permalink to this headline">¶</a></h3>
+<p>In the previous section, we explain that the primitives run in a sandbox in the sense that they are not aware of the other primitives running at the same time. In fact, this is not exactly true. More precisely, a primitive can access everything attached to the robot: e.g. motors, sensors. But you can also attach a primitive to the robot.</p>
+<p>Let&#8217;s go back on our DancePrimitive example. You can write:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">ergo_robot</span> <span class="o">=</span> <span class="n">pypot</span><span class="o">.</span><span class="n">robot</span><span class="o">.</span><span class="n">from_config</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+<span class="n">ergo_robot</span><span class="o">.</span><span class="n">start_sync</span><span class="p">()</span>
+
+<span class="n">ergo_robot</span><span class="o">.</span><span class="n">attach_primitive</span><span class="p">(</span><span class="n">DancePrimitive</span><span class="p">(</span><span class="n">ergo_robot</span><span class="p">),</span> <span class="s">&#39;dance&#39;</span><span class="p">)</span>
+<span class="n">ergo_robot</span><span class="o">.</span><span class="n">dance</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>By attaching a primitive to the robot, you make it accessible from within other primitive.</p>
+<p>For instance you could then write:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">SelectorPrimitive</span><span class="p">(</span><span class="n">pypot</span><span class="o">.</span><span class="n">primitive</span><span class="o">.</span><span class="n">Primitive</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">song</span> <span class="o">==</span> <span class="s">&#39;my_favorite_song_to_dance&#39;</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">robot</span><span class="o">.</span><span class="n">dance</span><span class="o">.</span><span class="n">is_alive</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">robot</span><span class="o">.</span><span class="n">dance</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">In this case, instantiating the DancePrimitive within the SelectorPrimitive would be another solution.</p>
+</div>
+</div>
+</div>
+<div class="section" id="remote-access">
+<h2>Remote Access<a class="headerlink" href="#remote-access" title="Permalink to this headline">¶</a></h2>
+<p>We add the possibility to remotely access and control your robot through TCP network. This can be useful both to work with client/server architecture (e.g. to separate the low-level control running on an embedded computer and higher-level computation on a more powerful computer) and to allow you to plug your existing code written in another language to the PyPot&#8217;s API.</p>
+<p>We defined a protocol which permits the access of all the robot variables and method (including motors and primitives) via a JSON request. The protocol is entirely described in the section <a class="reference internal" href="#remote-protocol"><em>Protocol</em></a> below. Two transport methods have been developed so far:</p>
+<ul class="simple">
+<li>HTTP via GET and POST request (see the <a class="reference internal" href="#http-server"><em>Http Server</em></a> section)</li>
+<li>ZMQ socket (see the <a class="reference internal" href="#zmq-server"><em>Zmq Server</em></a> section)</li>
+</ul>
+<p>The <a class="reference internal" href="pypot.server.html#pypot.server.request.BaseRequestHandler" title="pypot.server.request.BaseRequestHandler"><tt class="xref py py-class docutils literal"><span class="pre">BaseRequestHandler</span></tt></a> has been separated from the server, so you can easily add new transport methods if needed.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">For the moment, the server is defined as a primitive, so multiple requests will not be automatically combined but instead the last request will win. In further version, it will be possible to spawn each client in a separate primitive.</p>
+</div>
+<p>As an example of what you can do, here is the code of getting the load of a motor and changing its position:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">zmq</span>
+
+<span class="n">robot</span> <span class="o">=</span> <span class="n">pypot</span><span class="o">.</span><span class="n">robot</span><span class="o">.</span><span class="n">from_config</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+<span class="n">robot</span><span class="o">.</span><span class="n">start_sync</span><span class="p">()</span>
+
+<span class="n">server</span> <span class="o">=</span> <span class="n">pypot</span><span class="o">.</span><span class="n">server</span><span class="o">.</span><span class="n">ZMQServer</span><span class="p">(</span><span class="n">robot</span><span class="p">,</span> <span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">)</span>
+<span class="n">server</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+
+<span class="n">c</span> <span class="o">=</span> <span class="n">zmq</span><span class="o">.</span><span class="n">Context</span><span class="p">()</span>
+<span class="n">s</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">socket</span><span class="p">(</span><span class="n">zmq</span><span class="o">.</span><span class="n">REQ</span><span class="p">)</span>
+
+<span class="n">req</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s">&#39;get&#39;</span><span class="p">:</span> <span class="p">{</span><span class="n">motor_name</span><span class="p">:</span> <span class="p">(</span><span class="s">&#39;present_load&#39;</span><span class="p">,</span> <span class="p">)},</span>
+    <span class="s">&#39;set&#39;</span><span class="p">:</span> <span class="p">{</span><span class="n">motor_name</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;goal_position&#39;</span><span class="p">:</span> <span class="mf">20.0</span><span class="p">}}</span>
+<span class="p">}</span>
+
+<span class="n">s</span><span class="o">.</span><span class="n">send_json</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
+<span class="n">answer</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">recv_json</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="section" id="protocol">
+<span id="remote-protocol"></span><h3>Protocol<a class="headerlink" href="#protocol" title="Permalink to this headline">¶</a></h3>
+<p>Our protocol allows you define three types of requests:</p>
+<ul class="simple">
+<li><a class="reference internal" href="#get-req"><em>Get Request</em></a> (to retrieve a motor register value, access a primitive variable)</li>
+<li><a class="reference internal" href="#set-req"><em>Set Request</em></a> (to set a motor register value, modify any variable within the robot instance)</li>
+<li><a class="reference internal" href="#call-req"><em>Call Request</em></a> (to call a method of any object defined within the robot instance, e.g. a primitive)</li>
+</ul>
+<p>An entire request is defined as follows:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">req</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s">&#39;get&#39;</span><span class="p">:</span> <span class="n">get_request</span><span class="p">,</span>
+    <span class="s">&#39;set&#39;</span><span class="p">:</span> <span class="n">set_request</span><span class="p">,</span>
+    <span class="s">&#39;call&#39;</span><span class="p">:</span> <span class="n">call_request</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The field are optional, so you can define a request with only a get field for instance.</p>
+</div>
+<div class="section" id="get-request">
+<span id="get-req"></span><h4>Get Request<a class="headerlink" href="#get-request" title="Permalink to this headline">¶</a></h4>
+<p>The get request is constructed as follows:</p>
+<div class="highlight-python"><pre>get_request = {
+    obj_name_1: (var_path_1, var_path_2, ...),
+    obj_name_2: (var_path_1, var_path_2, ...),
+    ...
+}</pre>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The var_path can be a complete path such as skeleton.hip.position.x.</p>
+</div>
+<p>For instance, if you write the following get request:</p>
+<div class="highlight-python"><pre>get_request = {
+    'base_tilt_lower': ('present_position', 'present_load'),
+    'base_tilt_upper': ('present_temperature', ),
+    'dance', ('current_song.filename', ) # Where dance is an attached primitive
+}</pre>
+</div>
+<p>It will retrieve the variables robot.base_tilt_lower.present_position, robot.base_tilt_lower.present_load, robot.base_tilt_upper.present_temperature, and robot.dance.current_song.</p>
+<p>The server will return something like:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">answer</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s">&#39;get&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">&#39;base_tilt_lower&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;present_position&#39;</span><span class="p">:</span> <span class="mf">10.0</span><span class="p">,</span> <span class="s">&#39;present_load&#39;</span><span class="p">:</span> <span class="mf">23.0</span><span class="p">},</span>
+        <span class="s">&#39;base_tilt_upper&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;present_temperature&#39;</span><span class="p">:</span> <span class="mi">40</span><span class="p">},</span>
+        <span class="s">&#39;dance&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;current_song.filename&#39;</span><span class="p">:</span> <span class="s">&#39;never_gonna_give_you_up.mp3&#39;</span><span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="set-request">
+<span id="set-req"></span><h4>Set Request<a class="headerlink" href="#set-request" title="Permalink to this headline">¶</a></h4>
+<p>The set request is really similar to the get request. Instead of giving a list of the var_path you want to access, you provide dictionary of (var_path: desired_value):</p>
+<div class="highlight-python"><pre>set_request = {
+    obj_name_1: {var_path_1: value1, var_path_2: value2, ...},
+    obj_name_2: {var_path_1: value1, var_path_2: value2, ...},
+    ...
+}</pre>
+</div>
+<p>The server will return an empty set field used as an acknowledgment:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">answer</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s">&#39;set&#39;</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="call-request">
+<span id="call-req"></span><h4>Call Request<a class="headerlink" href="#call-request" title="Permalink to this headline">¶</a></h4>
+<p>You can also build call request as follows:</p>
+<div class="highlight-python"><pre>call_request = {
+    obj_name_1: {meth_name_1: args, meth_name_2: args, ...},
+    obj_name_2: {meth_name_1: args, meth_name_2: args, ...},
+    ...
+}</pre>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The argument as passed as a list.</p>
+</div>
+<p>For instance, this request will start the dance primitive:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">call_request</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s">&#39;dance&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;start&#39;</span><span class="p">:</span> <span class="p">()}</span> <span class="c"># The start method does not take any argument so we pass the empty list.</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The server will return the result of the called methods:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">answer</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s">&#39;call&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">&#39;dance&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;start&#39;</span><span class="p">:</span> <span class="bp">None</span><span class="p">},</span> <span class="c"># The start methods does not return anything.</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="zmq-server">
+<span id="id2"></span><h3>Zmq Server<a class="headerlink" href="#zmq-server" title="Permalink to this headline">¶</a></h3>
+<p>The Zmq Server used a Zmq socket to send (resp. receive) JSON request (JSON answer). It is based on the REQ/REP pattern. So you should always alternate sending and receiving. It will probably be switched to PUB/SUB soon.</p>
+<p>Zmq has been chosen as it has been binded to most language (<a class="reference external" href="http://zeromq.org/bindings:_start">http://zeromq.org/bindings:_start</a>) and can thus be used to connect code from other language to PyPot. For instance, we used it to connect RLPark (a Java reinforcement learning library) to PyPot.</p>
+<p>Here is an example of how you can create a zmq server and send request:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">zmq</span>
+
+<span class="n">robot</span> <span class="o">=</span> <span class="n">pypot</span><span class="o">.</span><span class="n">robot</span><span class="o">.</span><span class="n">from_config</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+<span class="n">robot</span><span class="o">.</span><span class="n">start_sync</span><span class="p">()</span>
+
+<span class="n">server</span> <span class="o">=</span> <span class="n">pypot</span><span class="o">.</span><span class="n">server</span><span class="o">.</span><span class="n">ZMQServer</span><span class="p">(</span><span class="n">robot</span><span class="p">,</span> <span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">)</span>
+<span class="n">server</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+
+<span class="n">c</span> <span class="o">=</span> <span class="n">zmq</span><span class="o">.</span><span class="n">Context</span><span class="p">()</span>
+<span class="n">s</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">socket</span><span class="p">(</span><span class="n">zmq</span><span class="o">.</span><span class="n">REQ</span><span class="p">)</span>
+<span class="n">s</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s">&#39;tcp://{}:{}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">))</span>
+
+<span class="n">req</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s">&#39;get&#39;</span><span class="p">:</span> <span class="p">{</span><span class="n">motor_name</span><span class="p">:</span> <span class="p">(</span><span class="s">&#39;present_load&#39;</span><span class="p">,</span> <span class="p">)},</span>
+    <span class="s">&#39;set&#39;</span><span class="p">:</span> <span class="p">{</span><span class="n">motor_name</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;goal_position&#39;</span><span class="p">:</span> <span class="mf">20.0</span><span class="p">}}</span>
+<span class="p">}</span>
+
+<span class="n">s</span><span class="o">.</span><span class="n">send_json</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
+<span class="n">answer</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">recv_json</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The zmq server is faster than the HTTP version and should be preferred when working with high frequency control loops.</p>
+</div>
+</div>
+<div class="section" id="http-server">
+<span id="id3"></span><h3>Http Server<a class="headerlink" href="#http-server" title="Permalink to this headline">¶</a></h3>
+<p>The HTTPServer is based on the bottle python framework (<a class="reference external" href="http://bottlepy.org/">http://bottlepy.org/</a>). We have developed a sort of REST API based on the protocol described above:</p>
+<ul class="simple">
+<li>GET /motor/list.json</li>
+<li>GET /primitive/list.json</li>
+<li>GET /motor/&lt;name&gt;/register.json (or GET /&lt;name&gt;/register.json)</li>
+<li>GET /motor/&lt;name&gt;/&lt;register&gt; (or GET /&lt;name&gt;/&lt;register&gt;)</li>
+<li>POST /motor/&lt;name&gt;/&lt;register&gt; (or POST /&lt;name&gt;/&lt;register&gt;)</li>
+<li>POST /primitive/&lt;prim_name&gt;/call/&lt;meth_name&gt; (or GET /&lt;prim_name&gt;/call/&lt;meth_name&gt;)</li>
+<li>POST /request.json</li>
+</ul>
+<p>An example of how you can use the HTTP server:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">urllib2</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">time</span>
+
+<span class="kn">import</span> <span class="nn">pypot.robot</span>
+<span class="kn">import</span> <span class="nn">pypot.server</span>
+
+<span class="n">robot</span> <span class="o">=</span> <span class="n">pypot</span><span class="o">.</span><span class="n">robot</span><span class="o">.</span><span class="n">from_config</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+<span class="n">robot</span><span class="o">.</span><span class="n">start_sync</span><span class="p">()</span>
+
+<span class="n">server</span> <span class="o">=</span> <span class="n">pypot</span><span class="o">.</span><span class="n">server</span><span class="o">.</span><span class="n">HTTPServer</span><span class="p">(</span><span class="n">robot</span><span class="p">,</span> <span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">)</span>
+<span class="n">server</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+
+<span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="c"># Make sure the server is really started</span>
+
+<span class="n">url</span> <span class="o">=</span> <span class="s">&#39;http://{}:{}/motor/list.json&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">)</span>
+<span class="k">print</span> <span class="n">urllib2</span><span class="o">.</span><span class="n">urlopen</span><span class="p">(</span><span class="n">url</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+
+<span class="n">url</span> <span class="o">=</span> <span class="s">&#39;http://{}:{}/motor/base_tilt_lower/goal_position&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">)</span>
+<span class="n">data</span> <span class="o">=</span> <span class="mf">20.0</span>
+<span class="n">r</span> <span class="o">=</span> <span class="n">urllib2</span><span class="o">.</span><span class="n">Request</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">data</span><span class="p">),</span> <span class="n">headers</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;Content-Type&#39;</span><span class="p">:</span> <span class="s">&#39;application/json&#39;</span><span class="p">})</span>
+<span class="k">print</span> <span class="n">urllib2</span><span class="o">.</span><span class="n">urlopen</span><span class="p">(</span><span class="n">r</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Note that the http server will always return a dictionary (see <a class="reference external" href="http://haacked.com/archive/2009/06/24/json-hijacking.aspx">http://haacked.com/archive/2009/06/24/json-hijacking.aspx</a> for an explanation).</p>
+</div>
+</div>
+</div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2012, Pierre Rouanet, Matthieu Lapeyre, Haylee Fogg.<br/>
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>
