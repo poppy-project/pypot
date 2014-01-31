@@ -50,8 +50,8 @@ class DxlMotor(object):
 
     def _setter(self, name, value):
         setitem(self._values, name, value)
-        logger.info("Setting '%s.%s' to %s",
-                    self.name, name, value)
+        logger.debug("Setting '%s.%s' to %s",
+                     self.name, name, value)
 
     @classmethod
     def _make_accessor(cls, name, rw=False, doc=None):
@@ -92,8 +92,8 @@ class DxlMotor(object):
         framed_value = (value + self.offset) if self.direct else -(value + self.offset)
         self._values['goal_position'] = framed_value
 
-        logger.info("Setting '%s.goal_position' to %s (%s)",
-                    self.name, value, framed_value)
+        logger.debug("Setting '%s.goal_position' to %s (%s)",
+                     self.name, value, framed_value)
 
     @property
     def present_speed(self):
