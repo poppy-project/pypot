@@ -141,7 +141,6 @@ class DxlMotor(object):
         # Change the goal_position only if you switch from compliant to not compliant mode
         if not value and self.compliant:
             self.goal_position = self.present_position
-        #self._values['compliant'] = value
         self._setter('compliant', value)
 
     @property
