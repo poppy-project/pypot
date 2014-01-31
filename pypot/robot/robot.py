@@ -1,20 +1,23 @@
 import time
+import logging
 
 import pypot.primitive.manager
 import pypot.dynamixel.controller
 
+logger = logging.getLogger(__name__)
+
 
 class Robot(object):
     """
-        This class is used to regroup all motors (and soon sensors) of your robots.
+        This class is used to regroup all motors and sensors of your robots.
 
         Most of the time, you do not want to directly instantiate this class,
         but you rather want to use the factory which creates a robot instance
-        from a configuration file, currently a xml file (see :ref:`config_file`).
+        from a python dictionnary (see :ref:`config_file`).
 
         This class encapsulates the different controllers (such as dynamixel ones)
         that automatically synchronize the virtual sensors/effectors instances held
-        by the robot class with the real devices. By doing so, each sensor/efector
+        by the robot class with the real devices. By doing so, each sensor/effector
         can be synchronized at a different frequency.
 
         This class also provides a generic motors accessor in order to (more or less)
@@ -45,14 +48,20 @@ class Robot(object):
         self._primitive_manager.start()
         [c.start() for c in self._dxl_controllers]
 
+        logger.info('Starting robot synchronization.')
+
     def stop_sync(self):
         """ Stops all the synchonization loop (sensor/effector controllers). """
         self._primitive_manager.stop()
         [c.stop() for c in self._dxl_controllers]
 
+        logger.info('Stopping robot synchronization.')
+
     def attach_primitive(self, primitive, name):
         setattr(self, name, primitive)
         self._attached_primitives[name] = primitive
+
+        logger.info("Attaching primitive '%s' to the robot.", name)
 
     @property
     def motors(self):
@@ -108,4 +117,3 @@ class Robot(object):
             m.compliant = False
             m.moving_speed = 0
             m.torque_limit = 100.0
-
