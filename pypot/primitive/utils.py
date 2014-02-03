@@ -15,10 +15,11 @@ class Sinus(pypot.primitive.LoopPrimitive):
 
         self.motor_list = [self.get_mockup_motor(m) for m in motor_list]
 
-
     def update(self, amp, freq, offset, phase):
         """ Compute the sin(t) where t is the elapsed time since the primitive has been started. """
-        pos = amp * numpy.sin(freq * 2.0 * numpy.pi * self.elapsed_time + \
+        pypot.primitive.LoopPrimitive.update(self)
+
+        pos = amp * numpy.sin(freq * 2.0 * numpy.pi * self.elapsed_time +
                               phase * numpy.pi / 180.0) + offset
 
         for m in self.motor_list:
@@ -34,4 +35,3 @@ class Cosinus(Sinus):
         Sinus.__init__(self, robot, refresh_freq,
                        motor_list,
                        amp, freq, offset, phase=(numpy.pi / 2 + phase))
-

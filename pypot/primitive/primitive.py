@@ -190,6 +190,7 @@ class LoopPrimitive(Primitive):
             :param args: the arguments passed to the constructor are automatically passed to this method
             :param kwargs: the arguments passed to the constructor are automatically passed to this method
 
+            .. note:: When you override this method you should call the update method from the mother class to keep the log consistent.
             """
         logger.debug('LoopPrimitive %s updated.', self)
 
