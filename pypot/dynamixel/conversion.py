@@ -80,7 +80,7 @@ def dxl_to_pid(value, model):
 
 def pid_to_dxl(value, model):
     truncate = lambda x: int(max(0, min(x, 254)))
-    return map(lambda x, y: truncate(x * y), value, (250, 2.048, 8.0))
+    return [truncate(x * y) for x, y in zip(value, (250, 2.048, 8.0))]
 
 # MARK: - Model
 
@@ -215,7 +215,7 @@ def dxl_decode(data):
 
 def dxl_decode_all(data, nb_elem):
     if nb_elem > 1:
-        data = list(itertools.izip(*([iter(data)] * (len(data) / nb_elem))))
+        data = list(itertools.izip(*([iter(data)] * (len(data) // nb_elem))))
         return tuple(map(dxl_decode, data))
     else:
         return dxl_decode(data)

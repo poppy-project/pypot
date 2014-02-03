@@ -81,7 +81,7 @@ The communication can be closed using the :meth:`~pypot.dynamixel.io.DxlIO.close
 Finding motors
 --------------
 
-Pypot has been designed to work specifically with the Robotis range of motors. These motors use two different protocols to communicate: TTL (3 wire bus) and RS485 (4 wire Bus). The motors can be daisey chained together with other types of motors on the same bus *as long as the bus communicates using the same protocol*. This means that MX-28 and AX-12 can communicate on the same bus, but cannot be connected to a RX-28.
+Pypot has been designed to work specifically with the Robotis range of motors. These motors use two different protocols to communicate: TTL (3 wire bus) and RS485 (4 wire Bus). The motors can be daisy chained together with other types of motors on the same bus *as long as the bus communicates using the same protocol*. This means that MX-28 and AX-12 can communicate on the same bus, but cannot be connected to a RX-28.
 
 All motors work sufficiently well with a 12V supply. Some motors can use more than 12V but you must be careful not to connect an 18V supply on a bus that contains motors that can only use 12V! Connect this 12V SMPS supply (switch mode power supply) to a Robotis SMPS2Dynamixel device which regulates the voltage coming from the SMPS. Connect your controller device and a single motor to this SMPS2Dynamixel.
 
@@ -197,68 +197,140 @@ While the :ref:`low_level` provides access to all functionalities of the dynamix
 * define read/write synchronization loop that will run in background.
 
 
-We will first see how to define your robot thanks to the writing of a :ref:`configuration file <config_file>`, then we will describe how to set up :ref:`synchronization loops <sync_loop>`. Finally, we will show how to easily :ref:`control this robot through asynchronous commands <control_robot>`.
+We will first see how to define your robot thanks to the writing of a :ref:`configuration <config_file>`, then we will describe how to set up :ref:`synchronization loops <sync_loop>`. Finally, we will show how to easily :ref:`control this robot through asynchronous commands <control_robot>`.
 
 
 
 .. _config_file:
 
-Writing a configuration file
-----------------------------
+Writing the configuration
+-------------------------
 
-The configuration file, written in xml, contains several important features that help build both your robot and the software to manage you robot. The important features are listed below:
+The configuration, described as a Python dictionary, contains several important features that help build both your robot and the software to manage you robot. The important fields are listed below:
 
-* **<Robot>** - The root of the configuration file.
-* **<DxlController>** - This tag holds the information pertaining to a controller and all the items connected to its bus.
-* **<DxlMotor>** - This is a description of all the custom setup values for each motor. Meta information, such as the motor access name or orientation, is also included here. It is also inside this markup that you will set the angle limits of the motor.
-* **<DxlMotorGroup>** - This is used to define alias of a group of motors (e.g. left_leg).
+* **controllers** - This key holds the information pertaining to a controller and all the items connected to its bus.
+* **motors** - This is a description of all the custom setup values for each motor. Meta information, such as the motor access name or orientation, is also included here. It is also there that you will set the angle limits of the motor.
+* **motorgroups** - This is used to define alias of a group of motors (e.g. left_leg).
 
-Now let's start writing your own configuration file. It is probably easier to start from one of the example provided with PyPot and modify it:
+.. note:: The configuration can be written programmatically or can be loaded from any file that can be loaded as a dict (e.g. a JSON file).
 
-#. Create a new file with the extension .xml. Your configuration file can be located anywhere on your filesystem. It does not need to be in the resources folder.
+Now let's detail each section. To better understand how the configuration is structure it is probably easier to start from one of the example provided with PyPot and modify it (e.g. :obj:`pypot.robot.config.ergo_robot_config`):
 
-#. Create the Robot opening and closing tags and add a name for you robot like the following::
+#. **controllers**: You can have a single or multiple :class:`~pypot.dynamixel.controller.DxlController`. For each of them, you should indicate whether or not to use the SYNC_READ instruction (only the USB2AX device currently supported it). When you describe your controller, you must also include the port that the device is connected to (see :ref:`open_connection`). You also have to specify which motors are attached to this bus. You can either give individual motors or groups (see the sections below)::
 
-    <Robot name="Violette">
-    </Robot>
+        my_config['controllers'] = {}
+        my_config['controllers']['upper_body_controler'] = {
+            'port': '/dev/ttyUSB0',
+            'sync_read': False,
+            'attached_motors': ['torso', 'head', 'arms']
+        }
 
-#. Now we should add the controller. You can have a single or multiple :class:`~pypot.dynamixel.controller.DxlController`. For each of them, you should indicate whether or not to use the SYNC_READ instruction (only the USB2AX device currently supported it). When you describe your controller, you must also include the port that the device is connected to (see :ref:`open_connection`)::
+#. **motorgroups**: Here, you can define the different motors group corresponding to the structure of your robot. It will automatically create an alias for the group. Groups can be nested, i.e. a group can be included inside another group, as in the example below::
 
-        <DxlController port="/dev/ttyACM0" sync_read="False">
-        </DxlController>
+        my_config['motorgroups'] = {
+            'torso': ['arms', 'head_x', 'head_y'],
+            'arms': ['left_arm', 'right_arm'],
+            'left_arm': ['l_shoulder_x', 'l_shoulder_y', 'l_elbow'],
+            'right_arm': ['r_shoulder_x', 'r_shoulder_y', 'r_elbow']
+        }
 
-#. Then we add the motors that belong on this bus. The attributes are not optional and describe how the motors can be used in the software. You have to specify the type of motor, it will change which attributes are available (e.g. compliance margin versus pid gains). The name and id are used to access the motor specifically. Orientation describes whether the motor will act in an anti-clockwise fashion (direct) or clockwise (indirect). You should also provide the angle limits of your motor. They will be checked automatically at every start up and changed if needed::
+#. **motors**: Then, you add all the motors. The attributes are not optional and describe how the motors can be used in the software. You have to specify the type of motor, it will change which attributes are available (e.g. compliance margin versus pid gains). The name and id are used to access the motor specifically. Orientation describes whether the motor will act in an anti-clockwise fashion (direct) or clockwise (indirect). You should also provide the angle limits of your motor. They will be checked automatically at every start up and changed if needed::
 
-        <DxlMotor name="base_pan" id="31" type="RX-64" orientation="direct" offset="22.5">
-            <angle_limits>(-67.5, 112.5)</angle_limits>
-        </DxlMotor>
-        <DxlMotor name="base_tilt_lower" id="32" type="RX-64" orientation="direct" offset="0.0">
-            <angle_limits>(-90, 90)</angle_limits>
-        </DxlMotor>
-
-#. Finally, you can define the different motors group corresponding to the structure of your robot. You only need to define your motors inside the DxlMotorGroup markup to include them in a group. A group can also be included inside another group::
-
-        <DxlMotorGroup name="arms">
-            <DxlMotorGroup name="left_arm">
-                <DxlMotor name="left_shoulder_pan" id="12" type="RX-28" orientation="indirect" offset="-67.5">
-                    <angle_limits>(-150, 150)</angle_limits>
-                </DxlMotor>
-                ...
-            </DxlMotorGroup>
-            ...
-        </DxlMotorGroup>
+        my_config['motors'] = {}
+        my_config['motors']['l_hip_y'] = {
+            'id': 11,
+            'type': 'RX-64',
+            'orientation': 'direct',
+            'offset': 22.5,
+            'angle_limit': (-67.5, 112.5),
+        }
 
 
-#. This is all you need to create and interact with your robot. All that remains is to connect your robot to your computer. To create your robot, you need to send it the location of your xml file in a string so that it can convert all the custom settings you have placed here and create you a robot. Here is an example of how to create your first robot and start using it::
+#. This is all you need to create and interact with your robot. All that remains is to connect your robot to your computer. To create your robot use the :func:`~pypot.robot.config.from_config` function which takes your configuration as an argument. Here is an example of how to create your first robot and start using it::
 
         import pypot.robot
 
-        robot = pypot.robot.from_configuration(my_config_file)
+        robot = pypot.robot.from_config(my_config)
         robot.start_sync()
 
         for m in robot.left_arm:
             print m.present_position
 
+#. (optional) If you prefer working with file, you can read/write your config to any format that can be transformed into a dictionary. For instance, you can easily use the JSON format::
+
+    import json
+
+    import pypot.robot
+
+    from pypot.robot.config import ergo_robot_config
+
+    with open('ergo.json', 'w') as f:
+        json.dump(ergo_robot_config, f, indent=2)
+
+    ergo = pypot.robot.from_json('ergo.json')
+
+
+To give you a complete overview of what your config should look like, here is the listing of the Ergo-Robot config dictionary::
+
+    ergo_robot_config = {
+        'controllers': {
+            'my_dxl_controller': {
+                'port': '/dev/ttyUSB0', # Depends on your OS
+                'sync_read': False,
+                'attached_motors': ['base', 'head'], # You can mix motorgroups or individual motors
+            },
+        },
+
+        'motorgroups': {
+            'base': ['base_pan', 'base_tilt_lower', 'base_tilt_upper'],
+            'head': ['head_pan', 'head_tilt_lower', 'head_tilt_upper'],
+        },
+
+        'motors': {
+            'base_pan': {
+                'id': 11,
+                'type': 'RX-64',
+                'orientation': 'direct',
+                'offset': 22.5,
+                'angle_limit': (-67.5, 112.5),
+            },
+            'base_tilt_lower': {
+                'id': 12,
+                'type': 'RX-64',
+                'orientation': 'direct',
+                'offset': 0.0,
+                'angle_limit': (-90.0, 90.0),
+            },
+            'base_tilt_upper': {
+                'id': 13,
+                'type': 'RX-64',
+                'orientation': 'direct',
+                'offset': 0.0,
+                'angle_limit': (-90.0, 90.0),
+            },
+            'head_pan': {
+                'id': 14,
+                'type': 'RX-28',
+                'orientation': 'direct',
+                'offset': 22.5,
+                'angle_limit': (-67.5, 112.5),
+            },
+            'head_tilt_lower': {
+                'id': 15,
+                'type': 'RX-28',
+                'orientation': 'indirect',
+                'offset': 0.0,
+                'angle_limit': (-90.0, 90.0),
+            },
+            'head_tilt_upper': {
+                'id': 16,
+                'type': 'RX-28',
+                'orientation': 'indirect',
+                'offset': 0.0,
+                'angle_limit': (-90.0, 90.0),
+            },
+        },
+    }
 
 .. _sync_loop:
 
@@ -278,13 +350,13 @@ If you looked closely at the example above, you could have noticed that even wit
 
 So, in most case you should not have to worry about synchronization loop and it should directly work. Off course, if you want to synchronize other values than the ones listed above you will have to modify this default behavior.
 
-.. note:: With the current version of PyPot, you can not indicate in the xml file which subclasses of :class:`~pypot.dynamixel.controller.DxlController` you want to use. This feature should be added in the next version. If you want to use your own controller, you should either modify the xml parser, modify the :class:`~pypot.dynamixel.controller.BaseDxlController` class or directly instantiate the :class:`~pypot.robot.robot.Robot` class.
+.. note:: With the current version of PyPot, you can not indicate in the configuration which subclasses of :class:`~pypot.dynamixel.controller.DxlController` you want to use. This feature should be added in a future version. If you want to use your own controller, you should either modify the config parser, modify the :class:`~pypot.dynamixel.controller.BaseDxlController` class or directly instantiate the :class:`~pypot.robot.robot.Robot` class.
 
 To start all the synchronization loops, you only need to call the :meth:`~pypot.robot.robot.Robot.start_sync` method. You can also stop the synchronization if needed (see the :meth:`~pypot.robot.robot.Robot.stop_sync` method)::
 
     import pypot.robot
 
-    robot = pypot.robot.from_configuration(my_config_file)
+    robot = pypot.robot.from_config(my_config)
     robot.start_sync()
 
 .. warning:: You should never set values to motors before starting the synchronization loop.
@@ -306,7 +378,9 @@ As shown in the examples above, the robot class let you directly access the diff
 
     import pypot.robot
 
-    ergo_robot = pypot.robot.from_configuration('resources/ergo_robot.xml')
+    from pypot.robot.config import ergo_robot_config
+
+    robot = pypot.robot.from_config(ergo_robot_config)
     ergo_start_sync()
 
     # Note that all these calls will return immediately,
@@ -328,11 +402,12 @@ As an example of what you can easily do with the Robot API, we are going to writ
 
     import pypot.robot
 
+    from pypot.robot.config import ergo_robot_config
+
     amp = 30
     freq = 0.5
 
-    ergo_robot = pypot.robot.from_configuration('resources/ergo_robot.xml')
-    ergo_robot.start_sync()
+    robot = pypot.robot.from_config(ergo_robot_config)    ergo_robot.start_sync()
 
     # Put the robot in its initial position
     for m in ergo_robot.motors: # Note that we always provide an alias for all motors.
@@ -438,7 +513,7 @@ As an example, let's write a simple primitive that recreate the dance behavior w
 
 To run this primitive on your robot, you simply have to do::
 
-    ergo_robot = pypot.robot.from_configuration(...)
+    ergo_robot = pypot.robot.from_config(...)
     ergo_robot.start_sync()
 
     dance = DancePrimitive(ergo_robot)
@@ -450,6 +525,8 @@ If you want to make the dance primitive infinite you can use the :class:`~pypot.
     class LoopDancePrimitive(pypot.primitive.LoopPrimitive):
         # The update function is automatically called at the frequency given on the constructor
         def update(self, amp=30, freq=0.5):
+            pypot.primitive.LoopPrimitive.update(self)
+
             x = amp * numpy.sin(2 * numpy.pi * freq * self.elapsed_time)
 
             self.robot.base_pan.goal_position = x
@@ -457,7 +534,7 @@ If you want to make the dance primitive infinite you can use the :class:`~pypot.
 
 And then runs it with::
 
-    ergo_robot = pypot.robot.from_configuration(...)
+    ergo_robot = pypot.robot.from_config(...)
     ergo_robot.start_sync()
 
     dance = LoopDancePrimitive(ergo_robot, 50)
@@ -505,7 +582,7 @@ In the previous section, we explain that the primitives run in a sandbox in the 
 
 Let's go back on our DancePrimitive example. You can write::
 
-    ergo_robot = pypot.robot.from_configuration(...)
+    ergo_robot = pypot.robot.from_config(...)
     ergo_robot.start_sync()
 
     ergo_robot.attach_primitive(DancePrimitive(ergo_robot), 'dance')
@@ -541,7 +618,7 @@ As an example of what you can do, here is the code of getting the load of a moto
 
     import zmq
 
-    robot = pypot.robot.from_configuration(...)
+    robot = pypot.robot.from_config(...)
     robot.start_sync()
 
     server = pypot.server.ZMQServer(robot, host, port)
@@ -678,7 +755,7 @@ Here is an example of how you can create a zmq server and send request::
 
     import zmq
 
-    robot = pypot.robot.from_configuration(...)
+    robot = pypot.robot.from_config(...)
     robot.start_sync()
 
     server = pypot.server.ZMQServer(robot, host, port)
@@ -722,7 +799,7 @@ An example of how you can use the HTTP server::
     import pypot.robot
     import pypot.server
 
-    robot = pypot.robot.from_configuration(...)
+    robot = pypot.robot.from_config(...)
     robot.start_sync()
 
     server = pypot.server.HTTPServer(robot, host, port)

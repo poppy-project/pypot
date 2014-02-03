@@ -18,9 +18,9 @@ class Link(namedtuple('Link', ('theta', 'd', 'a', 'alpha'))):
     :param float alpha: angle about common normal, from old z axis to new z axis
 
     .. note:: We are only considering revolute joint.
-        
+
     Please refer to http://en.wikipedia.org/wiki/Denavit-Hartenberg_parameters for more details.
-    
+
     """
 
     def get_transformation_matrix(self, theta):
@@ -41,22 +41,22 @@ class Chain(namedtuple('Chain', ('links', 'base', 'tool'))):
     :param list links: list of Link that compose the chain
     :param base: the base homogeneous transformation matrix
     :param tool: the end tool homogeneous transformation matrix
-    
+
     """
     def __new__(cls, links, base=numpy.identity(4), tool=numpy.identity(4)):
         return super(Chain, cls).__new__(cls, links, base, tool)
-    
+
     def forward_kinematics(self, q):
         """ Computes the homogeneous transformation matrix of the end effector of the chain.
-        
+
         :param vector q: vector of the joint angles (theta 1, theta 2, ..., theta n)
 
         """
         q = numpy.array(q).flatten()
-        
+
         if len(q) != len(self.links):
             raise ValueError('q must contain as element as the number of links')
-        
+
         tr = self.base.copy()
 
         l = []
@@ -65,11 +65,11 @@ class Chain(namedtuple('Chain', ('links', 'base', 'tool'))):
             tr = tr * link.get_transformation_matrix(theta)
 
             l.append(tr)
-                
+
         tr = tr * self.tool
         l.append(tr)
         return tr, numpy.asarray(l)
-    
+
     def inverse_kinematics(self, end_effector_transformation,
                            q=None,
                            max_iter=1000, tolerance=0.05,
@@ -83,7 +83,7 @@ class Chain(namedtuple('Chain', ('links', 'base', 'tool'))):
         :param float tolerance: tolerance before convergence
         :param mask: specify the cartesian DOF that will be ignore (in the case of a chain with less than 6 joints).
         :rtype: vector of the joint angles (theta 1, theta 2, ..., theta n)
-        
+
         """
         if q is None:
             q = numpy.zeros((len(self.links), 1))
@@ -92,7 +92,7 @@ class Chain(namedtuple('Chain', ('links', 'base', 'tool'))):
         best_e = numpy.ones(6) * numpy.inf
         best_q = None
         alpha = 1.0
-                
+
         for _ in range(max_iter):
             e = numpy.multiply(transform_difference(self.forward_kinematics(q)[0], end_effector_transformation), mask)
             d = numpy.linalg.norm(e)
@@ -105,7 +105,7 @@ class Chain(namedtuple('Chain', ('links', 'base', 'tool'))):
                 q = best_q.copy()
                 e = best_e.copy()
                 alpha *= 0.5
-                
+
             if use_pinv:
                 dq = numpy.linalg.pinv(self._jacob0(q)) * e.reshape((-1, 1))
             else:
@@ -144,14 +144,14 @@ class Chain(namedtuple('Chain', ('links', 'base', 'tool'))):
         return J
 
 # MARK: - Utility functions
-    
+
 def transform_difference(t1, t2):
     t1 = numpy.array(t1)
     t2 = numpy.array(t2)
-    
+
     return numpy.concatenate(((t2[0:3, 3] - t1[0:3, 3]).reshape(3),
-                             0.5 * (numpy.cross(t1[0:3, 0], t2[0:3, 0]) + 
-                                    numpy.cross(t1[0:3, 1], t2[0:3, 1]) + 
+                             0.5 * (numpy.cross(t1[0:3, 0], t2[0:3, 0]) +
+                                    numpy.cross(t1[0:3, 1], t2[0:3, 1]) +
                                     numpy.cross(t1[0:3, 2], t2[0:3, 2])).reshape(3)))
 
 def rotation_from_transf(tm):
@@ -201,4 +201,4 @@ def trotz(theta):
                       ( 0,   0,  1)))
 
     return transf_from_components(R, numpy.zeros(3))
-    
+

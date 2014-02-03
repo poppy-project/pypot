@@ -1,7 +1,12 @@
 import sys
 import time
 import numpy
+import logging
 import threading
+
+from collections import deque
+
+logger = logging.getLogger(__name__)
 
 
 class Primitive(object):
@@ -47,9 +52,14 @@ class Primitive(object):
         self._stop = threading.Event()
         self._resume = threading.Event()
 
+        self._synced = threading.Event()
+
     def _wrapped_run(self):
         self.t0 = time.time()
+
         self.run(*self.args, **self.kwargs)
+
+        self._synced.wait()
         self.robot._primitive_manager.remove(self)
 
     def run(self, *args, **kwargs):
@@ -80,6 +90,7 @@ class Primitive(object):
 
         self._resume.set()
         self._stop.clear()
+        self._synced.clear()
 
         self.robot._primitive_manager.add(self)
 
@@ -87,9 +98,12 @@ class Primitive(object):
         self._thread.daemon = True
         self._thread.start()
 
+        logger.info("Primitive %s started.", self)
+
     def stop(self):
         """ Requests the primitive to stop. """
         self._stop.set()
+        logger.info("Primitive %s stopped.", self)
 
     def should_stop(self):
         """ Signals if the primitive should be stopped or not. """
@@ -113,10 +127,12 @@ class Primitive(object):
     def pause(self):
         """ Requests the primitives to pause. """
         self._resume.clear()
+        logger.info("Primitive %s paused.", self)
 
     def resume(self):
         """ Requests the primitives to resume. """
         self._resume.set()
+        logger.info("Primitive %s resumed.", self)
 
     def should_pause(self):
         """ Signals if the primitive should be paused or not. """
@@ -130,6 +146,7 @@ class Primitive(object):
         """ Gets the equivalent :class:`~pypot.primitive.primitive.MockupMotor`. """
         return next((m for m in self.robot.motors if m.name == motor.name), None)
 
+
 class LoopPrimitive(Primitive):
     """ Simple primitive that call an update method at a predefined frequency.
 
@@ -139,9 +156,20 @@ class LoopPrimitive(Primitive):
     def __init__(self, robot, freq, *args, **kwargs):
         Primitive.__init__(self, robot, *args, **kwargs)
         self._period = 1.0 / freq
+        self._recent_updates = deque([], 11)
+
+    @property
+    def recent_update_frequencies(self):
+        """ Returns the 10 most recent update frequencies.
+
+        The given frequencies are computed as short-term frequencies!
+        The 0th element of the list corresponds to the most recent frequency.
+        """
+        return list(reversed([(1.0 / p) for p in numpy.diff(self._recent_updates)]))
 
     def run(self, *args, **kwargs):
         """ Calls the :meth:`~pypot.primitive.primitive.Primitive.update` method at a predefined frequency (runs until stopped). """
+
         while not self.should_stop():
             if self.should_pause():
                 self.wait_to_resume()
@@ -149,6 +177,8 @@ class LoopPrimitive(Primitive):
             start = time.time()
             self.update(*self.args, **self.kwargs)
             end = time.time()
+
+            self._recent_updates.append(start)
 
             dt = self._period - (end - start)
             if dt > 0:
@@ -160,8 +190,9 @@ class LoopPrimitive(Primitive):
             :param args: the arguments passed to the constructor are automatically passed to this method
             :param kwargs: the arguments passed to the constructor are automatically passed to this method
 
+            .. note:: When you override this method you should call the update method from the mother class to keep the log consistent.
             """
-        raise NotImplementedError
+        logger.debug('LoopPrimitive %s updated.', self)
 
 
 class MockupRobot(object):
@@ -178,9 +209,8 @@ class MockupRobot(object):
             self._motors.append(mockup_motor)
             setattr(self, m.name, mockup_motor)
 
-            for a in filter(lambda a: m in getattr(robot, a), robot.alias):
+            for a in [a for a in robot.alias if m in getattr(robot, a)]:
                 getattr(self, a).append(mockup_motor)
-
 
     def __getattr__(self, attr):
         return getattr(self._robot, attr)
@@ -204,6 +234,7 @@ class MockupRobot(object):
             m.moving_speed = 0
             m.torque_limit = 100.0
 
+
 class MockupMotor(object):
     """ Fake Motor used by the primitive to ensure sandboxing:
 
@@ -215,10 +246,6 @@ class MockupMotor(object):
         object.__setattr__(self, '_m', motor)
         object.__setattr__(self, '_to_set', {})
 
-    @property
-    def json(self):
-        return self._m.json
-
     def __getattr__(self, attr):
         return getattr(self._m, attr)
 
@@ -227,6 +254,8 @@ class MockupMotor(object):
             MockupMotor.goal_speed.fset(self, val)
         else:
             self._to_set[attr] = val
+            logger.debug("Setting MockupMotor '%s.%s' to %s",
+                         self.name, attr, val)
 
     def goto_position(self, position, duration, wait=False):
         """ Automatically sets the goal position and the moving speed to reach the desired position within the duration. """
