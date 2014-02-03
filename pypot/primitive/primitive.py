@@ -1,9 +1,12 @@
 import sys
 import time
 import numpy
+import logging
 import threading
 
 from collections import deque
+
+logger = logging.getLogger(__name__)
 
 
 class Primitive(object):
@@ -95,9 +98,12 @@ class Primitive(object):
         self._thread.daemon = True
         self._thread.start()
 
+        logger.info("Primitive %s started.", self)
+
     def stop(self):
         """ Requests the primitive to stop. """
         self._stop.set()
+        logger.info("Primitive %s stopped.", self)
 
     def should_stop(self):
         """ Signals if the primitive should be stopped or not. """
@@ -121,10 +127,12 @@ class Primitive(object):
     def pause(self):
         """ Requests the primitives to pause. """
         self._resume.clear()
+        logger.info("Primitive %s paused.", self)
 
     def resume(self):
         """ Requests the primitives to resume. """
         self._resume.set()
+        logger.info("Primitive %s resumed.", self)
 
     def should_pause(self):
         """ Signals if the primitive should be paused or not. """
@@ -182,8 +190,9 @@ class LoopPrimitive(Primitive):
             :param args: the arguments passed to the constructor are automatically passed to this method
             :param kwargs: the arguments passed to the constructor are automatically passed to this method
 
+            .. note:: When you override this method you should call the update method from the mother class to keep the log consistent.
             """
-        raise NotImplementedError
+        logger.debug('LoopPrimitive %s updated.', self)
 
 
 class MockupRobot(object):
@@ -245,6 +254,8 @@ class MockupMotor(object):
             MockupMotor.goal_speed.fset(self, val)
         else:
             self._to_set[attr] = val
+            logger.debug("Setting MockupMotor '%s.%s' to %s",
+                         self.name, attr, val)
 
     def goto_position(self, position, duration, wait=False):
         """ Automatically sets the goal position and the moving speed to reach the desired position within the duration. """

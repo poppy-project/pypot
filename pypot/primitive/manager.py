@@ -1,9 +1,12 @@
 import threading
+import logging
 import numpy
 import time
 
 from collections import defaultdict
 from functools import partial
+
+logger = logging.getLogger(__name__)
 
 
 class PrimitiveManager(threading.Thread):
@@ -63,6 +66,8 @@ class PrimitiveManager(threading.Thread):
 
                 for key, val in to_set.iteritems():
                     filtred_val = self._filter(val)
+                    logger.debug('Combined %s.%s from %s to %s',
+                                 m.name, key, val, filtred_val)
                     setattr(m, key, filtred_val)
 
                 [p._synced.set() for p in self._prim]

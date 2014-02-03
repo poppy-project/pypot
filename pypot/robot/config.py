@@ -78,6 +78,8 @@ ergo_robot_config = {
         },
     },
 }
+# This logger should always provides the config as extra
+logger = logging.getLogger(__name__)
 
 
 def from_config(config):
@@ -86,6 +88,7 @@ def from_config(config):
         For details on how to write such a configuration dictionnary, you should refer to the section :ref:`config_file`.
 
         """
+    logger.info('Loading config... ', extra={'config': config})
     robot = pypot.robot.Robot()
 
     alias = config['motorgroups']
@@ -118,8 +121,18 @@ def from_config(config):
             d = numpy.linalg.norm(numpy.asarray(angle_limit) - numpy.asarray(old_limits))
 
             if d > 1:
-                logging.warning('changes angle limit of motor {} to {}'.format(m.id, angle_limit))
+                logger.warning("Limits of '%s' changed to %s",
+                               m.name, angle_limit,
+                               extra={'config': config})
                 changed_angle_limits[m.id] = angle_limit
+
+            logger.info("Instantiating motor '%s' id=%d direct=%s limits=%s offset=%s",
+                        m.name, m.id, m.direct, angle_limit, m.offset,
+                        extra={'config': config})
+
+        logger.info('Instantiating controller on %s with motors %s',
+                    c_params['port'], motor_names,
+                    extra={'config': config})
 
         if changed_angle_limits:
             dxl_io.set_angle_limit(changed_angle_limits)
@@ -132,6 +145,13 @@ def from_config(config):
         motors = [getattr(robot, name) for name in _motor_extractor(alias, alias_name)]
         setattr(robot, alias_name, motors)
         robot.alias.append(alias_name)
+
+        logger.info("Creating alias '%s' for motors %s",
+                    alias_name, [m.name for m in motors],
+                    extra={'config': config})
+
+    logger.info('Loading complete!',
+                extra={'config': config})
 
     return robot
 
@@ -149,7 +169,9 @@ def from_json(json_file):
 
 
 def _oldxml_to_config(xml_file):
-    warnings.warn('Using XML file as configuration is deprecated, you should switch to Python dictionnary. You can save them as any format that can directly be transformed into a dictionnary (e.g. json).', DeprecationWarning)
+    msg = 'Using XML file as configuration is deprecated, you should switch to Python dictionnary. You can save them as any format that can directly be transformed into a dictionnary (e.g. json files).'
+
+    warnings.warn(msg, DeprecationWarning)
 
     import xml.dom.minidom
 
@@ -182,6 +204,8 @@ def _oldxml_to_config(xml_file):
                                   'orientation': str(motor_node.getAttribute('orientation')),
                                   'offset': float(motor_node.getAttribute('offset')),
                                   'angle_limit': angle_limit}
+
+    logger.warning(msg, extra={'config': config})
 
     return config
 
