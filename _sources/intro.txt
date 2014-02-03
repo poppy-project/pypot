@@ -20,7 +20,7 @@ The next sections describe how to :ref:`install <installation>` PyPot on your sy
 Installation
 ============
 
-The PyPot package is entirely written in Python. So, the install process should be rather straightforward. Package release and source code can be directly downloaded on `bitbucket <https://bitbucket.org/pierrerouanet/pypot>`_.
+The PyPot package is entirely written in Python. So, the install process should be rather straightforward. Package release and source code can be directly downloaded on `github <https://github.com/poppy-project/pypot>`_.
 
 Before you start building PyPot, you need to make sure that the following packages are already installed on your computer:
 

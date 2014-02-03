@@ -17,7 +17,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>pypot.dynamixel.io &mdash; PyPot 1.4.8 documentation</title>
+    <title>pypot.dynamixel.io &mdash; PyPot 1.5.0 documentation</title>
     
     <link rel="stylesheet" href="../../../_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -29,7 +29,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     '1.4.8',
+        VERSION:     '1.5.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -42,7 +42,7 @@
     <script type="text/javascript" src="../../../_static/js/jquery-fix.js"></script>
     <script type="text/javascript" src="../../../_static/bootstrap-3.0.0/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="../../../_static/bootstrap-sphinx.js"></script>
-    <link rel="top" title="PyPot 1.4.8 documentation" href="../../../index.html" />
+    <link rel="top" title="PyPot 1.5.0 documentation" href="../../../index.html" />
     <link rel="up" title="pypot.dynamixel" href="../dynamixel.html" />
 <meta charset='utf-8'>
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
@@ -62,7 +62,7 @@
           <span class="icon-bar"></span>
         </button>
         <a class="navbar-brand" href="../../../index.html">PyPot</a>
-        <span class="navbar-text navbar-version pull-left"><b>1.4.8</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>1.5.0</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -212,6 +212,7 @@
 <span class="c"># -*- coding: utf-8 -*-</span>
 
 <span class="kn">import</span> <span class="nn">serial</span>
+<span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">import</span> <span class="nn">operator</span>
 <span class="kn">import</span> <span class="nn">itertools</span>
 <span class="kn">import</span> <span class="nn">threading</span>
@@ -219,10 +220,14 @@
 <span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">namedtuple</span><span class="p">,</span> <span class="n">OrderedDict</span>
 <span class="kn">from</span> <span class="nn">contextlib</span> <span class="kn">import</span> <span class="n">contextmanager</span>
 
+<span class="kn">from</span> <span class="nn">.conversion</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">.packet</span> <span class="kn">import</span> <span class="o">*</span>
 
-<span class="kn">from</span> <span class="nn">pypot.dynamixel.conversion</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="kn">from</span> <span class="nn">pypot.dynamixel.packet</span> <span class="kn">import</span> <span class="o">*</span>
-
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="n">__name__</span><span class="p">)</span>
+<span class="c"># With this logger you should always provide as extra:</span>
+<span class="c"># - the port</span>
+<span class="c"># - the baudrate</span>
+<span class="c"># - the timeout</span>
 
 
 <span class="n">_DxlControl</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span><span class="s">&#39;_DxlControl&#39;</span><span class="p">,</span> <span class="p">(</span><span class="s">&#39;name&#39;</span><span class="p">,</span>
@@ -232,9 +237,9 @@
                                          <span class="s">&#39;dxl_to_si&#39;</span><span class="p">,</span> <span class="s">&#39;si_to_dxl&#39;</span><span class="p">,</span>
                                          <span class="s">&#39;getter_name&#39;</span><span class="p">,</span> <span class="s">&#39;setter_name&#39;</span><span class="p">))</span>
 
+
 <span class="k">class</span> <span class="nc">_DxlAccess</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="n">readonly</span><span class="p">,</span> <span class="n">writeonly</span><span class="p">,</span> <span class="n">readwrite</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
-
 
 
 <div class="viewcode-block" id="DxlIO"><a class="viewcode-back" href="../../../pypot.dynamixel.html#pypot.dynamixel.io.DxlIO">[docs]</a><span class="k">class</span> <span class="nc">DxlIO</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -295,6 +300,10 @@
 
 <span class="sd">            &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_open</span><span class="p">(</span><span class="n">port</span><span class="p">,</span> <span class="n">baudrate</span><span class="p">,</span> <span class="n">timeout</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&quot;Opening port &#39;</span><span class="si">%s</span><span class="s">&#39;&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">port</span><span class="p">,</span>
+                    <span class="n">extra</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;port&#39;</span><span class="p">:</span> <span class="n">port</span><span class="p">,</span>
+                           <span class="s">&#39;baudrate&#39;</span><span class="p">:</span> <span class="n">baudrate</span><span class="p">,</span>
+                           <span class="s">&#39;timeout&#39;</span><span class="p">:</span> <span class="n">timeout</span><span class="p">})</span>
 </div>
     <span class="k">def</span> <span class="nf">_open</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">port</span><span class="p">,</span> <span class="n">baudrate</span><span class="p">,</span> <span class="n">timeout</span><span class="p">,</span> <span class="n">max_recursion</span><span class="o">=</span><span class="mi">500</span><span class="p">):</span>
         <span class="c"># Tries to connect to port until it succeeds to ping any motor on the bus.</span>
@@ -333,6 +342,11 @@
             <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">__force_lock</span><span class="p">(</span><span class="n">_force_lock</span><span class="p">)</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">_serial_lock</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_serial</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">__used_ports</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">port</span><span class="p">)</span>
+
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&quot;Closing port &#39;</span><span class="si">%s</span><span class="s">&#39;&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">port</span><span class="p">,</span>
+                        <span class="n">extra</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;port&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">port</span><span class="p">,</span>
+                               <span class="s">&#39;baudrate&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">baudrate</span><span class="p">,</span>
+                               <span class="s">&#39;timeout&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">timeout</span><span class="p">})</span>
 </div>
 <div class="viewcode-block" id="DxlIO.flush"><a class="viewcode-back" href="../../../pypot.dynamixel.html#pypot.dynamixel.io.DxlIO.flush">[docs]</a>    <span class="k">def</span> <span class="nf">flush</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_force_lock</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Flushes the serial communication (both input and output). &quot;&quot;&quot;</span>
@@ -448,7 +462,8 @@
         <span class="n">srl</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="nb">id</span> <span class="ow">in</span> <span class="n">ids</span><span class="p">:</span>
             <span class="k">try</span><span class="p">:</span>
-                <span class="n">srl</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_status_return_level</span><span class="p">((</span><span class="nb">id</span><span class="p">,</span> <span class="p">),</span> <span class="n">error_handler</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">convert</span><span class="o">=</span><span class="n">convert</span><span class="p">))</span>
+                <span class="n">srl</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_status_return_level</span><span class="p">((</span><span class="nb">id</span><span class="p">,</span> <span class="p">),</span>
+                           <span class="n">error_handler</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">convert</span><span class="o">=</span><span class="n">convert</span><span class="p">))</span>
             <span class="k">except</span> <span class="n">DxlTimeoutError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
                 <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ping</span><span class="p">(</span><span class="nb">id</span><span class="p">):</span>
                     <span class="n">srl</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s">&#39;never&#39;</span> <span class="k">if</span> <span class="n">convert</span> <span class="k">else</span> <span class="mi">0</span><span class="p">)</span>
@@ -569,7 +584,6 @@
             <span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
-
 </div>
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">_generate_accessors</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">control</span><span class="p">):</span>
@@ -637,7 +651,7 @@
                 <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">itertools</span><span class="o">.</span><span class="n">chain</span><span class="p">(</span><span class="o">*</span><span class="n">values</span><span class="p">)</span> <span class="k">if</span> <span class="n">control</span><span class="o">.</span><span class="n">nb_elem</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="k">else</span> <span class="n">values</span><span class="p">):</span>
                     <span class="k">if</span> <span class="n">v</span> <span class="o">==</span> <span class="n">max_val</span><span class="p">:</span>
                         <span class="n">lost_ids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ids</span><span class="p">[</span><span class="n">i</span> <span class="o">//</span> <span class="n">control</span><span class="o">.</span><span class="n">nb_elem</span><span class="p">])</span>
-                <span class="n">e</span> <span class="o">=</span> <span class="n">DxlTimeoutError</span><span class="p">(</span><span class="n">rp</span><span class="p">,</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">lost_ids</span><span class="p">)))</span>
+                <span class="n">e</span> <span class="o">=</span> <span class="n">DxlTimeoutError</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rp</span><span class="p">,</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">lost_ids</span><span class="p">)))</span>
                 <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_error_handler</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">_error_handler</span><span class="o">.</span><span class="n">handle_timeout</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
                     <span class="k">return</span> <span class="p">()</span>
@@ -672,14 +686,17 @@
                                         <span class="n">dxl_code_all</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">control</span><span class="o">.</span><span class="n">length</span><span class="p">,</span> <span class="n">control</span><span class="o">.</span><span class="n">nb_elem</span><span class="p">)))</span>
 
         <span class="n">wp</span> <span class="o">=</span> <span class="n">DxlSyncWritePacket</span><span class="p">(</span><span class="n">control</span><span class="o">.</span><span class="n">address</span><span class="p">,</span> <span class="n">control</span><span class="o">.</span><span class="n">length</span> <span class="o">*</span> <span class="n">control</span><span class="o">.</span><span class="n">nb_elem</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
-        <span class="n">sp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_send_packet</span><span class="p">(</span><span class="n">wp</span><span class="p">,</span> <span class="n">wait_for_status_packet</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
-
+        <span class="bp">self</span><span class="o">.</span><span class="n">_send_packet</span><span class="p">(</span><span class="n">wp</span><span class="p">,</span> <span class="n">wait_for_status_packet</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
 
     <span class="c"># MARK: - Send/Receive packet</span>
-
     <span class="k">def</span> <span class="nf">__real_send</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instruction_packet</span><span class="p">,</span> <span class="n">wait_for_status_packet</span><span class="p">,</span> <span class="n">_force_lock</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">closed</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">DxlError</span><span class="p">(</span><span class="s">&#39;try to send a packet on a closed serial communication&#39;</span><span class="p">)</span>
+
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&#39;Sending </span><span class="si">%s</span><span class="s">&#39;</span><span class="p">,</span> <span class="n">instruction_packet</span><span class="p">,</span>
+                     <span class="n">extra</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;port&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">port</span><span class="p">,</span>
+                            <span class="s">&#39;baudrate&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">baudrate</span><span class="p">,</span>
+                            <span class="s">&#39;timeout&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">timeout</span><span class="p">})</span>
 
         <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">__force_lock</span><span class="p">(</span><span class="n">_force_lock</span><span class="p">)</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">_serial_lock</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">flush</span><span class="p">(</span><span class="n">_force_lock</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
@@ -687,15 +704,16 @@
             <span class="n">data</span> <span class="o">=</span> <span class="n">instruction_packet</span><span class="o">.</span><span class="n">to_string</span><span class="p">()</span>
             <span class="n">nbytes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_serial</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">!=</span> <span class="n">nbytes</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="n">DxlCommunicationError</span><span class="p">(</span><span class="s">&#39;instruction packet not entirely sent&#39;</span><span class="p">,</span>
-                                                  <span class="n">instruction_packet</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="n">DxlCommunicationError</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                                            <span class="s">&#39;instruction packet not entirely sent&#39;</span><span class="p">,</span>
+                                            <span class="n">instruction_packet</span><span class="p">)</span>
 
             <span class="k">if</span> <span class="ow">not</span> <span class="n">wait_for_status_packet</span><span class="p">:</span>
                 <span class="k">return</span>
 
             <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_serial</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">DxlPacketHeader</span><span class="o">.</span><span class="n">length</span><span class="p">)</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">data</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="n">DxlTimeoutError</span><span class="p">(</span><span class="n">instruction_packet</span><span class="p">,</span> <span class="n">instruction_packet</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="n">DxlTimeoutError</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instruction_packet</span><span class="p">,</span> <span class="n">instruction_packet</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
 
             <span class="k">try</span><span class="p">:</span>
                 <span class="n">header</span> <span class="o">=</span> <span class="n">DxlPacketHeader</span><span class="o">.</span><span class="n">from_string</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
@@ -703,16 +721,20 @@
                 <span class="n">status_packet</span> <span class="o">=</span> <span class="n">DxlStatusPacket</span><span class="o">.</span><span class="n">from_string</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
 
             <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="n">DxlCommunicationError</span><span class="p">(</span><span class="s">&#39;could not parse received data {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">ord</span><span class="p">,</span> <span class="n">data</span><span class="p">)),</span>
-                                                  <span class="n">instruction_packet</span><span class="p">)</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="s">&#39;could not parse received data {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">ord</span><span class="p">,</span> <span class="n">data</span><span class="p">))</span>
+                <span class="k">raise</span> <span class="n">DxlCommunicationError</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msg</span><span class="p">,</span> <span class="n">instruction_packet</span><span class="p">)</span>
+
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&#39;Receiving </span><span class="si">%s</span><span class="s">&#39;</span><span class="p">,</span> <span class="n">status_packet</span><span class="p">,</span>
+                         <span class="n">extra</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;port&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">port</span><span class="p">,</span>
+                                <span class="s">&#39;baudrate&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">baudrate</span><span class="p">,</span>
+                                <span class="s">&#39;timeout&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">timeout</span><span class="p">})</span>
 
             <span class="k">return</span> <span class="n">status_packet</span>
 
-
     <span class="k">def</span> <span class="nf">_send_packet</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
-                    <span class="n">instruction_packet</span><span class="p">,</span> <span class="n">wait_for_status_packet</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
-                    <span class="n">error_handler</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
-                    <span class="n">_force_lock</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+                     <span class="n">instruction_packet</span><span class="p">,</span> <span class="n">wait_for_status_packet</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+                     <span class="n">error_handler</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">_force_lock</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">error_handler</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__real_send</span><span class="p">(</span><span class="n">instruction_packet</span><span class="p">,</span> <span class="n">wait_for_status_packet</span><span class="p">,</span> <span class="n">_force_lock</span><span class="p">)</span>
 
@@ -735,17 +757,16 @@
             <span class="n">error_handler</span><span class="o">.</span><span class="n">handle_communication_error</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
 
 
-
-
-<span class="c"># MARK: - Dxl Errors</span>
-</div>
+<span class="c"># MARK: - Dxl Errors</span></div>
 <div class="viewcode-block" id="DxlError"><a class="viewcode-back" href="../../../pypot.dynamixel.html#pypot.dynamixel.io.DxlError">[docs]</a><span class="k">class</span> <span class="nc">DxlError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; Base class for all errors encountered using :class:`~pypot.dynamixel.io.DxlIO`. &quot;&quot;&quot;</span>
     <span class="k">pass</span>
+
 </div>
 <div class="viewcode-block" id="DxlCommunicationError"><a class="viewcode-back" href="../../../pypot.dynamixel.html#pypot.dynamixel.io.DxlCommunicationError">[docs]</a><span class="k">class</span> <span class="nc">DxlCommunicationError</span><span class="p">(</span><span class="n">DxlError</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; Base error for communication error encountered when using :class:`~pypot.dynamixel.io.DxlIO`. &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">,</span> <span class="n">instruction_packet</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dxl_io</span><span class="p">,</span> <span class="n">message</span><span class="p">,</span> <span class="n">instruction_packet</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dxl_io</span> <span class="o">=</span> <span class="n">dxl_io</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">message</span> <span class="o">=</span> <span class="n">message</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">instruction_packet</span> <span class="o">=</span> <span class="n">instruction_packet</span>
 
@@ -755,8 +776,8 @@
 </div>
 <div class="viewcode-block" id="DxlTimeoutError"><a class="viewcode-back" href="../../../pypot.dynamixel.html#pypot.dynamixel.io.DxlTimeoutError">[docs]</a><span class="k">class</span> <span class="nc">DxlTimeoutError</span><span class="p">(</span><span class="n">DxlCommunicationError</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; Timeout error encountered when using :class:`~pypot.dynamixel.io.DxlIO`. &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instruction_packet</span><span class="p">,</span> <span class="n">ids</span><span class="p">):</span>
-        <span class="n">DxlCommunicationError</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s">&#39;timeout occured&#39;</span><span class="p">,</span> <span class="n">instruction_packet</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dxl_io</span><span class="p">,</span> <span class="n">instruction_packet</span><span class="p">,</span> <span class="n">ids</span><span class="p">):</span>
+        <span class="n">DxlCommunicationError</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dxl_io</span><span class="p">,</span> <span class="s">&#39;timeout occured&#39;</span><span class="p">,</span> <span class="n">instruction_packet</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ids</span> <span class="o">=</span> <span class="n">ids</span>
 
     <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -775,11 +796,11 @@
                  <span class="n">setter_name</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
 
     <span class="n">control</span> <span class="o">=</span> <span class="n">_DxlControl</span><span class="p">(</span><span class="n">name</span><span class="p">,</span>
-                               <span class="n">address</span><span class="p">,</span> <span class="n">length</span><span class="p">,</span> <span class="n">nb_elem</span><span class="p">,</span>
-                               <span class="n">access</span><span class="p">,</span>
-                               <span class="n">models</span><span class="p">,</span>
-                               <span class="n">dxl_to_si</span><span class="p">,</span> <span class="n">si_to_dxl</span><span class="p">,</span>
-                               <span class="n">getter_name</span><span class="p">,</span> <span class="n">setter_name</span><span class="p">)</span>
+                          <span class="n">address</span><span class="p">,</span> <span class="n">length</span><span class="p">,</span> <span class="n">nb_elem</span><span class="p">,</span>
+                          <span class="n">access</span><span class="p">,</span>
+                          <span class="n">models</span><span class="p">,</span>
+                          <span class="n">dxl_to_si</span><span class="p">,</span> <span class="n">si_to_dxl</span><span class="p">,</span>
+                          <span class="n">getter_name</span><span class="p">,</span> <span class="n">setter_name</span><span class="p">)</span>
 
     <span class="n">DxlIO</span><span class="o">.</span><span class="n">_generate_accessors</span><span class="p">(</span><span class="n">control</span><span class="p">)</span>
 
@@ -900,12 +921,12 @@
 
 <span class="n">_add_control</span><span class="p">(</span><span class="s">&#39;goal position speed load&#39;</span><span class="p">,</span>
              <span class="n">address</span><span class="o">=</span><span class="mh">0x1E</span><span class="p">,</span> <span class="n">nb_elem</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
-             <span class="n">dxl_to_si</span><span class="o">=</span><span class="k">lambda</span> <span class="n">value</span><span class="p">,</span> <span class="n">model</span><span class="p">:(</span><span class="n">dxl_to_degree</span><span class="p">(</span><span class="n">value</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">model</span><span class="p">),</span>
-                                            <span class="n">dxl_to_speed</span><span class="p">(</span><span class="n">value</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">model</span><span class="p">),</span>
-                                            <span class="n">dxl_to_load</span><span class="p">(</span><span class="n">value</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">model</span><span class="p">)),</span>
-             <span class="n">si_to_dxl</span><span class="o">=</span><span class="k">lambda</span> <span class="n">value</span><span class="p">,</span> <span class="n">model</span><span class="p">:(</span><span class="n">degree_to_dxl</span><span class="p">(</span><span class="n">value</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">model</span><span class="p">),</span>
-                                            <span class="n">speed_to_dxl</span><span class="p">(</span><span class="n">value</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">model</span><span class="p">),</span>
-                                            <span class="n">torque_to_dxl</span><span class="p">(</span><span class="n">value</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">model</span><span class="p">)))</span>
+             <span class="n">dxl_to_si</span><span class="o">=</span><span class="k">lambda</span> <span class="n">value</span><span class="p">,</span> <span class="n">model</span><span class="p">:</span> <span class="p">(</span><span class="n">dxl_to_degree</span><span class="p">(</span><span class="n">value</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">model</span><span class="p">),</span>
+                                             <span class="n">dxl_to_speed</span><span class="p">(</span><span class="n">value</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">model</span><span class="p">),</span>
+                                             <span class="n">dxl_to_load</span><span class="p">(</span><span class="n">value</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">model</span><span class="p">)),</span>
+             <span class="n">si_to_dxl</span><span class="o">=</span><span class="k">lambda</span> <span class="n">value</span><span class="p">,</span> <span class="n">model</span><span class="p">:</span> <span class="p">(</span><span class="n">degree_to_dxl</span><span class="p">(</span><span class="n">value</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">model</span><span class="p">),</span>
+                                             <span class="n">speed_to_dxl</span><span class="p">(</span><span class="n">value</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">model</span><span class="p">),</span>
+                                             <span class="n">torque_to_dxl</span><span class="p">(</span><span class="n">value</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">model</span><span class="p">)))</span>
 
 <span class="n">_add_control</span><span class="p">(</span><span class="s">&#39;present position&#39;</span><span class="p">,</span>
              <span class="n">address</span><span class="o">=</span><span class="mh">0x24</span><span class="p">,</span>
@@ -925,9 +946,9 @@
 <span class="n">_add_control</span><span class="p">(</span><span class="s">&#39;present position speed load&#39;</span><span class="p">,</span>
              <span class="n">address</span><span class="o">=</span><span class="mh">0x24</span><span class="p">,</span> <span class="n">nb_elem</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
              <span class="n">access</span><span class="o">=</span><span class="n">_DxlAccess</span><span class="o">.</span><span class="n">readonly</span><span class="p">,</span>
-             <span class="n">dxl_to_si</span><span class="o">=</span><span class="k">lambda</span> <span class="n">value</span><span class="p">,</span> <span class="n">model</span><span class="p">:(</span><span class="n">dxl_to_degree</span><span class="p">(</span><span class="n">value</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">model</span><span class="p">),</span>
-                                            <span class="n">dxl_to_speed</span><span class="p">(</span><span class="n">value</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">model</span><span class="p">),</span>
-                                            <span class="n">dxl_to_load</span><span class="p">(</span><span class="n">value</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">model</span><span class="p">)))</span>
+             <span class="n">dxl_to_si</span><span class="o">=</span><span class="k">lambda</span> <span class="n">value</span><span class="p">,</span> <span class="n">model</span><span class="p">:</span> <span class="p">(</span><span class="n">dxl_to_degree</span><span class="p">(</span><span class="n">value</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">model</span><span class="p">),</span>
+                                             <span class="n">dxl_to_speed</span><span class="p">(</span><span class="n">value</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">model</span><span class="p">),</span>
+                                             <span class="n">dxl_to_load</span><span class="p">(</span><span class="n">value</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">model</span><span class="p">)))</span>
 
 <span class="n">_add_control</span><span class="p">(</span><span class="s">&#39;present voltage&#39;</span><span class="p">,</span>
              <span class="n">address</span><span class="o">=</span><span class="mh">0x2A</span><span class="p">,</span> <span class="n">length</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>

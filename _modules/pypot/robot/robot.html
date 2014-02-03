@@ -17,7 +17,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>pypot.robot.robot &mdash; PyPot 1.4.8 documentation</title>
+    <title>pypot.robot.robot &mdash; PyPot 1.5.0 documentation</title>
     
     <link rel="stylesheet" href="../../../_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -29,7 +29,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     '1.4.8',
+        VERSION:     '1.5.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -42,7 +42,7 @@
     <script type="text/javascript" src="../../../_static/js/jquery-fix.js"></script>
     <script type="text/javascript" src="../../../_static/bootstrap-3.0.0/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="../../../_static/bootstrap-sphinx.js"></script>
-    <link rel="top" title="PyPot 1.4.8 documentation" href="../../../index.html" />
+    <link rel="top" title="PyPot 1.5.0 documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" />
 <meta charset='utf-8'>
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
@@ -62,7 +62,7 @@
           <span class="icon-bar"></span>
         </button>
         <a class="navbar-brand" href="../../../index.html">PyPot</a>
-        <span class="navbar-text navbar-version pull-left"><b>1.4.8</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>1.5.0</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -210,22 +210,25 @@
       
   <h1>Source code for pypot.robot.robot</h1><div class="highlight"><pre>
 <span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">logging</span>
 
 <span class="kn">import</span> <span class="nn">pypot.primitive.manager</span>
 <span class="kn">import</span> <span class="nn">pypot.dynamixel.controller</span>
 
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="n">__name__</span><span class="p">)</span>
+
 
 <div class="viewcode-block" id="Robot"><a class="viewcode-back" href="../../../pypot.robot.html#pypot.robot.robot.Robot">[docs]</a><span class="k">class</span> <span class="nc">Robot</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        This class is used to regroup all motors (and soon sensors) of your robots.</span>
+<span class="sd">        This class is used to regroup all motors and sensors of your robots.</span>
 
 <span class="sd">        Most of the time, you do not want to directly instantiate this class,</span>
 <span class="sd">        but you rather want to use the factory which creates a robot instance</span>
-<span class="sd">        from a configuration file, currently a xml file (see :ref:`config_file`).</span>
+<span class="sd">        from a python dictionnary (see :ref:`config_file`).</span>
 
 <span class="sd">        This class encapsulates the different controllers (such as dynamixel ones)</span>
 <span class="sd">        that automatically synchronize the virtual sensors/effectors instances held</span>
-<span class="sd">        by the robot class with the real devices. By doing so, each sensor/efector</span>
+<span class="sd">        by the robot class with the real devices. By doing so, each sensor/effector</span>
 <span class="sd">        can be synchronized at a different frequency.</span>
 
 <span class="sd">        This class also provides a generic motors accessor in order to (more or less)</span>
@@ -255,15 +258,21 @@
         <span class="sd">&quot;&quot;&quot; Starts all the synchonization loop (sensor/effector controllers). &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_primitive_manager</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
         <span class="p">[</span><span class="n">c</span><span class="o">.</span><span class="n">start</span><span class="p">()</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dxl_controllers</span><span class="p">]</span>
+
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;Starting robot synchronization.&#39;</span><span class="p">)</span>
 </div>
 <div class="viewcode-block" id="Robot.stop_sync"><a class="viewcode-back" href="../../../pypot.robot.html#pypot.robot.robot.Robot.stop_sync">[docs]</a>    <span class="k">def</span> <span class="nf">stop_sync</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Stops all the synchonization loop (sensor/effector controllers). &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_primitive_manager</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
         <span class="p">[</span><span class="n">c</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dxl_controllers</span><span class="p">]</span>
+
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;Stopping robot synchronization.&#39;</span><span class="p">)</span>
 </div>
 <div class="viewcode-block" id="Robot.attach_primitive"><a class="viewcode-back" href="../../../pypot.robot.html#pypot.robot.robot.Robot.attach_primitive">[docs]</a>    <span class="k">def</span> <span class="nf">attach_primitive</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">primitive</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
         <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">primitive</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_attached_primitives</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">primitive</span>
+
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&quot;Attaching primitive &#39;</span><span class="si">%s</span><span class="s">&#39; to the robot.&quot;</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
 </div>
     <span class="nd">@property</span>
 <div class="viewcode-block" id="Robot.motors"><a class="viewcode-back" href="../../../pypot.robot.html#pypot.robot.robot.Robot.motors">[docs]</a>    <span class="k">def</span> <span class="nf">motors</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -318,8 +327,8 @@
         <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">motors</span><span class="p">:</span>
             <span class="n">m</span><span class="o">.</span><span class="n">compliant</span> <span class="o">=</span> <span class="bp">False</span>
             <span class="n">m</span><span class="o">.</span><span class="n">moving_speed</span> <span class="o">=</span> <span class="mi">0</span>
-            <span class="n">m</span><span class="o">.</span><span class="n">torque_limit</span> <span class="o">=</span> <span class="mf">100.0</span>
-</pre></div></div></div>
+            <span class="n">m</span><span class="o">.</span><span class="n">torque_limit</span> <span class="o">=</span> <span class="mf">100.0</span></div></div>
+</pre></div>
 
     </div>
       

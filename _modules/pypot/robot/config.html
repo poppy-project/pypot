@@ -17,7 +17,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>pypot.robot.config &mdash; PyPot 1.4.8 documentation</title>
+    <title>pypot.robot.config &mdash; PyPot 1.5.0 documentation</title>
     
     <link rel="stylesheet" href="../../../_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -29,7 +29,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     '1.4.8',
+        VERSION:     '1.5.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -42,7 +42,7 @@
     <script type="text/javascript" src="../../../_static/js/jquery-fix.js"></script>
     <script type="text/javascript" src="../../../_static/bootstrap-3.0.0/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="../../../_static/bootstrap-sphinx.js"></script>
-    <link rel="top" title="PyPot 1.4.8 documentation" href="../../../index.html" />
+    <link rel="top" title="PyPot 1.5.0 documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" />
 <meta charset='utf-8'>
 <meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
@@ -62,7 +62,7 @@
           <span class="icon-bar"></span>
         </button>
         <a class="navbar-brand" href="../../../index.html">PyPot</a>
-        <span class="navbar-text navbar-version pull-left"><b>1.4.8</b></span>
+        <span class="navbar-text navbar-version pull-left"><b>1.5.0</b></span>
       </div>
 
         <div class="collapse navbar-collapse nav-collapse">
@@ -289,6 +289,8 @@
         <span class="p">},</span>
     <span class="p">},</span>
 <span class="p">}</span>
+<span class="c"># This logger should always provides the config as extra</span>
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="n">__name__</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="from_config"><a class="viewcode-back" href="../../../pypot.robot.html#pypot.robot.config.from_config">[docs]</a><span class="k">def</span> <span class="nf">from_config</span><span class="p">(</span><span class="n">config</span><span class="p">):</span>
@@ -297,6 +299,7 @@
 <span class="sd">        For details on how to write such a configuration dictionnary, you should refer to the section :ref:`config_file`.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;Loading config... &#39;</span><span class="p">,</span> <span class="n">extra</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;config&#39;</span><span class="p">:</span> <span class="n">config</span><span class="p">})</span>
     <span class="n">robot</span> <span class="o">=</span> <span class="n">pypot</span><span class="o">.</span><span class="n">robot</span><span class="o">.</span><span class="n">Robot</span><span class="p">()</span>
 
     <span class="n">alias</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s">&#39;motorgroups&#39;</span><span class="p">]</span>
@@ -329,8 +332,18 @@
             <span class="n">d</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">angle_limit</span><span class="p">)</span> <span class="o">-</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">old_limits</span><span class="p">))</span>
 
             <span class="k">if</span> <span class="n">d</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
-                <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s">&#39;changes angle limit of motor {} to {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">angle_limit</span><span class="p">))</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s">&quot;Limits of &#39;</span><span class="si">%s</span><span class="s">&#39; changed to </span><span class="si">%s</span><span class="s">&quot;</span><span class="p">,</span>
+                               <span class="n">m</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">angle_limit</span><span class="p">,</span>
+                               <span class="n">extra</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;config&#39;</span><span class="p">:</span> <span class="n">config</span><span class="p">})</span>
                 <span class="n">changed_angle_limits</span><span class="p">[</span><span class="n">m</span><span class="o">.</span><span class="n">id</span><span class="p">]</span> <span class="o">=</span> <span class="n">angle_limit</span>
+
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&quot;Instantiating motor &#39;</span><span class="si">%s</span><span class="s">&#39; id=</span><span class="si">%d</span><span class="s"> direct=</span><span class="si">%s</span><span class="s"> limits=</span><span class="si">%s</span><span class="s"> offset=</span><span class="si">%s</span><span class="s">&quot;</span><span class="p">,</span>
+                        <span class="n">m</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">m</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">m</span><span class="o">.</span><span class="n">direct</span><span class="p">,</span> <span class="n">angle_limit</span><span class="p">,</span> <span class="n">m</span><span class="o">.</span><span class="n">offset</span><span class="p">,</span>
+                        <span class="n">extra</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;config&#39;</span><span class="p">:</span> <span class="n">config</span><span class="p">})</span>
+
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;Instantiating controller on </span><span class="si">%s</span><span class="s"> with motors </span><span class="si">%s</span><span class="s">&#39;</span><span class="p">,</span>
+                    <span class="n">c_params</span><span class="p">[</span><span class="s">&#39;port&#39;</span><span class="p">],</span> <span class="n">motor_names</span><span class="p">,</span>
+                    <span class="n">extra</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;config&#39;</span><span class="p">:</span> <span class="n">config</span><span class="p">})</span>
 
         <span class="k">if</span> <span class="n">changed_angle_limits</span><span class="p">:</span>
             <span class="n">dxl_io</span><span class="o">.</span><span class="n">set_angle_limit</span><span class="p">(</span><span class="n">changed_angle_limits</span><span class="p">)</span>
@@ -343,6 +356,13 @@
         <span class="n">motors</span> <span class="o">=</span> <span class="p">[</span><span class="nb">getattr</span><span class="p">(</span><span class="n">robot</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">_motor_extractor</span><span class="p">(</span><span class="n">alias</span><span class="p">,</span> <span class="n">alias_name</span><span class="p">)]</span>
         <span class="nb">setattr</span><span class="p">(</span><span class="n">robot</span><span class="p">,</span> <span class="n">alias_name</span><span class="p">,</span> <span class="n">motors</span><span class="p">)</span>
         <span class="n">robot</span><span class="o">.</span><span class="n">alias</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">alias_name</span><span class="p">)</span>
+
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&quot;Creating alias &#39;</span><span class="si">%s</span><span class="s">&#39; for motors </span><span class="si">%s</span><span class="s">&quot;</span><span class="p">,</span>
+                    <span class="n">alias_name</span><span class="p">,</span> <span class="p">[</span><span class="n">m</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">motors</span><span class="p">],</span>
+                    <span class="n">extra</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;config&#39;</span><span class="p">:</span> <span class="n">config</span><span class="p">})</span>
+
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;Loading complete!&#39;</span><span class="p">,</span>
+                <span class="n">extra</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;config&#39;</span><span class="p">:</span> <span class="n">config</span><span class="p">})</span>
 
     <span class="k">return</span> <span class="n">robot</span>
 
@@ -360,7 +380,9 @@
 
 </div>
 <span class="k">def</span> <span class="nf">_oldxml_to_config</span><span class="p">(</span><span class="n">xml_file</span><span class="p">):</span>
-    <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s">&#39;Using XML file as configuration is deprecated, you should switch to Python dictionnary. You can save them as any format that can directly be transformed into a dictionnary (e.g. json).&#39;</span><span class="p">,</span> <span class="ne">DeprecationWarning</span><span class="p">)</span>
+    <span class="n">msg</span> <span class="o">=</span> <span class="s">&#39;Using XML file as configuration is deprecated, you should switch to Python dictionnary. You can save them as any format that can directly be transformed into a dictionnary (e.g. json files).&#39;</span>
+
+    <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="ne">DeprecationWarning</span><span class="p">)</span>
 
     <span class="kn">import</span> <span class="nn">xml.dom.minidom</span>
 
@@ -393,6 +415,8 @@
                                   <span class="s">&#39;orientation&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">motor_node</span><span class="o">.</span><span class="n">getAttribute</span><span class="p">(</span><span class="s">&#39;orientation&#39;</span><span class="p">)),</span>
                                   <span class="s">&#39;offset&#39;</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">motor_node</span><span class="o">.</span><span class="n">getAttribute</span><span class="p">(</span><span class="s">&#39;offset&#39;</span><span class="p">)),</span>
                                   <span class="s">&#39;angle_limit&#39;</span><span class="p">:</span> <span class="n">angle_limit</span><span class="p">}</span>
+
+    <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="n">extra</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;config&#39;</span><span class="p">:</span> <span class="n">config</span><span class="p">})</span>
 
     <span class="k">return</span> <span class="n">config</span>
 
