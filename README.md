@@ -41,3 +41,4 @@ For more details on the installation procedure, please refer to the [installatio
 
 [![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/poppy-project/pypot/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
 
+[![Analytics](https://ga-beacon.appspot.com/UA-47783987-1/pypot/readme)](https://github.com/poppy-project/pypot)
