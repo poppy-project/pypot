@@ -1,7 +1,11 @@
+import logging
+
 from collections import defaultdict
 
-
 from pypot.utils import attrgetter, attrsetter
+
+
+logger = logging.getLogger(__name__)
 
 
 class BaseRequestHandler(object):
@@ -33,6 +37,8 @@ class BaseRequestHandler(object):
         for meth in [meth for meth in ('get', 'set', 'call') if meth in request]:
             f = getattr(self, 'handle_{}'.format(meth))
             answer[meth] = f(request[meth])
+
+        logger.debug('Handling request %s with answer %s', request, answer)
 
         return answer
 

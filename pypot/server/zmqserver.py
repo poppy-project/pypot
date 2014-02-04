@@ -1,7 +1,12 @@
 import zmq
 import json
+import logging
 
 from pypot.server.server import AbstractServer, MyJSONEncoder
+
+
+logger = logging.getLogger(__name__)
+
 
 class ZMQServer(AbstractServer):
     def __init__(self, robot, host='127.0.0.1', port=8080):
@@ -16,6 +21,8 @@ class ZMQServer(AbstractServer):
         self.socket = c.socket(zmq.REP)
         self.socket.bind('tcp://{}:{}'.format(host, port))
 
+        logger.info('Starting ZMQServer on tcp://%s:%s', host, port)
+
     def run(self):
         """ Run an infinite REQ/REP loop. """
         while True:
@@ -27,4 +34,3 @@ class ZMQServer(AbstractServer):
 
             except (AttributeError, TypeError) as e:
                 self.socket.send_json({'error': e.message})
-

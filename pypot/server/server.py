@@ -16,7 +16,6 @@ class AbstractServer(pypot.primitive.Primitive):
         self.request_handler = BaseRequestHandler(self.robot)
 
 
-
 class MyJSONEncoder(json.JSONEncoder):
     """ JSONEncoder which tries to call a json property before using the enconding default function. """
     def default(self, obj):

@@ -1,7 +1,12 @@
 import bottle
+import logging
 import json
 
 from pypot.server.server import AbstractServer, MyJSONEncoder
+
+
+logger = logging.getLogger(__name__)
+
 
 class HTTPServer(AbstractServer):
     """ Bottle based HTTPServer used to remote access a robot.
@@ -30,7 +35,7 @@ class HTTPServer(AbstractServer):
         def get_motor_list():
             req = {
                 'get': {
-                    '': ['motors',]
+                    '': ['motors', ]
                 }
             }
 
@@ -40,7 +45,7 @@ class HTTPServer(AbstractServer):
         def get_primitive_list():
             req = {
                 'get': {
-                    '': ['attached_primitives_name',]
+                    '': ['attached_primitives_name', ]
                 }
             }
             return self.request_handler.handle_request(req)['get']['']
@@ -50,7 +55,7 @@ class HTTPServer(AbstractServer):
         def get_motor_register(name):
             req = {
                 'get': {
-                    name: ['registers',]
+                    name: ['registers', ]
                 }
             }
             return self.request_handler.handle_request(req)['get'][name]
@@ -91,10 +96,11 @@ class HTTPServer(AbstractServer):
         def request():
             return self.request_handler.handle_request(bottle.request.json)
 
+        logger.info('Starting HTTPServer on http://%s:%s', host, port)
+
     def run(self):
         """ Start the bottle server, run forever. """
         bottle.run(self.app,
                    host=self.host, port=self.port,
                    quiet=True,
                    server='tornado')
-

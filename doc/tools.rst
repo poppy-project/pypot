@@ -16,6 +16,7 @@ Pypot is logging information at all different levels:
 * low-level dynamixel IO
 * motor and robot abstraction
 * within each primitive
+* each request received by the server
 
 .. note:: As you probably do not want to log everything (Pypot is sending a lot of messages!!!), you have to select in the logging structure what is relevant in your program and define it in your logging configuration.
 
@@ -25,13 +26,15 @@ Pypot's logging naming convention is following Pypot's architecture. Here is the
 
 * The logger **pypot.dynamixel.motor** is logging each time a register of a motor is set (DEBUG). The name of the register, the name of the motor and the set value are given in the message.
 
-* **pypot.robot.config** is logging information regarding the creation of a robot through a config dictionary. A message is sent for each motor, controller and alias added (INFO). A WARNING message is also sent when the angle limits of a motor are changed. We provide as extra the entire config dictionnary.
+* **pypot.robot.config** is logging information regarding the creation of a robot through a config dictionary. A message is sent for each motor, controller and alias added (INFO). A WARNING message is also sent when the angle limits of a motor are changed. We provide as extra the entire config dictionary.
 
 * The logger **pypot.robot.robot** is logging when the synchronization is started/stopped (INFO) and when a primitive is attached (INFO).
 
 * **pypot.primitive.primitive** logs a message when the primitive is started/stopped and paused/resumed (INFO). Eeach :meth:`~pypot.primitive.primitive.LoopPrimitive.update` of a LoopPrimitive is also logged (DEBUG). Each time a primitive sets a value to a register a message is also logged (DEBUG).
 
 * **pypot.primitive.manager** provides you information on how the values sent within primitives were combined (DEBUG).
+
+* **pypot.server** logs when the server is started (INFO) and each handled request (DEBUG).
 
 .. _log_ex:
 
