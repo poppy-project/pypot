@@ -126,6 +126,11 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../tools.html">Tools</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../tools.html#logging">Logging</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../tools.html#logging-structure">Logging structure</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../tools.html#using-pypot-s-logging">Using Pypot&#8217;s logging</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="../../../tools.html#herborist-the-configuration-tool">Herborist: the configuration tool</a></li>
 </ul>
 </li>
@@ -211,8 +216,13 @@
   <h1>Source code for pypot.server.zmqserver</h1><div class="highlight"><pre>
 <span class="kn">import</span> <span class="nn">zmq</span>
 <span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">logging</span>
 
 <span class="kn">from</span> <span class="nn">pypot.server.server</span> <span class="kn">import</span> <span class="n">AbstractServer</span><span class="p">,</span> <span class="n">MyJSONEncoder</span>
+
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="n">__name__</span><span class="p">)</span>
+
 
 <div class="viewcode-block" id="ZMQServer"><a class="viewcode-back" href="../../../pypot.server.html#pypot.server.zmqserver.ZMQServer">[docs]</a><span class="k">class</span> <span class="nc">ZMQServer</span><span class="p">(</span><span class="n">AbstractServer</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">robot</span><span class="p">,</span> <span class="n">host</span><span class="o">=</span><span class="s">&#39;127.0.0.1&#39;</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="mi">8080</span><span class="p">):</span>
@@ -227,6 +237,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">socket</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">socket</span><span class="p">(</span><span class="n">zmq</span><span class="o">.</span><span class="n">REP</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">socket</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="s">&#39;tcp://{}:{}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">))</span>
 
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;Starting ZMQServer on tcp://</span><span class="si">%s</span><span class="s">:</span><span class="si">%s</span><span class="s">&#39;</span><span class="p">,</span> <span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">)</span>
+
 <div class="viewcode-block" id="ZMQServer.run"><a class="viewcode-back" href="../../../pypot.server.html#pypot.server.zmqserver.ZMQServer.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Run an infinite REQ/REP loop. &quot;&quot;&quot;</span>
         <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
@@ -237,8 +249,8 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">socket</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">answer</span><span class="p">,</span> <span class="n">cls</span><span class="o">=</span><span class="n">MyJSONEncoder</span><span class="p">))</span>
 
             <span class="k">except</span> <span class="p">(</span><span class="ne">AttributeError</span><span class="p">,</span> <span class="ne">TypeError</span><span class="p">)</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">socket</span><span class="o">.</span><span class="n">send_json</span><span class="p">({</span><span class="s">&#39;error&#39;</span><span class="p">:</span> <span class="n">e</span><span class="o">.</span><span class="n">message</span><span class="p">})</span>
-</pre></div></div></div>
+                <span class="bp">self</span><span class="o">.</span><span class="n">socket</span><span class="o">.</span><span class="n">send_json</span><span class="p">({</span><span class="s">&#39;error&#39;</span><span class="p">:</span> <span class="n">e</span><span class="o">.</span><span class="n">message</span><span class="p">})</span></div></div>
+</pre></div>
 
     </div>
       

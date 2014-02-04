@@ -126,6 +126,11 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../tools.html">Tools</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../tools.html#logging">Logging</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../../tools.html#logging-structure">Logging structure</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../tools.html#using-pypot-s-logging">Using Pypot&#8217;s logging</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="../../../tools.html#herborist-the-configuration-tool">Herborist: the configuration tool</a></li>
 </ul>
 </li>
@@ -210,9 +215,14 @@
       
   <h1>Source code for pypot.server.httpserver</h1><div class="highlight"><pre>
 <span class="kn">import</span> <span class="nn">bottle</span>
+<span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">import</span> <span class="nn">json</span>
 
 <span class="kn">from</span> <span class="nn">pypot.server.server</span> <span class="kn">import</span> <span class="n">AbstractServer</span><span class="p">,</span> <span class="n">MyJSONEncoder</span>
+
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="n">__name__</span><span class="p">)</span>
+
 
 <div class="viewcode-block" id="HTTPServer"><a class="viewcode-back" href="../../../pypot.server.html#pypot.server.httpserver.HTTPServer">[docs]</a><span class="k">class</span> <span class="nc">HTTPServer</span><span class="p">(</span><span class="n">AbstractServer</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; Bottle based HTTPServer used to remote access a robot.</span>
@@ -241,7 +251,7 @@
         <span class="k">def</span> <span class="nf">get_motor_list</span><span class="p">():</span>
             <span class="n">req</span> <span class="o">=</span> <span class="p">{</span>
                 <span class="s">&#39;get&#39;</span><span class="p">:</span> <span class="p">{</span>
-                    <span class="s">&#39;&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s">&#39;motors&#39;</span><span class="p">,]</span>
+                    <span class="s">&#39;&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s">&#39;motors&#39;</span><span class="p">,</span> <span class="p">]</span>
                 <span class="p">}</span>
             <span class="p">}</span>
 
@@ -251,7 +261,7 @@
         <span class="k">def</span> <span class="nf">get_primitive_list</span><span class="p">():</span>
             <span class="n">req</span> <span class="o">=</span> <span class="p">{</span>
                 <span class="s">&#39;get&#39;</span><span class="p">:</span> <span class="p">{</span>
-                    <span class="s">&#39;&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s">&#39;attached_primitives_name&#39;</span><span class="p">,]</span>
+                    <span class="s">&#39;&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s">&#39;attached_primitives_name&#39;</span><span class="p">,</span> <span class="p">]</span>
                 <span class="p">}</span>
             <span class="p">}</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">request_handler</span><span class="o">.</span><span class="n">handle_request</span><span class="p">(</span><span class="n">req</span><span class="p">)[</span><span class="s">&#39;get&#39;</span><span class="p">][</span><span class="s">&#39;&#39;</span><span class="p">]</span>
@@ -261,7 +271,7 @@
         <span class="k">def</span> <span class="nf">get_motor_register</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
             <span class="n">req</span> <span class="o">=</span> <span class="p">{</span>
                 <span class="s">&#39;get&#39;</span><span class="p">:</span> <span class="p">{</span>
-                    <span class="n">name</span><span class="p">:</span> <span class="p">[</span><span class="s">&#39;registers&#39;</span><span class="p">,]</span>
+                    <span class="n">name</span><span class="p">:</span> <span class="p">[</span><span class="s">&#39;registers&#39;</span><span class="p">,</span> <span class="p">]</span>
                 <span class="p">}</span>
             <span class="p">}</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">request_handler</span><span class="o">.</span><span class="n">handle_request</span><span class="p">(</span><span class="n">req</span><span class="p">)[</span><span class="s">&#39;get&#39;</span><span class="p">][</span><span class="n">name</span><span class="p">]</span>
@@ -302,13 +312,15 @@
         <span class="k">def</span> <span class="nf">request</span><span class="p">():</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">request_handler</span><span class="o">.</span><span class="n">handle_request</span><span class="p">(</span><span class="n">bottle</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">json</span><span class="p">)</span>
 
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;Starting HTTPServer on http://</span><span class="si">%s</span><span class="s">:</span><span class="si">%s</span><span class="s">&#39;</span><span class="p">,</span> <span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">)</span>
+
 <div class="viewcode-block" id="HTTPServer.run"><a class="viewcode-back" href="../../../pypot.server.html#pypot.server.httpserver.HTTPServer.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Start the bottle server, run forever. &quot;&quot;&quot;</span>
         <span class="n">bottle</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="p">,</span>
                    <span class="n">host</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">port</span><span class="p">,</span>
                    <span class="n">quiet</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
-                   <span class="n">server</span><span class="o">=</span><span class="s">&#39;tornado&#39;</span><span class="p">)</span>
-</pre></div></div></div>
+                   <span class="n">server</span><span class="o">=</span><span class="s">&#39;tornado&#39;</span><span class="p">)</span></div></div>
+</pre></div>
 
     </div>
       
