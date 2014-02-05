@@ -20,11 +20,27 @@ The next sections describe how to :ref:`install <installation>` PyPot on your sy
 Installation
 ============
 
-The PyPot package is entirely written in Python. So, the install process should be rather straightforward. Package release and source code can be directly downloaded on `github <https://github.com/poppy-project/pypot>`_.
+Via Python Packages
+-------------------
+
+The PyPot package is entirely written in Python. So, the install process should be rather straightforward. You can directly install it via easy_install or pip::
+
+    pip install pypot
+
+or::
+
+    easy_install pypot
+
+The up to date archive can also be directly downloaded `here <https://pypi.python.org/pypi/pypot/>`_.
+
+From the source code
+--------------------
+
+You can also install it from the source. You can clone/fork our repo directly on `github <https://github.com/poppy-project/pypot>`_.
 
 Before you start building PyPot, you need to make sure that the following packages are already installed on your computer:
 
-* `python <http://www.python.org>`_ 2.7
+* `python <http://www.python.org>`_ 2.7 or 3
 * `pyserial <http://pyserial.sourceforge.net/>`_ 2.6 (or later)
 * `numpy <http://www.numpy.org>`_
 
@@ -38,6 +54,9 @@ Once it is done, you can build and install PyPot with the classical::
     cd PyPot
     python setup.py build
     python setup.py install
+
+Testing your install
+--------------------
 
 You can test if the installation went well with::
 
