@@ -1,15 +1,5 @@
 
 
-
-
-  
-  
- 
-  
-  
- 
-
-
 <!DOCTYPE html>
 
 
@@ -21,14 +11,14 @@
     
     <link rel="stylesheet" href="_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="_static/bootstrap-3.0.0/css/bootstrap.min.css" type="text/css" />
     <link rel="stylesheet" href="_static/my-css.css" type="text/css" />
+    <link rel="stylesheet" href="_static/bootstrap-3.0.0/css/bootstrap.min.css" type="text/css" />
     <link rel="stylesheet" href="_static/bootstrap-3.0.0/css/bootstrap-theme.min.css" type="text/css" />
     <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
     
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '',
+        URL_ROOT:    './',
         VERSION:     '1.5.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
@@ -62,7 +52,8 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="index.html">PyPot</a>
+        <a class="navbar-brand" href="index.html">
+          PyPot</a>
         <span class="navbar-text navbar-version pull-left"><b>1.5.0</b></span>
       </div>
 
@@ -79,7 +70,12 @@
     ><ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="">Introduction</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#what-is-pypot">What is PyPot?</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#installation">Installation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#via-python-packages">Via Python Packages</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#from-the-source-code">From the source code</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#testing-your-install">Testing your install</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="#quickstart-playing-with-an-ergo-robot">QuickStart: playing with an Ergo-Robot</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#building-your-own-ergo-robot">Building your own Ergo-Robot</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#connecting-the-robot-to-your-computer">Connecting the robot to your computer</a></li>
@@ -183,7 +179,12 @@
   <ul class="dropdown-menu localtoc"><ul>
 <li><a class="reference internal" href="#">Introduction</a><ul>
 <li><a class="reference internal" href="#what-is-pypot">What is PyPot?</a></li>
-<li><a class="reference internal" href="#installation">Installation</a></li>
+<li><a class="reference internal" href="#installation">Installation</a><ul>
+<li><a class="reference internal" href="#via-python-packages">Via Python Packages</a></li>
+<li><a class="reference internal" href="#from-the-source-code">From the source code</a></li>
+<li><a class="reference internal" href="#testing-your-install">Testing your install</a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#quickstart-playing-with-an-ergo-robot">QuickStart: playing with an Ergo-Robot</a><ul>
 <li><a class="reference internal" href="#building-your-own-ergo-robot">Building your own Ergo-Robot</a></li>
 <li><a class="reference internal" href="#connecting-the-robot-to-your-computer">Connecting the robot to your computer</a></li>
@@ -200,16 +201,20 @@
             
               
                 
-  <li><a href="index.html"
-         title="Previous Chapter: Welcome to PyPot’s documentation!">&laquo; Welcome to PyPot...</a></li>
-  <li><a href="tutorial.html"
-         title="Next Chapter: Tutorial">Tutorial &raquo;</a></li>
+  <li>
+    <a href="index.html" title="Previous Chapter: Welcome to PyPot’s documentation!"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm">&laquo; Welcome to PyPot...</span>
+    </a>
+  </li>
+  <li>
+    <a href="tutorial.html" title="Next Chapter: Tutorial"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm">Tutorial &raquo;</span>
+    </a>
+  </li>
               
             
             
             
             
-              <li>
+              <li class="hidden-sm">
 <div id="sourcelink">
   <a href="_sources/intro.txt"
      rel="nofollow">Source</a>
@@ -249,10 +254,24 @@
 </div>
 <div class="section" id="installation">
 <span id="id1"></span><h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
-<p>The PyPot package is entirely written in Python. So, the install process should be rather straightforward. Package release and source code can be directly downloaded on <a class="reference external" href="https://github.com/poppy-project/pypot">github</a>.</p>
+<div class="section" id="via-python-packages">
+<h3>Via Python Packages<a class="headerlink" href="#via-python-packages" title="Permalink to this headline">¶</a></h3>
+<p>The PyPot package is entirely written in Python. So, the install process should be rather straightforward. You can directly install it via easy_install or pip:</p>
+<div class="highlight-python"><div class="highlight"><pre>pip install pypot
+</pre></div>
+</div>
+<p>or:</p>
+<div class="highlight-python"><div class="highlight"><pre>easy_install pypot
+</pre></div>
+</div>
+<p>The up to date archive can also be directly downloaded <a class="reference external" href="https://pypi.python.org/pypi/pypot/">here</a>.</p>
+</div>
+<div class="section" id="from-the-source-code">
+<h3>From the source code<a class="headerlink" href="#from-the-source-code" title="Permalink to this headline">¶</a></h3>
+<p>You can also install it from the source. You can clone/fork our repo directly on <a class="reference external" href="https://github.com/poppy-project/pypot">github</a>.</p>
 <p>Before you start building PyPot, you need to make sure that the following packages are already installed on your computer:</p>
 <ul class="simple">
-<li><a class="reference external" href="http://www.python.org">python</a> 2.7</li>
+<li><a class="reference external" href="http://www.python.org">python</a> 2.7 or 3</li>
 <li><a class="reference external" href="http://pyserial.sourceforge.net/">pyserial</a> 2.6 (or later)</li>
 <li><a class="reference external" href="http://www.numpy.org">numpy</a></li>
 </ul>
@@ -262,12 +281,17 @@
 <li><a class="reference external" href="http://www.riverbankcomputing.com/software/pyqt/intro">PyQt4</a> (for the graphical tools)</li>
 </ul>
 <p>Once it is done, you can build and install PyPot with the classical:</p>
-<div class="highlight-python"><pre>cd PyPot
+<div class="highlight-python"><div class="highlight"><pre>cd PyPot
 python setup.py build
-python setup.py install</pre>
+python setup.py install
+</pre></div>
 </div>
+</div>
+<div class="section" id="testing-your-install">
+<h3>Testing your install<a class="headerlink" href="#testing-your-install" title="Permalink to this headline">¶</a></h3>
 <p>You can test if the installation went well with:</p>
-<div class="highlight-python"><pre>python -m "import pypot"</pre>
+<div class="highlight-python"><div class="highlight"><pre>python -m &quot;import pypot&quot;
+</pre></div>
 </div>
 <p>You will also have to install the driver for the USB2serial port. There are two devices that have been tested with PyPot that could be used:</p>
 <ul class="simple">
@@ -280,6 +304,7 @@ python setup.py install</pre>
 <p class="last">On the side of the USB2Dynamixel there is a switch. This is used to select the bus you wish to communicate on. This means that you cannot control two different bus protocols at the same time.</p>
 </div>
 <p>At this point you should have a PyPot ready to be used! In the extremely unlikely case where anything went wrong during the installation, please refer to the <a class="reference internal" href="knownissues.html"><em>Known Issues</em></a>.</p>
+</div>
 </div>
 <div class="section" id="quickstart-playing-with-an-ergo-robot">
 <span id="quickstart"></span><h2>QuickStart: playing with an Ergo-Robot<a class="headerlink" href="#quickstart-playing-with-an-ergo-robot" title="Permalink to this headline">¶</a></h2>
@@ -294,7 +319,7 @@ python setup.py install</pre>
 <div class="section" id="building-your-own-ergo-robot">
 <h3>Building your own Ergo-Robot<a class="headerlink" href="#building-your-own-ergo-robot" title="Permalink to this headline">¶</a></h3>
 <p>Ergo-Robots have been developed for an art exhibition in Fondation Cartier: <a class="reference external" href="http://fondation.cartier.com/#/en/art-contemporain/26/exhibitions/294/all-the-exhibitions/89/mathematics-a-beautiful-elsewhere/">Mathematics a beautiful elsewhere</a>. They are small creatures made from robotis motors and shaped as a stem with a head designed by David Lynch. They were developed to explore research topics such as artificial curiosity and language games. The robots were used during 5 months at the exhibition. More details on the whole project can be found <a class="reference external" href="https://flowers.inria.fr/ergo-robots-fr.php">here</a>.</p>
-<img alt="_images/ErgoRobots.jpg" class="align-center" src="_images/ErgoRobots.jpg" style="height: 400px;" />
+<a class="reference internal image-reference" href="_images/ErgoRobots.jpg"><img alt="_images/ErgoRobots.jpg" class="align-center" src="_images/ErgoRobots.jpg" style="height: 400px;" /></a>
 <p>The complete instructions to build your own Ergo-Robot are available <a class="reference external" href="https://wiki.bordeaux.inria.fr/flowers/doku.php?id=robot:ergorobot:construction">here</a>.</p>
 </div>
 <div class="section" id="connecting-the-robot-to-your-computer">
@@ -407,7 +432,7 @@ python setup.py install</pre>
     </p>
     <p>
         &copy; Copyright 2012, Pierre Rouanet, Matthieu Lapeyre, Haylee Fogg.<br/>
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.<br/>
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.2.1.<br/>
     </p>
   </div>
 </footer>

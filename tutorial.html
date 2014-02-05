@@ -1,15 +1,5 @@
 
 
-
-
-  
-  
- 
-  
-  
- 
-
-
 <!DOCTYPE html>
 
 
@@ -21,14 +11,14 @@
     
     <link rel="stylesheet" href="_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="_static/bootstrap-3.0.0/css/bootstrap.min.css" type="text/css" />
     <link rel="stylesheet" href="_static/my-css.css" type="text/css" />
+    <link rel="stylesheet" href="_static/bootstrap-3.0.0/css/bootstrap.min.css" type="text/css" />
     <link rel="stylesheet" href="_static/bootstrap-3.0.0/css/bootstrap-theme.min.css" type="text/css" />
     <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
     
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '',
+        URL_ROOT:    './',
         VERSION:     '1.5.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
@@ -62,7 +52,8 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="index.html">PyPot</a>
+        <a class="navbar-brand" href="index.html">
+          PyPot</a>
         <span class="navbar-text navbar-version pull-left"><b>1.5.0</b></span>
       </div>
 
@@ -79,7 +70,12 @@
     ><ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="intro.html#what-is-pypot">What is PyPot?</a></li>
-<li class="toctree-l2"><a class="reference internal" href="intro.html#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="intro.html#installation">Installation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="intro.html#via-python-packages">Via Python Packages</a></li>
+<li class="toctree-l3"><a class="reference internal" href="intro.html#from-the-source-code">From the source code</a></li>
+<li class="toctree-l3"><a class="reference internal" href="intro.html#testing-your-install">Testing your install</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="intro.html#quickstart-playing-with-an-ergo-robot">QuickStart: playing with an Ergo-Robot</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="intro.html#building-your-own-ergo-robot">Building your own Ergo-Robot</a></li>
 <li class="toctree-l3"><a class="reference internal" href="intro.html#connecting-the-robot-to-your-computer">Connecting the robot to your computer</a></li>
@@ -227,16 +223,20 @@
             
               
                 
-  <li><a href="intro.html"
-         title="Previous Chapter: Introduction">&laquo; Introduction</a></li>
-  <li><a href="tools.html"
-         title="Next Chapter: Tools">Tools &raquo;</a></li>
+  <li>
+    <a href="intro.html" title="Previous Chapter: Introduction"><span class="glyphicon glyphicon-chevron-left visible-sm"></span><span class="hidden-sm">&laquo; Introduction</span>
+    </a>
+  </li>
+  <li>
+    <a href="tools.html" title="Next Chapter: Tools"><span class="glyphicon glyphicon-chevron-right visible-sm"></span><span class="hidden-sm">Tools &raquo;</span>
+    </a>
+  </li>
               
             
             
             
             
-              <li>
+              <li class="hidden-sm">
 <div id="sourcelink">
   <a href="_sources/tutorial.txt"
      rel="nofollow">Source</a>
@@ -336,15 +336,17 @@ For instance:</p>
 <p>All motors work sufficiently well with a 12V supply. Some motors can use more than 12V but you must be careful not to connect an 18V supply on a bus that contains motors that can only use 12V! Connect this 12V SMPS supply (switch mode power supply) to a Robotis SMPS2Dynamixel device which regulates the voltage coming from the SMPS. Connect your controller device and a single motor to this SMPS2Dynamixel.</p>
 <p>Open your python terminal and create your <a class="reference internal" href="pypot.dynamixel.html#pypot.dynamixel.io.DxlIO" title="pypot.dynamixel.io.DxlIO"><tt class="xref py py-class docutils literal"><span class="pre">DxlIO</span></tt></a> as described in the above section <a class="reference internal" href="#open-connection"><em>Opening/Closing a communication port</em></a>.</p>
 <p>To detect the motors and find their id you can scan the bus. To avoid spending a long time searching all possible values, you can add a list of values to test:</p>
-<div class="highlight-python"><pre>dxl_io.scan()
+<div class="highlight-python"><div class="highlight"><pre>dxl_io.scan()
 &gt;&gt;&gt; [4, 23, 24, 25]
 
 dxl_io.scan([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
-&gt;&gt;&gt; [4]</pre>
+&gt;&gt;&gt; [4]
+</pre></div>
 </div>
 <p>Or, you can use the shorthand:</p>
-<div class="highlight-python"><pre>dxl_io.scan(range(10))
-&gt;&gt;&gt; [4]</pre>
+<div class="highlight-python"><div class="highlight"><pre>dxl_io.scan(range(10))
+&gt;&gt;&gt; [4]
+</pre></div>
 </div>
 <p>This should produce a list of the ids of the motors that are connected to the bus. Each motor on the bus must have a unique id. This means that unless your motors have been configured in advance, it is better to connect them one by one to ensure they all have unique ids first.</p>
 <div class="admonition note">
@@ -355,8 +357,9 @@ dxl_io.scan([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
 <div class="section" id="low-level-control">
 <h3>Low-level control<a class="headerlink" href="#low-level-control" title="Permalink to this headline">¶</a></h3>
 <p>Now we have the id of the motors connected, we can begin to access their functions by using their id. Try to find out the present position (in degrees) of the motor by typing the following:</p>
-<div class="highlight-python"><pre>dxl_io.get_present_position((4, ))
-&gt;&gt;&gt; (67.8, )</pre>
+<div class="highlight-python"><div class="highlight"><pre>dxl_io.get_present_position((4, ))
+&gt;&gt;&gt; (67.8, )
+</pre></div>
 </div>
 <p>You can also write a goal position (in degrees) to the motor using the following:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">dxl_io</span><span class="o">.</span><span class="n">set_goal_position</span><span class="p">({</span><span class="mi">4</span><span class="p">:</span> <span class="mi">0</span><span class="p">})</span>
@@ -632,7 +635,7 @@ dxl_io.scan([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
 </div>
 <p>For a complete list of all the attributes that you can access, you should refer to the <a class="reference internal" href="pypot.dynamixel.html#pypot.dynamixel.motor.DxlMotor" title="pypot.dynamixel.motor.DxlMotor"><tt class="xref py py-class docutils literal"><span class="pre">DxlMotor</span></tt></a> API.</p>
 <p>As an example of what you can easily do with the Robot API, we are going to write a simple program that will make a robot with two motors move with sinusoidal motions. More precisely, we will apply a sinusoid to one motor and the other one will read the value of the first motor and use it as its own goal position. We will still use an Ergo-robot as example:</p>
-<div class="highlight-python"><pre>import time
+<div class="highlight-python"><div class="highlight"><pre>import time
 import numpy
 
 import pypot.robot
@@ -670,7 +673,8 @@ while True:
     ergo_robot.head_pan.goal_position = -1.5 * ergo_robot.base_pan.present_position
 
     # We want to run this loop at 50Hz.
-    time.sleep(0.02)</pre>
+    time.sleep(0.02)
+</pre></div>
 </div>
 </div>
 <div class="section" id="controlling-in-speed">
@@ -893,22 +897,24 @@ For instance:</p>
 <div class="section" id="get-request">
 <span id="get-req"></span><h4>Get Request<a class="headerlink" href="#get-request" title="Permalink to this headline">¶</a></h4>
 <p>The get request is constructed as follows:</p>
-<div class="highlight-python"><pre>get_request = {
+<div class="highlight-python"><div class="highlight"><pre>get_request = {
     obj_name_1: (var_path_1, var_path_2, ...),
     obj_name_2: (var_path_1, var_path_2, ...),
     ...
-}</pre>
+}
+</pre></div>
 </div>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">The var_path can be a complete path such as skeleton.hip.position.x.</p>
 </div>
 <p>For instance, if you write the following get request:</p>
-<div class="highlight-python"><pre>get_request = {
-    'base_tilt_lower': ('present_position', 'present_load'),
-    'base_tilt_upper': ('present_temperature', ),
-    'dance', ('current_song.filename', ) # Where dance is an attached primitive
-}</pre>
+<div class="highlight-python"><div class="highlight"><pre>get_request = {
+    &#39;base_tilt_lower&#39;: (&#39;present_position&#39;, &#39;present_load&#39;),
+    &#39;base_tilt_upper&#39;: (&#39;present_temperature&#39;, ),
+    &#39;dance&#39;, (&#39;current_song.filename&#39;, ) # Where dance is an attached primitive
+}
+</pre></div>
 </div>
 <p>It will retrieve the variables robot.base_tilt_lower.present_position, robot.base_tilt_lower.present_load, robot.base_tilt_upper.present_temperature, and robot.dance.current_song.</p>
 <p>The server will return something like:</p>
@@ -925,11 +931,12 @@ For instance:</p>
 <div class="section" id="set-request">
 <span id="set-req"></span><h4>Set Request<a class="headerlink" href="#set-request" title="Permalink to this headline">¶</a></h4>
 <p>The set request is really similar to the get request. Instead of giving a list of the var_path you want to access, you provide dictionary of (var_path: desired_value):</p>
-<div class="highlight-python"><pre>set_request = {
+<div class="highlight-python"><div class="highlight"><pre>set_request = {
     obj_name_1: {var_path_1: value1, var_path_2: value2, ...},
     obj_name_2: {var_path_1: value1, var_path_2: value2, ...},
     ...
-}</pre>
+}
+</pre></div>
 </div>
 <p>The server will return an empty set field used as an acknowledgment:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">answer</span> <span class="o">=</span> <span class="p">{</span>
@@ -941,11 +948,12 @@ For instance:</p>
 <div class="section" id="call-request">
 <span id="call-req"></span><h4>Call Request<a class="headerlink" href="#call-request" title="Permalink to this headline">¶</a></h4>
 <p>You can also build call request as follows:</p>
-<div class="highlight-python"><pre>call_request = {
+<div class="highlight-python"><div class="highlight"><pre>call_request = {
     obj_name_1: {meth_name_1: args, meth_name_2: args, ...},
     obj_name_2: {meth_name_1: args, meth_name_2: args, ...},
     ...
-}</pre>
+}
+</pre></div>
 </div>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
@@ -1056,7 +1064,7 @@ For instance:</p>
     </p>
     <p>
         &copy; Copyright 2012, Pierre Rouanet, Matthieu Lapeyre, Haylee Fogg.<br/>
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.<br/>
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.2.1.<br/>
     </p>
   </div>
 </footer>

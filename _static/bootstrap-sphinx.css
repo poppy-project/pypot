@@ -14,16 +14,18 @@
 }
 
 
-body {
+  
+  body {
+  
+    padding-top: 40px;
+  
+  }
+  .page-top {
+  
+    top: 40px;
+  
+  }
 
-  padding-top: 40px;
-
-}
-.page-top {
-
-  top: 40px;
-
-}
 
 .navbar-inner {
   padding-left:  12px !important;
