@@ -3,18 +3,54 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to PyPot's documentation!
+Pypot
+*****
+
+Welcome to Pypot's documentation!
 =================================
 
-.. toctree::
-    :maxdepth: 4
+**Introduction**
 
-    intro
-    tutorial
-    tools
-    FAQ
-    knownissues
-    api
+.. toctree::
+    :titlesonly:
+    :maxdepth: 2
+
+    about.rst
+    installation.rst
+    quickstart.rst
+
+.. _tutorial:
+
+**Tutorial**
+
+.. toctree::
+    :titlesonly:
+    :maxdepth: 2
+
+    controlling_robot.rst
+    primitive.rst
+    logging.rst
+    remote_access.rst
+
+
+**Tools**
+
+.. toctree::
+    :titlesonly:
+    :maxdepth: 2
+
+    herborist.rst
+
+
+**Misc**
+
+.. toctree::
+    :titlesonly:
+    :maxdepth: 1
+
+    api.rst
+    FAQ.rst
+    knownissues.rst
 
 Indices and tables
 ==================
@@ -22,4 +58,3 @@ Indices and tables
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
-

@@ -12,12 +12,11 @@
 # serve to show the default.
 
 import sys, os, re
-import sphinx_bootstrap_theme
 
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
-sys.path.insert(0, os.path.abspath('..'))
+# sys.path.insert(0, os.path.abspath('..'))
 
 # -- General configuration -----------------------------------------------------
 
@@ -26,7 +25,10 @@ sys.path.insert(0, os.path.abspath('..'))
 
 # Add any Sphinx extension module names here, as strings. They can be extensions
 # coming with Sphinx (named 'sphinx.ext.*') or your custom ones.
-extensions = ['sphinx.ext.autodoc', 'sphinx.ext.intersphinx', 'sphinx.ext.viewcode']
+extensions = ['sphinx.ext.autodoc',
+              'sphinx.ext.intersphinx',
+              'sphinx.ext.viewcode',
+              'sphinxjp.themecore']
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -53,9 +55,10 @@ copyright = '2012, Pierre Rouanet, Matthieu Lapeyre, Haylee Fogg'
 # The full version, including alpha/beta/rc tags.
 #release = '1.4.0'
 
+
 def version():
-  with open('../pypot/_version.py') as f:
-    return re.search(r"^__version__ = ['\"]([^'\"]*)['\"]", f.read()).group(1)
+    with open('../pypot/_version.py') as f:
+        return re.search(r"^__version__ = ['\"]([^'\"]*)['\"]", f.read()).group(1)
 
 version = release = version()
 
@@ -101,24 +104,15 @@ autodoc_member_order = 'bysource'
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #html_theme = 'sphinxdoc'
-html_theme = 'bootstrap'
-
+html_theme = 'basicstrap'
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
 # documentation.
-#html_theme_options = {}
-html_theme_options = {
-    'navbar_title': 'PyPot',
-    'globaltoc_depth': -1,
-#    'navbar_class': 'navbar navbar-inverse',
-#'bootswatch_theme': '',
-}
-
+# html_theme_options = {}
 
 # Add any paths that contain custom themes here, relative to this directory.
 #html_theme_path = []
-html_theme_path = sphinx_bootstrap_theme.get_html_theme_path()
 
 # The name for this set of Sphinx documents.  If None, it defaults to
 # "<project> v<release> documentation".
