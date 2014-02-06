@@ -37,7 +37,7 @@ The first step is to setup the configuration for your robot. It will describe th
 If you do some introspection on this object, you will see that it is just a regular Python dictionary. So you can directly edit it like you will do with any other dict. You can also copy the one provided with PyPot and work with your own copy::
 
     my_config = dict(ergo_robot_config)
-    my_config['controllers']['port'] = 'COM6' # For Windows' users
+    my_config['controllers']['my_dxl_controller']['port']  = 'COM6' # For Windows' users
 
 You will only have to modify the USB2serial port and the id of the motors so they correspond to your robot. If you do not know how to get this information, you can refer to the documentation on the :ref:`Herborist tool <herborist>`. Alternatively, you can directly ask PyPot::
 
