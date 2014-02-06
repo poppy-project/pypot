@@ -1,6 +1,9 @@
 Known Issues
 ************
 
+For any issue which is not listed here, please report it in our GitHub `issue tracker <https://github.com/poppy-project/pypot/issues>`_. Please give us as detailed information as possible so we can reproduce your bug and hopefully solve it.
+
+
 Issue with USB2AX driver on Mac OS
 ----------------------------------
 
