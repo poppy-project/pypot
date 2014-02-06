@@ -245,7 +245,7 @@
 </div>
 <p>If you do some introspection on this object, you will see that it is just a regular Python dictionary. So you can directly edit it like you will do with any other dict. You can also copy the one provided with PyPot and work with your own copy:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">my_config</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">ergo_robot_config</span><span class="p">)</span>
-<span class="n">my_config</span><span class="p">[</span><span class="s">&#39;controllers&#39;</span><span class="p">][</span><span class="s">&#39;port&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;COM6&#39;</span> <span class="c"># For Windows&#39; users</span>
+<span class="n">my_config</span><span class="p">[</span><span class="s">&#39;controllers&#39;</span><span class="p">][</span><span class="s">&#39;my_dxl_controller&#39;</span><span class="p">][</span><span class="s">&#39;port&#39;</span><span class="p">]</span>  <span class="o">=</span> <span class="s">&#39;COM6&#39;</span> <span class="c"># For Windows&#39; users</span>
 </pre></div>
 </div>
 <p>You will only have to modify the USB2serial port and the id of the motors so they correspond to your robot. If you do not know how to get this information, you can refer to the documentation on the <a class="reference internal" href="herborist.html#herborist"><em>Herborist tool</em></a>. Alternatively, you can directly ask PyPot:</p>
