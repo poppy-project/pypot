@@ -1,8 +1,5 @@
-Tools
-*****
-
-Logging
-=======
+Mastering the logging system
+============================
 
 Pypot used the Python's builtin `logging <http://docs.python.org/2/library/logging.html>`_ module for logging. For details on how to use this module please refer to Python's own documentation or the one on `django webstite <https://docs.djangoproject.com/en/1.6/topics/logging/>`_. Here, we will only describe what pypot is logging and how it is organised (see section :ref:`log_struct`). We will also present a few examples on how to use pypot logging and parse the information (see section :ref:`log_ex`).
 
@@ -105,32 +102,3 @@ The execution of the program above will create a file named 'pypot.log' where ea
 
     plot(dt)
     show()
-
-
-.. _herborist:
-
-Herborist: the configuration tool
-=================================
-
-Herborist is a graphical tool that helps you detect and configure motors before using them in your robot.
-
-.. warning:: Herborist is entirely written in Python but requires PyQt4 to run.
-
-More precisely, Herborist can be used to:
-
-* Find and identify available serial ports
-* Scan multiple baud rates to find all connected motors
-* Modify the EEPROM configuration (of single or multiple motors)
-* Make motors move (e.g. to test the angle limits).
-
-You can directly launch herborist by running the *herborist* command in your terminal.
-
-.. note:: When you install PyPot with the setup.py, herborist is automatically added to your $PATH. You can call it from anywhere thanks to the command::
-
-        herborist
-
-    You can always find the script in the folder $(PYPOT_SRC)/pypot/tools/herborist.
-
-.. image:: herborist.png
-    :align: center
-
