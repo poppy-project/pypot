@@ -49,6 +49,7 @@ class Primitive(object):
         self.args = args
         self.kwargs = kwargs
 
+        self._started = threading.Event()
         self._stop = threading.Event()
         self._resume = threading.Event()
 
@@ -56,6 +57,7 @@ class Primitive(object):
 
     def _wrapped_run(self):
         self.t0 = time.time()
+        self._started.set()
 
         self.run(*self.args, **self.kwargs)
 
@@ -88,6 +90,7 @@ class Primitive(object):
             self.stop()
             self.wait_to_stop()
 
+        self._started.clear()
         self._resume.set()
         self._stop.clear()
         self._synced.clear()
@@ -98,10 +101,13 @@ class Primitive(object):
         self._thread.daemon = True
         self._thread.start()
 
+        self._started.wait()
+
         logger.info("Primitive %s started.", self)
 
     def stop(self):
         """ Requests the primitive to stop. """
+        self._resume.set()
         self._stop.set()
         logger.info("Primitive %s stopped.", self)
 
@@ -171,9 +177,6 @@ class LoopPrimitive(Primitive):
         """ Calls the :meth:`~pypot.primitive.primitive.Primitive.update` method at a predefined frequency (runs until stopped). """
 
         while not self.should_stop():
-            if self.should_pause():
-                self.wait_to_resume()
-
             start = time.time()
             self.update(*self.args, **self.kwargs)
             end = time.time()
@@ -183,6 +186,9 @@ class LoopPrimitive(Primitive):
             dt = self._period - (end - start)
             if dt > 0:
                 time.sleep(dt)
+
+            if self.should_pause():
+                self.wait_to_resume()
 
     def update(self, *args, **kwargs):
         """ Update methods that will be called at a predefined frequency.
