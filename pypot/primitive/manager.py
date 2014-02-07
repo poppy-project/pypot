@@ -80,4 +80,9 @@ class PrimitiveManager(threading.Thread):
 
     def stop(self):
         """ Stop the primitive manager. """
+        for p in self.primitives[:]:
+            p.stop()
+            p.wait_to_stop()
+
         self._running.clear()
+        self.join()
