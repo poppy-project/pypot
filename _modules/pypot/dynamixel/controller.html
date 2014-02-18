@@ -61,24 +61,6 @@
        }
     });
   });
-  $(window).load(function () {
-    /*
-
-     * Scroll the window to avoid the topnav bar
-     * https://github.com/twitter/bootstrap/issues/1768
-     */
-    if ($(".navbar.navbar-fixed-top").length > 0) {
-      // var navHeight = $(".navbar").height(),
-      var navHeight = 40,
-        shiftWindow = function() { scrollBy(0, -navHeight - 10); };
-
-      if (location.hash) {
-        setTimeout(shiftWindow, 1);
-      }
-
-      window.addEventListener("hashchange", shiftWindow);
-    }
-  });
 </script>
     <link rel="author" title="About these documents" href="../../../about.html" />
     <link rel="top" title="PyPot 1.5.0 documentation" href="../../../index.html" />
@@ -207,6 +189,7 @@
 <div class="viewcode-block" id="DxlController.stop"><a class="viewcode-back" href="../../../pypot.dynamixel.html#pypot.dynamixel.controller.DxlController.stop">[docs]</a>    <span class="k">def</span> <span class="nf">stop</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Stops al the synchronization loops (they can not be started again). &quot;&quot;&quot;</span>
         <span class="p">[</span><span class="n">_RepeatedTimer</span><span class="o">.</span><span class="n">stop</span><span class="p">(</span><span class="n">l</span><span class="p">)</span> <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_loops</span><span class="p">]</span>
+        <span class="p">[</span><span class="n">_RepeatedTimer</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">l</span><span class="p">)</span> <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_loops</span><span class="p">]</span>
 </div>
 <div class="viewcode-block" id="DxlController.add_sync_loop"><a class="viewcode-back" href="../../../pypot.dynamixel.html#pypot.dynamixel.controller.DxlController.add_sync_loop">[docs]</a>    <span class="k">def</span> <span class="nf">add_sync_loop</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">freq</span><span class="p">,</span> <span class="n">function</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Adds a synchronization loop that will run a function at a predefined freq. &quot;&quot;&quot;</span>

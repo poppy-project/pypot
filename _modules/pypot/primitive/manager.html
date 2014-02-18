@@ -61,24 +61,6 @@
        }
     });
   });
-  $(window).load(function () {
-    /*
-
-     * Scroll the window to avoid the topnav bar
-     * https://github.com/twitter/bootstrap/issues/1768
-     */
-    if ($(".navbar.navbar-fixed-top").length > 0) {
-      // var navHeight = $(".navbar").height(),
-      var navHeight = 40,
-        shiftWindow = function() { scrollBy(0, -navHeight - 10); };
-
-      if (location.hash) {
-        setTimeout(shiftWindow, 1);
-      }
-
-      window.addEventListener("hashchange", shiftWindow);
-    }
-  });
 </script>
     <link rel="author" title="About these documents" href="../../../about.html" />
     <link rel="top" title="PyPot 1.5.0 documentation" href="../../../index.html" />
@@ -257,7 +239,12 @@
 </div>
 <div class="viewcode-block" id="PrimitiveManager.stop"><a class="viewcode-back" href="../../../pypot.primitive.html#pypot.primitive.manager.PrimitiveManager.stop">[docs]</a>    <span class="k">def</span> <span class="nf">stop</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Stop the primitive manager. &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_running</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span></div></div>
+        <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">primitives</span><span class="p">[:]:</span>
+            <span class="n">p</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
+            <span class="n">p</span><span class="o">.</span><span class="n">wait_to_stop</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_running</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">join</span><span class="p">()</span></div></div>
 </pre></div>
 
                 </div>

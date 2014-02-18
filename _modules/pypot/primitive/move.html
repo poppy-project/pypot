@@ -1,0 +1,301 @@
+
+
+<!DOCTYPE html>
+
+
+
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    
+    <title>pypot.primitive.move &mdash; PyPot 1.5.0 documentation</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    
+<link rel="stylesheet" href="../../../_static/css/basicstrap-base.css" type="text/css" />
+<link rel="stylesheet" href="../../../_static/css/bootstrap.min.css" type="text/css" />
+<link rel="stylesheet" href="../../../_static/css/font-awesome.min.css">
+<!--[if IE 7]>
+<link rel="stylesheet" href="../../../_static/css/font-awesome-ie7.min.css">
+<![endif]-->
+
+<style type="text/css">
+  body {
+    padding-top: 60px;
+    padding-bottom: 40px;
+  }
+}
+</style>
+
+<link rel="stylesheet" href="../../../_static/basicstrap.css" type="text/css" />
+<link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+<link rel="stylesheet" href="../../../_static/my-css.css" type="text/css" />
+<link rel="stylesheet" href="../../../_static/css/bootstrap-responsive.min.css" type="text/css" />
+    
+<script type="text/javascript">
+  var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:    '../../../',
+            VERSION:     '1.5.0',
+            COLLAPSE_INDEX: false,
+            FILE_SUFFIX: '.html',
+            HAS_SOURCE:  true
+  };
+</script>
+<script type="text/javascript" src="../../../_static/js/jquery.min.js"></script>
+<script type="text/javascript" src="../../../_static/underscore.js"></script>
+<script type="text/javascript" src="../../../_static/doctools.js"></script>
+<script type="text/javascript" src="../../../_static/js/bootstrap.min.js"></script>
+<script type="text/javascript">
+  $(document).ready(function(){
+    $('.show-sidebar').click(function(e) {
+       e.preventDefault();
+       if ($(".show-sidebar").html() == "Open Table Of Contents") {
+          $('.for-mobile').removeClass('hidden-phone');
+          $(".show-sidebar").html("Close Table Of Contents");
+       } else {
+          $(".show-sidebar").html("Open Table Of Contents");
+       }
+    });
+  });
+</script>
+    <link rel="author" title="About these documents" href="../../../about.html" />
+    <link rel="top" title="PyPot 1.5.0 documentation" href="../../../index.html" />
+    <link rel="up" title="Module code" href="../../index.html" /> 
+  </head>
+  <body role="document">
+    <div class="navbar navbar-fixed-top " role="navigation" aria-label="top navigation">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </a>
+          <div role="banner">
+            <a class="brand" href="../../../index.html">PyPot 1.5.0 documentation</a>
+          </div>
+          <div class="nav-collapse collapse">
+            <ul class="nav pull-right">
+              
+                <li>
+                <a href="../../../genindex.html" title="General Index" accesskey="I">index</a>
+                </li>
+                <li>
+                <a href="../../../py-modindex.html" title="Python Module Index" >modules</a>
+                </li>
+                <li>
+                <a href="../../index.html" accesskey="U">Module code</a>
+                </li>
+              
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+
+    <!-- container -->
+    <div class="container-fluid">
+
+
+      
+      <div class="row-fluid hidden-desktop hidden-tablet">
+      
+<div class="span3 ">
+  <a class="visible-phone btn btn-small show-sidebar" data-toggle="collapse" data-target=".for-mobile">Open Table Of Contents</a>
+  <div class="for-mobile sidebar hidden-phone" role="navigation" aria-label="main navigation">
+<div id="searchbox" role="search">
+  <h3>Quick search</h3>
+  <form class="search form-search" action="../../../search.html" method="get">
+      <div class="input-append">
+        <input type="text" class="search-query" name="q">
+        <input type="submit" class="btn" value="Go" />
+      </div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+  </div>
+</div>
+      </div>
+      
+
+      <!-- row -->
+      <div class="row-fluid">
+         
+<div class="span3 visible-desktop visible-tablet">
+  <div class=" sidebar hidden-phone" role="navigation" aria-label="main navigation">
+<div id="searchbox" role="search">
+  <h3>Quick search</h3>
+  <form class="search form-search" action="../../../search.html" method="get">
+      <div class="input-append">
+        <input type="text" class="search-query" name="q">
+        <input type="submit" class="btn" value="Go" />
+      </div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+  </div>
+</div> 
+        
+
+        <div class="span9">
+          <div class="document" role="main">
+            <div class="documentwrapper">
+              <div class="bodywrapper">
+                <div class="body">
+                  
+  <h1>Source code for pypot.primitive.move</h1><div class="highlight"><pre>
+<span class="kn">import</span> <span class="nn">json</span>
+
+<span class="kn">from</span> <span class="nn">pypot.primitive</span> <span class="kn">import</span> <span class="n">LoopPrimitive</span>
+
+
+<div class="viewcode-block" id="Move"><a class="viewcode-back" href="../../../pypot.primitive.html#pypot.primitive.move.Move">[docs]</a><span class="k">class</span> <span class="nc">Move</span><span class="p">(</span><span class="nb">dict</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Simple class used to represent a movement.</span>
+
+<span class="sd">    This class simply wraps a sequence of positions of specified motors. The sequence must be recorded at a predefined frequency. This move can be recorded through the :class:`~pypot.primitive.move.MoveRecorder` class and played thanks to a :class:`~pypot.primitive.move.MovePlayer`.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">freq</span><span class="p">):</span>
+        <span class="nb">dict</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;framerate&#39;</span><span class="p">:</span> <span class="n">freq</span><span class="p">,</span>
+                             <span class="s">&#39;position&#39;</span><span class="p">:</span> <span class="p">[]})</span>
+
+<div class="viewcode-block" id="Move.add_position"><a class="viewcode-back" href="../../../pypot.primitive.html#pypot.primitive.move.Move.add_position">[docs]</a>    <span class="k">def</span> <span class="nf">add_position</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">position</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Add a new position to the movement sequence.</span>
+
+<span class="sd">        Each position is typically stored as a dict of (motor_name, motor_position).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="p">[</span><span class="s">&#39;position&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">position</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="Move.positions"><a class="viewcode-back" href="../../../pypot.primitive.html#pypot.primitive.move.Move.positions">[docs]</a>    <span class="k">def</span> <span class="nf">positions</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Returns an iterator on the stored positions. &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="p">[</span><span class="s">&#39;position&#39;</span><span class="p">])</span>
+</div>
+<div class="viewcode-block" id="Move.next"><a class="viewcode-back" href="../../../pypot.primitive.html#pypot.primitive.move.Move.next">[docs]</a>    <span class="k">def</span> <span class="nf">next</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_iter</span><span class="o">.</span><span class="n">next</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="Move.save"><a class="viewcode-back" href="../../../pypot.primitive.html#pypot.primitive.move.Move.save">[docs]</a>    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">file</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Saves the :class:`~pypot.primitive.move.Move` to a json file.</span>
+
+<span class="sd">        .. note:: The format used to store the :class:`~pypot.primitive.move.Move` is extremely verbose and should be obviously optimized for long moves.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">file</span><span class="p">)</span>
+</div>
+    <span class="nd">@classmethod</span>
+<div class="viewcode-block" id="Move.load"><a class="viewcode-back" href="../../../pypot.primitive.html#pypot.primitive.move.Move.load">[docs]</a>    <span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="nb">file</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Loads a :class:`~pypot.primitive.move.Move` from a json file. &quot;&quot;&quot;</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="nb">file</span><span class="p">)</span>
+
+        <span class="n">move</span> <span class="o">=</span> <span class="n">cls</span><span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="s">&#39;framerate&#39;</span><span class="p">])</span>
+        <span class="n">move</span><span class="p">[</span><span class="s">&#39;position&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">d</span><span class="p">[</span><span class="s">&#39;position&#39;</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">move</span>
+
+</div></div>
+<div class="viewcode-block" id="MoveRecorder"><a class="viewcode-back" href="../../../pypot.primitive.html#pypot.primitive.move.MoveRecorder">[docs]</a><span class="k">class</span> <span class="nc">MoveRecorder</span><span class="p">(</span><span class="n">LoopPrimitive</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Primitive used to record a :class:`~pypot.primitive.move.Move`.</span>
+
+<span class="sd">    The recording can be :meth:`~pypot.primitive.primitive.Primitive.start` and :meth:`~pypot.primitive.primitive.Primitive.stop` by using the :class:`~pypot.primitive.primitive.LoopPrimitive` methods.</span>
+
+<span class="sd">    .. note:: Re-starting the recording will create a new :class:`~pypot.primitive.move.Move` losing all the previously stored data.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">robot</span><span class="p">,</span> <span class="n">freq</span><span class="p">,</span> <span class="n">tracked_motors</span><span class="p">):</span>
+        <span class="n">LoopPrimitive</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">robot</span><span class="p">,</span> <span class="n">freq</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">freq</span> <span class="o">=</span> <span class="n">freq</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">tracked_motors</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_mockup_motor</span><span class="p">,</span> <span class="n">tracked_motors</span><span class="p">)</span>
+
+<div class="viewcode-block" id="MoveRecorder.start"><a class="viewcode-back" href="../../../pypot.primitive.html#pypot.primitive.move.MoveRecorder.start">[docs]</a>    <span class="k">def</span> <span class="nf">start</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_move</span> <span class="o">=</span> <span class="n">Move</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">freq</span><span class="p">)</span>
+        <span class="n">LoopPrimitive</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="MoveRecorder.update"><a class="viewcode-back" href="../../../pypot.primitive.html#pypot.primitive.move.MoveRecorder.update">[docs]</a>    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">LoopPrimitive</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+        <span class="n">position</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">([(</span><span class="n">m</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">m</span><span class="o">.</span><span class="n">present_position</span><span class="p">)</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">tracked_motors</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_move</span><span class="o">.</span><span class="n">add_position</span><span class="p">(</span><span class="n">position</span><span class="p">)</span>
+</div>
+    <span class="nd">@property</span>
+<div class="viewcode-block" id="MoveRecorder.move"><a class="viewcode-back" href="../../../pypot.primitive.html#pypot.primitive.move.MoveRecorder.move">[docs]</a>    <span class="k">def</span> <span class="nf">move</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Returns the currently recorded :class:`~pypot.primitive.move.Move`. &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_move</span>
+
+</div></div>
+<div class="viewcode-block" id="MovePlayer"><a class="viewcode-back" href="../../../pypot.primitive.html#pypot.primitive.move.MovePlayer">[docs]</a><span class="k">class</span> <span class="nc">MovePlayer</span><span class="p">(</span><span class="n">LoopPrimitive</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Primitive used to play a :class:`~pypot.primitive.move.Move`.</span>
+
+<span class="sd">    The playing can be :meth:`~pypot.primitive.primitive.Primitive.start` and :meth:`~pypot.primitive.primitive.Primitive.stop` by using the :class:`~pypot.primitive.primitive.LoopPrimitive` methods.</span>
+
+<span class="sd">    .. warning:: You should be careful that you primitive actually runs at the same speed that the move has been recorded. If the player can not run as fast as the framerate of the :class:`~pypot.primitive.move.Move`, it will be played slowly resulting in a slower version of your move.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">robot</span><span class="p">,</span> <span class="n">move</span><span class="p">):</span>
+        <span class="n">LoopPrimitive</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">robot</span><span class="p">,</span> <span class="n">move</span><span class="p">[</span><span class="s">&#39;framerate&#39;</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">move</span> <span class="o">=</span> <span class="n">move</span>
+
+<div class="viewcode-block" id="MovePlayer.start"><a class="viewcode-back" href="../../../pypot.primitive.html#pypot.primitive.move.MovePlayer.start">[docs]</a>    <span class="k">def</span> <span class="nf">start</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">positions</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">move</span><span class="o">.</span><span class="n">positions</span><span class="p">()</span>
+        <span class="n">LoopPrimitive</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="MovePlayer.update"><a class="viewcode-back" href="../../../pypot.primitive.html#pypot.primitive.move.MovePlayer.update">[docs]</a>    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">LoopPrimitive</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">position</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">positions</span><span class="o">.</span><span class="n">next</span><span class="p">()</span>
+
+            <span class="k">for</span> <span class="n">m</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">position</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+                <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">robot</span><span class="p">,</span> <span class="n">m</span><span class="p">)</span><span class="o">.</span><span class="n">goal_position</span> <span class="o">=</span> <span class="n">v</span>
+
+        <span class="k">except</span> <span class="ne">StopIteration</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span></div></div>
+</pre></div>
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        
+      </div><!-- /row -->
+
+      <!-- row -->
+      <div class="row-fluid">
+<div class="related navbar " role="navigation" aria-label="related navigation">
+  <div class="navbar-inner">
+    <ul class="nav pull-right">
+      
+        <li><a href="../../../genindex.html" title="General Index" >index</a></li>
+        <li><a href="../../../py-modindex.html" title="Python Module Index" >modules</a></li>
+        <li><a href="../../../index.html">PyPot 1.5.0 documentation</a></li>
+        <li><a href="../../index.html" >Module code</a></li> 
+      
+    </ul>
+  </div>
+</div>
+      </div><!-- /row -->
+
+      <!-- footer -->
+      <footer role="contentinfo">
+          &copy; Copyright 2012, Pierre Rouanet, Matthieu Lapeyre, Haylee Fogg.
+        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.2.1.
+      </footer>
+      <!-- /footer -->
+
+    </div>
+    <!-- /container -->
+
+  </body>
+</html>

@@ -61,24 +61,6 @@
        }
     });
   });
-  $(window).load(function () {
-    /*
-
-     * Scroll the window to avoid the topnav bar
-     * https://github.com/twitter/bootstrap/issues/1768
-     */
-    if ($(".navbar.navbar-fixed-top").length > 0) {
-      // var navHeight = $(".navbar").height(),
-      var navHeight = 40,
-        shiftWindow = function() { scrollBy(0, -navHeight - 10); };
-
-      if (location.hash) {
-        setTimeout(shiftWindow, 1);
-      }
-
-      window.addEventListener("hashchange", shiftWindow);
-    }
-  });
 </script>
     <link rel="author" title="About these documents" href="../about.html" />
     <link rel="top" title="PyPot 1.5.0 documentation" href="../index.html" /> 
@@ -179,6 +161,7 @@
 <li><a href="pypot/dynamixel/motor.html">pypot.dynamixel.motor</a></li>
 <li><a href="pypot/dynamixel/packet.html">pypot.dynamixel.packet</a></li>
 </ul><li><a href="pypot/primitive/manager.html">pypot.primitive.manager</a></li>
+<li><a href="pypot/primitive/move.html">pypot.primitive.move</a></li>
 <li><a href="pypot/primitive/primitive.html">pypot.primitive.primitive</a></li>
 <li><a href="pypot/primitive/utils.html">pypot.primitive.utils</a></li>
 <li><a href="pypot/robot/config.html">pypot.robot.config</a></li>
