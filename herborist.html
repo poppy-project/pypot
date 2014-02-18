@@ -61,10 +61,28 @@
        }
     });
   });
+  $(window).load(function () {
+    /*
+
+     * Scroll the window to avoid the topnav bar
+     * https://github.com/twitter/bootstrap/issues/1768
+     */
+    if ($(".navbar.navbar-fixed-top").length > 0) {
+      // var navHeight = $(".navbar").height(),
+      var navHeight = 40,
+        shiftWindow = function() { scrollBy(0, -navHeight - 10); };
+
+      if (location.hash) {
+        setTimeout(shiftWindow, 1);
+      }
+
+      window.addEventListener("hashchange", shiftWindow);
+    }
+  });
 </script>
     <link rel="author" title="About these documents" href="about.html" />
     <link rel="top" title="PyPot 1.5.0 documentation" href="index.html" />
-    <link rel="next" title="Move recording and playing" href="move.html" />
+    <link rel="next" title="PyPot’s API" href="api.html" />
     <link rel="prev" title="REST API" href="remote_access.html" /> 
   </head>
   <body role="document">
@@ -89,7 +107,7 @@
                 <a href="py-modindex.html" title="Python Module Index" >modules</a>
                 </li>
                 <li>
-                <a href="move.html" title="Move recording and playing" accesskey="N">next</a>
+                <a href="api.html" title="PyPot’s API" accesskey="N">next</a>
                 </li>
                 <li>
                 <a href="remote_access.html" title="REST API" accesskey="P">previous</a>
@@ -116,8 +134,8 @@
   <p class="topless"><a href="remote_access.html"
                         title="previous chapter">REST API</a></p>
   <h4>Next topic</h4>
-  <p class="topless"><a href="move.html"
-                        title="next chapter">Move recording and playing</a></p>
+  <p class="topless"><a href="api.html"
+                        title="next chapter">PyPot&#8217;s API</a></p>
   <h3>This Page</h3>
   <ul class="this-page-menu">
     <li><a href="_sources/herborist.txt"
@@ -151,8 +169,8 @@
   <p class="topless"><a href="remote_access.html"
                         title="previous chapter">REST API</a></p>
   <h4>Next topic</h4>
-  <p class="topless"><a href="move.html"
-                        title="next chapter">Move recording and playing</a></p>
+  <p class="topless"><a href="api.html"
+                        title="next chapter">PyPot&#8217;s API</a></p>
   <h3>This Page</h3>
   <ul class="this-page-menu">
     <li><a href="_sources/herborist.txt"
@@ -226,7 +244,7 @@
       
         <li><a href="genindex.html" title="General Index" >index</a></li>
         <li><a href="py-modindex.html" title="Python Module Index" >modules</a></li>
-        <li><a href="move.html" title="Move recording and playing" >next</a></li>
+        <li><a href="api.html" title="PyPot’s API" >next</a></li>
         <li><a href="remote_access.html" title="REST API" >previous</a></li>
         <li><a href="index.html">PyPot 1.5.0 documentation</a></li> 
       

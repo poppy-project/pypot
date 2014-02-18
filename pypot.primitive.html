@@ -61,6 +61,24 @@
        }
     });
   });
+  $(window).load(function () {
+    /*
+
+     * Scroll the window to avoid the topnav bar
+     * https://github.com/twitter/bootstrap/issues/1768
+     */
+    if ($(".navbar.navbar-fixed-top").length > 0) {
+      // var navHeight = $(".navbar").height(),
+      var navHeight = 40,
+        shiftWindow = function() { scrollBy(0, -navHeight - 10); };
+
+      if (location.hash) {
+        setTimeout(shiftWindow, 1);
+      }
+
+      window.addEventListener("hashchange", shiftWindow);
+    }
+  });
 </script>
     <link rel="author" title="About these documents" href="about.html" />
     <link rel="top" title="PyPot 1.5.0 documentation" href="index.html" />
@@ -121,7 +139,6 @@
 <li><a class="reference internal" href="#"><tt class="docutils literal"><span class="pre">primitive</span></tt> Package</a><ul>
 <li><a class="reference internal" href="#module-pypot.primitive.primitive"><tt class="docutils literal"><span class="pre">primitive</span></tt> Module</a></li>
 <li><a class="reference internal" href="#module-pypot.primitive.manager"><tt class="docutils literal"><span class="pre">manager</span></tt> Module</a></li>
-<li><a class="reference internal" href="#module-pypot.primitive.move"><tt class="docutils literal"><span class="pre">move</span></tt> Module</a></li>
 <li><a class="reference internal" href="#module-pypot.primitive.utils"><tt class="docutils literal"><span class="pre">utils</span></tt> Module</a></li>
 </ul>
 </li>
@@ -167,7 +184,6 @@
 <li><a class="reference internal" href="#"><tt class="docutils literal"><span class="pre">primitive</span></tt> Package</a><ul>
 <li><a class="reference internal" href="#module-pypot.primitive.primitive"><tt class="docutils literal"><span class="pre">primitive</span></tt> Module</a></li>
 <li><a class="reference internal" href="#module-pypot.primitive.manager"><tt class="docutils literal"><span class="pre">manager</span></tt> Module</a></li>
-<li><a class="reference internal" href="#module-pypot.primitive.move"><tt class="docutils literal"><span class="pre">move</span></tt> Module</a></li>
 <li><a class="reference internal" href="#module-pypot.primitive.utils"><tt class="docutils literal"><span class="pre">utils</span></tt> Module</a></li>
 </ul>
 </li>
@@ -451,7 +467,7 @@ The 0th element of the list corresponds to the most recent frequency.</p>
 <span id="manager-module"></span><h2><a class="reference internal" href="#module-pypot.primitive.manager" title="pypot.primitive.manager"><tt class="xref py py-mod docutils literal"><span class="pre">manager</span></tt></a> Module<a class="headerlink" href="#module-pypot.primitive.manager" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="pypot.primitive.manager.PrimitiveManager">
-<em class="property">class </em><tt class="descclassname">pypot.primitive.manager.</tt><tt class="descname">PrimitiveManager</tt><big>(</big><em>motors</em>, <em>freq=50</em>, <em>filter=&lt;functools.partial object at 0x111cdd418&gt;</em><big>)</big><a class="reference internal" href="_modules/pypot/primitive/manager.html#PrimitiveManager"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.primitive.manager.PrimitiveManager" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><tt class="descclassname">pypot.primitive.manager.</tt><tt class="descname">PrimitiveManager</tt><big>(</big><em>motors</em>, <em>freq=50</em>, <em>filter=&lt;functools.partial object at 0x10b05d3c0&gt;</em><big>)</big><a class="reference internal" href="_modules/pypot/primitive/manager.html#PrimitiveManager"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.primitive.manager.PrimitiveManager" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference external" href="http://docs.python.org/library/threading.html#threading.Thread" title="(in Python v2.7)"><tt class="xref py py-class docutils literal"><span class="pre">threading.Thread</span></tt></a></p>
 <p>Combines all <a class="reference internal" href="#pypot.primitive.primitive.Primitive" title="pypot.primitive.primitive.Primitive"><tt class="xref py py-class docutils literal"><span class="pre">Primitive</span></tt></a> orders and affect them to the real motors.</p>
 <p>At a predefined frequency, the manager gathers all the orders sent by the primitive to the &#8220;fake&#8221; motors, combined them thanks to the filter function and affect them to the &#8220;real&#8221; motors.</p>
@@ -505,101 +521,6 @@ The 0th element of the list corresponds to the most recent frequency.</p>
 <tt class="descname">stop</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/pypot/primitive/manager.html#PrimitiveManager.stop"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.primitive.manager.PrimitiveManager.stop" title="Permalink to this definition">¶</a></dt>
 <dd><p>Stop the primitive manager.</p>
 </dd></dl>
-
-</dd></dl>
-
-</div>
-<div class="section" id="module-pypot.primitive.move">
-<span id="move-module"></span><h2><a class="reference internal" href="#module-pypot.primitive.move" title="pypot.primitive.move"><tt class="xref py py-mod docutils literal"><span class="pre">move</span></tt></a> Module<a class="headerlink" href="#module-pypot.primitive.move" title="Permalink to this headline">¶</a></h2>
-<dl class="class">
-<dt id="pypot.primitive.move.Move">
-<em class="property">class </em><tt class="descclassname">pypot.primitive.move.</tt><tt class="descname">Move</tt><big>(</big><em>freq</em><big>)</big><a class="reference internal" href="_modules/pypot/primitive/move.html#Move"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.primitive.move.Move" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference external" href="http://docs.python.org/library/stdtypes.html#dict" title="(in Python v2.7)"><tt class="xref py py-class docutils literal"><span class="pre">dict</span></tt></a></p>
-<p>Simple class used to represent a movement.</p>
-<p>This class simply wraps a sequence of positions of specified motors. The sequence must be recorded at a predefined frequency. This move can be recorded through the <a class="reference internal" href="#pypot.primitive.move.MoveRecorder" title="pypot.primitive.move.MoveRecorder"><tt class="xref py py-class docutils literal"><span class="pre">MoveRecorder</span></tt></a> class and played thanks to a <a class="reference internal" href="#pypot.primitive.move.MovePlayer" title="pypot.primitive.move.MovePlayer"><tt class="xref py py-class docutils literal"><span class="pre">MovePlayer</span></tt></a>.</p>
-<dl class="method">
-<dt id="pypot.primitive.move.Move.add_position">
-<tt class="descname">add_position</tt><big>(</big><em>position</em><big>)</big><a class="reference internal" href="_modules/pypot/primitive/move.html#Move.add_position"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.primitive.move.Move.add_position" title="Permalink to this definition">¶</a></dt>
-<dd><p>Add a new position to the movement sequence.</p>
-<p>Each position is typically stored as a dict of (motor_name, motor_position).</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pypot.primitive.move.Move.positions">
-<tt class="descname">positions</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/pypot/primitive/move.html#Move.positions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.primitive.move.Move.positions" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns an iterator on the stored positions.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pypot.primitive.move.Move.next">
-<tt class="descname">next</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/pypot/primitive/move.html#Move.next"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.primitive.move.Move.next" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="pypot.primitive.move.Move.save">
-<tt class="descname">save</tt><big>(</big><em>file</em><big>)</big><a class="reference internal" href="_modules/pypot/primitive/move.html#Move.save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.primitive.move.Move.save" title="Permalink to this definition">¶</a></dt>
-<dd><p>Saves the <a class="reference internal" href="#pypot.primitive.move.Move" title="pypot.primitive.move.Move"><tt class="xref py py-class docutils literal"><span class="pre">Move</span></tt></a> to a json file.</p>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">The format used to store the <a class="reference internal" href="#pypot.primitive.move.Move" title="pypot.primitive.move.Move"><tt class="xref py py-class docutils literal"><span class="pre">Move</span></tt></a> is extremely verbose and should be obviously optimized for long moves.</p>
-</div>
-</dd></dl>
-
-<dl class="classmethod">
-<dt id="pypot.primitive.move.Move.load">
-<em class="property">classmethod </em><tt class="descname">load</tt><big>(</big><em>file</em><big>)</big><a class="reference internal" href="_modules/pypot/primitive/move.html#Move.load"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.primitive.move.Move.load" title="Permalink to this definition">¶</a></dt>
-<dd><p>Loads a <a class="reference internal" href="#pypot.primitive.move.Move" title="pypot.primitive.move.Move"><tt class="xref py py-class docutils literal"><span class="pre">Move</span></tt></a> from a json file.</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="pypot.primitive.move.MoveRecorder">
-<em class="property">class </em><tt class="descclassname">pypot.primitive.move.</tt><tt class="descname">MoveRecorder</tt><big>(</big><em>robot</em>, <em>freq</em>, <em>tracked_motors</em><big>)</big><a class="reference internal" href="_modules/pypot/primitive/move.html#MoveRecorder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.primitive.move.MoveRecorder" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#pypot.primitive.primitive.LoopPrimitive" title="pypot.primitive.primitive.LoopPrimitive"><tt class="xref py py-class docutils literal"><span class="pre">pypot.primitive.primitive.LoopPrimitive</span></tt></a></p>
-<p>Primitive used to record a <a class="reference internal" href="#pypot.primitive.move.Move" title="pypot.primitive.move.Move"><tt class="xref py py-class docutils literal"><span class="pre">Move</span></tt></a>.</p>
-<p>The recording can be <a class="reference internal" href="#pypot.primitive.primitive.Primitive.start" title="pypot.primitive.primitive.Primitive.start"><tt class="xref py py-meth docutils literal"><span class="pre">start()</span></tt></a> and <a class="reference internal" href="#pypot.primitive.primitive.Primitive.stop" title="pypot.primitive.primitive.Primitive.stop"><tt class="xref py py-meth docutils literal"><span class="pre">stop()</span></tt></a> by using the <a class="reference internal" href="#pypot.primitive.primitive.LoopPrimitive" title="pypot.primitive.primitive.LoopPrimitive"><tt class="xref py py-class docutils literal"><span class="pre">LoopPrimitive</span></tt></a> methods.</p>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">Re-starting the recording will create a new <a class="reference internal" href="#pypot.primitive.move.Move" title="pypot.primitive.move.Move"><tt class="xref py py-class docutils literal"><span class="pre">Move</span></tt></a> losing all the previously stored data.</p>
-</div>
-<dl class="method">
-<dt id="pypot.primitive.move.MoveRecorder.start">
-<tt class="descname">start</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/pypot/primitive/move.html#MoveRecorder.start"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.primitive.move.MoveRecorder.start" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="pypot.primitive.move.MoveRecorder.update">
-<tt class="descname">update</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/pypot/primitive/move.html#MoveRecorder.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.primitive.move.MoveRecorder.update" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pypot.primitive.move.MoveRecorder.move">
-<tt class="descname">move</tt><a class="reference internal" href="_modules/pypot/primitive/move.html#MoveRecorder.move"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.primitive.move.MoveRecorder.move" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns the currently recorded <a class="reference internal" href="#pypot.primitive.move.Move" title="pypot.primitive.move.Move"><tt class="xref py py-class docutils literal"><span class="pre">Move</span></tt></a>.</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="pypot.primitive.move.MovePlayer">
-<em class="property">class </em><tt class="descclassname">pypot.primitive.move.</tt><tt class="descname">MovePlayer</tt><big>(</big><em>robot</em>, <em>move</em><big>)</big><a class="reference internal" href="_modules/pypot/primitive/move.html#MovePlayer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.primitive.move.MovePlayer" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#pypot.primitive.primitive.LoopPrimitive" title="pypot.primitive.primitive.LoopPrimitive"><tt class="xref py py-class docutils literal"><span class="pre">pypot.primitive.primitive.LoopPrimitive</span></tt></a></p>
-<p>Primitive used to play a <a class="reference internal" href="#pypot.primitive.move.Move" title="pypot.primitive.move.Move"><tt class="xref py py-class docutils literal"><span class="pre">Move</span></tt></a>.</p>
-<p>The playing can be <a class="reference internal" href="#pypot.primitive.primitive.Primitive.start" title="pypot.primitive.primitive.Primitive.start"><tt class="xref py py-meth docutils literal"><span class="pre">start()</span></tt></a> and <a class="reference internal" href="#pypot.primitive.primitive.Primitive.stop" title="pypot.primitive.primitive.Primitive.stop"><tt class="xref py py-meth docutils literal"><span class="pre">stop()</span></tt></a> by using the <a class="reference internal" href="#pypot.primitive.primitive.LoopPrimitive" title="pypot.primitive.primitive.LoopPrimitive"><tt class="xref py py-class docutils literal"><span class="pre">LoopPrimitive</span></tt></a> methods.</p>
-<div class="admonition warning">
-<p class="first admonition-title">Warning</p>
-<p class="last">You should be careful that you primitive actually runs at the same speed that the move has been recorded. If the player can not run as fast as the framerate of the <a class="reference internal" href="#pypot.primitive.move.Move" title="pypot.primitive.move.Move"><tt class="xref py py-class docutils literal"><span class="pre">Move</span></tt></a>, it will be played slowly resulting in a slower version of your move.</p>
-</div>
-<dl class="method">
-<dt id="pypot.primitive.move.MovePlayer.start">
-<tt class="descname">start</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/pypot/primitive/move.html#MovePlayer.start"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.primitive.move.MovePlayer.start" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="pypot.primitive.move.MovePlayer.update">
-<tt class="descname">update</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/pypot/primitive/move.html#MovePlayer.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.primitive.move.MovePlayer.update" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
 
 </dd></dl>
 

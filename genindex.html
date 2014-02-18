@@ -62,6 +62,24 @@
        }
     });
   });
+  $(window).load(function () {
+    /*
+
+     * Scroll the window to avoid the topnav bar
+     * https://github.com/twitter/bootstrap/issues/1768
+     */
+    if ($(".navbar.navbar-fixed-top").length > 0) {
+      // var navHeight = $(".navbar").height(),
+      var navHeight = 40,
+        shiftWindow = function() { scrollBy(0, -navHeight - 10); };
+
+      if (location.hash) {
+        setTimeout(shiftWindow, 1);
+      }
+
+      window.addEventListener("hashchange", shiftWindow);
+    }
+  });
 </script>
     <link rel="author" title="About these documents" href="about.html" />
     <link rel="top" title="PyPot 1.5.0 documentation" href="index.html" /> 
@@ -196,10 +214,6 @@
 
       
   <dt><a href="pypot.primitive.html#pypot.primitive.manager.PrimitiveManager.add">add() (pypot.primitive.manager.PrimitiveManager method)</a>
-  </dt>
-
-      
-  <dt><a href="pypot.primitive.html#pypot.primitive.move.Move.add_position">add_position() (pypot.primitive.move.Move method)</a>
   </dt>
 
       
@@ -830,10 +844,6 @@
   </dt>
 
       </dl></dd>
-      
-  <dt><a href="pypot.primitive.html#pypot.primitive.move.Move.load">load() (pypot.primitive.move.Move class method)</a>
-  </dt>
-
   </dl></td>
   <td style="width: 33%" valign="top"><dl>
       
@@ -858,6 +868,8 @@
   <dt><a href="pypot.primitive.html#pypot.primitive.primitive.MockupRobot">MockupRobot (class in pypot.primitive.primitive)</a>
   </dt>
 
+  </dl></td>
+  <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="pypot.primitive.html#pypot.primitive.primitive.MockupRobot.motors">motors (pypot.primitive.primitive.MockupRobot attribute)</a>
   </dt>
@@ -868,24 +880,6 @@
   </dt>
 
       </dl></dd>
-      
-  <dt><a href="pypot.primitive.html#pypot.primitive.move.Move">Move (class in pypot.primitive.move)</a>
-  </dt>
-
-  </dl></td>
-  <td style="width: 33%" valign="top"><dl>
-      
-  <dt><a href="pypot.primitive.html#pypot.primitive.move.MoveRecorder.move">move (pypot.primitive.move.MoveRecorder attribute)</a>
-  </dt>
-
-      
-  <dt><a href="pypot.primitive.html#pypot.primitive.move.MovePlayer">MovePlayer (class in pypot.primitive.move)</a>
-  </dt>
-
-      
-  <dt><a href="pypot.primitive.html#pypot.primitive.move.MoveRecorder">MoveRecorder (class in pypot.primitive.move)</a>
-  </dt>
-
       
   <dt><a href="pypot.dynamixel.html#pypot.dynamixel.motor.DxlMotor.moving_speed">moving_speed (pypot.dynamixel.motor.DxlMotor attribute)</a>
   </dt>
@@ -902,12 +896,6 @@
   <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="pypot.dynamixel.html#pypot.dynamixel.motor.DxlMotor.name">name (pypot.dynamixel.motor.DxlMotor attribute)</a>
-  </dt>
-
-  </dl></td>
-  <td style="width: 33%" valign="top"><dl>
-      
-  <dt><a href="pypot.primitive.html#pypot.primitive.move.Move.next">next() (pypot.primitive.move.Move method)</a>
   </dt>
 
   </dl></td>
@@ -954,10 +942,6 @@
 
       
   <dt><a href="pypot.dynamixel.html#pypot.dynamixel.io.DxlIO.port">port (pypot.dynamixel.io.DxlIO attribute)</a>
-  </dt>
-
-      
-  <dt><a href="pypot.primitive.html#pypot.primitive.move.Move.positions">positions() (pypot.primitive.move.Move method)</a>
   </dt>
 
       
@@ -1034,10 +1018,6 @@
 
       
   <dt><a href="pypot.primitive.html#module-pypot.primitive.manager">pypot.primitive.manager (module)</a>
-  </dt>
-
-      
-  <dt><a href="pypot.primitive.html#module-pypot.primitive.move">pypot.primitive.move (module)</a>
   </dt>
 
       
@@ -1145,10 +1125,6 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%" valign="top"><dl>
       
-  <dt><a href="pypot.primitive.html#pypot.primitive.move.Move.save">save() (pypot.primitive.move.Move method)</a>
-  </dt>
-
-      
   <dt><a href="pypot.dynamixel.html#pypot.dynamixel.io.DxlIO.scan">scan() (pypot.dynamixel.io.DxlIO method)</a>
   </dt>
 
@@ -1248,14 +1224,6 @@
 
       <dd><dl>
         
-  <dt><a href="pypot.primitive.html#pypot.primitive.move.MovePlayer.start">(pypot.primitive.move.MovePlayer method)</a>
-  </dt>
-
-        
-  <dt><a href="pypot.primitive.html#pypot.primitive.move.MoveRecorder.start">(pypot.primitive.move.MoveRecorder method)</a>
-  </dt>
-
-        
   <dt><a href="pypot.primitive.html#pypot.primitive.primitive.Primitive.start">(pypot.primitive.primitive.Primitive method)</a>
   </dt>
 
@@ -1341,18 +1309,10 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%" valign="top"><dl>
       
-  <dt><a href="pypot.primitive.html#pypot.primitive.move.MovePlayer.update">update() (pypot.primitive.move.MovePlayer method)</a>
+  <dt><a href="pypot.primitive.html#pypot.primitive.primitive.LoopPrimitive.update">update() (pypot.primitive.primitive.LoopPrimitive method)</a>
   </dt>
 
       <dd><dl>
-        
-  <dt><a href="pypot.primitive.html#pypot.primitive.move.MoveRecorder.update">(pypot.primitive.move.MoveRecorder method)</a>
-  </dt>
-
-        
-  <dt><a href="pypot.primitive.html#pypot.primitive.primitive.LoopPrimitive.update">(pypot.primitive.primitive.LoopPrimitive method)</a>
-  </dt>
-
         
   <dt><a href="pypot.primitive.html#pypot.primitive.utils.Sinus.update">(pypot.primitive.utils.Sinus method)</a>
   </dt>
