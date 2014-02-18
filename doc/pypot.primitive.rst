@@ -18,8 +18,15 @@
     :members:
     :undoc-members:
     :show-inheritance:
-    
-    
+
+:mod:`~pypot.primitive.move` Module
+------------------------------------
+
+.. automodule:: pypot.primitive.move
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 :mod:`~pypot.primitive.utils` Module
 ------------------------------------
 
