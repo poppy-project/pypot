@@ -58,8 +58,6 @@ If you want to make the dance primitive infinite you can use the :class:`~pypot.
     class LoopDancePrimitive(pypot.primitive.LoopPrimitive):
         # The update function is automatically called at the frequency given on the constructor
         def update(self, amp=30, freq=0.5):
-            pypot.primitive.LoopPrimitive.update(self)
-
             x = amp * numpy.sin(2 * numpy.pi * freq * self.elapsed_time)
 
             self.robot.base_pan.goal_position = x

@@ -178,7 +178,7 @@ class LoopPrimitive(Primitive):
 
         while not self.should_stop():
             start = time.time()
-            self.update(*self.args, **self.kwargs)
+            self._wrapped_update(*self.args, **self.kwargs)
             end = time.time()
 
             self._recent_updates.append(start)
@@ -190,15 +190,17 @@ class LoopPrimitive(Primitive):
             if self.should_pause():
                 self.wait_to_resume()
 
+    def _wrapped_update(self, *args, **kwargs):
+        logger.debug('LoopPrimitive %s updated.', self)
+        self.update(*args, **kwargs)
+
     def update(self, *args, **kwargs):
         """ Update methods that will be called at a predefined frequency.
 
             :param args: the arguments passed to the constructor are automatically passed to this method
             :param kwargs: the arguments passed to the constructor are automatically passed to this method
-
-            .. note:: When you override this method you should call the update method from the mother class to keep the log consistent.
             """
-        logger.debug('LoopPrimitive %s updated.', self)
+        raise NotImplementedError
 
 
 class MockupRobot(object):
