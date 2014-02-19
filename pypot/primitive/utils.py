@@ -17,8 +17,6 @@ class Sinus(pypot.primitive.LoopPrimitive):
 
     def update(self, amp, freq, offset, phase):
         """ Compute the sin(t) where t is the elapsed time since the primitive has been started. """
-        pypot.primitive.LoopPrimitive.update(self)
-
         pos = amp * numpy.sin(freq * 2.0 * numpy.pi * self.elapsed_time +
                               phase * numpy.pi / 180.0) + offset
 
