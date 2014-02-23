@@ -63,7 +63,6 @@ class MoveRecorder(LoopPrimitive):
         LoopPrimitive.start(self)
 
     def update(self):
-        LoopPrimitive.update(self)
 
         position = dict([(m.name, m.present_position) for m in self.tracked_motors])
         self._move.add_position(position)
@@ -91,7 +90,6 @@ class MovePlayer(LoopPrimitive):
         LoopPrimitive.start(self)
 
     def update(self):
-        LoopPrimitive.update(self)
 
         try:
             position = self.positions.next()
