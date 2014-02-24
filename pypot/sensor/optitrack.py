@@ -6,10 +6,8 @@ import threading
 
 from collections import namedtuple
 
-from pypot.utils import Point
 
-
-TrackedObject = namedtuple('TrackedObject', ('position', 'orientation', 'timestamp'))
+TrackedObject = namedtuple('TrackedObject', ('position', 'quaternion', 'orientation', 'timestamp'))
 
 
 def quat2euler(q):
@@ -55,7 +53,8 @@ class OptiTrackClient(threading.Thread):
         return dict([(k, v) for k, v in self.tracked_objects.iteritems() if f(k) < dt])
 
     def handler(self, obj, data):
-        self.tracked_objects[obj] = TrackedObject(Point(*data['position']),
+        self.tracked_objects[obj] = TrackedObject(numpy.array(*data['position']),
+                                                  numpy.array(data['quaternion']),
                                                   quat2euler(numpy.array(data['quaternion'])),
                                                   datetime.datetime.now())
 
