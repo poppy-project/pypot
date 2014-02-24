@@ -58,13 +58,10 @@ class MoveRecorder(LoopPrimitive):
 
         self.tracked_motors = map(self.get_mockup_motor, tracked_motors)
 
-    def start(self):
+    def setup(self):
         self._move = Move(self.freq)
-        LoopPrimitive.start(self)
 
     def update(self):
-        LoopPrimitive.update(self)
-
         position = dict([(m.name, m.present_position) for m in self.tracked_motors])
         self._move.add_position(position)
 
@@ -86,13 +83,10 @@ class MovePlayer(LoopPrimitive):
         LoopPrimitive.__init__(self, robot, move['framerate'])
         self.move = move
 
-    def start(self):
+    def setup(self):
         self.positions = self.move.positions()
-        LoopPrimitive.start(self)
 
     def update(self):
-        LoopPrimitive.update(self)
-
         try:
             position = self.positions.next()
 
