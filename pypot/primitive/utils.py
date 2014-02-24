@@ -10,55 +10,54 @@ class Sinus(pypot.primitive.LoopPrimitive):
                  motor_list,
                  amp=1, freq=0.5, offset=0, phase=0):
 
-        pypot.primitive.LoopPrimitive.__init__(self, robot, refresh_freq,
-                                               amp, freq, offset, phase)
+        pypot.primitive.LoopPrimitive.__init__(self, robot, refresh_freq)
 
-        self.freq = freq
-        self.amp = amp
-        self.offset = offset
-        self.phase = phase
+        self._freq = freq
+        self._amp = amp
+        self._offset = offset
+        self._phase = phase
 
         self.motor_list = [self.get_mockup_motor(m) for m in motor_list]
 
     def update(self):
         """ Compute the sin(t) where t is the elapsed time since the primitive has been started. """
-        pos = self.amp * numpy.sin(self.freq * 2.0 * numpy.pi * self.elapsed_time +
-                              self.phase * numpy.pi / 180.0) + self.offset
+        pos = self._amp * numpy.sin(self._freq * 2.0 * numpy.pi * self.elapsed_time +
+                              self._phase * numpy.pi / 180.0) + self._offset
 
         for m in self.motor_list:
             m.goal_position = pos
 
     @property
     def frequency(self):
-        return self.freq
+        return self._freq
 
     @frequency.setter
     def frequency(self, new_freq):
-        self.freq = new_freq
+        self._freq = new_freq
 
     @property
     def amplitude(self):
-        return self.amp
+        return self._amp
 
     @amplitude.setter
     def amplitude(self, new_amp):
-        self.amp = new_amp
+        self._amp = new_amp
 
     @property
     def offset(self):
-        return self.offset
+        return self._offset
 
     @offset.setter
     def offset(self, new_offset):
-        self.offset = new_offset
+        self._offset = new_offset
 
     @property
     def phase(self):
-        return self.phase
+        return self._phase
 
     @phase.setter
     def phase(self, new_phase):
-        self.phase = new_phase
+        self._phase = new_phase
 
 
 class Cosinus(Sinus):

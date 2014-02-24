@@ -23,7 +23,7 @@ class OptiBridgeServer(threading.Thread):
 
     def run(self):
         while True:
-            self.s.send(pickle.dumps(self.optitrack.tracked_objects))
+            self.s.send(pickle.dumps(self.optitrack.recent_tracked_objects))
             time.sleep(0.02)
 
 
@@ -43,8 +43,15 @@ class OptiTrackClient(threading.Thread):
     def run(self):
         while True:
             d = pickle.loads(self.s.recv())
-            self._tracked_obj = {k: d[k] for k in self.obj_name}
+            self._tracked_obj = {
+                k: d[k]
+                for k in filter(lambda k: k in self.obj_name, d.keys())
+            }
 
     @property
     def tracked_objects(self):
         return self._tracked_obj
+
+    @property
+    def recent_tracked_objects(self):
+        return self.tracked_objects
