@@ -9,7 +9,7 @@
   <head>
     <meta charset="utf-8" />
     
-    <title>primitive Package &mdash; PyPot 1.5.0 documentation</title>
+    <title>primitive Package &mdash; PyPot 1.5.1 documentation</title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
@@ -39,7 +39,7 @@
 <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
             URL_ROOT:    './',
-            VERSION:     '1.5.0',
+            VERSION:     '1.5.1',
             COLLAPSE_INDEX: false,
             FILE_SUFFIX: '.html',
             HAS_SOURCE:  true
@@ -81,7 +81,7 @@
   });
 </script>
     <link rel="author" title="About these documents" href="about.html" />
-    <link rel="top" title="PyPot 1.5.0 documentation" href="index.html" />
+    <link rel="top" title="PyPot 1.5.1 documentation" href="index.html" />
     <link rel="up" title="PyPot’s API" href="api.html" />
     <link rel="next" title="robot Package" href="pypot.robot.html" />
     <link rel="prev" title="dynamixel Package" href="pypot.dynamixel.html" /> 
@@ -96,7 +96,7 @@
             <span class="icon-bar"></span>
           </a>
           <div role="banner">
-            <a class="brand" href="index.html">PyPot 1.5.0 documentation</a>
+            <a class="brand" href="index.html">PyPot 1.5.1 documentation</a>
           </div>
           <div class="nav-collapse collapse">
             <ul class="nav pull-right">
@@ -139,6 +139,7 @@
 <li><a class="reference internal" href="#"><tt class="docutils literal"><span class="pre">primitive</span></tt> Package</a><ul>
 <li><a class="reference internal" href="#module-pypot.primitive.primitive"><tt class="docutils literal"><span class="pre">primitive</span></tt> Module</a></li>
 <li><a class="reference internal" href="#module-pypot.primitive.manager"><tt class="docutils literal"><span class="pre">manager</span></tt> Module</a></li>
+<li><a class="reference internal" href="#module-pypot.primitive.move"><tt class="docutils literal"><span class="pre">move</span></tt> Module</a></li>
 <li><a class="reference internal" href="#module-pypot.primitive.utils"><tt class="docutils literal"><span class="pre">utils</span></tt> Module</a></li>
 </ul>
 </li>
@@ -184,6 +185,7 @@
 <li><a class="reference internal" href="#"><tt class="docutils literal"><span class="pre">primitive</span></tt> Package</a><ul>
 <li><a class="reference internal" href="#module-pypot.primitive.primitive"><tt class="docutils literal"><span class="pre">primitive</span></tt> Module</a></li>
 <li><a class="reference internal" href="#module-pypot.primitive.manager"><tt class="docutils literal"><span class="pre">manager</span></tt> Module</a></li>
+<li><a class="reference internal" href="#module-pypot.primitive.move"><tt class="docutils literal"><span class="pre">move</span></tt> Module</a></li>
 <li><a class="reference internal" href="#module-pypot.primitive.utils"><tt class="docutils literal"><span class="pre">utils</span></tt> Module</a></li>
 </ul>
 </li>
@@ -275,6 +277,20 @@ into a <a class="reference internal" href="#pypot.primitive.primitive.MockupRobo
 <p class="first admonition-title">Warning</p>
 <p class="last">You should not directly pass motors as argument to the primitive. If you need to, use the method <a class="reference internal" href="#pypot.primitive.primitive.Primitive.get_mockup_motor" title="pypot.primitive.primitive.Primitive.get_mockup_motor"><tt class="xref py py-meth docutils literal"><span class="pre">get_mockup_motor()</span></tt></a> to transform them into &#8220;fake&#8221; motors. See the <a class="reference internal" href="primitive.html#write-own-prim"><em>Writing your own primitive</em></a> section for details.</p>
 </div>
+<dl class="method">
+<dt id="pypot.primitive.primitive.Primitive.setup">
+<tt class="descname">setup</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/pypot/primitive/primitive.html#Primitive.setup"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.primitive.primitive.Primitive.setup" title="Permalink to this definition">¶</a></dt>
+<dd><p>Setup methods called before the run loop.</p>
+<p>You can override this method to setup the environment needed by your primitive before the run loop. This method will be called every time the primitive is started/restarted.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.primitive.primitive.Primitive.teardown">
+<tt class="descname">teardown</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/pypot/primitive/primitive.html#Primitive.teardown"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.primitive.primitive.Primitive.teardown" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tear down methods called after the run loop.</p>
+<p>You can override this method to clean up the environment needed by your primitive. This method will be called every time the primitive is stopped.</p>
+</dd></dl>
+
 <dl class="method">
 <dt id="pypot.primitive.primitive.Primitive.run">
 <tt class="descname">run</tt><big>(</big><em>*args</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="_modules/pypot/primitive/primitive.html#Primitive.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.primitive.primitive.Primitive.run" title="Permalink to this definition">¶</a></dt>
@@ -403,10 +419,6 @@ The 0th element of the list corresponds to the most recent frequency.</p>
 </tr>
 </tbody>
 </table>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">When you override this method you should call the update method from the mother class to keep the log consistent.</p>
-</div>
 </dd></dl>
 
 </dd></dl>
@@ -467,7 +479,7 @@ The 0th element of the list corresponds to the most recent frequency.</p>
 <span id="manager-module"></span><h2><a class="reference internal" href="#module-pypot.primitive.manager" title="pypot.primitive.manager"><tt class="xref py py-mod docutils literal"><span class="pre">manager</span></tt></a> Module<a class="headerlink" href="#module-pypot.primitive.manager" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="pypot.primitive.manager.PrimitiveManager">
-<em class="property">class </em><tt class="descclassname">pypot.primitive.manager.</tt><tt class="descname">PrimitiveManager</tt><big>(</big><em>motors</em>, <em>freq=50</em>, <em>filter=&lt;functools.partial object at 0x10b05d3c0&gt;</em><big>)</big><a class="reference internal" href="_modules/pypot/primitive/manager.html#PrimitiveManager"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.primitive.manager.PrimitiveManager" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><tt class="descclassname">pypot.primitive.manager.</tt><tt class="descname">PrimitiveManager</tt><big>(</big><em>motors</em>, <em>freq=50</em>, <em>filter=&lt;functools.partial object at 0x106a8da48&gt;</em><big>)</big><a class="reference internal" href="_modules/pypot/primitive/manager.html#PrimitiveManager"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.primitive.manager.PrimitiveManager" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference external" href="http://docs.python.org/library/threading.html#threading.Thread" title="(in Python v2.7)"><tt class="xref py py-class docutils literal"><span class="pre">threading.Thread</span></tt></a></p>
 <p>Combines all <a class="reference internal" href="#pypot.primitive.primitive.Primitive" title="pypot.primitive.primitive.Primitive"><tt class="xref py py-class docutils literal"><span class="pre">Primitive</span></tt></a> orders and affect them to the real motors.</p>
 <p>At a predefined frequency, the manager gathers all the orders sent by the primitive to the &#8220;fake&#8221; motors, combined them thanks to the filter function and affect them to the &#8220;real&#8221; motors.</p>
@@ -525,18 +537,133 @@ The 0th element of the list corresponds to the most recent frequency.</p>
 </dd></dl>
 
 </div>
+<div class="section" id="module-pypot.primitive.move">
+<span id="move-module"></span><h2><a class="reference internal" href="#module-pypot.primitive.move" title="pypot.primitive.move"><tt class="xref py py-mod docutils literal"><span class="pre">move</span></tt></a> Module<a class="headerlink" href="#module-pypot.primitive.move" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pypot.primitive.move.Move">
+<em class="property">class </em><tt class="descclassname">pypot.primitive.move.</tt><tt class="descname">Move</tt><big>(</big><em>freq</em><big>)</big><a class="reference internal" href="_modules/pypot/primitive/move.html#Move"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.primitive.move.Move" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="http://docs.python.org/library/stdtypes.html#dict" title="(in Python v2.7)"><tt class="xref py py-class docutils literal"><span class="pre">dict</span></tt></a></p>
+<p>Simple class used to represent a movement.</p>
+<p>This class simply wraps a sequence of positions of specified motors. The sequence must be recorded at a predefined frequency. This move can be recorded through the <a class="reference internal" href="#pypot.primitive.move.MoveRecorder" title="pypot.primitive.move.MoveRecorder"><tt class="xref py py-class docutils literal"><span class="pre">MoveRecorder</span></tt></a> class and played thanks to a <a class="reference internal" href="#pypot.primitive.move.MovePlayer" title="pypot.primitive.move.MovePlayer"><tt class="xref py py-class docutils literal"><span class="pre">MovePlayer</span></tt></a>.</p>
+<dl class="method">
+<dt id="pypot.primitive.move.Move.add_position">
+<tt class="descname">add_position</tt><big>(</big><em>position</em><big>)</big><a class="reference internal" href="_modules/pypot/primitive/move.html#Move.add_position"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.primitive.move.Move.add_position" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a new position to the movement sequence.</p>
+<p>Each position is typically stored as a dict of (motor_name, motor_position).</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.primitive.move.Move.positions">
+<tt class="descname">positions</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/pypot/primitive/move.html#Move.positions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.primitive.move.Move.positions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns an iterator on the stored positions.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.primitive.move.Move.next">
+<tt class="descname">next</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/pypot/primitive/move.html#Move.next"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.primitive.move.Move.next" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pypot.primitive.move.Move.save">
+<tt class="descname">save</tt><big>(</big><em>file</em><big>)</big><a class="reference internal" href="_modules/pypot/primitive/move.html#Move.save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.primitive.move.Move.save" title="Permalink to this definition">¶</a></dt>
+<dd><p>Saves the <a class="reference internal" href="#pypot.primitive.move.Move" title="pypot.primitive.move.Move"><tt class="xref py py-class docutils literal"><span class="pre">Move</span></tt></a> to a json file.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The format used to store the <a class="reference internal" href="#pypot.primitive.move.Move" title="pypot.primitive.move.Move"><tt class="xref py py-class docutils literal"><span class="pre">Move</span></tt></a> is extremely verbose and should be obviously optimized for long moves.</p>
+</div>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="pypot.primitive.move.Move.load">
+<em class="property">classmethod </em><tt class="descname">load</tt><big>(</big><em>file</em><big>)</big><a class="reference internal" href="_modules/pypot/primitive/move.html#Move.load"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.primitive.move.Move.load" title="Permalink to this definition">¶</a></dt>
+<dd><p>Loads a <a class="reference internal" href="#pypot.primitive.move.Move" title="pypot.primitive.move.Move"><tt class="xref py py-class docutils literal"><span class="pre">Move</span></tt></a> from a json file.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pypot.primitive.move.MoveRecorder">
+<em class="property">class </em><tt class="descclassname">pypot.primitive.move.</tt><tt class="descname">MoveRecorder</tt><big>(</big><em>robot</em>, <em>freq</em>, <em>tracked_motors</em><big>)</big><a class="reference internal" href="_modules/pypot/primitive/move.html#MoveRecorder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.primitive.move.MoveRecorder" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pypot.primitive.primitive.LoopPrimitive" title="pypot.primitive.primitive.LoopPrimitive"><tt class="xref py py-class docutils literal"><span class="pre">pypot.primitive.primitive.LoopPrimitive</span></tt></a></p>
+<p>Primitive used to record a <a class="reference internal" href="#pypot.primitive.move.Move" title="pypot.primitive.move.Move"><tt class="xref py py-class docutils literal"><span class="pre">Move</span></tt></a>.</p>
+<p>The recording can be <a class="reference internal" href="#pypot.primitive.primitive.Primitive.start" title="pypot.primitive.primitive.Primitive.start"><tt class="xref py py-meth docutils literal"><span class="pre">start()</span></tt></a> and <a class="reference internal" href="#pypot.primitive.primitive.Primitive.stop" title="pypot.primitive.primitive.Primitive.stop"><tt class="xref py py-meth docutils literal"><span class="pre">stop()</span></tt></a> by using the <a class="reference internal" href="#pypot.primitive.primitive.LoopPrimitive" title="pypot.primitive.primitive.LoopPrimitive"><tt class="xref py py-class docutils literal"><span class="pre">LoopPrimitive</span></tt></a> methods.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Re-starting the recording will create a new <a class="reference internal" href="#pypot.primitive.move.Move" title="pypot.primitive.move.Move"><tt class="xref py py-class docutils literal"><span class="pre">Move</span></tt></a> losing all the previously stored data.</p>
+</div>
+<dl class="method">
+<dt id="pypot.primitive.move.MoveRecorder.start">
+<tt class="descname">start</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/pypot/primitive/move.html#MoveRecorder.start"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.primitive.move.MoveRecorder.start" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pypot.primitive.move.MoveRecorder.update">
+<tt class="descname">update</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/pypot/primitive/move.html#MoveRecorder.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.primitive.move.MoveRecorder.update" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pypot.primitive.move.MoveRecorder.move">
+<tt class="descname">move</tt><a class="reference internal" href="_modules/pypot/primitive/move.html#MoveRecorder.move"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.primitive.move.MoveRecorder.move" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the currently recorded <a class="reference internal" href="#pypot.primitive.move.Move" title="pypot.primitive.move.Move"><tt class="xref py py-class docutils literal"><span class="pre">Move</span></tt></a>.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pypot.primitive.move.MovePlayer">
+<em class="property">class </em><tt class="descclassname">pypot.primitive.move.</tt><tt class="descname">MovePlayer</tt><big>(</big><em>robot</em>, <em>move</em><big>)</big><a class="reference internal" href="_modules/pypot/primitive/move.html#MovePlayer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.primitive.move.MovePlayer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pypot.primitive.primitive.LoopPrimitive" title="pypot.primitive.primitive.LoopPrimitive"><tt class="xref py py-class docutils literal"><span class="pre">pypot.primitive.primitive.LoopPrimitive</span></tt></a></p>
+<p>Primitive used to play a <a class="reference internal" href="#pypot.primitive.move.Move" title="pypot.primitive.move.Move"><tt class="xref py py-class docutils literal"><span class="pre">Move</span></tt></a>.</p>
+<p>The playing can be <a class="reference internal" href="#pypot.primitive.primitive.Primitive.start" title="pypot.primitive.primitive.Primitive.start"><tt class="xref py py-meth docutils literal"><span class="pre">start()</span></tt></a> and <a class="reference internal" href="#pypot.primitive.primitive.Primitive.stop" title="pypot.primitive.primitive.Primitive.stop"><tt class="xref py py-meth docutils literal"><span class="pre">stop()</span></tt></a> by using the <a class="reference internal" href="#pypot.primitive.primitive.LoopPrimitive" title="pypot.primitive.primitive.LoopPrimitive"><tt class="xref py py-class docutils literal"><span class="pre">LoopPrimitive</span></tt></a> methods.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">You should be careful that you primitive actually runs at the same speed that the move has been recorded. If the player can not run as fast as the framerate of the <a class="reference internal" href="#pypot.primitive.move.Move" title="pypot.primitive.move.Move"><tt class="xref py py-class docutils literal"><span class="pre">Move</span></tt></a>, it will be played slowly resulting in a slower version of your move.</p>
+</div>
+<dl class="method">
+<dt id="pypot.primitive.move.MovePlayer.start">
+<tt class="descname">start</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/pypot/primitive/move.html#MovePlayer.start"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.primitive.move.MovePlayer.start" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pypot.primitive.move.MovePlayer.update">
+<tt class="descname">update</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/pypot/primitive/move.html#MovePlayer.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.primitive.move.MovePlayer.update" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
 <div class="section" id="module-pypot.primitive.utils">
 <span id="utils-module"></span><h2><a class="reference internal" href="#module-pypot.primitive.utils" title="pypot.primitive.utils"><tt class="xref py py-mod docutils literal"><span class="pre">utils</span></tt></a> Module<a class="headerlink" href="#module-pypot.primitive.utils" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="pypot.primitive.utils.Sinus">
 <em class="property">class </em><tt class="descclassname">pypot.primitive.utils.</tt><tt class="descname">Sinus</tt><big>(</big><em>robot</em>, <em>refresh_freq</em>, <em>motor_list</em>, <em>amp=1</em>, <em>freq=0.5</em>, <em>offset=0</em>, <em>phase=0</em><big>)</big><a class="reference internal" href="_modules/pypot/primitive/utils.html#Sinus"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.primitive.utils.Sinus" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#pypot.primitive.primitive.LoopPrimitive" title="pypot.primitive.primitive.LoopPrimitive"><tt class="xref py py-class docutils literal"><span class="pre">pypot.primitive.primitive.LoopPrimitive</span></tt></a></p>
-<p>Apply a sinus on the motor specified as argument.</p>
+<p>Apply a sinus on the motor specified as argument. Parameters (amp, offset and phase) should be specified in degree</p>
 <dl class="method">
 <dt id="pypot.primitive.utils.Sinus.update">
-<tt class="descname">update</tt><big>(</big><em>amp</em>, <em>freq</em>, <em>offset</em>, <em>phase</em><big>)</big><a class="reference internal" href="_modules/pypot/primitive/utils.html#Sinus.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.primitive.utils.Sinus.update" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">update</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/pypot/primitive/utils.html#Sinus.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.primitive.utils.Sinus.update" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute the sin(t) where t is the elapsed time since the primitive has been started.</p>
 </dd></dl>
+
+<dl class="attribute">
+<dt id="pypot.primitive.utils.Sinus.frequency">
+<tt class="descname">frequency</tt><a class="reference internal" href="_modules/pypot/primitive/utils.html#Sinus.frequency"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.primitive.utils.Sinus.frequency" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pypot.primitive.utils.Sinus.amplitude">
+<tt class="descname">amplitude</tt><a class="reference internal" href="_modules/pypot/primitive/utils.html#Sinus.amplitude"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.primitive.utils.Sinus.amplitude" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pypot.primitive.utils.Sinus.offset">
+<tt class="descname">offset</tt><a class="reference internal" href="_modules/pypot/primitive/utils.html#Sinus.offset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.primitive.utils.Sinus.offset" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pypot.primitive.utils.Sinus.phase">
+<tt class="descname">phase</tt><a class="reference internal" href="_modules/pypot/primitive/utils.html#Sinus.phase"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.primitive.utils.Sinus.phase" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 </dd></dl>
 
@@ -544,7 +671,7 @@ The 0th element of the list corresponds to the most recent frequency.</p>
 <dt id="pypot.primitive.utils.Cosinus">
 <em class="property">class </em><tt class="descclassname">pypot.primitive.utils.</tt><tt class="descname">Cosinus</tt><big>(</big><em>robot</em>, <em>refresh_freq</em>, <em>motor_list</em>, <em>amp=1</em>, <em>freq=0.5</em>, <em>offset=0</em>, <em>phase=0</em><big>)</big><a class="reference internal" href="_modules/pypot/primitive/utils.html#Cosinus"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.primitive.utils.Cosinus" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#pypot.primitive.utils.Sinus" title="pypot.primitive.utils.Sinus"><tt class="xref py py-class docutils literal"><span class="pre">pypot.primitive.utils.Sinus</span></tt></a></p>
-<p>Apply a cosinus on the motor specified as argument.</p>
+<p>Apply a cosinus on the motor specified as argument. Parameters (amp, offset and phase) should be specified in degree</p>
 </dd></dl>
 
 </div>
@@ -570,7 +697,7 @@ The 0th element of the list corresponds to the most recent frequency.</p>
         <li><a href="py-modindex.html" title="Python Module Index" >modules</a></li>
         <li><a href="pypot.robot.html" title="robot Package" >next</a></li>
         <li><a href="pypot.dynamixel.html" title="dynamixel Package" >previous</a></li>
-        <li><a href="index.html">PyPot 1.5.0 documentation</a></li>
+        <li><a href="index.html">PyPot 1.5.1 documentation</a></li>
         <li><a href="api.html" >PyPot&#8217;s API</a></li> 
       
     </ul>

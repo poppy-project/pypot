@@ -9,7 +9,7 @@
   <head>
     <meta charset="utf-8" />
     
-    <title>pypot.primitive.primitive &mdash; PyPot 1.5.0 documentation</title>
+    <title>pypot.primitive.primitive &mdash; PyPot 1.5.1 documentation</title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
@@ -39,7 +39,7 @@
 <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
             URL_ROOT:    '../../../',
-            VERSION:     '1.5.0',
+            VERSION:     '1.5.1',
             COLLAPSE_INDEX: false,
             FILE_SUFFIX: '.html',
             HAS_SOURCE:  true
@@ -81,7 +81,7 @@
   });
 </script>
     <link rel="author" title="About these documents" href="../../../about.html" />
-    <link rel="top" title="PyPot 1.5.0 documentation" href="../../../index.html" />
+    <link rel="top" title="PyPot 1.5.1 documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body role="document">
@@ -94,7 +94,7 @@
             <span class="icon-bar"></span>
           </a>
           <div role="banner">
-            <a class="brand" href="../../../index.html">PyPot 1.5.0 documentation</a>
+            <a class="brand" href="../../../index.html">PyPot 1.5.1 documentation</a>
           </div>
           <div class="nav-collapse collapse">
             <ul class="nav pull-right">
@@ -232,7 +232,24 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_synced</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Event</span><span class="p">()</span>
 
+<div class="viewcode-block" id="Primitive.setup"><a class="viewcode-back" href="../../../pypot.primitive.html#pypot.primitive.primitive.Primitive.setup">[docs]</a>    <span class="k">def</span> <span class="nf">setup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Setup methods called before the run loop.</span>
+
+<span class="sd">        You can override this method to setup the environment needed by your primitive before the run loop. This method will be called every time the primitive is started/restarted.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span>
+</div>
+<div class="viewcode-block" id="Primitive.teardown"><a class="viewcode-back" href="../../../pypot.primitive.html#pypot.primitive.primitive.Primitive.teardown">[docs]</a>    <span class="k">def</span> <span class="nf">teardown</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Tear down methods called after the run loop.</span>
+
+<span class="sd">        You can override this method to clean up the environment needed by your primitive. This method will be called every time the primitive is stopped.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span>
+</div>
     <span class="k">def</span> <span class="nf">_wrapped_run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&quot;Primitive </span><span class="si">%s</span><span class="s"> setup.&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setup</span><span class="p">()</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">t0</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_started</span><span class="o">.</span><span class="n">set</span><span class="p">()</span>
 
@@ -240,6 +257,9 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_synced</span><span class="o">.</span><span class="n">wait</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">robot</span><span class="o">.</span><span class="n">_primitive_manager</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&quot;Primitive </span><span class="si">%s</span><span class="s"> teardown.&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">teardown</span><span class="p">()</span>
 
 <div class="viewcode-block" id="Primitive.run"><a class="viewcode-back" href="../../../pypot.primitive.html#pypot.primitive.primitive.Primitive.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Run method of the primitive thread. You should always overwrite this method.</span>
@@ -355,7 +375,7 @@
 
         <span class="k">while</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">should_stop</span><span class="p">():</span>
             <span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">kwargs</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_wrapped_update</span><span class="p">(</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">kwargs</span><span class="p">)</span>
             <span class="n">end</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
 
             <span class="bp">self</span><span class="o">.</span><span class="n">_recent_updates</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">start</span><span class="p">)</span>
@@ -367,15 +387,17 @@
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">should_pause</span><span class="p">():</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">wait_to_resume</span><span class="p">()</span>
 </div>
+    <span class="k">def</span> <span class="nf">_wrapped_update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&#39;LoopPrimitive </span><span class="si">%s</span><span class="s"> updated.&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
 <div class="viewcode-block" id="LoopPrimitive.update"><a class="viewcode-back" href="../../../pypot.primitive.html#pypot.primitive.primitive.LoopPrimitive.update">[docs]</a>    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Update methods that will be called at a predefined frequency.</span>
 
 <span class="sd">            :param args: the arguments passed to the constructor are automatically passed to this method</span>
 <span class="sd">            :param kwargs: the arguments passed to the constructor are automatically passed to this method</span>
-
-<span class="sd">            .. note:: When you override this method you should call the update method from the mother class to keep the log consistent.</span>
 <span class="sd">            &quot;&quot;&quot;</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&#39;LoopPrimitive </span><span class="si">%s</span><span class="s"> updated.&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
 
 </div></div>
 <div class="viewcode-block" id="MockupRobot"><a class="viewcode-back" href="../../../pypot.primitive.html#pypot.primitive.primitive.MockupRobot">[docs]</a><span class="k">class</span> <span class="nc">MockupRobot</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -492,7 +514,7 @@
       
         <li><a href="../../../genindex.html" title="General Index" >index</a></li>
         <li><a href="../../../py-modindex.html" title="Python Module Index" >modules</a></li>
-        <li><a href="../../../index.html">PyPot 1.5.0 documentation</a></li>
+        <li><a href="../../../index.html">PyPot 1.5.1 documentation</a></li>
         <li><a href="../../index.html" >Module code</a></li> 
       
     </ul>
