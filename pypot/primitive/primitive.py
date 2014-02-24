@@ -55,7 +55,24 @@ class Primitive(object):
 
         self._synced = threading.Event()
 
+    def setup(self):
+        """ Setup methods called before the run loop.
+
+        You can override this method to setup the environment needed by your primitive before the run loop. This method will be called every time the primitive is started/restarted.
+        """
+        pass
+
+    def teardown(self):
+        """ Tear down methods called after the run loop.
+
+        You can override this method to clean up the environment needed by your primitive. This method will be called every time the primitive is stopped.
+        """
+        pass
+
     def _wrapped_run(self):
+        logger.info("Primitive %s setup.", self)
+        self.setup()
+
         self.t0 = time.time()
         self._started.set()
 
@@ -63,6 +80,9 @@ class Primitive(object):
 
         self._synced.wait()
         self.robot._primitive_manager.remove(self)
+
+        logger.info("Primitive %s teardown.", self)
+        self.teardown()
 
     def run(self, *args, **kwargs):
         """ Run method of the primitive thread. You should always overwrite this method.
