@@ -78,7 +78,11 @@ class Primitive(object):
 
         self.run(*self.args, **self.kwargs)
 
+        # Forces a last synced to make sure that all values sent
+        # Within the primitives will be sent to the motors.
+        self._synced.clear()
         self._synced.wait()
+
         self.robot._primitive_manager.remove(self)
 
         logger.info("Primitive %s teardown.", self)
