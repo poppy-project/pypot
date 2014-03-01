@@ -43,6 +43,9 @@ class Move(dict):
         move['position'] = d['position']
         return move
 
+    def get_frame(self, n):
+        return self['position'][n]
+
 
 class MoveRecorder(LoopPrimitive):
     """ Primitive used to record a :class:`~pypot.primitive.move.Move`.
