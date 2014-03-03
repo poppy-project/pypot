@@ -27,12 +27,13 @@ class Move(dict):
     def next(self):
         return self._iter.next()
 
+
     def save(self, file):
         """ Saves the :class:`~pypot.primitive.move.Move` to a json file.
 
         .. note:: The format used to store the :class:`~pypot.primitive.move.Move` is extremely verbose and should be obviously optimized for long moves.
         """
-        json.dump(self, file)
+        json.dump(self, file, indent=2)
 
     @classmethod
     def load(cls, file):
