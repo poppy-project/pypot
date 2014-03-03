@@ -18,6 +18,7 @@ import pypot.robot
 import pypot.dynamixel
 
 from pypot.dynamixel.motor import DxlAXRXMotor, DxlMXMotor
+from pypot.dynamixel.io import DxlError
 
 ergo_robot_config = {
     'controllers': {
@@ -102,9 +103,17 @@ def from_config(config):
         dxl_motors = []
         motor_names = sum([_motor_extractor(alias, name) for name in c_params['attached_motors']], [])
         motor_nodes = map(lambda m: (m, config['motors'][m]), motor_names)
-        changed_angle_limits = {}
+
+        # First, scan everyone to make sure that we are not missing any motors
+        ids = [params['id'] for _, params in motor_nodes]
+        found_ids = dxl_io.scan(ids)
+        if ids != found_ids:
+            missing_ids = tuple(set(ids) - set(found_ids))
+            raise DxlError('Could not find the motors {} on bus {}.'.format(missing_ids,
+                                                                            dxl_io.port))
 
         # Instatiate the attached motors and set their angle_limits if needed
+        changed_angle_limits = {}
         for m_name, m_params in motor_nodes:
             MotorCls = DxlMXMotor if m_params['type'].startswith('MX') else DxlAXRXMotor
 
