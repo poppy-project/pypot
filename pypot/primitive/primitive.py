@@ -73,6 +73,8 @@ class Primitive(object):
         logger.info("Primitive %s setup.", self)
         self.setup()
 
+        self.robot._primitive_manager.add(self)
+
         self.t0 = time.time()
         self._started.set()
 
@@ -118,8 +120,6 @@ class Primitive(object):
         self._resume.set()
         self._stop.clear()
         self._synced.clear()
-
-        self.robot._primitive_manager.add(self)
 
         self._thread = threading.Thread(target=self._wrapped_run)
         self._thread.daemon = True
