@@ -32,7 +32,7 @@ class Move(dict):
 
         .. note:: The format used to store the :class:`~pypot.primitive.move.Move` is extremely verbose and should be obviously optimized for long moves.
         """
-        json.dump(self, file)
+        json.dump(self, file, indent=2)
 
     @classmethod
     def load(cls, file):
@@ -42,6 +42,9 @@ class Move(dict):
         move = cls(d['framerate'])
         move['position'] = d['position']
         return move
+
+    def __getitem__(self, i):
+        return self['position'][i]
 
 
 class MoveRecorder(LoopPrimitive):
