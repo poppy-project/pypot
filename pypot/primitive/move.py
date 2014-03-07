@@ -27,7 +27,6 @@ class Move(dict):
     def next(self):
         return self._iter.next()
 
-
     def save(self, file):
         """ Saves the :class:`~pypot.primitive.move.Move` to a json file.
 
@@ -44,8 +43,8 @@ class Move(dict):
         move['position'] = d['position']
         return move
 
-    def get_frame(self, frame_number):
-        return self['position'][frame_number]
+    def __getitem__(self, i):
+        return self['position'][i]
 
 
 class MoveRecorder(LoopPrimitive):
