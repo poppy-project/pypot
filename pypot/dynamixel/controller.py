@@ -18,6 +18,17 @@ class DxlController(object):
 
         self._loops = []
 
+    def __del__(self):
+        self.close()
+
+    def __exit__(self):
+        self.close()
+
+    def close(self):
+        print 'Close', self._dxl_io
+        self.stop()
+        self._dxl_io.close()
+
     def start(self):
         """ Starts all the synchronization loops. """
         for l in self._loops:
@@ -26,8 +37,9 @@ class DxlController(object):
 
     def stop(self):
         """ Stops al the synchronization loops (they can not be started again). """
-        [_RepeatedTimer.stop(l) for l in self._loops]
-        [_RepeatedTimer.join(l) for l in self._loops]
+        for l in filter(lambda l: l.is_alive(), self._loops):
+                l.stop()
+                l.join()
 
     def add_sync_loop(self, freq, function, name):
         """ Adds a synchronization loop that will run a function at a predefined freq. """
