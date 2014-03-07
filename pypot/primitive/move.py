@@ -44,8 +44,8 @@ class Move(dict):
         move['position'] = d['position']
         return move
 
-    def get_frame(self, n):
-        return self['position'][n]
+    def get_frame(self, frame_number):
+        return self['position'][frame_number]
 
 
 class MoveRecorder(LoopPrimitive):
