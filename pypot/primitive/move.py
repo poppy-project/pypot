@@ -3,36 +3,45 @@ import json
 from pypot.primitive import LoopPrimitive
 
 
-class Move(dict):
+class Move(object):
     """ Simple class used to represent a movement.
 
     This class simply wraps a sequence of positions of specified motors. The sequence must be recorded at a predefined frequency. This move can be recorded through the :class:`~pypot.primitive.move.MoveRecorder` class and played thanks to a :class:`~pypot.primitive.move.MovePlayer`.
 
     """
     def __init__(self, freq):
-        dict.__init__(self, {'framerate': freq,
-                             'position': []})
+        self._framerate = freq
+        self._positions = []
 
-    def add_position(self, position):
+    @property
+    def framerate(self):
+        return self._framerate
+
+    def add_position(self, pos):
         """ Add a new position to the movement sequence.
 
         Each position is typically stored as a dict of (motor_name, motor_position).
         """
-        self['position'].append(position)
+        self._positions.append(pos)
+
+    def iterpositions(self):
+        """ Returns an iterator on the stored positions. """
+        return iter(self._positions)
 
     def positions(self):
-        """ Returns an iterator on the stored positions. """
-        return iter(self['position'])
-
-    def next(self):
-        return self._iter.next()
+        """ Returns a copy of the stored positions. """
+        return list(self.iterpositions())
 
     def save(self, file):
         """ Saves the :class:`~pypot.primitive.move.Move` to a json file.
 
         .. note:: The format used to store the :class:`~pypot.primitive.move.Move` is extremely verbose and should be obviously optimized for long moves.
         """
-        json.dump(self, file, indent=2)
+        d = {
+            'framerate': self.framerate,
+            'positions': self.positions(),
+        }
+        json.dump(d, file, indent=2)
 
     @classmethod
     def load(cls, file):
@@ -40,11 +49,11 @@ class Move(dict):
         d = json.load(file)
 
         move = cls(d['framerate'])
-        move['position'] = d['position']
+        move._positions = d['positions']
         return move
 
     def __getitem__(self, i):
-        return self['position'][i]
+        return self._positions[i]
 
 
 class MoveRecorder(LoopPrimitive):
@@ -89,11 +98,10 @@ class MovePlayer(LoopPrimitive):
         self.move = move
 
     def start(self):
-        self.positions = self.move.positions()
+        self.positions = self.move.iterpositions()
         LoopPrimitive.start(self)
 
     def update(self):
-
         try:
             position = self.positions.next()
 
