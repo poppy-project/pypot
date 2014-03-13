@@ -94,7 +94,7 @@ class MovePlayer(LoopPrimitive):
     """
 
     def __init__(self, robot, move):
-        LoopPrimitive.__init__(self, robot, move['framerate'])
+        LoopPrimitive.__init__(self, robot, move.framerate)
         self.move = move
 
     def start(self):
