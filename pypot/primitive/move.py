@@ -13,6 +13,13 @@ class Move(object):
         self._framerate = freq
         self._positions = []
 
+    def __repr__(self):
+        return '<Move framerate={} #keyframes={}>'.format(self.framerate,
+                                                          len(self.positions()))
+
+    def __getitem__(self, i):
+        return self._positions[i]
+
     @property
     def framerate(self):
         return self._framerate
@@ -52,9 +59,6 @@ class Move(object):
         move._positions = d['positions']
         return move
 
-    def __getitem__(self, i):
-        return self._positions[i]
-
 
 class MoveRecorder(LoopPrimitive):
     """ Primitive used to record a :class:`~pypot.primitive.move.Move`.
@@ -70,12 +74,10 @@ class MoveRecorder(LoopPrimitive):
 
         self.tracked_motors = map(self.get_mockup_motor, tracked_motors)
 
-    def start(self):
+    def setup(self):
         self._move = Move(self.freq)
-        LoopPrimitive.start(self)
 
     def update(self):
-
         position = dict([(m.name, m.present_position) for m in self.tracked_motors])
         self._move.add_position(position)
 
@@ -97,9 +99,8 @@ class MovePlayer(LoopPrimitive):
         LoopPrimitive.__init__(self, robot, move.framerate)
         self.move = move
 
-    def start(self):
+    def setup(self):
         self.positions = self.move.iterpositions()
-        LoopPrimitive.start(self)
 
     def update(self):
         try:
