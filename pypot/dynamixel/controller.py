@@ -25,7 +25,6 @@ class DxlController(object):
         self.close()
 
     def close(self):
-        print 'Close', self._dxl_io
         self.stop()
         self._dxl_io.close()
 
