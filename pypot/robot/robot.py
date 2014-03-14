@@ -31,15 +31,6 @@ class Robot(object):
         self._dxl_controllers = []
         self._primitive_manager = pypot.primitive.manager.PrimitiveManager(self.motors)
 
-    def __enter__(self):
-        return self
-
-    def __del__(self):
-        self.close()
-
-    def __exit__(self, exc_type, exc_value, traceback):
-        self.close()
-
     def close(self):
         self.stop_sync()
         [c.close() for c in self._dxl_controllers]

@@ -18,12 +18,6 @@ class DxlController(object):
 
         self._loops = []
 
-    def __del__(self):
-        self.close()
-
-    def __exit__(self):
-        self.close()
-
     def close(self):
         self.stop()
         self._dxl_io.close()
