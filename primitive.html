@@ -135,7 +135,7 @@
 <li><a class="reference internal" href="#">Primitives everywhere</a><ul>
 <li><a class="reference internal" href="#what-do-we-call-primitive">What do we call &#8220;Primitive&#8221;?</a></li>
 <li><a class="reference internal" href="#writing-your-own-primitive">Writing your own primitive</a></li>
-<li><a class="reference internal" href="#starting-pausing-primitives">Starting/pausing primitives</a></li>
+<li><a class="reference internal" href="#start-stop-pause-and-resume">Start, Stop, Pause, and Resume</a></li>
 <li><a class="reference internal" href="#attaching-a-primitive-to-the-robot">Attaching a primitive to the robot</a></li>
 </ul>
 </li>
@@ -181,7 +181,7 @@
 <li><a class="reference internal" href="#">Primitives everywhere</a><ul>
 <li><a class="reference internal" href="#what-do-we-call-primitive">What do we call &#8220;Primitive&#8221;?</a></li>
 <li><a class="reference internal" href="#writing-your-own-primitive">Writing your own primitive</a></li>
-<li><a class="reference internal" href="#starting-pausing-primitives">Starting/pausing primitives</a></li>
+<li><a class="reference internal" href="#start-stop-pause-and-resume">Start, Stop, Pause, and Resume</a></li>
 <li><a class="reference internal" href="#attaching-a-primitive-to-the-robot">Attaching a primitive to the robot</a></li>
 </ul>
 </li>
@@ -223,7 +223,7 @@
                 <div class="body">
                   
   <div class="section" id="primitives-everywhere">
-<h1>Primitives everywhere<a class="headerlink" href="#primitives-everywhere" title="Permalink to this headline">¶</a></h1>
+<span id="my-prim"></span><h1>Primitives everywhere<a class="headerlink" href="#primitives-everywhere" title="Permalink to this headline">¶</a></h1>
 <p>In the previous sections, we have shown how to make a simple behavior thanks to the <tt class="xref py py-class docutils literal"><span class="pre">Robot</span></tt> abstraction. But how to combine those elementary behaviors into something more complex? You could use threads and do it manually, but we provide the <tt class="xref py py-class docutils literal"><span class="pre">Primitive</span></tt> to abstract most of the work for you.</p>
 <div class="section" id="what-do-we-call-primitive">
 <h2>What do we call &#8220;Primitive&#8221;?<a class="headerlink" href="#what-do-we-call-primitive" title="Permalink to this headline">¶</a></h2>
@@ -319,8 +319,8 @@ For instance:</p>
 </div>
 </div>
 </div>
-<div class="section" id="starting-pausing-primitives">
-<h2>Starting/pausing primitives<a class="headerlink" href="#starting-pausing-primitives" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="start-stop-pause-and-resume">
+<span id="start-prim"></span><h2>Start, Stop, Pause, and Resume<a class="headerlink" href="#start-stop-pause-and-resume" title="Permalink to this headline">¶</a></h2>
 <p>The primitive can be <a class="reference internal" href="pypot.primitive.html#pypot.primitive.primitive.Primitive.start" title="pypot.primitive.primitive.Primitive.start"><tt class="xref py py-meth docutils literal"><span class="pre">start()</span></tt></a>, <a class="reference internal" href="pypot.primitive.html#pypot.primitive.primitive.Primitive.stop" title="pypot.primitive.primitive.Primitive.stop"><tt class="xref py py-meth docutils literal"><span class="pre">stop()</span></tt></a>, <a class="reference internal" href="pypot.primitive.html#pypot.primitive.primitive.Primitive.pause" title="pypot.primitive.primitive.Primitive.pause"><tt class="xref py py-meth docutils literal"><span class="pre">pause()</span></tt></a> and <a class="reference internal" href="pypot.primitive.html#pypot.primitive.primitive.Primitive.resume" title="pypot.primitive.primitive.Primitive.resume"><tt class="xref py py-meth docutils literal"><span class="pre">resume()</span></tt></a>. Unlike regular python thread, primitive can be restart by calling again the <a class="reference internal" href="pypot.primitive.html#pypot.primitive.primitive.Primitive.start" title="pypot.primitive.primitive.Primitive.start"><tt class="xref py py-meth docutils literal"><span class="pre">start()</span></tt></a> method.</p>
 <p>When overriding the <a class="reference internal" href="pypot.primitive.html#pypot.primitive.primitive.Primitive" title="pypot.primitive.primitive.Primitive"><tt class="xref py py-class docutils literal"><span class="pre">Primitive</span></tt></a>, you are responsible for correctly handling those events. For instance, the stop method will only trigger the should stop event that you should watch in your run loop and break it when the event is set. In particular, you should check the <a class="reference internal" href="pypot.primitive.html#pypot.primitive.primitive.Primitive.should_stop" title="pypot.primitive.primitive.Primitive.should_stop"><tt class="xref py py-meth docutils literal"><span class="pre">should_stop()</span></tt></a> and <a class="reference internal" href="pypot.primitive.html#pypot.primitive.primitive.Primitive.should_pause" title="pypot.primitive.primitive.Primitive.should_pause"><tt class="xref py py-meth docutils literal"><span class="pre">should_pause()</span></tt></a> in your run loop. You can also use the <a class="reference internal" href="pypot.primitive.html#pypot.primitive.primitive.Primitive.wait_to_stop" title="pypot.primitive.primitive.Primitive.wait_to_stop"><tt class="xref py py-meth docutils literal"><span class="pre">wait_to_stop()</span></tt></a> and <a class="reference internal" href="pypot.primitive.html#pypot.primitive.primitive.Primitive.wait_to_resume" title="pypot.primitive.primitive.Primitive.wait_to_resume"><tt class="xref py py-meth docutils literal"><span class="pre">wait_to_resume()</span></tt></a> to wait until the commands have really been executed.</p>
 <div class="admonition note">

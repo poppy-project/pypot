@@ -208,6 +208,11 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_dxl_controllers</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_primitive_manager</span> <span class="o">=</span> <span class="n">pypot</span><span class="o">.</span><span class="n">primitive</span><span class="o">.</span><span class="n">manager</span><span class="o">.</span><span class="n">PrimitiveManager</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">motors</span><span class="p">)</span>
 
+<div class="viewcode-block" id="Robot.close"><a class="viewcode-back" href="../../../pypot.robot.html#pypot.robot.robot.Robot.close">[docs]</a>    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Cleans the robot by stopping synchronization and all controllers.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">stop_sync</span><span class="p">()</span>
+        <span class="p">[</span><span class="n">c</span><span class="o">.</span><span class="n">close</span><span class="p">()</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dxl_controllers</span><span class="p">]</span>
+</div>
     <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="s">&#39;&lt;Robot motors={}&gt;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">motors</span><span class="p">)</span>
 
@@ -229,7 +234,8 @@
 </div>
 <div class="viewcode-block" id="Robot.stop_sync"><a class="viewcode-back" href="../../../pypot.robot.html#pypot.robot.robot.Robot.stop_sync">[docs]</a>    <span class="k">def</span> <span class="nf">stop_sync</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Stops all the synchonization loop (sensor/effector controllers). &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_primitive_manager</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_primitive_manager</span><span class="o">.</span><span class="n">is_alive</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_primitive_manager</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
         <span class="p">[</span><span class="n">c</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dxl_controllers</span><span class="p">]</span>
 
         <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;Stopping robot synchronization.&#39;</span><span class="p">)</span>

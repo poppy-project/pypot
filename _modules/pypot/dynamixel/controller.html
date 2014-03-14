@@ -198,6 +198,11 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_loops</span> <span class="o">=</span> <span class="p">[]</span>
 
+<div class="viewcode-block" id="DxlController.close"><a class="viewcode-back" href="../../../pypot.dynamixel.html#pypot.dynamixel.controller.DxlController.close">[docs]</a>    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Stops the synchronization loop and closes the dynamixel connection. &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_dxl_io</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</div>
 <div class="viewcode-block" id="DxlController.start"><a class="viewcode-back" href="../../../pypot.dynamixel.html#pypot.dynamixel.controller.DxlController.start">[docs]</a>    <span class="k">def</span> <span class="nf">start</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Starts all the synchronization loops. &quot;&quot;&quot;</span>
         <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_loops</span><span class="p">:</span>
@@ -206,8 +211,9 @@
 </div>
 <div class="viewcode-block" id="DxlController.stop"><a class="viewcode-back" href="../../../pypot.dynamixel.html#pypot.dynamixel.controller.DxlController.stop">[docs]</a>    <span class="k">def</span> <span class="nf">stop</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Stops al the synchronization loops (they can not be started again). &quot;&quot;&quot;</span>
-        <span class="p">[</span><span class="n">_RepeatedTimer</span><span class="o">.</span><span class="n">stop</span><span class="p">(</span><span class="n">l</span><span class="p">)</span> <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_loops</span><span class="p">]</span>
-        <span class="p">[</span><span class="n">_RepeatedTimer</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">l</span><span class="p">)</span> <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_loops</span><span class="p">]</span>
+        <span class="n">loops_to_stop</span> <span class="o">=</span> <span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">l</span><span class="p">:</span> <span class="n">l</span><span class="o">.</span><span class="n">is_alive</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_loops</span><span class="p">)</span>
+        <span class="p">[</span><span class="n">l</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span> <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">loops_to_stop</span><span class="p">]</span>
+        <span class="p">[</span><span class="n">l</span><span class="o">.</span><span class="n">join</span><span class="p">()</span> <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">loops_to_stop</span><span class="p">]</span>
 </div>
 <div class="viewcode-block" id="DxlController.add_sync_loop"><a class="viewcode-back" href="../../../pypot.dynamixel.html#pypot.dynamixel.controller.DxlController.add_sync_loop">[docs]</a>    <span class="k">def</span> <span class="nf">add_sync_loop</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">freq</span><span class="p">,</span> <span class="n">function</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Adds a synchronization loop that will run a function at a predefined freq. &quot;&quot;&quot;</span>

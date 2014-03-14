@@ -145,6 +145,7 @@
 <li><a class="reference internal" href="#controlling-in-speed">Controlling in speed</a></li>
 </ul>
 </li>
+<li><a class="reference internal" href="#closing-the-robot">Closing the robot</a></li>
 </ul>
 </li>
 </ul>
@@ -195,6 +196,7 @@
 <li><a class="reference internal" href="#controlling-in-speed">Controlling in speed</a></li>
 </ul>
 </li>
+<li><a class="reference internal" href="#closing-the-robot">Closing the robot</a></li>
 </ul>
 </li>
 </ul>
@@ -509,6 +511,32 @@ while True:
 <p class="first admonition-title">Warning</p>
 <p class="last">If you set both <a class="reference internal" href="pypot.dynamixel.html#pypot.dynamixel.motor.DxlMotor.goal_speed" title="pypot.dynamixel.motor.DxlMotor.goal_speed"><tt class="xref py py-attr docutils literal"><span class="pre">goal_speed</span></tt></a> and <a class="reference internal" href="pypot.dynamixel.html#pypot.dynamixel.motor.DxlMotor.goal_position" title="pypot.dynamixel.motor.DxlMotor.goal_position"><tt class="xref py py-attr docutils literal"><span class="pre">goal_position</span></tt></a> only the last command will be executed. Unless you know what you are doing, you should avoid to mix these both approaches.</p>
 </div>
+</div>
+</div>
+<div class="section" id="closing-the-robot">
+<h2>Closing the robot<a class="headerlink" href="#closing-the-robot" title="Permalink to this headline">¶</a></h2>
+<p>To make sure that everything gets cleaned correctly after you are done using your <a class="reference internal" href="pypot.robot.html#pypot.robot.robot.Robot" title="pypot.robot.robot.Robot"><tt class="xref py py-class docutils literal"><span class="pre">Robot</span></tt></a>, you should always call the <a class="reference internal" href="pypot.robot.html#pypot.robot.robot.Robot.close" title="pypot.robot.robot.Robot.close"><tt class="xref py py-meth docutils literal"><span class="pre">close()</span></tt></a> method. Doing so will ensure that all the controllers attached to this robot, and their associated dynamixel serial connection, are correctly stopped and cleaned.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Note calling the <a class="reference internal" href="pypot.robot.html#pypot.robot.robot.Robot.close" title="pypot.robot.robot.Robot.close"><tt class="xref py py-meth docutils literal"><span class="pre">close()</span></tt></a> method on a <a class="reference internal" href="pypot.robot.html#pypot.robot.robot.Robot" title="pypot.robot.robot.Robot"><tt class="xref py py-class docutils literal"><span class="pre">Robot</span></tt></a> can prevent you from opening it again without terminating your current Python session. Indeed, as the destruction of object is handled by the garbage collector, there is no mechanism which guarantee that we can automatically clean it when destroyed.</p>
+</div>
+<p>When closing the robot, we also send a stop signal to all the primitives running and wait for them to terminate. See section <a class="reference internal" href="primitive.html#my-prim"><em>Primitives everywhere</em></a> for details on what we call primitives.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">You should be careful that all your primitives correctly respond to the stop signal. Indeed, having a blocking primitive will prevent the <a class="reference internal" href="pypot.robot.html#pypot.robot.robot.Robot.close" title="pypot.robot.robot.Robot.close"><tt class="xref py py-meth docutils literal"><span class="pre">close()</span></tt></a> method to terminate (please refer to <a class="reference internal" href="primitive.html#start-prim"><em>Start, Stop, Pause, and Resume</em></a> for details).</p>
+</div>
+<p>Thanks to the <a class="reference external" href="http://docs.python.org/library/contextlib.html#contextlib.closing" title="(in Python v2.7)"><tt class="xref py py-func docutils literal"><span class="pre">contextlib.closing()</span></tt></a> decorator you can easily make sure that the close function of your robot is always called whatever happened inside your code:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">contextlib</span> <span class="kn">import</span> <span class="n">closing</span>
+
+<span class="kn">import</span> <span class="nn">pypot.robot</span>
+
+<span class="c"># The closing decorator make sure that the close function will be called</span>
+<span class="c"># on the object passed as argument when the with block is exited.</span>
+<span class="k">with</span> <span class="n">closing</span><span class="p">(</span><span class="n">pypot</span><span class="o">.</span><span class="n">robot</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="s">&#39;myconfig.json&#39;</span><span class="p">))</span> <span class="k">as</span> <span class="n">my_robot</span><span class="p">:</span>
+    <span class="n">my_robot</span><span class="o">.</span><span class="n">start_sync</span><span class="p">()</span>
+
+    <span class="c"># do stuff without having to make sure not to forget to close my_robot!</span>
+</pre></div>
 </div>
 </div>
 </div>
