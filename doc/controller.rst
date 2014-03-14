@@ -282,3 +282,28 @@ As an example, you could write::
 
 .. warning:: If you set both :attr:`~pypot.dynamixel.motor.DxlMotor.goal_speed` and :attr:`~pypot.dynamixel.motor.DxlMotor.goal_position` only the last command will be executed. Unless you know what you are doing, you should avoid to mix these both approaches.
 
+Closing the robot
+-----------------
+
+To make sure that everything gets cleaned correctly after you are done using your :class:`~pypot.robot.robot.Robot`, you should always call the :meth:`~pypot.robot.robot.Robot.close` method. Doing so will ensure that all the controllers attached to this robot, and their associated dynamixel serial connection, are correctly stopped and cleaned.
+
+.. note:: Note calling the :meth:`~pypot.robot.robot.Robot.close` method on a :class:`~pypot.robot.robot.Robot` can prevent you from opening it again without terminating your current Python session. Indeed, as the destruction of object is handled by the garbage collector, there is no mechanism which guarantee that we can automatically clean it when destroyed.
+
+When closing the robot, we also send a stop signal to all the primitives running and wait for them to terminate. See section :ref:`my_prim` for details on what we call primitives.
+
+.. warning:: You should be careful that all your primitives correctly respond to the stop signal. Indeed, having a blocking primitive will prevent the :meth:`~pypot.robot.robot.Robot.close` method to terminate (please refer to :ref:`start_prim` for details).
+
+Thanks to the :func:`contextlib.closing` decorator you can easily make sure that the close function of your robot is always called whatever happened inside your code::
+
+    from contextlib import closing
+
+    import pypot.robot
+
+    # The closing decorator make sure that the close function will be called
+    # on the object passed as argument when the with block is exited.
+    with closing(pypot.robot.from_json('myconfig.json')) as my_robot:
+        my_robot.start_sync()
+
+        # do stuff without having to make sure not to forget to close my_robot!
+
+

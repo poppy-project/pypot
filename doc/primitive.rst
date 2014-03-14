@@ -1,3 +1,5 @@
+.. _my_prim:
+
 Primitives everywhere
 =====================
 
@@ -96,8 +98,10 @@ And then runs it with::
 
 
 
-Starting/pausing primitives
----------------------------
+.. _start_prim:
+
+Start, Stop, Pause, and Resume
+------------------------------
 
 The primitive can be :meth:`~pypot.primitive.primitive.Primitive.start`, :meth:`~pypot.primitive.primitive.Primitive.stop`, :meth:`~pypot.primitive.primitive.Primitive.pause` and :meth:`~pypot.primitive.primitive.Primitive.resume`. Unlike regular python thread, primitive can be restart by calling again the :meth:`~pypot.primitive.primitive.Primitive.start` method.
 
