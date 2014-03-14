@@ -19,6 +19,7 @@ class DxlController(object):
         self._loops = []
 
     def close(self):
+        """ Stops the synchronization loop and closes the dynamixel connection. """
         self.stop()
         self._dxl_io.close()
 
@@ -30,9 +31,9 @@ class DxlController(object):
 
     def stop(self):
         """ Stops al the synchronization loops (they can not be started again). """
-        for l in filter(lambda l: l.is_alive(), self._loops):
-                l.stop()
-                l.join()
+        loops_to_stop = filter(lambda l: l.is_alive(), self._loops)
+        [l.stop() for l in loops_to_stop]
+        [l.join() for l in loops_to_stop]
 
     def add_sync_loop(self, freq, function, name):
         """ Adds a synchronization loop that will run a function at a predefined freq. """
