@@ -134,6 +134,7 @@
   <ul>
 <li><a class="reference internal" href="#">FAQ</a><ul>
 <li><a class="reference internal" href="#why-is-the-default-baud-rate-different-for-robotis-and-for-pypot">Why is the default baud rate different for robotis and for PyPot ?</a></li>
+<li><a class="reference internal" href="#i-got-a-dxlcommunicationerror-when-scanning-multiple-motors-on-a-bus">I got a DxlCommunicationError when scanning multiple motors on a bus</a></li>
 </ul>
 </li>
 </ul>
@@ -177,6 +178,7 @@
   <ul>
 <li><a class="reference internal" href="#">FAQ</a><ul>
 <li><a class="reference internal" href="#why-is-the-default-baud-rate-different-for-robotis-and-for-pypot">Why is the default baud rate different for robotis and for PyPot ?</a></li>
+<li><a class="reference internal" href="#i-got-a-dxlcommunicationerror-when-scanning-multiple-motors-on-a-bus">I got a DxlCommunicationError when scanning multiple motors on a bus</a></li>
 </ul>
 </li>
 </ul>
@@ -221,6 +223,10 @@
 <div class="section" id="why-is-the-default-baud-rate-different-for-robotis-and-for-pypot">
 <h2>Why is the default baud rate different for robotis and for PyPot ?<a class="headerlink" href="#why-is-the-default-baud-rate-different-for-robotis-and-for-pypot" title="Permalink to this headline">¶</a></h2>
 <p>Robotis motors are set up to work with a 57140 baud rate. Yet, in PyPot we choose to use 1000000 baud rate as the default configuration. While everything would work with the robotis default baud rate, we choose to incitate people to modify this default configuration to allow for more performance.</p>
+</div>
+<div class="section" id="i-got-a-dxlcommunicationerror-when-scanning-multiple-motors-on-a-bus">
+<h2>I got a DxlCommunicationError when scanning multiple motors on a bus<a class="headerlink" href="#i-got-a-dxlcommunicationerror-when-scanning-multiple-motors-on-a-bus" title="Permalink to this headline">¶</a></h2>
+<p>This exception is usually raised when two (or more) motors share the same id. This should never happened, all ids should be unique on a same bus. Otherwise, package will collide resulting in communication error.</p>
 </div>
 </div>
 

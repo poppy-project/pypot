@@ -188,6 +188,7 @@
 
 <span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">namedtuple</span><span class="p">,</span> <span class="n">OrderedDict</span>
 <span class="kn">from</span> <span class="nn">contextlib</span> <span class="kn">import</span> <span class="n">contextmanager</span>
+<span class="kn">from</span> <span class="nn">struct</span> <span class="kn">import</span> <span class="n">unpack</span>
 
 <span class="kn">from</span> <span class="nn">.conversion</span> <span class="kn">import</span> <span class="o">*</span>
 <span class="kn">from</span> <span class="nn">.packet</span> <span class="kn">import</span> <span class="o">*</span>
@@ -690,7 +691,8 @@
                 <span class="n">status_packet</span> <span class="o">=</span> <span class="n">DxlStatusPacket</span><span class="o">.</span><span class="n">from_string</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
 
             <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
-                <span class="n">msg</span> <span class="o">=</span> <span class="s">&#39;could not parse received data {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">ord</span><span class="p">,</span> <span class="n">data</span><span class="p">))</span>
+                <span class="n">fmt</span> <span class="o">=</span> <span class="s">&#39;B&#39;</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="s">&#39;could not parse received data {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">unpack</span><span class="p">(</span><span class="n">fmt</span><span class="p">,</span> <span class="n">data</span><span class="p">))</span>
                 <span class="k">raise</span> <span class="n">DxlCommunicationError</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msg</span><span class="p">,</span> <span class="n">instruction_packet</span><span class="p">)</span>
 
             <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&#39;Receiving </span><span class="si">%s</span><span class="s">&#39;</span><span class="p">,</span> <span class="n">status_packet</span><span class="p">,</span>
