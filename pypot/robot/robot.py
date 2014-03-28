@@ -31,6 +31,11 @@ class Robot(object):
         self._dxl_controllers = []
         self._primitive_manager = pypot.primitive.manager.PrimitiveManager(self.motors)
 
+    def close(self):
+        """ Cleans the robot by stopping synchronization and all controllers."""
+        self.stop_sync()
+        [c.close() for c in self._dxl_controllers]
+
     def __repr__(self):
         return '<Robot motors={}>'.format(self.motors)
 
@@ -52,7 +57,8 @@ class Robot(object):
 
     def stop_sync(self):
         """ Stops all the synchonization loop (sensor/effector controllers). """
-        self._primitive_manager.stop()
+        if self._primitive_manager.is_alive():
+            self._primitive_manager.stop()
         [c.stop() for c in self._dxl_controllers]
 
         logger.info('Stopping robot synchronization.')

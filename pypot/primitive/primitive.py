@@ -73,12 +73,18 @@ class Primitive(object):
         logger.info("Primitive %s setup.", self)
         self.setup()
 
+        self.robot._primitive_manager.add(self)
+
         self.t0 = time.time()
         self._started.set()
 
         self.run(*self.args, **self.kwargs)
 
+        # Forces a last synced to make sure that all values sent
+        # Within the primitives will be sent to the motors.
+        self._synced.clear()
         self._synced.wait()
+
         self.robot._primitive_manager.remove(self)
 
         logger.info("Primitive %s teardown.", self)
@@ -114,8 +120,6 @@ class Primitive(object):
         self._resume.set()
         self._stop.clear()
         self._synced.clear()
-
-        self.robot._primitive_manager.add(self)
 
         self._thread = threading.Thread(target=self._wrapped_run)
         self._thread.daemon = True
