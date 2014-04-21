@@ -1,16 +1,16 @@
 import numpy
 
-import pypot.primitive
+from .primitive import LoopPrimitive
 
 
-class Sinus(pypot.primitive.LoopPrimitive):
+class Sinus(LoopPrimitive):
     """ Apply a sinus on the motor specified as argument. Parameters (amp, offset and phase) should be specified in degree
     """
     def __init__(self, robot, refresh_freq,
                  motor_list,
                  amp=1, freq=0.5, offset=0, phase=0):
 
-        pypot.primitive.LoopPrimitive.__init__(self, robot, refresh_freq)
+        LoopPrimitive.__init__(self, robot, refresh_freq)
 
         self._freq = freq
         self._amp = amp
@@ -70,4 +70,3 @@ class Cosinus(Sinus):
         Sinus.__init__(self, robot, refresh_freq,
                        motor_list,
                        amp, freq, offset, phase=(numpy.pi / 2 + phase))
-

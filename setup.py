@@ -44,5 +44,11 @@ setup(name='pypot',
       description='Python Library for Robot Control',
       url='https://github.com/poppy-project/pypot',
       license='GNU GENERAL PUBLIC LICENSE Version 3',
+
+      classifiers=[
+          "Programming Language :: Python :: 2",
+          "Programming Language :: Python :: 3",
+          "Topic :: Scientific/Engineering", ],
+
       **extra
       )

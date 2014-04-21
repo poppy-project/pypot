@@ -5,7 +5,7 @@ import threading
 from collections import namedtuple
 
 
-from pypot.utils import Point3D, Point2D, Quaternion
+from ...utils import Point3D, Point2D, Quaternion
 
 
 torso_joints = ('hip_center', 'spine', 'shoulder_center', 'head')
