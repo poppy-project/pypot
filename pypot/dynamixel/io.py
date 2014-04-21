@@ -240,7 +240,7 @@ class DxlIO(object):
         """ Changes the baudrate of the specified motors. """
         self._change_baudrate(baudrate_for_ids)
 
-        for motor_id in baudrate_for_ids.iterkeys():
+        for motor_id in baudrate_for_ids:
             if motor_id in self._known_models:
                 del self._known_models[motor_id]
             if motor_id in self._known_mode:

@@ -150,7 +150,7 @@ def from_config(config):
         robot._attach_dxl_motors(dxl_io, dxl_motors)
 
     # Create the alias for the motorgroups
-    for alias_name in alias.keys():
+    for alias_name in alias:
         motors = [getattr(robot, name) for name in _motor_extractor(alias, alias_name)]
         setattr(robot, alias_name, motors)
         robot.alias.append(alias_name)
