@@ -689,11 +689,11 @@ _add_control('pid gain',
 
 _add_control('compliance margin',
              address=0x1A, length=1, nb_elem=2,
-             models=('AX-12', 'RX-28', 'RX-64'))
+             models=('AX-12', 'AX-18', 'RX-28', 'RX-64'))
 
 _add_control('compliance slope',
              address=0x1C, length=1, nb_elem=2,
-             models=('AX-12', 'RX-28', 'RX-64'))
+             models=('AX-12', 'AX-18', 'RX-28', 'RX-64'))
 
 _add_control('goal position',
              address=0x1E,
