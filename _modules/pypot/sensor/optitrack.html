@@ -1,0 +1,294 @@
+
+
+<!DOCTYPE html>
+
+
+
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    
+    <title>pypot.sensor.optitrack &mdash; PyPot 1.5.3 documentation</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    
+<link rel="stylesheet" href="../../../_static/css/basicstrap-base.css" type="text/css" />
+<link rel="stylesheet" href="../../../_static/css/bootstrap.min.css" type="text/css" />
+<link rel="stylesheet" href="../../../_static/css/font-awesome.min.css">
+<!--[if IE 7]>
+<link rel="stylesheet" href="../../../_static/css/font-awesome-ie7.min.css">
+<![endif]-->
+
+<style type="text/css">
+  body {
+    padding-top: 60px;
+    padding-bottom: 40px;
+  }
+}
+</style>
+
+<link rel="stylesheet" href="../../../_static/basicstrap.css" type="text/css" />
+<link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+<link rel="stylesheet" href="../../../_static/my-css.css" type="text/css" />
+<link rel="stylesheet" href="../../../_static/css/bootstrap-responsive.min.css" type="text/css" />
+    
+<script type="text/javascript">
+  var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:    '../../../',
+            VERSION:     '1.5.3',
+            COLLAPSE_INDEX: false,
+            FILE_SUFFIX: '.html',
+            HAS_SOURCE:  true
+  };
+</script>
+<script type="text/javascript" src="../../../_static/js/jquery.min.js"></script>
+<script type="text/javascript" src="../../../_static/underscore.js"></script>
+<script type="text/javascript" src="../../../_static/doctools.js"></script>
+<script type="text/javascript" src="../../../_static/js/bootstrap.min.js"></script>
+<script type="text/javascript">
+  $(document).ready(function(){
+    $('.show-sidebar').click(function(e) {
+       e.preventDefault();
+       if ($(".show-sidebar").html() == "Open Table Of Contents") {
+          $('.for-mobile').removeClass('hidden-phone');
+          $(".show-sidebar").html("Close Table Of Contents");
+       } else {
+          $(".show-sidebar").html("Open Table Of Contents");
+       }
+    });
+  });
+  $(window).load(function () {
+    /*
+
+     * Scroll the window to avoid the topnav bar
+     * https://github.com/twitter/bootstrap/issues/1768
+     */
+    if ($(".navbar.navbar-fixed-top").length > 0) {
+      // var navHeight = $(".navbar").height(),
+      var navHeight = 40,
+        shiftWindow = function() { scrollBy(0, -navHeight - 10); };
+
+      if (location.hash) {
+        setTimeout(shiftWindow, 1);
+      }
+
+      window.addEventListener("hashchange", shiftWindow);
+    }
+  });
+</script>
+    <link rel="author" title="About these documents" href="../../../about.html" />
+    <link rel="top" title="PyPot 1.5.3 documentation" href="../../../index.html" />
+    <link rel="up" title="Module code" href="../../index.html" /> 
+  </head>
+  <body role="document">
+    <div class="navbar navbar-fixed-top " role="navigation" aria-label="top navigation">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </a>
+          <div role="banner">
+            <a class="brand" href="../../../index.html">PyPot 1.5.3 documentation</a>
+          </div>
+          <div class="nav-collapse collapse">
+            <ul class="nav pull-right">
+              
+                <li>
+                <a href="../../../genindex.html" title="General Index" accesskey="I">index</a>
+                </li>
+                <li>
+                <a href="../../../py-modindex.html" title="Python Module Index" >modules</a>
+                </li>
+                <li>
+                <a href="../../index.html" accesskey="U">Module code</a>
+                </li>
+              
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+
+    <!-- container -->
+    <div class="container-fluid">
+
+
+      
+      <div class="row-fluid hidden-desktop hidden-tablet">
+      
+<div class="span3 ">
+  <a class="visible-phone btn btn-small show-sidebar" data-toggle="collapse" data-target=".for-mobile">Open Table Of Contents</a>
+  <div class="for-mobile sidebar hidden-phone" role="navigation" aria-label="main navigation">
+<div id="searchbox" role="search">
+  <h3>Quick search</h3>
+  <form class="search form-search" action="../../../search.html" method="get">
+      <div class="input-append">
+        <input type="text" class="search-query" name="q">
+        <input type="submit" class="btn" value="Go" />
+      </div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+  </div>
+</div>
+      </div>
+      
+
+      <!-- row -->
+      <div class="row-fluid">
+         
+<div class="span3 visible-desktop visible-tablet">
+  <div class=" sidebar hidden-phone" role="navigation" aria-label="main navigation">
+<div id="searchbox" role="search">
+  <h3>Quick search</h3>
+  <form class="search form-search" action="../../../search.html" method="get">
+      <div class="input-append">
+        <input type="text" class="search-query" name="q">
+        <input type="submit" class="btn" value="Go" />
+      </div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+  </div>
+</div> 
+        
+
+        <div class="span9">
+          <div class="document" role="main">
+            <div class="documentwrapper">
+              <div class="bodywrapper">
+                <div class="body">
+                  
+  <h1>Source code for pypot.sensor.optitrack</h1><div class="highlight"><pre>
+<span class="kn">import</span> <span class="nn">vrpn</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">numpy</span>
+<span class="kn">import</span> <span class="nn">datetime</span>
+<span class="kn">import</span> <span class="nn">threading</span>
+
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">namedtuple</span>
+
+
+<span class="n">TrackedObject</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span><span class="s">&#39;TrackedObject&#39;</span><span class="p">,</span> <span class="p">(</span><span class="s">&#39;position&#39;</span><span class="p">,</span> <span class="s">&#39;quaternion&#39;</span><span class="p">,</span> <span class="s">&#39;orientation&#39;</span><span class="p">,</span> <span class="s">&#39;timestamp&#39;</span><span class="p">))</span>
+
+
+<div class="viewcode-block" id="quat2euler"><a class="viewcode-back" href="../../../pypot.sensor.html#pypot.sensor.optitrack.quat2euler">[docs]</a><span class="k">def</span> <span class="nf">quat2euler</span><span class="p">(</span><span class="n">q</span><span class="p">):</span>
+    <span class="n">qx</span><span class="p">,</span> <span class="n">qy</span><span class="p">,</span> <span class="n">qz</span><span class="p">,</span> <span class="n">qw</span> <span class="o">=</span> <span class="n">q</span>
+    <span class="n">sqx</span><span class="p">,</span> <span class="n">sqy</span><span class="p">,</span> <span class="n">sqz</span><span class="p">,</span> <span class="n">sqw</span> <span class="o">=</span> <span class="n">q</span> <span class="o">**</span> <span class="mi">2</span>
+    <span class="n">invs</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="p">(</span><span class="n">sqx</span> <span class="o">+</span> <span class="n">sqy</span> <span class="o">+</span> <span class="n">sqz</span> <span class="o">+</span> <span class="n">sqw</span><span class="p">)</span>
+
+    <span class="n">yaw</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">arctan2</span><span class="p">(</span><span class="mf">2.0</span> <span class="o">*</span> <span class="p">(</span><span class="n">qx</span> <span class="o">*</span> <span class="n">qz</span> <span class="o">+</span> <span class="n">qy</span> <span class="o">*</span> <span class="n">qw</span><span class="p">)</span> <span class="o">*</span> <span class="n">invs</span><span class="p">,</span> <span class="p">(</span><span class="n">sqx</span> <span class="o">-</span> <span class="n">sqy</span> <span class="o">-</span> <span class="n">sqz</span> <span class="o">+</span> <span class="n">sqw</span><span class="p">)</span> <span class="o">*</span> <span class="n">invs</span><span class="p">)</span>
+    <span class="n">pitch</span> <span class="o">=</span> <span class="o">-</span><span class="n">numpy</span><span class="o">.</span><span class="n">arcsin</span><span class="p">(</span><span class="mf">2.0</span> <span class="o">*</span> <span class="p">(</span><span class="n">qx</span> <span class="o">*</span> <span class="n">qy</span> <span class="o">-</span> <span class="n">qz</span> <span class="o">*</span> <span class="n">qw</span><span class="p">)</span> <span class="o">*</span> <span class="n">invs</span><span class="p">)</span>
+    <span class="n">roll</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">arctan2</span><span class="p">(</span><span class="mf">2.0</span> <span class="o">*</span> <span class="p">(</span><span class="n">qy</span> <span class="o">*</span> <span class="n">qz</span> <span class="o">+</span> <span class="n">qx</span> <span class="o">*</span> <span class="n">qw</span><span class="p">)</span> <span class="o">*</span> <span class="n">invs</span><span class="p">,</span> <span class="p">(</span><span class="o">-</span><span class="n">sqx</span> <span class="o">+</span> <span class="n">sqy</span> <span class="o">-</span> <span class="n">sqz</span> <span class="o">+</span> <span class="n">sqw</span><span class="p">)</span> <span class="o">*</span> <span class="n">invs</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">((</span><span class="n">yaw</span><span class="p">,</span> <span class="n">pitch</span><span class="p">,</span> <span class="n">roll</span><span class="p">))</span>
+
+</div>
+<div class="viewcode-block" id="OptiTrackClient"><a class="viewcode-back" href="../../../pypot.sensor.html#pypot.sensor.optitrack.OptiTrackClient">[docs]</a><span class="k">class</span> <span class="nc">OptiTrackClient</span><span class="p">(</span><span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Retrieves position, orientation, and timestamp of each tracked object.</span>
+
+<span class="sd">        The position is expressed in meters (X is left, Y is up, and Z is depth).</span>
+<span class="sd">        The orientation is expressed in radians (yaw, pitch, roll).</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">addr</span><span class="p">,</span> <span class="n">port</span><span class="p">,</span> <span class="n">obj_names</span><span class="p">):</span>
+        <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">daemon</span> <span class="o">=</span> <span class="bp">True</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">trackers</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="n">obj_names</span><span class="p">:</span>
+            <span class="n">t</span> <span class="o">=</span> <span class="n">vrpn</span><span class="o">.</span><span class="n">receiver</span><span class="o">.</span><span class="n">Tracker</span><span class="p">(</span><span class="s">&#39;{}@{}:{}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">addr</span><span class="p">,</span> <span class="n">port</span><span class="p">))</span>
+            <span class="n">t</span><span class="o">.</span><span class="n">register_change_handler</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">handler</span><span class="p">,</span> <span class="s">&#39;position&#39;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">trackers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_tracked_objects</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="nd">@property</span>
+<div class="viewcode-block" id="OptiTrackClient.tracked_objects"><a class="viewcode-back" href="../../../pypot.sensor.html#pypot.sensor.optitrack.OptiTrackClient.tracked_objects">[docs]</a>    <span class="k">def</span> <span class="nf">tracked_objects</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tracked_objects</span>
+</div>
+    <span class="nd">@property</span>
+<div class="viewcode-block" id="OptiTrackClient.recent_tracked_objects"><a class="viewcode-back" href="../../../pypot.sensor.html#pypot.sensor.optitrack.OptiTrackClient.recent_tracked_objects">[docs]</a>    <span class="k">def</span> <span class="nf">recent_tracked_objects</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Only returns the objects that have been tracked less than 20ms ago. &quot;&quot;&quot;</span>
+        <span class="n">dt</span> <span class="o">=</span> <span class="mf">0.02</span>
+        <span class="n">f</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">name</span><span class="p">:</span> <span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">tracked_objects</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">timestamp</span><span class="p">)</span><span class="o">.</span><span class="n">total_seconds</span><span class="p">()</span>
+        <span class="k">return</span> <span class="nb">dict</span><span class="p">([(</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">tracked_objects</span><span class="o">.</span><span class="n">iteritems</span><span class="p">()</span> <span class="k">if</span> <span class="n">f</span><span class="p">(</span><span class="n">k</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">dt</span><span class="p">])</span>
+</div>
+<div class="viewcode-block" id="OptiTrackClient.handler"><a class="viewcode-back" href="../../../pypot.sensor.html#pypot.sensor.optitrack.OptiTrackClient.handler">[docs]</a>    <span class="k">def</span> <span class="nf">handler</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tracked_objects</span><span class="p">[</span><span class="n">obj</span><span class="p">]</span> <span class="o">=</span> <span class="n">TrackedObject</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="o">*</span><span class="n">data</span><span class="p">[</span><span class="s">&#39;position&#39;</span><span class="p">]),</span>
+                                                  <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s">&#39;quaternion&#39;</span><span class="p">]),</span>
+                                                  <span class="n">quat2euler</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s">&#39;quaternion&#39;</span><span class="p">])),</span>
+                                                  <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">())</span>
+</div>
+<div class="viewcode-block" id="OptiTrackClient.serve_forever"><a class="viewcode-back" href="../../../pypot.sensor.html#pypot.sensor.optitrack.OptiTrackClient.serve_forever">[docs]</a>    <span class="k">def</span> <span class="nf">serve_forever</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+
+        <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">KeyboardInterrupt</span><span class="p">:</span>
+                <span class="k">break</span>
+</div>
+<div class="viewcode-block" id="OptiTrackClient.run"><a class="viewcode-back" href="../../../pypot.sensor.html#pypot.sensor.optitrack.OptiTrackClient.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">trackers</span><span class="p">:</span>
+                <span class="n">t</span><span class="o">.</span><span class="n">mainloop</span><span class="p">()</span>
+            <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">1.0</span> <span class="o">/</span> <span class="mi">120</span><span class="p">)</span>
+</div></div>
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="n">OptiTrackClient</span><span class="p">(</span><span class="s">&#39;193.50.110.176&#39;</span><span class="p">,</span> <span class="mi">3883</span><span class="p">,</span> <span class="p">(</span><span class="s">&#39;obj_1&#39;</span><span class="p">,</span> <span class="p">))</span>
+    <span class="n">c</span><span class="o">.</span><span class="n">serve_forever</span><span class="p">()</span>
+</pre></div>
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        
+      </div><!-- /row -->
+
+      <!-- row -->
+      <div class="row-fluid">
+<div class="related navbar " role="navigation" aria-label="related navigation">
+  <div class="navbar-inner">
+    <ul class="nav pull-right">
+      
+        <li><a href="../../../genindex.html" title="General Index" >index</a></li>
+        <li><a href="../../../py-modindex.html" title="Python Module Index" >modules</a></li>
+        <li><a href="../../../index.html">PyPot 1.5.3 documentation</a></li>
+        <li><a href="../../index.html" >Module code</a></li> 
+      
+    </ul>
+  </div>
+</div>
+      </div><!-- /row -->
+
+      <!-- footer -->
+      <footer role="contentinfo">
+          &copy; Copyright 2012, Pierre Rouanet, Matthieu Lapeyre, Haylee Fogg.
+        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.2.2.
+      </footer>
+      <!-- /footer -->
+
+    </div>
+    <!-- /container -->
+
+  </body>
+</html>

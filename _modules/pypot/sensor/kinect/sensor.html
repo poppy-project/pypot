@@ -1,0 +1,302 @@
+
+
+<!DOCTYPE html>
+
+
+
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    
+    <title>pypot.sensor.kinect.sensor &mdash; PyPot 1.5.3 documentation</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    
+<link rel="stylesheet" href="../../../../_static/css/basicstrap-base.css" type="text/css" />
+<link rel="stylesheet" href="../../../../_static/css/bootstrap.min.css" type="text/css" />
+<link rel="stylesheet" href="../../../../_static/css/font-awesome.min.css">
+<!--[if IE 7]>
+<link rel="stylesheet" href="../../../../_static/css/font-awesome-ie7.min.css">
+<![endif]-->
+
+<style type="text/css">
+  body {
+    padding-top: 60px;
+    padding-bottom: 40px;
+  }
+}
+</style>
+
+<link rel="stylesheet" href="../../../../_static/basicstrap.css" type="text/css" />
+<link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+<link rel="stylesheet" href="../../../../_static/my-css.css" type="text/css" />
+<link rel="stylesheet" href="../../../../_static/css/bootstrap-responsive.min.css" type="text/css" />
+    
+<script type="text/javascript">
+  var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:    '../../../../',
+            VERSION:     '1.5.3',
+            COLLAPSE_INDEX: false,
+            FILE_SUFFIX: '.html',
+            HAS_SOURCE:  true
+  };
+</script>
+<script type="text/javascript" src="../../../../_static/js/jquery.min.js"></script>
+<script type="text/javascript" src="../../../../_static/underscore.js"></script>
+<script type="text/javascript" src="../../../../_static/doctools.js"></script>
+<script type="text/javascript" src="../../../../_static/js/bootstrap.min.js"></script>
+<script type="text/javascript">
+  $(document).ready(function(){
+    $('.show-sidebar').click(function(e) {
+       e.preventDefault();
+       if ($(".show-sidebar").html() == "Open Table Of Contents") {
+          $('.for-mobile').removeClass('hidden-phone');
+          $(".show-sidebar").html("Close Table Of Contents");
+       } else {
+          $(".show-sidebar").html("Open Table Of Contents");
+       }
+    });
+  });
+  $(window).load(function () {
+    /*
+
+     * Scroll the window to avoid the topnav bar
+     * https://github.com/twitter/bootstrap/issues/1768
+     */
+    if ($(".navbar.navbar-fixed-top").length > 0) {
+      // var navHeight = $(".navbar").height(),
+      var navHeight = 40,
+        shiftWindow = function() { scrollBy(0, -navHeight - 10); };
+
+      if (location.hash) {
+        setTimeout(shiftWindow, 1);
+      }
+
+      window.addEventListener("hashchange", shiftWindow);
+    }
+  });
+</script>
+    <link rel="author" title="About these documents" href="../../../../about.html" />
+    <link rel="top" title="PyPot 1.5.3 documentation" href="../../../../index.html" />
+    <link rel="up" title="Module code" href="../../../index.html" /> 
+  </head>
+  <body role="document">
+    <div class="navbar navbar-fixed-top " role="navigation" aria-label="top navigation">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </a>
+          <div role="banner">
+            <a class="brand" href="../../../../index.html">PyPot 1.5.3 documentation</a>
+          </div>
+          <div class="nav-collapse collapse">
+            <ul class="nav pull-right">
+              
+                <li>
+                <a href="../../../../genindex.html" title="General Index" accesskey="I">index</a>
+                </li>
+                <li>
+                <a href="../../../../py-modindex.html" title="Python Module Index" >modules</a>
+                </li>
+                <li>
+                <a href="../../../index.html" accesskey="U">Module code</a>
+                </li>
+              
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+
+    <!-- container -->
+    <div class="container-fluid">
+
+
+      
+      <div class="row-fluid hidden-desktop hidden-tablet">
+      
+<div class="span3 ">
+  <a class="visible-phone btn btn-small show-sidebar" data-toggle="collapse" data-target=".for-mobile">Open Table Of Contents</a>
+  <div class="for-mobile sidebar hidden-phone" role="navigation" aria-label="main navigation">
+<div id="searchbox" role="search">
+  <h3>Quick search</h3>
+  <form class="search form-search" action="../../../../search.html" method="get">
+      <div class="input-append">
+        <input type="text" class="search-query" name="q">
+        <input type="submit" class="btn" value="Go" />
+      </div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+  </div>
+</div>
+      </div>
+      
+
+      <!-- row -->
+      <div class="row-fluid">
+         
+<div class="span3 visible-desktop visible-tablet">
+  <div class=" sidebar hidden-phone" role="navigation" aria-label="main navigation">
+<div id="searchbox" role="search">
+  <h3>Quick search</h3>
+  <form class="search form-search" action="../../../../search.html" method="get">
+      <div class="input-append">
+        <input type="text" class="search-query" name="q">
+        <input type="submit" class="btn" value="Go" />
+      </div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+  </div>
+</div> 
+        
+
+        <div class="span9">
+          <div class="document" role="main">
+            <div class="documentwrapper">
+              <div class="bodywrapper">
+                <div class="body">
+                  
+  <h1>Source code for pypot.sensor.kinect.sensor</h1><div class="highlight"><pre>
+<span class="kn">import</span> <span class="nn">zmq</span>
+<span class="kn">import</span> <span class="nn">numpy</span>
+<span class="kn">import</span> <span class="nn">threading</span>
+
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">namedtuple</span>
+
+
+<span class="kn">from</span> <span class="nn">pypot.utils</span> <span class="kn">import</span> <span class="n">Point3D</span><span class="p">,</span> <span class="n">Point2D</span><span class="p">,</span> <span class="n">Quaternion</span>
+
+
+<span class="n">torso_joints</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;hip_center&#39;</span><span class="p">,</span> <span class="s">&#39;spine&#39;</span><span class="p">,</span> <span class="s">&#39;shoulder_center&#39;</span><span class="p">,</span> <span class="s">&#39;head&#39;</span><span class="p">)</span>
+<span class="n">left_arm_joints</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;shoulder_left&#39;</span><span class="p">,</span> <span class="s">&#39;elbow_left&#39;</span><span class="p">,</span> <span class="s">&#39;wrist_left&#39;</span><span class="p">,</span> <span class="s">&#39;hand_left&#39;</span><span class="p">)</span>
+<span class="n">right_arm_joints</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;shoulder_right&#39;</span><span class="p">,</span> <span class="s">&#39;elbow_right&#39;</span><span class="p">,</span> <span class="s">&#39;wrist_right&#39;</span><span class="p">,</span> <span class="s">&#39;hand_right&#39;</span><span class="p">)</span>
+<span class="n">left_leg_joints</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;hip_left&#39;</span><span class="p">,</span> <span class="s">&#39;knee_left&#39;</span><span class="p">,</span> <span class="s">&#39;ankle_left&#39;</span><span class="p">,</span> <span class="s">&#39;foot_left&#39;</span><span class="p">)</span>
+<span class="n">right_leg_joints</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;hip_right&#39;</span><span class="p">,</span> <span class="s">&#39;knee_right&#39;</span><span class="p">,</span> <span class="s">&#39;ankle_right&#39;</span><span class="p">,</span> <span class="s">&#39;foot_right&#39;</span><span class="p">)</span>
+<span class="n">skeleton_joints</span> <span class="o">=</span> <span class="n">torso_joints</span> <span class="o">+</span> <span class="n">left_arm_joints</span> <span class="o">+</span> <span class="n">right_arm_joints</span> <span class="o">+</span> <span class="n">left_leg_joints</span> <span class="o">+</span> <span class="n">right_leg_joints</span>
+
+
+<div class="viewcode-block" id="Skeleton"><a class="viewcode-back" href="../../../../pypot.sensor.html#pypot.sensor.kinect.sensor.Skeleton">[docs]</a><span class="k">class</span> <span class="nc">Skeleton</span><span class="p">(</span><span class="n">namedtuple</span><span class="p">(</span><span class="s">&#39;Skeleton&#39;</span><span class="p">,</span> <span class="p">(</span><span class="s">&#39;timestamp&#39;</span><span class="p">,</span> <span class="s">&#39;user_id&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="n">skeleton_joints</span><span class="p">)):</span>
+    <span class="n">joints</span> <span class="o">=</span> <span class="n">skeleton_joints</span>
+
+</div>
+<span class="n">Joint</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span><span class="s">&#39;Joint&#39;</span><span class="p">,</span> <span class="p">(</span><span class="s">&#39;position&#39;</span><span class="p">,</span> <span class="s">&#39;orientation&#39;</span><span class="p">,</span> <span class="s">&#39;pixel_coordinate&#39;</span><span class="p">))</span>
+
+
+<div class="viewcode-block" id="KinectSensor"><a class="viewcode-back" href="../../../../pypot.sensor.html#pypot.sensor.kinect.sensor.KinectSensor">[docs]</a><span class="k">class</span> <span class="nc">KinectSensor</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">addr</span><span class="p">,</span> <span class="n">port</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_lock</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Lock</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_skeleton</span> <span class="o">=</span> <span class="bp">None</span>
+
+        <span class="n">context</span> <span class="o">=</span> <span class="n">zmq</span><span class="o">.</span><span class="n">Context</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">socket</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">socket</span><span class="p">(</span><span class="n">zmq</span><span class="o">.</span><span class="n">SUB</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">socket</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s">&#39;tcp://{}:{}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">addr</span><span class="p">,</span> <span class="n">port</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">socket</span><span class="o">.</span><span class="n">setsockopt</span><span class="p">(</span><span class="n">zmq</span><span class="o">.</span><span class="n">SUBSCRIBE</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">)</span>
+
+        <span class="n">t</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">get_skeleton</span><span class="p">)</span>
+        <span class="n">t</span><span class="o">.</span><span class="n">daemon</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="n">t</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">tracked_skeleton</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lock</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_skeleton</span>
+
+    <span class="nd">@tracked_skeleton.setter</span>
+<div class="viewcode-block" id="KinectSensor.tracked_skeleton"><a class="viewcode-back" href="../../../../pypot.sensor.html#pypot.sensor.kinect.sensor.KinectSensor.tracked_skeleton">[docs]</a>    <span class="k">def</span> <span class="nf">tracked_skeleton</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">skeleton</span><span class="p">):</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lock</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_skeleton</span> <span class="o">=</span> <span class="n">skeleton</span>
+</div>
+<div class="viewcode-block" id="KinectSensor.get_skeleton"><a class="viewcode-back" href="../../../../pypot.sensor.html#pypot.sensor.kinect.sensor.KinectSensor.get_skeleton">[docs]</a>    <span class="k">def</span> <span class="nf">get_skeleton</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+            <span class="n">md</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">socket</span><span class="o">.</span><span class="n">recv_json</span><span class="p">()</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">socket</span><span class="o">.</span><span class="n">recv</span><span class="p">()</span>
+
+            <span class="n">skeleton_array</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">frombuffer</span><span class="p">(</span><span class="nb">buffer</span><span class="p">(</span><span class="n">msg</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">md</span><span class="p">[</span><span class="s">&#39;dtype&#39;</span><span class="p">])</span>
+            <span class="n">skeleton_array</span> <span class="o">=</span> <span class="n">skeleton_array</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">md</span><span class="p">[</span><span class="s">&#39;shape&#39;</span><span class="p">])</span>
+
+            <span class="n">joints</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">skeleton_joints</span><span class="p">)):</span>
+                <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">w</span> <span class="o">=</span> <span class="n">skeleton_array</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">:</span><span class="mi">4</span><span class="p">]</span>
+                <span class="n">position</span> <span class="o">=</span> <span class="n">Point3D</span><span class="p">(</span><span class="n">x</span> <span class="o">/</span> <span class="n">w</span><span class="p">,</span> <span class="n">y</span> <span class="o">/</span> <span class="n">w</span><span class="p">,</span> <span class="n">z</span> <span class="o">/</span> <span class="n">w</span><span class="p">)</span>
+                <span class="n">pixel_coord</span> <span class="o">=</span> <span class="n">Point2D</span><span class="p">(</span><span class="o">*</span><span class="n">skeleton_array</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">4</span><span class="p">:</span><span class="mi">6</span><span class="p">])</span>
+                <span class="n">orientation</span> <span class="o">=</span> <span class="n">Quaternion</span><span class="p">(</span><span class="o">*</span><span class="n">skeleton_array</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">6</span><span class="p">:</span><span class="mi">10</span><span class="p">])</span>
+                <span class="n">joints</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Joint</span><span class="p">(</span><span class="n">position</span><span class="p">,</span> <span class="n">orientation</span><span class="p">,</span> <span class="n">pixel_coord</span><span class="p">))</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">tracked_skeleton</span> <span class="o">=</span> <span class="n">Skeleton</span><span class="p">(</span><span class="n">md</span><span class="p">[</span><span class="s">&#39;timestamp&#39;</span><span class="p">],</span> <span class="n">md</span><span class="p">[</span><span class="s">&#39;user_index&#39;</span><span class="p">],</span> <span class="o">*</span><span class="n">joints</span><span class="p">)</span>
+
+</div></div>
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">cv2</span>
+
+    <span class="n">kinect</span> <span class="o">=</span> <span class="n">KinectSensor</span><span class="p">(</span><span class="s">&#39;193.50.110.60&#39;</span><span class="p">,</span> <span class="mi">9999</span><span class="p">)</span>
+
+    <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+        <span class="n">img</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">480</span><span class="p">,</span> <span class="mi">640</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+
+        <span class="n">skeleton</span> <span class="o">=</span> <span class="n">kinect</span><span class="o">.</span><span class="n">tracked_skeleton</span>
+
+        <span class="k">if</span> <span class="n">skeleton</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">joint_name</span> <span class="ow">in</span> <span class="n">skeleton</span><span class="o">.</span><span class="n">joints</span><span class="p">:</span>
+                <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">skeleton</span><span class="p">,</span> <span class="n">joint_name</span><span class="p">)</span><span class="o">.</span><span class="n">pixel_coordinate</span>
+                <span class="n">pt</span> <span class="o">=</span> <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">x</span> <span class="o">*</span> <span class="mi">640</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">y</span> <span class="o">*</span> <span class="mi">480</span><span class="p">))</span>
+                <span class="n">cv2</span><span class="o">.</span><span class="n">circle</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">pt</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">),</span> <span class="n">thickness</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="n">cv2</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="s">&#39;Skeleton&#39;</span><span class="p">,</span> <span class="n">img</span><span class="p">)</span>
+        <span class="n">cv2</span><span class="o">.</span><span class="n">waitKey</span><span class="p">(</span><span class="mi">50</span><span class="p">)</span>
+</pre></div>
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        
+      </div><!-- /row -->
+
+      <!-- row -->
+      <div class="row-fluid">
+<div class="related navbar " role="navigation" aria-label="related navigation">
+  <div class="navbar-inner">
+    <ul class="nav pull-right">
+      
+        <li><a href="../../../../genindex.html" title="General Index" >index</a></li>
+        <li><a href="../../../../py-modindex.html" title="Python Module Index" >modules</a></li>
+        <li><a href="../../../../index.html">PyPot 1.5.3 documentation</a></li>
+        <li><a href="../../../index.html" >Module code</a></li> 
+      
+    </ul>
+  </div>
+</div>
+      </div><!-- /row -->
+
+      <!-- footer -->
+      <footer role="contentinfo">
+          &copy; Copyright 2012, Pierre Rouanet, Matthieu Lapeyre, Haylee Fogg.
+        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.2.2.
+      </footer>
+      <!-- /footer -->
+
+    </div>
+    <!-- /container -->
+
+  </body>
+</html>
