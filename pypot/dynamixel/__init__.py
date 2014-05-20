@@ -1,9 +1,9 @@
 import platform
 import glob
 
-from pypot.dynamixel.io import DxlIO
-from pypot.dynamixel.controller import DxlController
-from pypot.dynamixel.error import BaseErrorHandler
+from .io import DxlIO
+from .error import BaseErrorHandler
+from .controller import DxlController
 
 
 def get_available_ports():

@@ -2,7 +2,7 @@ import logging
 
 from collections import defaultdict
 
-from pypot.utils import attrgetter, attrsetter
+from ..utils import attrgetter, attrsetter
 
 
 logger = logging.getLogger(__name__)
