@@ -8,7 +8,6 @@ import threading
 
 from collections import namedtuple, OrderedDict
 from contextlib import contextmanager
-from struct import unpack
 
 from .conversion import *
 from .packet import *
@@ -511,8 +510,7 @@ class DxlIO(object):
                 status_packet = DxlStatusPacket.from_string(data)
 
             except ValueError:
-                fmt = 'B' * len(data)
-                msg = 'could not parse received data {}'.format(unpack(fmt, data))
+                msg = 'could not parse received data {}'.format(bytearray(data))
                 raise DxlCommunicationError(self, msg, instruction_packet)
 
             logger.debug('Receiving %s', status_packet,

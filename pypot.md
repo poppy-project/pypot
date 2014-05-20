@@ -1,9 +1,5 @@
 # Pypot todo list
 
-## Python 3
-* use bytearray (serial already does)
-* otherwise check http://python3porting.com/problems.html#bytes-strings-and-unicode
-
 ## Documentation
 * Déplacer la doc. de construction d'un ergo-robot à un endroit accessible + post de blog
 * Post sur le forum pour expliquer comment Pypot pourrait être adapté à d'autres types de moteur
