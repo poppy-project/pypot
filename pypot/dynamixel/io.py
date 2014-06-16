@@ -6,6 +6,9 @@ import operator
 import itertools
 import threading
 
+import os
+from serial.tools import list_ports
+
 from collections import namedtuple, OrderedDict
 from contextlib import contextmanager
 from struct import unpack
@@ -27,6 +30,33 @@ _DxlControl = namedtuple('_DxlControl', ('name',
                                          'dxl_to_si', 'si_to_dxl',
                                          'getter_name', 'setter_name'))
 
+
+
+def serial_ports():
+    """
+    Returns a generator for all available serial ports
+    based on: http://stackoverflow.com/questions/12090503/listing-available-com-ports-with-python
+    WARNING: works with pyserial>=2.7
+    """
+
+    ports = []
+    if os.name == 'nt':
+        # windows
+        for i in range(256):
+            try:
+                s = serial.Serial(i)
+                s.close()
+                ports.append('COM' + str(i + 1))
+            except serial.SerialException:
+                pass
+    else:
+        # unix
+        for port in list_ports.comports():
+            if 'USB' in port[0] or 'ACM' in port[0]:
+                # yield port[0]
+                ports.append(port[0])
+
+    return ports
 
 class _DxlAccess(object):
     readonly, writeonly, readwrite = range(3)
@@ -66,6 +96,7 @@ class DxlIO(object):
         self._convert = convert
 
         self._serial_lock = threading.Lock()
+
         self.open(port, baudrate, timeout)
 
         #Very dirty hack
@@ -200,11 +231,25 @@ class DxlIO(object):
 
             """
         pp = DxlPingPacket(id)
-        try:
-            self._send_packet(pp, error_handler=None)
-            return True
-        except DxlTimeoutError:
+
+
+        sp = self._send_packet(pp, error_handler=self._error_handler)
+
+        #Humm is it ok?
+        if sp is None:
             return False
+        else:
+            return True
+
+        # return True
+
+        #     return False
+
+        # try:
+        #     self._send_packet(pp, error_handler=None)
+        #     return True
+        # except DxlTimeoutError:
+        #     return False
 
     def scan(self, ids=xrange(254)):
         """ Pings all ids within the specified list, by default it finds all the motors connected to the bus. """
@@ -520,8 +565,7 @@ class DxlIO(object):
                 status_packet = DxlStatusPacket.from_string(data)
 
             except ValueError:
-                fmt = 'B' * len(data)
-                msg = 'could not parse received data {}'.format(unpack(fmt, data))
+                msg = 'could not parse received data {}'.format(bytearray(data))
                 raise DxlCommunicationError(self, msg, instruction_packet)
 
             logger.debug('Receiving %s', status_packet,

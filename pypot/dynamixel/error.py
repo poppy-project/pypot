@@ -22,7 +22,9 @@ class DxlErrorHandler(object):
         raise NotImplementedError
 
     def handle_communication_error(self, communication_error):
-        raise NotImplementedError
+        # raise NotImplementedError
+        print "WARNING: communication error"
+        pass
 
     # MARK: - Motor errors
     def handle_input_voltage_error(self, instruction_packet):

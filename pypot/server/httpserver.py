@@ -31,6 +31,28 @@ class HTTPServer(AbstractServer):
         self.app = bottle.Bottle()
         self.app.install(bottle.JSONPlugin(json_dumps=lambda s: json.dumps(s, cls=MyJSONEncoder)))
 
+
+        #test index
+        # @self.app.get('/')
+        # def index(name='test'):
+        #     # return bottle.template('<b>Hello {{name}}</b>!', name=name)
+        #     idx = '/home/steve/Project/Repo/poppy-software/example/web/'
+        #     return bottle.static_file('/',root = idx )
+
+            # test index
+        @self.app.get('/<filename>')
+        def index_static(filename):
+            # return bottle.template('<b>Hello {{name}}</b>!', name=name)
+            path = '/home/steve/Project/Repo/poppy-software/example/web/'
+            return bottle.static_file(filename,root=path )
+
+        @self.app.get('/flot/<filename>')
+        def index_static(filename):
+            # return bottle.template('<b>Hello {{name}}</b>!', name=name)
+            path = '/home/steve/Project/Repo/poppy-software/example/web/flot/'
+            return bottle.static_file(filename,root=path )
+
+
         @self.app.get('/motor/list.json')
         def get_motor_list():
             req = {
