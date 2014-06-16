@@ -112,7 +112,8 @@ def from_config(config, strict=True):
             port_list = pypot.dynamixel.io.serial_ports()
 
             for o in opened_ports:
-                port_list.remove(o)
+                if o in port_list:
+                    port_list.remove(o)
 
             for test_port in port_list:
                 print 'Auto detecting...', test_port
