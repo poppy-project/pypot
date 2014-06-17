@@ -120,6 +120,12 @@ def from_config(config, strict=True):
 
                 try:
 
+                    # dirty walkaround to fix a strange bug. Observed with the USB2AX on Linux (and maybe MacOs) with pyserial 2.7
+                    # we have to first open/close the port in order to make it work at 1Mbauds
+                    dxl_io = pypot.dynamixel.DxlIO(port=test_port, baudrate = 57600)
+                    dxl_io.close()
+
+
                     dxl_io = pypot.dynamixel.DxlIO(port=test_port,
                                                    use_sync_read=c_params['sync_read'],
                                                    error_handler_cls=pypot.dynamixel.BaseErrorHandler)
@@ -166,6 +172,11 @@ def from_config(config, strict=True):
 
 
         else:
+
+            # dirty walkaround to fix a strange bug. Observed with the USB2AX on Linux (and maybe MacOs) with pyserial 2.7
+            # we have to first open/close the port in order to make it work at 1Mbauds
+            dxl_io = pypot.dynamixel.DxlIO(port=test_port, baudrate = 57600)
+            dxl_io.close()
 
             dxl_io = pypot.dynamixel.DxlIO(port=c_params['port'],
                                            use_sync_read=c_params['sync_read'],
