@@ -239,7 +239,7 @@ class DxlIO(object):
             return False
 
 
-    def scan(self, ids=xrange(1, 254, 1)):
+    def scan(self, ids=xrange(254)):
         """ Pings all ids within the specified list, by default it finds all the motors connected to the bus. """
         return [id for id in ids if self.ping(id)]
 
@@ -545,15 +545,14 @@ class DxlIO(object):
 
             data = self._serial.read(DxlPacketHeader.length)
             if not data:
-
                 raise DxlTimeoutError(self, instruction_packet, instruction_packet.id)
 
             try:
                 header = DxlPacketHeader.from_string(data)
                 data += self._serial.read(header.packet_length)
                 status_packet = DxlStatusPacket.from_string(data)
-            except ValueError:
 
+            except ValueError:
                 msg = 'could not parse received data {}'.format(bytearray(data))
                 raise DxlCommunicationError(self, msg, instruction_packet)
 
@@ -562,8 +561,9 @@ class DxlIO(object):
                                 'baudrate': self.baudrate,
                                 'timeout': self.timeout})
 
-
             return status_packet
+
+
 
     def _send_packet(self,
                      instruction_packet, wait_for_status_packet=True,

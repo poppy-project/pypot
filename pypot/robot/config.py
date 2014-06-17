@@ -143,7 +143,7 @@ def from_config(config, strict=True):
 
                     if ids ==  found_ids:
                         #Finished, we found the port
-                        print 'Scanning ok. Port is:', test_port
+                        print 'Scanning ok. %s found on port %s' % (c_params['attached_motors'], test_port)
                         opened_ports.append(test_port)
                         break
                     else:
