@@ -232,26 +232,14 @@ class DxlIO(object):
             """
         pp = DxlPingPacket(id)
 
-
-        sp = self._send_packet(pp, error_handler=self._error_handler)
-
-        #Humm is it ok?
-        if sp is None:
-            return False
-        else:
+        try:
+            self._send_packet(pp, error_handler=None)
             return True
+        except DxlTimeoutError:
+            return False
 
-        # return True
 
-        #     return False
-
-        # try:
-        #     self._send_packet(pp, error_handler=None)
-        #     return True
-        # except DxlTimeoutError:
-        #     return False
-
-    def scan(self, ids=xrange(254)):
+    def scan(self, ids=xrange(1, 254, 1)):
         """ Pings all ids within the specified list, by default it finds all the motors connected to the bus. """
         return [id for id in ids if self.ping(id)]
 
@@ -557,14 +545,15 @@ class DxlIO(object):
 
             data = self._serial.read(DxlPacketHeader.length)
             if not data:
+
                 raise DxlTimeoutError(self, instruction_packet, instruction_packet.id)
 
             try:
                 header = DxlPacketHeader.from_string(data)
                 data += self._serial.read(header.packet_length)
                 status_packet = DxlStatusPacket.from_string(data)
-
             except ValueError:
+
                 msg = 'could not parse received data {}'.format(bytearray(data))
                 raise DxlCommunicationError(self, msg, instruction_packet)
 
@@ -572,6 +561,7 @@ class DxlIO(object):
                          extra={'port': self.port,
                                 'baudrate': self.baudrate,
                                 'timeout': self.timeout})
+
 
             return status_packet
 
@@ -649,7 +639,6 @@ class DxlTimeoutError(DxlCommunicationError):
     def __init__(self, dxl_io, instruction_packet, ids):
         DxlCommunicationError.__init__(self, dxl_io, 'timeout occured', instruction_packet)
         self.ids = ids
-
     def __str__(self):
         return 'motors {} did not respond after sending {}'.format(self.ids, self.instruction_packet)
 

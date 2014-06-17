@@ -118,41 +118,51 @@ def from_config(config, strict=True):
             for test_port in port_list:
                 print 'Auto detecting...', test_port
 
-                dxl_io = pypot.dynamixel.DxlIO(port=test_port,
-                                               use_sync_read=c_params['sync_read'],
-                                               error_handler_cls=pypot.dynamixel.BaseErrorHandler)
+                try:
 
+                    dxl_io = pypot.dynamixel.DxlIO(port=test_port,
+                                                   use_sync_read=c_params['sync_read'],
+                                                   error_handler_cls=pypot.dynamixel.BaseErrorHandler)
 
-                dxl_motors = []
-                motor_names = sum([_motor_extractor(alias, name) for name in c_params['attached_motors']], [])
-                motor_nodes = map(lambda m: (m, config['motors'][m]), motor_names)
+                    dxl_motors = []
+                    motor_names = sum([_motor_extractor(alias, name) for name in c_params['attached_motors']], [])
+                    motor_nodes = map(lambda m: (m, config['motors'][m]), motor_names)
 
-                # First, scan everyone to make sure that we are not missing any motors
-                ids = [params['id'] for _, params in motor_nodes]
-                found_ids = dxl_io.scan(ids)
+                    # First, scan everyone to make sure that we are not missing any motors
+                    ids = [params['id'] for _, params in motor_nodes]
 
-                print 'Found ids:', found_ids
+                    try:
+                        found_ids = dxl_io.scan(ids)
 
-                if ids ==  found_ids:
-                    #Finished, we found the port
-                    print 'Scanning ok. Port is:', test_port
-                    opened_ports.append(test_port)
-                    break
-                else:
-                    if not strict:
-                        missing_ids = tuple(set(ids) - set(found_ids))
-                        if numpy.array(list(missing_ids)).sum() < numpy.array(ids).sum() / 2.0:
-                            #totally adhoc
-                            print 'Scanning ok. Port is:', test_port
-                            opened_ports.append(test_port)
-                            break
-                        else:
-                            print 'bad serial port', test_port
-                            dxl.io.close()
+                    except:
+                        print 'bad serial port', test_port
+                        dxl_io.close()
+                        pass
 
+                    print 'Found ids:', found_ids
+
+                    if ids ==  found_ids:
+                        #Finished, we found the port
+                        print 'Scanning ok. Port is:', test_port
+                        opened_ports.append(test_port)
+                        break
+                    else:
+                        if not strict:
+                            missing_ids = tuple(set(ids) - set(found_ids))
+                            if numpy.array(list(missing_ids)).sum() < numpy.array(ids).sum() / 2.0:
+                                #totally adhoc
+                                print 'Scanning ok. Port is:', test_port
+                                opened_ports.append(test_port)
+                                break
+                            else:
+                                print 'bad serial port', test_port
+                                dxl_io.close()
+
+                except:
+                    print 'bad serial port', test_port
 
             else:
-                raise DxlError('Could not find the port.')
+                raise DxlError('Could not find motors on any port.')
 
 
         else:
