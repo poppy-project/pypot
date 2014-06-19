@@ -1,8 +1,9 @@
 import time
 import logging
 
-import pypot.primitive.manager
-import pypot.dynamixel.controller
+from ..primitive.manager import PrimitiveManager
+from ..dynamixel.controller import BaseDxlController
+
 
 logger = logging.getLogger(__name__)
 
@@ -29,7 +30,7 @@ class Robot(object):
         self.alias = []
         self._attached_primitives = {}
         self._dxl_controllers = []
-        self._primitive_manager = pypot.primitive.manager.PrimitiveManager(self.motors)
+        self._primitive_manager = PrimitiveManager(self.motors)
 
     def close(self):
         """ Cleans the robot by stopping synchronization and all controllers."""
@@ -40,7 +41,7 @@ class Robot(object):
         return '<Robot motors={}>'.format(self.motors)
 
     def _attach_dxl_motors(self, dxl_io, dxl_motors):
-        c = pypot.dynamixel.controller.BaseDxlController(dxl_io, dxl_motors)
+        c = BaseDxlController(dxl_io, dxl_motors)
         self._dxl_controllers.append(c)
 
         for m in dxl_motors:

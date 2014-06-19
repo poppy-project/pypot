@@ -11,7 +11,6 @@ from serial.tools import list_ports
 
 from collections import namedtuple, OrderedDict
 from contextlib import contextmanager
-from struct import unpack
 
 from .conversion import *
 from .packet import *
@@ -276,7 +275,7 @@ class DxlIO(object):
         """ Changes the baudrate of the specified motors. """
         self._change_baudrate(baudrate_for_ids)
 
-        for motor_id in baudrate_for_ids.iterkeys():
+        for motor_id in baudrate_for_ids:
             if motor_id in self._known_models:
                 del self._known_models[motor_id]
             if motor_id in self._known_mode:
@@ -766,11 +765,11 @@ _add_control('pid gain',
 
 _add_control('compliance margin',
              address=0x1A, length=1, nb_elem=2,
-             models=('AX-12', 'RX-28', 'RX-64'))
+             models=('AX-12', 'AX-18', 'RX-28', 'RX-64'))
 
 _add_control('compliance slope',
              address=0x1C, length=1, nb_elem=2,
-             models=('AX-12', 'RX-28', 'RX-64'))
+             models=('AX-12', 'AX-18', 'RX-28', 'RX-64'))
 
 _add_control('goal position',
              address=0x1E,

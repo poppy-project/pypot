@@ -37,3 +37,5 @@ You will also have to install the driver for the USB2serial port. There are two 
 * USB2Dynamixel - this device can manage both TTL and RS485 communication.
 
 For more details on the installation procedure, please refer to the [installation section](http://poppy-project.github.io/pypot/intro.html#installation) of the documentation.
+
+![Alt text](https://zenodo.org/badge/3914/poppy-project/pypot.png)

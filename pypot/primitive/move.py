@@ -1,6 +1,6 @@
 import json
 
-from pypot.primitive import LoopPrimitive
+from .primitive import LoopPrimitive
 
 
 class Move(object):

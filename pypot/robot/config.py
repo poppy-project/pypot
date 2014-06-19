@@ -14,11 +14,11 @@ import numpy
 import time
 import json
 
-import pypot.robot
-import pypot.dynamixel
+from ..dynamixel.motor import DxlAXRXMotor, DxlMXMotor
+from ..dynamixel.error import BaseErrorHandler
+from ..dynamixel.io import DxlIO, DxlError
+from .robot import Robot
 
-from pypot.dynamixel.motor import DxlAXRXMotor, DxlMXMotor
-from pypot.dynamixel.io import DxlError
 
 ergo_robot_config = {
     'controllers': {
@@ -90,7 +90,7 @@ def from_config(config, strict=True):
 
         """
     logger.info('Loading config... ', extra={'config': config})
-    robot = pypot.robot.Robot()
+    robot = Robot()
 
     alias = config['motorgroups']
 
@@ -98,6 +98,9 @@ def from_config(config, strict=True):
 
     # Instatiate the different controllers
     for c_name, c_params in config['controllers'].items():
+        dxl_io = DxlIO(port=c_params['port'],
+                       use_sync_read=c_params['sync_read'],
+                       error_handler_cls=BaseErrorHandler)
 
         dxl_motors = []
         motor_names = []
@@ -105,6 +108,13 @@ def from_config(config, strict=True):
         ids = []
         found_ids = []
 
+        # First, scan everyone to make sure that we are not missing any motors
+        ids = [params['id'] for _, params in motor_nodes]
+        found_ids = dxl_io.scan(ids)
+        if ids != found_ids:
+            missing_ids = tuple(set(ids) - set(found_ids))
+            raise DxlError('Could not find the motors {} on bus {}.'.format(missing_ids,
+                                                                            dxl_io.port))
 
         #Testing: dirty hack to auto detect serial port with inference
         if c_params['port'] == 'auto':
@@ -261,7 +271,7 @@ def from_config(config, strict=True):
         robot._attach_dxl_motors(dxl_io, dxl_motors)
 
     # Create the alias for the motorgroups
-    for alias_name in alias.keys():
+    for alias_name in alias:
         motors = [getattr(robot, name) for name in _motor_extractor(alias, alias_name)]
         setattr(robot, alias_name, motors)
         robot.alias.append(alias_name)

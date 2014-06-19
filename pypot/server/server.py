@@ -1,17 +1,16 @@
 import json
 
-import pypot.primitive
-
-from pypot.server.request import BaseRequestHandler
+from ..primitive import Primitive
+from .request import BaseRequestHandler
 
 
 # TODO: The server should spawn a new primitive for each client
 
 
-class AbstractServer(pypot.primitive.Primitive):
+class AbstractServer(Primitive):
     """ Abstract Server which mostly delegate the work to a request handler. """
     def __init__(self, robot, handler=BaseRequestHandler):
-        pypot.primitive.Primitive.__init__(self, robot)
+        Primitive.__init__(self, robot)
 
         self.request_handler = BaseRequestHandler(self.robot)
 
