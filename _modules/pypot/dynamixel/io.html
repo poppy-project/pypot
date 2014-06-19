@@ -9,7 +9,7 @@
   <head>
     <meta charset="utf-8" />
     
-    <title>pypot.dynamixel.io &mdash; PyPot 1.5.3 documentation</title>
+    <title>pypot.dynamixel.io &mdash; PyPot 1.7.0 documentation</title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
@@ -39,7 +39,7 @@
 <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
             URL_ROOT:    '../../../',
-            VERSION:     '1.5.3',
+            VERSION:     '1.7.0',
             COLLAPSE_INDEX: false,
             FILE_SUFFIX: '.html',
             HAS_SOURCE:  true
@@ -81,7 +81,7 @@
   });
 </script>
     <link rel="author" title="About these documents" href="../../../about.html" />
-    <link rel="top" title="PyPot 1.5.3 documentation" href="../../../index.html" />
+    <link rel="top" title="PyPot 1.7.0 documentation" href="../../../index.html" />
     <link rel="up" title="pypot.dynamixel" href="../dynamixel.html" /> 
   </head>
   <body role="document">
@@ -94,7 +94,7 @@
             <span class="icon-bar"></span>
           </a>
           <div role="banner">
-            <a class="brand" href="../../../index.html">PyPot 1.5.3 documentation</a>
+            <a class="brand" href="../../../index.html">PyPot 1.7.0 documentation</a>
           </div>
           <div class="nav-collapse collapse">
             <ul class="nav pull-right">
@@ -188,7 +188,6 @@
 
 <span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">namedtuple</span><span class="p">,</span> <span class="n">OrderedDict</span>
 <span class="kn">from</span> <span class="nn">contextlib</span> <span class="kn">import</span> <span class="n">contextmanager</span>
-<span class="kn">from</span> <span class="nn">struct</span> <span class="kn">import</span> <span class="n">unpack</span>
 
 <span class="kn">from</span> <span class="nn">.conversion</span> <span class="kn">import</span> <span class="o">*</span>
 <span class="kn">from</span> <span class="nn">.packet</span> <span class="kn">import</span> <span class="o">*</span>
@@ -246,6 +245,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_convert</span> <span class="o">=</span> <span class="n">convert</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_serial_lock</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Lock</span><span class="p">()</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">port</span><span class="p">,</span> <span class="n">baudrate</span><span class="p">,</span> <span class="n">timeout</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -377,6 +377,7 @@
 
 <span class="sd">            &quot;&quot;&quot;</span>
         <span class="n">pp</span> <span class="o">=</span> <span class="n">DxlPingPacket</span><span class="p">(</span><span class="nb">id</span><span class="p">)</span>
+
         <span class="k">try</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_send_packet</span><span class="p">(</span><span class="n">pp</span><span class="p">,</span> <span class="n">error_handler</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
             <span class="k">return</span> <span class="bp">True</span>
@@ -420,7 +421,7 @@
         <span class="sd">&quot;&quot;&quot; Changes the baudrate of the specified motors. &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_change_baudrate</span><span class="p">(</span><span class="n">baudrate_for_ids</span><span class="p">)</span>
 
-        <span class="k">for</span> <span class="n">motor_id</span> <span class="ow">in</span> <span class="n">baudrate_for_ids</span><span class="o">.</span><span class="n">iterkeys</span><span class="p">():</span>
+        <span class="k">for</span> <span class="n">motor_id</span> <span class="ow">in</span> <span class="n">baudrate_for_ids</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">motor_id</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_known_models</span><span class="p">:</span>
                 <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">_known_models</span><span class="p">[</span><span class="n">motor_id</span><span class="p">]</span>
             <span class="k">if</span> <span class="n">motor_id</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_known_mode</span><span class="p">:</span>
@@ -691,8 +692,7 @@
                 <span class="n">status_packet</span> <span class="o">=</span> <span class="n">DxlStatusPacket</span><span class="o">.</span><span class="n">from_string</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
 
             <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
-                <span class="n">fmt</span> <span class="o">=</span> <span class="s">&#39;B&#39;</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
-                <span class="n">msg</span> <span class="o">=</span> <span class="s">&#39;could not parse received data {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">unpack</span><span class="p">(</span><span class="n">fmt</span><span class="p">,</span> <span class="n">data</span><span class="p">))</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="s">&#39;could not parse received data {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">bytearray</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
                 <span class="k">raise</span> <span class="n">DxlCommunicationError</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msg</span><span class="p">,</span> <span class="n">instruction_packet</span><span class="p">)</span>
 
             <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&#39;Receiving </span><span class="si">%s</span><span class="s">&#39;</span><span class="p">,</span> <span class="n">status_packet</span><span class="p">,</span>
@@ -754,8 +754,8 @@
     <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="s">&#39;motors {} did not respond after sending {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ids</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">instruction_packet</span><span class="p">)</span>
 
-
 <span class="c"># MARK: - Generate the accessors</span>
+
 </div>
 <span class="k">def</span> <span class="nf">_add_control</span><span class="p">(</span><span class="n">name</span><span class="p">,</span>
                  <span class="n">address</span><span class="p">,</span> <span class="n">length</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">nb_elem</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
@@ -955,7 +955,7 @@
       
         <li><a href="../../../genindex.html" title="General Index" >index</a></li>
         <li><a href="../../../py-modindex.html" title="Python Module Index" >modules</a></li>
-        <li><a href="../../../index.html">PyPot 1.5.3 documentation</a></li>
+        <li><a href="../../../index.html">PyPot 1.7.0 documentation</a></li>
         <li><a href="../../index.html" >Module code</a></li>
         <li><a href="../dynamixel.html" >pypot.dynamixel</a></li> 
       

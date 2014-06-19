@@ -9,7 +9,7 @@
   <head>
     <meta charset="utf-8" />
     
-    <title>QuickStart: playing with an Ergo-Robot &mdash; PyPot 1.5.3 documentation</title>
+    <title>QuickStart: playing with an Ergo-Robot &mdash; PyPot 1.7.0 documentation</title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
@@ -39,7 +39,7 @@
 <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
             URL_ROOT:    './',
-            VERSION:     '1.5.3',
+            VERSION:     '1.7.0',
             COLLAPSE_INDEX: false,
             FILE_SUFFIX: '.html',
             HAS_SOURCE:  true
@@ -81,7 +81,7 @@
   });
 </script>
     <link rel="author" title="About these documents" href="about.html" />
-    <link rel="top" title="PyPot 1.5.3 documentation" href="index.html" />
+    <link rel="top" title="PyPot 1.7.0 documentation" href="index.html" />
     <link rel="next" title="Controlling robot" href="controlling_robot.html" />
     <link rel="prev" title="Installation" href="installation.html" /> 
   </head>
@@ -95,7 +95,7 @@
             <span class="icon-bar"></span>
           </a>
           <div role="banner">
-            <a class="brand" href="index.html">PyPot 1.5.3 documentation</a>
+            <a class="brand" href="index.html">PyPot 1.7.0 documentation</a>
           </div>
           <div class="nav-collapse collapse">
             <ul class="nav pull-right">
@@ -263,6 +263,15 @@
 <p class="first admonition-title">Note</p>
 <p class="last">You can save/load configurations from any format that can be written/read as a Python dictionary. A wrapper for loading json configuration file is provided (see <a class="reference internal" href="pypot.robot.html#pypot.robot.config.from_json" title="pypot.robot.config.from_json"><tt class="xref py py-func docutils literal"><span class="pre">from_json()</span></tt></a>).</p>
 </div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>Since Pypot 1.7, you can now set the port to &#8216;auto&#8217; in the dictionary. When loading the configuration, Pypot will automatically try to find the port with the corresponding attached motor ids.
+For instance:</p>
+<div class="last highlight-python"><div class="highlight"><pre><span class="n">my_config</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">ergo_robot_config</span><span class="p">)</span>
+<span class="n">my_config</span><span class="p">[</span><span class="s">&#39;controllers&#39;</span><span class="p">][</span><span class="s">&#39;my_dxl_controller&#39;</span><span class="p">][</span><span class="s">&#39;port&#39;</span><span class="p">]</span>  <span class="o">=</span> <span class="s">&#39;auto&#39;</span>
+</pre></div>
+</div>
+</div>
 <p>Once you have edited the configuration dictionary, you should be able to instantiate your robot directly like this:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">pypot.robot</span>
 
@@ -352,7 +361,7 @@
         <li><a href="py-modindex.html" title="Python Module Index" >modules</a></li>
         <li><a href="controlling_robot.html" title="Controlling robot" >next</a></li>
         <li><a href="installation.html" title="Installation" >previous</a></li>
-        <li><a href="index.html">PyPot 1.5.3 documentation</a></li> 
+        <li><a href="index.html">PyPot 1.7.0 documentation</a></li> 
       
     </ul>
   </div>

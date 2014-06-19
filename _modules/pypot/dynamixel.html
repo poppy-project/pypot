@@ -9,7 +9,7 @@
   <head>
     <meta charset="utf-8" />
     
-    <title>pypot.dynamixel &mdash; PyPot 1.5.3 documentation</title>
+    <title>pypot.dynamixel &mdash; PyPot 1.7.0 documentation</title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
@@ -39,7 +39,7 @@
 <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
             URL_ROOT:    '../../',
-            VERSION:     '1.5.3',
+            VERSION:     '1.7.0',
             COLLAPSE_INDEX: false,
             FILE_SUFFIX: '.html',
             HAS_SOURCE:  true
@@ -81,7 +81,7 @@
   });
 </script>
     <link rel="author" title="About these documents" href="../../about.html" />
-    <link rel="top" title="PyPot 1.5.3 documentation" href="../../index.html" />
+    <link rel="top" title="PyPot 1.7.0 documentation" href="../../index.html" />
     <link rel="up" title="Module code" href="../index.html" /> 
   </head>
   <body role="document">
@@ -94,7 +94,7 @@
             <span class="icon-bar"></span>
           </a>
           <div role="banner">
-            <a class="brand" href="../../index.html">PyPot 1.5.3 documentation</a>
+            <a class="brand" href="../../index.html">PyPot 1.7.0 documentation</a>
           </div>
           <div class="nav-collapse collapse">
             <ul class="nav pull-right">
@@ -178,9 +178,9 @@
 <span class="kn">import</span> <span class="nn">platform</span>
 <span class="kn">import</span> <span class="nn">glob</span>
 
-<span class="kn">from</span> <span class="nn">pypot.dynamixel.io</span> <span class="kn">import</span> <span class="n">DxlIO</span>
-<span class="kn">from</span> <span class="nn">pypot.dynamixel.controller</span> <span class="kn">import</span> <span class="n">DxlController</span>
-<span class="kn">from</span> <span class="nn">pypot.dynamixel.error</span> <span class="kn">import</span> <span class="n">BaseErrorHandler</span>
+<span class="kn">from</span> <span class="nn">.io</span> <span class="kn">import</span> <span class="n">DxlIO</span><span class="p">,</span> <span class="n">DxlError</span>
+<span class="kn">from</span> <span class="nn">.error</span> <span class="kn">import</span> <span class="n">BaseErrorHandler</span>
+<span class="kn">from</span> <span class="nn">.controller</span> <span class="kn">import</span> <span class="n">DxlController</span>
 
 
 <div class="viewcode-block" id="get_available_ports"><a class="viewcode-back" href="../../pypot.dynamixel.html#pypot.dynamixel.get_available_ports">[docs]</a><span class="k">def</span> <span class="nf">get_available_ports</span><span class="p">():</span>
@@ -205,7 +205,32 @@
             <span class="k">except</span> <span class="ne">WindowsError</span><span class="p">:</span>
                 <span class="k">return</span> <span class="n">ports</span>
 
-    <span class="k">return</span> <span class="p">[]</span></div>
+    <span class="k">return</span> <span class="p">[]</span>
+
+</div>
+<div class="viewcode-block" id="find_port"><a class="viewcode-back" href="../../pypot.dynamixel.html#pypot.dynamixel.find_port">[docs]</a><span class="k">def</span> <span class="nf">find_port</span><span class="p">(</span><span class="n">ids</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Find the port with the specified attached motor ids.</span>
+
+<span class="sd">        :param list ids: list of motor ids to find</span>
+<span class="sd">        :param bool strict: specify if all ids should be find (when set to False, only half motor must be found)</span>
+
+<span class="sd">        .. warning:: If two (or more) ports are attached to the same list of motor ids the first match will be returned.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">port</span> <span class="ow">in</span> <span class="n">get_available_ports</span><span class="p">():</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">with</span> <span class="n">DxlIO</span><span class="p">(</span><span class="n">port</span><span class="p">)</span> <span class="k">as</span> <span class="n">dxl</span><span class="p">:</span>
+                <span class="n">founds</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">dxl</span><span class="o">.</span><span class="n">scan</span><span class="p">(</span><span class="n">ids</span><span class="p">))</span>
+
+                <span class="k">if</span> <span class="n">strict</span> <span class="ow">and</span> <span class="n">founds</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">ids</span><span class="p">):</span>
+                    <span class="k">return</span> <span class="n">port</span>
+
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">strict</span> <span class="ow">and</span> <span class="n">founds</span> <span class="o">&gt;=</span> <span class="nb">len</span><span class="p">(</span><span class="n">ids</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">port</span>
+        <span class="k">except</span> <span class="n">DxlError</span><span class="p">:</span>
+            <span class="k">continue</span>
+
+    <span class="k">raise</span> <span class="ne">IndexError</span><span class="p">(</span><span class="s">&#39;No suitable port found for ids {}!&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">ids</span><span class="p">))</span></div>
 </pre></div>
 
                 </div>
@@ -225,7 +250,7 @@
       
         <li><a href="../../genindex.html" title="General Index" >index</a></li>
         <li><a href="../../py-modindex.html" title="Python Module Index" >modules</a></li>
-        <li><a href="../../index.html">PyPot 1.5.3 documentation</a></li>
+        <li><a href="../../index.html">PyPot 1.7.0 documentation</a></li>
         <li><a href="../index.html" >Module code</a></li> 
       
     </ul>

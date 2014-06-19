@@ -9,7 +9,7 @@
   <head>
     <meta charset="utf-8" />
     
-    <title>pypot.primitive.utils &mdash; PyPot 1.5.3 documentation</title>
+    <title>pypot.primitive.utils &mdash; PyPot 1.7.0 documentation</title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
@@ -39,7 +39,7 @@
 <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
             URL_ROOT:    '../../../',
-            VERSION:     '1.5.3',
+            VERSION:     '1.7.0',
             COLLAPSE_INDEX: false,
             FILE_SUFFIX: '.html',
             HAS_SOURCE:  true
@@ -81,7 +81,7 @@
   });
 </script>
     <link rel="author" title="About these documents" href="../../../about.html" />
-    <link rel="top" title="PyPot 1.5.3 documentation" href="../../../index.html" />
+    <link rel="top" title="PyPot 1.7.0 documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body role="document">
@@ -94,7 +94,7 @@
             <span class="icon-bar"></span>
           </a>
           <div role="banner">
-            <a class="brand" href="../../../index.html">PyPot 1.5.3 documentation</a>
+            <a class="brand" href="../../../index.html">PyPot 1.7.0 documentation</a>
           </div>
           <div class="nav-collapse collapse">
             <ul class="nav pull-right">
@@ -177,17 +177,17 @@
   <h1>Source code for pypot.primitive.utils</h1><div class="highlight"><pre>
 <span class="kn">import</span> <span class="nn">numpy</span>
 
-<span class="kn">import</span> <span class="nn">pypot.primitive</span>
+<span class="kn">from</span> <span class="nn">.primitive</span> <span class="kn">import</span> <span class="n">LoopPrimitive</span>
 
 
-<div class="viewcode-block" id="Sinus"><a class="viewcode-back" href="../../../pypot.primitive.html#pypot.primitive.utils.Sinus">[docs]</a><span class="k">class</span> <span class="nc">Sinus</span><span class="p">(</span><span class="n">pypot</span><span class="o">.</span><span class="n">primitive</span><span class="o">.</span><span class="n">LoopPrimitive</span><span class="p">):</span>
+<div class="viewcode-block" id="Sinus"><a class="viewcode-back" href="../../../pypot.primitive.html#pypot.primitive.utils.Sinus">[docs]</a><span class="k">class</span> <span class="nc">Sinus</span><span class="p">(</span><span class="n">LoopPrimitive</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; Apply a sinus on the motor specified as argument. Parameters (amp, offset and phase) should be specified in degree</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">robot</span><span class="p">,</span> <span class="n">refresh_freq</span><span class="p">,</span>
                  <span class="n">motor_list</span><span class="p">,</span>
                  <span class="n">amp</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">phase</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
 
-        <span class="n">pypot</span><span class="o">.</span><span class="n">primitive</span><span class="o">.</span><span class="n">LoopPrimitive</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">robot</span><span class="p">,</span> <span class="n">refresh_freq</span><span class="p">)</span>
+        <span class="n">LoopPrimitive</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">robot</span><span class="p">,</span> <span class="n">refresh_freq</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_freq</span> <span class="o">=</span> <span class="n">freq</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_amp</span> <span class="o">=</span> <span class="n">amp</span>
@@ -246,8 +246,8 @@
 
         <span class="n">Sinus</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">robot</span><span class="p">,</span> <span class="n">refresh_freq</span><span class="p">,</span>
                        <span class="n">motor_list</span><span class="p">,</span>
-                       <span class="n">amp</span><span class="p">,</span> <span class="n">freq</span><span class="p">,</span> <span class="n">offset</span><span class="p">,</span> <span class="n">phase</span><span class="o">=</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">phase</span><span class="p">))</span>
-</pre></div></div>
+                       <span class="n">amp</span><span class="p">,</span> <span class="n">freq</span><span class="p">,</span> <span class="n">offset</span><span class="p">,</span> <span class="n">phase</span><span class="o">=</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">phase</span><span class="p">))</span></div>
+</pre></div>
 
                 </div>
               </div>
@@ -266,7 +266,7 @@
       
         <li><a href="../../../genindex.html" title="General Index" >index</a></li>
         <li><a href="../../../py-modindex.html" title="Python Module Index" >modules</a></li>
-        <li><a href="../../../index.html">PyPot 1.5.3 documentation</a></li>
+        <li><a href="../../../index.html">PyPot 1.7.0 documentation</a></li>
         <li><a href="../../index.html" >Module code</a></li> 
       
     </ul>

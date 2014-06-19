@@ -9,7 +9,7 @@
   <head>
     <meta charset="utf-8" />
     
-    <title>sensor Package &mdash; PyPot 1.5.3 documentation</title>
+    <title>sensor Package &mdash; PyPot 1.7.0 documentation</title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
@@ -39,7 +39,7 @@
 <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
             URL_ROOT:    './',
-            VERSION:     '1.5.3',
+            VERSION:     '1.7.0',
             COLLAPSE_INDEX: false,
             FILE_SUFFIX: '.html',
             HAS_SOURCE:  true
@@ -81,7 +81,7 @@
   });
 </script>
     <link rel="author" title="About these documents" href="about.html" />
-    <link rel="top" title="PyPot 1.5.3 documentation" href="index.html" />
+    <link rel="top" title="PyPot 1.7.0 documentation" href="index.html" />
     <link rel="up" title="PyPot’s API" href="api.html" />
     <link rel="next" title="server Package" href="pypot.server.html" />
     <link rel="prev" title="robot Package" href="pypot.robot.html" /> 
@@ -96,7 +96,7 @@
             <span class="icon-bar"></span>
           </a>
           <div role="banner">
-            <a class="brand" href="index.html">PyPot 1.5.3 documentation</a>
+            <a class="brand" href="index.html">PyPot 1.7.0 documentation</a>
           </div>
           <div class="nav-collapse collapse">
             <ul class="nav pull-right">
@@ -317,41 +317,6 @@
 <tt class="descclassname">pypot.sensor.optitrack.</tt><tt class="descname">quat2euler</tt><big>(</big><em>q</em><big>)</big><a class="reference internal" href="_modules/pypot/sensor/optitrack.html#quat2euler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.sensor.optitrack.quat2euler" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
-<dl class="class">
-<dt id="pypot.sensor.optitrack.OptiTrackClient">
-<em class="property">class </em><tt class="descclassname">pypot.sensor.optitrack.</tt><tt class="descname">OptiTrackClient</tt><big>(</big><em>addr</em>, <em>port</em>, <em>obj_names</em><big>)</big><a class="reference internal" href="_modules/pypot/sensor/optitrack.html#OptiTrackClient"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.sensor.optitrack.OptiTrackClient" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference external" href="http://docs.python.org/library/threading.html#threading.Thread" title="(in Python v2.7)"><tt class="xref py py-class docutils literal"><span class="pre">threading.Thread</span></tt></a></p>
-<p>Retrieves position, orientation, and timestamp of each tracked object.</p>
-<p>The position is expressed in meters (X is left, Y is up, and Z is depth).
-The orientation is expressed in radians (yaw, pitch, roll).</p>
-<dl class="attribute">
-<dt id="pypot.sensor.optitrack.OptiTrackClient.tracked_objects">
-<tt class="descname">tracked_objects</tt><a class="reference internal" href="_modules/pypot/sensor/optitrack.html#OptiTrackClient.tracked_objects"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.sensor.optitrack.OptiTrackClient.tracked_objects" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pypot.sensor.optitrack.OptiTrackClient.recent_tracked_objects">
-<tt class="descname">recent_tracked_objects</tt><a class="reference internal" href="_modules/pypot/sensor/optitrack.html#OptiTrackClient.recent_tracked_objects"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.sensor.optitrack.OptiTrackClient.recent_tracked_objects" title="Permalink to this definition">¶</a></dt>
-<dd><p>Only returns the objects that have been tracked less than 20ms ago.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pypot.sensor.optitrack.OptiTrackClient.handler">
-<tt class="descname">handler</tt><big>(</big><em>obj</em>, <em>data</em><big>)</big><a class="reference internal" href="_modules/pypot/sensor/optitrack.html#OptiTrackClient.handler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.sensor.optitrack.OptiTrackClient.handler" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="pypot.sensor.optitrack.OptiTrackClient.serve_forever">
-<tt class="descname">serve_forever</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/pypot/sensor/optitrack.html#OptiTrackClient.serve_forever"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.sensor.optitrack.OptiTrackClient.serve_forever" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="pypot.sensor.optitrack.OptiTrackClient.run">
-<tt class="descname">run</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/pypot/sensor/optitrack.html#OptiTrackClient.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.sensor.optitrack.OptiTrackClient.run" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
 </div>
 </div>
 
@@ -375,7 +340,7 @@ The orientation is expressed in radians (yaw, pitch, roll).</p>
         <li><a href="py-modindex.html" title="Python Module Index" >modules</a></li>
         <li><a href="pypot.server.html" title="server Package" >next</a></li>
         <li><a href="pypot.robot.html" title="robot Package" >previous</a></li>
-        <li><a href="index.html">PyPot 1.5.3 documentation</a></li>
+        <li><a href="index.html">PyPot 1.7.0 documentation</a></li>
         <li><a href="api.html" >PyPot&#8217;s API</a></li> 
       
     </ul>

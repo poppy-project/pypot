@@ -52,6 +52,12 @@ You will only have to modify the USB2serial port and the id of the motors so the
 
 .. note:: You can save/load configurations from any format that can be written/read as a Python dictionary. A wrapper for loading json configuration file is provided (see :func:`~pypot.robot.config.from_json`).
 
+.. note:: Since Pypot 1.7, you can now set the port to 'auto' in the dictionary. When loading the configuration, Pypot will automatically try to find the port with the corresponding attached motor ids.
+    For instance::
+
+        my_config = dict(ergo_robot_config)
+        my_config['controllers']['my_dxl_controller']['port']  = 'auto'
+
 Once you have edited the configuration dictionary, you should be able to instantiate your robot directly like this::
 
     import pypot.robot
