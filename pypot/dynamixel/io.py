@@ -65,6 +65,7 @@ class DxlIO(object):
         self._convert = convert
 
         self._serial_lock = threading.Lock()
+
         self.open(port, baudrate, timeout)
 
     def __enter__(self):
@@ -196,6 +197,7 @@ class DxlIO(object):
 
             """
         pp = DxlPingPacket(id)
+
         try:
             self._send_packet(pp, error_handler=None)
             return True
@@ -572,8 +574,8 @@ class DxlTimeoutError(DxlCommunicationError):
     def __str__(self):
         return 'motors {} did not respond after sending {}'.format(self.ids, self.instruction_packet)
 
-
 # MARK: - Generate the accessors
+
 
 def _add_control(name,
                  address, length=2, nb_elem=1,

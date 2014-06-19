@@ -17,13 +17,14 @@ import json
 from ..dynamixel.motor import DxlAXRXMotor, DxlMXMotor
 from ..dynamixel.error import BaseErrorHandler
 from ..dynamixel.io import DxlIO, DxlError
+from ..dynamixel import find_port
 from .robot import Robot
 
 
 ergo_robot_config = {
     'controllers': {
         'my_dxl_controller': {
-            'port': '/dev/ttyUSB0',  # Depends on your OS
+            'port': 'auto',  # It will automatically try to find the corresponding port depending on the attached motor ids.
             'sync_read': False,
             'attached_motors': ['base', 'head'],  # You can mix motorgroups or individual motors
         },
@@ -83,8 +84,11 @@ ergo_robot_config = {
 logger = logging.getLogger(__name__)
 
 
-def from_config(config):
+def from_config(config, strict=True):
     """ Returns a :class:`~pypot.robot.robot.Robot` instance created from a configuration dictionnary.
+
+        :param dict config: robot configuration dictionary
+        :param bool strict: make sure that all ports, motors are availaible.
 
         For details on how to write such a configuration dictionnary, you should refer to the section :ref:`config_file`.
 
@@ -96,21 +100,31 @@ def from_config(config):
 
     # Instatiate the different controllers
     for c_name, c_params in config['controllers'].items():
-        dxl_io = DxlIO(port=c_params['port'],
+        port = c_params['port']
+
+        dxl_motors = []
+        motor_names = sum([_motor_extractor(alias, name)
+                           for name in c_params['attached_motors']], [])
+        motor_nodes = map(lambda m: (m, config['motors'][m]), motor_names)
+        ids = [params['id'] for _, params in motor_nodes]
+
+        if port == 'auto':
+            port = find_port(ids, strict)
+            logger.info('Found port {} for ids {}'.format(port, ids))
+
+        dxl_io = DxlIO(port=port,
                        use_sync_read=c_params['sync_read'],
                        error_handler_cls=BaseErrorHandler)
 
-        dxl_motors = []
-        motor_names = sum([_motor_extractor(alias, name) for name in c_params['attached_motors']], [])
-        motor_nodes = map(lambda m: (m, config['motors'][m]), motor_names)
-
-        # First, scan everyone to make sure that we are not missing any motors
-        ids = [params['id'] for _, params in motor_nodes]
         found_ids = dxl_io.scan(ids)
         if ids != found_ids:
             missing_ids = tuple(set(ids) - set(found_ids))
-            raise DxlError('Could not find the motors {} on bus {}.'.format(missing_ids,
-                                                                            dxl_io.port))
+            msg = 'Could not find the motors {} on bus {}.'.format(missing_ids,
+                                                                   dxl_io.port)
+            logger.warning(msg)
+
+            if strict:
+                raise DxlError(msg)
 
         # Instatiate the attached motors and set their angle_limits if needed
         changed_angle_limits = {}
@@ -156,7 +170,7 @@ def from_config(config):
         robot.alias.append(alias_name)
 
         logger.info("Creating alias '%s' for motors %s",
-                    alias_name, [m.name for m in motors],
+                    alias_name, [motor.name for motor in motors],
                     extra={'config': config})
 
     logger.info('Loading complete!',

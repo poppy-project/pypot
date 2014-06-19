@@ -3,6 +3,8 @@
 
 .. autofunction:: pypot.dynamixel.get_available_ports
 
+.. autofunction:: pypot.dynamixel.find_port
+
 :mod:`~pypot.dynamixel.io` Module
 ---------------------------------
 
@@ -20,7 +22,7 @@
     :undoc-members:
     :show-inheritance:
 
-    
+
 :mod:`controller` Module
 ------------------------
 
@@ -28,8 +30,8 @@
     :members:
     :undoc-members:
     :show-inheritance:
-    
-    
+
+
 :mod:`error` Module
 -------------------
 
@@ -37,7 +39,7 @@
     :members:
     :undoc-members:
     :show-inheritance:
-    
+
 :mod:`conversion` Module
 ------------------------
 
@@ -53,4 +55,3 @@
     :members:
     :undoc-members:
     :show-inheritance:
-
