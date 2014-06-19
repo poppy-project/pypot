@@ -149,6 +149,10 @@ To give you a complete overview of what your config should look like, here is th
         },
     }
 
+Since Pypot 1.7, you can now set the port to 'auto' in the dictionary. When loading the configuration, Pypot will automatically try to find the port with the corresponding attached motor ids.
+
+.. note:: While this is convenient as the same config file can be use on multiple machine, it also slows the creation of the :class:`~pypot.robot.robot.Robot`.
+
 .. _sync_loop:
 
 Dynamixel controller and Synchronization Loop
@@ -305,5 +309,3 @@ Thanks to the :func:`contextlib.closing` decorator you can easily make sure that
         my_robot.start_sync()
 
         # do stuff without having to make sure not to forget to close my_robot!
-
-
