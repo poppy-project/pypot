@@ -22,9 +22,7 @@ class DxlErrorHandler(object):
         raise NotImplementedError
 
     def handle_communication_error(self, communication_error):
-        # raise NotImplementedError
-        print "WARNING: communication error"
-        pass
+        raise NotImplementedError
 
     # MARK: - Motor errors
     def handle_input_voltage_error(self, instruction_packet):
@@ -42,10 +40,8 @@ class DxlErrorHandler(object):
     def handle_checksum_error(self, instruction_packet):
         raise NotImplementedError
 
-    def handle_overload_error(self, overload_error):
-        print "WARNING: Overload!"
-        pass
-        # raise NotImplementedError
+    def handle_overload_error(self, instruction_packet):
+        raise NotImplementedError
 
     def handle_instruction_error(self, instruction_packet):
         raise NotImplementedError
@@ -71,17 +67,3 @@ class BaseErrorHandler(DxlErrorHandler):
                        extra={'port': com_error.dxl_io.port,
                               'baudrate': com_error.dxl_io.baudrate,
                               'timeout': com_error.dxl_io.timeout})
-
-    # def handle_overload_error(self, overload_error):
-    #     #Experimental!
-    #     msg =  'WARNING: {}'.format(overload_error)
-    #     print msg
-    #     logger.warning(msg, extra={'port': overload_error.dxl_io.port,
-    #                           'baudrate': overload_error.dxl_io.baudrate,
-    #                           'timeout': overload_error.dxl_io.timeout})
-
-
-        # overload_error.dxl_io.disable_torque((overload_error.ids, ))
-        # overload_error.dxl_io.set_torque_limit((overload_error.ids,), (100, ))
-        # overload_error.dxl_io.switch_led_off((overload_error.ids, ))
-        # overload_error.dxl_io.ignore_overload[overload_error.ids] = False

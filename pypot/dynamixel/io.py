@@ -6,9 +6,6 @@ import operator
 import itertools
 import threading
 
-import os
-from serial.tools import list_ports
-
 from collections import namedtuple, OrderedDict
 from contextlib import contextmanager
 
@@ -29,33 +26,6 @@ _DxlControl = namedtuple('_DxlControl', ('name',
                                          'dxl_to_si', 'si_to_dxl',
                                          'getter_name', 'setter_name'))
 
-
-
-def serial_ports():
-    """
-    Returns a generator for all available serial ports
-    based on: http://stackoverflow.com/questions/12090503/listing-available-com-ports-with-python
-    WARNING: works with pyserial>=2.7
-    """
-
-    ports = []
-    if os.name == 'nt':
-        # windows
-        for i in range(256):
-            try:
-                s = serial.Serial(i)
-                s.close()
-                ports.append('COM' + str(i + 1))
-            except serial.SerialException:
-                pass
-    else:
-        # unix
-        for port in list_ports.comports():
-            if 'USB' in port[0] or 'ACM' in port[0]:
-                # yield port[0]
-                ports.append(port[0])
-
-    return ports
 
 class _DxlAccess(object):
     readonly, writeonly, readwrite = range(3)
@@ -97,9 +67,6 @@ class DxlIO(object):
         self._serial_lock = threading.Lock()
 
         self.open(port, baudrate, timeout)
-
-        #Very dirty hack
-        self.ignore_overload = {}
 
     def __enter__(self):
         return self
@@ -237,7 +204,6 @@ class DxlIO(object):
         except DxlTimeoutError:
             return False
 
-
     def scan(self, ids=xrange(254)):
         """ Pings all ids within the specified list, by default it finds all the motors connected to the bus. """
         return [id for id in ids if self.ping(id)]
@@ -363,12 +329,6 @@ class DxlIO(object):
     def disable_torque(self, ids):
         """ Disables torque of the motors with the specified ids. """
         self._set_torque_enable(dict(zip(ids, itertools.repeat(False))))
-
-    def set_torque_limit(self, ids, torques):
-        """ Set torque limits of the motors with the specified ids. """
-        self._set_torque_limit(dict(zip(ids, torques)))
-
-
 
     def get_pid_gain(self, ids, **kwargs):
         """ Gets the pid gain for the specified motors. """
@@ -562,8 +522,6 @@ class DxlIO(object):
 
             return status_packet
 
-
-
     def _send_packet(self,
                      instruction_packet, wait_for_status_packet=True,
                      error_handler=None,
@@ -578,42 +536,16 @@ class DxlIO(object):
                 errors = decode_error(sp.error)
                 for e in errors:
                     handler_name = 'handle_{}'.format(e.lower().replace(' ', '_'))
-
-                    #Dirty hack
-                    # if handler_name ==  'handle_overload_error' :
-                    #     # don't raise because we want to continue
-
-                    #     if (instruction_packet.id in self.ignore_overload):
-                    #         if self.ignore_overload[instruction_packet.id] == False:
-                    #             self.ignore_overload[instruction_packet.id] = True
-                    #             er = DxlOverloadError(self, instruction_packet.id)
-                    #             error_handler.handle_overload_error(er)
-
-                    #     else:
-                    #         self.ignore_overload[instruction_packet.id] = True
-                    #         er = DxlOverloadError(self, instruction_packet.id)
-                    #         error_handler.handle_overload_error(er)
-
-
-                    # else:
-
-                    #     f = operator.methodcaller(handler_name, instruction_packet)
-                    #     f(error_handler)
-
                     f = operator.methodcaller(handler_name, instruction_packet)
                     f(error_handler)
 
             return sp
-
-        # except DxlOverloadError as e:
-        #     error_handler.handle_overload_error(e)
 
         except DxlTimeoutError as e:
             error_handler.handle_timeout(e)
 
         except DxlCommunicationError as e:
             error_handler.handle_communication_error(e)
-
 
 
 # MARK: - Dxl Errors
@@ -638,20 +570,12 @@ class DxlTimeoutError(DxlCommunicationError):
     def __init__(self, dxl_io, instruction_packet, ids):
         DxlCommunicationError.__init__(self, dxl_io, 'timeout occured', instruction_packet)
         self.ids = ids
+
     def __str__(self):
         return 'motors {} did not respond after sending {}'.format(self.ids, self.instruction_packet)
 
-class DxlOverloadError(DxlError):
-    """ Experiment overload """
-    def __init__(self, dxl_io, ids):
-        self.dxl_io =  dxl_io
-        self.ids = ids
-
-    def __str__(self):
-        return 'motors {} in overload. Trying to bypass. (EXPERIMENTAL!) '.format(self.ids)
-
-
 # MARK: - Generate the accessors
+
 
 def _add_control(name,
                  address, length=2, nb_elem=1,
@@ -784,8 +708,7 @@ _add_control('moving speed',
 _add_control('torque limit',
              address=0x22,
              dxl_to_si=dxl_to_torque,
-             si_to_dxl=torque_to_dxl,
-             setter_name='_set_torque_limit')
+             si_to_dxl=torque_to_dxl)
 
 _add_control('goal position speed load',
              address=0x1E, nb_elem=3,
