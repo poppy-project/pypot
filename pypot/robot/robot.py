@@ -2,7 +2,6 @@ import time
 import logging
 
 from ..primitive.manager import PrimitiveManager
-from ..dynamixel.controller import BaseDxlController
 
 
 logger = logging.getLogger(__name__)
@@ -25,34 +24,33 @@ class Robot(object):
         easily extends this class to other types of motor.
 
         """
-    def __init__(self):
+    def __init__(self, motor_controllers=[]):
         self._motors = []
         self.alias = []
+
+        self._controllers = motor_controllers
+
+        for controller in self._controllers:
+            for m in controller.motors:
+                setattr(self, m.name, m)
+
+            self._motors.extend(controller.motors)
+
         self._attached_primitives = {}
-        self._dxl_controllers = []
         self._primitive_manager = PrimitiveManager(self.motors)
 
     def close(self):
         """ Cleans the robot by stopping synchronization and all controllers."""
         self.stop_sync()
-        [c.close() for c in self._dxl_controllers]
+        [c.close() for c in self._controllers]
 
     def __repr__(self):
         return '<Robot motors={}>'.format(self.motors)
 
-    def _attach_dxl_motors(self, dxl_io, dxl_motors):
-        c = BaseDxlController(dxl_io, dxl_motors)
-        self._dxl_controllers.append(c)
-
-        for m in dxl_motors:
-            setattr(self, m.name, m)
-
-        self._motors.extend(dxl_motors)
-
     def start_sync(self):
         """ Starts all the synchonization loop (sensor/effector controllers). """
+        [c.start() for c in self._controllers]
         self._primitive_manager.start()
-        [c.start() for c in self._dxl_controllers]
 
         logger.info('Starting robot synchronization.')
 
@@ -60,7 +58,7 @@ class Robot(object):
         """ Stops all the synchonization loop (sensor/effector controllers). """
         if self._primitive_manager.is_alive():
             self._primitive_manager.stop()
-        [c.stop() for c in self._dxl_controllers]
+        [c.stop() for c in self._controllers]
 
         logger.info('Stopping robot synchronization.')
 

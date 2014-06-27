@@ -1,71 +1,38 @@
-import vrep
+import time
+
+from numpy import rad2deg, deg2rad
+
+from .io import VrepIO
+from ..robot.controller import AbstractController
 
 
-class VrepIOError(Exception):
-    pass
+class VrepController(AbstractController):
+    """
 
+    """
+    def __init__(self, vrep_host, vrep_port, motors, sync_freq=50.):
+        """ """
+        vrep_io = VrepIO(vrep_host, vrep_port)
+        AbstractController.__init__(self, vrep_io, motors, sync_freq)
 
-class vrep_check(object):
-    def __init__(self, msg):
-        self.msg = msg
+    def sync_values(self):
+        self._init_vrep_streaming()
 
-    def __call__(self, f):
-        def safe_vrep_call(*args, **kwargs):
-            val = f(*args, **kwargs)
+        while self.running():
+            for m in self.motors:
+                # Read values from V-REP and set them to the Motor
+                p = round(rad2deg(self.io.get_motor_position(m.name)), 1)
+                m._values['present_position'] = p
 
-            # If used with a getter, val should be (errorcode, retvalue)
-            # If used with a setter, val should be errorcode
-            errorcode, retvalue = ((val[0], val[1]) if isinstance(val, tuple)
-                                   else (val, None))
+                # Send new values from Motor to V-REP
+                p = deg2rad(round(m._values['goal_position'], 1))
+                self.io.set_motor_position(m.name, p)
 
-            if errorcode != vrep.simx_return_ok:
-                msg = '{} errorcode: {}'.format(self.msg.format(**kwargs),
-                                                errorcode)
-                raise VrepIOError(msg)
+            time.sleep(self._sync_period)
 
-            return retvalue
+    def _init_vrep_streaming(self):
+        pos = [self.io.get_motor_position(motor_name=m.name) for m in self.motors]
 
-        return safe_vrep_call
-
-
-class VrepController(object):
-    def __init__(self, vrep_host, vrep_port, motors):
-        self.client_id = vrep.simxStart(vrep_host, vrep_port, True, True, 5000, 5)
-
-        self._motor_handles = {m.name: self._get_motor_handle(motor_name=m.name)
-                               for m in motors}
-
-    @vrep_check('Cannot get handle for "{motor_name}"!')
-    def _get_motor_handle(self, motor_name):
-        return vrep.simxGetObjectHandle(self.client_id, motor_name,
-                                        vrep.simx_opmode_oneshot_wait)
-
-    # Get/Set Position
-
-    @vrep_check('Cannot get position for "{motor_name}"')
-    def _get_motor_position(self, motor_name):
-        return vrep.simxGetJointPosition(self.client_id,
-                                         self._motor_handles[motor_name],
-                                         vrep.simx_opmode_streaming)
-
-    @vrep_check('Cannot set position for "{motor_name}"')
-    def _set_motor_position(self, motor_name, position):
-        return vrep.simxSetJointTargetPosition(self.client_id,
-                                               self._motor_handles[motor_name],
-                                               position,
-                                               vrep.simx_opmode_oneshot)
-
-    # Get/Set Speed
-
-    @vrep_check('Cannot get velocity for "{motor_name}"')
-    def _get_motor_speed(self, motor_name):
-        return vrep.simxGetObjectVelocity(self.client_id,
-                                          self._motor_handles[motor_name],
-                                          vrep.simx_opmode_oneshot_wait)
-
-    @vrep_check('Cannot set velocity for "{motor_name}"')
-    def _set_motor_speed(self, motor_name, speed):
-        return vrep.simxSetJointTargetVelocity(self.client_id,
-                                               self._motor_handles[motor_name],
-                                               speed,
-                                               vrep.simx_opmode_oneshot)
+        for m, p in zip(self.motors, pos):
+            # self.io.set_motor_position(m.name, p)
+            self.io.set_motor_position(m.name, 0.)
