@@ -23,7 +23,8 @@ setup(name='pypot',
       extras_require={
           'tools': [],  # Extras require: PyQt4 (not a PyPi packet)
           'doc': ['sphinx', 'sphinx-bootstrap-theme'],
-          'server': ['bottle', 'tornado', 'zmq']
+          'server': ['bottle', 'tornado', 'zmq'],
+          'vrep': [],  # v-rep remote API (http://www.coppeliarobotics.com/helpFiles/en/remoteApiOverview.htm)
       },
 
       entry_points={
