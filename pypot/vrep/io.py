@@ -97,6 +97,7 @@ class VrepIO(object):
     @vrep_check_errorcode('Cannot get position for "{motor_name}"')
     @vrep_init_streaming
     def get_motor_position(self, motor_name):
+        """ Get the motor current position. """
         return vrep.simxGetJointPosition(self.client_id,
                                          self.get_motor_handle(motor_name=motor_name),
                                          vrep.simx_opmode_streaming)
@@ -104,6 +105,7 @@ class VrepIO(object):
     @vrep_check_errorcode('Cannot set position for "{motor_name}"')
     @vrep_init_sending
     def set_motor_position(self, motor_name, position):
+        """ Set the motor target position. """
         return vrep.simxSetJointTargetPosition(self.client_id,
                                                self.get_motor_handle(motor_name=motor_name),
                                                position,
@@ -115,6 +117,7 @@ class VrepIO(object):
                                         vrep.simx_opmode_oneshot_wait)
 
     def get_motor_handle(self, motor_name):
+        """ Get the motor vrep handle. """
         if motor_name not in self._motor_handles:
             self._motor_handles[motor_name] = self._get_motor_handle(motor_name=motor_name)
 
@@ -128,10 +131,11 @@ def close_all_connections():
 
 # V-REP Errors
 class VrepIOError(Exception):
+    """ Base class for V-REP IO Errors. """
     def __init__(self, error_code, message):
         message = 'V-REP error code {}: "{}"'.format(error_code, message)
         Exception.__init__(self, message)
 
 
 class VrepConnectionError(Exception):
-    pass
+    """ Base class for V-REP connection Errors. """
