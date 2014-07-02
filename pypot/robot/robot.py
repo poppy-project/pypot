@@ -8,23 +8,19 @@ logger = logging.getLogger(__name__)
 
 
 class Robot(object):
-    """
-        This class is used to regroup all motors and sensors of your robots.
+    """ This class is used to regroup all motors and sensors of your robots.
 
-        Most of the time, you do not want to directly instantiate this class,
-        but you rather want to use the factory which creates a robot instance
-        from a python dictionnary (see :ref:`config_file`).
+    Most of the time, you do not want to directly instantiate this class, but you rather want to use the factory which creates a robot instance from a python dictionnary (see :ref:`config_file`).
 
-        This class encapsulates the different controllers (such as dynamixel ones)
-        that automatically synchronize the virtual sensors/effectors instances held
-        by the robot class with the real devices. By doing so, each sensor/effector
-        can be synchronized at a different frequency.
+    This class encapsulates the different controllers (such as dynamixel ones) that automatically synchronize the virtual sensors/effectors instances held by the robot class with the real devices. By doing so, each sensor/effector can be synchronized at a different frequency.
 
-        This class also provides a generic motors accessor in order to (more or less)
-        easily extends this class to other types of motor.
+    This class also provides a generic motors accessor in order to (more or less) easily extends this class to other types of motor.
 
         """
     def __init__(self, motor_controllers=[]):
+        """
+        :param list motor_controllers: list of motors controllers attached to the robot
+        """
         self._motors = []
         self.alias = []
 
@@ -42,7 +38,6 @@ class Robot(object):
     def close(self):
         """ Cleans the robot by stopping synchronization and all controllers."""
         self.stop_sync()
-        [c.close() for c in self._controllers]
 
     def __repr__(self):
         return '<Robot motors={}>'.format(self.motors)

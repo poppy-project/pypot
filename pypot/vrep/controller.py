@@ -5,12 +5,12 @@ from ..robot.controller import AbstractController
 
 
 class VrepController(AbstractController):
-    """ V-REP motor controller. """
+    """ V-REP motors controller. """
     def __init__(self, vrep_host, vrep_port, motors, sync_freq=50.):
         """
         :param str vrep_host: host of the v-rep instance
         :param int vrep_port: port of the v-rep instance
-        :param list motors: list of motors attached to the DxlController
+        :param list motors: list of motors attached to the controller
         :param float sync_freq: synchronization frequency
 
         """
@@ -24,7 +24,7 @@ class VrepController(AbstractController):
     def update(self):
         """ Synchronization update loop.
 
-        At each update all motor position are read from vrep and set to the motors. The motors goal position are also send to v-rep.
+        At each update all motor position are read from vrep and set to the motors. The motors target position are also send to v-rep.
 
         """
         for m in self.motors:
