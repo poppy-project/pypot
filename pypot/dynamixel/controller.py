@@ -10,7 +10,7 @@ class DxlController(AbstractController):
 
         """
     def __init__(self, io, motors, controllers):
-        AbstractController.__init__(io, motors, 1.)
+        AbstractController.__init__(self, io, motors, 1.)
         self.controllers = controllers
 
     def setup(self):
@@ -42,10 +42,10 @@ class BaseDxlController(DxlController):
         controllers = [_PosSpeedLoadDxlController(io, motors, 50),
                        factory(io, motors, 10, 'set', 'pid_gain', 'pid'),
                        factory(io, motors, 10, 'set', 'compliance_margin'),
-                       factory(io, motors, 10, 'compliance_slope'),
-                       factory(io, motors, 1, 'angle_limit'),
-                       factory(io, motors, 1, 'present_voltage'),
-                       factory(io, motors, 1, 'present_temperature')]
+                       factory(io, motors, 10, 'set', 'compliance_slope'),
+                       factory(io, motors, 1, 'get', 'angle_limit'),
+                       factory(io, motors, 1, 'get', 'present_voltage'),
+                       factory(io, motors, 1, 'get', 'present_temperature')]
 
         DxlController.__init__(self, io, motors, controllers)
 
@@ -59,12 +59,16 @@ class _AbstractDxlController(AbstractController):
 
 class _DxlRegisterController(_AbstractDxlController):
     def __init__(self, io, motors, sync_freq,
-                 mode, regname, varname):
+                 mode, regname, varname=None):
         _AbstractDxlController.__init__(self, io, motors, sync_freq)
 
         self.mode = mode
         self.regname = regname
-        self.varname = varname
+        self.varname = regname if varname is None else varname
+
+    def setup(self):
+        if self.mode == 'set':
+            self.get_register()
 
     def update(self):
         self.get_register() if self.mode == 'get' else self.set_register()
