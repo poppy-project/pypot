@@ -3,6 +3,9 @@ import time
 import vrep
 
 
+from ..robot.io import AbstractIO
+
+
 # V-REP decorators
 class vrep_check_errorcode(object):
     """ Decorator for V-REP error code checking. """
@@ -64,7 +67,7 @@ def vrep_init_sending(f, vrep_timeout=0.2, max_iter=2):
 
 
 # V-REP low-level IO
-class VrepIO(object):
+class VrepIO(AbstractIO):
     """ This class is used to get/set values from/to a V-REP scene.
 
         It is based on the V-REP remote API (http://www.coppeliarobotics.com/helpFiles/en/remoteApiOverview.htm).
