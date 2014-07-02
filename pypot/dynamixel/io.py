@@ -9,8 +9,10 @@ import threading
 from collections import namedtuple, OrderedDict
 from contextlib import contextmanager
 
+from ..robot.io import AbstractIO
 from .conversion import *
 from .packet import *
+
 
 logger = logging.getLogger(__name__)
 # With this logger you should always provide as extra:
@@ -31,7 +33,7 @@ class _DxlAccess(object):
     readonly, writeonly, readwrite = range(3)
 
 
-class DxlIO(object):
+class DxlIO(AbstractIO):
     """ Low-level class to handle the serial communication with the robotis motors. """
 
     __used_ports = set()

@@ -14,11 +14,13 @@ import numpy
 import time
 import json
 
-from ..dynamixel.motor import DxlAXRXMotor, DxlMXMotor
-from ..dynamixel.controller import BaseDxlController
-from ..dynamixel.error import BaseErrorHandler
-from ..dynamixel.io import DxlIO, DxlError
-from ..dynamixel import find_port
+
+import pypot.dynamixel
+import pypot.dynamixel.io
+import pypot.dynamixel.error
+import pypot.dynamixel.motor
+import pypot.dynamixel.controller
+
 from .robot import Robot
 
 
@@ -111,7 +113,7 @@ def from_config(config, strict=True):
 
         check_motor_limits(config, dxl_io, motor_names)
 
-        c = BaseDxlController(dxl_io, attached_motors)
+        c = pypot.dynamixel.controller.BaseDxlController(dxl_io, attached_motors)
         logger.info('Instantiating controller on %s with motors %s',
                     dxl_io.port, motor_names,
                     extra={'config': config})
@@ -139,7 +141,8 @@ def from_config(config, strict=True):
 def motor_from_confignode(config, motor_name):
     params = config['motors'][motor_name]
 
-    MotorCls = DxlMXMotor if params['type'].startswith('MX') else DxlAXRXMotor
+    MotorCls = (pypot.dynamixel.motor.DxlMXMotor if params['type'].startswith('MX')
+                else pypot.dynamixel.motor.DxlAXRXMotor)
 
     m = MotorCls(id=params['id'],
                  name=motor_name,
@@ -157,12 +160,13 @@ def dxl_io_from_confignode(config, c_params, ids, strict):
     port = c_params['port']
 
     if port == 'auto':
-        port = find_port(ids, strict)
+        port = pypot.dynamixel.find_port(ids, strict)
         logger.info('Found port {} for ids {}'.format(port, ids))
 
-    dxl_io = DxlIO(port=port,
-                   use_sync_read=c_params['sync_read'],
-                   error_handler_cls=BaseErrorHandler)
+    handler = pypot.dynamixel.error.BaseErrorHandler
+    dxl_io = pypot.dynamixel.io.DxlIO(port=port,
+                                      use_sync_read=c_params['sync_read'],
+                                      error_handler_cls=handler)
 
     found_ids = dxl_io.scan(ids)
     if ids != found_ids:
@@ -172,7 +176,7 @@ def dxl_io_from_confignode(config, c_params, ids, strict):
         logger.warning(msg)
 
         if strict:
-            raise DxlError(msg)
+            raise pypot.dynamixel.io.DxlError(msg)
 
     return dxl_io
 
@@ -203,7 +207,8 @@ def instatiate_motors(config):
     motors = []
 
     for m_name, m_params in config['motors']:
-        MotorCls = DxlMXMotor if m_params['type'].startswith('MX') else DxlAXRXMotor
+        MotorCls = (pypot.dynamixel.motor.DxlMXMotor if m_params['type'].startswith('MX')
+                    else pypot.dynamixel.motor.DxlAXRXMotor)
 
         m = MotorCls(id=m_params['id'],
                      name=m_name,

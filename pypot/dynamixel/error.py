@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 
-from .io import logger
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 class DxlErrorHandler(object):
