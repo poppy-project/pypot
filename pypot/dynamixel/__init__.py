@@ -3,7 +3,6 @@ import glob
 
 from .io import DxlIO, DxlError
 from .error import BaseErrorHandler
-from .controller import DxlController
 
 
 def get_available_ports():
