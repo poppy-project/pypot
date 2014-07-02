@@ -1,48 +1,28 @@
-import threading
-
-from abc import ABCMeta, abstractmethod
+from ..stoppablethread import StoppableLoopThread
 
 
-class AbstractController(object):
-    __metaclass__ = ABCMeta
+class AbstractController(StoppableLoopThread):
+    """ Abstract class for motors controller.
 
+    The controller role is to synchronize the reading/writing of a set of motor instances with their "hardware" equivalent through an :class:`~pypot.robot.io.AbstractIO` object. It is defined as a :class:`~pypot.stoppablethread.StoppableLoopThread` where each loop update synchronizes  values from the "software" :class:`~pypot.dynamixel.motor.DxlMotor` with their "hardware" equivalent.
+
+    To define your Controller, you need to define the :meth:`~pypot.stoppablethread.stoppablethread.update` method. This method will be called at the predefined frequency. An exemple of how to do it can be found in :class:`~pypot.dynamixel.controller.BaseDxlController`.
+
+    """
     def __init__(self, io, motors, sync_freq=50.):
-        """ """
+        """
+        :param io: IO used to communicate with the hardware motors
+        :type io: :class:`~pypot.robot.io.AbstractIO`
+        :param list motors: list of motors attached to the controller
+        :param float sync_freq: synchronization frequency
+
+        """
+        StoppableLoopThread.__init__(self, sync_freq)
+
         self.io = io
-        self._motors = motors
-
-        self._sync_period = 1.0 / sync_freq
-        self._running = threading.Event()
-
-    def start(self):
-        """ """
-        if self.running():
-            self.stop(wait=True)
-
-        self._running.set()
-        self._sync_thread = threading.Thread(target=self.sync_values)
-        self._sync_thread.start()
-
-    def stop(self):
-        """ """
-        if not self.running():
-            return
-
-        self._running.clear()
-        self._sync_thread.join()
+        self.motors = motors
 
     def close(self):
-        """ """
+        """ Cleans and closes the controller. """
         self.stop()
         self.io.close()
-
-    def running(self):
-        return self._running.is_set()
-
-    @abstractmethod
-    def sync_values(self):
-        pass
-
-    @property
-    def motors(self):
-        return self._motors
