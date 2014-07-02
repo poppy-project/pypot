@@ -16,6 +16,10 @@ import json
 
 
 import pypot.dynamixel
+import pypot.dynamixel.io
+import pypot.dynamixel.error
+import pypot.dynamixel.motor
+import pypot.dynamixel.controller
 
 from .robot import Robot
 
