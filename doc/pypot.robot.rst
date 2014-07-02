@@ -15,6 +15,14 @@
     :undoc-members:
     :show-inheritance:
 
+:mod:`motor` Module
+-------------------
+
+.. automodule:: pypot.robot.motor
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 :mod:`controller` Module
 ------------------------
 

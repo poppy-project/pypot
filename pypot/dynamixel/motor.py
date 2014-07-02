@@ -8,11 +8,12 @@ import logging
 from collections import defaultdict
 from operator import getitem, setitem
 
+from ..robot.motor import Motor
 
 logger = logging.getLogger(__name__)
 
 
-class DxlMotor(object):
+class DxlMotor(Motor):
     """ High-level class used to represent and control a generic dynamixel motor.
 
         This class provides all level access to:
