@@ -50,17 +50,17 @@ class BaseDxlController(DxlController):
         DxlController.__init__(self, io, motors, controllers)
 
 
-class AbstractDxlController(AbstractController):
+class _AbstractDxlController(AbstractController):
     def __init__(self, io, motors, sync_freq=50.):
         AbstractController.__init__(self, io, motors, sync_freq)
 
         self.ids = [m.id for m in motors]
 
 
-class _DxlRegisterController(AbstractDxlController):
+class _DxlRegisterController(_AbstractDxlController):
     def __init__(self, io, motors, sync_freq,
                  mode, regname, varname):
-        AbstractDxlController.__init__(self, io, motors, sync_freq)
+        _AbstractDxlController.__init__(self, io, motors, sync_freq)
 
         self.mode = mode
         self.regname = regname
@@ -92,7 +92,7 @@ class _DxlRegisterController(AbstractDxlController):
         getattr(self.io, 'set_{}'.format(self.regname))(dict(zip(ids, values)))
 
 
-class _PosSpeedLoadDxlController(AbstractDxlController):
+class _PosSpeedLoadDxlController(_AbstractDxlController):
     def setup(self):
         torques = self.io.is_torque_enabled(self.ids)
         for m, c in zip(self.motors, torques):

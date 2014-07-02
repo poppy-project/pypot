@@ -71,11 +71,12 @@ class StoppableThread(object):
     def run(self):
         """ Run method of the thread.
 
-        .. warning:: In order to be stoppable, this method has to check the running property - as often as possible to improve responsivness - and terminate when running become False. For instance, this can be implemented as follows:
+        .. note:: In order to be stoppable, this method has to check the running property - as often as possible to improve responsivness - and terminate when running become False.
+            For instance::
 
-            while self.running:
-                do_atom_work()
-                ...
+                while self.running:
+                    do_atom_work()
+                    ...
 
         """
         pass

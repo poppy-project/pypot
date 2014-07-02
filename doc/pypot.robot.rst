@@ -15,6 +15,22 @@
     :undoc-members:
     :show-inheritance:
 
+:mod:`controller` Module
+------------------------
+
+.. automodule:: pypot.robot.controller
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`io` Module
+----------------
+
+.. automodule:: pypot.robot.io
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 :mod:`config` Module
 --------------------
 
