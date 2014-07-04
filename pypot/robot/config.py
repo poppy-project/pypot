@@ -121,16 +121,7 @@ def from_config(config, strict=True):
         controllers.append(c)
 
     robot = Robot(motor_controllers=controllers)
-
-    # Create the alias for the motorgroups
-    for alias_name in alias:
-        motors = [getattr(robot, name) for name in _motor_extractor(alias, alias_name)]
-        setattr(robot, alias_name, motors)
-        robot.alias.append(alias_name)
-
-        logger.info("Creating alias '%s' for motors %s",
-                    alias_name, [motor.name for motor in motors],
-                    extra={'config': config})
+    make_alias(config, robot)
 
     logger.info('Loading complete!',
                 extra={'config': config})
@@ -222,6 +213,20 @@ def instatiate_motors(config):
                     extra={'config': config})
 
     return motors
+
+
+def make_alias(config, robot):
+    alias = config['motorgroups']
+
+    # Create the alias for the motorgroups
+    for alias_name in alias:
+        motors = [getattr(robot, name) for name in _motor_extractor(alias, alias_name)]
+        setattr(robot, alias_name, motors)
+        robot.alias.append(alias_name)
+
+        logger.info("Creating alias '%s' for motors %s",
+                    alias_name, [motor.name for motor in motors],
+                    extra={'config': config})
 
 
 def from_json(json_file):
