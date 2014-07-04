@@ -16,7 +16,7 @@ class DxlController(AbstractController):
     def setup(self):
         """ Starts all the synchronization loops. """
         [c.start() for c in self.controllers]
-        [c.wait_for_start() for c in self.controllers]
+        [c.wait_to_start() for c in self.controllers]
 
     def update(self):
         pass

@@ -45,7 +45,7 @@ class Robot(object):
     def start_sync(self):
         """ Starts all the synchonization loop (sensor/effector controllers). """
         [c.start() for c in self._controllers]
-        [c.wait_for_start() for c in self._controllers]
+        [c.wait_to_start() for c in self._controllers]
         self._primitive_manager.start()
 
         logger.info('Starting robot synchronization.')
