@@ -37,25 +37,19 @@ class Primitive(StoppableThread):
         .. note:: This class should always be extended to define your particular behavior in the :meth:`~pypot.primitive.primitive.Primitive.run` method.
 
         """
-    def __init__(self, robot, *args, **kwargs):
+    def __init__(self, robot):
         """ At instanciation, it automatically transforms the :class:`~pypot.robot.robot.Robot`
             into a :class:`~pypot.primitive.primitive.MockupRobot`.
 
-            :param args: the arguments are automatically passed to the run method.
-            :param kwargs: the keywords arguments are automatically passed to the run method.
+        .. warning:: You should not directly pass motors as argument to the primitive. If you need to, use the method :meth:`~pypot.primitive.primitive.Primitive.get_mockup_motor` to transform them into "fake" motors. See the :ref:`write_own_prim` section for details.
 
-            .. warning:: You should not directly pass motors as argument to the primitive. If you need to, use the method :meth:`~pypot.primitive.primitive.Primitive.get_mockup_motor` to transform them into "fake" motors. See the :ref:`write_own_prim` section for details.
-
-            """
+        """
         StoppableThread.__init__(self,
-                                 custom_setup=self._prim_setup,
-                                 custom_target=self._prim_run,
-                                 custom_teardown=self._prim_teardown)
+                                 setup=self._prim_setup,
+                                 target=self._prim_run,
+                                 teardown=self._prim_teardown)
 
         self.robot = MockupRobot(robot)
-
-        self.args = args
-        self.kwargs = kwargs
 
         self._synced = threading.Event()
 
@@ -74,19 +68,16 @@ class Primitive(StoppableThread):
         pass
 
     def _prim_run(self):
-        self.run(*self.args, **self.kwargs)
+        self.run()
 
-    def run(self, *args, **kwargs):
+    def run(self):
         """ Run method of the primitive thread. You should always overwrite this method.
 
-            :param args: the arguments passed to the constructor are automatically passed to this method
-            :param kwargs: the arguments passed to the constructor are automatically passed to this method
+        .. warning:: You are responsible of handling the :meth:`~primitive.primitive.Primitive.should_stop`, :meth:`~primitive.primitive.Primitive.should_pause` and :meth:`~primitive.primitive.Primitive.wait_to_resume` methods correctly so the code inside your run function matches the desired behavior. You can refer to the code of the :meth:`~primitive.primitive.LoopPrimitive.run` method of the :class:`~primitive.primitive.LoopPrimitive` as an example.
 
-            .. warning:: You are responsible of handling the :meth:`~primitive.primitive.Primitive.should_stop`, :meth:`~primitive.primitive.Primitive.should_pause` and :meth:`~primitive.primitive.Primitive.wait_to_resume` methods correctly so the code inside your run function matches the desired behavior. You can refer to the code of the :meth:`~primitive.primitive.LoopPrimitive.run` method of the :class:`~primitive.primitive.LoopPrimitive` as an example.
+        After termination of the run function, the primitive will automatically be removed from the list of active primitives of the :class:`~pypot.primitive.manager.PrimitiveManager`.
 
-            After termination of the run function, the primitive will automatically be removed from the list of active primitives of the :class:`~pypot.primitive.manager.PrimitiveManager`.
-
-            """
+        """
         pass
 
     def _prim_teardown(self):
@@ -146,8 +137,8 @@ class LoopPrimitive(Primitive):
         You should write your own subclass where you only defined the :meth:`~pypot.primitive.primitive.LoopPrimitive.update` method.
 
         """
-    def __init__(self, robot, freq, *args, **kwargs):
-        Primitive.__init__(self, robot, *args, **kwargs)
+    def __init__(self, robot, freq):
+        Primitive.__init__(self, robot)
         # self._period = 1.0 / freq
         self.period = 1.0 / freq
         self._recent_updates = deque([], 11)
@@ -161,21 +152,17 @@ class LoopPrimitive(Primitive):
         """
         return list(reversed([(1.0 / p) for p in numpy.diff(self._recent_updates)]))
 
-    def run(self, *args, **kwargs):
+    def run(self):
         """ Calls the :meth:`~pypot.primitive.primitive.Primitive.update` method at a predefined frequency (runs until stopped). """
         make_update_loop(self, self._wrapped_update)
 
-    def _wrapped_update(self, *args, **kwargs):
+    def _wrapped_update(self):
         logger.debug('LoopPrimitive %s updated.', self)
         self._recent_updates.append(time.time())
-        self.update(*args, **kwargs)
+        self.update()
 
-    def update(self, *args, **kwargs):
-        """ Update methods that will be called at a predefined frequency.
-
-            :param args: the arguments passed to the constructor are automatically passed to this method
-            :param kwargs: the arguments passed to the constructor are automatically passed to this method
-            """
+    def update(self):
+        """ Update methods that will be called at a predefined frequency. """
         raise NotImplementedError
 
 
