@@ -6,15 +6,17 @@ from ..robot.controller import AbstractController
 
 class VrepController(AbstractController):
     """ V-REP motors controller. """
-    def __init__(self, vrep_host, vrep_port, motors, sync_freq=50.):
+    def __init__(self, vrep_host, vrep_port, scene,
+                 motors, sync_freq=50.):
         """
         :param str vrep_host: host of the v-rep instance
         :param int vrep_port: port of the v-rep instance
+        :param str scene: path to the V-REP scene to start
         :param list motors: list of motors attached to the controller
         :param float sync_freq: synchronization frequency
 
         """
-        vrep_io = VrepIO(vrep_host, vrep_port)
+        vrep_io = VrepIO(vrep_host, vrep_port, scene, True)
         AbstractController.__init__(self, vrep_io, motors, sync_freq)
 
     def setup(self):

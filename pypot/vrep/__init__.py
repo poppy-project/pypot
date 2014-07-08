@@ -7,8 +7,13 @@ from ..robot import Robot
 from ..robot.config import motor_from_confignode, make_alias
 
 
-def from_vrep(config, vrep_host, vrep_port):
+def from_vrep(config, vrep_host, vrep_port, vrep_scene):
     """ Create a robot from a V-REP instance.
+
+    :param dict config: robot configuration dictionary
+    :param str vrep_host: host of the V-REP server
+    :param int vrep_port: port of the V-REP server
+    :param str vrep_scene: path to the V-REP scene to load and start
 
     This function tries to connect to a V-REP instance and expects to find motors with names corresponding as the ones found in the config.
 
@@ -24,11 +29,11 @@ def from_vrep(config, vrep_host, vrep_port):
             from pypot.vrep import from_vrep
 
             real_robot = from_config(config)
-            simulated_robot = from_vrep(config, '127.0.0.1', 19997)
+            simulated_robot = from_vrep(config, '127.0.0.1', 19997, 'poppy.ttt')
 
     """
     motors = [motor_from_confignode(config, name) for name in config['motors'].keys()]
-    controller = VrepController(vrep_host, vrep_port, motors)
+    controller = VrepController(vrep_host, vrep_port, vrep_scene, motors)
 
     robot = Robot(motor_controllers=[controller])
 
