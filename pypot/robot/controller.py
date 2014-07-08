@@ -22,6 +22,10 @@ class AbstractController(StoppableLoopThread):
         self.io = io
         self.motors = motors
 
+    def start(self):
+        StoppableLoopThread.start(self)
+        self.wait_to_start()
+
     def close(self):
         """ Cleans and closes the controller. """
         self.stop()
