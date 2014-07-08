@@ -73,11 +73,13 @@ class VrepIO(AbstractIO):
         It is based on the V-REP remote API (http://www.coppeliarobotics.com/helpFiles/en/remoteApiOverview.htm).
 
     """
-    def __init__(self, vrep_host='127.0.0.1', vrep_port=19997):
+    def __init__(self, vrep_host='127.0.0.1', vrep_port=19997, scene=None, start=False):
         """ Starts the connection with the V-REP remote API server.
 
         :param str vrep_host: V-REP remote API server host
         :param int vrep_port: V-REP remote API server port
+        :param str scene: path to a scene
+        :param bool start: whether to start the scene after loading
 
         .. warning:: Only one connection can be established with the V-REP remote server API. So before trying to connect make sure that all previously started connections have been closed (see :func:`~pypot.vrep.io.close_all_connections`)
 
@@ -92,9 +94,48 @@ class VrepIO(AbstractIO):
 
         self._motor_handles = {}
 
+        if scene:
+            self.load_scene(scene, start)
+
     def close(self):
         """ Close the current connection. """
         vrep.simxFinish(self.client_id)
+
+    def load_scene(self, scene_path, start=False):
+        """ Loads a scene on the V-REP server.
+
+        :param str scene_path: path to the scene file
+        :param bool start: whether to directly start the simulation after loading
+
+        .. note:: It is assumed that the scene is always on the server side.
+
+        """
+        self.stop_simulation()
+
+        vrep.simxLoadScene(self.client_id, scene_path,
+                           True, vrep.simx_opmode_oneshot_wait)
+
+        if start:
+            self.start_simulation()
+
+    def start_simulation(self):
+        """ Starts the simulation.
+
+            .. note:: Do nothing if the simulation is already started.
+        """
+        vrep.simxStartSimulation(self.client_id, vrep.simx_opmode_oneshot_wait)
+
+    def stop_simulation(self):
+        """ Stops the simulation. """
+        vrep.simxStopSimulation(self.client_id, vrep.simx_opmode_oneshot_wait)
+
+    def pause_simulation(self):
+        """ Pauses the simulation. """
+        vrep.simxPauseSimulation(self.client_id, vrep.simx_opmode_oneshot_wait)
+
+    def resume_simulation(self):
+        """ Resumes the simulation. """
+        self.start_simulation()
 
     # Get/Set Position
     @vrep_check_errorcode('Cannot get position for "{motor_name}"')
