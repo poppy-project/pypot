@@ -92,7 +92,7 @@ class VrepIO(AbstractIO):
                    '(try pypot.vrep.close_all_connections())').format(vrep_host, vrep_port)
             raise VrepConnectionError(msg)
 
-        self._motor_handles = {}
+        self._object_handles = {}
 
         if scene:
             self.load_scene(scene, start)
@@ -153,7 +153,7 @@ class VrepIO(AbstractIO):
     def get_motor_position(self, motor_name):
         """ Get the motor current position. """
         return vrep.simxGetJointPosition(self.client_id,
-                                         self.get_motor_handle(motor_name=motor_name),
+                                         self.get_object_handle(obj=motor_name),
                                          vrep.simx_opmode_streaming)
 
     @vrep_check_errorcode('Cannot set position for "{motor_name}"')
@@ -161,21 +161,30 @@ class VrepIO(AbstractIO):
     def set_motor_position(self, motor_name, position):
         """ Set the motor target position. """
         return vrep.simxSetJointTargetPosition(self.client_id,
-                                               self.get_motor_handle(motor_name=motor_name),
+                                               self.get_object_handle(obj=motor_name),
                                                position,
                                                vrep.simx_opmode_oneshot)
 
-    @vrep_check_errorcode('Cannot get handle for "{motor_name}"')
-    def _get_motor_handle(self, motor_name):
-        return vrep.simxGetObjectHandle(self.client_id, motor_name,
+    @vrep_check_errorcode('Cannot get position for "{object_name}"')
+    @vrep_init_streaming
+    def get_object_position(self, object_name):
+        """ Get the object absolute position. """
+        return vrep.simxGetObjectPosition(self.client_id,
+                                          self.get_object_handle(obj=object_name),
+                                          -1,
+                                          vrep.simx_opmode_oneshot_wait)
+
+    @vrep_check_errorcode('Cannot get handle for "{obj}"')
+    def _get_object_handle(self, obj):
+        return vrep.simxGetObjectHandle(self.client_id, obj,
                                         vrep.simx_opmode_oneshot_wait)
 
-    def get_motor_handle(self, motor_name):
-        """ Get the motor vrep handle. """
-        if motor_name not in self._motor_handles:
-            self._motor_handles[motor_name] = self._get_motor_handle(motor_name=motor_name)
+    def get_object_handle(self, obj):
+        """ Get the vrep object handle. """
+        if obj not in self._object_handles:
+            self._object_handles[obj] = self._get_object_handle(obj=obj)
 
-        return self._motor_handles[motor_name]
+        return self._object_handles[obj]
 
 
 def close_all_connections():
