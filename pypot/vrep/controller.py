@@ -31,16 +31,16 @@ class VrepController(AbstractController):
         """
         for m in self.motors:
             # Read values from V-REP and set them to the Motor
-            p = round(rad2deg(self.io.get_motor_position(m.name)), 1)
+            p = round(rad2deg(self.io.get_motor_position(motor_name=m.name)), 1)
             m._values['present_position'] = p
 
             # Send new values from Motor to V-REP
             p = deg2rad(round(m._values['goal_position'], 1))
-            self.io.set_motor_position(m.name, p)
+            self.io.set_motor_position(motor_name=m.name, position=p)
 
     def _init_vrep_streaming(self):
         pos = [self.io.get_motor_position(motor_name=m.name) for m in self.motors]
 
         for m, p in zip(self.motors, pos):
             # self.io.set_motor_position(m.name, p)
-            self.io.set_motor_position(m.name, 0.)
+            self.io.set_motor_position(motor_name=m.name, position=0.)
