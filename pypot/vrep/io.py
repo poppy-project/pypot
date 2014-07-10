@@ -175,18 +175,18 @@ class VrepIO(AbstractIO):
         return vrep.simxGetObjectPosition(self.client_id,
                                           self.get_object_handle(obj=object_name),
                                           relative_handle,
-                                          vrep.simx_opmode_oneshot_wait)
+                                          vrep.simx_opmode_streaming)
 
     @vrep_check_errorcode('Cannot get orientation for "{object_name}"')
     @vrep_init_streaming
     def get_object_orientation(self, object_name, relative_to_object=None):
-        relative_handle = (-1 if relative_to_object is VrepConnectionError
+        relative_handle = (-1 if relative_to_object is None
                            else self.get_object_handle(obj=relative_to_object))
 
         return vrep.simxGetObjectOrientation(self.client_id,
                                              self.get_object_handle(obj=object_name),
                                              relative_handle,
-                                             vrep.simx_opmode_oneshot_wait)
+                                             vrep.simx_opmode_streaming)
 
     @vrep_check_errorcode('Cannot get handle for "{obj}"')
     def _get_object_handle(self, obj):

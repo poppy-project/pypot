@@ -55,4 +55,4 @@ class VrepObjectTracker(SensorsController):
         """ Updates the position and orientation of the tracked objects. """
         for s in self.sensors:
             s.position = self.io.get_object_position(object_name=s.name)
-            # s.orientation = self.io.get_object_orientation(object_name=s.name)
+            s.orientation = self.io.get_object_orientation(object_name=s.name)
