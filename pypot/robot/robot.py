@@ -17,20 +17,24 @@ class Robot(object):
     This class also provides a generic motors accessor in order to (more or less) easily extends this class to other types of motor.
 
         """
-    def __init__(self, motor_controllers=[]):
+    def __init__(self, motor_controllers=[], sensor_controllers=[]):
         """
         :param list motor_controllers: list of motors controllers attached to the robot
         """
         self._motors = []
         self.alias = []
 
-        self._controllers = motor_controllers
+        self._controllers = motor_controllers + sensor_controllers
 
-        for controller in self._controllers:
+        for controller in motor_controllers:
             for m in controller.motors:
                 setattr(self, m.name, m)
 
             self._motors.extend(controller.motors)
+
+        for controller in sensor_controllers:
+            for s in controller.sensors:
+                setattr(self, s.name, s)
 
         self._attached_primitives = {}
         self._primitive_manager = PrimitiveManager(self.motors)

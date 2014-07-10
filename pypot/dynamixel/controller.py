@@ -1,7 +1,7 @@
-from ..robot.controller import AbstractController
+from ..robot.controller import MotorsController
 
 
-class DxlController(AbstractController):
+class DxlController(MotorsController):
     """ Synchronizes the reading/writing of :class:`~pypot.dynamixel.motor.DxlMotor` with the real motors.
 
         This class handles synchronization loops that automatically read/write values from the "software" :class:`~pypot.dynamixel.motor.DxlMotor` with their "hardware" equivalent. Those loops shared a same :class:`~pypot.dynamixel.io.DxlIO` connection to avoid collision in the bus. Each loop run within its own thread as its own frequency.
@@ -10,7 +10,7 @@ class DxlController(AbstractController):
 
         """
     def __init__(self, io, motors, controllers):
-        AbstractController.__init__(self, io, motors, 1.)
+        MotorsController.__init__(self, io, motors, 1.)
         self.controllers = controllers
 
     def setup(self):
@@ -50,17 +50,17 @@ class BaseDxlController(DxlController):
         DxlController.__init__(self, io, motors, controllers)
 
 
-class _AbstractDxlController(AbstractController):
+class _DxlController(MotorsController):
     def __init__(self, io, motors, sync_freq=50.):
-        AbstractController.__init__(self, io, motors, sync_freq)
+        MotorsController.__init__(self, io, motors, sync_freq)
 
         self.ids = [m.id for m in motors]
 
 
-class _DxlRegisterController(_AbstractDxlController):
+class _DxlRegisterController(_DxlController):
     def __init__(self, io, motors, sync_freq,
                  mode, regname, varname=None):
-        _AbstractDxlController.__init__(self, io, motors, sync_freq)
+        _DxlController.__init__(self, io, motors, sync_freq)
 
         self.mode = mode
         self.regname = regname
@@ -96,7 +96,7 @@ class _DxlRegisterController(_AbstractDxlController):
         getattr(self.io, 'set_{}'.format(self.regname))(dict(zip(ids, values)))
 
 
-class _PosSpeedLoadDxlController(_AbstractDxlController):
+class _PosSpeedLoadDxlController(_DxlController):
     def setup(self):
         torques = self.io.is_torque_enabled(self.ids)
         for m, c in zip(self.motors, torques):

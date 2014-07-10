@@ -34,7 +34,8 @@ class DxlMotor(Motor):
     def __init__(self, id, name=None,
                  direct=True, offset=0.0):
         self._id = id
-        self._name = name if name else 'motor_{}'.format(id)
+        name = name if name else 'motor_{}'.format(id)
+        Motor.__init__(self, name)
 
         self._direct = direct
         self._offset = offset
