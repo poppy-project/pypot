@@ -1,12 +1,11 @@
 from numpy import rad2deg, deg2rad
 
-from .io import VrepIO
-from ..robot.controller import AbstractController
+from ..robot.controller import MotorsController, SensorsController
 
 
-class VrepController(AbstractController):
+class VrepController(MotorsController):
     """ V-REP motors controller. """
-    def __init__(self, vrep_host, vrep_port, scene,
+    def __init__(self, vrep_io, scene,
                  motors, sync_freq=50.):
         """
         :param str vrep_host: host of the v-rep instance
@@ -16,8 +15,8 @@ class VrepController(AbstractController):
         :param float sync_freq: synchronization frequency
 
         """
-        vrep_io = VrepIO(vrep_host, vrep_port, scene, True)
-        AbstractController.__init__(self, vrep_io, motors, sync_freq)
+        MotorsController.__init__(self, vrep_io, motors, sync_freq)
+        vrep_io.load_scene(scene, start=True)
 
     def setup(self):
         """ Setup the controller by reading/setting position for all motors. """
@@ -44,3 +43,16 @@ class VrepController(AbstractController):
         for m, p in zip(self.motors, pos):
             # self.io.set_motor_position(m.name, p)
             self.io.set_motor_position(motor_name=m.name, position=0.)
+
+
+class VrepObjectTracker(SensorsController):
+    """ Tracks the 3D position and orientation of a V-REP object. """
+
+    def setup(self):
+        self.update()
+
+    def update(self):
+        """ Updates the position and orientation of the tracked objects. """
+        for s in self.sensors:
+            s.position = self.io.get_object_position(object_name=s.name)
+            # s.orientation = self.io.get_object_orientation(object_name=s.name)
