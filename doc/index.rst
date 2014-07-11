@@ -29,6 +29,7 @@ Welcome to Pypot's documentation!
 
     controlling_robot.rst
     primitive.rst
+    vrep.rst
     logging.rst
     remote_access.rst
 
