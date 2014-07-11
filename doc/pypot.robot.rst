@@ -23,6 +23,14 @@
     :undoc-members:
     :show-inheritance:
 
+:mod:`sensor` Module
+--------------------
+
+.. automodule:: pypot.robot.sensor
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 :mod:`controller` Module
 ------------------------
 

@@ -10,7 +10,7 @@ logger = logging.getLogger(__name__)
 class Robot(object):
     """ This class is used to regroup all motors and sensors of your robots.
 
-    Most of the time, you do not want to directly instantiate this class, but you rather want to use the factory which creates a robot instance from a python dictionnary (see :ref:`config_file`).
+    Most of the time, you do not want to directly instantiate this class, but you rather want to use a factory which creates a robot instance - e.g. from a python dictionnary (see :ref:`config_file`).
 
     This class encapsulates the different controllers (such as dynamixel ones) that automatically synchronize the virtual sensors/effectors instances held by the robot class with the real devices. By doing so, each sensor/effector can be synchronized at a different frequency.
 
@@ -19,7 +19,9 @@ class Robot(object):
         """
     def __init__(self, motor_controllers=[], sensor_controllers=[]):
         """
-        :param list motor_controllers: list of motors controllers attached to the robot
+        :param list motor_controllers: motors controllers to attach to the robot
+        :param list sensor_controllers: sensors controllers to attach to the robot
+
         """
         self._motors = []
         self.alias = []

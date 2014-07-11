@@ -5,12 +5,11 @@ from ..robot.controller import MotorsController, SensorsController
 
 class VrepController(MotorsController):
     """ V-REP motors controller. """
-    def __init__(self, vrep_io, scene,
-                 motors, sync_freq=50.):
+    def __init__(self, vrep_io, scene, motors, sync_freq=50.):
         """
-        :param str vrep_host: host of the v-rep instance
-        :param int vrep_port: port of the v-rep instance
-        :param str scene: path to the V-REP scene to start
+        :param vrep_io: vrep io instance
+        :type vrep_io: :class:`~pypot.vrep.io.VrepIO`
+        :param str scene: path to the V-REP scene file to start
         :param list motors: list of motors attached to the controller
         :param float sync_freq: synchronization frequency
 
@@ -19,7 +18,7 @@ class VrepController(MotorsController):
         vrep_io.load_scene(scene, start=True)
 
     def setup(self):
-        """ Setup the controller by reading/setting position for all motors. """
+        """ Setups the controller by reading/setting position for all motors. """
         self._init_vrep_streaming()
 
     def update(self):
@@ -49,6 +48,7 @@ class VrepObjectTracker(SensorsController):
     """ Tracks the 3D position and orientation of a V-REP object. """
 
     def setup(self):
+        """ Forces a first update to trigger V-REP streaming. """
         self.update()
 
     def update(self):

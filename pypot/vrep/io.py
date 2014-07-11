@@ -1,5 +1,7 @@
 import time
 
+from functools import wraps
+
 import vrep
 
 
@@ -13,6 +15,7 @@ class vrep_check_errorcode(object):
         self.error_msg_fmt = error_msg_fmt
 
     def __call__(self, f):
+        @wraps(f)
         def wrapped_f(*args, **kwargs):
             ret = f(*args, **kwargs)
 
@@ -36,6 +39,7 @@ class vrep_check_errorcode(object):
 
 def vrep_init_streaming(f, vrep_timeout=0.2, max_iter=2):
     """ Decorator for initializing V-REP data streaming. """
+    @wraps(f)
     def wrapped_f(*args, **kwargs):
         for _ in range(max_iter):
             err, res = f(*args, **kwargs)
@@ -52,6 +56,7 @@ def vrep_init_streaming(f, vrep_timeout=0.2, max_iter=2):
 
 def vrep_init_sending(f, vrep_timeout=0.2, max_iter=2):
     """ Decorator for initializing V-REP data sending. """
+    @wraps(f)
     def wrapped_f(*args, **kwargs):
         for _ in range(max_iter):
             err = f(*args, **kwargs)
@@ -70,7 +75,7 @@ def vrep_init_sending(f, vrep_timeout=0.2, max_iter=2):
 class VrepIO(AbstractIO):
     """ This class is used to get/set values from/to a V-REP scene.
 
-        It is based on the V-REP remote API (http://www.coppeliarobotics.com/helpFiles/en/remoteApiOverview.htm).
+        It is based on V-REP remote API (http://www.coppeliarobotics.com/helpFiles/en/remoteApiOverview.htm).
 
     """
     def __init__(self, vrep_host='127.0.0.1', vrep_port=19997, scene=None, start=False):
@@ -78,8 +83,8 @@ class VrepIO(AbstractIO):
 
         :param str vrep_host: V-REP remote API server host
         :param int vrep_port: V-REP remote API server port
-        :param str scene: path to a scene
-        :param bool start: whether to start the scene after loading
+        :param str scene: path to a V-REP scene file
+        :param bool start: whether to start the scene after loading it
 
         .. warning:: Only one connection can be established with the V-REP remote server API. So before trying to connect make sure that all previously started connections have been closed (see :func:`~pypot.vrep.io.close_all_connections`)
 
@@ -89,8 +94,8 @@ class VrepIO(AbstractIO):
             msg = ('Could not connect to V-REP server on {}:{}. '
                    'This could also means that you still have '
                    'a previously opened connection running! '
-                   '(try pypot.vrep.close_all_connections())').format(vrep_host, vrep_port)
-            raise VrepConnectionError(msg)
+                   '(try pypot.vrep.close_all_connections())')
+            raise VrepConnectionError(msg.format(vrep_host, vrep_port))
 
         self._object_handles = {}
 
@@ -98,16 +103,16 @@ class VrepIO(AbstractIO):
             self.load_scene(scene, start)
 
     def close(self):
-        """ Close the current connection. """
+        """ Closes the current connection. """
         vrep.simxFinish(self.client_id)
 
     def load_scene(self, scene_path, start=False):
         """ Loads a scene on the V-REP server.
 
-        :param str scene_path: path to the scene file
-        :param bool start: whether to directly start the simulation after loading
+        :param str scene_path: path to a V-REP scene file
+        :param bool start: whether to directly start the simulation after loading the scene
 
-        .. note:: It is assumed that the scene is always on the server side.
+        .. note:: It is assumed that the scene file is always available on the server side.
 
         """
         self.stop_simulation()
@@ -151,7 +156,7 @@ class VrepIO(AbstractIO):
     @vrep_check_errorcode('Cannot get position for "{motor_name}"')
     @vrep_init_streaming
     def get_motor_position(self, motor_name):
-        """ Get the motor current position. """
+        """ Gets the motor current position. """
         return vrep.simxGetJointPosition(self.client_id,
                                          self.get_object_handle(obj=motor_name),
                                          vrep.simx_opmode_streaming)
@@ -159,7 +164,7 @@ class VrepIO(AbstractIO):
     @vrep_check_errorcode('Cannot set position for "{motor_name}"')
     @vrep_init_sending
     def set_motor_position(self, motor_name, position):
-        """ Set the motor target position. """
+        """ Sets the motor target position. """
         return vrep.simxSetJointTargetPosition(self.client_id,
                                                self.get_object_handle(obj=motor_name),
                                                position,
@@ -168,7 +173,7 @@ class VrepIO(AbstractIO):
     @vrep_check_errorcode('Cannot get position for "{object_name}"')
     @vrep_init_streaming
     def get_object_position(self, object_name, relative_to_object=None):
-        """ Get the object absolute position. """
+        """ Gets the object position. """
         relative_handle = (-1 if relative_to_object is None
                            else self.get_object_handle(obj=relative_to_object))
 
@@ -180,6 +185,7 @@ class VrepIO(AbstractIO):
     @vrep_check_errorcode('Cannot get orientation for "{object_name}"')
     @vrep_init_streaming
     def get_object_orientation(self, object_name, relative_to_object=None):
+        """ Gets the object orientation. """
         relative_handle = (-1 if relative_to_object is None
                            else self.get_object_handle(obj=relative_to_object))
 
@@ -194,7 +200,7 @@ class VrepIO(AbstractIO):
                                         vrep.simx_opmode_oneshot_wait)
 
     def get_object_handle(self, obj):
-        """ Get the vrep object handle. """
+        """ Gets the vrep object handle. """
         if obj not in self._object_handles:
             self._object_handles[obj] = self._get_object_handle(obj=obj)
 
@@ -216,3 +222,4 @@ class VrepIOError(Exception):
 
 class VrepConnectionError(Exception):
     """ Base class for V-REP connection Errors. """
+    pass

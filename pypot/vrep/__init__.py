@@ -19,7 +19,7 @@ def from_vrep(config, vrep_host, vrep_port, vrep_scene, tracked_objects=[]):
 
     This function tries to connect to a V-REP instance and expects to find motors with names corresponding as the ones found in the config.
 
-    The :class:`~pypot.robot.robot.Robot` returned will also provide a conveniencd reset_simulation method which resets the simulation and the robot position to its intial stance.
+    .. note:: The :class:`~pypot.robot.robot.Robot` returned will also provide a convenience reset_simulation method which resets the simulation and the robot position to its intial stance.
 
     .. note:: Using the same configuration, you should be able to switch from a real to a simulated robot just by switching from :func:`~pypot.robot.config.from_config` to :func:`~pypot.vrep.from_vrep`.
         For instance::
