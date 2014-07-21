@@ -114,7 +114,7 @@ class DxlIO(object):
                 # Dirty walkaround to fix a strange bug.
                 # Observed with the USB2AX on Linux with pyserial 2.7
                 # We have to first open/close the port in order to make it work at 1Mbauds
-                if platform.system() == 'Linux' and self._sync.read:
+                if platform.system() == 'Linux' and self._sync_read:
                     self._serial = serial.Serial(port, 57600)
                     self._serial.close()
 

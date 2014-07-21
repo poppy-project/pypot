@@ -17,7 +17,7 @@ class PrimitiveManager(threading.Thread):
         .. note:: The primitives are automatically added (resp. removed) to the manager when they are started (resp. stopped).
 
         """
-    def __init__(self, motors, freq=50, filter=partial(numpy.mean, axis=0)):
+    def __init__(self, motors, freq=50, filter=partial(numpy.sum, axis=0)):
         """ :param motors: list of real motors used by the attached primitives
             :type motors: list of :class:`~pypot.dynamixel.motor.DxlMotor`
 
