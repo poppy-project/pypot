@@ -38,6 +38,11 @@ def from_vrep(config, vrep_host, vrep_port, vrep_scene, tracked_objects=[]):
     """
     vrep_io = VrepIO(vrep_host, vrep_port)
 
+    # The URDF uses the offset as the 0 for the motors equivalent
+    # so we set all the offsets to 0    config = dict(config)
+    for m in config['motors'].itervalues():
+        m['offset'] = 0.0
+
     motors = [motor_from_confignode(config, name) for name in config['motors'].keys()]
     vc = VrepController(vrep_io, vrep_scene, motors)
 
