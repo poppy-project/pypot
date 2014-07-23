@@ -45,6 +45,7 @@ def from_vrep(config, vrep_host, vrep_port, vrep_scene, tracked_objects=[]):
 
     motors = [motor_from_confignode(config, name) for name in config['motors'].keys()]
     vc = VrepController(vrep_io, vrep_scene, motors)
+    vc._init_vrep_streaming()
 
     sensor_controller = []
     if tracked_objects:
@@ -55,7 +56,7 @@ def from_vrep(config, vrep_host, vrep_port, vrep_scene, tracked_objects=[]):
     robot = Robot(motor_controllers=[vc],
                   sensor_controllers=sensor_controller)
 
-    init_pos = {m: m.present_position for m in robot.motors}
+    init_pos = {m: m.goal_position for m in robot.motors}
 
     make_alias(config, robot)
 

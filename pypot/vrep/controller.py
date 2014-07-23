@@ -40,8 +40,8 @@ class VrepController(MotorsController):
         pos = [self.io.get_motor_position(motor_name=m.name) for m in self.motors]
 
         for m, p in zip(self.motors, pos):
-            # self.io.set_motor_position(m.name, p)
-            self.io.set_motor_position(motor_name=m.name, position=0.)
+            self.io.set_motor_position(motor_name=m.name, position=p)
+            m._values['goal_position'] = rad2deg(p)
 
 
 class VrepObjectTracker(SensorsController):
