@@ -10,7 +10,7 @@ class StoppableThread(object):
         * you can restart a thread (stop it and re-run it)
         * you can pause/resume a thread
 
-    .. warning:: It is up to the subclass to correctly respond to the stop, pause/resume signals (see :meth:`~pypot.stoppablethread.StoppableThread.run` for details).
+    .. warning:: It is up to the subclass to correctly respond to the stop, pause/resume signals (see :meth:`~pypot.utils.stoppablethread.StoppableThread.run` for details).
 
     """
     def __init__(self, setup=None, target=None, teardown=None):
@@ -88,7 +88,7 @@ class StoppableThread(object):
     def run(self):
         """ Run method of the thread.
 
-        .. note:: In order to be stoppable (resp. pausable), this method has to check the running property - as often as possible to improve responsivness - and terminate when should_stop() (resp. should_pause()) becomes True.
+        .. note:: In order to be stoppable (resp. pausable), this method has to check the running property - as often as possible to improve responsivness - and terminate when :meth:`~pypot.utils.stoppablethread.StoppableThread.should_stop` (resp. :meth:`~pypot.utils.stoppablethread.StoppableThread.should_pause`) becomes True.
             For instance::
 
                 while self.should_stop():
