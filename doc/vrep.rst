@@ -52,4 +52,4 @@ will become::
 
 In particular, the walking primitive should work exactly the same way in both cases without needing to change anything.
 
-.. note:: Not all dynamixel registers have their V-REP equivalent. For the moment, only the control of the position is used. More advanced features can be easily added thanks to the controller abstraction (see section :ref:`TODO`).
+.. note:: Not all dynamixel registers have their V-REP equivalent. For the moment, only the control of the position is used. More advanced features can be easily added thanks to the controller abstraction (see section :ref:`extending`).
