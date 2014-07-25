@@ -2,13 +2,15 @@ from .io import (VrepIO, close_all_connections,
                  VrepIOError, VrepConnectionError)
 
 from .controller import VrepController, VrepObjectTracker
+from .controller import VrepCollisionTracker, VrepCollisionDetector
 
 from ..robot import Robot
 from ..robot.sensor import ObjectTracker
 from ..robot.config import motor_from_confignode, make_alias
 
 
-def from_vrep(config, vrep_host, vrep_port, vrep_scene, tracked_objects=[]):
+def from_vrep(config, vrep_host, vrep_port, vrep_scene,
+              tracked_objects=[], tracked_collisions=[]):
     """ Create a robot from a V-REP instance.
 
     :param dict config: robot configuration dictionary
@@ -16,6 +18,7 @@ def from_vrep(config, vrep_host, vrep_port, vrep_scene, tracked_objects=[]):
     :param int vrep_port: port of the V-REP server
     :param str vrep_scene: path to the V-REP scene to load and start
     :param list tracked_objects: list of V-REP dummy object to track
+    :param list tracked_collisions: list of V-REP collision to track
 
     This function tries to connect to a V-REP instance and expects to find motors with names corresponding as the ones found in the config.
 
@@ -47,14 +50,20 @@ def from_vrep(config, vrep_host, vrep_port, vrep_scene, tracked_objects=[]):
     vc = VrepController(vrep_io, vrep_scene, motors)
     vc._init_vrep_streaming()
 
-    sensor_controller = []
+    sensor_controllers = []
+
     if tracked_objects:
         sensors = [ObjectTracker(name) for name in tracked_objects]
         vot = VrepObjectTracker(vrep_io, sensors)
-        sensor_controller.append(vot)
+        sensor_controllers.append(vot)
+
+    if tracked_collisions:
+        sensors = [VrepCollisionDetector(name) for name in tracked_collisions]
+        vct = VrepCollisionTracker(vrep_io, sensors)
+        sensor_controllers.append(vct)
 
     robot = Robot(motor_controllers=[vc],
-                  sensor_controllers=sensor_controller)
+                  sensor_controllers=sensor_controllers)
 
     init_pos = {m: m.goal_position for m in robot.motors}
 
@@ -64,7 +73,9 @@ def from_vrep(config, vrep_host, vrep_port, vrep_scene, tracked_objects=[]):
         for m, p in init_pos.iteritems():
             m.goal_position = p
 
+        vct.stop()
         robot._controllers[0].io.restart_simulation()
+        vct.start()
 
     robot.reset_simulation = lambda: reset(robot)
 

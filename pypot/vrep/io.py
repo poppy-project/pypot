@@ -229,6 +229,31 @@ class VrepIO(AbstractIO):
 
         return self._object_handles[obj]
 
+    @vrep_check_errorcode('Cannot get collision state for "{collision_name}"')
+    @vrep_init_streaming
+    def get_collision_state(self, collision_name):
+        """ Gets the collision state. """
+        h = self.get_collision_handle(collision=collision_name)
+
+        with self._lock:
+            return vrep.simxReadCollision(self.client_id,
+                                          h,
+                                          vrep.simx_opmode_streaming)
+
+    @vrep_check_errorcode('Cannot get handle for "{collision}"')
+    def _get_collision_handle(self, collision):
+        with self._lock:
+            return vrep.simxGetCollisionHandle(self.client_id, collision,
+                                               vrep.simx_opmode_oneshot_wait)
+
+    def get_collision_handle(self, collision):
+        """ Gets a vrep collisions handle. """
+        if collision not in self._object_handles:
+            h = self._get_collision_handle(collision=collision)
+            self._object_handles[collision] = h
+
+        return self._object_handles[collision]
+
 
 def close_all_connections():
     """ Closes all opened connection to V-REP remote API server. """
