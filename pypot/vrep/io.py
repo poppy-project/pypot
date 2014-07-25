@@ -101,7 +101,7 @@ class VrepIO(AbstractIO):
                    '(try pypot.vrep.close_all_connections())')
             raise VrepConnectionError(msg.format(vrep_host, vrep_port))
 
-        if scene:
+        if scene is not None:
             self.load_scene(scene, start)
 
     def close(self):
@@ -136,6 +136,10 @@ class VrepIO(AbstractIO):
         """
         with self._lock:
             vrep.simxStartSimulation(self.client_id, vrep.simx_opmode_oneshot_wait)
+
+        # We have to force a sleep
+        # Otherwise it may causes troubles??
+        time.sleep(0.5)
 
     def restart_simulation(self):
         """ Re-starts the simulation. """
