@@ -123,7 +123,7 @@ class Primitive(StoppableThread):
         The value will be true only when the :meth:`~pypot.utils.stoppablethread.StoppableThread.run` function is executed.
 
         """
-        return self.runnning
+        return self.running
 
     def get_mockup_motor(self, motor):
         """ Gets the equivalent :class:`~pypot.primitive.primitive.MockupMotor`. """
