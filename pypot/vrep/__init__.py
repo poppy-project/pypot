@@ -73,9 +73,11 @@ def from_vrep(config, vrep_host, vrep_port, vrep_scene,
         for m, p in init_pos.iteritems():
             m.goal_position = p
 
-        vct.stop()
+        if tracked_collisions:
+            vct.stop()
         robot._controllers[0].io.restart_simulation()
-        vct.start()
+        if tracked_collisions:
+            vct.start()
 
     robot.reset_simulation = lambda: reset(robot)
 
