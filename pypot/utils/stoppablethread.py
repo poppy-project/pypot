@@ -46,8 +46,14 @@ class StoppableThread(object):
 
         More precisely, sends the stopping signal to the thread. It is then up top the run method to correctly responds.
 
-         """
-        if self.started:
+        """
+        # We can not stop ourselves so we create a dummy thread to do that for us
+        if threading.current_thread() == self._thread:
+            t = threading.Thread(target=self.stop)
+            t.start()
+            t.join()
+
+        elif self.started:
             self._running.clear()
             self._thread.join()
             self._started.clear()
