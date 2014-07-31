@@ -75,7 +75,8 @@ def from_vrep(config, vrep_host, vrep_port, vrep_scene,
 
         if tracked_collisions:
             vct.stop()
-        robot._controllers[0].io.restart_simulation()
+
+        vrep_io.restart_simulation()
 
         if tracked_collisions:
             vct.start()
