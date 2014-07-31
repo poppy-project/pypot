@@ -83,4 +83,9 @@ def from_vrep(config, vrep_host, vrep_port, vrep_scene,
 
     robot.reset_simulation = lambda: reset(robot)
 
+    def current_simulation_time(robot):
+        return vrep_io.get_simulation_current_time(robot)
+
+    Robot.current_simulation_time = property(lambda robot: current_simulation_time(robot))
+
     return robot
