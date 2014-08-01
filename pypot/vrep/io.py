@@ -254,6 +254,15 @@ class VrepIO(AbstractIO):
 
         return self._object_handles[collision]
 
+    @vrep_check_errorcode('Cannot get current time')
+    @vrep_init_streaming
+    def get_simulation_current_time(self, timer='CurrentTime'):
+        """ Gets the simulation current time. """
+        with self._lock:
+            return vrep.simxGetFloatSignal(self.client_id,
+                                           timer,
+                                           vrep.simx_opmode_streaming)
+
 
 def close_all_connections():
     """ Closes all opened connection to V-REP remote API server. """
