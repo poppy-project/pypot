@@ -108,14 +108,13 @@ class Primitive(StoppableThread):
     def start(self):
         """ Start or restart (the :meth:`~pypot.primitive.primitive.Primitive.stop` method will automatically be called) the primitive. """
         StoppableThread.start(self)
-        self.wait_to_start()
 
         logger.info("Primitive %s started.", self)
 
-    def stop(self):
+    def stop(self, wait=True):
         """ Requests the primitive to stop. """
         logger.info("Primitive %s stopped.", self)
-        StoppableThread.stop(self)
+        StoppableThread.stop(self, wait)
 
     def is_alive(self):
         """ Determines whether the primitive is running or not.
