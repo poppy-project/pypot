@@ -147,7 +147,7 @@ Zmq Server
 
 The Zmq Server used a Zmq socket to send (resp. receive) JSON request (JSON answer). It is based on the REQ/REP pattern. So you should always alternate sending and receiving. It will probably be switched to PUB/SUB soon.
 
-Zmq has been chosen as it has been binded to most language (http://zeromq.org/bindings:_start) and can thus be used to connect code from other language to PyPot. For instance, we used it to connect RLPark (a Java reinforcement learning library) to PyPot.
+Zmq has been chosen as it has been `binded to most language <http://zeromq.org/bindings:_start>`_ and can thus be used to connect code from other language to PyPot. For instance, we used it to connect `RLPark <http://rlpark.github.io>`_ (a Java reinforcement learning library) to PyPot.
 
 Here is an example of how you can create a zmq server and send request::
 

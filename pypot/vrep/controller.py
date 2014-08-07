@@ -1,6 +1,7 @@
 from numpy import rad2deg, deg2rad
 
 from ..robot.controller import MotorsController, SensorsController
+from ..robot.sensor import Sensor
 
 
 class VrepController(MotorsController):
@@ -44,8 +45,8 @@ class VrepController(MotorsController):
         pos = [self.io.get_motor_position(motor_name=m.name) for m in self.motors]
 
         for m, p in zip(self.motors, pos):
-            # self.io.set_motor_position(m.name, p)
-            self.io.set_motor_position(motor_name=m.name, position=0.)
+            self.io.set_motor_position(motor_name=m.name, position=p)
+            m._values['goal_position'] = rad2deg(p)
 
 
 class VrepObjectTracker(SensorsController):
@@ -60,3 +61,32 @@ class VrepObjectTracker(SensorsController):
         for s in self.sensors:
             s.position = self.io.get_object_position(object_name=s.name)
             s.orientation = self.io.get_object_orientation(object_name=s.name)
+
+
+class VrepCollisionDetector(Sensor):
+    def __init__(self, name):
+        Sensor.__init__(self, name)
+
+        self._colliding = False
+
+    @property
+    def colliding(self):
+        return self._colliding
+
+    @colliding.setter
+    def colliding(self, new_state):
+        self._colliding = new_state
+
+
+class VrepCollisionTracker(SensorsController):
+    """ Tracks collision state. """
+
+    def setup(self):
+        """ Forces a first update to trigger V-REP streaming. """
+        self.update()
+
+    def update(self):
+        """ Update the state of the collision detectors. """
+
+        for s in self.sensors:
+            s.colliding = self.io.get_collision_state(collision_name=s.name)

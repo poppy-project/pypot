@@ -29,6 +29,7 @@ Before you start building PyPot, you need to make sure that the following packag
 
 Other optional packages may be installed depending on your needs:
 
+* `V-REP Python remote API <http://www.coppeliarobotics.com/helpFiles/en/remoteApiFunctionsPython.htm>`_ (to use it with the V-REP simulator)
 * `sphinx <http://sphinx-doc.org/index.html>`_ (to build the doc)
 * `PyQt4 <http://www.riverbankcomputing.com/software/pyqt/intro>`_ (for the graphical tools)
 
@@ -54,4 +55,4 @@ On Windows and Mac, it will be necessary to download and install a FTDI (VCP) dr
 
 .. note:: On the side of the USB2Dynamixel there is a switch. This is used to select the bus you wish to communicate on. This means that you cannot control two different bus protocols at the same time.
 
-At this point you should have a PyPot ready to be used! In the extremely unlikely case where anything went wrong during the installation, please refer to the :doc:`Known Issues </knownissues>`.
+At this point you should have a PyPot ready to be used! In the extremely unlikely case where anything went wrong during the installation, please refer to the `issue tracker <https://github.com/poppy-project/pypot/issues>`_.

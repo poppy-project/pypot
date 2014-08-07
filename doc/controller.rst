@@ -228,7 +228,8 @@ As an example of what you can easily do with the Robot API, we are going to writ
     amp = 30
     freq = 0.5
 
-    robot = pypot.robot.from_config(ergo_robot_config)    ergo_robot.start_sync()
+    robot = pypot.robot.from_config(ergo_robot_config)
+    ergo_robot.start_sync()
 
     # Put the robot in its initial position
     for m in ergo_robot.motors: # Note that we always provide an alias for all motors.

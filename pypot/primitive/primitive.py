@@ -38,8 +38,7 @@ class Primitive(StoppableThread):
 
         """
     def __init__(self, robot):
-        """ At instanciation, it automatically transforms the :class:`~pypot.robot.robot.Robot`
-            into a :class:`~pypot.primitive.primitive.MockupRobot`.
+        """ At instanciation, it automatically transforms the :class:`~pypot.robot.robot.Robot` into a :class:`~pypot.primitive.primitive.MockupRobot`.
 
         .. warning:: You should not directly pass motors as argument to the primitive. If you need to, use the method :meth:`~pypot.primitive.primitive.Primitive.get_mockup_motor` to transform them into "fake" motors. See the :ref:`write_own_prim` section for details.
 
@@ -73,7 +72,7 @@ class Primitive(StoppableThread):
     def run(self):
         """ Run method of the primitive thread. You should always overwrite this method.
 
-        .. warning:: You are responsible of handling the :meth:`~primitive.primitive.Primitive.should_stop`, :meth:`~primitive.primitive.Primitive.should_pause` and :meth:`~primitive.primitive.Primitive.wait_to_resume` methods correctly so the code inside your run function matches the desired behavior. You can refer to the code of the :meth:`~primitive.primitive.LoopPrimitive.run` method of the :class:`~primitive.primitive.LoopPrimitive` as an example.
+        .. warning:: You are responsible of handling the :meth:`~pypot.utils.stoppablethread.StoppableThread.should_stop`, :meth:`~pypot.utils.stoppablethread.StoppableThread.should_pause` and :meth:`~pypot.utils.stoppablethread.StoppableThread.wait_to_resume` methods correctly so the code inside your run function matches the desired behavior. You can refer to the code of the :meth:`~pypot.utils.stoppablethread.StoppableLoopThread.run` method of the :class:`~pypot.primitive.primitive.LoopPrimitive` as an example.
 
         After termination of the run function, the primitive will automatically be removed from the list of active primitives of the :class:`~pypot.primitive.manager.PrimitiveManager`.
 
@@ -109,22 +108,21 @@ class Primitive(StoppableThread):
     def start(self):
         """ Start or restart (the :meth:`~pypot.primitive.primitive.Primitive.stop` method will automatically be called) the primitive. """
         StoppableThread.start(self)
-        self.wait_to_start()
 
         logger.info("Primitive %s started.", self)
 
-    def stop(self):
+    def stop(self, wait=True):
         """ Requests the primitive to stop. """
         logger.info("Primitive %s stopped.", self)
-        StoppableThread.stop(self)
+        StoppableThread.stop(self, wait)
 
     def is_alive(self):
         """ Determines whether the primitive is running or not.
 
-        The value will be true only when the :meth:`~primitive.primitive.Primitive.run` function is executed.
+        The value will be true only when the :meth:`~pypot.utils.stoppablethread.StoppableThread.run` function is executed.
 
         """
-        return self.runnning
+        return self.running
 
     def get_mockup_motor(self, motor):
         """ Gets the equivalent :class:`~pypot.primitive.primitive.MockupMotor`. """
@@ -153,7 +151,7 @@ class LoopPrimitive(Primitive):
         return list(reversed([(1.0 / p) for p in numpy.diff(self._recent_updates)]))
 
     def run(self):
-        """ Calls the :meth:`~pypot.primitive.primitive.Primitive.update` method at a predefined frequency (runs until stopped). """
+        """ Calls the :meth:`~pypot.utils.stoppablethread.StoppableLoopThread.update` method at a predefined frequency (runs until stopped). """
         make_update_loop(self, self._wrapped_update)
 
     def _wrapped_update(self):

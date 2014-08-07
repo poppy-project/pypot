@@ -58,7 +58,7 @@ class Robot(object):
 
     def stop_sync(self):
         """ Stops all the synchonization loop (sensor/effector controllers). """
-        if self._primitive_manager.is_alive():
+        if self._primitive_manager.running:
             self._primitive_manager.stop()
         [c.stop() for c in self._controllers]
 

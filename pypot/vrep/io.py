@@ -1,6 +1,7 @@
 import time
 
 from functools import wraps
+from threading import Lock
 
 import vrep
 
@@ -89,6 +90,9 @@ class VrepIO(AbstractIO):
         .. warning:: Only one connection can be established with the V-REP remote server API. So before trying to connect make sure that all previously started connections have been closed (see :func:`~pypot.vrep.io.close_all_connections`)
 
         """
+        self._object_handles = {}
+        self._lock = Lock()
+
         self.client_id = vrep.simxStart(vrep_host, vrep_port, True, True, 5000, 5)
         if self.client_id == -1:
             msg = ('Could not connect to V-REP server on {}:{}. '
@@ -97,14 +101,13 @@ class VrepIO(AbstractIO):
                    '(try pypot.vrep.close_all_connections())')
             raise VrepConnectionError(msg.format(vrep_host, vrep_port))
 
-        self._object_handles = {}
-
-        if scene:
+        if scene is not None:
             self.load_scene(scene, start)
 
     def close(self):
         """ Closes the current connection. """
-        vrep.simxFinish(self.client_id)
+        with self._lock:
+            vrep.simxFinish(self.client_id)
 
     def load_scene(self, scene_path, start=False):
         """ Loads a scene on the V-REP server.
@@ -117,8 +120,9 @@ class VrepIO(AbstractIO):
         """
         self.stop_simulation()
 
-        vrep.simxLoadScene(self.client_id, scene_path,
-                           True, vrep.simx_opmode_oneshot_wait)
+        with self._lock:
+            vrep.simxLoadScene(self.client_id, scene_path,
+                               True, vrep.simx_opmode_oneshot_wait)
 
         if start:
             self.start_simulation()
@@ -130,7 +134,12 @@ class VrepIO(AbstractIO):
 
             .. warning:: if you start the simulation just after stopping it, the simulation will likely not be started. Use :meth:`~pypot.vrep.io.VrepIO.restart_simulation` instead.
         """
-        vrep.simxStartSimulation(self.client_id, vrep.simx_opmode_oneshot_wait)
+        with self._lock:
+            vrep.simxStartSimulation(self.client_id, vrep.simx_opmode_oneshot_wait)
+
+        # We have to force a sleep
+        # Otherwise it may causes troubles??
+        time.sleep(0.5)
 
     def restart_simulation(self):
         """ Re-starts the simulation. """
@@ -142,62 +151,76 @@ class VrepIO(AbstractIO):
 
     def stop_simulation(self):
         """ Stops the simulation. """
-        vrep.simxStopSimulation(self.client_id, vrep.simx_opmode_oneshot_wait)
+        with self._lock:
+            vrep.simxStopSimulation(self.client_id, vrep.simx_opmode_oneshot_wait)
 
     def pause_simulation(self):
         """ Pauses the simulation. """
-        vrep.simxPauseSimulation(self.client_id, vrep.simx_opmode_oneshot_wait)
+        with self._lock:
+            vrep.simxPauseSimulation(self.client_id, vrep.simx_opmode_oneshot_wait)
 
     def resume_simulation(self):
         """ Resumes the simulation. """
-        self.start_simulation()
+        with self._lock:
+            self.start_simulation()
 
     # Get/Set Position
     @vrep_check_errorcode('Cannot get position for "{motor_name}"')
     @vrep_init_streaming
     def get_motor_position(self, motor_name):
         """ Gets the motor current position. """
-        return vrep.simxGetJointPosition(self.client_id,
-                                         self.get_object_handle(obj=motor_name),
-                                         vrep.simx_opmode_streaming)
+        h = self.get_object_handle(obj=motor_name)
+
+        with self._lock:
+            return vrep.simxGetJointPosition(self.client_id,
+                                             h,
+                                             vrep.simx_opmode_streaming)
 
     @vrep_check_errorcode('Cannot set position for "{motor_name}"')
     @vrep_init_sending
     def set_motor_position(self, motor_name, position):
         """ Sets the motor target position. """
-        return vrep.simxSetJointTargetPosition(self.client_id,
-                                               self.get_object_handle(obj=motor_name),
-                                               position,
-                                               vrep.simx_opmode_oneshot)
+        h = self.get_object_handle(obj=motor_name)
+
+        with self._lock:
+            return vrep.simxSetJointTargetPosition(self.client_id,
+                                                   h,
+                                                   position,
+                                                   vrep.simx_opmode_oneshot)
 
     @vrep_check_errorcode('Cannot get position for "{object_name}"')
     @vrep_init_streaming
     def get_object_position(self, object_name, relative_to_object=None):
         """ Gets the object position. """
+        h = self.get_object_handle(obj=object_name)
         relative_handle = (-1 if relative_to_object is None
                            else self.get_object_handle(obj=relative_to_object))
 
-        return vrep.simxGetObjectPosition(self.client_id,
-                                          self.get_object_handle(obj=object_name),
-                                          relative_handle,
-                                          vrep.simx_opmode_streaming)
+        with self._lock:
+            return vrep.simxGetObjectPosition(self.client_id,
+                                              h,
+                                              relative_handle,
+                                              vrep.simx_opmode_streaming)
 
     @vrep_check_errorcode('Cannot get orientation for "{object_name}"')
     @vrep_init_streaming
     def get_object_orientation(self, object_name, relative_to_object=None):
         """ Gets the object orientation. """
+        h = self.get_object_handle(obj=object_name)
         relative_handle = (-1 if relative_to_object is None
                            else self.get_object_handle(obj=relative_to_object))
 
-        return vrep.simxGetObjectOrientation(self.client_id,
-                                             self.get_object_handle(obj=object_name),
-                                             relative_handle,
-                                             vrep.simx_opmode_streaming)
+        with self._lock:
+            return vrep.simxGetObjectOrientation(self.client_id,
+                                                 h,
+                                                 relative_handle,
+                                                 vrep.simx_opmode_streaming)
 
     @vrep_check_errorcode('Cannot get handle for "{obj}"')
     def _get_object_handle(self, obj):
-        return vrep.simxGetObjectHandle(self.client_id, obj,
-                                        vrep.simx_opmode_oneshot_wait)
+        with self._lock:
+            return vrep.simxGetObjectHandle(self.client_id, obj,
+                                            vrep.simx_opmode_oneshot_wait)
 
     def get_object_handle(self, obj):
         """ Gets the vrep object handle. """
@@ -205,6 +228,40 @@ class VrepIO(AbstractIO):
             self._object_handles[obj] = self._get_object_handle(obj=obj)
 
         return self._object_handles[obj]
+
+    @vrep_check_errorcode('Cannot get collision state for "{collision_name}"')
+    @vrep_init_streaming
+    def get_collision_state(self, collision_name):
+        """ Gets the collision state. """
+        h = self.get_collision_handle(collision=collision_name)
+
+        with self._lock:
+            return vrep.simxReadCollision(self.client_id,
+                                          h,
+                                          vrep.simx_opmode_streaming)
+
+    @vrep_check_errorcode('Cannot get handle for "{collision}"')
+    def _get_collision_handle(self, collision):
+        with self._lock:
+            return vrep.simxGetCollisionHandle(self.client_id, collision,
+                                               vrep.simx_opmode_oneshot_wait)
+
+    def get_collision_handle(self, collision):
+        """ Gets a vrep collisions handle. """
+        if collision not in self._object_handles:
+            h = self._get_collision_handle(collision=collision)
+            self._object_handles[collision] = h
+
+        return self._object_handles[collision]
+
+    @vrep_check_errorcode('Cannot get current time')
+    @vrep_init_streaming
+    def get_simulation_current_time(self, timer='CurrentTime'):
+        """ Gets the simulation current time. """
+        with self._lock:
+            return vrep.simxGetFloatSignal(self.client_id,
+                                           timer,
+                                           vrep.simx_opmode_streaming)
 
 
 def close_all_connections():

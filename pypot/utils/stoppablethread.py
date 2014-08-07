@@ -10,7 +10,7 @@ class StoppableThread(object):
         * you can restart a thread (stop it and re-run it)
         * you can pause/resume a thread
 
-    .. warning:: It is up to the subclass to correctly respond to the stop, pause/resume signals (see :meth:`~pypot.stoppablethread.StoppableThread.run` for details).
+    .. warning:: It is up to the subclass to correctly respond to the stop, pause/resume signals (see :meth:`~pypot.utils.stoppablethread.StoppableThread.run` for details).
 
     """
     def __init__(self, setup=None, target=None, teardown=None):
@@ -41,15 +41,21 @@ class StoppableThread(object):
         self._thread.daemon = True
         self._thread.start()
 
-    def stop(self):
+    def stop(self, wait=True):
         """ Stop the thread.
 
         More precisely, sends the stopping signal to the thread. It is then up top the run method to correctly responds.
 
-         """
+        """
         if self.started:
             self._running.clear()
-            self._thread.join()
+
+            if wait:
+                if threading.current_thread() == self._thread:
+                    raise RuntimeError('Cannot wait for current thread')
+
+                self._thread.join()
+
             self._started.clear()
             self._resume.clear()
 
@@ -79,7 +85,8 @@ class StoppableThread(object):
 
     def wait_to_stop(self):
         """ Wait for the thread to terminate. """
-        self.join()
+        if self.started:
+            self.join()
 
     def setup(self):
         """ Setup method call just before the run. """
@@ -88,7 +95,7 @@ class StoppableThread(object):
     def run(self):
         """ Run method of the thread.
 
-        .. note:: In order to be stoppable (resp. pausable), this method has to check the running property - as often as possible to improve responsivness - and terminate when should_stop() (resp. should_pause()) becomes True.
+        .. note:: In order to be stoppable (resp. pausable), this method has to check the running property - as often as possible to improve responsivness - and terminate when :meth:`~pypot.utils.stoppablethread.StoppableThread.should_stop` (resp. :meth:`~pypot.utils.stoppablethread.StoppableThread.should_pause`) becomes True.
             For instance::
 
                 while self.should_stop():
@@ -138,6 +145,9 @@ class StoppableThread(object):
 def make_update_loop(thread, update_func):
     """ Makes a run loop which calls an update function at a predefined frequency. """
     while not thread.should_stop():
+        if thread.should_pause():
+            thread.wait_to_resume()
+
         start = time.time()
         update_func()
         end = time.time()
@@ -145,9 +155,6 @@ def make_update_loop(thread, update_func):
         dt = thread.period - (end - start)
         if dt > 0:
             time.sleep(dt)
-
-        if thread.should_pause():
-            thread.wait_to_resume()
 
 
 class StoppableLoopThread(StoppableThread):
