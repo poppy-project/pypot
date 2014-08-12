@@ -3,6 +3,10 @@ import glob
 
 from .io import DxlIO, DxlError
 from .error import BaseErrorHandler
+from .controller import BaseDxlController
+from .motor import DxlMXMotor, DxlAXRXMotor
+
+from ..robot import Robot
 
 
 def get_available_ports():
@@ -53,3 +57,20 @@ def find_port(ids, strict=True):
             continue
 
     raise IndexError('No suitable port found for ids {}!'.format(ids))
+
+
+def autodetect_robot():
+    """ Creates a Robot by detecting motors on all available ports. """
+    motor_controllers = []
+
+    for port in get_available_ports():
+        dxl_io = DxlIO(port)
+        ids = dxl_io.scan()
+        models = dxl_io.get_model(ids)
+        motors = [(DxlAXRXMotor(id) if model.startswith('MX')
+                   else DxlAXRXMotor(id)) for id, model in zip(ids, models)]
+
+        c = BaseDxlController(dxl_io, motors)
+        motor_controllers.append(c)
+
+    return Robot(motor_controllers)
