@@ -153,6 +153,39 @@ Since Pypot 1.7, you can now set the port to 'auto' in the dictionary. When load
 
 .. note:: While this is convenient as the same config file can be use on multiple machine, it also slows the creation of the :class:`~pypot.robot.robot.Robot`.
 
+
+Auto-detection and generation of the configuration
+--------------------------------------------------
+
+Pypot provides another way of creating your :class:`~pypot.robot.robot.Robot`. The :func:`~pypot.dynamixel.autodetect_robot` can scan all dynamixel ports plugged and find all connected motors. It then returns the corresponding :class:`~pypot.robot.robot.Robot`. For instance::
+
+    from pypot.dynamixel import autodetect_robot
+
+    my_robot = autodetect_robot()
+    my_robot.start_sync()
+
+    for m in my_robot.motors:
+        m.goal_position = 0.0
+
+.. note:: As the :func:`~pypot.dynamixel.autodetect_robot` function scans all available ports, it can be quite slow (few seconds). So this should be used to first discover the robot configuration and then export it (see below).
+
+If you have manually created your :class:`~pypot.robot.robot.Robot` (or thanks to the :func:`~pypot.dynamixel.autodetect_robot` function), you can then use the :meth:`~pypot.robot.Robot.to_config` method to export the :class:`~pypot.robot.robot.Robot` current configuration.
+
+This configuration can then be easily saved::
+
+    import json
+
+    config = my_robot.to_config()
+
+    with open('my_robot.json', 'wb') as f:
+        json.dump(config, f)
+
+You can then easily re-create your robot::
+
+    from pypot.robot import from_json
+
+    my_robot = from_json('my_robot.json')
+
 .. _sync_loop:
 
 Dynamixel controller and Synchronization Loop

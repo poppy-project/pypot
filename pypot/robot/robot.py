@@ -126,6 +126,11 @@ class Robot(object):
             m.torque_limit = 100.0
 
     def to_config(self):
+        """ Generates the config for the current robot.
+
+            .. note:: The generated config should be used as a basis and must probably be modified.
+
+        """
         from ..dynamixel.controller import DxlController
 
         dxl_controllers = [c for c in self._controllers

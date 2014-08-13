@@ -60,7 +60,7 @@ def find_port(ids, strict=True):
 
 
 def autodetect_robot():
-    """ Creates a Robot by detecting motors on all available ports. """
+    """ Creates a :class:`~pypot.robot.robot.Robot` by detecting dynamixel motors on all available ports. """
     motor_controllers = []
 
     for port in get_available_ports():
