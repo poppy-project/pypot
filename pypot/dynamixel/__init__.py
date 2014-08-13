@@ -67,7 +67,7 @@ def autodetect_robot():
         dxl_io = DxlIO(port)
         ids = dxl_io.scan()
         models = dxl_io.get_model(ids)
-        motors = [(DxlAXRXMotor(id, model=model) if model.startswith('MX')
+        motors = [(DxlMXMotor(id, model=model) if model.startswith('MX')
                    else DxlAXRXMotor(id, model=model))
                   for id, model in zip(ids, models)]
 
