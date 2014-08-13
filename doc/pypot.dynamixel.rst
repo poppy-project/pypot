@@ -5,6 +5,9 @@
 
 .. autofunction:: pypot.dynamixel.find_port
 
+.. autofunction:: pypot.dynamixel.autodetect_robot
+
+
 :mod:`~pypot.dynamixel.io` Module
 ---------------------------------
 

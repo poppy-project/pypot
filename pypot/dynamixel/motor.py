@@ -31,11 +31,13 @@ class DxlMotor(Motor):
         Those properties are synchronized with the real motors values thanks to a :class:`~pypot.dynamixel.controller.DxlController`.
 
         """
-    def __init__(self, id, name=None,
+    def __init__(self, id, name=None, model='',
                  direct=True, offset=0.0):
         self._id = id
         name = name if name else 'motor_{}'.format(id)
         Motor.__init__(self, name)
+
+        self._model = model
 
         self._direct = direct
         self._offset = offset
@@ -76,6 +78,11 @@ class DxlMotor(Motor):
     def name(self):
         """ Name of the motor (readonly). """
         return self._name
+
+    @property
+    def model(self):
+        """ Model of the motor. """
+        return self._model
 
     @property
     def present_position(self):
@@ -191,9 +198,9 @@ class DxlAXRXMotor(DxlMotor):
             * compliance margin/slope (see the robotis website for details)
 
         """
-    def __init__(self, id, name=None,
+    def __init__(self, id, name=None, model='',
                  direct=True, offset=0.0):
-        DxlMotor.__init__(self, id, name, direct, offset)
+        DxlMotor.__init__(self, id, name, model, direct, offset)
         self.max_pos = 150
 
 
@@ -204,7 +211,7 @@ DxlAXRXMotor.compliance_slope = DxlAXRXMotor._make_accessor('compliance_slope', 
 
 
 class DxlMXMotor(DxlMotor):
-    def __init__(self, id, name=None,
+    def __init__(self, id, name=None, model='',
                  direct=True, offset=0.0):
         """ This class represents the RX and MX robotis motor.
 
@@ -212,7 +219,7 @@ class DxlMXMotor(DxlMotor):
                 * PID gains (see the robotis website for details)
 
             """
-        DxlMotor.__init__(self, id, name, direct, offset)
+        DxlMotor.__init__(self, id, name, model, direct, offset)
         self.max_pos = 180
 
 DxlMXMotor.pid = DxlMXMotor._make_accessor('pid', rw=True,
