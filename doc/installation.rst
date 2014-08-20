@@ -44,7 +44,7 @@ Testing your install
 
 You can test if the installation went well with::
 
-    python -m "import pypot"
+    python -c "import pypot"
 
 You will also have to install the driver for the USB2serial port. There are two devices that have been tested with PyPot that could be used:
 
