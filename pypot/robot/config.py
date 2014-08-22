@@ -11,7 +11,8 @@ Configuration are written as Python dictionary so you can define/modify them pro
 import warnings
 import logging
 import numpy
-import time
+# import time
+import pypot.utils.pypot_time as time
 import json
 
 

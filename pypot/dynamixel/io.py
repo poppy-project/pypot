@@ -102,7 +102,8 @@ class DxlIO(AbstractIO):
         # This is  used to circumvent a bug with the driver for the USB2AX on Mac.
         # Warning: If no motor is connected on the bus, this will run forever!!!
         import platform
-        import time
+        # import time
+        import pypot.utils.pypot_time as time
 
         for i in range(max_recursion):
             self._known_models.clear()

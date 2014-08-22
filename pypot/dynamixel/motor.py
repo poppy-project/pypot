@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*
 
 import sys
-import time
+# import time
+import pypot.utils.pypot_time as time
 import numpy
 import logging
 

@@ -1,5 +1,5 @@
 import sys
-import time
+
 import numpy
 import logging
 import threading
@@ -7,7 +7,7 @@ import threading
 from collections import deque
 
 from ..utils.stoppablethread import StoppableThread, make_update_loop
-
+import pypot.utils.pypot_time as time
 
 logger = logging.getLogger(__name__)
 
@@ -102,6 +102,7 @@ class Primitive(StoppableThread):
     def elapsed_time(self):
         """ Elapsed time (in seconds) since the primitive runs. """
         return time.time() - self.t0
+
 
     # MARK: - Start/Stop handling
 

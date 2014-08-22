@@ -9,6 +9,32 @@ from ..robot.sensor import ObjectTracker
 from ..robot.config import motor_from_confignode, make_alias
 
 
+import pypot.utils.pypot_time as pypot_time
+import time as sys_time
+import vrep
+
+ROBOT = None
+
+
+class vrep_time():
+    def __init__(self, robot):
+        self.robot = robot
+
+    def get_time(self):
+        # print 'CUSTOM TIME'
+        # return self.robot._controllers[0].io.get_simulation_current_time()
+        res, tt = vrep.simxGetFloatSignal(self.robot._controllers[0].io.client_id, 'CurrentTime', vrep.simx_opmode_buffer)
+        return tt
+
+    def sleep(self, t):
+        t0 = self.get_time()
+        while (self.get_time() - t0) < t:
+            sys_time.sleep(0.01)
+
+
+
+
+
 def from_vrep(config, vrep_host, vrep_port, vrep_scene,
               tracked_objects=[], tracked_collisions=[]):
     """ Create a robot from a V-REP instance.
@@ -87,5 +113,10 @@ def from_vrep(config, vrep_host, vrep_port, vrep_scene,
         return robot._controllers[0].io.get_simulation_current_time()
 
     Robot.current_simulation_time = property(lambda robot: current_simulation_time(robot))
+
+    res, tt = vrep.simxGetFloatSignal(robot._controllers[0].io.client_id, 'CurrentTime', vrep.simx_opmode_streaming)
+    vreptime = vrep_time(robot)
+    pypot_time.time = vreptime.get_time
+    # pypot_time.sleep = vreptime.sleep
 
     return robot

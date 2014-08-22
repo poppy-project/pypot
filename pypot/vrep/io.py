@@ -1,4 +1,4 @@
-import time
+import pypot.utils.pypot_time as time
 
 from functools import wraps
 from threading import Lock
