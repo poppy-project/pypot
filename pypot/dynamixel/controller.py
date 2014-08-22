@@ -24,6 +24,7 @@ class DxlController(MotorsController):
     def teardown(self):
         """ Stops the synchronization loops. """
         [c.stop() for c in self.controllers]
+        self.io.close()
 
 
 class BaseDxlController(DxlController):

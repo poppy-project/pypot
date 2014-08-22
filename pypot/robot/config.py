@@ -138,6 +138,7 @@ def motor_from_confignode(config, motor_name):
 
     m = MotorCls(id=params['id'],
                  name=motor_name,
+                 model=params['type'],
                  direct=True if params['orientation'] == 'direct' else False,
                  offset=params['offset'])
 
