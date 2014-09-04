@@ -23,7 +23,7 @@ if __name__ == '__main__':
 
     bp = args.log_folder
     if os.path.exists(bp):
-        raise IOError('Folder already exists: {}'.format(p))
+        raise IOError('Folder already exists: {}'.format(bp))
     os.mkdir(bp)
 
     call(["python", "dxl-single-motor.py",

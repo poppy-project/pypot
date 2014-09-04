@@ -22,8 +22,6 @@ if __name__ == '__main__':
     if os.path.exists(bp):
         raise IOError('File already exists: {}'.format(bp))
 
-    print('Measuring cpu load when nothing is running.')
-
     p = psutil.Process()
     p.cpu_percent()
 
