@@ -109,6 +109,7 @@ class Primitive(StoppableThread):
     def start(self):
         """ Start or restart (the :meth:`~pypot.primitive.primitive.Primitive.stop` method will automatically be called) the primitive. """
         StoppableThread.start(self)
+        self.wait_to_start()
 
         logger.info("Primitive %s started.", self)
 
