@@ -9,6 +9,16 @@ import vrep
 from ..robot.io import AbstractIO
 
 
+vrep_error = {vrep.simx_return_ok: 'Ok',
+              vrep.simx_return_novalue_flag: 'No value',
+              vrep.simx_return_timeout_flag: 'Timeout' ,
+              vrep.simx_return_illegal_opmode_flag: 'Opmode error' ,
+              vrep.simx_return_remote_error_flag: 'Remote error',
+              vrep.simx_return_split_progress_flag: 'Progress error',
+              vrep.simx_return_local_error_flag: 'Local error' ,
+              vrep.simx_return_initialize_error_flag: 'Init error' }
+
+
 # V-REP decorators
 class vrep_check_errorcode(object):
     """ Decorator for V-REP error code checking. """
@@ -273,7 +283,7 @@ def close_all_connections():
 class VrepIOError(Exception):
     """ Base class for V-REP IO Errors. """
     def __init__(self, error_code, message):
-        message = 'V-REP error code {}: "{}"'.format(error_code, message)
+        message = 'V-REP error code {} ({}): "{}"'.format(error_code, vrep_error[error_code], message)
         Exception.__init__(self, message)
 
 

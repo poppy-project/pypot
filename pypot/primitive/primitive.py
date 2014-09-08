@@ -54,10 +54,11 @@ class Primitive(StoppableThread):
 
     def _prim_setup(self):
         logger.info("Primitive %s setup.", self)
-        self.setup()
+
 
         self.robot._primitive_manager.add(self)
         self.t0 = time.time()
+        self.setup()
 
     def setup(self):
         """ Setup methods called before the run loop.
