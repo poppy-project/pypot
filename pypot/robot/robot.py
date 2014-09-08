@@ -27,7 +27,7 @@ class Robot(object):
         self._motors = []
         self.alias = []
 
-        self._controllers = motor_controllers + sensor_controllers
+        self._controllers = sensor_controllers + motor_controllers
 
         for controller in motor_controllers:
             for m in controller.motors:

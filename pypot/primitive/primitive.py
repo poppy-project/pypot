@@ -54,11 +54,11 @@ class Primitive(StoppableThread):
 
     def _prim_setup(self):
         logger.info("Primitive %s setup.", self)
-
-
         self.robot._primitive_manager.add(self)
-        self.t0 = time.time()
         self.setup()
+
+        self.t0 = time.time()
+
 
     def setup(self):
         """ Setup methods called before the run loop.
@@ -110,6 +110,7 @@ class Primitive(StoppableThread):
     def start(self):
         """ Start or restart (the :meth:`~pypot.primitive.primitive.Primitive.stop` method will automatically be called) the primitive. """
         StoppableThread.start(self)
+        self.wait_to_start()
 
         logger.info("Primitive %s started.", self)
 
