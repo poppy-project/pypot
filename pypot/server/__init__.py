@@ -14,3 +14,4 @@
 
 from .zmqserver import ZMQServer
 from .httpserver import HTTPServer
+from .rest import RESTRobot

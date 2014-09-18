@@ -2,6 +2,14 @@ from operator import attrgetter
 
 
 class RESTRobot(object):
+    """ REST API for a Robot.
+
+    Through the REST API you can currently access:
+        * the motors list (and the aliases)
+        * the registers list for a specific motor
+        * read/write a value from/to a register of a specific motor
+
+    """
     def __init__(self, robot):
         self.robot = robot
 
@@ -22,8 +30,3 @@ class RESTRobot(object):
 
     def get_motors_alias(self):
         return self.robot.alias
-
-    # Access sensor related values
-
-    def get_sensors_list(self):
-        return [m.name for m in self.robot.sensors]

@@ -25,6 +25,7 @@ setup(name='pypot',
           'doc': ['sphinx', 'sphinx-bootstrap-theme'],
           'server': ['bottle', 'tornado', 'zmq'],
           'vrep': [],  # v-rep remote API (http://www.coppeliarobotics.com/helpFiles/en/remoteApiOverview.htm)
+          'remote-robot': ['zerorpc'],
       },
 
       entry_points={
