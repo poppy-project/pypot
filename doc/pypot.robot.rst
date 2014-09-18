@@ -54,3 +54,11 @@
     :members:
     :undoc-members:
     :show-inheritance:
+
+:mod:`remote` Module
+--------------------
+
+.. automodule:: pypot.robot.remote
+    :members:
+    :undoc-members:
+    :show-inheritance:
