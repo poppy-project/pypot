@@ -7,6 +7,9 @@ class RemoteRobot(object):
         This RemoteRobot gives you access to motors and alias.
         For each motor you can read/write all of their registers.
 
+        You also have access to primitives.
+        More specifically you can start/stop them.
+
     """
     def __init__(self, host, port):
         client = zerorpc.Client()
@@ -42,6 +45,22 @@ class RemoteRobot(object):
         for alias in client.get_motors_alias():
             motors = [getattr(self, name) for name in client.get_motors_list(alias)]
             setattr(self, alias, motors)
+
+        class Primitive(object):
+            def __init__(self, name):
+                self.name = name
+
+            def start(self):
+                client.start_primitive(self.name)
+
+            def stop(self):
+                client.stop_primitive(self.name)
+
+        self.primitives = []
+        for p in client.get_primitives_list():
+            prim = Primitive(p)
+            setattr(self, p, prim)
+            self.primitives.append(prim)
 
 
 def from_remote(host, port=4242):
