@@ -40,7 +40,7 @@ setup(name='pypot',
 
       zip_safe=True,
 
-      author='Pierre Rouanet, Matthieu Lapeyre, Haylee Fogg',
+      author='Pierre Rouanet, Steve N\'Guyen, Matthieu Lapeyre',
       author_email='pierre.rouanet@gmail.com',
       description='Python Library for Robot Control',
       url='https://github.com/poppy-project/pypot',

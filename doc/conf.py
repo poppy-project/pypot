@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# PyPot documentation build configuration file, created by
+# Pypot documentation build configuration file, created by
 # sphinx-quickstart on Sat Sep 15 18:52:00 2012.
 #
 # This file is execfile()d with the current directory set to its containing dir.
@@ -43,8 +43,8 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = 'PyPot'
-copyright = '2012, Pierre Rouanet, Matthieu Lapeyre, Haylee Fogg'
+project = 'pypot'
+copyright = '2012, Poppy-Project'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -177,7 +177,7 @@ html_static_path = ['_static']
 #html_file_suffix = None
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'PyPotdoc'
+htmlhelp_basename = 'Pypotdoc'
 
 
 # -- Options for LaTeX output --------------------------------------------------
@@ -196,8 +196,8 @@ latex_elements = {
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title, author, documentclass [howto/manual]).
 latex_documents = [
-  ('index', 'PyPot.tex', 'PyPot Documentation',
-   'Pierre Rouanet, Haylee Fogg, Matthieu Lapeyre', 'manual'),
+  ('index', 'Pypot.tex', 'Pypot Documentation',
+   'Poppy-Project', 'manual'),
 ]
 
 # The name of an image file (relative to this directory) to place at the top of
@@ -226,8 +226,8 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    ('index', 'pypot', 'PyPot Documentation',
-     ['Pierre Rouanet, Matthieu Lapeyre, Haylee Fogg'], 1)
+    ('index', 'pypot', 'Pypot Documentation',
+     ['Poppy-Project'], 1)
 ]
 
 # If true, show URL addresses after external links.
@@ -240,8 +240,8 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-  ('index', 'PyPot', 'PyPot Documentation',
-   'Pierre Rouanet, Matthieu Lapeyre, Haylee Fogg', 'PyPot', 'One line description of project.',
+  ('index', 'pypot', 'Pypot Documentation',
+   'Poppy-Project', 'Pypot', 'One line description of project.',
    'Miscellaneous'),
 ]
 
