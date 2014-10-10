@@ -11,7 +11,8 @@ from ..robot.config import motor_from_confignode, make_alias
 
 import pypot.utils.pypot_time as pypot_time
 import time as sys_time
-import vrep
+
+from remoteApiBindings import vrep
 
 ROBOT = None
 

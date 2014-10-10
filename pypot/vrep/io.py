@@ -3,7 +3,7 @@ import pypot.utils.pypot_time as time
 from functools import wraps
 from threading import Lock
 
-import vrep
+from remoteApiBindings import vrep
 
 
 from ..robot.io import AbstractIO
