@@ -38,14 +38,14 @@ import os
 import sys
 
 basepath = os.path.join(os.path.dirname(__file__), 'lib')
+version = '64Bit' if sys.maxsize > 2**32 else '32Bit'
 
 if platform.system() == 'Windows':
-    dyn_lib = os.path.join(basepath, 'remoteApi.dll')
+    dyn_lib = os.path.join(basepath, 'windows', version, 'remoteApi.dll')
 elif platform.system() == 'Darwin':
-    dyn_lib = os.path.join(basepath, 'remoteApi.dylib')
+    dyn_lib = os.path.join(basepath, 'mac', version, 'remoteApi.dylib')
 else:
-    '64Bit' if sys.maxsize > 2**32 else '32Bit'
-    dyn_lib = os.path.join(basepath, version, 'remoteApi.so')
+    dyn_lib = os.path.join(basepath, 'linux', version, 'remoteApi.so')
 
 libsimx = CDLL(dyn_lib)
 
