@@ -9,19 +9,17 @@
   <head>
     <meta charset="utf-8" />
     
-    <title>server Package &mdash; PyPot 1.7.0 documentation</title>
-
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>server Package &mdash; PyPot 1.7.1 documentation</title>
     <meta name="description" content="">
     <meta name="author" content="">
 
     
+
 <link rel="stylesheet" href="_static/css/basicstrap-base.css" type="text/css" />
-<link rel="stylesheet" href="_static/css/bootstrap.min.css" type="text/css" />
+<link rel="stylesheet" id="current-theme" href="_static/css/bootstrap3/bootstrap.min.css" type="text/css" />
+<link rel="stylesheet" id="current-adjust-theme" type="text/css" />
+
 <link rel="stylesheet" href="_static/css/font-awesome.min.css">
-<!--[if IE 7]>
-<link rel="stylesheet" href="_static/css/font-awesome-ie7.min.css">
-<![endif]-->
 
 <style type="text/css">
   body {
@@ -31,94 +29,85 @@
 }
 </style>
 
-<link rel="stylesheet" href="_static/basicstrap.css" type="text/css" />
+<link rel="stylesheet" href="_static/css/basicstrap.css" type="text/css" />
 <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
 <link rel="stylesheet" href="_static/my-css.css" type="text/css" />
-<link rel="stylesheet" href="_static/css/bootstrap-responsive.min.css" type="text/css" />
     
 <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
             URL_ROOT:    './',
-            VERSION:     '1.7.0',
+            VERSION:     '1.7.1',
             COLLAPSE_INDEX: false,
             FILE_SUFFIX: '.html',
             HAS_SOURCE:  true
   };
 </script>
-<script type="text/javascript" src="_static/js/jquery.min.js"></script>
-<script type="text/javascript" src="_static/underscore.js"></script>
-<script type="text/javascript" src="_static/doctools.js"></script>
-<script type="text/javascript" src="_static/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="_static/js/jquery.min.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/js/bootstrap3.min.js"></script>
+<script type="text/javascript" src="_static/js/jquery.cookie.min.js"></script>
+<script type="text/javascript" src="_static/js/basicstrap.js"></script>
 <script type="text/javascript">
-  $(document).ready(function(){
-    $('.show-sidebar').click(function(e) {
-       e.preventDefault();
-       if ($(".show-sidebar").html() == "Open Table Of Contents") {
-          $('.for-mobile').removeClass('hidden-phone');
-          $(".show-sidebar").html("Close Table Of Contents");
-       } else {
-          $(".show-sidebar").html("Open Table Of Contents");
-       }
-    });
-  });
-  $(window).load(function () {
-    /*
-
-     * Scroll the window to avoid the topnav bar
-     * https://github.com/twitter/bootstrap/issues/1768
-     */
-    if ($(".navbar.navbar-fixed-top").length > 0) {
-      // var navHeight = $(".navbar").height(),
-      var navHeight = 40,
-        shiftWindow = function() { scrollBy(0, -navHeight - 10); };
-
-      if (location.hash) {
-        setTimeout(shiftWindow, 1);
-      }
-
-      window.addEventListener("hashchange", shiftWindow);
-    }
-  });
 </script>
     <link rel="author" title="About these documents" href="about.html" />
-    <link rel="top" title="PyPot 1.7.0 documentation" href="index.html" />
+    <link rel="top" title="PyPot 1.7.1 documentation" href="index.html" />
     <link rel="up" title="PyPot’s API" href="api.html" />
     <link rel="next" title="FAQ" href="FAQ.html" />
     <link rel="prev" title="sensor Package" href="pypot.sensor.html" /> 
   </head>
   <body role="document">
-    <div class="navbar navbar-fixed-top " role="navigation" aria-label="top navigation">
-      <div class="navbar-inner">
-        <div class="container-fluid">
-          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+    <div id="navbar-top" class="navbar navbar-fixed-top navbar-default" role="navigation" aria-label="top navigation">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
-          </a>
-          <div role="banner">
-            <a class="brand" href="index.html">PyPot 1.7.0 documentation</a>
-          </div>
-          <div class="nav-collapse collapse">
-            <ul class="nav pull-right">
-              
-                <li>
-                <a href="genindex.html" title="General Index" accesskey="I">index</a>
-                </li>
-                <li>
-                <a href="py-modindex.html" title="Python Module Index" >modules</a>
-                </li>
-                <li>
-                <a href="FAQ.html" title="FAQ" accesskey="N">next</a>
-                </li>
-                <li>
-                <a href="pypot.sensor.html" title="sensor Package" accesskey="P">previous</a>
-                </li>
-                <li>
-                <a href="api.html" accesskey="U">PyPot&#8217;s API</a>
-                </li>
-              
-            </ul>
-          </div>
+          </button>
+          <a class="navbar-brand" href="index.html">PyPot 1.7.1 documentation</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
+              <li class="dropdown visible-xs">
+                <a role="button" id="localToc" data-toggle="dropdown" data-target="#" href="#">Table Of Contents <b class="caret"></b></a>
+                <ul class="dropdown-menu localtoc sp-localtoc" role="menu" aria-labelledby="localToc">
+                <ul>
+<li><a class="reference internal" href="#"><code class="docutils literal"><span class="pre">server</span></code> Package</a><ul>
+<li><a class="reference internal" href="#module-pypot.server.request"><code class="docutils literal"><span class="pre">request</span></code> Module</a></li>
+<li><a class="reference internal" href="#module-pypot.server.server"><code class="docutils literal"><span class="pre">server</span></code> Module</a></li>
+<li><a class="reference internal" href="#module-pypot.server.httpserver"><code class="docutils literal"><span class="pre">httpserver</span></code> Module</a></li>
+<li><a class="reference internal" href="#module-pypot.server.zmqserver"><code class="docutils literal"><span class="pre">zmqserver</span></code> Module</a></li>
+</ul>
+</li>
+</ul>
+
+                </ul>
+              </li>
+
+            
+              <li><a href="pypot.sensor.html" title="sensor Package" accesskey="P">previous </a></li>
+              <li><a href="FAQ.html" title="FAQ" accesskey="N">next </a></li>
+              <li><a href="py-modindex.html" title="Python Module Index" >modules </a></li>
+              <li><a href="genindex.html" title="General Index" accesskey="I">index </a></li>
+              <li><a href="api.html" accesskey="U">PyPot&#8217;s API</a></li>
+            
+            <li class="visible-xs"><a href="_sources/pypot.server.txt" rel="nofollow">Show Source</a></li>
+
+            <li class="visible-xs">
+                <form class="search form-search form-inline navbar-form navbar-right sp-searchbox" action="search.html" method="get">
+                  <div class="input-append input-group">
+                    <input type="text" class="search-query form-control" name="q" placeholder="Search...">
+                    <span class="input-group-btn">
+                    <input type="submit" class="btn" value="Go" />
+                    </span>
+                  </div>
+                  <input type="hidden" name="check_keywords" value="yes" />
+                  <input type="hidden" name="area" value="default" />
+                </form>
+            </li>
+          </ul>
         </div>
       </div>
     </div>
@@ -127,87 +116,43 @@
     <!-- container -->
     <div class="container-fluid">
 
-
-      
-      <div class="row-fluid hidden-desktop hidden-tablet">
-      
-<div class="span3 ">
-  <a class="visible-phone btn btn-small show-sidebar" data-toggle="collapse" data-target=".for-mobile">Open Table Of Contents</a>
-  <div class="for-mobile sidebar hidden-phone" role="navigation" aria-label="main navigation">
-  <h3><a href="index.html">Table Of Contents</a></h3>
-  <ul>
-<li><a class="reference internal" href="#"><tt class="docutils literal"><span class="pre">server</span></tt> Package</a><ul>
-<li><a class="reference internal" href="#module-pypot.server.request"><tt class="docutils literal"><span class="pre">request</span></tt> Module</a></li>
-<li><a class="reference internal" href="#module-pypot.server.server"><tt class="docutils literal"><span class="pre">server</span></tt> Module</a></li>
-<li><a class="reference internal" href="#module-pypot.server.httpserver"><tt class="docutils literal"><span class="pre">httpserver</span></tt> Module</a></li>
-<li><a class="reference internal" href="#module-pypot.server.zmqserver"><tt class="docutils literal"><span class="pre">zmqserver</span></tt> Module</a></li>
-</ul>
-</li>
-</ul>
-
-  <h4>Previous topic</h4>
-  <p class="topless"><a href="pypot.sensor.html"
-                        title="previous chapter"><tt class="docutils literal"><span class="pre">sensor</span></tt> Package</a></p>
-  <h4>Next topic</h4>
-  <p class="topless"><a href="FAQ.html"
-                        title="next chapter">FAQ</a></p>
-  <h3>This Page</h3>
-  <ul class="this-page-menu">
-    <li><a href="_sources/pypot.server.txt"
-           rel="nofollow">Show Source</a></li>
-  </ul>
-<div id="searchbox" role="search">
-  <h3>Quick search</h3>
-  <form class="search form-search" action="search.html" method="get">
-      <div class="input-append">
-        <input type="text" class="search-query" name="q">
-        <input type="submit" class="btn" value="Go" />
-      </div>
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
-    </form>
-    <p class="searchtip" style="font-size: 90%">
-    Enter search terms or a module, class or function name.
-    </p>
-</div>
-  </div>
-</div>
-      </div>
-      
-
       <!-- row -->
-      <div class="row-fluid">
+      <div class="row">
          
-<div class="span3 visible-desktop visible-tablet">
-  <div class=" sidebar hidden-phone" role="navigation" aria-label="main navigation">
+<div class="col-md-3 hidden-xs">
+  <div class="sidebar hidden-xs" role="navigation" aria-label="main navigation">
   <h3><a href="index.html">Table Of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#"><tt class="docutils literal"><span class="pre">server</span></tt> Package</a><ul>
-<li><a class="reference internal" href="#module-pypot.server.request"><tt class="docutils literal"><span class="pre">request</span></tt> Module</a></li>
-<li><a class="reference internal" href="#module-pypot.server.server"><tt class="docutils literal"><span class="pre">server</span></tt> Module</a></li>
-<li><a class="reference internal" href="#module-pypot.server.httpserver"><tt class="docutils literal"><span class="pre">httpserver</span></tt> Module</a></li>
-<li><a class="reference internal" href="#module-pypot.server.zmqserver"><tt class="docutils literal"><span class="pre">zmqserver</span></tt> Module</a></li>
+<li><a class="reference internal" href="#"><code class="docutils literal"><span class="pre">server</span></code> Package</a><ul>
+<li><a class="reference internal" href="#module-pypot.server.request"><code class="docutils literal"><span class="pre">request</span></code> Module</a></li>
+<li><a class="reference internal" href="#module-pypot.server.server"><code class="docutils literal"><span class="pre">server</span></code> Module</a></li>
+<li><a class="reference internal" href="#module-pypot.server.httpserver"><code class="docutils literal"><span class="pre">httpserver</span></code> Module</a></li>
+<li><a class="reference internal" href="#module-pypot.server.zmqserver"><code class="docutils literal"><span class="pre">zmqserver</span></code> Module</a></li>
 </ul>
 </li>
 </ul>
 
   <h4>Previous topic</h4>
   <p class="topless"><a href="pypot.sensor.html"
-                        title="previous chapter"><tt class="docutils literal"><span class="pre">sensor</span></tt> Package</a></p>
+                        title="previous chapter"><code class="docutils literal"><span class="pre">sensor</span></code> Package</a></p>
   <h4>Next topic</h4>
   <p class="topless"><a href="FAQ.html"
                         title="next chapter">FAQ</a></p>
-  <h3>This Page</h3>
-  <ul class="this-page-menu">
-    <li><a href="_sources/pypot.server.txt"
-           rel="nofollow">Show Source</a></li>
-  </ul>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/pypot.server.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
 <div id="searchbox" role="search">
   <h3>Quick search</h3>
-  <form class="search form-search" action="search.html" method="get">
-      <div class="input-append">
-        <input type="text" class="search-query" name="q">
+  <form class="search form-inline" action="search.html" method="get">
+      <div class="input-append input-group">
+        <input type="text" class="search-query form-control" name="q" placeholder="Search...">
+        <span class="input-group-btn">
         <input type="submit" class="btn" value="Go" />
+        </span>
       </div>
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
@@ -220,35 +165,35 @@
 </div> 
         
 
-        <div class="span9">
+        <div class="col-md-9">
           <div class="document" role="main">
             <div class="documentwrapper">
               <div class="bodywrapper">
                 <div class="body">
                   
   <div class="section" id="module-pypot.server">
-<span id="server-package"></span><h1><tt class="xref py py-mod docutils literal"><span class="pre">server</span></tt> Package<a class="headerlink" href="#module-pypot.server" title="Permalink to this headline">¶</a></h1>
+<span id="server-package"></span><h1><code class="xref py py-mod docutils literal"><span class="pre">server</span></code> Package<a class="headerlink" href="#module-pypot.server" title="Permalink to this headline">¶</a></h1>
 <p>Server provides a remote control of a robot through a primitive.</p>
-<p>The client can access (get or set) all motors, sensors, primitives attached to the robot (as any primitive). The communication between the server and the client follows a predefined JSON protocol (see <a class="reference internal" href="#module-pypot.server.request" title="pypot.server.request"><tt class="xref py py-mod docutils literal"><span class="pre">request</span></tt></a> for details).</p>
+<p>The client can access (get or set) all motors, sensors, primitives attached to the robot (as any primitive). The communication between the server and the client follows a predefined JSON protocol (see <a class="reference internal" href="#module-pypot.server.request" title="pypot.server.request"><code class="xref py py-mod docutils literal"><span class="pre">request</span></code></a> for details).</p>
 <p>So far, two types of server have been implemented:</p>
 <ul class="simple">
-<li>a zmq based server (see <a class="reference internal" href="#module-pypot.server.zmqserver" title="pypot.server.zmqserver"><tt class="xref py py-mod docutils literal"><span class="pre">zmqserver</span></tt></a>) and</li>
-<li>a html based server (see <a class="reference internal" href="#module-pypot.server.httpserver" title="pypot.server.httpserver"><tt class="xref py py-mod docutils literal"><span class="pre">httpserver</span></tt></a>)</li>
+<li>a zmq based server (see <a class="reference internal" href="#module-pypot.server.zmqserver" title="pypot.server.zmqserver"><code class="xref py py-mod docutils literal"><span class="pre">zmqserver</span></code></a>) and</li>
+<li>a html based server (see <a class="reference internal" href="#module-pypot.server.httpserver" title="pypot.server.httpserver"><code class="xref py py-mod docutils literal"><span class="pre">httpserver</span></code></a>)</li>
 </ul>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">All clients lives in the same primitive, so their requests are automatically combined. In future version, each client will spawn its own primitive.</p>
 </div>
 <div class="section" id="module-pypot.server.request">
-<span id="request-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">request</span></tt> Module<a class="headerlink" href="#module-pypot.server.request" title="Permalink to this headline">¶</a></h2>
+<span id="request-module"></span><h2><code class="xref py py-mod docutils literal"><span class="pre">request</span></code> Module<a class="headerlink" href="#module-pypot.server.request" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="pypot.server.request.BaseRequestHandler">
-<em class="property">class </em><tt class="descclassname">pypot.server.request.</tt><tt class="descname">BaseRequestHandler</tt><big>(</big><em>robot</em><big>)</big><a class="reference internal" href="_modules/pypot/server/request.html#BaseRequestHandler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.server.request.BaseRequestHandler" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<em class="property">class </em><code class="descclassname">pypot.server.request.</code><code class="descname">BaseRequestHandler</code><span class="sig-paren">(</span><em>robot</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/server/request.html#BaseRequestHandler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.server.request.BaseRequestHandler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="http://docs.python.org/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
 <p>JSON request (get, set or call) handler.</p>
 <dl class="method">
 <dt id="pypot.server.request.BaseRequestHandler.handle_request">
-<tt class="descname">handle_request</tt><big>(</big><em>request</em><big>)</big><a class="reference internal" href="_modules/pypot/server/request.html#BaseRequestHandler.handle_request"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.server.request.BaseRequestHandler.handle_request" title="Permalink to this definition">¶</a></dt>
+<code class="descname">handle_request</code><span class="sig-paren">(</span><em>request</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/server/request.html#BaseRequestHandler.handle_request"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.server.request.BaseRequestHandler.handle_request" title="Permalink to this definition">¶</a></dt>
 <dd><p>Handles a JSON request from the client.</p>
 <p>The request can contain at the same time a get, a set and a call request. Each of these requests can retrieve (resp. affect and call) multiple values at the same time, so for instance you can get the position, speed, load and temperature of multiple motors and get the pressure value of a sensor in the same request.</p>
 <p>The request are constructed as follows:</p>
@@ -268,7 +213,7 @@
 
 <dl class="method">
 <dt id="pypot.server.request.BaseRequestHandler.handle_get">
-<tt class="descname">handle_get</tt><big>(</big><em>request</em><big>)</big><a class="reference internal" href="_modules/pypot/server/request.html#BaseRequestHandler.handle_get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.server.request.BaseRequestHandler.handle_get" title="Permalink to this definition">¶</a></dt>
+<code class="descname">handle_get</code><span class="sig-paren">(</span><em>request</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/server/request.html#BaseRequestHandler.handle_get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.server.request.BaseRequestHandler.handle_get" title="Permalink to this definition">¶</a></dt>
 <dd><p>Handles the get field of a request.</p>
 <p>The get field is constructed as follows:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="p">{</span>
@@ -296,7 +241,7 @@
 
 <dl class="method">
 <dt id="pypot.server.request.BaseRequestHandler.handle_set">
-<tt class="descname">handle_set</tt><big>(</big><em>request</em><big>)</big><a class="reference internal" href="_modules/pypot/server/request.html#BaseRequestHandler.handle_set"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.server.request.BaseRequestHandler.handle_set" title="Permalink to this definition">¶</a></dt>
+<code class="descname">handle_set</code><span class="sig-paren">(</span><em>request</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/server/request.html#BaseRequestHandler.handle_set"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.server.request.BaseRequestHandler.handle_set" title="Permalink to this definition">¶</a></dt>
 <dd><p>Handles the set field of a request.</p>
 <p>The set field is constructed as follows:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="p">{</span>
@@ -330,7 +275,7 @@
 
 <dl class="method">
 <dt id="pypot.server.request.BaseRequestHandler.handle_call">
-<tt class="descname">handle_call</tt><big>(</big><em>request</em><big>)</big><a class="reference internal" href="_modules/pypot/server/request.html#BaseRequestHandler.handle_call"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.server.request.BaseRequestHandler.handle_call" title="Permalink to this definition">¶</a></dt>
+<code class="descname">handle_call</code><span class="sig-paren">(</span><em>request</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/server/request.html#BaseRequestHandler.handle_call"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.server.request.BaseRequestHandler.handle_call" title="Permalink to this definition">¶</a></dt>
 <dd><p>Handles the call field of a request.</p>
 <p>The call field is constructed as follows:</p>
 <div class="highlight-python"><div class="highlight"><pre>&#39;call&#39;: {
@@ -366,18 +311,18 @@
 
 </div>
 <div class="section" id="module-pypot.server.server">
-<span id="server-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">server</span></tt> Module<a class="headerlink" href="#module-pypot.server.server" title="Permalink to this headline">¶</a></h2>
+<span id="server-module"></span><h2><code class="xref py py-mod docutils literal"><span class="pre">server</span></code> Module<a class="headerlink" href="#module-pypot.server.server" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="pypot.server.server.AbstractServer">
-<em class="property">class </em><tt class="descclassname">pypot.server.server.</tt><tt class="descname">AbstractServer</tt><big>(</big><em>robot</em>, <em>handler=&lt;class 'pypot.server.request.BaseRequestHandler'&gt;</em><big>)</big><a class="reference internal" href="_modules/pypot/server/server.html#AbstractServer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.server.server.AbstractServer" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="pypot.primitive.html#pypot.primitive.primitive.Primitive" title="pypot.primitive.primitive.Primitive"><tt class="xref py py-class docutils literal"><span class="pre">pypot.primitive.primitive.Primitive</span></tt></a></p>
+<em class="property">class </em><code class="descclassname">pypot.server.server.</code><code class="descname">AbstractServer</code><span class="sig-paren">(</span><em>robot</em>, <em>handler=&lt;class 'pypot.server.request.BaseRequestHandler'&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/server/server.html#AbstractServer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.server.server.AbstractServer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="pypot.primitive.html#pypot.primitive.primitive.Primitive" title="pypot.primitive.primitive.Primitive"><code class="xref py py-class docutils literal"><span class="pre">pypot.primitive.primitive.Primitive</span></code></a></p>
 <p>Abstract Server which mostly delegate the work to a request handler.</p>
 </dd></dl>
 
 <dl class="class">
 <dt id="pypot.server.server.MyJSONEncoder">
-<em class="property">class </em><tt class="descclassname">pypot.server.server.</tt><tt class="descname">MyJSONEncoder</tt><big>(</big><em>skipkeys=False</em>, <em>ensure_ascii=True</em>, <em>check_circular=True</em>, <em>allow_nan=True</em>, <em>sort_keys=False</em>, <em>indent=None</em>, <em>separators=None</em>, <em>encoding='utf-8'</em>, <em>default=None</em><big>)</big><a class="reference internal" href="_modules/pypot/server/server.html#MyJSONEncoder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.server.server.MyJSONEncoder" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">json.encoder.JSONEncoder</span></tt></p>
+<em class="property">class </em><code class="descclassname">pypot.server.server.</code><code class="descname">MyJSONEncoder</code><span class="sig-paren">(</span><em>skipkeys=False</em>, <em>ensure_ascii=True</em>, <em>check_circular=True</em>, <em>allow_nan=True</em>, <em>sort_keys=False</em>, <em>indent=None</em>, <em>separators=None</em>, <em>encoding='utf-8'</em>, <em>default=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/server/server.html#MyJSONEncoder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.server.server.MyJSONEncoder" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">json.encoder.JSONEncoder</span></code></p>
 <p>JSONEncoder which tries to call a json property before using the enconding default function.</p>
 <p>Constructor for JSONEncoder, with sensible defaults.</p>
 <p>If skipkeys is false, then it is a TypeError to attempt
@@ -412,24 +357,24 @@ tuple.  The default is (&#8216;, &#8216;, &#8216;: &#8216;).  To get the most co
 representation you should specify (&#8216;,&#8217;, &#8216;:&#8217;) to eliminate whitespace.</p>
 <p>If specified, default is a function that gets called for objects
 that can&#8217;t otherwise be serialized.  It should return a JSON encodable
-version of the object or raise a <tt class="docutils literal"><span class="pre">TypeError</span></tt>.</p>
+version of the object or raise a <code class="docutils literal"><span class="pre">TypeError</span></code>.</p>
 <p>If encoding is not None, then all input strings will be
 transformed into unicode using that encoding prior to JSON-encoding.
 The default is UTF-8.</p>
 <dl class="method">
 <dt id="pypot.server.server.MyJSONEncoder.default">
-<tt class="descname">default</tt><big>(</big><em>obj</em><big>)</big><a class="reference internal" href="_modules/pypot/server/server.html#MyJSONEncoder.default"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.server.server.MyJSONEncoder.default" title="Permalink to this definition">¶</a></dt>
+<code class="descname">default</code><span class="sig-paren">(</span><em>obj</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/server/server.html#MyJSONEncoder.default"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.server.server.MyJSONEncoder.default" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
 </div>
 <div class="section" id="module-pypot.server.httpserver">
-<span id="httpserver-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">httpserver</span></tt> Module<a class="headerlink" href="#module-pypot.server.httpserver" title="Permalink to this headline">¶</a></h2>
+<span id="httpserver-module"></span><h2><code class="xref py py-mod docutils literal"><span class="pre">httpserver</span></code> Module<a class="headerlink" href="#module-pypot.server.httpserver" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="pypot.server.httpserver.HTTPServer">
-<em class="property">class </em><tt class="descclassname">pypot.server.httpserver.</tt><tt class="descname">HTTPServer</tt><big>(</big><em>robot</em>, <em>host='localhost'</em>, <em>port=8080</em><big>)</big><a class="reference internal" href="_modules/pypot/server/httpserver.html#HTTPServer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.server.httpserver.HTTPServer" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#pypot.server.server.AbstractServer" title="pypot.server.server.AbstractServer"><tt class="xref py py-class docutils literal"><span class="pre">pypot.server.server.AbstractServer</span></tt></a></p>
+<em class="property">class </em><code class="descclassname">pypot.server.httpserver.</code><code class="descname">HTTPServer</code><span class="sig-paren">(</span><em>robot</em>, <em>host='localhost'</em>, <em>port=8080</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/server/httpserver.html#HTTPServer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.server.httpserver.HTTPServer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pypot.server.server.AbstractServer" title="pypot.server.server.AbstractServer"><code class="xref py py-class docutils literal"><span class="pre">pypot.server.server.AbstractServer</span></code></a></p>
 <p>Bottle based HTTPServer used to remote access a robot.</p>
 <p>The server answers to the following requests:</p>
 <ul class="simple">
@@ -443,7 +388,7 @@ The default is UTF-8.</p>
 </ul>
 <dl class="method">
 <dt id="pypot.server.httpserver.HTTPServer.run">
-<tt class="descname">run</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/pypot/server/httpserver.html#HTTPServer.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.server.httpserver.HTTPServer.run" title="Permalink to this definition">¶</a></dt>
+<code class="descname">run</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/server/httpserver.html#HTTPServer.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.server.httpserver.HTTPServer.run" title="Permalink to this definition">¶</a></dt>
 <dd><p>Start the bottle server, run forever.</p>
 </dd></dl>
 
@@ -451,16 +396,16 @@ The default is UTF-8.</p>
 
 </div>
 <div class="section" id="module-pypot.server.zmqserver">
-<span id="zmqserver-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">zmqserver</span></tt> Module<a class="headerlink" href="#module-pypot.server.zmqserver" title="Permalink to this headline">¶</a></h2>
+<span id="zmqserver-module"></span><h2><code class="xref py py-mod docutils literal"><span class="pre">zmqserver</span></code> Module<a class="headerlink" href="#module-pypot.server.zmqserver" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="pypot.server.zmqserver.ZMQServer">
-<em class="property">class </em><tt class="descclassname">pypot.server.zmqserver.</tt><tt class="descname">ZMQServer</tt><big>(</big><em>robot</em>, <em>host='127.0.0.1'</em>, <em>port=8080</em><big>)</big><a class="reference internal" href="_modules/pypot/server/zmqserver.html#ZMQServer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.server.zmqserver.ZMQServer" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#pypot.server.server.AbstractServer" title="pypot.server.server.AbstractServer"><tt class="xref py py-class docutils literal"><span class="pre">pypot.server.server.AbstractServer</span></tt></a></p>
+<em class="property">class </em><code class="descclassname">pypot.server.zmqserver.</code><code class="descname">ZMQServer</code><span class="sig-paren">(</span><em>robot</em>, <em>host='127.0.0.1'</em>, <em>port=8080</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/server/zmqserver.html#ZMQServer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.server.zmqserver.ZMQServer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pypot.server.server.AbstractServer" title="pypot.server.server.AbstractServer"><code class="xref py py-class docutils literal"><span class="pre">pypot.server.server.AbstractServer</span></code></a></p>
 <p>A ZMQServer allowing remote access of a robot instance.</p>
 <p>The server used the REQ/REP zmq pattern. You should always first send a request and then read the answer.</p>
 <dl class="method">
 <dt id="pypot.server.zmqserver.ZMQServer.run">
-<tt class="descname">run</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/pypot/server/zmqserver.html#ZMQServer.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.server.zmqserver.ZMQServer.run" title="Permalink to this definition">¶</a></dt>
+<code class="descname">run</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/server/zmqserver.html#ZMQServer.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.server.zmqserver.ZMQServer.run" title="Permalink to this definition">¶</a></dt>
 <dd><p>Run an infinite REQ/REP loop.</p>
 </dd></dl>
 
@@ -480,16 +425,18 @@ The default is UTF-8.</p>
       </div><!-- /row -->
 
       <!-- row -->
-      <div class="row-fluid">
-<div class="related navbar " role="navigation" aria-label="related navigation">
+      <div class="row footer-relbar">
+<div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
   <div class="navbar-inner">
-    <ul class="nav pull-right">
+    <ul class="nav navbar-nav">
+        <li><a href="index.html">PyPot 1.7.1 documentation</a></li>
+    </ul>
+    <ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
       
-        <li><a href="genindex.html" title="General Index" >index</a></li>
-        <li><a href="py-modindex.html" title="Python Module Index" >modules</a></li>
-        <li><a href="FAQ.html" title="FAQ" >next</a></li>
         <li><a href="pypot.sensor.html" title="sensor Package" >previous</a></li>
-        <li><a href="index.html">PyPot 1.7.0 documentation</a></li>
+        <li><a href="FAQ.html" title="FAQ" >next</a></li>
+        <li><a href="py-modindex.html" title="Python Module Index" >modules</a></li>
+        <li><a href="genindex.html" title="General Index" >index</a></li>
         <li><a href="api.html" >PyPot&#8217;s API</a></li> 
       
     </ul>
@@ -500,7 +447,7 @@ The default is UTF-8.</p>
       <!-- footer -->
       <footer role="contentinfo">
           &copy; Copyright 2012, Pierre Rouanet, Matthieu Lapeyre, Haylee Fogg.
-        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.2.2.
+        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.3b1.
       </footer>
       <!-- /footer -->
 

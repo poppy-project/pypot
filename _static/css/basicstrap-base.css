@@ -1,21 +1,11 @@
 @import url("../basic.css");
 
 
-/*  Table
-    ------------------------------------------------------- */
-table.docutils {
-    border: none;
-    border-collapse: none;
-}
-
-table.docutils th,
-table.docutils td
-{
-    border: none;
-    border-collapse: none;
-}
+/* Table
+   ---------------------------------------------------------*/
 
 table {
+  border: 0;
   max-width: 100%;
   background-color: transparent;
   border-collapse: collapse;
@@ -25,59 +15,28 @@ table {
 table.docutils {
   width: 100%;
   margin-bottom: 20px;
-}
-
-table.docutils th,
-table.docutils td {
-  padding: 8px;
-  line-height: 20px;
-  text-align: left;
-  vertical-align: top;
-  border-spacing: 0 !important;
-  border-top: 1px solid #dddddd;
+  border: 1px solid #dddddd;
+  border-collapse: separate;
+  *border-collapse: collapse;
+  border-left: 0;
+  border-right: 0;
 }
 
 table.docutils th {
   font-weight: bold;
 }
-
-table.docutils thead th {
-  vertical-align: bottom;
-}
-
-table.docutils caption + thead tr:first-child th,
-table.docutils caption + thead tr:first-child td,
-table.docutils colgroup + thead tr:first-child th,
-table.docutils colgroup + thead tr:first-child td,
-table.docutils thead:first-child tr:first-child th,
-table.docutils thead:first-child tr:first-child td {
-  border-top: 0;
-}
-
-table.docutils tbody + tbody {
-  border-top: 2px solid #dddddd;
-}
-
 table.docutils th,
-table.docutils td {
-  padding: 4px 5px;
+table.docutils td
+{
+  padding: 8px;
+  line-height: 20px;
+  text-align: left;
+  vertical-align: top;
+  border: none;
+  border-spacing: 0 !important;
+  border-collapse: none;
+  border-top: 1px solid #dddddd;
 }
-
-table.docutils {
-  border: 1px solid #dddddd;
-  border-collapse: separate;
-  *border-collapse: collapse;
-  border-left: 0;
-  -webkit-border-radius: 4px;
-     -moz-border-radius: 4px;
-          border-radius: 4px;
-}
-
-table.docutils th,
-table.docutils td {
-  border-left: 1px solid #dddddd;
-}
-
 table.docutils caption + thead tr:first-child th,
 table.docutils caption + tbody tr:first-child th,
 table.docutils caption + tbody tr:first-child td,
@@ -89,77 +48,119 @@ table.docutils tbody:first-child tr:first-child th,
 table.docutils tbody:first-child tr:first-child td {
   border-top: 0;
 }
-
-table.docutils thead:first-child tr:first-child th:first-child,
-table.docutils tbody:first-child tr:first-child td:first-child {
-  -webkit-border-top-left-radius: 4px;
-          border-top-left-radius: 4px;
-  -moz-border-radius-topleft: 4px;
+table.docutils thead th {
+  vertical-align: bottom;
+}
+table.docutils tbody + tbody {
+  border-top: 2px solid #dddddd;
 }
 
-table.docutils thead:first-child tr:first-child th:last-child,
-table.docutils tbody:first-child tr:first-child td:last-child {
-  -webkit-border-top-right-radius: 4px;
-          border-top-right-radius: 4px;
-  -moz-border-radius-topright: 4px;
+/* Table-bordered
+   ---------------------------------------------------------*/
+
+table.table-bordered {
+  border-top: 1px solid #dddddd;
+  border-left: 1px solid #dddddd;
+  border-right: none;
+}
+table.table-bordered > thead > tr > th,
+table.table-bordered > tbody > tr > th,
+table.table-bordered > tfoot > tr > th,
+table.table-bordered > thead > tr > td,
+table.table-bordered > tbody > tr > td,
+table.table-bordered > tfoot > tr > td {
+  border-left: none;
+  border-bottom-width: 0;
 }
 
-table.docutils thead:last-child tr:last-child th:first-child,
-table.docutils tbody:last-child tr:last-child td:first-child,
-table.docutils tfoot:last-child tr:last-child td:first-child {
-  -webkit-border-radius: 0 0 0 4px;
-     -moz-border-radius: 0 0 0 4px;
-          border-radius: 0 0 0 4px;
-  -webkit-border-bottom-left-radius: 4px;
-          border-bottom-left-radius: 4px;
-  -moz-border-radius-bottomleft: 4px;
+/* Highlight Table
+   ---------------------------------------------------------*/
+
+.highlighttable .code pre {
+    font-size: 12px;
 }
 
-table.docutils thead:last-child tr:last-child th:last-child,
-table.docutils tbody:last-child tr:last-child td:last-child,
-table.docutils tfoot:last-child tr:last-child td:last-child {
-  -webkit-border-bottom-right-radius: 4px;
-          border-bottom-right-radius: 4px;
-  -moz-border-radius-bottomright: 4px;
+.highlighttable .linenos pre {
+    word-break: normal;
+    font-size: 12px;
 }
 
-table.docutils caption + thead tr:first-child th:first-child,
-table.docutils caption + tbody tr:first-child td:first-child,
-table.docutils colgroup + thead tr:first-child th:first-child,
-table.docutils colgroup + tbody tr:first-child td:first-child {
-  -webkit-border-top-left-radius: 4px;
-          border-top-left-radius: 4px;
-  -moz-border-radius-topleft: 4px;
+div.highlight {
+  background: none;
 }
 
-table.docutils caption + thead tr:first-child th:last-child,
-table.docutils caption + tbody tr:first-child td:last-child,
-table.docutils colgroup + thead tr:first-child th:last-child,
-table.docutils colgroup + tbody tr:first-child td:last-child {
-  -webkit-border-top-right-radius: 4px;
-          border-top-right-radius: 4px;
-  -moz-border-radius-topleft: 4px;
+/* Field-list
+   ---------------------------------------------------------*/
+
+table.field-list {
+  width: auto;
+  border: none;
 }
 
-table.docutils tbody tr:nth-child(odd) td,
-table.docutils tbody tr:nth-child(odd) th {
-  background-color: #f9f9f9;
+/* Citation
+   ---------------------------------------------------------*/
+
+table.citation{
+    width: auto;
+    margin-bottom: 0;
+    border: none;
+}
+table.citation td.label {
+  font-size: 100%;
+  display: block;
+  line-height: normal;
+  background: inherit;
 }
 
-table.docutils tbody tr:hover td,
-table.docutils tbody tr:hover th {
-  background-color: #f5f5f5;
+/* Footnote
+   ---------------------------------------------------------*/
+
+a.footnote-reference {
+  vertical-align: super;
+  font-size: 75%;
+}
+
+table.footnote td.label {
+  font-size: 100%;
+  display: block;
+  line-height: normal;
+  background: inherit;
+}
+
+table.footnote {
+  width: auto;
+  margin-bottom: 0px;
+  border: none;
+}
+
+
+/* Footer
+   ---------------------------------------------------------*/
+
+footer {
+  width: 100%;
+  margin: 0;
+  text-align: center;
+  padding: 0px;
+  padding-left: auto;
+  padding-right: auto;
 }
 
 /*  Sidebar
     ------------------------------------------------------- */
 div.sidebar {
-    border: none;
-    margin: 0;
-    padding: 0;
-    background: none;
-    width: 100%;
-    float: none;
+  border: none;
+  margin: 0;
+  padding: 0;
+  background: none;
+  width: 100%;
+  float: none;
+}
+
+div.sidebar ul:second-child {
+  color: red;
+  background-color: #000 !important;
+  list-style: none !important;
 }
 
 /* Admonition styles
@@ -177,23 +178,23 @@ div.admonition {
 }
 
 div.admonition p {
-    margin: 0.5em 1em 0.5em 1em;
-    padding: 0;
+  margin: 0.5em 1em 0.5em 1em;
+  padding: 0;
 }
 
 div.admonition pre {
-    margin: 0.4em 1em 0.4em 1em;
+  margin: 0.4em 1em 0.4em 1em;
 }
 
 div.admonition p.admonition-title {
-    margin: 0;
-    padding: 0.1em 0 0.1em 0.5em;
-    font-weight: bold;
+  margin: 0;
+  padding: 0.1em 0 0.1em 0.5em;
+  font-weight: bold;
 }
 
 div.admonition ul, div.admonition ol {
-    margin: 0.1em 0.5em 0.5em 3em;
-    padding: 0;
+  margin: 0.1em 0.5em 0.5em 3em;
+  padding: 0;
 }
 
 /* -- danger, error -- */
@@ -258,13 +259,11 @@ a.headerlink {
  padding-left: 5px;
 }
 
-h2, h3, h4, h5, h6 {
- border-bottom: 1px solid #d0d0d0;
-}
-
+/*
 #searchbox .search-query {
   width: 60%;
 }
+*/
 
 div.topic {
   min-height: 20px;
@@ -282,3 +281,63 @@ div.topic {
           border-radius: 3px;
 }
 
+ul.sp-localtoc {
+   list-style: none;
+   padding: 0;
+}
+ul.sp-localtoc ul{
+   list-style: none;
+   padding-left: 0;
+}
+ul.sp-localtoc ul a{
+   padding-left: 15px;
+   padding-top:7px;
+   padding-bottom:7px;
+   display: block;
+   text-decoration: none;
+   color: #777777;
+}
+ul.sp-localtoc ul a:hover{
+   color: #555555;
+}
+ul.sp-localtoc ul ul{
+   list-style: none;
+}
+ul.sp-localtoc ul ul a{
+   padding-left: 25px;
+}
+ul.sp-localtoc ul ul ul a{
+   padding-left: 35px;
+}
+ul.sp-localtoc ul ul ul ul a{
+   padding-left: 45px;
+}
+ul.sp-localtoc ul ul ul ul ul a{
+   padding-left: 55px;
+}
+ul.sp-localtoc ul ul ul ul ul a{
+   padding-left: 65px;
+}
+div.navbar-inverse ul.sp-localtoc ul a{
+   color: #999999;
+}
+div.navbar-inverse ul.sp-localtoc ul a:hover{
+   color: #ffffff;
+}
+
+
+div.footer-relbar {
+  margin-top:10px;
+}
+
+div.sidebar ul {
+    list-style: none;
+    padding-left: 10px;
+}
+div.sidebar ul ul {
+    list-style: initial;
+    padding-left: 40px;
+}
+div.sidebar p.topless {
+    padding-left: 10px;
+}

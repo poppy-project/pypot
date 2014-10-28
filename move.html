@@ -9,19 +9,17 @@
   <head>
     <meta charset="utf-8" />
     
-    <title>Move recording and playing &mdash; PyPot 1.7.0 documentation</title>
-
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Move recording and playing &mdash; PyPot 1.7.1 documentation</title>
     <meta name="description" content="">
     <meta name="author" content="">
 
     
+
 <link rel="stylesheet" href="_static/css/basicstrap-base.css" type="text/css" />
-<link rel="stylesheet" href="_static/css/bootstrap.min.css" type="text/css" />
+<link rel="stylesheet" id="current-theme" href="_static/css/bootstrap3/bootstrap.min.css" type="text/css" />
+<link rel="stylesheet" id="current-adjust-theme" type="text/css" />
+
 <link rel="stylesheet" href="_static/css/font-awesome.min.css">
-<!--[if IE 7]>
-<link rel="stylesheet" href="_static/css/font-awesome-ie7.min.css">
-<![endif]-->
 
 <style type="text/css">
   body {
@@ -31,90 +29,68 @@
 }
 </style>
 
-<link rel="stylesheet" href="_static/basicstrap.css" type="text/css" />
+<link rel="stylesheet" href="_static/css/basicstrap.css" type="text/css" />
 <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
 <link rel="stylesheet" href="_static/my-css.css" type="text/css" />
-<link rel="stylesheet" href="_static/css/bootstrap-responsive.min.css" type="text/css" />
     
 <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
             URL_ROOT:    './',
-            VERSION:     '1.7.0',
+            VERSION:     '1.7.1',
             COLLAPSE_INDEX: false,
             FILE_SUFFIX: '.html',
             HAS_SOURCE:  true
   };
 </script>
-<script type="text/javascript" src="_static/js/jquery.min.js"></script>
-<script type="text/javascript" src="_static/underscore.js"></script>
-<script type="text/javascript" src="_static/doctools.js"></script>
-<script type="text/javascript" src="_static/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="_static/js/jquery.min.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/js/bootstrap3.min.js"></script>
+<script type="text/javascript" src="_static/js/jquery.cookie.min.js"></script>
+<script type="text/javascript" src="_static/js/basicstrap.js"></script>
 <script type="text/javascript">
-  $(document).ready(function(){
-    $('.show-sidebar').click(function(e) {
-       e.preventDefault();
-       if ($(".show-sidebar").html() == "Open Table Of Contents") {
-          $('.for-mobile').removeClass('hidden-phone');
-          $(".show-sidebar").html("Close Table Of Contents");
-       } else {
-          $(".show-sidebar").html("Open Table Of Contents");
-       }
-    });
-  });
-  $(window).load(function () {
-    /*
-
-     * Scroll the window to avoid the topnav bar
-     * https://github.com/twitter/bootstrap/issues/1768
-     */
-    if ($(".navbar.navbar-fixed-top").length > 0) {
-      // var navHeight = $(".navbar").height(),
-      var navHeight = 40,
-        shiftWindow = function() { scrollBy(0, -navHeight - 10); };
-
-      if (location.hash) {
-        setTimeout(shiftWindow, 1);
-      }
-
-      window.addEventListener("hashchange", shiftWindow);
-    }
-  });
 </script>
     <link rel="author" title="About these documents" href="about.html" />
-    <link rel="top" title="PyPot 1.7.0 documentation" href="index.html" />
+    <link rel="top" title="PyPot 1.7.1 documentation" href="index.html" />
     <link rel="next" title="PyPot’s API" href="api.html" />
     <link rel="prev" title="Herborist: the configuration tool" href="herborist.html" /> 
   </head>
   <body role="document">
-    <div class="navbar navbar-fixed-top " role="navigation" aria-label="top navigation">
-      <div class="navbar-inner">
-        <div class="container-fluid">
-          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+    <div id="navbar-top" class="navbar navbar-fixed-top navbar-default" role="navigation" aria-label="top navigation">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
-          </a>
-          <div role="banner">
-            <a class="brand" href="index.html">PyPot 1.7.0 documentation</a>
-          </div>
-          <div class="nav-collapse collapse">
-            <ul class="nav pull-right">
-              
-                <li>
-                <a href="genindex.html" title="General Index" accesskey="I">index</a>
-                </li>
-                <li>
-                <a href="py-modindex.html" title="Python Module Index" >modules</a>
-                </li>
-                <li>
-                <a href="api.html" title="PyPot’s API" accesskey="N">next</a>
-                </li>
-                <li>
-                <a href="herborist.html" title="Herborist: the configuration tool" accesskey="P">previous</a>
-                </li>
-              
-            </ul>
-          </div>
+          </button>
+          <a class="navbar-brand" href="index.html">PyPot 1.7.1 documentation</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
+
+            
+              <li><a href="herborist.html" title="Herborist: the configuration tool" accesskey="P">previous </a></li>
+              <li><a href="api.html" title="PyPot’s API" accesskey="N">next </a></li>
+              <li><a href="py-modindex.html" title="Python Module Index" >modules </a></li>
+              <li><a href="genindex.html" title="General Index" accesskey="I">index </a></li>
+            
+            <li class="visible-xs"><a href="_sources/move.txt" rel="nofollow">Show Source</a></li>
+
+            <li class="visible-xs">
+                <form class="search form-search form-inline navbar-form navbar-right sp-searchbox" action="search.html" method="get">
+                  <div class="input-append input-group">
+                    <input type="text" class="search-query form-control" name="q" placeholder="Search...">
+                    <span class="input-group-btn">
+                    <input type="submit" class="btn" value="Go" />
+                    </span>
+                  </div>
+                  <input type="hidden" name="check_keywords" value="yes" />
+                  <input type="hidden" name="area" value="default" />
+                </form>
+            </li>
+          </ul>
         </div>
       </div>
     </div>
@@ -123,65 +99,32 @@
     <!-- container -->
     <div class="container-fluid">
 
-
-      
-      <div class="row-fluid hidden-desktop hidden-tablet">
-      
-<div class="span3 ">
-  <a class="visible-phone btn btn-small show-sidebar" data-toggle="collapse" data-target=".for-mobile">Open Table Of Contents</a>
-  <div class="for-mobile sidebar hidden-phone" role="navigation" aria-label="main navigation">
-  <h4>Previous topic</h4>
-  <p class="topless"><a href="herborist.html"
-                        title="previous chapter">Herborist: the configuration tool</a></p>
-  <h4>Next topic</h4>
-  <p class="topless"><a href="api.html"
-                        title="next chapter">PyPot&#8217;s API</a></p>
-  <h3>This Page</h3>
-  <ul class="this-page-menu">
-    <li><a href="_sources/move.txt"
-           rel="nofollow">Show Source</a></li>
-  </ul>
-<div id="searchbox" role="search">
-  <h3>Quick search</h3>
-  <form class="search form-search" action="search.html" method="get">
-      <div class="input-append">
-        <input type="text" class="search-query" name="q">
-        <input type="submit" class="btn" value="Go" />
-      </div>
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
-    </form>
-    <p class="searchtip" style="font-size: 90%">
-    Enter search terms or a module, class or function name.
-    </p>
-</div>
-  </div>
-</div>
-      </div>
-      
-
       <!-- row -->
-      <div class="row-fluid">
+      <div class="row">
          
-<div class="span3 visible-desktop visible-tablet">
-  <div class=" sidebar hidden-phone" role="navigation" aria-label="main navigation">
+<div class="col-md-3 hidden-xs">
+  <div class="sidebar hidden-xs" role="navigation" aria-label="main navigation">
   <h4>Previous topic</h4>
   <p class="topless"><a href="herborist.html"
                         title="previous chapter">Herborist: the configuration tool</a></p>
   <h4>Next topic</h4>
   <p class="topless"><a href="api.html"
                         title="next chapter">PyPot&#8217;s API</a></p>
-  <h3>This Page</h3>
-  <ul class="this-page-menu">
-    <li><a href="_sources/move.txt"
-           rel="nofollow">Show Source</a></li>
-  </ul>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/move.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
 <div id="searchbox" role="search">
   <h3>Quick search</h3>
-  <form class="search form-search" action="search.html" method="get">
-      <div class="input-append">
-        <input type="text" class="search-query" name="q">
+  <form class="search form-inline" action="search.html" method="get">
+      <div class="input-append input-group">
+        <input type="text" class="search-query form-control" name="q" placeholder="Search...">
+        <span class="input-group-btn">
         <input type="submit" class="btn" value="Go" />
+        </span>
       </div>
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
@@ -194,7 +137,7 @@
 </div> 
         
 
-        <div class="span9">
+        <div class="col-md-9">
           <div class="document" role="main">
             <div class="documentwrapper">
               <div class="bodywrapper">
@@ -202,18 +145,18 @@
                   
   <div class="section" id="move-recording-and-playing">
 <span id="move"></span><h1>Move recording and playing<a class="headerlink" href="#move-recording-and-playing" title="Permalink to this headline">¶</a></h1>
-<p>The <a class="reference internal" href="pypot.primitive.html#module-pypot.primitive.move" title="pypot.primitive.move"><tt class="xref py py-mod docutils literal"><span class="pre">move</span></tt></a> module contains utility classes to help you record and play moves. Those <a class="reference internal" href="pypot.primitive.html#pypot.primitive.move.Move" title="pypot.primitive.move.Move"><tt class="xref py py-class docutils literal"><span class="pre">Move</span></tt></a> is simply defined as a sequence of positions.</p>
+<p>The <a class="reference internal" href="pypot.primitive.html#module-pypot.primitive.move" title="pypot.primitive.move"><code class="xref py py-mod docutils literal"><span class="pre">move</span></code></a> module contains utility classes to help you record and play moves. Those <a class="reference internal" href="pypot.primitive.html#pypot.primitive.move.Move" title="pypot.primitive.move.Move"><code class="xref py py-class docutils literal"><span class="pre">Move</span></code></a> is simply defined as a sequence of positions.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">To keep the <a class="reference internal" href="pypot.primitive.html#module-pypot.primitive.move" title="pypot.primitive.move"><tt class="xref py py-mod docutils literal"><span class="pre">move</span></tt></a> module as simple as possible, you can only define <a class="reference internal" href="pypot.primitive.html#pypot.primitive.move.Move" title="pypot.primitive.move.Move"><tt class="xref py py-class docutils literal"><span class="pre">Move</span></tt></a> as a predefined frequency and you can not define keyframes whenever you want. This could be added if it seems like it would be useful.</p>
+<p class="last">To keep the <a class="reference internal" href="pypot.primitive.html#module-pypot.primitive.move" title="pypot.primitive.move"><code class="xref py py-mod docutils literal"><span class="pre">move</span></code></a> module as simple as possible, you can only define <a class="reference internal" href="pypot.primitive.html#pypot.primitive.move.Move" title="pypot.primitive.move.Move"><code class="xref py py-class docutils literal"><span class="pre">Move</span></code></a> as a predefined frequency and you can not define keyframes whenever you want. This could be added if it seems like it would be useful.</p>
 </div>
-<p>You can use the <a class="reference internal" href="pypot.primitive.html#module-pypot.primitive.move" title="pypot.primitive.move"><tt class="xref py py-mod docutils literal"><span class="pre">move</span></tt></a> module to:</p>
+<p>You can use the <a class="reference internal" href="pypot.primitive.html#module-pypot.primitive.move" title="pypot.primitive.move"><code class="xref py py-mod docutils literal"><span class="pre">move</span></code></a> module to:</p>
 <ul class="simple">
 <li>record moves,</li>
 <li>play moves,</li>
 <li>save/load them on the disk.</li>
 </ul>
-<p>The <a class="reference internal" href="pypot.primitive.html#pypot.primitive.move.MoveRecorder" title="pypot.primitive.move.MoveRecorder"><tt class="xref py py-class docutils literal"><span class="pre">MoveRecorder</span></tt></a> and <a class="reference internal" href="pypot.primitive.html#pypot.primitive.move.MovePlayer" title="pypot.primitive.move.MovePlayer"><tt class="xref py py-class docutils literal"><span class="pre">MovePlayer</span></tt></a> are defined as subclass of <a class="reference internal" href="pypot.primitive.html#pypot.primitive.primitive.LoopPrimitive" title="pypot.primitive.primitive.LoopPrimitive"><tt class="xref py py-class docutils literal"><span class="pre">LoopPrimitive</span></tt></a> and can thus be used as such. For instance, if you want to record a 50Hz move on all the motor of an ergo-robot you can simply use the following code:</p>
+<p>The <a class="reference internal" href="pypot.primitive.html#pypot.primitive.move.MoveRecorder" title="pypot.primitive.move.MoveRecorder"><code class="xref py py-class docutils literal"><span class="pre">MoveRecorder</span></code></a> and <a class="reference internal" href="pypot.primitive.html#pypot.primitive.move.MovePlayer" title="pypot.primitive.move.MovePlayer"><code class="xref py py-class docutils literal"><span class="pre">MovePlayer</span></code></a> are defined as subclass of <a class="reference internal" href="pypot.primitive.html#pypot.primitive.primitive.LoopPrimitive" title="pypot.primitive.primitive.LoopPrimitive"><code class="xref py py-class docutils literal"><span class="pre">LoopPrimitive</span></code></a> and can thus be used as such. For instance, if you want to record a 50Hz move on all the motor of an ergo-robot you can simply use the following code:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">time</span>
 <span class="kn">import</span> <span class="nn">pypot.robot</span>
 
@@ -248,7 +191,7 @@
 </div>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
-<p class="last">It is important to note that you should be sure that you primitive actually runs at the same speed that the move has been recorded. If the player can not run as fast as the framerate of the recorded <a class="reference internal" href="pypot.primitive.html#pypot.primitive.move.Move" title="pypot.primitive.move.Move"><tt class="xref py py-class docutils literal"><span class="pre">Move</span></tt></a>, it will be played slowly resulting in a slower version of your move.</p>
+<p class="last">It is important to note that you should be sure that you primitive actually runs at the same speed that the move has been recorded. If the player can not run as fast as the framerate of the recorded <a class="reference internal" href="pypot.primitive.html#pypot.primitive.move.Move" title="pypot.primitive.move.Move"><code class="xref py py-class docutils literal"><span class="pre">Move</span></code></a>, it will be played slowly resulting in a slower version of your move.</p>
 </div>
 </div>
 
@@ -263,16 +206,18 @@
       </div><!-- /row -->
 
       <!-- row -->
-      <div class="row-fluid">
-<div class="related navbar " role="navigation" aria-label="related navigation">
+      <div class="row footer-relbar">
+<div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
   <div class="navbar-inner">
-    <ul class="nav pull-right">
+    <ul class="nav navbar-nav">
+        <li><a href="index.html">PyPot 1.7.1 documentation</a></li>
+    </ul>
+    <ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
       
-        <li><a href="genindex.html" title="General Index" >index</a></li>
-        <li><a href="py-modindex.html" title="Python Module Index" >modules</a></li>
-        <li><a href="api.html" title="PyPot’s API" >next</a></li>
         <li><a href="herborist.html" title="Herborist: the configuration tool" >previous</a></li>
-        <li><a href="index.html">PyPot 1.7.0 documentation</a></li> 
+        <li><a href="api.html" title="PyPot’s API" >next</a></li>
+        <li><a href="py-modindex.html" title="Python Module Index" >modules</a></li>
+        <li><a href="genindex.html" title="General Index" >index</a></li> 
       
     </ul>
   </div>
@@ -282,7 +227,7 @@
       <!-- footer -->
       <footer role="contentinfo">
           &copy; Copyright 2012, Pierre Rouanet, Matthieu Lapeyre, Haylee Fogg.
-        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.2.2.
+        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.3b1.
       </footer>
       <!-- /footer -->
 

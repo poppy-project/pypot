@@ -9,19 +9,17 @@
   <head>
     <meta charset="utf-8" />
     
-    <title>Dynamixel Low-level IO &mdash; PyPot 1.7.0 documentation</title>
-
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamixel Low-level IO &mdash; PyPot 1.7.1 documentation</title>
     <meta name="description" content="">
     <meta name="author" content="">
 
     
+
 <link rel="stylesheet" href="_static/css/basicstrap-base.css" type="text/css" />
-<link rel="stylesheet" href="_static/css/bootstrap.min.css" type="text/css" />
+<link rel="stylesheet" id="current-theme" href="_static/css/bootstrap3/bootstrap.min.css" type="text/css" />
+<link rel="stylesheet" id="current-adjust-theme" type="text/css" />
+
 <link rel="stylesheet" href="_static/css/font-awesome.min.css">
-<!--[if IE 7]>
-<link rel="stylesheet" href="_static/css/font-awesome-ie7.min.css">
-<![endif]-->
 
 <style type="text/css">
   body {
@@ -31,94 +29,84 @@
 }
 </style>
 
-<link rel="stylesheet" href="_static/basicstrap.css" type="text/css" />
+<link rel="stylesheet" href="_static/css/basicstrap.css" type="text/css" />
 <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
 <link rel="stylesheet" href="_static/my-css.css" type="text/css" />
-<link rel="stylesheet" href="_static/css/bootstrap-responsive.min.css" type="text/css" />
     
 <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
             URL_ROOT:    './',
-            VERSION:     '1.7.0',
+            VERSION:     '1.7.1',
             COLLAPSE_INDEX: false,
             FILE_SUFFIX: '.html',
             HAS_SOURCE:  true
   };
 </script>
-<script type="text/javascript" src="_static/js/jquery.min.js"></script>
-<script type="text/javascript" src="_static/underscore.js"></script>
-<script type="text/javascript" src="_static/doctools.js"></script>
-<script type="text/javascript" src="_static/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="_static/js/jquery.min.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/js/bootstrap3.min.js"></script>
+<script type="text/javascript" src="_static/js/jquery.cookie.min.js"></script>
+<script type="text/javascript" src="_static/js/basicstrap.js"></script>
 <script type="text/javascript">
-  $(document).ready(function(){
-    $('.show-sidebar').click(function(e) {
-       e.preventDefault();
-       if ($(".show-sidebar").html() == "Open Table Of Contents") {
-          $('.for-mobile').removeClass('hidden-phone');
-          $(".show-sidebar").html("Close Table Of Contents");
-       } else {
-          $(".show-sidebar").html("Open Table Of Contents");
-       }
-    });
-  });
-  $(window).load(function () {
-    /*
-
-     * Scroll the window to avoid the topnav bar
-     * https://github.com/twitter/bootstrap/issues/1768
-     */
-    if ($(".navbar.navbar-fixed-top").length > 0) {
-      // var navHeight = $(".navbar").height(),
-      var navHeight = 40,
-        shiftWindow = function() { scrollBy(0, -navHeight - 10); };
-
-      if (location.hash) {
-        setTimeout(shiftWindow, 1);
-      }
-
-      window.addEventListener("hashchange", shiftWindow);
-    }
-  });
 </script>
     <link rel="author" title="About these documents" href="about.html" />
-    <link rel="top" title="PyPot 1.7.0 documentation" href="index.html" />
+    <link rel="top" title="PyPot 1.7.1 documentation" href="index.html" />
     <link rel="up" title="Controlling robot" href="controlling_robot.html" />
     <link rel="next" title="Robot Controller" href="controller.html" />
     <link rel="prev" title="Controlling robot" href="controlling_robot.html" /> 
   </head>
   <body role="document">
-    <div class="navbar navbar-fixed-top " role="navigation" aria-label="top navigation">
-      <div class="navbar-inner">
-        <div class="container-fluid">
-          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+    <div id="navbar-top" class="navbar navbar-fixed-top navbar-default" role="navigation" aria-label="top navigation">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
-          </a>
-          <div role="banner">
-            <a class="brand" href="index.html">PyPot 1.7.0 documentation</a>
-          </div>
-          <div class="nav-collapse collapse">
-            <ul class="nav pull-right">
-              
-                <li>
-                <a href="genindex.html" title="General Index" accesskey="I">index</a>
-                </li>
-                <li>
-                <a href="py-modindex.html" title="Python Module Index" >modules</a>
-                </li>
-                <li>
-                <a href="controller.html" title="Robot Controller" accesskey="N">next</a>
-                </li>
-                <li>
-                <a href="controlling_robot.html" title="Controlling robot" accesskey="P">previous</a>
-                </li>
-                <li>
-                <a href="controlling_robot.html" accesskey="U">Controlling robot</a>
-                </li>
-              
-            </ul>
-          </div>
+          </button>
+          <a class="navbar-brand" href="index.html">PyPot 1.7.1 documentation</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
+              <li class="dropdown visible-xs">
+                <a role="button" id="localToc" data-toggle="dropdown" data-target="#" href="#">Table Of Contents <b class="caret"></b></a>
+                <ul class="dropdown-menu localtoc sp-localtoc" role="menu" aria-labelledby="localToc">
+                <ul>
+<li><a class="reference internal" href="#">Dynamixel Low-level IO</a><ul>
+<li><a class="reference internal" href="#opening-closing-a-communication-port">Opening/Closing a communication port</a></li>
+<li><a class="reference internal" href="#finding-motors">Finding motors</a></li>
+<li><a class="reference internal" href="#low-level-control">Low-level control</a></li>
+</ul>
+</li>
+</ul>
+
+                </ul>
+              </li>
+
+            
+              <li><a href="controlling_robot.html" title="Controlling robot" accesskey="P">previous </a></li>
+              <li><a href="controller.html" title="Robot Controller" accesskey="N">next </a></li>
+              <li><a href="py-modindex.html" title="Python Module Index" >modules </a></li>
+              <li><a href="genindex.html" title="General Index" accesskey="I">index </a></li>
+              <li><a href="controlling_robot.html" accesskey="U">Controlling robot</a></li>
+            
+            <li class="visible-xs"><a href="_sources/dynamixel.txt" rel="nofollow">Show Source</a></li>
+
+            <li class="visible-xs">
+                <form class="search form-search form-inline navbar-form navbar-right sp-searchbox" action="search.html" method="get">
+                  <div class="input-append input-group">
+                    <input type="text" class="search-query form-control" name="q" placeholder="Search...">
+                    <span class="input-group-btn">
+                    <input type="submit" class="btn" value="Go" />
+                    </span>
+                  </div>
+                  <input type="hidden" name="check_keywords" value="yes" />
+                  <input type="hidden" name="area" value="default" />
+                </form>
+            </li>
+          </ul>
         </div>
       </div>
     </div>
@@ -127,58 +115,11 @@
     <!-- container -->
     <div class="container-fluid">
 
-
-      
-      <div class="row-fluid hidden-desktop hidden-tablet">
-      
-<div class="span3 ">
-  <a class="visible-phone btn btn-small show-sidebar" data-toggle="collapse" data-target=".for-mobile">Open Table Of Contents</a>
-  <div class="for-mobile sidebar hidden-phone" role="navigation" aria-label="main navigation">
-  <h3><a href="index.html">Table Of Contents</a></h3>
-  <ul>
-<li><a class="reference internal" href="#">Dynamixel Low-level IO</a><ul>
-<li><a class="reference internal" href="#opening-closing-a-communication-port">Opening/Closing a communication port</a></li>
-<li><a class="reference internal" href="#finding-motors">Finding motors</a></li>
-<li><a class="reference internal" href="#low-level-control">Low-level control</a></li>
-</ul>
-</li>
-</ul>
-
-  <h4>Previous topic</h4>
-  <p class="topless"><a href="controlling_robot.html"
-                        title="previous chapter">Controlling robot</a></p>
-  <h4>Next topic</h4>
-  <p class="topless"><a href="controller.html"
-                        title="next chapter">Robot Controller</a></p>
-  <h3>This Page</h3>
-  <ul class="this-page-menu">
-    <li><a href="_sources/dynamixel.txt"
-           rel="nofollow">Show Source</a></li>
-  </ul>
-<div id="searchbox" role="search">
-  <h3>Quick search</h3>
-  <form class="search form-search" action="search.html" method="get">
-      <div class="input-append">
-        <input type="text" class="search-query" name="q">
-        <input type="submit" class="btn" value="Go" />
-      </div>
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
-    </form>
-    <p class="searchtip" style="font-size: 90%">
-    Enter search terms or a module, class or function name.
-    </p>
-</div>
-  </div>
-</div>
-      </div>
-      
-
       <!-- row -->
-      <div class="row-fluid">
+      <div class="row">
          
-<div class="span3 visible-desktop visible-tablet">
-  <div class=" sidebar hidden-phone" role="navigation" aria-label="main navigation">
+<div class="col-md-3 hidden-xs">
+  <div class="sidebar hidden-xs" role="navigation" aria-label="main navigation">
   <h3><a href="index.html">Table Of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">Dynamixel Low-level IO</a><ul>
@@ -195,17 +136,21 @@
   <h4>Next topic</h4>
   <p class="topless"><a href="controller.html"
                         title="next chapter">Robot Controller</a></p>
-  <h3>This Page</h3>
-  <ul class="this-page-menu">
-    <li><a href="_sources/dynamixel.txt"
-           rel="nofollow">Show Source</a></li>
-  </ul>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/dynamixel.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
 <div id="searchbox" role="search">
   <h3>Quick search</h3>
-  <form class="search form-search" action="search.html" method="get">
-      <div class="input-append">
-        <input type="text" class="search-query" name="q">
+  <form class="search form-inline" action="search.html" method="get">
+      <div class="input-append input-group">
+        <input type="text" class="search-query form-control" name="q" placeholder="Search...">
+        <span class="input-group-btn">
         <input type="submit" class="btn" value="Go" />
+        </span>
       </div>
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
@@ -218,7 +163,7 @@
 </div> 
         
 
-        <div class="span9">
+        <div class="col-md-9">
           <div class="document" role="main">
             <div class="documentwrapper">
               <div class="bodywrapper">
@@ -226,7 +171,7 @@
                   
   <div class="section" id="dynamixel-low-level-io">
 <span id="low-level"></span><h1>Dynamixel Low-level IO<a class="headerlink" href="#dynamixel-low-level-io" title="Permalink to this headline">¶</a></h1>
-<p>The low-level API almost directly encapsulates the communication protocol used by dynamixel motors. This protocol can be used to access any register of these motors. The <a class="reference internal" href="pypot.dynamixel.html#pypot.dynamixel.io.DxlIO" title="pypot.dynamixel.io.DxlIO"><tt class="xref py py-class docutils literal"><span class="pre">DxlIO</span></tt></a> class is used to handle the communication with a particular port.</p>
+<p>The low-level API almost directly encapsulates the communication protocol used by dynamixel motors. This protocol can be used to access any register of these motors. The <a class="reference internal" href="pypot.dynamixel.html#pypot.dynamixel.io.DxlIO" title="pypot.dynamixel.io.DxlIO"><code class="xref py py-class docutils literal"><span class="pre">DxlIO</span></code></a> class is used to handle the communication with a particular port.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">The port can only be accessed by a single DxlIO instance.</p>
@@ -248,7 +193,7 @@
 </div>
 <div class="section" id="opening-closing-a-communication-port">
 <span id="open-connection"></span><h2>Opening/Closing a communication port<a class="headerlink" href="#opening-closing-a-communication-port" title="Permalink to this headline">¶</a></h2>
-<p>In order to open a connection with the device, you will need to know what port it is connected to. PyPot has a function named <a class="reference internal" href="pypot.dynamixel.html#pypot.dynamixel.get_available_ports" title="pypot.dynamixel.get_available_ports"><tt class="xref py py-func docutils literal"><span class="pre">get_available_ports()</span></tt></a> which will try to auto-discover any compatible devices connected to the communication ports.</p>
+<p>In order to open a connection with the device, you will need to know what port it is connected to. PyPot has a function named <a class="reference internal" href="pypot.dynamixel.html#pypot.dynamixel.get_available_ports" title="pypot.dynamixel.get_available_ports"><code class="xref py py-func docutils literal"><span class="pre">get_available_ports()</span></code></a> which will try to auto-discover any compatible devices connected to the communication ports.</p>
 <p>To create a connection, open up a python terminal and type the following code:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">pypot.dynamixel</span>
 
@@ -272,10 +217,10 @@
 <div class="highlight-python"><div class="highlight"><pre><span class="n">dxl_io</span> <span class="o">=</span> <span class="n">pypot</span><span class="o">.</span><span class="n">dynamixel</span><span class="o">.</span><span class="n">DxlIO</span><span class="p">(</span><span class="n">port</span><span class="p">,</span> <span class="n">baudrate</span><span class="o">=</span><span class="mi">57140</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>The communication can be closed using the <a class="reference internal" href="pypot.dynamixel.html#pypot.dynamixel.io.DxlIO.close" title="pypot.dynamixel.io.DxlIO.close"><tt class="xref py py-meth docutils literal"><span class="pre">close()</span></tt></a> method.</p>
+<p>The communication can be closed using the <a class="reference internal" href="pypot.dynamixel.html#pypot.dynamixel.io.DxlIO.close" title="pypot.dynamixel.io.DxlIO.close"><code class="xref py py-meth docutils literal"><span class="pre">close()</span></code></a> method.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p>The class <a class="reference internal" href="pypot.dynamixel.html#pypot.dynamixel.io.DxlIO" title="pypot.dynamixel.io.DxlIO"><tt class="xref py py-class docutils literal"><span class="pre">DxlIO</span></tt></a> can also be used as a <a class="reference external" href="http://docs.python.org/2/library/contextlib.html">Context Manager</a> (the <a class="reference internal" href="pypot.dynamixel.html#pypot.dynamixel.io.DxlIO.close" title="pypot.dynamixel.io.DxlIO.close"><tt class="xref py py-meth docutils literal"><span class="pre">close()</span></tt></a> method will automatically be called at the end).
+<p>The class <a class="reference internal" href="pypot.dynamixel.html#pypot.dynamixel.io.DxlIO" title="pypot.dynamixel.io.DxlIO"><code class="xref py py-class docutils literal"><span class="pre">DxlIO</span></code></a> can also be used as a <a class="reference external" href="http://docs.python.org/2/library/contextlib.html">Context Manager</a> (the <a class="reference internal" href="pypot.dynamixel.html#pypot.dynamixel.io.DxlIO.close" title="pypot.dynamixel.io.DxlIO.close"><code class="xref py py-meth docutils literal"><span class="pre">close()</span></code></a> method will automatically be called at the end).
 For instance:</p>
 <div class="last highlight-python"><div class="highlight"><pre><span class="k">with</span> <span class="n">pypot</span><span class="o">.</span><span class="n">dynamixel</span><span class="o">.</span><span class="n">DxlIO</span><span class="p">(</span><span class="s">&#39;/dev/ttyUSB0&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">dxl_io</span><span class="p">:</span>
     <span class="o">...</span>
@@ -287,7 +232,7 @@ For instance:</p>
 <h2>Finding motors<a class="headerlink" href="#finding-motors" title="Permalink to this headline">¶</a></h2>
 <p>Pypot has been designed to work specifically with the Robotis range of motors. These motors use two different protocols to communicate: TTL (3 wire bus) and RS485 (4 wire Bus). The motors can be daisy chained together with other types of motors on the same bus <em>as long as the bus communicates using the same protocol</em>. This means that MX-28 and AX-12 can communicate on the same bus, but cannot be connected to a RX-28.</p>
 <p>All motors work sufficiently well with a 12V supply. Some motors can use more than 12V but you must be careful not to connect an 18V supply on a bus that contains motors that can only use 12V! Connect this 12V SMPS supply (switch mode power supply) to a Robotis SMPS2Dynamixel device which regulates the voltage coming from the SMPS. Connect your controller device and a single motor to this SMPS2Dynamixel.</p>
-<p>Open your python terminal and create your <a class="reference internal" href="pypot.dynamixel.html#pypot.dynamixel.io.DxlIO" title="pypot.dynamixel.io.DxlIO"><tt class="xref py py-class docutils literal"><span class="pre">DxlIO</span></tt></a> as described in the above section <a class="reference internal" href="#open-connection"><em>Opening/Closing a communication port</em></a>.</p>
+<p>Open your python terminal and create your <a class="reference internal" href="pypot.dynamixel.html#pypot.dynamixel.io.DxlIO" title="pypot.dynamixel.io.DxlIO"><code class="xref py py-class docutils literal"><span class="pre">DxlIO</span></code></a> as described in the above section <a class="reference internal" href="#open-connection"><em>Opening/Closing a communication port</em></a>.</p>
 <p>To detect the motors and find their id you can scan the bus. To avoid spending a long time searching all possible values, you can add a list of values to test:</p>
 <div class="highlight-python"><div class="highlight"><pre>dxl_io.scan()
 &gt;&gt;&gt; [4, 23, 24, 25]
@@ -375,7 +320,7 @@ dxl_io.scan([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
         <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.02</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Thanks to PyPot, you can access all registers of your motors using the same syntax (e.g. <a class="reference internal" href="pypot.dynamixel.html#pypot.dynamixel.io.DxlIO.get_present_speed" title="pypot.dynamixel.io.DxlIO.get_present_speed"><tt class="xref py py-meth docutils literal"><span class="pre">get_present_speed()</span></tt></a>, <a class="reference internal" href="pypot.dynamixel.html#pypot.dynamixel.io.DxlIO.set_max_torque" title="pypot.dynamixel.io.DxlIO.set_max_torque"><tt class="xref py py-meth docutils literal"><span class="pre">set_max_torque()</span></tt></a>, <a class="reference internal" href="pypot.dynamixel.html#pypot.dynamixel.io.DxlIO.get_pid_gain" title="pypot.dynamixel.io.DxlIO.get_pid_gain"><tt class="xref py py-meth docutils literal"><span class="pre">get_pid_gain()</span></tt></a>). Some shortcuts have been provided to make the code more readable (e.g. <a class="reference internal" href="pypot.dynamixel.html#pypot.dynamixel.io.DxlIO.enable_torque" title="pypot.dynamixel.io.DxlIO.enable_torque"><tt class="xref py py-meth docutils literal"><span class="pre">enable_torque()</span></tt></a> instead of set_torque_enabled). All the getter functions takes a list of ids as argument and the setter takes a dictionary of (id: value) pairs. You can refer to the documentation of <a class="reference internal" href="pypot.dynamixel.html#pypot.dynamixel.io.DxlIO" title="pypot.dynamixel.io.DxlIO"><tt class="xref py py-class docutils literal"><span class="pre">DxlIO</span></tt></a> for a complete list of all the available methods.</p>
+<p>Thanks to PyPot, you can access all registers of your motors using the same syntax (e.g. <a class="reference internal" href="pypot.dynamixel.html#pypot.dynamixel.io.DxlIO.get_present_speed" title="pypot.dynamixel.io.DxlIO.get_present_speed"><code class="xref py py-meth docutils literal"><span class="pre">get_present_speed()</span></code></a>, <a class="reference internal" href="pypot.dynamixel.html#pypot.dynamixel.io.DxlIO.set_max_torque" title="pypot.dynamixel.io.DxlIO.set_max_torque"><code class="xref py py-meth docutils literal"><span class="pre">set_max_torque()</span></code></a>, <a class="reference internal" href="pypot.dynamixel.html#pypot.dynamixel.io.DxlIO.get_pid_gain" title="pypot.dynamixel.io.DxlIO.get_pid_gain"><code class="xref py py-meth docutils literal"><span class="pre">get_pid_gain()</span></code></a>). Some shortcuts have been provided to make the code more readable (e.g. <a class="reference internal" href="pypot.dynamixel.html#pypot.dynamixel.io.DxlIO.enable_torque" title="pypot.dynamixel.io.DxlIO.enable_torque"><code class="xref py py-meth docutils literal"><span class="pre">enable_torque()</span></code></a> instead of set_torque_enabled). All the getter functions takes a list of ids as argument and the setter takes a dictionary of (id: value) pairs. You can refer to the documentation of <a class="reference internal" href="pypot.dynamixel.html#pypot.dynamixel.io.DxlIO" title="pypot.dynamixel.io.DxlIO"><code class="xref py py-class docutils literal"><span class="pre">DxlIO</span></code></a> for a complete list of all the available methods.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">PyPot provides an easy way to extend the code and automatically create methods to access new registers added by robotis.</p>
@@ -394,16 +339,18 @@ dxl_io.scan([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
       </div><!-- /row -->
 
       <!-- row -->
-      <div class="row-fluid">
-<div class="related navbar " role="navigation" aria-label="related navigation">
+      <div class="row footer-relbar">
+<div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
   <div class="navbar-inner">
-    <ul class="nav pull-right">
+    <ul class="nav navbar-nav">
+        <li><a href="index.html">PyPot 1.7.1 documentation</a></li>
+    </ul>
+    <ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
       
-        <li><a href="genindex.html" title="General Index" >index</a></li>
-        <li><a href="py-modindex.html" title="Python Module Index" >modules</a></li>
-        <li><a href="controller.html" title="Robot Controller" >next</a></li>
         <li><a href="controlling_robot.html" title="Controlling robot" >previous</a></li>
-        <li><a href="index.html">PyPot 1.7.0 documentation</a></li>
+        <li><a href="controller.html" title="Robot Controller" >next</a></li>
+        <li><a href="py-modindex.html" title="Python Module Index" >modules</a></li>
+        <li><a href="genindex.html" title="General Index" >index</a></li>
         <li><a href="controlling_robot.html" >Controlling robot</a></li> 
       
     </ul>
@@ -414,7 +361,7 @@ dxl_io.scan([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
       <!-- footer -->
       <footer role="contentinfo">
           &copy; Copyright 2012, Pierre Rouanet, Matthieu Lapeyre, Haylee Fogg.
-        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.2.2.
+        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.3b1.
       </footer>
       <!-- /footer -->
 

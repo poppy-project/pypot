@@ -10,19 +10,17 @@
   <head>
     <meta charset="utf-8" />
     
-    <title>Search &mdash; PyPot 1.7.0 documentation</title>
-
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search &mdash; PyPot 1.7.1 documentation</title>
     <meta name="description" content="">
     <meta name="author" content="">
 
     
+
 <link rel="stylesheet" href="_static/css/basicstrap-base.css" type="text/css" />
-<link rel="stylesheet" href="_static/css/bootstrap.min.css" type="text/css" />
+<link rel="stylesheet" id="current-theme" href="_static/css/bootstrap3/bootstrap.min.css" type="text/css" />
+<link rel="stylesheet" id="current-adjust-theme" type="text/css" />
+
 <link rel="stylesheet" href="_static/css/font-awesome.min.css">
-<!--[if IE 7]>
-<link rel="stylesheet" href="_static/css/font-awesome-ie7.min.css">
-<![endif]-->
 
 <style type="text/css">
   body {
@@ -32,58 +30,30 @@
 }
 </style>
 
-<link rel="stylesheet" href="_static/basicstrap.css" type="text/css" />
+<link rel="stylesheet" href="_static/css/basicstrap.css" type="text/css" />
 <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
 <link rel="stylesheet" href="_static/my-css.css" type="text/css" />
-<link rel="stylesheet" href="_static/css/bootstrap-responsive.min.css" type="text/css" />
     
 <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
             URL_ROOT:    './',
-            VERSION:     '1.7.0',
+            VERSION:     '1.7.1',
             COLLAPSE_INDEX: false,
             FILE_SUFFIX: '.html',
             HAS_SOURCE:  true
   };
 </script>
-<script type="text/javascript" src="_static/js/jquery.min.js"></script>
-<script type="text/javascript" src="_static/underscore.js"></script>
-<script type="text/javascript" src="_static/doctools.js"></script>
-<script type="text/javascript" src="_static/searchtools.js"></script>
-<script type="text/javascript" src="_static/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="_static/js/jquery.min.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/searchtools.js"></script>
+    <script type="text/javascript" src="_static/js/bootstrap3.min.js"></script>
+<script type="text/javascript" src="_static/js/jquery.cookie.min.js"></script>
+<script type="text/javascript" src="_static/js/basicstrap.js"></script>
 <script type="text/javascript">
-  $(document).ready(function(){
-    $('.show-sidebar').click(function(e) {
-       e.preventDefault();
-       if ($(".show-sidebar").html() == "Open Table Of Contents") {
-          $('.for-mobile').removeClass('hidden-phone');
-          $(".show-sidebar").html("Close Table Of Contents");
-       } else {
-          $(".show-sidebar").html("Open Table Of Contents");
-       }
-    });
-  });
-  $(window).load(function () {
-    /*
-
-     * Scroll the window to avoid the topnav bar
-     * https://github.com/twitter/bootstrap/issues/1768
-     */
-    if ($(".navbar.navbar-fixed-top").length > 0) {
-      // var navHeight = $(".navbar").height(),
-      var navHeight = 40,
-        shiftWindow = function() { scrollBy(0, -navHeight - 10); };
-
-      if (location.hash) {
-        setTimeout(shiftWindow, 1);
-      }
-
-      window.addEventListener("hashchange", shiftWindow);
-    }
-  });
 </script>
     <link rel="author" title="About these documents" href="about.html" />
-    <link rel="top" title="PyPot 1.7.0 documentation" href="index.html" />
+    <link rel="top" title="PyPot 1.7.1 documentation" href="index.html" />
   <script type="text/javascript">
     jQuery(function() { Search.loadIndex("searchindex.js"); });
   </script>
@@ -91,29 +61,38 @@
 
   </head>
   <body role="document">
-    <div class="navbar navbar-fixed-top " role="navigation" aria-label="top navigation">
-      <div class="navbar-inner">
-        <div class="container-fluid">
-          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+    <div id="navbar-top" class="navbar navbar-fixed-top navbar-default" role="navigation" aria-label="top navigation">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
-          </a>
-          <div role="banner">
-            <a class="brand" href="index.html">PyPot 1.7.0 documentation</a>
-          </div>
-          <div class="nav-collapse collapse">
-            <ul class="nav pull-right">
-              
-                <li>
-                <a href="genindex.html" title="General Index" accesskey="I">index</a>
-                </li>
-                <li>
-                <a href="py-modindex.html" title="Python Module Index" >modules</a>
-                </li>
-              
-            </ul>
-          </div>
+          </button>
+          <a class="navbar-brand" href="index.html">PyPot 1.7.1 documentation</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
+
+            
+              <li><a href="py-modindex.html" title="Python Module Index" >modules </a></li>
+              <li><a href="genindex.html" title="General Index" accesskey="I">index </a></li>
+            
+
+            <li class="visible-xs">
+                <form class="search form-search form-inline navbar-form navbar-right sp-searchbox" action="#" method="get">
+                  <div class="input-append input-group">
+                    <input type="text" class="search-query form-control" name="q" placeholder="Search...">
+                    <span class="input-group-btn">
+                    <input type="submit" class="btn" value="Go" />
+                    </span>
+                  </div>
+                  <input type="hidden" name="check_keywords" value="yes" />
+                  <input type="hidden" name="area" value="default" />
+                </form>
+            </li>
+          </ul>
         </div>
       </div>
     </div>
@@ -122,28 +101,16 @@
     <!-- container -->
     <div class="container-fluid">
 
-
-      
-      <div class="row-fluid hidden-desktop hidden-tablet">
-      
-<div class="span3 ">
-  <a class="visible-phone btn btn-small show-sidebar" data-toggle="collapse" data-target=".for-mobile">Open Table Of Contents</a>
-  <div class="for-mobile sidebar hidden-phone" role="navigation" aria-label="main navigation">
-  </div>
-</div>
-      </div>
-      
-
       <!-- row -->
-      <div class="row-fluid">
+      <div class="row">
          
-<div class="span3 visible-desktop visible-tablet">
-  <div class=" sidebar hidden-phone" role="navigation" aria-label="main navigation">
+<div class="col-md-3 hidden-xs">
+  <div class="sidebar hidden-xs" role="navigation" aria-label="main navigation">
   </div>
 </div> 
         
 
-        <div class="span9">
+        <div class="col-md-9">
           <div class="document" role="main">
             <div class="documentwrapper">
               <div class="bodywrapper">
@@ -163,10 +130,12 @@
     function will automatically search for all of the words. Pages
     containing fewer words won't appear in the result list.
   </p>
-  <form class="form-search" action="" method="get">
-    <div class="input-append">
-      <input type="text" class="search-query" name="q" value="">
+  <form class="form-search form-inline" action="" method="get">
+    <div class="input-append input-group">
+      <input type="text" class="search-query form-control" name="q" value="" placeholder="Search...">
+      <span class="input-group-btn">
       <input type="submit" class="btn" value="search" />
+      </span>
     </div>
     <span id="search-progress" style="padding-left: 10px"></span>
   </form>
@@ -188,14 +157,16 @@
       </div><!-- /row -->
 
       <!-- row -->
-      <div class="row-fluid">
-<div class="related navbar " role="navigation" aria-label="related navigation">
+      <div class="row footer-relbar">
+<div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
   <div class="navbar-inner">
-    <ul class="nav pull-right">
+    <ul class="nav navbar-nav">
+        <li><a href="index.html">PyPot 1.7.1 documentation</a></li>
+    </ul>
+    <ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
       
-        <li><a href="genindex.html" title="General Index" >index</a></li>
         <li><a href="py-modindex.html" title="Python Module Index" >modules</a></li>
-        <li><a href="index.html">PyPot 1.7.0 documentation</a></li> 
+        <li><a href="genindex.html" title="General Index" >index</a></li> 
       
     </ul>
   </div>
@@ -205,7 +176,7 @@
       <!-- footer -->
       <footer role="contentinfo">
           &copy; Copyright 2012, Pierre Rouanet, Matthieu Lapeyre, Haylee Fogg.
-        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.2.2.
+        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.3b1.
       </footer>
       <!-- /footer -->
 

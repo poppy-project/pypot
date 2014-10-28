@@ -9,19 +9,17 @@
   <head>
     <meta charset="utf-8" />
     
-    <title>sensor Package &mdash; PyPot 1.7.0 documentation</title>
-
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>sensor Package &mdash; PyPot 1.7.1 documentation</title>
     <meta name="description" content="">
     <meta name="author" content="">
 
     
+
 <link rel="stylesheet" href="_static/css/basicstrap-base.css" type="text/css" />
-<link rel="stylesheet" href="_static/css/bootstrap.min.css" type="text/css" />
+<link rel="stylesheet" id="current-theme" href="_static/css/bootstrap3/bootstrap.min.css" type="text/css" />
+<link rel="stylesheet" id="current-adjust-theme" type="text/css" />
+
 <link rel="stylesheet" href="_static/css/font-awesome.min.css">
-<!--[if IE 7]>
-<link rel="stylesheet" href="_static/css/font-awesome-ie7.min.css">
-<![endif]-->
 
 <style type="text/css">
   body {
@@ -31,94 +29,83 @@
 }
 </style>
 
-<link rel="stylesheet" href="_static/basicstrap.css" type="text/css" />
+<link rel="stylesheet" href="_static/css/basicstrap.css" type="text/css" />
 <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
 <link rel="stylesheet" href="_static/my-css.css" type="text/css" />
-<link rel="stylesheet" href="_static/css/bootstrap-responsive.min.css" type="text/css" />
     
 <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
             URL_ROOT:    './',
-            VERSION:     '1.7.0',
+            VERSION:     '1.7.1',
             COLLAPSE_INDEX: false,
             FILE_SUFFIX: '.html',
             HAS_SOURCE:  true
   };
 </script>
-<script type="text/javascript" src="_static/js/jquery.min.js"></script>
-<script type="text/javascript" src="_static/underscore.js"></script>
-<script type="text/javascript" src="_static/doctools.js"></script>
-<script type="text/javascript" src="_static/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="_static/js/jquery.min.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/js/bootstrap3.min.js"></script>
+<script type="text/javascript" src="_static/js/jquery.cookie.min.js"></script>
+<script type="text/javascript" src="_static/js/basicstrap.js"></script>
 <script type="text/javascript">
-  $(document).ready(function(){
-    $('.show-sidebar').click(function(e) {
-       e.preventDefault();
-       if ($(".show-sidebar").html() == "Open Table Of Contents") {
-          $('.for-mobile').removeClass('hidden-phone');
-          $(".show-sidebar").html("Close Table Of Contents");
-       } else {
-          $(".show-sidebar").html("Open Table Of Contents");
-       }
-    });
-  });
-  $(window).load(function () {
-    /*
-
-     * Scroll the window to avoid the topnav bar
-     * https://github.com/twitter/bootstrap/issues/1768
-     */
-    if ($(".navbar.navbar-fixed-top").length > 0) {
-      // var navHeight = $(".navbar").height(),
-      var navHeight = 40,
-        shiftWindow = function() { scrollBy(0, -navHeight - 10); };
-
-      if (location.hash) {
-        setTimeout(shiftWindow, 1);
-      }
-
-      window.addEventListener("hashchange", shiftWindow);
-    }
-  });
 </script>
     <link rel="author" title="About these documents" href="about.html" />
-    <link rel="top" title="PyPot 1.7.0 documentation" href="index.html" />
+    <link rel="top" title="PyPot 1.7.1 documentation" href="index.html" />
     <link rel="up" title="PyPot’s API" href="api.html" />
     <link rel="next" title="server Package" href="pypot.server.html" />
     <link rel="prev" title="robot Package" href="pypot.robot.html" /> 
   </head>
   <body role="document">
-    <div class="navbar navbar-fixed-top " role="navigation" aria-label="top navigation">
-      <div class="navbar-inner">
-        <div class="container-fluid">
-          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+    <div id="navbar-top" class="navbar navbar-fixed-top navbar-default" role="navigation" aria-label="top navigation">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
-          </a>
-          <div role="banner">
-            <a class="brand" href="index.html">PyPot 1.7.0 documentation</a>
-          </div>
-          <div class="nav-collapse collapse">
-            <ul class="nav pull-right">
-              
-                <li>
-                <a href="genindex.html" title="General Index" accesskey="I">index</a>
-                </li>
-                <li>
-                <a href="py-modindex.html" title="Python Module Index" >modules</a>
-                </li>
-                <li>
-                <a href="pypot.server.html" title="server Package" accesskey="N">next</a>
-                </li>
-                <li>
-                <a href="pypot.robot.html" title="robot Package" accesskey="P">previous</a>
-                </li>
-                <li>
-                <a href="api.html" accesskey="U">PyPot&#8217;s API</a>
-                </li>
-              
-            </ul>
-          </div>
+          </button>
+          <a class="navbar-brand" href="index.html">PyPot 1.7.1 documentation</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
+              <li class="dropdown visible-xs">
+                <a role="button" id="localToc" data-toggle="dropdown" data-target="#" href="#">Table Of Contents <b class="caret"></b></a>
+                <ul class="dropdown-menu localtoc sp-localtoc" role="menu" aria-labelledby="localToc">
+                <ul>
+<li><a class="reference internal" href="#"><code class="docutils literal"><span class="pre">sensor</span></code> Package</a><ul>
+<li><a class="reference internal" href="#module-pypot.sensor.kinect.sensor"><code class="docutils literal"><span class="pre">kinect</span></code> Module</a></li>
+<li><a class="reference internal" href="#module-pypot.sensor.optitrack"><code class="docutils literal"><span class="pre">optitrack</span></code> Module</a></li>
+</ul>
+</li>
+</ul>
+
+                </ul>
+              </li>
+
+            
+              <li><a href="pypot.robot.html" title="robot Package" accesskey="P">previous </a></li>
+              <li><a href="pypot.server.html" title="server Package" accesskey="N">next </a></li>
+              <li><a href="py-modindex.html" title="Python Module Index" >modules </a></li>
+              <li><a href="genindex.html" title="General Index" accesskey="I">index </a></li>
+              <li><a href="api.html" accesskey="U">PyPot&#8217;s API</a></li>
+            
+            <li class="visible-xs"><a href="_sources/pypot.sensor.txt" rel="nofollow">Show Source</a></li>
+
+            <li class="visible-xs">
+                <form class="search form-search form-inline navbar-form navbar-right sp-searchbox" action="search.html" method="get">
+                  <div class="input-append input-group">
+                    <input type="text" class="search-query form-control" name="q" placeholder="Search...">
+                    <span class="input-group-btn">
+                    <input type="submit" class="btn" value="Go" />
+                    </span>
+                  </div>
+                  <input type="hidden" name="check_keywords" value="yes" />
+                  <input type="hidden" name="area" value="default" />
+                </form>
+            </li>
+          </ul>
         </div>
       </div>
     </div>
@@ -127,83 +114,41 @@
     <!-- container -->
     <div class="container-fluid">
 
-
-      
-      <div class="row-fluid hidden-desktop hidden-tablet">
-      
-<div class="span3 ">
-  <a class="visible-phone btn btn-small show-sidebar" data-toggle="collapse" data-target=".for-mobile">Open Table Of Contents</a>
-  <div class="for-mobile sidebar hidden-phone" role="navigation" aria-label="main navigation">
-  <h3><a href="index.html">Table Of Contents</a></h3>
-  <ul>
-<li><a class="reference internal" href="#"><tt class="docutils literal"><span class="pre">sensor</span></tt> Package</a><ul>
-<li><a class="reference internal" href="#module-pypot.sensor.kinect.sensor"><tt class="docutils literal"><span class="pre">kinect</span></tt> Module</a></li>
-<li><a class="reference internal" href="#module-pypot.sensor.optitrack"><tt class="docutils literal"><span class="pre">optitrack</span></tt> Module</a></li>
-</ul>
-</li>
-</ul>
-
-  <h4>Previous topic</h4>
-  <p class="topless"><a href="pypot.robot.html"
-                        title="previous chapter"><tt class="docutils literal"><span class="pre">robot</span></tt> Package</a></p>
-  <h4>Next topic</h4>
-  <p class="topless"><a href="pypot.server.html"
-                        title="next chapter"><tt class="docutils literal"><span class="pre">server</span></tt> Package</a></p>
-  <h3>This Page</h3>
-  <ul class="this-page-menu">
-    <li><a href="_sources/pypot.sensor.txt"
-           rel="nofollow">Show Source</a></li>
-  </ul>
-<div id="searchbox" role="search">
-  <h3>Quick search</h3>
-  <form class="search form-search" action="search.html" method="get">
-      <div class="input-append">
-        <input type="text" class="search-query" name="q">
-        <input type="submit" class="btn" value="Go" />
-      </div>
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
-    </form>
-    <p class="searchtip" style="font-size: 90%">
-    Enter search terms or a module, class or function name.
-    </p>
-</div>
-  </div>
-</div>
-      </div>
-      
-
       <!-- row -->
-      <div class="row-fluid">
+      <div class="row">
          
-<div class="span3 visible-desktop visible-tablet">
-  <div class=" sidebar hidden-phone" role="navigation" aria-label="main navigation">
+<div class="col-md-3 hidden-xs">
+  <div class="sidebar hidden-xs" role="navigation" aria-label="main navigation">
   <h3><a href="index.html">Table Of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#"><tt class="docutils literal"><span class="pre">sensor</span></tt> Package</a><ul>
-<li><a class="reference internal" href="#module-pypot.sensor.kinect.sensor"><tt class="docutils literal"><span class="pre">kinect</span></tt> Module</a></li>
-<li><a class="reference internal" href="#module-pypot.sensor.optitrack"><tt class="docutils literal"><span class="pre">optitrack</span></tt> Module</a></li>
+<li><a class="reference internal" href="#"><code class="docutils literal"><span class="pre">sensor</span></code> Package</a><ul>
+<li><a class="reference internal" href="#module-pypot.sensor.kinect.sensor"><code class="docutils literal"><span class="pre">kinect</span></code> Module</a></li>
+<li><a class="reference internal" href="#module-pypot.sensor.optitrack"><code class="docutils literal"><span class="pre">optitrack</span></code> Module</a></li>
 </ul>
 </li>
 </ul>
 
   <h4>Previous topic</h4>
   <p class="topless"><a href="pypot.robot.html"
-                        title="previous chapter"><tt class="docutils literal"><span class="pre">robot</span></tt> Package</a></p>
+                        title="previous chapter"><code class="docutils literal"><span class="pre">robot</span></code> Package</a></p>
   <h4>Next topic</h4>
   <p class="topless"><a href="pypot.server.html"
-                        title="next chapter"><tt class="docutils literal"><span class="pre">server</span></tt> Package</a></p>
-  <h3>This Page</h3>
-  <ul class="this-page-menu">
-    <li><a href="_sources/pypot.sensor.txt"
-           rel="nofollow">Show Source</a></li>
-  </ul>
+                        title="next chapter"><code class="docutils literal"><span class="pre">server</span></code> Package</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/pypot.sensor.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
 <div id="searchbox" role="search">
   <h3>Quick search</h3>
-  <form class="search form-search" action="search.html" method="get">
-      <div class="input-append">
-        <input type="text" class="search-query" name="q">
+  <form class="search form-inline" action="search.html" method="get">
+      <div class="input-append input-group">
+        <input type="text" class="search-query form-control" name="q" placeholder="Search...">
+        <span class="input-group-btn">
         <input type="submit" class="btn" value="Go" />
+        </span>
       </div>
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
@@ -216,47 +161,47 @@
 </div> 
         
 
-        <div class="span9">
+        <div class="col-md-9">
           <div class="document" role="main">
             <div class="documentwrapper">
               <div class="bodywrapper">
                 <div class="body">
                   
   <div class="section" id="module-pypot.sensor">
-<span id="sensor-package"></span><h1><tt class="xref py py-mod docutils literal"><span class="pre">sensor</span></tt> Package<a class="headerlink" href="#module-pypot.sensor" title="Permalink to this headline">¶</a></h1>
+<span id="sensor-package"></span><h1><code class="xref py py-mod docutils literal"><span class="pre">sensor</span></code> Package<a class="headerlink" href="#module-pypot.sensor" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="module-pypot.sensor.kinect.sensor">
-<span id="kinect-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">kinect</span></tt> Module<a class="headerlink" href="#module-pypot.sensor.kinect.sensor" title="Permalink to this headline">¶</a></h2>
+<span id="kinect-module"></span><h2><code class="xref py py-mod docutils literal"><span class="pre">kinect</span></code> Module<a class="headerlink" href="#module-pypot.sensor.kinect.sensor" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="pypot.sensor.kinect.sensor.Skeleton">
-<em class="property">class </em><tt class="descclassname">pypot.sensor.kinect.sensor.</tt><tt class="descname">Skeleton</tt><a class="reference internal" href="_modules/pypot/sensor/kinect/sensor.html#Skeleton"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.sensor.kinect.sensor.Skeleton" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#pypot.sensor.kinect.sensor.Skeleton" title="pypot.sensor.kinect.sensor.Skeleton"><tt class="xref py py-class docutils literal"><span class="pre">pypot.sensor.kinect.sensor.Skeleton</span></tt></a></p>
+<em class="property">class </em><code class="descclassname">pypot.sensor.kinect.sensor.</code><code class="descname">Skeleton</code><a class="reference internal" href="_modules/pypot/sensor/kinect/sensor.html#Skeleton"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.sensor.kinect.sensor.Skeleton" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pypot.sensor.kinect.sensor.Skeleton" title="pypot.sensor.kinect.sensor.Skeleton"><code class="xref py py-class docutils literal"><span class="pre">pypot.sensor.kinect.sensor.Skeleton</span></code></a></p>
 <dl class="attribute">
 <dt id="pypot.sensor.kinect.sensor.Skeleton.joints">
-<tt class="descname">joints</tt><em class="property"> = ('hip_center', 'spine', 'shoulder_center', 'head', 'shoulder_left', 'elbow_left', 'wrist_left', 'hand_left', 'shoulder_right', 'elbow_right', 'wrist_right', 'hand_right', 'hip_left', 'knee_left', 'ankle_left', 'foot_left', 'hip_right', 'knee_right', 'ankle_right', 'foot_right')</em><a class="headerlink" href="#pypot.sensor.kinect.sensor.Skeleton.joints" title="Permalink to this definition">¶</a></dt>
+<code class="descname">joints</code><em class="property"> = ('hip_center', 'spine', 'shoulder_center', 'head', 'shoulder_left', 'elbow_left', 'wrist_left', 'hand_left', 'shoulder_right', 'elbow_right', 'wrist_right', 'hand_right', 'hip_left', 'knee_left', 'ankle_left', 'foot_left', 'hip_right', 'knee_right', 'ankle_right', 'foot_right')</em><a class="headerlink" href="#pypot.sensor.kinect.sensor.Skeleton.joints" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
 <dl class="class">
 <dt id="pypot.sensor.kinect.sensor.Joint">
-<em class="property">class </em><tt class="descclassname">pypot.sensor.kinect.sensor.</tt><tt class="descname">Joint</tt><a class="headerlink" href="#pypot.sensor.kinect.sensor.Joint" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">tuple</span></tt></p>
+<em class="property">class </em><code class="descclassname">pypot.sensor.kinect.sensor.</code><code class="descname">Joint</code><a class="headerlink" href="#pypot.sensor.kinect.sensor.Joint" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">tuple</span></code></p>
 <p>Joint(position, orientation, pixel_coordinate)</p>
 <dl class="attribute">
 <dt id="pypot.sensor.kinect.sensor.Joint.orientation">
-<tt class="descname">orientation</tt><a class="headerlink" href="#pypot.sensor.kinect.sensor.Joint.orientation" title="Permalink to this definition">¶</a></dt>
+<code class="descname">orientation</code><a class="headerlink" href="#pypot.sensor.kinect.sensor.Joint.orientation" title="Permalink to this definition">¶</a></dt>
 <dd><p>Alias for field number 1</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="pypot.sensor.kinect.sensor.Joint.pixel_coordinate">
-<tt class="descname">pixel_coordinate</tt><a class="headerlink" href="#pypot.sensor.kinect.sensor.Joint.pixel_coordinate" title="Permalink to this definition">¶</a></dt>
+<code class="descname">pixel_coordinate</code><a class="headerlink" href="#pypot.sensor.kinect.sensor.Joint.pixel_coordinate" title="Permalink to this definition">¶</a></dt>
 <dd><p>Alias for field number 2</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="pypot.sensor.kinect.sensor.Joint.position">
-<tt class="descname">position</tt><a class="headerlink" href="#pypot.sensor.kinect.sensor.Joint.position" title="Permalink to this definition">¶</a></dt>
+<code class="descname">position</code><a class="headerlink" href="#pypot.sensor.kinect.sensor.Joint.position" title="Permalink to this definition">¶</a></dt>
 <dd><p>Alias for field number 0</p>
 </dd></dl>
 
@@ -264,49 +209,49 @@
 
 <dl class="class">
 <dt id="pypot.sensor.kinect.sensor.KinectSensor">
-<em class="property">class </em><tt class="descclassname">pypot.sensor.kinect.sensor.</tt><tt class="descname">KinectSensor</tt><big>(</big><em>addr</em>, <em>port</em><big>)</big><a class="reference internal" href="_modules/pypot/sensor/kinect/sensor.html#KinectSensor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.sensor.kinect.sensor.KinectSensor" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<em class="property">class </em><code class="descclassname">pypot.sensor.kinect.sensor.</code><code class="descname">KinectSensor</code><span class="sig-paren">(</span><em>addr</em>, <em>port</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/sensor/kinect/sensor.html#KinectSensor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.sensor.kinect.sensor.KinectSensor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="http://docs.python.org/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
 <dl class="attribute">
 <dt id="pypot.sensor.kinect.sensor.KinectSensor.tracked_skeleton">
-<tt class="descname">tracked_skeleton</tt><a class="reference internal" href="_modules/pypot/sensor/kinect/sensor.html#KinectSensor.tracked_skeleton"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.sensor.kinect.sensor.KinectSensor.tracked_skeleton" title="Permalink to this definition">¶</a></dt>
+<code class="descname">tracked_skeleton</code><a class="headerlink" href="#pypot.sensor.kinect.sensor.KinectSensor.tracked_skeleton" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="pypot.sensor.kinect.sensor.KinectSensor.get_skeleton">
-<tt class="descname">get_skeleton</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/pypot/sensor/kinect/sensor.html#KinectSensor.get_skeleton"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.sensor.kinect.sensor.KinectSensor.get_skeleton" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get_skeleton</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/sensor/kinect/sensor.html#KinectSensor.get_skeleton"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.sensor.kinect.sensor.KinectSensor.get_skeleton" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
 </div>
 <div class="section" id="module-pypot.sensor.optitrack">
-<span id="optitrack-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">optitrack</span></tt> Module<a class="headerlink" href="#module-pypot.sensor.optitrack" title="Permalink to this headline">¶</a></h2>
+<span id="optitrack-module"></span><h2><code class="xref py py-mod docutils literal"><span class="pre">optitrack</span></code> Module<a class="headerlink" href="#module-pypot.sensor.optitrack" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="pypot.sensor.optitrack.TrackedObject">
-<em class="property">class </em><tt class="descclassname">pypot.sensor.optitrack.</tt><tt class="descname">TrackedObject</tt><a class="headerlink" href="#pypot.sensor.optitrack.TrackedObject" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">tuple</span></tt></p>
+<em class="property">class </em><code class="descclassname">pypot.sensor.optitrack.</code><code class="descname">TrackedObject</code><a class="headerlink" href="#pypot.sensor.optitrack.TrackedObject" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">tuple</span></code></p>
 <p>TrackedObject(position, quaternion, orientation, timestamp)</p>
 <dl class="attribute">
 <dt id="pypot.sensor.optitrack.TrackedObject.orientation">
-<tt class="descname">orientation</tt><a class="headerlink" href="#pypot.sensor.optitrack.TrackedObject.orientation" title="Permalink to this definition">¶</a></dt>
+<code class="descname">orientation</code><a class="headerlink" href="#pypot.sensor.optitrack.TrackedObject.orientation" title="Permalink to this definition">¶</a></dt>
 <dd><p>Alias for field number 2</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="pypot.sensor.optitrack.TrackedObject.position">
-<tt class="descname">position</tt><a class="headerlink" href="#pypot.sensor.optitrack.TrackedObject.position" title="Permalink to this definition">¶</a></dt>
+<code class="descname">position</code><a class="headerlink" href="#pypot.sensor.optitrack.TrackedObject.position" title="Permalink to this definition">¶</a></dt>
 <dd><p>Alias for field number 0</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="pypot.sensor.optitrack.TrackedObject.quaternion">
-<tt class="descname">quaternion</tt><a class="headerlink" href="#pypot.sensor.optitrack.TrackedObject.quaternion" title="Permalink to this definition">¶</a></dt>
+<code class="descname">quaternion</code><a class="headerlink" href="#pypot.sensor.optitrack.TrackedObject.quaternion" title="Permalink to this definition">¶</a></dt>
 <dd><p>Alias for field number 1</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="pypot.sensor.optitrack.TrackedObject.timestamp">
-<tt class="descname">timestamp</tt><a class="headerlink" href="#pypot.sensor.optitrack.TrackedObject.timestamp" title="Permalink to this definition">¶</a></dt>
+<code class="descname">timestamp</code><a class="headerlink" href="#pypot.sensor.optitrack.TrackedObject.timestamp" title="Permalink to this definition">¶</a></dt>
 <dd><p>Alias for field number 3</p>
 </dd></dl>
 
@@ -314,7 +259,7 @@
 
 <dl class="function">
 <dt id="pypot.sensor.optitrack.quat2euler">
-<tt class="descclassname">pypot.sensor.optitrack.</tt><tt class="descname">quat2euler</tt><big>(</big><em>q</em><big>)</big><a class="reference internal" href="_modules/pypot/sensor/optitrack.html#quat2euler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.sensor.optitrack.quat2euler" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">pypot.sensor.optitrack.</code><code class="descname">quat2euler</code><span class="sig-paren">(</span><em>q</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/sensor/optitrack.html#quat2euler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.sensor.optitrack.quat2euler" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </div>
@@ -331,16 +276,18 @@
       </div><!-- /row -->
 
       <!-- row -->
-      <div class="row-fluid">
-<div class="related navbar " role="navigation" aria-label="related navigation">
+      <div class="row footer-relbar">
+<div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
   <div class="navbar-inner">
-    <ul class="nav pull-right">
+    <ul class="nav navbar-nav">
+        <li><a href="index.html">PyPot 1.7.1 documentation</a></li>
+    </ul>
+    <ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
       
-        <li><a href="genindex.html" title="General Index" >index</a></li>
-        <li><a href="py-modindex.html" title="Python Module Index" >modules</a></li>
-        <li><a href="pypot.server.html" title="server Package" >next</a></li>
         <li><a href="pypot.robot.html" title="robot Package" >previous</a></li>
-        <li><a href="index.html">PyPot 1.7.0 documentation</a></li>
+        <li><a href="pypot.server.html" title="server Package" >next</a></li>
+        <li><a href="py-modindex.html" title="Python Module Index" >modules</a></li>
+        <li><a href="genindex.html" title="General Index" >index</a></li>
         <li><a href="api.html" >PyPot&#8217;s API</a></li> 
       
     </ul>
@@ -351,7 +298,7 @@
       <!-- footer -->
       <footer role="contentinfo">
           &copy; Copyright 2012, Pierre Rouanet, Matthieu Lapeyre, Haylee Fogg.
-        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.2.2.
+        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.3b1.
       </footer>
       <!-- /footer -->
 

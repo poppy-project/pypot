@@ -9,19 +9,17 @@
   <head>
     <meta charset="utf-8" />
     
-    <title>Primitives everywhere &mdash; PyPot 1.7.0 documentation</title>
-
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Primitives everywhere &mdash; PyPot 1.7.1 documentation</title>
     <meta name="description" content="">
     <meta name="author" content="">
 
     
+
 <link rel="stylesheet" href="_static/css/basicstrap-base.css" type="text/css" />
-<link rel="stylesheet" href="_static/css/bootstrap.min.css" type="text/css" />
+<link rel="stylesheet" id="current-theme" href="_static/css/bootstrap3/bootstrap.min.css" type="text/css" />
+<link rel="stylesheet" id="current-adjust-theme" type="text/css" />
+
 <link rel="stylesheet" href="_static/css/font-awesome.min.css">
-<!--[if IE 7]>
-<link rel="stylesheet" href="_static/css/font-awesome-ie7.min.css">
-<![endif]-->
 
 <style type="text/css">
   body {
@@ -31,90 +29,83 @@
 }
 </style>
 
-<link rel="stylesheet" href="_static/basicstrap.css" type="text/css" />
+<link rel="stylesheet" href="_static/css/basicstrap.css" type="text/css" />
 <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
 <link rel="stylesheet" href="_static/my-css.css" type="text/css" />
-<link rel="stylesheet" href="_static/css/bootstrap-responsive.min.css" type="text/css" />
     
 <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
             URL_ROOT:    './',
-            VERSION:     '1.7.0',
+            VERSION:     '1.7.1',
             COLLAPSE_INDEX: false,
             FILE_SUFFIX: '.html',
             HAS_SOURCE:  true
   };
 </script>
-<script type="text/javascript" src="_static/js/jquery.min.js"></script>
-<script type="text/javascript" src="_static/underscore.js"></script>
-<script type="text/javascript" src="_static/doctools.js"></script>
-<script type="text/javascript" src="_static/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="_static/js/jquery.min.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/js/bootstrap3.min.js"></script>
+<script type="text/javascript" src="_static/js/jquery.cookie.min.js"></script>
+<script type="text/javascript" src="_static/js/basicstrap.js"></script>
 <script type="text/javascript">
-  $(document).ready(function(){
-    $('.show-sidebar').click(function(e) {
-       e.preventDefault();
-       if ($(".show-sidebar").html() == "Open Table Of Contents") {
-          $('.for-mobile').removeClass('hidden-phone');
-          $(".show-sidebar").html("Close Table Of Contents");
-       } else {
-          $(".show-sidebar").html("Open Table Of Contents");
-       }
-    });
-  });
-  $(window).load(function () {
-    /*
-
-     * Scroll the window to avoid the topnav bar
-     * https://github.com/twitter/bootstrap/issues/1768
-     */
-    if ($(".navbar.navbar-fixed-top").length > 0) {
-      // var navHeight = $(".navbar").height(),
-      var navHeight = 40,
-        shiftWindow = function() { scrollBy(0, -navHeight - 10); };
-
-      if (location.hash) {
-        setTimeout(shiftWindow, 1);
-      }
-
-      window.addEventListener("hashchange", shiftWindow);
-    }
-  });
 </script>
     <link rel="author" title="About these documents" href="about.html" />
-    <link rel="top" title="PyPot 1.7.0 documentation" href="index.html" />
+    <link rel="top" title="PyPot 1.7.1 documentation" href="index.html" />
     <link rel="next" title="Mastering the logging system" href="logging.html" />
     <link rel="prev" title="Robot Controller" href="controller.html" /> 
   </head>
   <body role="document">
-    <div class="navbar navbar-fixed-top " role="navigation" aria-label="top navigation">
-      <div class="navbar-inner">
-        <div class="container-fluid">
-          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+    <div id="navbar-top" class="navbar navbar-fixed-top navbar-default" role="navigation" aria-label="top navigation">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
-          </a>
-          <div role="banner">
-            <a class="brand" href="index.html">PyPot 1.7.0 documentation</a>
-          </div>
-          <div class="nav-collapse collapse">
-            <ul class="nav pull-right">
-              
-                <li>
-                <a href="genindex.html" title="General Index" accesskey="I">index</a>
-                </li>
-                <li>
-                <a href="py-modindex.html" title="Python Module Index" >modules</a>
-                </li>
-                <li>
-                <a href="logging.html" title="Mastering the logging system" accesskey="N">next</a>
-                </li>
-                <li>
-                <a href="controller.html" title="Robot Controller" accesskey="P">previous</a>
-                </li>
-              
-            </ul>
-          </div>
+          </button>
+          <a class="navbar-brand" href="index.html">PyPot 1.7.1 documentation</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
+              <li class="dropdown visible-xs">
+                <a role="button" id="localToc" data-toggle="dropdown" data-target="#" href="#">Table Of Contents <b class="caret"></b></a>
+                <ul class="dropdown-menu localtoc sp-localtoc" role="menu" aria-labelledby="localToc">
+                <ul>
+<li><a class="reference internal" href="#">Primitives everywhere</a><ul>
+<li><a class="reference internal" href="#what-do-we-call-primitive">What do we call &#8220;Primitive&#8221;?</a></li>
+<li><a class="reference internal" href="#writing-your-own-primitive">Writing your own primitive</a></li>
+<li><a class="reference internal" href="#start-stop-pause-and-resume">Start, Stop, Pause, and Resume</a></li>
+<li><a class="reference internal" href="#attaching-a-primitive-to-the-robot">Attaching a primitive to the robot</a></li>
+</ul>
+</li>
+</ul>
+
+                </ul>
+              </li>
+
+            
+              <li><a href="controller.html" title="Robot Controller" accesskey="P">previous </a></li>
+              <li><a href="logging.html" title="Mastering the logging system" accesskey="N">next </a></li>
+              <li><a href="py-modindex.html" title="Python Module Index" >modules </a></li>
+              <li><a href="genindex.html" title="General Index" accesskey="I">index </a></li>
+            
+            <li class="visible-xs"><a href="_sources/primitive.txt" rel="nofollow">Show Source</a></li>
+
+            <li class="visible-xs">
+                <form class="search form-search form-inline navbar-form navbar-right sp-searchbox" action="search.html" method="get">
+                  <div class="input-append input-group">
+                    <input type="text" class="search-query form-control" name="q" placeholder="Search...">
+                    <span class="input-group-btn">
+                    <input type="submit" class="btn" value="Go" />
+                    </span>
+                  </div>
+                  <input type="hidden" name="check_keywords" value="yes" />
+                  <input type="hidden" name="area" value="default" />
+                </form>
+            </li>
+          </ul>
         </div>
       </div>
     </div>
@@ -123,59 +114,11 @@
     <!-- container -->
     <div class="container-fluid">
 
-
-      
-      <div class="row-fluid hidden-desktop hidden-tablet">
-      
-<div class="span3 ">
-  <a class="visible-phone btn btn-small show-sidebar" data-toggle="collapse" data-target=".for-mobile">Open Table Of Contents</a>
-  <div class="for-mobile sidebar hidden-phone" role="navigation" aria-label="main navigation">
-  <h3><a href="index.html">Table Of Contents</a></h3>
-  <ul>
-<li><a class="reference internal" href="#">Primitives everywhere</a><ul>
-<li><a class="reference internal" href="#what-do-we-call-primitive">What do we call &#8220;Primitive&#8221;?</a></li>
-<li><a class="reference internal" href="#writing-your-own-primitive">Writing your own primitive</a></li>
-<li><a class="reference internal" href="#start-stop-pause-and-resume">Start, Stop, Pause, and Resume</a></li>
-<li><a class="reference internal" href="#attaching-a-primitive-to-the-robot">Attaching a primitive to the robot</a></li>
-</ul>
-</li>
-</ul>
-
-  <h4>Previous topic</h4>
-  <p class="topless"><a href="controller.html"
-                        title="previous chapter">Robot Controller</a></p>
-  <h4>Next topic</h4>
-  <p class="topless"><a href="logging.html"
-                        title="next chapter">Mastering the logging system</a></p>
-  <h3>This Page</h3>
-  <ul class="this-page-menu">
-    <li><a href="_sources/primitive.txt"
-           rel="nofollow">Show Source</a></li>
-  </ul>
-<div id="searchbox" role="search">
-  <h3>Quick search</h3>
-  <form class="search form-search" action="search.html" method="get">
-      <div class="input-append">
-        <input type="text" class="search-query" name="q">
-        <input type="submit" class="btn" value="Go" />
-      </div>
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
-    </form>
-    <p class="searchtip" style="font-size: 90%">
-    Enter search terms or a module, class or function name.
-    </p>
-</div>
-  </div>
-</div>
-      </div>
-      
-
       <!-- row -->
-      <div class="row-fluid">
+      <div class="row">
          
-<div class="span3 visible-desktop visible-tablet">
-  <div class=" sidebar hidden-phone" role="navigation" aria-label="main navigation">
+<div class="col-md-3 hidden-xs">
+  <div class="sidebar hidden-xs" role="navigation" aria-label="main navigation">
   <h3><a href="index.html">Table Of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">Primitives everywhere</a><ul>
@@ -193,17 +136,21 @@
   <h4>Next topic</h4>
   <p class="topless"><a href="logging.html"
                         title="next chapter">Mastering the logging system</a></p>
-  <h3>This Page</h3>
-  <ul class="this-page-menu">
-    <li><a href="_sources/primitive.txt"
-           rel="nofollow">Show Source</a></li>
-  </ul>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/primitive.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
 <div id="searchbox" role="search">
   <h3>Quick search</h3>
-  <form class="search form-search" action="search.html" method="get">
-      <div class="input-append">
-        <input type="text" class="search-query" name="q">
+  <form class="search form-inline" action="search.html" method="get">
+      <div class="input-append input-group">
+        <input type="text" class="search-query form-control" name="q" placeholder="Search...">
+        <span class="input-group-btn">
         <input type="submit" class="btn" value="Go" />
+        </span>
       </div>
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
@@ -216,7 +163,7 @@
 </div> 
         
 
-        <div class="span9">
+        <div class="col-md-9">
           <div class="document" role="main">
             <div class="documentwrapper">
               <div class="bodywrapper">
@@ -224,15 +171,15 @@
                   
   <div class="section" id="primitives-everywhere">
 <span id="my-prim"></span><h1>Primitives everywhere<a class="headerlink" href="#primitives-everywhere" title="Permalink to this headline">¶</a></h1>
-<p>In the previous sections, we have shown how to make a simple behavior thanks to the <tt class="xref py py-class docutils literal"><span class="pre">Robot</span></tt> abstraction. But how to combine those elementary behaviors into something more complex? You could use threads and do it manually, but we provide the <tt class="xref py py-class docutils literal"><span class="pre">Primitive</span></tt> to abstract most of the work for you.</p>
+<p>In the previous sections, we have shown how to make a simple behavior thanks to the <code class="xref py py-class docutils literal"><span class="pre">Robot</span></code> abstraction. But how to combine those elementary behaviors into something more complex? You could use threads and do it manually, but we provide the <code class="xref py py-class docutils literal"><span class="pre">Primitive</span></code> to abstract most of the work for you.</p>
 <div class="section" id="what-do-we-call-primitive">
 <h2>What do we call &#8220;Primitive&#8221;?<a class="headerlink" href="#what-do-we-call-primitive" title="Permalink to this headline">¶</a></h2>
-<p>We call <a class="reference internal" href="pypot.primitive.html#pypot.primitive.primitive.Primitive" title="pypot.primitive.primitive.Primitive"><tt class="xref py py-class docutils literal"><span class="pre">Primitive</span></tt></a> any simple or complex behavior applied to a <a class="reference internal" href="pypot.robot.html#pypot.robot.robot.Robot" title="pypot.robot.robot.Robot"><tt class="xref py py-class docutils literal"><span class="pre">Robot</span></tt></a>. A primitive can access all sensors and effectors in the robot. A primitive is supposed to be independent of other primitives. In particular, a primitive is not aware of the other primitives running on the robot at the same time. We imagine those primitives as elementary blocks that can be combined to create more complex blocks in a hierarchical manner.</p>
+<p>We call <a class="reference internal" href="pypot.primitive.html#pypot.primitive.primitive.Primitive" title="pypot.primitive.primitive.Primitive"><code class="xref py py-class docutils literal"><span class="pre">Primitive</span></code></a> any simple or complex behavior applied to a <a class="reference internal" href="pypot.robot.html#pypot.robot.robot.Robot" title="pypot.robot.robot.Robot"><code class="xref py py-class docutils literal"><span class="pre">Robot</span></code></a>. A primitive can access all sensors and effectors in the robot. A primitive is supposed to be independent of other primitives. In particular, a primitive is not aware of the other primitives running on the robot at the same time. We imagine those primitives as elementary blocks that can be combined to create more complex blocks in a hierarchical manner.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">The independence of primitives is really important when you create complex behaviors - such as balance - where many primitives are needed. Adding another primitive - such as walking - should be direct and not force you to rewrite everything. Furthermore, the balance primitive could also be combined with another behavior - such as shoot a ball - without modifying it.</p>
 </div>
-<p>To ensure this independence, the primitive is running in a sort of sandbox. More precisely, this means that the primitive has not direct access to the robot. It can only request commands (e.g. set a new goal position of a motor) to a <a class="reference internal" href="pypot.primitive.html#pypot.primitive.manager.PrimitiveManager" title="pypot.primitive.manager.PrimitiveManager"><tt class="xref py py-class docutils literal"><span class="pre">PrimitiveManager</span></tt></a> which transmits them to the &#8220;real&#8221; robot. As multiple primitives can run on the robot at the same time, their request orders are combined by the manager.</p>
+<p>To ensure this independence, the primitive is running in a sort of sandbox. More precisely, this means that the primitive has not direct access to the robot. It can only request commands (e.g. set a new goal position of a motor) to a <a class="reference internal" href="pypot.primitive.html#pypot.primitive.manager.PrimitiveManager" title="pypot.primitive.manager.PrimitiveManager"><code class="xref py py-class docutils literal"><span class="pre">PrimitiveManager</span></code></a> which transmits them to the &#8220;real&#8221; robot. As multiple primitives can run on the robot at the same time, their request orders are combined by the manager.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">The primitives all share the same manager. In further versions, we would like to move from this linear combination of all primitives to a hierarchical structure and have different layer of managers.</p>
@@ -240,15 +187,15 @@
 <p>The manager uses a filter function to combine all orders sent by primitives. By default, this filter function is a simple mean but you can choose your own specific filter (e.g. add function).</p>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
-<p class="last">You should not mix control through primitives and direct control through the <a class="reference internal" href="pypot.robot.html#pypot.robot.robot.Robot" title="pypot.robot.robot.Robot"><tt class="xref py py-class docutils literal"><span class="pre">Robot</span></tt></a>. Indeed, the primitive manager will overwrite your orders at its refresh frequency: i.e. it will look like only the commands send through primitives will be taken into account.</p>
+<p class="last">You should not mix control through primitives and direct control through the <a class="reference internal" href="pypot.robot.html#pypot.robot.robot.Robot" title="pypot.robot.robot.Robot"><code class="xref py py-class docutils literal"><span class="pre">Robot</span></code></a>. Indeed, the primitive manager will overwrite your orders at its refresh frequency: i.e. it will look like only the commands send through primitives will be taken into account.</p>
 </div>
 </div>
 <div class="section" id="writing-your-own-primitive">
 <span id="write-own-prim"></span><h2>Writing your own primitive<a class="headerlink" href="#writing-your-own-primitive" title="Permalink to this headline">¶</a></h2>
-<p>To write you own primitive, you have to subclass the <a class="reference internal" href="pypot.primitive.html#pypot.primitive.primitive.Primitive" title="pypot.primitive.primitive.Primitive"><tt class="xref py py-class docutils literal"><span class="pre">Primitive</span></tt></a> class. It provides you with basic mechanisms (e.g. connection to the manager, setup of the thread) to allow you to directly &#8220;plug&#8221; your primitive to your robot and run it.</p>
+<p>To write you own primitive, you have to subclass the <a class="reference internal" href="pypot.primitive.html#pypot.primitive.primitive.Primitive" title="pypot.primitive.primitive.Primitive"><code class="xref py py-class docutils literal"><span class="pre">Primitive</span></code></a> class. It provides you with basic mechanisms (e.g. connection to the manager, setup of the thread) to allow you to directly &#8220;plug&#8221; your primitive to your robot and run it.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">You should always call the super constructor if you override the <tt class="xref py py-meth docutils literal"><span class="pre">__init__()</span></tt> method.</p>
+<p class="last">You should always call the super constructor if you override the <code class="xref py py-meth docutils literal"><span class="pre">__init__()</span></code> method.</p>
 </div>
 <p>As an example, let&#8217;s write a simple primitive that recreate the dance behavior written in the <a class="reference internal" href="quickstart.html#dance"><em>Controlling your Ergo-Robot</em></a> section:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">time</span>
@@ -275,7 +222,7 @@
 <span class="n">dance</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
 </pre></div>
 </div>
-<p>If you want to make the dance primitive infinite you can use the <a class="reference internal" href="pypot.primitive.html#pypot.primitive.primitive.LoopPrimitive" title="pypot.primitive.primitive.LoopPrimitive"><tt class="xref py py-class docutils literal"><span class="pre">LoopPrimitive</span></tt></a> class:</p>
+<p>If you want to make the dance primitive infinite you can use the <a class="reference internal" href="pypot.primitive.html#pypot.primitive.primitive.LoopPrimitive" title="pypot.primitive.primitive.LoopPrimitive"><code class="xref py py-class docutils literal"><span class="pre">LoopPrimitive</span></code></a> class:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">LoopDancePrimitive</span><span class="p">(</span><span class="n">pypot</span><span class="o">.</span><span class="n">primitive</span><span class="o">.</span><span class="n">LoopPrimitive</span><span class="p">):</span>
     <span class="c"># The update function is automatically called at the frequency given on the constructor</span>
     <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">amp</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="mf">0.5</span><span class="p">):</span>
@@ -296,7 +243,7 @@
 </div>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
-<p>When writing your own primitive, you should always keep in mind that you should never directly pass the robot or its motors as argument and access them directly. You have to access them through the self.robot and self.robot.motors properties. Indeed, at instantiation the <a class="reference internal" href="pypot.robot.html#pypot.robot.robot.Robot" title="pypot.robot.robot.Robot"><tt class="xref py py-class docutils literal"><span class="pre">Robot</span></tt></a> (resp. <a class="reference internal" href="pypot.dynamixel.html#pypot.dynamixel.motor.DxlMotor" title="pypot.dynamixel.motor.DxlMotor"><tt class="xref py py-class docutils literal"><span class="pre">DxlMotor</span></tt></a>) instance is transformed into a <a class="reference internal" href="pypot.primitive.html#pypot.primitive.primitive.MockupRobot" title="pypot.primitive.primitive.MockupRobot"><tt class="xref py py-class docutils literal"><span class="pre">MockupRobot</span></tt></a> (resp. <a class="reference internal" href="pypot.primitive.html#pypot.primitive.primitive.MockupMotor" title="pypot.primitive.primitive.MockupMotor"><tt class="xref py py-class docutils literal"><span class="pre">MockupMotor</span></tt></a>). Those class are used to intercept the orders sent and forward them to the <a class="reference internal" href="pypot.primitive.html#pypot.primitive.manager.PrimitiveManager" title="pypot.primitive.manager.PrimitiveManager"><tt class="xref py py-class docutils literal"><span class="pre">PrimitiveManager</span></tt></a> which will combine them. By directly accessing the &#8220;real&#8221; motor or robot you circumvent this mechanism and break the sandboxing. If you have to specify a list of motors to your primitive (e.g. apply the sinusoid primitive to the specified motors), you should either give the motors name and access the motors within the primitive or transform the list of <a class="reference internal" href="pypot.dynamixel.html#pypot.dynamixel.motor.DxlMotor" title="pypot.dynamixel.motor.DxlMotor"><tt class="xref py py-class docutils literal"><span class="pre">DxlMotor</span></tt></a> into <a class="reference internal" href="pypot.primitive.html#pypot.primitive.primitive.MockupMotor" title="pypot.primitive.primitive.MockupMotor"><tt class="xref py py-class docutils literal"><span class="pre">MockupMotor</span></tt></a> thanks to the <a class="reference internal" href="pypot.primitive.html#pypot.primitive.primitive.Primitive.get_mockup_motor" title="pypot.primitive.primitive.Primitive.get_mockup_motor"><tt class="xref py py-meth docutils literal"><span class="pre">get_mockup_motor()</span></tt></a> method.
+<p>When writing your own primitive, you should always keep in mind that you should never directly pass the robot or its motors as argument and access them directly. You have to access them through the self.robot and self.robot.motors properties. Indeed, at instantiation the <a class="reference internal" href="pypot.robot.html#pypot.robot.robot.Robot" title="pypot.robot.robot.Robot"><code class="xref py py-class docutils literal"><span class="pre">Robot</span></code></a> (resp. <a class="reference internal" href="pypot.dynamixel.html#pypot.dynamixel.motor.DxlMotor" title="pypot.dynamixel.motor.DxlMotor"><code class="xref py py-class docutils literal"><span class="pre">DxlMotor</span></code></a>) instance is transformed into a <a class="reference internal" href="pypot.primitive.html#pypot.primitive.primitive.MockupRobot" title="pypot.primitive.primitive.MockupRobot"><code class="xref py py-class docutils literal"><span class="pre">MockupRobot</span></code></a> (resp. <a class="reference internal" href="pypot.primitive.html#pypot.primitive.primitive.MockupMotor" title="pypot.primitive.primitive.MockupMotor"><code class="xref py py-class docutils literal"><span class="pre">MockupMotor</span></code></a>). Those class are used to intercept the orders sent and forward them to the <a class="reference internal" href="pypot.primitive.html#pypot.primitive.manager.PrimitiveManager" title="pypot.primitive.manager.PrimitiveManager"><code class="xref py py-class docutils literal"><span class="pre">PrimitiveManager</span></code></a> which will combine them. By directly accessing the &#8220;real&#8221; motor or robot you circumvent this mechanism and break the sandboxing. If you have to specify a list of motors to your primitive (e.g. apply the sinusoid primitive to the specified motors), you should either give the motors name and access the motors within the primitive or transform the list of <a class="reference internal" href="pypot.dynamixel.html#pypot.dynamixel.motor.DxlMotor" title="pypot.dynamixel.motor.DxlMotor"><code class="xref py py-class docutils literal"><span class="pre">DxlMotor</span></code></a> into <a class="reference internal" href="pypot.primitive.html#pypot.primitive.primitive.MockupMotor" title="pypot.primitive.primitive.MockupMotor"><code class="xref py py-class docutils literal"><span class="pre">MockupMotor</span></code></a> thanks to the <a class="reference internal" href="pypot.primitive.html#pypot.primitive.primitive.Primitive.get_mockup_motor" title="pypot.primitive.primitive.Primitive.get_mockup_motor"><code class="xref py py-meth docutils literal"><span class="pre">get_mockup_motor()</span></code></a> method.
 For instance:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">MyDummyPrimitive</span><span class="p">(</span><span class="n">pypot</span><span class="o">.</span><span class="n">primitive</span><span class="o">.</span><span class="n">Primitive</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">motors_name</span><span class="p">):</span>
@@ -321,11 +268,11 @@ For instance:</p>
 </div>
 <div class="section" id="start-stop-pause-and-resume">
 <span id="start-prim"></span><h2>Start, Stop, Pause, and Resume<a class="headerlink" href="#start-stop-pause-and-resume" title="Permalink to this headline">¶</a></h2>
-<p>The primitive can be <a class="reference internal" href="pypot.primitive.html#pypot.primitive.primitive.Primitive.start" title="pypot.primitive.primitive.Primitive.start"><tt class="xref py py-meth docutils literal"><span class="pre">start()</span></tt></a>, <a class="reference internal" href="pypot.primitive.html#pypot.primitive.primitive.Primitive.stop" title="pypot.primitive.primitive.Primitive.stop"><tt class="xref py py-meth docutils literal"><span class="pre">stop()</span></tt></a>, <a class="reference internal" href="pypot.primitive.html#pypot.primitive.primitive.Primitive.pause" title="pypot.primitive.primitive.Primitive.pause"><tt class="xref py py-meth docutils literal"><span class="pre">pause()</span></tt></a> and <a class="reference internal" href="pypot.primitive.html#pypot.primitive.primitive.Primitive.resume" title="pypot.primitive.primitive.Primitive.resume"><tt class="xref py py-meth docutils literal"><span class="pre">resume()</span></tt></a>. Unlike regular python thread, primitive can be restart by calling again the <a class="reference internal" href="pypot.primitive.html#pypot.primitive.primitive.Primitive.start" title="pypot.primitive.primitive.Primitive.start"><tt class="xref py py-meth docutils literal"><span class="pre">start()</span></tt></a> method.</p>
-<p>When overriding the <a class="reference internal" href="pypot.primitive.html#pypot.primitive.primitive.Primitive" title="pypot.primitive.primitive.Primitive"><tt class="xref py py-class docutils literal"><span class="pre">Primitive</span></tt></a>, you are responsible for correctly handling those events. For instance, the stop method will only trigger the should stop event that you should watch in your run loop and break it when the event is set. In particular, you should check the <a class="reference internal" href="pypot.primitive.html#pypot.primitive.primitive.Primitive.should_stop" title="pypot.primitive.primitive.Primitive.should_stop"><tt class="xref py py-meth docutils literal"><span class="pre">should_stop()</span></tt></a> and <a class="reference internal" href="pypot.primitive.html#pypot.primitive.primitive.Primitive.should_pause" title="pypot.primitive.primitive.Primitive.should_pause"><tt class="xref py py-meth docutils literal"><span class="pre">should_pause()</span></tt></a> in your run loop. You can also use the <a class="reference internal" href="pypot.primitive.html#pypot.primitive.primitive.Primitive.wait_to_stop" title="pypot.primitive.primitive.Primitive.wait_to_stop"><tt class="xref py py-meth docutils literal"><span class="pre">wait_to_stop()</span></tt></a> and <a class="reference internal" href="pypot.primitive.html#pypot.primitive.primitive.Primitive.wait_to_resume" title="pypot.primitive.primitive.Primitive.wait_to_resume"><tt class="xref py py-meth docutils literal"><span class="pre">wait_to_resume()</span></tt></a> to wait until the commands have really been executed.</p>
+<p>The primitive can be <a class="reference internal" href="pypot.primitive.html#pypot.primitive.primitive.Primitive.start" title="pypot.primitive.primitive.Primitive.start"><code class="xref py py-meth docutils literal"><span class="pre">start()</span></code></a>, <a class="reference internal" href="pypot.primitive.html#pypot.primitive.primitive.Primitive.stop" title="pypot.primitive.primitive.Primitive.stop"><code class="xref py py-meth docutils literal"><span class="pre">stop()</span></code></a>, <a class="reference internal" href="pypot.primitive.html#pypot.primitive.primitive.Primitive.pause" title="pypot.primitive.primitive.Primitive.pause"><code class="xref py py-meth docutils literal"><span class="pre">pause()</span></code></a> and <a class="reference internal" href="pypot.primitive.html#pypot.primitive.primitive.Primitive.resume" title="pypot.primitive.primitive.Primitive.resume"><code class="xref py py-meth docutils literal"><span class="pre">resume()</span></code></a>. Unlike regular python thread, primitive can be restart by calling again the <a class="reference internal" href="pypot.primitive.html#pypot.primitive.primitive.Primitive.start" title="pypot.primitive.primitive.Primitive.start"><code class="xref py py-meth docutils literal"><span class="pre">start()</span></code></a> method.</p>
+<p>When overriding the <a class="reference internal" href="pypot.primitive.html#pypot.primitive.primitive.Primitive" title="pypot.primitive.primitive.Primitive"><code class="xref py py-class docutils literal"><span class="pre">Primitive</span></code></a>, you are responsible for correctly handling those events. For instance, the stop method will only trigger the should stop event that you should watch in your run loop and break it when the event is set. In particular, you should check the <a class="reference internal" href="pypot.primitive.html#pypot.primitive.primitive.Primitive.should_stop" title="pypot.primitive.primitive.Primitive.should_stop"><code class="xref py py-meth docutils literal"><span class="pre">should_stop()</span></code></a> and <a class="reference internal" href="pypot.primitive.html#pypot.primitive.primitive.Primitive.should_pause" title="pypot.primitive.primitive.Primitive.should_pause"><code class="xref py py-meth docutils literal"><span class="pre">should_pause()</span></code></a> in your run loop. You can also use the <a class="reference internal" href="pypot.primitive.html#pypot.primitive.primitive.Primitive.wait_to_stop" title="pypot.primitive.primitive.Primitive.wait_to_stop"><code class="xref py py-meth docutils literal"><span class="pre">wait_to_stop()</span></code></a> and <a class="reference internal" href="pypot.primitive.html#pypot.primitive.primitive.Primitive.wait_to_resume" title="pypot.primitive.primitive.Primitive.wait_to_resume"><code class="xref py py-meth docutils literal"><span class="pre">wait_to_resume()</span></code></a> to wait until the commands have really been executed.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">You can refer to the source code of the <a class="reference internal" href="pypot.primitive.html#pypot.primitive.primitive.LoopPrimitive" title="pypot.primitive.primitive.LoopPrimitive"><tt class="xref py py-class docutils literal"><span class="pre">LoopPrimitive</span></tt></a> for an example of how to correctly handle all these events.</p>
+<p class="last">You can refer to the source code of the <a class="reference internal" href="pypot.primitive.html#pypot.primitive.primitive.LoopPrimitive" title="pypot.primitive.primitive.LoopPrimitive"><code class="xref py py-class docutils literal"><span class="pre">LoopPrimitive</span></code></a> for an example of how to correctly handle all these events.</p>
 </div>
 </div>
 <div class="section" id="attaching-a-primitive-to-the-robot">
@@ -365,16 +312,18 @@ For instance:</p>
       </div><!-- /row -->
 
       <!-- row -->
-      <div class="row-fluid">
-<div class="related navbar " role="navigation" aria-label="related navigation">
+      <div class="row footer-relbar">
+<div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
   <div class="navbar-inner">
-    <ul class="nav pull-right">
+    <ul class="nav navbar-nav">
+        <li><a href="index.html">PyPot 1.7.1 documentation</a></li>
+    </ul>
+    <ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
       
-        <li><a href="genindex.html" title="General Index" >index</a></li>
-        <li><a href="py-modindex.html" title="Python Module Index" >modules</a></li>
-        <li><a href="logging.html" title="Mastering the logging system" >next</a></li>
         <li><a href="controller.html" title="Robot Controller" >previous</a></li>
-        <li><a href="index.html">PyPot 1.7.0 documentation</a></li> 
+        <li><a href="logging.html" title="Mastering the logging system" >next</a></li>
+        <li><a href="py-modindex.html" title="Python Module Index" >modules</a></li>
+        <li><a href="genindex.html" title="General Index" >index</a></li> 
       
     </ul>
   </div>
@@ -384,7 +333,7 @@ For instance:</p>
       <!-- footer -->
       <footer role="contentinfo">
           &copy; Copyright 2012, Pierre Rouanet, Matthieu Lapeyre, Haylee Fogg.
-        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.2.2.
+        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.3b1.
       </footer>
       <!-- /footer -->
 
