@@ -54,4 +54,8 @@ On Windows and Mac, it will be necessary to download and install a FTDI (VCP) dr
 
 .. note:: On the side of the USB2Dynamixel there is a switch. This is used to select the bus you wish to communicate on. This means that you cannot control two different bus protocols at the same time.
 
+On most Linux distributions you will not have the necessary permission to access the serial port. You can either run the command in sudo or better you can add yourself to the *dialout* group::
+
+  sudo addgroup "username" dialout
+
 At this point you should have a PyPot ready to be used! In the extremely unlikely case where anything went wrong during the installation, please refer to the :doc:`Known Issues </knownissues>`.
