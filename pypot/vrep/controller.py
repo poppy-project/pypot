@@ -42,8 +42,24 @@ class VrepController(MotorsController):
             #     self.io.set_motor_position(motor_name=m.name, position=- p)
 
     def _init_vrep_streaming(self):
+        # While the code below may look redundant and that
+        # it could be simplified. It is written as such to
+        # speed-up the initialization of the streaming process.
+        # Here, we initalized all streaming and then wait for
+        # them to be ready at once.
+
+        # Prepare streaming for getting position for each motor
+        for m in self.motors:
+            self.io._get_motor_position(m.name)
+
+        # Now actually retrieves all values
         pos = [self.io.get_motor_position(motor_name=m.name) for m in self.motors]
 
+        # Prepare streaming for setting position for each motor
+        for m, p in zip(self.motors, pos):
+            self.io._set_motor_position(motor_name=m.name, position=p)
+
+        # And actually affect them
         for m, p in zip(self.motors, pos):
             self.io.set_motor_position(motor_name=m.name, position=p)
             m._values['goal_position'] = rad2deg(p)

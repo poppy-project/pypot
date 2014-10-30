@@ -48,7 +48,7 @@ class vrep_check_errorcode(object):
         return wrapped_f
 
 
-def vrep_init_streaming(f, vrep_timeout=0.2, max_iter=2):
+def vrep_init_streaming(f, vrep_timeout=0.2, max_iter=5):
     """ Decorator for initializing V-REP data streaming. """
     @wraps(f)
     def wrapped_f(*args, **kwargs):
@@ -65,7 +65,7 @@ def vrep_init_streaming(f, vrep_timeout=0.2, max_iter=2):
     return wrapped_f
 
 
-def vrep_init_sending(f, vrep_timeout=0.2, max_iter=2):
+def vrep_init_sending(f, vrep_timeout=0.2, max_iter=5):
     """ Decorator for initializing V-REP data sending. """
     @wraps(f)
     def wrapped_f(*args, **kwargs):
@@ -175,10 +175,7 @@ class VrepIO(AbstractIO):
             self.start_simulation()
 
     # Get/Set Position
-    @vrep_check_errorcode('Cannot get position for "{motor_name}"')
-    @vrep_init_streaming
-    def get_motor_position(self, motor_name):
-        """ Gets the motor current position. """
+    def _get_motor_position(self, motor_name):
         h = self.get_object_handle(obj=motor_name)
 
         with self._lock:
@@ -186,10 +183,7 @@ class VrepIO(AbstractIO):
                                              h,
                                              vrep.simx_opmode_streaming)
 
-    @vrep_check_errorcode('Cannot set position for "{motor_name}"')
-    @vrep_init_sending
-    def set_motor_position(self, motor_name, position):
-        """ Sets the motor target position. """
+    def _set_motor_position(self, motor_name, position):
         h = self.get_object_handle(obj=motor_name)
 
         with self._lock:
@@ -197,6 +191,18 @@ class VrepIO(AbstractIO):
                                                    h,
                                                    position,
                                                    vrep.simx_opmode_oneshot)
+
+    @vrep_check_errorcode('Cannot get position for "{motor_name}"')
+    @vrep_init_streaming
+    def get_motor_position(self, motor_name):
+        """ Gets the motor current position. """
+        return self._get_motor_position(motor_name=motor_name)
+
+    @vrep_check_errorcode('Cannot set position for "{motor_name}"')
+    @vrep_init_sending
+    def set_motor_position(self, motor_name, position):
+        """ Sets the motor target position. """
+        return self._set_motor_position(motor_name, position)
 
     @vrep_check_errorcode('Cannot get position for "{object_name}"')
     @vrep_init_streaming
