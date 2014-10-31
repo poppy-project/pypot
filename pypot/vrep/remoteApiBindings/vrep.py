@@ -33,12 +33,21 @@ from vrepConst import *
 
 #load library
 libsimx = None
-if platform.system() =='Windows':
-    libsimx = CDLL("./remoteApi.dll") 
+
+import os
+import sys
+
+basepath = os.path.join(os.path.dirname(__file__), 'lib')
+version = '64Bit' if sys.maxsize > 2**32 else '32Bit'
+
+if platform.system() == 'Windows':
+    dyn_lib = os.path.join(basepath, 'windows', version, 'remoteApi.dll')
 elif platform.system() == 'Darwin':
-    libsimx = CDLL("./remoteApi.dylib")
+    dyn_lib = os.path.join(basepath, 'mac', version, 'remoteApi.dylib')
 else:
-    libsimx = CDLL("./remoteApi.so")
+    dyn_lib = os.path.join(basepath, 'linux', version, 'remoteApi.so')
+
+libsimx = CDLL(dyn_lib)
 
 #ctypes wrapper prototypes 
 c_GetJointPosition          = CFUNCTYPE(c_int32,c_int32, c_int32, POINTER(c_float), c_int32)(("simxGetJointPosition", libsimx))
