@@ -24,7 +24,7 @@
 # along with the REMOTE API.  If not, see <http://www.gnu.org/licenses/>.
 # -------------------------------------------------------------------
 #
-# This file was automatically created for V-REP release V3.1.2 on June 16th 2014
+# This file was automatically created for V-REP release V3.1.3 on Sept. 30th 2014
 
 #constants
 #Scene object types. Values are serialized
@@ -298,6 +298,11 @@ sim_handle_single					=-8
 sim_handle_default					=-9
 sim_handle_all_except_self			=-10
 sim_handle_parent					=-11
+
+
+# special handle flags
+sim_handleflag_assembly				=0x400000
+sim_handleflag_model				=0x800000
 
 
 # distance calculation methods (serialized) 

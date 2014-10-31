@@ -1,30 +1,30 @@
 # This file is part of the REMOTE API
-#
-# Copyright 2006-2014 Coppelia Robotics GmbH. All rights reserved.
+# 
+# Copyright 2006-2014 Coppelia Robotics GmbH. All rights reserved. 
 # marc@coppeliarobotics.com
 # www.coppeliarobotics.com
-#
+# 
 # The REMOTE API is licensed under the terms of GNU GPL:
-#
+# 
 # -------------------------------------------------------------------
 # The REMOTE API is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
 # (at your option) any later version.
-#
+# 
 # THE REMOTE API IS DISTRIBUTED "AS IS", WITHOUT ANY EXPRESS OR IMPLIED
 # WARRANTY. THE USER WILL USE IT AT HIS/HER OWN RISK. THE ORIGINAL
 # AUTHORS AND COPPELIA ROBOTICS GMBH WILL NOT BE LIABLE FOR DATA LOSS,
 # DAMAGES, LOSS OF PROFITS OR ANY OTHER KIND OF LOSS WHILE USING OR
 # MISUSING THIS SOFTWARE.
-#
+# 
 # See the GNU General Public License for more details.
-#
+# 
 # You should have received a copy of the GNU General Public License
 # along with the REMOTE API.  If not, see <http://www.gnu.org/licenses/>.
 # -------------------------------------------------------------------
 #
-# This file was automatically created for V-REP release V3.1.2 on June 16th 2014
+# This file was automatically created for V-REP release V3.1.3 on Sept. 30th 2014
 
 import platform
 import struct
@@ -33,23 +33,14 @@ from vrepConst import *
 
 #load library
 libsimx = None
-
-import os
-import sys
-
-basepath = os.path.join(os.path.dirname(__file__), 'lib')
-version = '64Bit' if sys.maxsize > 2**32 else '32Bit'
-
-if platform.system() == 'Windows':
-    dyn_lib = os.path.join(basepath, 'windows', version, 'remoteApi.dll')
+if platform.system() =='Windows':
+    libsimx = CDLL("./remoteApi.dll") 
 elif platform.system() == 'Darwin':
-    dyn_lib = os.path.join(basepath, 'mac', version, 'remoteApi.dylib')
+    libsimx = CDLL("./remoteApi.dylib")
 else:
-    dyn_lib = os.path.join(basepath, 'linux', version, 'remoteApi.so')
+    libsimx = CDLL("./remoteApi.so")
 
-libsimx = CDLL(dyn_lib)
-
-#ctypes wrapper prototypes
+#ctypes wrapper prototypes 
 c_GetJointPosition          = CFUNCTYPE(c_int32,c_int32, c_int32, POINTER(c_float), c_int32)(("simxGetJointPosition", libsimx))
 c_SetJointPosition          = CFUNCTYPE(c_int32,c_int32, c_int32, c_float, c_int32)(("simxSetJointPosition", libsimx))
 c_GetJointMatrix            = CFUNCTYPE(c_int32,c_int32, c_int32, POINTER(c_float), c_int32)(("simxGetJointMatrix", libsimx))
@@ -106,6 +97,7 @@ c_GetDistanceHandle         = CFUNCTYPE(c_int32,c_int32, POINTER(c_char), POINTE
 c_ReadCollision             = CFUNCTYPE(c_int32,c_int32, c_int32, POINTER(c_ubyte), c_int32)(("simxReadCollision", libsimx))
 c_ReadDistance              = CFUNCTYPE(c_int32,c_int32, c_int32, POINTER(c_float), c_int32)(("simxReadDistance", libsimx))
 c_RemoveObject              = CFUNCTYPE(c_int32,c_int32, c_int32, c_int32)(("simxRemoveObject", libsimx))
+c_RemoveModel               = CFUNCTYPE(c_int32,c_int32, c_int32, c_int32)(("simxRemoveModel", libsimx))
 c_RemoveUI                  = CFUNCTYPE(c_int32,c_int32, c_int32, c_int32)(("simxRemoveUI", libsimx))
 c_CloseScene                = CFUNCTYPE(c_int32,c_int32, c_int32)(("simxCloseScene", libsimx))
 c_GetObjects                = CFUNCTYPE(c_int32,c_int32, c_int32, POINTER(c_int32), POINTER(POINTER(c_int32)), c_int32)(("simxGetObjects", libsimx))
@@ -175,10 +167,10 @@ def simxGetJointMatrix(clientID, jointHandle, operationMode):
     Please have a look at the function description/documentation in the V-REP user manual
     '''
     matrix = (c_float*12)()
-    ret = c_GetJointMatrix(clientID, jointHandle, matrix, operationMode)
+    ret = c_GetJointMatrix(clientID, jointHandle, matrix, operationMode)	
     arr = []
     for i in range(12):
-        arr.append(matrix[i])
+        arr.append(matrix[i])	
     return ret, arr
 
 def simxSetSphericalJointMatrix(clientID, jointHandle, matrix, operationMode):
@@ -232,11 +224,11 @@ def simxReadForceSensor(clientID, forceSensorHandle, operationMode):
     ret = c_ReadForceSensor(clientID, forceSensorHandle, byref(state), forceVector, torqueVector, operationMode)
     arr1 = []
     for i in range(3):
-        arr1.append(forceVector[i])
+        arr1.append(forceVector[i])	
     arr2 = []
     for i in range(3):
-        arr2.append(torqueVector[i])
-    return ret, ord(state.value), arr1, arr2
+        arr2.append(torqueVector[i])	
+    return ret, ord(state.value), arr1, arr2 
 
 def simxBreakForceSensor(clientID, forceSensorHandle, operationMode):
     '''
@@ -253,7 +245,7 @@ def simxReadVisionSensor(clientID, sensorHandle, operationMode):
     auxValues      = pointer(c_float())
     auxValuesCount = pointer(c_int())
     ret = c_ReadVisionSensor(clientID, sensorHandle, byref(detectionState), byref(auxValues), byref(auxValuesCount), operationMode)
-
+    
     auxValues2 = []
     if ret == 0:
         s = 0
@@ -265,7 +257,7 @@ def simxReadVisionSensor(clientID, sensorHandle, operationMode):
         c_ReleaseBuffer(auxValues)
         c_ReleaseBuffer(auxValuesCount)
 
-    return ret, bool(detectionState.value!='\0'), auxValues2
+    return ret, bool(detectionState.value!=0), auxValues2 
 
 def simxGetObjectHandle(clientID, objectName, operationMode):
     '''
@@ -283,12 +275,12 @@ def simxGetVisionSensorImage(clientID, sensorHandle, options, operationMode):
     c_image  = pointer(c_byte())
     bytesPerPixel = 3
     if (options and 1) != 0:
-        bytesPerPixel = 1
+        bytesPerPixel = 1	
     ret = c_GetVisionSensorImage(clientID, sensorHandle, resolution, byref(c_image), options, operationMode)
 
     reso = []
     image = []
-    if (ret == 0):
+    if (ret == 0):	
         image = [None]*resolution[0]*resolution[1]*bytesPerPixel
         for i in range(resolution[0] * resolution[1] * bytesPerPixel):
             image[i] = c_image[i]
@@ -313,7 +305,7 @@ def simxGetVisionSensorDepthBuffer(clientID, sensorHandle, operationMode):
     ret = c_GetVisionSensorDepthBuffer(clientID, sensorHandle, resolution, byref(c_buffer), operationMode)
     reso = []
     buffer = []
-    if (ret == 0):
+    if (ret == 0):	
         buffer = [None]*resolution[0]*resolution[1]
         for i in range(resolution[0] * resolution[1]):
             buffer[i] = c_buffer[i]
@@ -348,11 +340,11 @@ def simxReadProximitySensor(clientID, sensorHandle, operationMode):
     ret = c_ReadProximitySensor(clientID, sensorHandle, byref(detectionState), detectedPoint, byref(detectedObjectHandle), detectedSurfaceNormalVector, operationMode)
     arr1 = []
     for i in range(3):
-        arr1.append(detectedPoint[i])
+        arr1.append(detectedPoint[i])	
     arr2 = []
     for i in range(3):
-        arr2.append(detectedSurfaceNormalVector[i])
-    return ret, bool(detectionState.value!='\0'), arr1, detectedObjectHandle.value, arr2
+        arr2.append(detectedSurfaceNormalVector[i])	
+    return ret, bool(detectionState.value!=0), arr1, detectedObjectHandle.value, arr2
 
 def simxLoadModel(clientID, modelPathAndName, options, operationMode):
     '''
@@ -369,7 +361,7 @@ def simxLoadUI(clientID, uiPathAndName, options, operationMode):
     count = c_int()
     uiHandles = pointer(c_int())
     ret = c_LoadUI(clientID, uiPathAndName, options, byref(count), byref(uiHandles), operationMode)
-
+    
     handles = []
     if ret == 0:
         for i in range(count.value):
@@ -440,7 +432,7 @@ def simxGetUIEventButton(clientID, uiHandle, operationMode):
     ret = c_GetUIEventButton(clientID, uiHandle, byref(uiEventButtonID), auxValues, operationMode)
     arr = []
     for i in range(2):
-        arr.append(auxValues[i])
+        arr.append(auxValues[i])	
     return ret, uiEventButtonID.value, arr
 
 def simxGetUIButtonProperty(clientID, uiHandle, uiButtonID, operationMode):
@@ -455,7 +447,7 @@ def simxSetUIButtonProperty(clientID, uiHandle, uiButtonID, prop, operationMode)
     '''
     Please have a look at the function description/documentation in the V-REP user manual
     '''
-
+    
     return c_SetUIButtonProperty(clientID, uiHandle, uiButtonID, prop, operationMode)
 
 def simxAddStatusbarMessage(clientID, message, operationMode):
@@ -518,7 +510,7 @@ def simxGetObjectOrientation(clientID, objectHandle, relativeToObjectHandle, ope
     ret = c_GetObjectOrientation(clientID, objectHandle, relativeToObjectHandle, eulerAngles, operationMode)
     arr = []
     for i in range(3):
-        arr.append(eulerAngles[i])
+        arr.append(eulerAngles[i])	
     return ret, arr
 
 def simxGetObjectPosition(clientID, objectHandle, relativeToObjectHandle, operationMode):
@@ -529,7 +521,7 @@ def simxGetObjectPosition(clientID, objectHandle, relativeToObjectHandle, operat
     ret = c_GetObjectPosition(clientID, objectHandle, relativeToObjectHandle, position, operationMode)
     arr = []
     for i in range(3):
-        arr.append(position[i])
+        arr.append(position[i])	
     return ret, arr
 
 def simxSetObjectOrientation(clientID, objectHandle, relativeToObjectHandle, eulerAngles, operationMode):
@@ -570,7 +562,7 @@ def simxGetLastErrors(clientID, operationMode):
     errorCnt = c_int()
     errorStrings = pointer(c_char())
     ret = c_GetLastErrors(clientID, byref(errorCnt), byref(errorStrings), operationMode)
-
+    
     if ret == 0:
         s = 0
         for i in range(errorCnt.value):
@@ -578,7 +570,7 @@ def simxGetLastErrors(clientID, operationMode):
             while errorStrings[s] != '\0':
                 a.append(errorStrings[s])
                 s += 1
-
+                
             s += 1 #skip null
             errors.append(str(a))
 
@@ -592,7 +584,7 @@ def simxGetArrayParameter(clientID, paramIdentifier, operationMode):
     ret = c_GetArrayParameter(clientID, paramIdentifier, paramValues, operationMode)
     arr = []
     for i in range(3):
-        arr.append(paramValues[i])
+        arr.append(paramValues[i])	
     return ret, arr
 
 def simxSetArrayParameter(clientID, paramIdentifier, paramValues, operationMode):
@@ -609,7 +601,7 @@ def simxGetBooleanParameter(clientID, paramIdentifier, operationMode):
     '''
 
     paramValue = c_ubyte()
-    return c_GetBooleanParameter(clientID, paramIdentifier, byref(paramValue), operationMode), bool(paramValue.value!='\0')
+    return c_GetBooleanParameter(clientID, paramIdentifier, byref(paramValue), operationMode), bool(paramValue.value!=0)
 
 def simxSetBooleanParameter(clientID, paramIdentifier, paramValue, operationMode):
     '''
@@ -654,7 +646,7 @@ def simxGetStringParameter(clientID, paramIdentifier, operationMode):
     '''
     paramValue = pointer(c_char())
     ret = c_GetStringParameter(clientID, paramIdentifier, byref(paramValue), operationMode)
-
+    
     a = bytearray()
     if ret == 0:
         i = 0
@@ -685,7 +677,7 @@ def simxReadCollision(clientID, collisionObjectHandle, operationMode):
     Please have a look at the function description/documentation in the V-REP user manual
     '''
     collisionState = c_ubyte()
-    return c_ReadCollision(clientID, collisionObjectHandle, byref(collisionState), operationMode), bool(collisionState.value!='\0')
+    return c_ReadCollision(clientID, collisionObjectHandle, byref(collisionState), operationMode), bool(collisionState.value!=0)
 
 def simxReadDistance(clientID, distanceObjectHandle, operationMode):
     '''
@@ -701,6 +693,13 @@ def simxRemoveObject(clientID, objectHandle, operationMode):
     '''
 
     return c_RemoveObject(clientID, objectHandle, operationMode)
+
+def simxRemoveModel(clientID, objectHandle, operationMode):
+    '''
+    Please have a look at the function description/documentation in the V-REP user manual
+    '''
+
+    return c_RemoveModel(clientID, objectHandle, operationMode)
 
 def simxRemoveUI(clientID, uiHandle, operationMode):
     '''
@@ -763,14 +762,14 @@ def simxGetDialogInput(clientID, dialogHandle, operationMode):
     '''
     inputText = pointer(c_char())
     ret = c_GetDialogInput(clientID, dialogHandle, byref(inputText), operationMode)
-
+    
     a = bytearray()
     if ret == 0:
         i = 0
         while inputText[i] != '\0':
             a.append(inputText[i])
             i = i+1
-
+			
     return ret, str(a)
 
 
@@ -875,7 +874,7 @@ def simxGetStringSignal(clientID, signalName, operationMode):
             a.append(signalValue[i])
 
     return ret, str(a)
-
+	
 def simxGetAndClearStringSignal(clientID, signalName, operationMode):
     '''
     Please have a look at the function description/documentation in the V-REP user manual
@@ -891,7 +890,7 @@ def simxGetAndClearStringSignal(clientID, signalName, operationMode):
             a.append(signalValue[i])
 
     return ret, str(a)
-
+	
 def simxReadStringStream(clientID, signalName, operationMode):
     '''
     Please have a look at the function description/documentation in the V-REP user manual
@@ -907,7 +906,7 @@ def simxReadStringStream(clientID, signalName, operationMode):
             a.append(signalValue[i])
 
     return ret, str(a)
-
+	
 def simxSetFloatSignal(clientID, signalName, signalValue, operationMode):
     '''
     Please have a look at the function description/documentation in the V-REP user manual
@@ -947,9 +946,9 @@ def simxGetObjectFloatParameter(clientID, objectHandle, parameterID, operationMo
     '''
     Please have a look at the function description/documentation in the V-REP user manual
     '''
-
+    
     parameterValue = c_float()
-    return c_GetObjectFloatParameter(clientID, objectHandle, parameterID, byref(parameterValue), operationMode), parameterValue.value
+    return c_GetObjectFloatParameter(clientID, objectHandle, parameterID, byref(parameterValue), operationMode), parameterValue.value 
 
 def simxSetObjectFloatParameter(clientID, objectHandle, parameterID, parameterValue, operationMode):
     '''
@@ -963,7 +962,7 @@ def simxGetObjectIntParameter(clientID, objectHandle, parameterID, operationMode
     Please have a look at the function description/documentation in the V-REP user manual
     '''
 
-    parameterValue = c_int()
+    parameterValue = c_int() 
     return c_GetObjectIntParameter(clientID, objectHandle, parameterID, byref(parameterValue), operationMode), parameterValue.value
 
 def simxSetObjectIntParameter(clientID, objectHandle, parameterID, parameterValue, operationMode):
@@ -1132,7 +1131,7 @@ def simxGetObjectGroupData(clientID, objectType, dataType, operationMode):
     stringDataC = c_int()
     stringDataP = pointer(c_char())
     ret = c_GetObjectGroupData(clientID, objectType, dataType, byref(handlesC), byref(handlesP), byref(intDataC), byref(intDataP), byref(floatDataC), byref(floatDataP), byref(stringDataC), byref(stringDataP), operationMode)
-
+    
     if ret == 0:
         for i in range(handlesC.value):
             handles.append(handlesP[i])
@@ -1148,7 +1147,7 @@ def simxGetObjectGroupData(clientID, objectType, dataType, operationMode):
                 s += 1
             s += 1 #skip null
             stringData.append(str(a))
-
+ 
     return ret, handles, intData, floatData, stringData
 
 def simxGetObjectVelocity(clientID, objectHandle, operationMode):
@@ -1157,14 +1156,14 @@ def simxGetObjectVelocity(clientID, objectHandle, operationMode):
     '''
     linearVel  = (c_float*3)()
     angularVel = (c_float*3)()
-    ret = c_ReadForceSensor(clientID, objectHandle, linearVel, angularVel, operationMode)
+    ret = c_GetObjectVelocity(clientID, objectHandle, linearVel, angularVel, operationMode)
     arr1 = []
     for i in range(3):
-        arr1.append(linearVel[i])
+        arr1.append(linearVel[i])	
     arr2 = []
     for i in range(3):
-        arr2.append(angularVel[i])
-    return ret, arr1, arr2
+        arr2.append(angularVel[i])	
+    return ret, arr1, arr2 
 
 def simxPackInts(intList):
     '''
@@ -1179,7 +1178,7 @@ def simxUnpackInts(intsPackedInString):
     '''
     Please have a look at the function description/documentation in the V-REP user manual
     '''
-    b=[]
+    b=[]	
     for i in range(len(intsPackedInString)/4):
         b.append(struct.unpack('<i',intsPackedInString[4*i:4*(i+1)])[0])
     return b
@@ -1197,7 +1196,7 @@ def simxUnpackFloats(floatsPackedInString):
     '''
     Please have a look at the function description/documentation in the V-REP user manual
     '''
-    b=[]
+    b=[]	
     for i in range(len(floatsPackedInString)/4):
         b.append(struct.unpack('<f',floatsPackedInString[4*i:4*(i+1)])[0])
     return b
