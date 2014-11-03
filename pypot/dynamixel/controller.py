@@ -83,7 +83,7 @@ class _DxlRegisterController(_DxlController):
 
         values = getattr(self.io, 'get_{}'.format(self.regname))(ids)
         for m, val in zip(motors, values):
-            m._values[self.varname] = val
+            m.__dict__[self.varname] = val
 
     def set_register(self):
         """ Gets the value from :class:`~pypot.dynamixel.motor.DxlMotor` and sets it to the specified register. """
@@ -93,7 +93,7 @@ class _DxlRegisterController(_DxlController):
             return
         ids = [m.id for m in motors]
 
-        values = (m._values[self.varname] for m in motors)
+        values = (m.__dict__[self.varname] for m in motors)
         getattr(self.io, 'set_{}'.format(self.regname))(dict(zip(ids, values)))
 
 
@@ -107,9 +107,9 @@ class _PosSpeedLoadDxlController(_DxlController):
         values = self.io.get_goal_position_speed_load(self.ids)
         positions, speeds, loads = zip(*values)
         for m, p, s, l in zip(self.motors, positions, speeds, loads):
-            m._values['goal_position'] = p
-            m._values['moving_speed'] = s
-            m._values['torque_limit'] = l
+            m.__dict__['goal_position'] = p
+            m.__dict__['moving_speed'] = s
+            m.__dict__['torque_limit'] = l
 
     def update(self):
         self.get_present_position_speed_load()
@@ -124,9 +124,9 @@ class _PosSpeedLoadDxlController(_DxlController):
         positions, speeds, loads = zip(*values)
 
         for m, p, s, l in zip(self.motors, positions, speeds, loads):
-            m._values['present_position'] = p
-            m._values['present_speed'] = s
-            m._values['present_load'] = l
+            m.__dict__['present_position'] = p
+            m.__dict__['present_speed'] = s
+            m.__dict__['present_load'] = l
 
     def set_goal_position_speed_load(self):
         change_torque = {}
@@ -144,7 +144,7 @@ class _PosSpeedLoadDxlController(_DxlController):
         if not ids:
             return
 
-        values = ((m._values['goal_position'],
-                   m._values['moving_speed'],
-                   m._values['torque_limit']) for m in rigid_motors)
+        values = ((m.__dict__['goal_position'],
+                   m.__dict__['moving_speed'],
+                   m.__dict__['torque_limit']) for m in rigid_motors)
         self.io.set_goal_position_speed_load(dict(zip(ids, values)))

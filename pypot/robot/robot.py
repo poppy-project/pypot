@@ -1,4 +1,3 @@
-#import time
 import pypot.utils.pypot_time as time
 import logging
 
@@ -68,6 +67,7 @@ class Robot(object):
     def attach_primitive(self, primitive, name):
         setattr(self, name, primitive)
         self._attached_primitives[name] = primitive
+        primitive.name = name
 
         logger.info("Attaching primitive '%s' to the robot.", name)
 
@@ -77,19 +77,14 @@ class Robot(object):
         return self._motors
 
     @property
-    def primitives(self):
-        """ Returns all the primitives attached to the robot. """
+    def active_primitives(self):
+        """ Returns all the primitives currently running on the robot. """
         return self._primitive_manager._prim
 
     @property
-    def attached_primitives(self):
+    def primitives(self):
         """ Returns all the primitives name attached to the robot. """
         return self._attached_primitives.values()
-
-    @property
-    def attached_primitives_name(self):
-        """ Returns all the primitives name attached to the robot. """
-        return self._attached_primitives.keys()
 
     @property
     def compliant(self):

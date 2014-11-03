@@ -31,10 +31,10 @@ class VrepController(MotorsController):
         for m in self.motors:
             # Read values from V-REP and set them to the Motor
             p = round(rad2deg(self.io.get_motor_position(motor_name=m.name)), 1)
-            m._values['present_position'] = p
+            m.__dict__['present_position'] = p
 
             # Send new values from Motor to V-REP
-            p = deg2rad(round(m._values['goal_position'], 1))
+            p = deg2rad(round(m.__dict__['goal_position'], 1))
             self.io.set_motor_position(motor_name=m.name, position=p)
             # if m.direct:
             #     self.io.set_motor_position(motor_name=m.name, position=p)
@@ -62,7 +62,7 @@ class VrepController(MotorsController):
         # And actually affect them
         for m, p in zip(self.motors, pos):
             self.io.set_motor_position(motor_name=m.name, position=p)
-            m._values['goal_position'] = rad2deg(p)
+            m.__dict__['goal_position'] = rad2deg(p)
 
 
 class VrepObjectTracker(SensorsController):

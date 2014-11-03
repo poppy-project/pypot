@@ -1,11 +1,14 @@
 import numpy
+from scipy import signal
 
 from .primitive import LoopPrimitive
 
 
 class Sinus(LoopPrimitive):
+
     """ Apply a sinus on the motor specified as argument. Parameters (amp, offset and phase) should be specified in degree
     """
+
     def __init__(self, robot, refresh_freq,
                  motor_list,
                  amp=1, freq=0.5, offset=0, phase=0):
@@ -22,7 +25,7 @@ class Sinus(LoopPrimitive):
     def update(self):
         """ Compute the sin(t) where t is the elapsed time since the primitive has been started. """
         pos = self._amp * numpy.sin(self._freq * 2.0 * numpy.pi * self.elapsed_time +
-                              self._phase * numpy.pi / 180.0) + self._offset
+                                    self._phase * numpy.pi / 180.0) + self._offset
 
         for m in self.motor_list:
             m.goal_position = pos
@@ -61,8 +64,10 @@ class Sinus(LoopPrimitive):
 
 
 class Cosinus(Sinus):
+
     """ Apply a cosinus on the motor specified as argument. Parameters (amp, offset and phase) should be specified in degree
     """
+
     def __init__(self, robot, refresh_freq,
                  motor_list,
                  amp=1, freq=0.5, offset=0, phase=0):
@@ -70,3 +75,36 @@ class Cosinus(Sinus):
         Sinus.__init__(self, robot, refresh_freq,
                        motor_list,
                        amp, freq, offset, phase=(numpy.pi / 2 + phase))
+
+
+class Square(Sinus):
+
+    """ Apply a square signal. Parameters (amp, freq, offset, phase, duty cycle)
+    """
+
+    def __init__(self, robot, refresh_freq,
+                 motor_list,
+                 amp=1, freq=1.0, offset=0, phase=0, duty=0.5):
+
+        Sinus.__init__(self, robot, refresh_freq,
+                       motor_list,
+                       amp, freq, offset, phase)
+
+        self._duty = duty
+
+    def update(self):
+
+        pos = self._amp * signal.square(self._freq * 2.0 * numpy.pi *
+                                        self.elapsed_time + self._phase * numpy.pi / 180.0, self._duty) + self._offset
+
+        for m in self.motor_list:
+            m.goal_position = pos
+        print pos
+
+    @property
+    def duty(self):
+        return self._duty
+
+    @duty.setter
+    def duty(self, new_duty):
+        self._duty = new_duty

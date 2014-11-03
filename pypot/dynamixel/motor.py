@@ -1,17 +1,56 @@
-# -*- coding: utf-8 -*
-
-import sys
-# import time
-import pypot.utils.pypot_time as time
 import numpy
 import logging
 
-from collections import defaultdict
-from operator import getitem, setitem
+import pypot.utils.pypot_time as time
 
 from ..robot.motor import Motor
 
 logger = logging.getLogger(__name__)
+
+
+class DxlRegister(object):
+    def __init__(self, rw=False):
+        self.rw = rw
+
+    def __get__(self, instance, owner):
+        return instance.__dict__.get(self.label, 0)
+
+    def __set__(self, instance, value):
+        if not self.rw:
+            raise AttributeError("can't set attribute")
+
+        logger.debug("Setting '%s.%s' to %s",
+                     instance.name, self.label, value)
+        instance.__dict__[self.label] = value
+
+
+class DxlOrientedRegister(DxlRegister):
+    def __get__(self, instance, owner):
+        value = DxlRegister.__get__(self, instance, owner)
+        return (value if instance.direct else -value)
+
+    def __set__(self, instance, value):
+        value = value if instance.direct else -value
+        DxlRegister.__set__(self, instance, value)
+
+
+class DxlPositionRegister(DxlOrientedRegister):
+    def __get__(self, instance, owner):
+        value = DxlOrientedRegister.__get__(self, instance, owner)
+        return value - instance.offset
+
+    def __set__(self, instance, value):
+        value = value + instance.offset
+        DxlOrientedRegister.__set__(self, instance, value)
+
+
+class RegisterOwner(type):
+    def __new__(cls, name, bases, attrs):
+        for n, v in attrs.items():
+            if isinstance(v, DxlRegister):
+                v.label = n
+                attrs['registers'].append(n)
+        return super(RegisterOwner, cls).__new__(cls, name, bases, attrs)
 
 
 class DxlMotor(Motor):
@@ -32,84 +71,46 @@ class DxlMotor(Motor):
         Those properties are synchronized with the real motors values thanks to a :class:`~pypot.dynamixel.controller.DxlController`.
 
         """
+    __metaclass__ = RegisterOwner
+
+    registers = ['registers', 'goal_speed', 'compliant']
+
+    id = DxlRegister()
+    name = DxlRegister()
+    model = DxlRegister()
+
+    present_position = DxlPositionRegister()
+    goal_position = DxlPositionRegister(rw=True)
+    present_speed = DxlOrientedRegister()
+    moving_speed = DxlRegister(rw=True)
+    present_load = DxlOrientedRegister()
+    torque_limit = DxlRegister(rw=True)
+
+    angle_limit = DxlRegister()
+    present_voltage = DxlRegister()
+    present_temperature = DxlRegister()
+
     def __init__(self, id, name=None, model='',
                  direct=True, offset=0.0):
-        self._id = id
-        name = name if name else 'motor_{}'.format(id)
-        Motor.__init__(self, name)
+        self.__dict__['id'] = id
 
-        self._model = model
+        name = name if name is not None else 'motor_{}'.format(id)
+        self.__dict__['name'] = name
 
-        self._direct = direct
-        self._offset = offset
+        self.__dict__['model'] = model
+        self.__dict__['direct'] = direct
+        self.__dict__['offset'] = offset
 
-        self._values = defaultdict(int)
-        self._values['compliant'] = True
+        self.__dict__['compliant'] = True
 
     def __repr__(self):
-        return '<DxlMotor name={self.name} id={self.id} pos={self.present_position}>'.format(self=self)
+        return ('<DxlMotor name={self.name} '
+                'id={self.id} '
+                'pos={self.present_position}>').format(self=self)
 
     @property
     def json(self):
         return self.name
-
-    def _setter(self, name, value):
-        setitem(self._values, name, value)
-        logger.debug("Setting '%s.%s' to %s",
-                     self.name, name, value)
-
-    @classmethod
-    def _make_accessor(cls, name, rw=False, doc=None):
-        def getter(self):
-            return getitem(self._values, name)
-
-        def setter(self, value):
-            self._setter(name, value)
-
-        return property(fget=getter,
-                        fset=setter if rw else None,
-                        doc=doc)
-
-    @property
-    def id(self):
-        """ Id of the motor (readonly). """
-        return self._id
-
-    @property
-    def name(self):
-        """ Name of the motor (readonly). """
-        return self._name
-
-    @property
-    def model(self):
-        """ Model of the motor. """
-        return self._model
-
-    @property
-    def present_position(self):
-        """ Present position (in degrees) of the motor (readonly). """
-        pos = self._values['present_position']
-        return (pos if self.direct else -pos) - self.offset
-
-    @property
-    def goal_position(self):
-        """ Goal position (in degrees) of th motor. """
-        pos = self._values['goal_position']
-        return (pos if self.direct else -pos) - self.offset
-
-    @goal_position.setter
-    def goal_position(self, value):
-        framed_value = (value + self.offset) if self.direct else -(value + self.offset)
-        self._values['goal_position'] = framed_value
-
-        logger.debug("Setting '%s.goal_position' to %s (%s)",
-                     self.name, value, framed_value)
-
-    @property
-    def present_speed(self):
-        """ Present speed (in degrees per second) of the motor (readonly). """
-        speed = self._values['present_speed']
-        return (speed if self.direct else -speed)
 
     @property
     def goal_speed(self):
@@ -124,7 +125,7 @@ class DxlMotor(Motor):
 
     @goal_speed.setter
     def goal_speed(self, value):
-        if abs(value) < sys.float_info.epsilon:
+        if abs(value) < numpy.finfo(numpy.float).eps:
             self.goal_position = self.present_position
 
         else:
@@ -136,36 +137,16 @@ class DxlMotor(Motor):
             self.moving_speed = abs(value)
 
     @property
-    def present_load(self):
-        """ Present load (in percentage of max load) of the motor (readonly). """
-        load = self._values['present_load']
-        return (load if self.direct else -load)
-
-    @property
     def compliant(self):
         """ Compliancy of the motor. """
-        return bool(self._values['compliant'])
+        return bool(self.__dict__['compliant'])
 
     @compliant.setter
     def compliant(self, value):
         # Change the goal_position only if you switch from compliant to not compliant mode
         if not value and self.compliant:
             self.goal_position = self.present_position
-        self._setter('compliant', value)
-
-    @property
-    def direct(self):
-        """ Orientation of the motor. """
-        return self._direct
-
-    @property
-    def offset(self):
-        """ Offset of the zero of the motor (in degrees). """
-        return self._offset
-
-    @property
-    def registers(self):
-        return [r for r in dir(self) if not r.startswith('_')]
+        self.__dict__['compliant'] = value
 
     def goto_position(self, position, duration, wait=False):
         """ Automatically sets the goal position and the moving speed to reach the desired position within the duration. """
@@ -179,19 +160,6 @@ class DxlMotor(Motor):
             time.sleep(duration)
 
 
-DxlMotor.moving_speed = DxlMotor._make_accessor('moving_speed', rw=True,
-                                                doc='Moving speed (in degrees per second) of the motor.')
-DxlMotor.torque_limit = DxlMotor._make_accessor('torque_limit', rw=True,
-                                                doc='Torque limit (in percentage of max torque) of the motor.')
-
-DxlMotor.angle_limit = DxlMotor._make_accessor('angle_limit',
-                                               doc='Angle limit (in degrees) of the motor.')
-DxlMotor.present_voltage = DxlMotor._make_accessor('present_voltage',
-                                                   doc='Present voltage (in V) of the motor.')
-DxlMotor.present_temperature = DxlMotor._make_accessor('present_temperature',
-                                                       doc='Present temperature (in °C) of the motor.')
-
-
 class DxlAXRXMotor(DxlMotor):
     """ This class represents the AX robotis motor.
 
@@ -199,19 +167,22 @@ class DxlAXRXMotor(DxlMotor):
             * compliance margin/slope (see the robotis website for details)
 
         """
+    registers = list(DxlMotor.registers)
+
+    compliance_margin = DxlRegister(rw=True)
+    compliance_slope = DxlRegister(rw=True)
+
     def __init__(self, id, name=None, model='',
                  direct=True, offset=0.0):
         DxlMotor.__init__(self, id, name, model, direct, offset)
         self.max_pos = 150
 
 
-DxlAXRXMotor.compliance_margin = DxlAXRXMotor._make_accessor('compliance_margin', rw=True,
-                                                             doc='Compliance margin of the motor (see robotis website).')
-DxlAXRXMotor.compliance_slope = DxlAXRXMotor._make_accessor('compliance_slope', rw=True,
-                                                            doc='Compliance slope of the motor (see robotis website).')
-
-
 class DxlMXMotor(DxlMotor):
+    registers = list(DxlMotor.registers)
+
+    pid = DxlRegister(rw=True)
+
     def __init__(self, id, name=None, model='',
                  direct=True, offset=0.0):
         """ This class represents the RX and MX robotis motor.
@@ -222,6 +193,3 @@ class DxlMXMotor(DxlMotor):
             """
         DxlMotor.__init__(self, id, name, model, direct, offset)
         self.max_pos = 180
-
-DxlMXMotor.pid = DxlMXMotor._make_accessor('pid', rw=True,
-                                           doc='PID gains of the motors (see robotis website).')
