@@ -264,7 +264,7 @@ class VrepIO(AbstractIO):
     @vrep_check_errorcode('Cannot get handle for "{collision}"')
     def _get_collision_handle(self, collision):
         with self._lock:
-            time.sleep(1) #dirty fix
+            time.sleep(1)  # dirty fix
             return vrep.simxGetCollisionHandle(self.client_id, collision,
                                                vrep.simx_opmode_oneshot_wait)
 
