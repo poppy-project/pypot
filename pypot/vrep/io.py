@@ -1,3 +1,5 @@
+import os
+
 import pypot.utils.pypot_time as time
 
 from functools import wraps
@@ -129,6 +131,9 @@ class VrepIO(AbstractIO):
 
         """
         self.stop_simulation()
+
+        if not os.path.exists(scene_path):
+            raise IOError("No such file or directory: '{}'".format(scene_path))
 
         with self._lock:
             vrep.simxLoadScene(self.client_id, scene_path,
