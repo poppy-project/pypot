@@ -29,7 +29,6 @@ Before you start building PyPot, you need to make sure that the following packag
 
 Other optional packages may be installed depending on your needs:
 
-* `V-REP Python remote API <http://www.coppeliarobotics.com/helpFiles/en/remoteApiFunctionsPython.htm>`_ (to use it with the V-REP simulator)
 * `sphinx <http://sphinx-doc.org/index.html>`_ (to build the doc)
 * `PyQt4 <http://www.riverbankcomputing.com/software/pyqt/intro>`_ (for the graphical tools)
 
@@ -54,5 +53,9 @@ You will also have to install the driver for the USB2serial port. There are two 
 On Windows and Mac, it will be necessary to download and install a FTDI (VCP) driver to run the USB2Dynamixel, you can find it `here <http://www.ftdichip.com/Drivers/VCP.htm>`__. Linux distributions should already come with an appropriate driver. The USB2AX device should not require a driver installation under MAC or Linux, it should already exist. For Windows XP, it should automatically install the correct driver.
 
 .. note:: On the side of the USB2Dynamixel there is a switch. This is used to select the bus you wish to communicate on. This means that you cannot control two different bus protocols at the same time.
+
+On most Linux distributions you will not have the necessary permission to access the serial port. You can either run the command in sudo or better you can add yourself to the *dialout* group::
+
+  sudo addgroup "username" dialout
 
 At this point you should have a PyPot ready to be used! In the extremely unlikely case where anything went wrong during the installation, please refer to the `issue tracker <https://github.com/poppy-project/pypot/issues>`_.
