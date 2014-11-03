@@ -15,6 +15,38 @@
     :undoc-members:
     :show-inheritance:
 
+:mod:`motor` Module
+-------------------
+
+.. automodule:: pypot.robot.motor
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`sensor` Module
+--------------------
+
+.. automodule:: pypot.robot.sensor
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`controller` Module
+------------------------
+
+.. automodule:: pypot.robot.controller
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`io` Module
+----------------
+
+.. automodule:: pypot.robot.io
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 :mod:`config` Module
 --------------------
 

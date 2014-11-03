@@ -1,5 +1,8 @@
 # Pypot todo list
 
+## Dynamixel protocol V2.
+
+
 ## Documentation
 - [ ] Déplacer la doc. de construction d'un ergo-robot à un endroit accessible + post de blog
 - [ ] Post sur le forum pour expliquer comment Pypot pourrait être adapté à d'autres types de moteur

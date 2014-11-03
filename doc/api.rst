@@ -7,3 +7,6 @@ PyPot's API
     pypot.robot
     pypot.sensor
     pypot.server
+    pypot.vrep
+
+    pypot.utils

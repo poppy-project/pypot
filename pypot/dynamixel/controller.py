@@ -1,142 +1,144 @@
-import threading
-import time
+from ..robot.controller import MotorsController
 
 
-class DxlController(object):
-    def __init__(self, dxl_io, dxl_motors):
-        """ Synchronizes the reading/writing of :class:`~pypot.dynamixel.motor.DxlMotor` with the real motors.
+class DxlController(MotorsController):
+    """ Synchronizes the reading/writing of :class:`~pypot.dynamixel.motor.DxlMotor` with the real motors.
 
-            This class handles synchronization loops that automatically read/write values from the "software" :class:`~pypot.dynamixel.motor.DxlMotor` with their "hardware" equivalent. Those loops shared a same :class:`~pypot.dynamixel.io.DxlIO` connection to avoid collision in the bus. Each loop run within its own thread at its own frequency.
+        This class handles synchronization loops that automatically read/write values from the "software" :class:`~pypot.dynamixel.motor.DxlMotor` with their "hardware" equivalent. Those loops shared a same :class:`~pypot.dynamixel.io.DxlIO` connection to avoid collision in the bus. Each loop run within its own thread as its own frequency.
 
-            .. warning:: As all the loop attached to a controller shared the same bus, you should make sure that they can run without slowing down the other ones.
+        .. warning:: As all the loop attached to a controller shared the same bus, you should make sure that they can run without slowing down the other ones.
 
-            """
-        self._dxl_io = dxl_io
+        """
+    def __init__(self, io, motors, controllers):
+        MotorsController.__init__(self, io, motors, 1.)
+        self.controllers = controllers
 
-        self._motors = dxl_motors
-        self._ids = tuple(m.id for m in self._motors)
-
-        self._loops = []
-
-    def close(self):
-        """ Stops the synchronization loop and closes the dynamixel connection. """
-        self.stop()
-        self._dxl_io.close()
-
-    def start(self):
+    def setup(self):
         """ Starts all the synchronization loops. """
-        for l in self._loops:
-            l.start()
-            l._started.wait()
+        [c.start() for c in self.controllers]
+        [c.wait_to_start() for c in self.controllers]
 
-    def stop(self):
-        """ Stops al the synchronization loops (they can not be started again). """
-        loops_to_stop = filter(lambda l: l.is_alive(), self._loops)
-        [l.stop() for l in loops_to_stop]
-        [l.join() for l in loops_to_stop]
+    def update(self):
+        pass
 
-    def add_sync_loop(self, freq, function, name):
-        """ Adds a synchronization loop that will run a function at a predefined freq. """
-        sl = _RepeatedTimer(freq, function, name)
-        self._loops.append(sl)
-
-    def add_read_loop(self, freq, regname, varname=None):
-        """ Adds a read loop that will get the value from the specified register and set it to the :class:`~pypot.dynamixel.motor.DxlMotor`. """
-        varname = varname if varname else regname
-        self.add_sync_loop(freq, lambda: self._get_register(regname, varname),
-                           'Thread-get_{}'.format(regname))
-
-    def _get_register(self, regname, varname):
-        motors = [m for m in self._motors if hasattr(m, varname)]
-        if not motors:
-            return
-        ids = [m.id for m in motors]
-
-        values = getattr(self._dxl_io, 'get_{}'.format(regname))(ids)
-        for m, val in zip(motors, values):
-            m._values[varname] = val
-
-    def add_write_loop(self, freq, regname, varname=None):
-        """ Adds a write loop that will get the value from :class:`~pypot.dynamixel.motor.DxlMotor` and set it to the specified register. """
-        varname = varname if varname else regname
-
-        # We force a get to initalize the synced var to their current values
-        self._get_register(regname, varname)
-
-        self.add_sync_loop(freq, lambda: self._set_register(regname, varname),
-                           'Thread-set_{}'.format(regname))
-
-    def _set_register(self, regname, varname):
-        motors = [m for m in self._motors if hasattr(m, varname)]
-
-        if not motors:
-            return
-        ids = [m.id for m in motors]
-
-        values = (m._values[varname] for m in motors)
-        getattr(self._dxl_io, 'set_{}'.format(regname))(dict(zip(ids, values)))
+    def teardown(self):
+        """ Stops the synchronization loops. """
+        [c.stop() for c in self.controllers]
+        self.io.close()
 
 
 class BaseDxlController(DxlController):
     """ Implements a basic controller that synchronized the most frequently used values.
 
-        More precisely, this controller:
-            * reads the present position, speed, load at 50Hz
-            * writes the goal position, moving speed and torque limit at 50Hz
-            * writes the pid gains (or compliance margin and slope) at 10Hz
-            * reads the present voltage and temperature at 1Hz
+    More precisely, this controller:
+        * reads the present position, speed, load at 50Hz
+        * writes the goal position, moving speed and torque limit at 50Hz
+        * writes the pid gains (or compliance margin and slope) at 10Hz
+        * reads the present voltage and temperature at 1Hz
 
-        """
-    def __init__(self, dxl_io, dxl_motors):
-        DxlController.__init__(self, dxl_io, dxl_motors)
+    """
+    def __init__(self, io, motors):
+        factory = _DxlRegisterController
 
-        self.add_sync_loop(50, self._get_pos_speed_load, 'Thread-get_pos_speed_load')
-        self.add_sync_loop(50, self._set_pos_speed_load, 'Thread-set_pos_speed_load')
+        controllers = [_PosSpeedLoadDxlController(io, motors, 50),
+                       factory(io, motors, 10, 'set', 'pid_gain', 'pid'),
+                       factory(io, motors, 10, 'set', 'compliance_margin'),
+                       factory(io, motors, 10, 'set', 'compliance_slope'),
+                       factory(io, motors, 1, 'get', 'angle_limit'),
+                       factory(io, motors, 1, 'get', 'present_voltage'),
+                       factory(io, motors, 1, 'get', 'present_temperature')]
 
-        self.add_write_loop(10, 'pid_gain', 'pid')
-        self.add_write_loop(10, 'compliance_margin')
-        self.add_write_loop(10, 'compliance_slope')
+        DxlController.__init__(self, io, motors, controllers)
 
-        self.add_read_loop(1, 'angle_limit')
-        self.add_read_loop(1, 'present_voltage')
-        self.add_read_loop(1, 'present_temperature')
 
-        torques = self._dxl_io.is_torque_enabled(self._ids)
-        for m, c in zip(self._motors, torques):
+class _DxlController(MotorsController):
+    def __init__(self, io, motors, sync_freq=50.):
+        MotorsController.__init__(self, io, motors, sync_freq)
+
+        self.ids = [m.id for m in motors]
+
+
+class _DxlRegisterController(_DxlController):
+    def __init__(self, io, motors, sync_freq,
+                 mode, regname, varname=None):
+        _DxlController.__init__(self, io, motors, sync_freq)
+
+        self.mode = mode
+        self.regname = regname
+        self.varname = regname if varname is None else varname
+
+    def setup(self):
+        if self.mode == 'set':
+            self.get_register()
+
+    def update(self):
+        self.get_register() if self.mode == 'get' else self.set_register()
+
+    def get_register(self):
+        """ Gets the value from the specified register and sets it to the :class:`~pypot.dynamixel.motor.DxlMotor`. """
+        motors = [m for m in self.motors if hasattr(m, self.varname)]
+        if not motors:
+            return
+        ids = [m.id for m in motors]
+
+        values = getattr(self.io, 'get_{}'.format(self.regname))(ids)
+        for m, val in zip(motors, values):
+            m._values[self.varname] = val
+
+    def set_register(self):
+        """ Gets the value from :class:`~pypot.dynamixel.motor.DxlMotor` and sets it to the specified register. """
+        motors = [m for m in self.motors if hasattr(m, self.varname)]
+
+        if not motors:
+            return
+        ids = [m.id for m in motors]
+
+        values = (m._values[self.varname] for m in motors)
+        getattr(self.io, 'set_{}'.format(self.regname))(dict(zip(ids, values)))
+
+
+class _PosSpeedLoadDxlController(_DxlController):
+    def setup(self):
+        torques = self.io.is_torque_enabled(self.ids)
+        for m, c in zip(self.motors, torques):
             m.compliant = not c
         self._old_torques = torques
 
-        values = self._dxl_io.get_goal_position_speed_load(self._ids)
+        values = self.io.get_goal_position_speed_load(self.ids)
         positions, speeds, loads = zip(*values)
-        for m, p, s, l in zip(self._motors, positions, speeds, loads):
+        for m, p, s, l in zip(self.motors, positions, speeds, loads):
             m._values['goal_position'] = p
             m._values['moving_speed'] = s
             m._values['torque_limit'] = l
 
-    def _get_pos_speed_load(self):
-        values = self._dxl_io.get_present_position_speed_load(self._ids)
+    def update(self):
+        self.get_present_position_speed_load()
+        self.set_goal_position_speed_load()
+
+    def get_present_position_speed_load(self):
+        values = self.io.get_present_position_speed_load(self.ids)
 
         if not values:
             return
 
         positions, speeds, loads = zip(*values)
 
-        for m, p, s, l in zip(self._motors, positions, speeds, loads):
+        for m, p, s, l in zip(self.motors, positions, speeds, loads):
             m._values['present_position'] = p
             m._values['present_speed'] = s
             m._values['present_load'] = l
 
-    def _set_pos_speed_load(self):
+    def set_goal_position_speed_load(self):
         change_torque = {}
-        torques = [not m.compliant for m in self._motors]
-        for m, t, old_t in zip(self._motors, torques, self._old_torques):
+        torques = [not m.compliant for m in self.motors]
+        for m, t, old_t in zip(self.motors, torques, self._old_torques):
             if t != old_t:
                 change_torque[m.id] = t
         self._old_torques = torques
         if change_torque:
-            self._dxl_io._set_torque_enable(change_torque)
+            self.io._set_torque_enable(change_torque)
 
-        rigid_motors = [m for m in self._motors if not m.compliant]
+        rigid_motors = [m for m in self.motors if not m.compliant]
         ids = tuple(m.id for m in rigid_motors)
 
         if not ids:
@@ -145,36 +147,4 @@ class BaseDxlController(DxlController):
         values = ((m._values['goal_position'],
                    m._values['moving_speed'],
                    m._values['torque_limit']) for m in rigid_motors)
-        self._dxl_io.set_goal_position_speed_load(dict(zip(ids, values)))
-
-
-class _RepeatedTimer(threading.Thread):
-    def __init__(self, freq, function, name=None):
-        threading.Thread.__init__(self, name=name)
-        self.daemon = True
-
-        self.period = 1.0 / freq
-        self.function = function
-
-        self._running = threading.Event()
-        self._running.set()
-
-        self._started = threading.Event()
-
-    def run(self):
-        while self._running.is_set():
-            start = time.time()
-
-            self.function()
-
-            if not self._started.is_set():
-                self._started.set()
-
-            end = time.time()
-
-            st = self.period - (end - start)
-            if st > 0:
-                time.sleep(st)
-
-    def stop(self):
-        self._running.clear()
+        self.io.set_goal_position_speed_load(dict(zip(ids, values)))

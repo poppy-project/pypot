@@ -9,8 +9,10 @@ import threading
 from collections import namedtuple, OrderedDict
 from contextlib import contextmanager
 
+from ..robot.io import AbstractIO
 from .conversion import *
 from .packet import *
+
 
 logger = logging.getLogger(__name__)
 # With this logger you should always provide as extra:
@@ -31,8 +33,7 @@ class _DxlAccess(object):
     readonly, writeonly, readwrite = range(3)
 
 
-class DxlIO(object):
-
+class DxlIO(AbstractIO):
     """ Low-level class to handle the serial communication with the robotis motors. """
 
     __used_ports = set()
@@ -62,8 +63,7 @@ class DxlIO(object):
         self._known_mode = {}
 
         self._sync_read = use_sync_read
-        self._error_handler = error_handler_cls(
-        ) if error_handler_cls else None
+        self._error_handler = error_handler_cls() if error_handler_cls else None
         self._convert = convert
 
         self._serial_lock = threading.Lock()
@@ -100,10 +100,10 @@ class DxlIO(object):
     def _open(self, port, baudrate, timeout, max_recursion=500):
         # Tries to connect to port until it succeeds to ping any motor on the bus.
         # This is  used to circumvent a bug with the driver for the USB2AX on Mac.
-        # Warning: If no motor is connected on the bus, this will run
-        # forever!!!
+        # Warning: If no motor is connected on the bus, this will run forever!!!
         import platform
-        import time
+        # import time
+        import pypot.utils.pypot_time as time
 
         for i in range(max_recursion):
             self._known_models.clear()
@@ -135,8 +135,7 @@ class DxlIO(object):
                     self.flush()
             break
         else:
-            raise DxlError(
-                'could not connect to the port {}'.format(self.port))
+            raise DxlError('could not connect to the port {}'.format(self.port))
 
     def close(self, _force_lock=False):
         """ Closes the serial communication if opened. """
@@ -225,8 +224,7 @@ class DxlIO(object):
     def get_model(self, ids):
         """ Gets the model for the specified motors. """
         to_get_ids = [i for i in ids if i not in self._known_models]
-        models = [dxl_to_model(m)
-                  for m in self._get_model(to_get_ids, convert=False)]
+        models = [dxl_to_model(m) for m in self._get_model(to_get_ids, convert=False)]
         self._known_models.update(zip(to_get_ids, models))
 
         return tuple(self._known_models[id] for id in ids)
@@ -267,7 +265,7 @@ class DxlIO(object):
         for id in ids:
             try:
                 srl.extend(self._get_status_return_level((id, ),
-                                                         error_handler=None, convert=convert))
+                           error_handler=None, convert=convert))
             except DxlTimeoutError as e:
                 if self.ping(id):
                     srl.append('never' if convert else 0)
@@ -285,7 +283,7 @@ class DxlIO(object):
         convert = kwargs['convert'] if 'convert' in kwargs else self._convert
         if convert:
             srl_for_id = dict(zip(srl_for_id.keys(),
-                                  [('never', 'read', 'always').index(s) for s in srl_for_id.values()]))
+                              [('never', 'read', 'always').index(s) for s in srl_for_id.values()]))
         self._set_status_return_level(srl_for_id, convert=False)
 
     def get_mode(self, ids):
@@ -307,14 +305,12 @@ class DxlIO(object):
         self._set_mode(dict(zip(ids, itertools.repeat('joint'))))
 
     def _set_mode(self, mode_for_id):
-        models = ['MX' if m.startswith(
-            'MX') else '*' for m in self.get_model(list(mode_for_id.keys()))]
+        models = ['MX' if m.startswith('MX') else '*' for m in self.get_model(list(mode_for_id.keys()))]
         pos_max = [position_range[m][0] for m in models]
         limits = ((0, 0) if mode == 'wheel' else (0, pos_max[i] - 1)
                   for i, mode in enumerate(mode_for_id.itervalues()))
 
-        self._set_angle_limit(
-            dict(zip(mode_for_id.keys(), limits)), convert=False)
+        self._set_angle_limit(dict(zip(mode_for_id.keys(), limits)), convert=False)
         self._known_mode.update(mode_for_id.items())
 
     def set_angle_limit(self, limit_for_id, **kwargs):
@@ -322,8 +318,7 @@ class DxlIO(object):
         convert = kwargs['convert'] if 'convert' in kwargs else self._convert
 
         if 'wheel' in self.get_mode(limit_for_id.keys()):
-            raise ValueError(
-                'can not change the angle limit of a motor in wheel mode')
+            raise ValueError('can not change the angle limit of a motor in wheel mode')
 
         if (0, 0) in limit_for_id.values():
             raise ValueError('can not set limit to (0, 0)')
@@ -364,8 +359,7 @@ class DxlIO(object):
             ..note:: This function requires the model for each motor to be known. Querring this additional information might add some extra delay.
 
             """
-        error_handler = kwargs['error_handler'] if (
-            'error_handler' in kwargs) else self._error_handler
+        error_handler = kwargs['error_handler'] if ('error_handler' in kwargs) else self._error_handler
         convert = kwargs['convert'] if ('convert' in kwargs) else self._convert
 
         bl = ('goal position speed load', 'present position speed load')
@@ -379,16 +373,14 @@ class DxlIO(object):
             controls = sorted(controls, key=lambda c: c.address)
 
             address = controls[0].address
-            length = controls[-1].address + \
-                controls[-1].nb_elem * controls[-1].length
+            length = controls[-1].address + controls[-1].nb_elem * controls[-1].length
 
             rp = DxlReadDataPacket(id, address, length)
             sp = self._send_packet(rp, error_handler=error_handler)
 
             d = OrderedDict()
             for c in controls:
-                v = dxl_decode_all(
-                    sp.parameters[c.address:c.address + c.nb_elem * c.length], c.nb_elem)
+                v = dxl_decode_all(sp.parameters[c.address:c.address+c.nb_elem*c.length], c.nb_elem)
                 d[c.name] = c.dxl_to_si(v, model) if convert else v
 
             res.append(d)
@@ -403,12 +395,9 @@ class DxlIO(object):
             def my_getter(self, ids, **kwargs):
                 return self._get_control_value(control, ids, **kwargs)
 
-            func_name = control.getter_name if control.getter_name else 'get_{}'.format(
-                control.name.replace(' ', '_'))
-            func_name = '_{}'.format(func_name) if hasattr(
-                cls, func_name) else func_name
-            my_getter.__doc__ = 'Gets {} from the specified motors.'.format(
-                control.name)
+            func_name = control.getter_name if control.getter_name else 'get_{}'.format(control.name.replace(' ', '_'))
+            func_name = '_{}'.format(func_name) if hasattr(cls, func_name) else func_name
+            my_getter.__doc__ = 'Gets {} from the specified motors.'.format(control.name)
             my_getter.__name__ = func_name
             setattr(cls, func_name, my_getter)
 
@@ -416,12 +405,9 @@ class DxlIO(object):
             def my_setter(self, value_for_id, **kwargs):
                 self._set_control_value(control, value_for_id, **kwargs)
 
-            func_name = control.setter_name if control.setter_name else 'set_{}'.format(
-                control.name.replace(' ', '_'))
-            func_name = '_{}'.format(func_name) if hasattr(
-                cls, func_name) else func_name
-            my_setter.__doc__ = 'Sets {} to the specified motors.'.format(
-                control.name)
+            func_name = control.setter_name if control.setter_name else 'set_{}'.format(control.name.replace(' ', '_'))
+            func_name = '_{}'.format(func_name) if hasattr(cls, func_name) else func_name
+            my_setter.__doc__ = 'Sets {} to the specified motors.'.format(control.name)
             my_setter.__name__ = func_name
             setattr(cls, func_name, my_setter)
 
@@ -429,13 +415,11 @@ class DxlIO(object):
         if not ids:
             return ()
 
-        error_handler = kwargs['error_handler'] if (
-            'error_handler' in kwargs) else self._error_handler
+        error_handler = kwargs['error_handler'] if ('error_handler' in kwargs) else self._error_handler
         convert = kwargs['convert'] if ('convert' in kwargs) else self._convert
 
         if self._sync_read and len(ids) > 1:
-            rp = DxlSyncReadPacket(
-                ids, control.address, control.length * control.nb_elem)
+            rp = DxlSyncReadPacket(ids, control.address, control.length * control.nb_elem)
             sp = self._send_packet(rp, error_handler=error_handler)
 
             if not sp:
@@ -446,8 +430,7 @@ class DxlIO(object):
         else:
             values = []
             for motor_id in ids:
-                rp = DxlReadDataPacket(
-                    motor_id, control.address, control.length * control.nb_elem)
+                rp = DxlReadDataPacket(motor_id, control.address, control.length * control.nb_elem)
                 sp = self._send_packet(rp, error_handler=error_handler)
 
                 if not sp:
@@ -455,8 +438,7 @@ class DxlIO(object):
 
                 values.extend(sp.parameters)
 
-        values = list(
-            itertools.izip(*([iter(values)] * control.length * control.nb_elem)))
+        values = list(itertools.izip(*([iter(values)] * control.length * control.nb_elem)))
         values = [dxl_decode_all(value, control.nb_elem) for value in values]
 
         if not values:
@@ -505,15 +487,13 @@ class DxlIO(object):
             data.extend(itertools.chain((motor_id, ),
                                         dxl_code_all(value, control.length, control.nb_elem)))
 
-        wp = DxlSyncWritePacket(
-            control.address, control.length * control.nb_elem, data)
+        wp = DxlSyncWritePacket(control.address, control.length * control.nb_elem, data)
         self._send_packet(wp, wait_for_status_packet=False)
 
     # MARK: - Send/Receive packet
     def __real_send(self, instruction_packet, wait_for_status_packet, _force_lock):
         if self.closed:
-            raise DxlError(
-                'try to send a packet on a closed serial communication')
+            raise DxlError('try to send a packet on a closed serial communication')
 
         logger.debug('Sending %s', instruction_packet,
                      extra={'port': self.port,
@@ -535,8 +515,7 @@ class DxlIO(object):
 
             data = self._serial.read(DxlPacketHeader.length)
             if not data:
-                raise DxlTimeoutError(
-                    self, instruction_packet, instruction_packet.id)
+                raise DxlTimeoutError(self, instruction_packet, instruction_packet.id)
 
             try:
                 header = DxlPacketHeader.from_string(data)
@@ -544,8 +523,7 @@ class DxlIO(object):
                 status_packet = DxlStatusPacket.from_string(data)
 
             except ValueError:
-                msg = 'could not parse received data {}'.format(
-                    bytearray(data))
+                msg = 'could not parse received data {}'.format(bytearray(data))
                 raise DxlCommunicationError(self, msg, instruction_packet)
 
             logger.debug('Receiving %s', status_packet,
@@ -563,14 +541,12 @@ class DxlIO(object):
             return self.__real_send(instruction_packet, wait_for_status_packet, _force_lock)
 
         try:
-            sp = self.__real_send(
-                instruction_packet, wait_for_status_packet, _force_lock)
+            sp = self.__real_send(instruction_packet, wait_for_status_packet, _force_lock)
 
             if sp and sp.error:
                 errors = decode_error(sp.error)
                 for e in errors:
-                    handler_name = 'handle_{}'.format(
-                        e.lower().replace(' ', '_'))
+                    handler_name = 'handle_{}'.format(e.lower().replace(' ', '_'))
                     f = operator.methodcaller(handler_name, instruction_packet)
                     f(error_handler)
 
@@ -585,15 +561,12 @@ class DxlIO(object):
 
 # MARK: - Dxl Errors
 class DxlError(Exception):
-
     """ Base class for all errors encountered using :class:`~pypot.dynamixel.io.DxlIO`. """
     pass
 
 
 class DxlCommunicationError(DxlError):
-
     """ Base error for communication error encountered when using :class:`~pypot.dynamixel.io.DxlIO`. """
-
     def __init__(self, dxl_io, message, instruction_packet):
         self.dxl_io = dxl_io
         self.message = message
@@ -604,12 +577,9 @@ class DxlCommunicationError(DxlError):
 
 
 class DxlTimeoutError(DxlCommunicationError):
-
     """ Timeout error encountered when using :class:`~pypot.dynamixel.io.DxlIO`. """
-
     def __init__(self, dxl_io, instruction_packet, ids):
-        DxlCommunicationError.__init__(
-            self, dxl_io, 'timeout occured', instruction_packet)
+        DxlCommunicationError.__init__(self, dxl_io, 'timeout occured', instruction_packet)
         self.ids = ids
 
     def __str__(self):

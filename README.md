@@ -8,6 +8,8 @@ PyPot is a framework developed in the [inria FLOWERS](https://flowers.inria.fr/)
 
 PyPot has been entirely written in Python to allow for fast development, easy deployment and quick scripting by non-necessary expert developers. It can also benefits from the scientific and machine learning libraries existing in Python. The serial communication is handled through the standard library and thus allows for rather high performance (10ms sensorimotor loop). It is crossed-platform and has been tested on Linux, Windows and Mac OS.
 
+PyPot is also compatible with the [V-REP simulator](http://www.coppeliarobotics.com). This allows you to seamlessly switch from a real robot to its simulated equivalent without having to modify your code.
+
 ## The Poppy-project: open source ##
 
 PyPot is part of the [Poppy project](http://www.poppy-project.org) aiming at releasing an integrated humanoid platform under an open source license GPL V3. Poppy is a kid-size humanoid robot designed for biped locomotion and physical human-robot interaction. It is based on a combination of standard dynamixel actuators, 3D printed parts and open-source electronics such as Arduino boards. Both the hardware (3D models, electronics...) and software can be freely used, modified and duplicated.

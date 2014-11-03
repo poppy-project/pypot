@@ -3,7 +3,10 @@ import glob
 
 from .io import DxlIO, DxlError
 from .error import BaseErrorHandler
-from .controller import DxlController
+from .controller import BaseDxlController
+from .motor import DxlMXMotor, DxlAXRXMotor
+
+from ..robot import Robot
 
 
 def get_available_ports():
@@ -54,3 +57,21 @@ def find_port(ids, strict=True):
             continue
 
     raise IndexError('No suitable port found for ids {}!'.format(ids))
+
+
+def autodetect_robot():
+    """ Creates a :class:`~pypot.robot.robot.Robot` by detecting dynamixel motors on all available ports. """
+    motor_controllers = []
+
+    for port in get_available_ports():
+        dxl_io = DxlIO(port)
+        ids = dxl_io.scan()
+        models = dxl_io.get_model(ids)
+        motors = [(DxlMXMotor(id, model=model) if model.startswith('MX')
+                   else DxlAXRXMotor(id, model=model))
+                  for id, model in zip(ids, models)]
+
+        c = BaseDxlController(dxl_io, motors)
+        motor_controllers.append(c)
+
+    return Robot(motor_controllers)

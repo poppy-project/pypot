@@ -1,15 +1,18 @@
 import sys
-import time
+
 import numpy
 import logging
 import threading
 
 from collections import deque
 
+from ..utils.stoppablethread import StoppableThread, make_update_loop
+import pypot.utils.pypot_time as time
+
 logger = logging.getLogger(__name__)
 
 
-class Primitive(object):
+class Primitive(StoppableThread):
     """ A Primitive is an elementary behavior that can easily be combined to create more complex behaviors.
 
         A primitive is basically a thread with access to a "fake" robot to ensure a sort of sandboxing. More precisely, it means that the primitives will be able to:
@@ -34,26 +37,28 @@ class Primitive(object):
         .. note:: This class should always be extended to define your particular behavior in the :meth:`~pypot.primitive.primitive.Primitive.run` method.
 
         """
-    def __init__(self, robot, *args, **kwargs):
-        """ At instanciation, it automatically transforms the :class:`~pypot.robot.robot.Robot`
-            into a :class:`~pypot.primitive.primitive.MockupRobot`.
+    def __init__(self, robot):
+        """ At instanciation, it automatically transforms the :class:`~pypot.robot.robot.Robot` into a :class:`~pypot.primitive.primitive.MockupRobot`.
 
-            :param args: the arguments are automatically passed to the run method.
-            :param kwargs: the keywords arguments are automatically passed to the run method.
+        .. warning:: You should not directly pass motors as argument to the primitive. If you need to, use the method :meth:`~pypot.primitive.primitive.Primitive.get_mockup_motor` to transform them into "fake" motors. See the :ref:`write_own_prim` section for details.
 
-            .. warning:: You should not directly pass motors as argument to the primitive. If you need to, use the method :meth:`~pypot.primitive.primitive.Primitive.get_mockup_motor` to transform them into "fake" motors. See the :ref:`write_own_prim` section for details.
+        """
+        StoppableThread.__init__(self,
+                                 setup=self._prim_setup,
+                                 target=self._prim_run,
+                                 teardown=self._prim_teardown)
 
-            """
         self.robot = MockupRobot(robot)
 
-        self.args = args
-        self.kwargs = kwargs
-
-        self._started = threading.Event()
-        self._stop = threading.Event()
-        self._resume = threading.Event()
-
         self._synced = threading.Event()
+
+    def _prim_setup(self):
+        logger.info("Primitive %s setup.", self)
+        self.robot._primitive_manager.add(self)
+        self.setup()
+
+        self.t0 = time.time()
+
 
     def setup(self):
         """ Setup methods called before the run loop.
@@ -62,23 +67,22 @@ class Primitive(object):
         """
         pass
 
-    def teardown(self):
-        """ Tear down methods called after the run loop.
+    def _prim_run(self):
+        self.run()
 
-        You can override this method to clean up the environment needed by your primitive. This method will be called every time the primitive is stopped.
+    def run(self):
+        """ Run method of the primitive thread. You should always overwrite this method.
+
+        .. warning:: You are responsible of handling the :meth:`~pypot.utils.stoppablethread.StoppableThread.should_stop`, :meth:`~pypot.utils.stoppablethread.StoppableThread.should_pause` and :meth:`~pypot.utils.stoppablethread.StoppableThread.wait_to_resume` methods correctly so the code inside your run function matches the desired behavior. You can refer to the code of the :meth:`~pypot.utils.stoppablethread.StoppableLoopThread.run` method of the :class:`~pypot.primitive.primitive.LoopPrimitive` as an example.
+
+        After termination of the run function, the primitive will automatically be removed from the list of active primitives of the :class:`~pypot.primitive.manager.PrimitiveManager`.
+
         """
         pass
 
-    def _wrapped_run(self):
-        logger.info("Primitive %s setup.", self)
-        self.setup()
-
-        self.robot._primitive_manager.add(self)
-
-        self.t0 = time.time()
-        self._started.set()
-
-        self.run(*self.args, **self.kwargs)
+    def _prim_teardown(self):
+        logger.info("Primitive %s teardown.", self)
+        self.teardown()
 
         # Forces a last synced to make sure that all values sent
         # Within the primitives will be sent to the motors.
@@ -87,20 +91,12 @@ class Primitive(object):
 
         self.robot._primitive_manager.remove(self)
 
-        logger.info("Primitive %s teardown.", self)
-        self.teardown()
+    def teardown(self):
+        """ Tear down methods called after the run loop.
 
-    def run(self, *args, **kwargs):
-        """ Run method of the primitive thread. You should always overwrite this method.
+        You can override this method to clean up the environment needed by your primitive. This method will be called every time the primitive is stopped.
 
-            :param args: the arguments passed to the constructor are automatically passed to this method
-            :param kwargs: the arguments passed to the constructor are automatically passed to this method
-
-            .. warning:: You are responsible of handling the :meth:`~primitive.primitive.Primitive.should_stop`, :meth:`~primitive.primitive.Primitive.should_pause` and :meth:`~primitive.primitive.Primitive.wait_to_resume` methods correctly so the code inside your run function matches the desired behavior. You can refer to the code of the :meth:`~primitive.primitive.LoopPrimitive.run` method of the :class:`~primitive.primitive.LoopPrimitive` as an example.
-
-            After termination of the run function, the primitive will automatically be removed from the list of active primitives of the :class:`~pypot.primitive.manager.PrimitiveManager`.
-
-            """
+        """
         pass
 
     @property
@@ -108,69 +104,28 @@ class Primitive(object):
         """ Elapsed time (in seconds) since the primitive runs. """
         return time.time() - self.t0
 
+
     # MARK: - Start/Stop handling
 
     def start(self):
         """ Start or restart (the :meth:`~pypot.primitive.primitive.Primitive.stop` method will automatically be called) the primitive. """
-        if self.is_alive():
-            self.stop()
-            self.wait_to_stop()
-
-        self._started.clear()
-        self._resume.set()
-        self._stop.clear()
-        self._synced.clear()
-
-        self._thread = threading.Thread(target=self._wrapped_run)
-        self._thread.daemon = True
-        self._thread.start()
-
-        self._started.wait()
+        StoppableThread.start(self)
+        self.wait_to_start()
 
         logger.info("Primitive %s started.", self)
 
-    def stop(self):
+    def stop(self, wait=True):
         """ Requests the primitive to stop. """
-        self._resume.set()
-        self._stop.set()
         logger.info("Primitive %s stopped.", self)
-
-    def should_stop(self):
-        """ Signals if the primitive should be stopped or not. """
-        return self._stop.is_set()
-
-    def wait_to_stop(self):
-        """ Wait until the primitive actually stops. """
-        if hasattr(self, '_thread'):
-            self._thread.join()
+        StoppableThread.stop(self, wait)
 
     def is_alive(self):
         """ Determines whether the primitive is running or not.
 
-            The value will be true only when the :meth:`~primitive.primitive.Primitive.run` function is executed.
+        The value will be true only when the :meth:`~pypot.utils.stoppablethread.StoppableThread.run` function is executed.
 
-            """
-        return hasattr(self, '_thread') and self._thread.is_alive()
-
-    # MARK: - Pause/Resume handling
-
-    def pause(self):
-        """ Requests the primitives to pause. """
-        self._resume.clear()
-        logger.info("Primitive %s paused.", self)
-
-    def resume(self):
-        """ Requests the primitives to resume. """
-        self._resume.set()
-        logger.info("Primitive %s resumed.", self)
-
-    def should_pause(self):
-        """ Signals if the primitive should be paused or not. """
-        return not self._resume.is_set()
-
-    def wait_to_resume(self):
-        """ Waits until the primitive is resumed. """
-        self._resume.wait()
+        """
+        return self.running
 
     def get_mockup_motor(self, motor):
         """ Gets the equivalent :class:`~pypot.primitive.primitive.MockupMotor`. """
@@ -180,12 +135,13 @@ class Primitive(object):
 class LoopPrimitive(Primitive):
     """ Simple primitive that call an update method at a predefined frequency.
 
-        You should write your own subclass where you only defined the :meth:`~pypot.primitive.primitive.Primitive.update` method.
+        You should write your own subclass where you only defined the :meth:`~pypot.primitive.primitive.LoopPrimitive.update` method.
 
         """
-    def __init__(self, robot, freq, *args, **kwargs):
-        Primitive.__init__(self, robot, *args, **kwargs)
-        self._period = 1.0 / freq
+    def __init__(self, robot, freq):
+        Primitive.__init__(self, robot)
+        # self._period = 1.0 / freq
+        self.period = 1.0 / freq
         self._recent_updates = deque([], 11)
 
     @property
@@ -197,33 +153,17 @@ class LoopPrimitive(Primitive):
         """
         return list(reversed([(1.0 / p) for p in numpy.diff(self._recent_updates)]))
 
-    def run(self, *args, **kwargs):
-        """ Calls the :meth:`~pypot.primitive.primitive.Primitive.update` method at a predefined frequency (runs until stopped). """
+    def run(self):
+        """ Calls the :meth:`~pypot.utils.stoppablethread.StoppableLoopThread.update` method at a predefined frequency (runs until stopped). """
+        make_update_loop(self, self._wrapped_update)
 
-        while not self.should_stop():
-            start = time.time()
-            self._wrapped_update(*self.args, **self.kwargs)
-            end = time.time()
-
-            self._recent_updates.append(start)
-
-            dt = self._period - (end - start)
-            if dt > 0:
-                time.sleep(dt)
-
-            if self.should_pause():
-                self.wait_to_resume()
-
-    def _wrapped_update(self, *args, **kwargs):
+    def _wrapped_update(self):
         logger.debug('LoopPrimitive %s updated.', self)
-        self.update(*args, **kwargs)
+        self._recent_updates.append(time.time())
+        self.update()
 
-    def update(self, *args, **kwargs):
-        """ Update methods that will be called at a predefined frequency.
-
-            :param args: the arguments passed to the constructor are automatically passed to this method
-            :param kwargs: the arguments passed to the constructor are automatically passed to this method
-            """
+    def update(self):
+        """ Update methods that will be called at a predefined frequency. """
         raise NotImplementedError
 
 

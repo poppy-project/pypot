@@ -23,15 +23,16 @@ if __name__ == '__main__':
     robot = from_json(args.config)
 
     # We keep the controller with most motors connected
-    ids = [len(c._ids) for c in robot._dxl_controllers]
-    c = robot._dxl_controllers[argmax(ids)]
+    motors = [len(c.motors) for c in robot._controllers]
+    c = robot._controllers[argmax(motors)]
 
-    print('Using controller with motors {}'.format(c._ids))
+    print('Using controller with motors {}'.format([m.id for m in c.motors]))
+    c = c.controllers[0]
 
     dt = []
     for _ in range(args.N):
         start = time.time()
-        c._get_pos_speed_load()
+        c.get_present_position_speed_load()
         end = time.time()
         dt.append(end - start)
 

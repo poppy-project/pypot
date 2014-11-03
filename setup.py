@@ -23,7 +23,8 @@ setup(name='pypot',
       extras_require={
           'tools': [],  # Extras require: PyQt4 (not a PyPi packet)
           'doc': ['sphinx', 'sphinx-bootstrap-theme'],
-          'server': ['bottle', 'tornado', 'zmq']
+          'server': ['bottle', 'tornado', 'zmq'],
+          'vrep': [],  # v-rep remote API (http://www.coppeliarobotics.com/helpFiles/en/remoteApiOverview.htm)
       },
 
       entry_points={
@@ -39,7 +40,7 @@ setup(name='pypot',
 
       zip_safe=True,
 
-      author='Pierre Rouanet, Matthieu Lapeyre, Haylee Fogg',
+      author='Pierre Rouanet, Steve N\'Guyen, Matthieu Lapeyre',
       author_email='pierre.rouanet@gmail.com',
       description='Python Library for Robot Control',
       url='https://github.com/poppy-project/pypot',

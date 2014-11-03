@@ -11,13 +11,17 @@ Configuration are written as Python dictionary so you can define/modify them pro
 import warnings
 import logging
 import numpy
-import time
+# import time
+import pypot.utils.pypot_time as time
 import json
 
-from ..dynamixel.motor import DxlAXRXMotor, DxlMXMotor
-from ..dynamixel.error import BaseErrorHandler
-from ..dynamixel.io import DxlIO, DxlError
-from ..dynamixel import find_port
+
+import pypot.dynamixel
+import pypot.dynamixel.io
+import pypot.dynamixel.error
+import pypot.dynamixel.motor
+import pypot.dynamixel.controller
+
 from .robot import Robot
 
 
@@ -94,74 +98,127 @@ def from_config(config, strict=True):
 
         """
     logger.info('Loading config... ', extra={'config': config})
-    robot = Robot()
 
     alias = config['motorgroups']
 
-    # Instatiate the different controllers
+    # Instatiate the different motor controllers
+    controllers = []
     for c_name, c_params in config['controllers'].items():
-        port = c_params['port']
-
-        dxl_motors = []
         motor_names = sum([_motor_extractor(alias, name)
                            for name in c_params['attached_motors']], [])
-        motor_nodes = map(lambda m: (m, config['motors'][m]), motor_names)
-        ids = [params['id'] for _, params in motor_nodes]
 
-        if port == 'auto':
-            port = find_port(ids, strict)
-            logger.info('Found port {} for ids {}'.format(port, ids))
+        attached_motors = [motor_from_confignode(config, name) for name in motor_names]
 
-        dxl_io = DxlIO(port=port,
-                       use_sync_read=c_params['sync_read'],
-                       error_handler_cls=BaseErrorHandler)
+        attached_ids = [m.id for m in attached_motors]
+        dxl_io = dxl_io_from_confignode(config, c_params, attached_ids, strict)
 
-        found_ids = dxl_io.scan(ids)
-        if ids != found_ids:
-            missing_ids = tuple(set(ids) - set(found_ids))
-            msg = 'Could not find the motors {} on bus {}.'.format(missing_ids,
-                                                                   dxl_io.port)
-            logger.warning(msg)
+        check_motor_limits(config, dxl_io, motor_names)
 
-            if strict:
-                raise DxlError(msg)
-
-        # Instatiate the attached motors and set their angle_limits if needed
-        changed_angle_limits = {}
-        for m_name, m_params in motor_nodes:
-            MotorCls = DxlMXMotor if m_params['type'].startswith('MX') else DxlAXRXMotor
-
-            m = MotorCls(id=m_params['id'],
-                         name=m_name,
-                         direct=True if m_params['orientation'] == 'direct' else False,
-                         offset=m_params['offset'])
-
-            dxl_motors.append(m)
-
-            angle_limit = m_params['angle_limit']
-
-            old_limits = dxl_io.get_angle_limit((m.id, ))[0]
-            d = numpy.linalg.norm(numpy.asarray(angle_limit) - numpy.asarray(old_limits))
-
-            if d > 1:
-                logger.warning("Limits of '%s' changed to %s",
-                               m.name, angle_limit,
-                               extra={'config': config})
-                changed_angle_limits[m.id] = angle_limit
-
-            logger.info("Instantiating motor '%s' id=%d direct=%s limits=%s offset=%s",
-                        m.name, m.id, m.direct, angle_limit, m.offset,
-                        extra={'config': config})
-
+        c = pypot.dynamixel.controller.BaseDxlController(dxl_io, attached_motors)
         logger.info('Instantiating controller on %s with motors %s',
-                    c_params['port'], motor_names,
+                    dxl_io.port, motor_names,
                     extra={'config': config})
 
-        if changed_angle_limits:
-            dxl_io.set_angle_limit(changed_angle_limits)
-            time.sleep(1)
+        controllers.append(c)
 
-        robot._attach_dxl_motors(dxl_io, dxl_motors)
+    robot = Robot(motor_controllers=controllers)
+    make_alias(config, robot)
+
+    logger.info('Loading complete!',
+                extra={'config': config})
+
+    return robot
+
+
+def motor_from_confignode(config, motor_name):
+    params = config['motors'][motor_name]
+
+    MotorCls = (pypot.dynamixel.motor.DxlMXMotor if params['type'].startswith('MX')
+                else pypot.dynamixel.motor.DxlAXRXMotor)
+
+    m = MotorCls(id=params['id'],
+                 name=motor_name,
+                 model=params['type'],
+                 direct=True if params['orientation'] == 'direct' else False,
+                 offset=params['offset'])
+
+    logger.info("Instantiating motor '%s' id=%d direct=%s offset=%s",
+                m.name, m.id, m.direct, m.offset,
+                extra={'config': config})
+
+    return m
+
+
+def dxl_io_from_confignode(config, c_params, ids, strict):
+    port = c_params['port']
+
+    if port == 'auto':
+        port = pypot.dynamixel.find_port(ids, strict)
+        logger.info('Found port {} for ids {}'.format(port, ids))
+
+    handler = pypot.dynamixel.error.BaseErrorHandler
+    dxl_io = pypot.dynamixel.io.DxlIO(port=port,
+                                      use_sync_read=c_params['sync_read'],
+                                      error_handler_cls=handler)
+
+    found_ids = dxl_io.scan(ids)
+    if ids != found_ids:
+        missing_ids = tuple(set(ids) - set(found_ids))
+        msg = 'Could not find the motors {} on bus {}.'.format(missing_ids,
+                                                               dxl_io.port)
+        logger.warning(msg)
+
+        if strict:
+            raise pypot.dynamixel.io.DxlError(msg)
+
+    return dxl_io
+
+
+def check_motor_limits(config, dxl_io, motor_names):
+    changed_angle_limits = {}
+
+    for name in motor_names:
+        m = config['motors'][name]
+        id = m['id']
+
+        old_limits = dxl_io.get_angle_limit((id, ))[0]
+        new_limits = m['angle_limit']
+
+        d = numpy.linalg.norm(numpy.asarray(new_limits) - numpy.asarray(old_limits))
+        if d > 1:
+            logger.warning("Limits of '%s' changed to %s",
+                           name, new_limits,
+                           extra={'config': config})
+            changed_angle_limits[id] = new_limits
+
+    if changed_angle_limits:
+        dxl_io.set_angle_limit(changed_angle_limits)
+        time.sleep(1)
+
+
+def instatiate_motors(config):
+    motors = []
+
+    for m_name, m_params in config['motors']:
+        MotorCls = (pypot.dynamixel.motor.DxlMXMotor if m_params['type'].startswith('MX')
+                    else pypot.dynamixel.motor.DxlAXRXMotor)
+
+        m = MotorCls(id=m_params['id'],
+                     name=m_name,
+                     direct=True if m_params['orientation'] == 'direct' else False,
+                     offset=m_params['offset'])
+
+        motors.append(m)
+
+        logger.info("Instantiating motor '%s' id=%d direct=%s offset=%s",
+                    m.name, m.id, m.direct, m.offset,
+                    extra={'config': config})
+
+    return motors
+
+
+def make_alias(config, robot):
+    alias = config['motorgroups']
 
     # Create the alias for the motorgroups
     for alias_name in alias:
@@ -172,11 +229,6 @@ def from_config(config, strict=True):
         logger.info("Creating alias '%s' for motors %s",
                     alias_name, [motor.name for motor in motors],
                     extra={'config': config})
-
-    logger.info('Loading complete!',
-                extra={'config': config})
-
-    return robot
 
 
 def from_json(json_file):

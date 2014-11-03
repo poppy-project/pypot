@@ -29,6 +29,8 @@ Welcome to Pypot's documentation!
 
     controlling_robot.rst
     primitive.rst
+    vrep.rst
+    extending.rst
     logging.rst
     remote_access.rst
 
@@ -51,7 +53,6 @@ Welcome to Pypot's documentation!
 
     api.rst
     FAQ.rst
-    knownissues.rst
 
 Indices and tables
 ==================

@@ -58,4 +58,4 @@ On most Linux distributions you will not have the necessary permission to access
 
   sudo addgroup "username" dialout
 
-At this point you should have a PyPot ready to be used! In the extremely unlikely case where anything went wrong during the installation, please refer to the :doc:`Known Issues </knownissues>`.
+At this point you should have a PyPot ready to be used! In the extremely unlikely case where anything went wrong during the installation, please refer to the `issue tracker <https://github.com/poppy-project/pypot/issues>`_.

@@ -3,7 +3,7 @@
 Primitives everywhere
 =====================
 
-In the previous sections, we have shown how to make a simple behavior thanks to the :class:`~pypot.robot.Robot` abstraction. But how to combine those elementary behaviors into something more complex? You could use threads and do it manually, but we provide the :class:`~pypot.primitive.Primitive` to abstract most of the work for you.
+In the previous sections, we have shown how to make a simple behavior thanks to the :class:`~pypot.robot.robot.Robot` abstraction. But how to combine those elementary behaviors into something more complex? You could use threads and do it manually, but we provide the :class:`~pypot.primitive.primitive.Primitive` to abstract most of the work for you.
 
 What do we call "Primitive"?
 ----------------------------
@@ -103,9 +103,9 @@ And then runs it with::
 Start, Stop, Pause, and Resume
 ------------------------------
 
-The primitive can be :meth:`~pypot.primitive.primitive.Primitive.start`, :meth:`~pypot.primitive.primitive.Primitive.stop`, :meth:`~pypot.primitive.primitive.Primitive.pause` and :meth:`~pypot.primitive.primitive.Primitive.resume`. Unlike regular python thread, primitive can be restart by calling again the :meth:`~pypot.primitive.primitive.Primitive.start` method.
+The primitive can be :meth:`~pypot.primitive.primitive.Primitive.start`, :meth:`~pypot.primitive.primitive.Primitive.stop`, :meth:`~pypot.utils.stoppablethread.StoppableThread.pause` and :meth:`~pypot.utils.stoppablethread.StoppableThread.resume`. Unlike regular python thread, primitive can be restart by calling again the :meth:`~pypot.primitive.primitive.Primitive.start` method.
 
-When overriding the :class:`~pypot.primitive.primitive.Primitive`, you are responsible for correctly handling those events. For instance, the stop method will only trigger the should stop event that you should watch in your run loop and break it when the event is set. In particular, you should check the :meth:`~pypot.primitive.primitive.Primitive.should_stop` and :meth:`~pypot.primitive.primitive.Primitive.should_pause` in your run loop. You can also use the :meth:`~pypot.primitive.primitive.Primitive.wait_to_stop` and :meth:`~pypot.primitive.primitive.Primitive.wait_to_resume` to wait until the commands have really been executed.
+When overriding the :class:`~pypot.primitive.primitive.Primitive`, you are responsible for correctly handling those events. For instance, the stop method will only trigger the should stop event that you should watch in your run loop and break it when the event is set. In particular, you should check the :meth:`~pypot.utils.stoppablethread.StoppableThread.should_stop` and :meth:`~pypot.utils.stoppablethread.StoppableThread.should_pause` in your run loop. You can also use the :meth:`~pypot.utils.stoppablethread.StoppableThread.wait_to_stop` and :meth:`~pypot.utils.stoppablethread.StoppableThread.wait_to_resume` to wait until the commands have really been executed.
 
 .. note:: You can refer to the source code of the :class:`~pypot.primitive.primitive.LoopPrimitive` for an example of how to correctly handle all these events.
 
@@ -133,4 +133,3 @@ For instance you could then write::
                 self.robot.dance.start()
 
 .. note:: In this case, instantiating the DancePrimitive within the SelectorPrimitive would be another solution.
-
