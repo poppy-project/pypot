@@ -8,6 +8,7 @@ It has been largerly inspired by the Matlab Robotics Toolbox.
 
 """
 
+
 class Link(namedtuple('Link', ('theta', 'd', 'a', 'alpha'))):
     """ Link object as defined by the standard DH representation.
 
@@ -30,10 +31,11 @@ class Link(namedtuple('Link', ('theta', 'd', 'a', 'alpha'))):
         ca = numpy.cos(self.alpha)
         sa = numpy.sin(self.alpha)
 
-        return numpy.matrix(((ct, -st * ca,  st * sa, self.a * ct),
-                             (st,  ct * ca, -ct * sa, self.a * st),
-                             (0 ,  sa     , ca      , self.d),
-                             (0 ,   0     , 0       , 1)))
+        return numpy.matrix(((ct, -st * ca, st * sa, self.a * ct),
+                             (st, ct * ca, -ct * sa, self.a * st),
+                             (0, sa, ca, self.d),
+                             (0, 0, 0, 1)))
+
 
 class Chain(namedtuple('Chain', ('links', 'base', 'tool'))):
     """ Chain of Link that can be used to perform forward and inverse kinematics.
@@ -112,7 +114,7 @@ class Chain(namedtuple('Chain', ('links', 'base', 'tool'))):
                 dq = self._jacob0(q).T * e.reshape((-1, 1))
             q += alpha * dq
 
-            #d = numpy.linalg.norm(dq)
+            # d = numpy.linalg.norm(dq)
             if d < tolerance:
                 return q
 
@@ -143,6 +145,7 @@ class Chain(namedtuple('Chain', ('links', 'base', 'tool'))):
 
         return J
 
+
 # MARK: - Utility functions
 
 def transform_difference(t1, t2):
@@ -154,40 +157,48 @@ def transform_difference(t1, t2):
                                     numpy.cross(t1[0:3, 1], t2[0:3, 1]) +
                                     numpy.cross(t1[0:3, 2], t2[0:3, 2])).reshape(3)))
 
+
 def rotation_from_transf(tm):
     return tm[0:3, 0:3]
+
 
 def translation_from_transf(tm):
     return numpy.array(tm[0:3, 3]).reshape(3)
 
+
 def components_from_transf(tm):
     return rotation_from_transf(tm), translation_from_transf(tm)
 
+
 def transf_from_components(R, T):
-    return numpy.matrix(numpy.vstack((numpy.hstack((R, T.reshape(3, 1))), (0, 0, 0, 1))))
+    return numpy.matrix(numpy.vstack((numpy.hstack((R, T.reshape(3, 1))),
+                                      (0, 0, 0, 1))))
+
 
 def transl(x, y, z):
     M = numpy.matrix(numpy.identity(4))
     M[0:3, 3] = numpy.matrix([x, y, z]).T
     return M
 
+
 def trotx(theta):
     ct = numpy.cos(theta)
     st = numpy.sin(theta)
 
-    R = numpy.matrix(((1,  0,   0),
+    R = numpy.matrix(((1, 0, 0),
                       (0, ct, -st),
-                      (0, st,  ct)))
+                      (0, st, ct)))
 
     return transf_from_components(R, numpy.zeros(3))
+
 
 def troty(theta):
     ct = numpy.cos(theta)
     st = numpy.sin(theta)
 
-    R = numpy.matrix((( ct,  0,  st),
-                      (  0,  1,   0),
-                      (-st,  0,  ct)))
+    R = numpy.matrix(((ct, 0, st),
+                      (0, 1, 0),
+                      (-st, 0, ct)))
 
     return transf_from_components(R, numpy.zeros(3))
 
@@ -196,9 +207,8 @@ def trotz(theta):
     ct = numpy.cos(theta)
     st = numpy.sin(theta)
 
-    R = numpy.matrix(((ct, -st,  0),
-                      (st,  ct,  0),
-                      ( 0,   0,  1)))
+    R = numpy.matrix(((ct, -st, 0),
+                      (st, ct, 0),
+                      (0, 0, 1)))
 
     return transf_from_components(R, numpy.zeros(3))
-

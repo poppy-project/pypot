@@ -34,7 +34,7 @@ class KinectServer(object):
             timestamp=time.time(),
             dtype=str(skeleton_array.dtype),
             shape=skeleton_array.shape,
-            )
+        )
 
         self.socket.send_json(md, flags | zmq.SNDMORE)
         return self.socket.send(skeleton_array, flags, copy=copy, track=track)

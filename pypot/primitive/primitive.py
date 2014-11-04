@@ -59,7 +59,6 @@ class Primitive(StoppableThread):
 
         self.t0 = time.time()
 
-
     def setup(self):
         """ Setup methods called before the run loop.
 
@@ -104,9 +103,7 @@ class Primitive(StoppableThread):
         """ Elapsed time (in seconds) since the primitive runs. """
         return time.time() - self.t0
 
-
     # MARK: - Start/Stop handling
-
     def start(self):
         """ Start or restart (the :meth:`~pypot.primitive.primitive.Primitive.stop` method will automatically be called) the primitive. """
         StoppableThread.start(self)

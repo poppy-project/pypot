@@ -23,11 +23,13 @@ position_range = {
     '*': (1024, 300.0)
 }
 
+
 def dxl_to_degree(value, model):
     model = 'MX' if model.startswith('MX') else '*'
     max_pos, max_deg = position_range[model]
 
     return round(((max_deg * float(value)) / (max_pos - 1)) - (max_deg / 2), 2)
+
 
 def degree_to_dxl(value, model):
     model = 'MX' if model.startswith('MX') else '*'
@@ -40,6 +42,7 @@ def degree_to_dxl(value, model):
 
 # MARK: - Speed
 
+
 def dxl_to_speed(value, model):
     cw, speed = divmod(value, 1024)
     direction = (-2 * cw + 1)
@@ -47,6 +50,7 @@ def dxl_to_speed(value, model):
     speed_factor = 0.114 if model.startswith('MX') else 0.111
 
     return direction * (speed * speed_factor) * 6
+
 
 def speed_to_dxl(value, model):
     direction = 1024 if value < 0 else 0
@@ -59,11 +63,14 @@ def speed_to_dxl(value, model):
 
 # MARK: - Torque
 
+
 def dxl_to_torque(value, model):
     return round(value / 10.23, 1)
 
+
 def torque_to_dxl(value, model):
     return int(round(value * 10.23, 0))
+
 
 def dxl_to_load(value, model):
     cw, load = divmod(value, 1024)
@@ -73,10 +80,12 @@ def dxl_to_load(value, model):
 
 # PID Gains
 
+
 def dxl_to_pid(value, model):
     return (value[0] * 0.004,
             value[1] * 0.48828125,
             value[2] * 0.125)
+
 
 def pid_to_dxl(value, model):
     truncate = lambda x: int(max(0, min(x, 254)))
@@ -94,16 +103,20 @@ dynamixelModels = {
     320: 'MX-106',  # 64 + (1<<8)
 }
 
+
 def dxl_to_model(value, dummy=None):
     return dynamixelModels[value]
 # MARK: - Drive Mode
 
+
 def check_bit(value, offset):
     return bool(value & (1 << offset))
+
 
 def dxl_to_drive_mode(value, model):
     return ('reverse' if check_bit(value, 0) else 'normal',
             'slave' if check_bit(value, 1) else 'master')
+
 
 def drive_mode_to_dxl(value, model):
     return (int('slave' in value) << 1 | int('reverse' in value))
@@ -125,8 +138,10 @@ dynamixelBaudrates = {
     252: 3000000.0,
 }
 
+
 def dxl_to_baudrate(value, model):
     return dynamixelBaudrates[value]
+
 
 def baudrate_to_dxl(value, model):
     for k, v in dynamixelBaudrates.iteritems():
@@ -136,24 +151,30 @@ def baudrate_to_dxl(value, model):
 
 # MARK: - Return Delay Time
 
+
 def dxl_to_rdt(value, model):
     return value * 2
+
 
 def rdt_to_dxl(value, model):
     return int(value / 2)
 
 # MARK: - Temperature
 
+
 def dxl_to_temperature(value, model):
     return float(value)
+
 
 def temperature_to_dxl(value, model):
     return int(value)
 
 # MARK: - Voltage
 
+
 def dxl_to_voltage(value, model):
     return value * 0.1
+
 
 def voltage_to_dxl(value, model):
     return int(value * 10)
@@ -162,8 +183,10 @@ def voltage_to_dxl(value, model):
 
 status_level = ('never', 'read', 'always')
 
+
 def dxl_to_status(value, model):
     return status_level[value]
+
 
 def status_to_dxl(value, model):
     if value not in status_level:
@@ -181,12 +204,15 @@ dynamixelErrors = ['None Error',
                    'Angle Limit Error',
                    'Input Voltage Error']
 
+
 def dxl_to_alarm(value, model):
     return decode_error(value)
+
 
 def decode_error(error_code):
     bits = numpy.unpackbits(numpy.asarray(error_code, dtype=numpy.uint8))
     return tuple(numpy.array(dynamixelErrors)[bits == 1])
+
 
 def alarm_to_dxl(value, model):
     if not set(value).issubset(dynamixelErrors):
@@ -201,8 +227,10 @@ def alarm_to_dxl(value, model):
 def dxl_to_bool(value, model):
     return bool(value)
 
+
 def bool_to_dxl(value, model):
     return int(value)
+
 
 def dxl_decode(data):
     if len(data) not in (1, 2):
@@ -214,12 +242,14 @@ def dxl_decode(data):
     if len(data) == 2:
         return data[0] + (data[1] << 8)
 
+
 def dxl_decode_all(data, nb_elem):
     if nb_elem > 1:
         data = list(itertools.izip(*([iter(data)] * (len(data) // nb_elem))))
         return tuple(map(dxl_decode, data))
     else:
         return dxl_decode(data)
+
 
 def dxl_code(value, length):
     if length not in (1, 2):
@@ -230,6 +260,7 @@ def dxl_code(value, length):
 
     if length == 2:
         return (value % 256, value >> 8)
+
 
 def dxl_code_all(value, length, nb_elem):
     if nb_elem > 1:

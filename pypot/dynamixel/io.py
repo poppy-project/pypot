@@ -380,7 +380,7 @@ class DxlIO(AbstractIO):
 
             d = OrderedDict()
             for c in controls:
-                v = dxl_decode_all(sp.parameters[c.address:c.address+c.nb_elem*c.length], c.nb_elem)
+                v = dxl_decode_all(sp.parameters[c.address:c.address + c.nb_elem * c.length], c.nb_elem)
                 d[c.name] = c.dxl_to_si(v, model) if convert else v
 
             res.append(d)

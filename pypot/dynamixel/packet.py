@@ -136,7 +136,7 @@ class DxlSyncWritePacket(DxlInstructionPacket):
         address = self.parameters[0]
         length = self.parameters[1]
 
-        a = numpy.array(self.parameters[2:]).reshape((-1, length+1))
+        a = numpy.array(self.parameters[2:]).reshape((-1, length + 1))
         ids = a[:, 0]
         values = [tuple(v) for v in a[:, 1:]]
 

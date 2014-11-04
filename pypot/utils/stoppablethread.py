@@ -148,11 +148,9 @@ def make_update_loop(thread, update_func):
         if thread.should_pause():
             thread.wait_to_resume()
 
-
         start = time.time()
         update_func()
         end = time.time()
-
 
         dt = thread.period - (end - start)
 

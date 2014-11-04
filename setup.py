@@ -31,7 +31,7 @@ setup(name='pypot',
       entry_points={
           'gui_scripts': [
               'herborist = pypot.tools.herborist.herborist:main [tools]',
-              ],
+          ],
       },
 
       setup_requires=['setuptools_git >= 0.3', ],
