@@ -22,8 +22,9 @@
 
 .. automodule:: pypot.dynamixel.motor
     :members:
-    :undoc-members:
     :show-inheritance:
+
+.. autoattribute:: pypot.dynamixel.motor.DxlMotor.registers
 
 
 :mod:`controller` Module

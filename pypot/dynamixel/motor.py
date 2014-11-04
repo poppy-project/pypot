@@ -56,10 +56,12 @@ class RegisterOwner(type):
 class DxlMotor(Motor):
     """ High-level class used to represent and control a generic dynamixel motor.
 
-        This class provides all level access to:
+        This class provides all level access to (see :attr:`~pypot.dynamixel.motor.DxlMotor.registers` for an exhaustive list):
             * motor id
             * motor name
-            * position/speed/load (read and write)
+            * motor model
+            * present position/speed/load
+            * goal position/speed/load
             * compliant
             * motor orientation and offset
             * angle limit
@@ -138,7 +140,6 @@ class DxlMotor(Motor):
 
     @property
     def compliant(self):
-        """ Compliancy of the motor. """
         return bool(self.__dict__['compliant'])
 
     @compliant.setter
