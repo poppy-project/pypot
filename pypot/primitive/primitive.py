@@ -107,6 +107,9 @@ class Primitive(StoppableThread):
     # MARK: - Start/Stop handling
     def start(self):
         """ Start or restart (the :meth:`~pypot.primitive.primitive.Primitive.stop` method will automatically be called) the primitive. """
+        if not self.robot._primitive_manager.running:
+            raise RuntimeError('Cannot run a primitive when the sync is stopped!')
+
         StoppableThread.start(self)
         self.wait_to_start()
 

@@ -42,6 +42,9 @@ class Robot(object):
         self._attached_primitives = {}
         self._primitive_manager = PrimitiveManager(self.motors)
 
+        self._syncing = False
+        self.start_sync()
+
     def close(self):
         """ Cleans the robot by stopping synchronization and all controllers."""
         self.stop_sync()
@@ -51,17 +54,27 @@ class Robot(object):
 
     def start_sync(self):
         """ Starts all the synchonization loop (sensor/effector controllers). """
+        if self._syncing:
+            return
+
         [c.start() for c in self._controllers]
         [c.wait_to_start() for c in self._controllers]
         self._primitive_manager.start()
+
+        self._syncing = True
 
         logger.info('Starting robot synchronization.')
 
     def stop_sync(self):
         """ Stops all the synchonization loop (sensor/effector controllers). """
+        if not self._syncing:
+            return
+
         if self._primitive_manager.running:
             self._primitive_manager.stop()
         [c.stop() for c in self._controllers]
+
+        self._syncing = False
 
         logger.info('Stopping robot synchronization.')
 
