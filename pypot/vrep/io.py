@@ -1,13 +1,11 @@
 import os
 
-import pypot.utils.pypot_time as time
-
 from functools import wraps
 from threading import Lock
 
+import pypot.utils.pypot_time as time
+
 from remoteApiBindings import vrep
-
-
 from ..robot.io import AbstractIO
 
 

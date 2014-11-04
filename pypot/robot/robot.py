@@ -1,5 +1,6 @@
-import pypot.utils.pypot_time as time
 import logging
+
+import pypot.utils.pypot_time as time
 
 from ..primitive.manager import PrimitiveManager
 

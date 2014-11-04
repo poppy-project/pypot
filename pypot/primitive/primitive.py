@@ -6,8 +6,9 @@ import threading
 
 from collections import deque
 
-from ..utils.stoppablethread import StoppableThread, make_update_loop
 import pypot.utils.pypot_time as time
+
+from ..utils.stoppablethread import StoppableThread, make_update_loop
 
 logger = logging.getLogger(__name__)
 
