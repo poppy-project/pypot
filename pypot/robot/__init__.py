@@ -6,4 +6,7 @@ try:
 except ImportError:
     pass
 
-from ..vrep import from_vrep
+try:
+    from ..vrep import from_vrep
+except ImportError:
+    pass
