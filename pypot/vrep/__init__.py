@@ -115,6 +115,7 @@ def from_vrep(config, vrep_host, vrep_port, vrep_scene,
     Robot.current_simulation_time = property(lambda robot: current_simulation_time(robot))
 
     res, tt = vrep.simxGetFloatSignal(robot._controllers[0].io.client_id, 'CurrentTime', vrep.simx_opmode_streaming)
+    pypot_time.sleep(.1)
     vreptime = vrep_time(robot)
     pypot_time.time = vreptime.get_time
     # pypot_time.sleep = vreptime.sleep
