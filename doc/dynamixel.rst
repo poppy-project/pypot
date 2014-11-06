@@ -29,7 +29,7 @@ As an example, you can write::
 Opening/Closing a communication port
 ------------------------------------
 
-In order to open a connection with the device, you will need to know what port it is connected to. PyPot has a function named :func:`~pypot.dynamixel.get_available_ports` which will try to auto-discover any compatible devices connected to the communication ports.
+In order to open a connection with the device, you will need to know what port it is connected to. Pypot has a function named :func:`~pypot.dynamixel.get_available_ports` which will try to auto-discover any compatible devices connected to the communication ports.
 
 To create a connection, open up a python terminal and type the following code::
 
@@ -47,7 +47,7 @@ To create a connection, open up a python terminal and type the following code::
 
 This should open a connection through a virtual communication port to your device.
 
-.. warning:: It is important to note that it will open a connection using a default baud rate. By default your motors are set up to work on the robotis default baud rate (57140) while PyPot is set up to work with a 1000000 baud rate. To communicate with your motors, you must ensure that this baud rate is the same baud rate that the motors are configure to use. So, you will need to change either the configuration of your motors (see :ref:`Herborist <herborist>` section) or change the default baud rate of your connection.
+.. warning:: It is important to note that it will open a connection using a default baud rate. By default your motors are set up to work on the robotis default baud rate (57140) while pypot is set up to work with a 1000000 baud rate. To communicate with your motors, you must ensure that this baud rate is the same baud rate that the motors are configure to use. So, you will need to change either the configuration of your motors (see :ref:`Herborist <herborist>` section) or change the default baud rate of your connection.
 
 To set up a connection with another baud rate you can write::
 
@@ -158,7 +158,7 @@ As an example of what you can do with the low-level API, we are going to apply a
 
 
 
-Thanks to PyPot, you can access all registers of your motors using the same syntax (e.g. :meth:`~pypot.dynamixel.io.DxlIO.get_present_speed`, :meth:`~pypot.dynamixel.io.DxlIO.set_max_torque`, :meth:`~pypot.dynamixel.io.DxlIO.get_pid_gain`). Some shortcuts have been provided to make the code more readable (e.g. :meth:`~pypot.dynamixel.io.DxlIO.enable_torque` instead of set_torque_enabled). All the getter functions takes a list of ids as argument and the setter takes a dictionary of (id: value) pairs. You can refer to the documentation of :class:`~pypot.dynamixel.io.DxlIO` for a complete list of all the available methods.
+Thanks to pypot, you can access all registers of your motors using the same syntax (e.g. :meth:`~pypot.dynamixel.io.DxlIO.get_present_speed`, :meth:`~pypot.dynamixel.io.DxlIO.set_max_torque`, :meth:`~pypot.dynamixel.io.DxlIO.get_pid_gain`). Some shortcuts have been provided to make the code more readable (e.g. :meth:`~pypot.dynamixel.io.DxlIO.enable_torque` instead of set_torque_enabled). All the getter functions takes a list of ids as argument and the setter takes a dictionary of (id: value) pairs. You can refer to the documentation of :class:`~pypot.dynamixel.io.DxlIO` for a complete list of all the available methods.
 
 
-.. note:: PyPot provides an easy way to extend the code and automatically create methods to access new registers added by robotis.
+.. note:: Pypot provides an easy way to extend the code and automatically create methods to access new registers added by robotis.

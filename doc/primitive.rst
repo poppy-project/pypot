@@ -49,7 +49,6 @@ As an example, let's write a simple primitive that recreate the dance behavior w
 To run this primitive on your robot, you simply have to do::
 
     ergo_robot = pypot.robot.from_config(...)
-    ergo_robot.start_sync()
 
     dance = DancePrimitive(ergo_robot)
     dance.start()
@@ -68,7 +67,6 @@ If you want to make the dance primitive infinite you can use the :class:`~pypot.
 And then runs it with::
 
     ergo_robot = pypot.robot.from_config(...)
-    ergo_robot.start_sync()
 
     dance = LoopDancePrimitive(ergo_robot, 50)
     # The robot will dance until you call dance.stop()
@@ -118,7 +116,6 @@ In the previous section, we explain that the primitives run in a sandbox in the 
 Let's go back on our DancePrimitive example. You can write::
 
     ergo_robot = pypot.robot.from_config(...)
-    ergo_robot.start_sync()
 
     ergo_robot.attach_primitive(DancePrimitive(ergo_robot), 'dance')
     ergo_robot.dance.start()

@@ -1,7 +1,7 @@
 REST API
 ========
 
-We add the possibility to remotely access and control your robot through TCP network. This can be useful both to work with client/server architecture (e.g. to separate the low-level control running on an embedded computer and higher-level computation on a more powerful computer) and to allow you to plug your existing code written in another language to the PyPot's API.
+We add the possibility to remotely access and control your robot through TCP network. This can be useful both to work with client/server architecture (e.g. to separate the low-level control running on an embedded computer and higher-level computation on a more powerful computer) and to allow you to plug your existing code written in another language to the pypot's API.
 
 We defined a protocol which permits the access of all the robot variables and method (including motors and primitives) via a JSON request. The protocol is entirely described in the section :ref:`remote_protocol` below. Two transport methods have been developed so far:
 
@@ -17,7 +17,6 @@ As an example of what you can do, here is the code of getting the load of a moto
     import zmq
 
     robot = pypot.robot.from_config(...)
-    robot.start_sync()
 
     server = pypot.server.ZMQServer(robot, host, port)
     server.start()
@@ -147,14 +146,13 @@ Zmq Server
 
 The Zmq Server used a Zmq socket to send (resp. receive) JSON request (JSON answer). It is based on the REQ/REP pattern. So you should always alternate sending and receiving. It will probably be switched to PUB/SUB soon.
 
-Zmq has been chosen as it has been `binded to most language <http://zeromq.org/bindings:_start>`_ and can thus be used to connect code from other language to PyPot. For instance, we used it to connect `RLPark <http://rlpark.github.io>`_ (a Java reinforcement learning library) to PyPot.
+Zmq has been chosen as it has been `binded to most language <http://zeromq.org/bindings:_start>`_ and can thus be used to connect code from other language to pypot. For instance, we used it to connect `RLPark <http://rlpark.github.io>`_ (a Java reinforcement learning library) to pypot.
 
 Here is an example of how you can create a zmq server and send request::
 
     import zmq
 
     robot = pypot.robot.from_config(...)
-    robot.start_sync()
 
     server = pypot.server.ZMQServer(robot, host, port)
     server.start()
@@ -198,7 +196,6 @@ An example of how you can use the HTTP server::
     import pypot.server
 
     robot = pypot.robot.from_config(...)
-    robot.start_sync()
 
     server = pypot.server.HTTPServer(robot, host, port)
     server.start()

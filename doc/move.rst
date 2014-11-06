@@ -21,7 +21,6 @@ The :class:`~pypot.primitive.move.MoveRecorder` and :class:`~pypot.primitive.mov
     from pypot.primitive.move import MoveRecorder, Move, MovePlayer
 
     ergo = pypot.robot.from_config(...)
-    ergo.start_sync()
 
     move_recorder = MoveRecorder(ergo, 50, ergo.motors)
 

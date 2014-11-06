@@ -1,4 +1,4 @@
-PyPot's API
+Pypot's API
 ***********
 
 .. toctree::
