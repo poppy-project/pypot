@@ -283,6 +283,12 @@ class VrepIO(AbstractIO):
                                            timer,
                                            vrep.simx_opmode_streaming)
 
+    def call_vrep_remoteapi(self, command_name, *args, **kwargs):
+        """ Calls any remote API functions. """
+        with self._lock:
+            func = getattr(vrep, command_name)
+            return func(self.client_id, *args, **kwargs)
+
 
 def close_all_connections():
     """ Closes all opened connection to V-REP remote API server. """
