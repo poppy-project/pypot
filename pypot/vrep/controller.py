@@ -50,18 +50,25 @@ class VrepController(MotorsController):
 
         # Prepare streaming for getting position for each motor
         for m in self.motors:
-            self.io._get_motor_position(m.name)
+            self.io.call_remote_api('simxGetJointPosition',
+                                    self.io.get_object_handle(m.name),
+                                    streaming=True,
+                                    _force=True)
 
         # Now actually retrieves all values
-        pos = [self.io.get_motor_position(motor_name=m.name) for m in self.motors]
+        pos = [self.io.get_motor_position(m.name) for m in self.motors]
 
-        # Prepare streaming for setting position for each motor
+        # # Prepare streaming for setting position for each motor
         for m, p in zip(self.motors, pos):
-            self.io._set_motor_position(motor_name=m.name, position=p)
+            self.io.call_remote_api('simxSetJointTargetPosition',
+                                    self.io.get_object_handle(m.name),
+                                    p,
+                                    sending=True,
+                                    _force=True)
 
         # And actually affect them
         for m, p in zip(self.motors, pos):
-            self.io.set_motor_position(motor_name=m.name, position=p)
+            self.io.set_motor_position(m.name, p)
             m.__dict__['goal_position'] = rad2deg(p)
 
 
