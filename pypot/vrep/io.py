@@ -231,7 +231,7 @@ class VrepIO(AbstractIO):
             time.sleep(VrepIO.TIMEOUT)
 
         if any(err):
-            msg = ' '.join([vrep_error[i] for i, e in enumerate(err) if e])
+            msg = ' '.join([vrep_error[2 ** i] for i, e in enumerate(err) if e])
             raise VrepIOError(msg)
 
         return res

@@ -14,7 +14,6 @@ import time as sys_time
 
 
 class vrep_time():
-
     def __init__(self, vrep_io):
         self.io = vrep_io
 
@@ -108,7 +107,11 @@ def from_vrep(config, vrep_host, vrep_port, vrep_scene,
         if tracked_collisions:
             vct.stop()
 
+        vc.stop()
+
         vrep_io.restart_simulation()
+
+        vc.start()
 
         if tracked_objects:
             vot.start()
