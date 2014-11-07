@@ -26,6 +26,7 @@ vrep_mode = {
 
 
 class VrepIO(AbstractIO):
+
     """ This class is used to get/set values from/to a V-REP scene.
 
         It is based on V-REP remote API (http://www.coppeliarobotics.com/helpFiles/en/remoteApiOverview.htm).
@@ -48,7 +49,8 @@ class VrepIO(AbstractIO):
         self._object_handles = {}
         self._lock = Lock()
 
-        self.client_id = remote_api.simxStart(vrep_host, vrep_port, True, True, 5000, 5)
+        self.client_id = remote_api.simxStart(
+            vrep_host, vrep_port, True, True, 5000, 5)
         if self.client_id == -1:
             msg = ('Could not connect to V-REP server on {}:{}. '
                    'This could also means that you still have '
@@ -231,8 +233,9 @@ class VrepIO(AbstractIO):
             time.sleep(VrepIO.TIMEOUT)
 
         if any(err):
-            msg = ' '.join([vrep_error[2 ** i] for i, e in enumerate(err) if e])
-            raise VrepIOError(msg)
+            msg = ' '.join([vrep_error[2 ** i]
+                            for i, e in enumerate(err) if e])
+            raise VrepIOError(err, msg)
 
         return res
 
@@ -252,12 +255,16 @@ def close_all_connections():
 
 # V-REP Errors
 class VrepIOError(Exception):
+
     """ Base class for V-REP IO Errors. """
+
     def __init__(self, error_code, message):
-        message = 'V-REP error code {} ({}): "{}"'.format(error_code, vrep_error[error_code], message)
+        message = 'V-REP error code {} ({}): "{}"'.format(
+            error_code, vrep_error[error_code], message)
         Exception.__init__(self, message)
 
 
 class VrepConnectionError(Exception):
+
     """ Base class for V-REP connection Errors. """
     pass
