@@ -15,6 +15,7 @@ import time as sys_time
 
 
 class vrep_time():
+
     def __init__(self, vrep_io):
         self.io = vrep_io
 
@@ -23,9 +24,11 @@ class vrep_time():
 
     def sleep(self, t):
         if t > 1000:  # That's probably due to an error in get_time
+            print 'WARNING: big vrep sleep', t
             raise IOError('Invalid argument')
+
         t0 = self.get_time()
-        while (self.get_time() - t0) < t:
+        while (self.get_time() - t0) < t and (self.get_time() - t) > 0.0:
             sys_time.sleep(0.01)
 
 
@@ -71,7 +74,8 @@ def from_vrep(config, vrep_host, vrep_port, vrep_scene,
     for m in config['motors'].itervalues():
         m['offset'] = 0.0
 
-    motors = [motor_from_confignode(config, name) for name in config['motors'].keys()]
+    motors = [motor_from_confignode(config, name)
+              for name in config['motors'].keys()]
 
     vc = VrepController(vrep_io, vrep_scene, motors)
     vc._init_vrep_streaming()
@@ -113,7 +117,8 @@ def from_vrep(config, vrep_host, vrep_port, vrep_scene,
 
     def current_simulation_time(robot):
         return robot._controllers[0].io.get_simulation_current_time()
+    Robot.current_simulation_time = property(
 
-    Robot.current_simulation_time = property(lambda robot: current_simulation_time(robot))
+        lambda robot: current_simulation_time(robot))
 
     return robot
