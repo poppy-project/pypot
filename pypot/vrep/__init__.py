@@ -13,7 +13,6 @@ import pypot.utils.pypot_time as pypot_time
 import time as sys_time
 
 
-
 class vrep_time():
 
     def __init__(self, vrep_io):
@@ -103,14 +102,18 @@ def from_vrep(config, vrep_host, vrep_port, vrep_scene,
         for m, p in init_pos.iteritems():
             m.goal_position = p
 
-        if tracked_collisions:
+        if tracked_objects:
             vot.stop()
+
+        if tracked_collisions:
             vct.stop()
 
         vrep_io.restart_simulation()
 
-        if tracked_collisions:
+        if tracked_objects:
             vot.start()
+
+        if tracked_collisions:
             vct.start()
 
     robot.reset_simulation = lambda: reset(robot)
