@@ -199,7 +199,6 @@ class VrepIO(AbstractIO):
                                     streaming=True)
 
         """
-        # print 'call', func_name, args, kwargs
         f = getattr(remote_api, func_name)
 
         mode = self._extract_mode(kwargs)

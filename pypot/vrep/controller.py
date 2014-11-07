@@ -36,10 +36,6 @@ class VrepController(MotorsController):
             # Send new values from Motor to V-REP
             p = deg2rad(round(m.__dict__['goal_position'], 1))
             self.io.set_motor_position(motor_name=m.name, position=p)
-            # if m.direct:
-            #     self.io.set_motor_position(motor_name=m.name, position=p)
-            # else:
-            #     self.io.set_motor_position(motor_name=m.name, position=- p)
 
     def _init_vrep_streaming(self):
         # While the code below may look redundant and that

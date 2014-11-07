@@ -12,22 +12,18 @@ from ..robot.config import motor_from_confignode, make_alias
 import pypot.utils.pypot_time as pypot_time
 import time as sys_time
 
-from remoteApiBindings import vrep
-
-ROBOT = None
 
 
 class vrep_time():
-    def __init__(self, robot):
-        self.robot = robot
+    def __init__(self, vrep_io):
+        self.io = vrep_io
 
     def get_time(self):
-        # print 'CUSTOM TIME'
-        # return self.robot._controllers[0].io.get_simulation_current_time()
-        res, tt = vrep.simxGetFloatSignal(self.robot._controllers[0].io.client_id, 'CurrentTime', vrep.simx_opmode_buffer)
-        return tt
+        return self.io.get_simulation_current_time()
 
     def sleep(self, t):
+        if t > 1000:  # That's probably due to an error in get_time
+            raise IOError('Invalid argument')
         t0 = self.get_time()
         while (self.get_time() - t0) < t:
             sys_time.sleep(0.01)
@@ -65,6 +61,10 @@ def from_vrep(config, vrep_host, vrep_port, vrep_scene,
     """
     vrep_io = VrepIO(vrep_host, vrep_port)
 
+    vreptime = vrep_time(vrep_io)
+    pypot_time.time = vreptime.get_time
+    pypot_time.sleep = vreptime.sleep
+
     # The URDF uses the offset as the 0 for the motors equivalent
     # so we set all the offsets to 0
     config = dict(config)
@@ -100,11 +100,13 @@ def from_vrep(config, vrep_host, vrep_port, vrep_scene,
             m.goal_position = p
 
         if tracked_collisions:
+            vot.stop()
             vct.stop()
 
         vrep_io.restart_simulation()
 
         if tracked_collisions:
+            vot.start()
             vct.start()
 
     robot.reset_simulation = lambda: reset(robot)
@@ -113,11 +115,5 @@ def from_vrep(config, vrep_host, vrep_port, vrep_scene,
         return robot._controllers[0].io.get_simulation_current_time()
 
     Robot.current_simulation_time = property(lambda robot: current_simulation_time(robot))
-
-    res, tt = vrep.simxGetFloatSignal(robot._controllers[0].io.client_id, 'CurrentTime', vrep.simx_opmode_streaming)
-    pypot_time.sleep(.1)
-    vreptime = vrep_time(robot)
-    pypot_time.time = vreptime.get_time
-    # pypot_time.sleep = vreptime.sleep
 
     return robot
