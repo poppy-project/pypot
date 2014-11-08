@@ -235,7 +235,7 @@ class VrepIO(AbstractIO):
         if any(err):
             msg = ' '.join([vrep_error[2 ** i]
                             for i, e in enumerate(err) if e])
-            raise VrepIOError(err, msg)
+            raise VrepIOError(msg)
 
         return res
 
@@ -261,6 +261,12 @@ class VrepIOError(Exception):
     def __init__(self, error_code, message):
         message = 'V-REP error code {} ({}): "{}"'.format(
             error_code, vrep_error[error_code], message)
+        Exception.__init__(self, message)
+
+
+class VrepIOErrors(Exception):
+
+    def __init__(self, message):
         Exception.__init__(self, message)
 
 
