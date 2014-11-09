@@ -14,6 +14,7 @@ import time as sys_time
 
 
 class vrep_time():
+
     def __init__(self, vrep_io):
         self.io = vrep_io
 
@@ -23,8 +24,8 @@ class vrep_time():
     def sleep(self, t):
         if t > 1000:  # That's probably due to an error in get_time
             print 'WARNING: big vrep sleep', t
-            raise IOError('Invalid argument')
-
+            #raise IOError('Invalid argument')
+            t = 1
         t0 = self.get_time()
         while (self.get_time() - t0) < t and (self.get_time() - t) > 0.0:
             sys_time.sleep(0.01)

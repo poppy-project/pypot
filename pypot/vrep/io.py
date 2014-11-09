@@ -49,17 +49,38 @@ class VrepIO(AbstractIO):
         self._object_handles = {}
         self._lock = Lock()
 
+        self.vrep_host = vrep_host
+        self.vrep_port = vrep_port
+        self.scene = scene
+        self.start = start
+
+        # self.client_id = remote_api.simxStart(
+        #     vrep_host, vrep_port, True, True, 5000, 5)
+        # if self.client_id == -1:
+        #     msg = ('Could not connect to V-REP server on {}:{}. '
+        #            'This could also means that you still have '
+        #            'a previously opened connection running! '
+        #            '(try pypot.vrep.close_all_connections())')
+        #     raise VrepConnectionError(msg.format(vrep_host, vrep_port))
+
+        # if scene is not None:
+        #     self.load_scene(scene, start)
+
+        self.open_io()
+
+    def open_io(self):
         self.client_id = remote_api.simxStart(
-            vrep_host, vrep_port, True, True, 5000, 5)
+            self.vrep_host, self.vrep_port, True, True, 5000, 5)
         if self.client_id == -1:
             msg = ('Could not connect to V-REP server on {}:{}. '
                    'This could also means that you still have '
                    'a previously opened connection running! '
                    '(try pypot.vrep.close_all_connections())')
-            raise VrepConnectionError(msg.format(vrep_host, vrep_port))
+            raise VrepConnectionError(
+                msg.format(self.vrep_host, self.vrep_port))
 
-        if scene is not None:
-            self.load_scene(scene, start)
+        if self.scene is not None:
+            self.load_scene(self.scene, self.start)
 
     def close(self):
         """ Closes the current connection. """
@@ -205,6 +226,7 @@ class VrepIO(AbstractIO):
 
         mode = self._extract_mode(kwargs)
         kwargs['operationMode'] = vrep_mode[mode]
+        hard_retry = True
 
         if '_force' in kwargs:
             del kwargs['_force']
@@ -231,6 +253,37 @@ class VrepIO(AbstractIO):
                 break
 
             time.sleep(VrepIO.TIMEOUT)
+
+        if any(err) and hard_retry:
+            print "HARD RETRY"
+            # self.stop_simulation() #nope
+
+            notconnected = True
+            while notconnected:
+                self.close()
+                close_all_connections()
+                time.sleep(0.5)
+                try:
+                    self.open_io()
+                    notconnected = False
+                except:
+                    print 'CONNECTION ERROR'
+                    pass
+
+            self.start_simulation()
+
+            with self._lock:
+                ret = f(self.client_id, *args, **kwargs)
+
+                if mode == 'sending' or isinstance(ret, int):
+                    err, res = ret, None
+                else:
+                    err, res = ret[0], ret[1:]
+                    res = res[0] if len(res) == 1 else res
+
+                err = [bool((err >> i) & 1) for i in range(len(vrep_error))]
+
+                return res
 
         if any(err):
             msg = ' '.join([vrep_error[2 ** i]
