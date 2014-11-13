@@ -125,6 +125,9 @@ def from_vrep(config, vrep_host, vrep_port, vrep_scene,
         if tracked_collisions:
             vct.start()
 
+        while vrep_io.get_simulation_current_time() < 1.:
+            sys_time.sleep(0.1)
+
     robot.reset_simulation = lambda: reset(robot)
 
     def current_simulation_time(robot):
