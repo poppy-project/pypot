@@ -229,7 +229,7 @@ class VrepIO(AbstractIO):
 
         mode = self._extract_mode(kwargs)
         kwargs['operationMode'] = vrep_mode[mode]
-        hard_retry = True
+        # hard_retry = True
 
         if '_force' in kwargs:
             del kwargs['_force']
@@ -258,36 +258,35 @@ class VrepIO(AbstractIO):
             time.sleep(VrepIO.TIMEOUT)
 
         # if any(err) and hard_retry:
-        if False:
-            print "HARD RETRY"
-            # self.stop_simulation() #nope
-
-            notconnected = True
-            while notconnected:
-                self.close()
-                close_all_connections()
-                time.sleep(0.5)
-                try:
-                    self.open_io()
-                    notconnected = False
-                except:
-                    print 'CONNECTION ERROR'
-                    pass
-
-            self.start_simulation()
-
-            with self._lock:
-                ret = f(self.client_id, *args, **kwargs)
-
-                if mode == 'sending' or isinstance(ret, int):
-                    err, res = ret, None
-                else:
-                    err, res = ret[0], ret[1:]
-                    res = res[0] if len(res) == 1 else res
-
-                err = [bool((err >> i) & 1) for i in range(len(vrep_error))]
-
-                return res
+        #     print "HARD RETRY"
+        #     # self.stop_simulation() #nope
+        #
+        #     notconnected = True
+        #     while notconnected:
+        #         self.close()
+        #         close_all_connections()
+        #         time.sleep(0.5)
+        #         try:
+        #             self.open_io()
+        #             notconnected = False
+        #         except:
+        #             print 'CONNECTION ERROR'
+        #             pass
+        #
+        #     self.start_simulation()
+        #
+        #     with self._lock:
+        #         ret = f(self.client_id, *args, **kwargs)
+        #
+        #         if mode == 'sending' or isinstance(ret, int):
+        #             err, res = ret, None
+        #         else:
+        #             err, res = ret[0], ret[1:]
+        #             res = res[0] if len(res) == 1 else res
+        #
+        #         err = [bool((err >> i) & 1) for i in range(len(vrep_error))]
+        #
+        #         return res
 
         if any(err):
             msg = ' '.join([vrep_error[2 ** i]
