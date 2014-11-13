@@ -254,7 +254,8 @@ class VrepIO(AbstractIO):
 
             time.sleep(VrepIO.TIMEOUT)
 
-        if any(err) and hard_retry:
+        # if any(err) and hard_retry:
+        if False:
             print "HARD RETRY"
             # self.stop_simulation() #nope
 

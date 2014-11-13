@@ -1,5 +1,7 @@
+import logging
+
 from .io import (VrepIO, close_all_connections,
-                 VrepIOError, VrepConnectionError)
+                 VrepIOError, VrepIOErrors, VrepConnectionError)
 
 from .controller import VrepController, VrepObjectTracker
 from .controller import VrepCollisionTracker, VrepCollisionDetector
@@ -12,20 +14,24 @@ from ..robot.config import motor_from_confignode, make_alias
 import pypot.utils.pypot_time as pypot_time
 import time as sys_time
 
+logger = logging.getLogger(__name__)
+
 
 class vrep_time():
-
     def __init__(self, vrep_io):
         self.io = vrep_io
 
     def get_time(self):
-        return self.io.get_simulation_current_time()
+        try:
+            return self.io.get_simulation_current_time()
+        except VrepIOErrors:
+            return 0.0
 
     def sleep(self, t):
         if t > 1000:  # That's probably due to an error in get_time
-            print 'WARNING: big vrep sleep', t
-            #raise IOError('Invalid argument')
+            logger.warning('Big vrep sleep: {}'.format(t))
             t = 1
+
         t0 = self.get_time()
         while (self.get_time() - t0) < t and (self.get_time() - t) > 0.0:
             sys_time.sleep(0.01)
