@@ -201,7 +201,10 @@ class VrepIO(AbstractIO):
 
     def get_simulation_current_time(self, timer='CurrentTime'):
         """ Gets the simulation current time. """
-        return self.call_remote_api('simxGetFloatSignal', timer, streaming=True)
+        try:
+            return self.call_remote_api('simxGetFloatSignal', timer, streaming=True)
+        except VrepIOErrors:
+            return 0.0
 
     def call_remote_api(self, func_name, *args, **kwargs):
         """ Calls any remote API func in a thread_safe way.

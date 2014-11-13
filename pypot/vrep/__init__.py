@@ -1,7 +1,7 @@
 import logging
 
 from .io import (VrepIO, close_all_connections,
-                 VrepIOError, VrepIOErrors, VrepConnectionError)
+                 VrepIOError, VrepConnectionError)
 
 from .controller import VrepController, VrepObjectTracker
 from .controller import VrepCollisionTracker, VrepCollisionDetector
@@ -22,10 +22,9 @@ class vrep_time():
         self.io = vrep_io
 
     def get_time(self):
-        try:
-            return self.io.get_simulation_current_time()
-        except VrepIOErrors:
-            return 0.0
+        t = self.io.get_simulation_current_time()
+
+        return t
 
     def sleep(self, t):
         if t > 1000:  # That's probably due to an error in get_time
