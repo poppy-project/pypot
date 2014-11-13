@@ -32,7 +32,9 @@ class vrep_time():
             t = 1
 
         t0 = self.get_time()
-        while (self.get_time() - t0) < t and (self.get_time() - t) > 0.0:
+        while (self.get_time() - t0) < t:
+            if self.get_time() < t0:
+                break
             sys_time.sleep(0.01)
 
 
