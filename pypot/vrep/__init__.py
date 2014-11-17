@@ -1,3 +1,5 @@
+import logging
+
 from .io import (VrepIO, close_all_connections,
                  VrepIOError, VrepConnectionError)
 
@@ -12,24 +14,27 @@ from ..robot.config import motor_from_confignode, make_alias
 import pypot.utils.pypot_time as pypot_time
 import time as sys_time
 
-from remoteApiBindings import vrep
-
-ROBOT = None
+logger = logging.getLogger(__name__)
 
 
 class vrep_time():
-    def __init__(self, robot):
-        self.robot = robot
+    def __init__(self, vrep_io):
+        self.io = vrep_io
 
     def get_time(self):
-        # print 'CUSTOM TIME'
-        # return self.robot._controllers[0].io.get_simulation_current_time()
-        res, tt = vrep.simxGetFloatSignal(self.robot._controllers[0].io.client_id, 'CurrentTime', vrep.simx_opmode_buffer)
-        return tt
+        t = self.io.get_simulation_current_time()
+
+        return t
 
     def sleep(self, t):
+        if t > 1000:  # That's probably due to an error in get_time
+            logger.warning('Big vrep sleep: {}'.format(t))
+            t = 1
+
         t0 = self.get_time()
         while (self.get_time() - t0) < t:
+            if self.get_time() < t0:
+                break
             sys_time.sleep(0.01)
 
 
@@ -65,13 +70,18 @@ def from_vrep(config, vrep_host, vrep_port, vrep_scene,
     """
     vrep_io = VrepIO(vrep_host, vrep_port)
 
+    vreptime = vrep_time(vrep_io)
+    pypot_time.time = vreptime.get_time
+    pypot_time.sleep = vreptime.sleep
+
     # The URDF uses the offset as the 0 for the motors equivalent
     # so we set all the offsets to 0
     config = dict(config)
     for m in config['motors'].itervalues():
         m['offset'] = 0.0
 
-    motors = [motor_from_confignode(config, name) for name in config['motors'].keys()]
+    motors = [motor_from_confignode(config, name)
+              for name in config['motors'].keys()]
 
     vc = VrepController(vrep_io, vrep_scene, motors)
     vc._init_vrep_streaming()
@@ -99,25 +109,33 @@ def from_vrep(config, vrep_host, vrep_port, vrep_scene,
         for m, p in init_pos.iteritems():
             m.goal_position = p
 
+        if tracked_objects:
+            vot.stop()
+
         if tracked_collisions:
             vct.stop()
 
+        vc.stop()
+
         vrep_io.restart_simulation()
+
+        vc.start()
+
+        if tracked_objects:
+            vot.start()
 
         if tracked_collisions:
             vct.start()
+
+        while vrep_io.get_simulation_current_time() < 1.:
+            sys_time.sleep(0.1)
 
     robot.reset_simulation = lambda: reset(robot)
 
     def current_simulation_time(robot):
         return robot._controllers[0].io.get_simulation_current_time()
+    Robot.current_simulation_time = property(
 
-    Robot.current_simulation_time = property(lambda robot: current_simulation_time(robot))
-
-    res, tt = vrep.simxGetFloatSignal(robot._controllers[0].io.client_id, 'CurrentTime', vrep.simx_opmode_streaming)
-    pypot_time.sleep(.1)
-    vreptime = vrep_time(robot)
-    pypot_time.time = vreptime.get_time
-    # pypot_time.sleep = vreptime.sleep
+        lambda robot: current_simulation_time(robot))
 
     return robot
