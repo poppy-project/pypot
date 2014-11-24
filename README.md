@@ -40,4 +40,8 @@ You will also have to install the driver for the USB2serial port. There are two 
 
 For more details on the installation procedure, please refer to the [installation section](http://poppy-project.github.io/pypot/intro.html#installation) of the documentation.
 
+## Roadmap ##
+
+The roadmap of the project can be found [here](https://github.com/poppy-project/pypot/blob/master/roadmap.md).
+
 ![Alt text](https://zenodo.org/badge/3914/poppy-project/pypot.png)

@@ -1,15 +1,18 @@
-# Version 2.0
+# Changelog
 
-## Major changes
+## V. 2.0
+
+### Major changes
 * support for V-REP simulator
-* nouveau controller: extending pypot
+* new controller implementation: [extending pypot](http://poppy-project.github.io/pypot/extending.html)
 
-## Minor changes
-* autodetect robot
-* uses descriptor for motor registers
-* REST API/ remote robot
-* automatically starts the synchronization
+### Minor changes
+* Use of descriptors for motor registers
+* REST API / remote robot
+* Starts automatically the synchronization
 
 
-# Version 1.7
+## V. 1.7
+
+### Minor changes
 * Autodetect robot
