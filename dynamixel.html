@@ -9,7 +9,7 @@
   <head>
     <meta charset="utf-8" />
     
-    <title>Dynamixel Low-level IO &mdash; PyPot 1.7.1 documentation</title>
+    <title>Dynamixel Low-level IO &mdash; pypot 1.7.1 documentation</title>
     <meta name="description" content="">
     <meta name="author" content="">
 
@@ -51,7 +51,7 @@
 <script type="text/javascript">
 </script>
     <link rel="author" title="About these documents" href="about.html" />
-    <link rel="top" title="PyPot 1.7.1 documentation" href="index.html" />
+    <link rel="top" title="pypot 1.7.1 documentation" href="index.html" />
     <link rel="up" title="Controlling robot" href="controlling_robot.html" />
     <link rel="next" title="Robot Controller" href="controller.html" />
     <link rel="prev" title="Controlling robot" href="controlling_robot.html" /> 
@@ -66,7 +66,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="index.html">PyPot 1.7.1 documentation</a>
+          <a class="navbar-brand" href="index.html">pypot 1.7.1 documentation</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
@@ -193,7 +193,7 @@
 </div>
 <div class="section" id="opening-closing-a-communication-port">
 <span id="open-connection"></span><h2>Opening/Closing a communication port<a class="headerlink" href="#opening-closing-a-communication-port" title="Permalink to this headline">¶</a></h2>
-<p>In order to open a connection with the device, you will need to know what port it is connected to. PyPot has a function named <a class="reference internal" href="pypot.dynamixel.html#pypot.dynamixel.get_available_ports" title="pypot.dynamixel.get_available_ports"><code class="xref py py-func docutils literal"><span class="pre">get_available_ports()</span></code></a> which will try to auto-discover any compatible devices connected to the communication ports.</p>
+<p>In order to open a connection with the device, you will need to know what port it is connected to. Pypot has a function named <a class="reference internal" href="pypot.dynamixel.html#pypot.dynamixel.get_available_ports" title="pypot.dynamixel.get_available_ports"><code class="xref py py-func docutils literal"><span class="pre">get_available_ports()</span></code></a> which will try to auto-discover any compatible devices connected to the communication ports.</p>
 <p>To create a connection, open up a python terminal and type the following code:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">pypot.dynamixel</span>
 
@@ -211,7 +211,7 @@
 <p>This should open a connection through a virtual communication port to your device.</p>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
-<p class="last">It is important to note that it will open a connection using a default baud rate. By default your motors are set up to work on the robotis default baud rate (57140) while PyPot is set up to work with a 1000000 baud rate. To communicate with your motors, you must ensure that this baud rate is the same baud rate that the motors are configure to use. So, you will need to change either the configuration of your motors (see <a class="reference internal" href="herborist.html#herborist"><em>Herborist</em></a> section) or change the default baud rate of your connection.</p>
+<p class="last">It is important to note that it will open a connection using a default baud rate. By default your motors are set up to work on the robotis default baud rate (57140) while pypot is set up to work with a 1000000 baud rate. To communicate with your motors, you must ensure that this baud rate is the same baud rate that the motors are configure to use. So, you will need to change either the configuration of your motors (see <a class="reference internal" href="herborist.html#herborist"><em>Herborist</em></a> section) or change the default baud rate of your connection.</p>
 </div>
 <p>To set up a connection with another baud rate you can write:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">dxl_io</span> <span class="o">=</span> <span class="n">pypot</span><span class="o">.</span><span class="n">dynamixel</span><span class="o">.</span><span class="n">DxlIO</span><span class="p">(</span><span class="n">port</span><span class="p">,</span> <span class="n">baudrate</span><span class="o">=</span><span class="mi">57140</span><span class="p">)</span>
@@ -320,10 +320,10 @@ dxl_io.scan([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
         <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.02</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Thanks to PyPot, you can access all registers of your motors using the same syntax (e.g. <a class="reference internal" href="pypot.dynamixel.html#pypot.dynamixel.io.DxlIO.get_present_speed" title="pypot.dynamixel.io.DxlIO.get_present_speed"><code class="xref py py-meth docutils literal"><span class="pre">get_present_speed()</span></code></a>, <a class="reference internal" href="pypot.dynamixel.html#pypot.dynamixel.io.DxlIO.set_max_torque" title="pypot.dynamixel.io.DxlIO.set_max_torque"><code class="xref py py-meth docutils literal"><span class="pre">set_max_torque()</span></code></a>, <a class="reference internal" href="pypot.dynamixel.html#pypot.dynamixel.io.DxlIO.get_pid_gain" title="pypot.dynamixel.io.DxlIO.get_pid_gain"><code class="xref py py-meth docutils literal"><span class="pre">get_pid_gain()</span></code></a>). Some shortcuts have been provided to make the code more readable (e.g. <a class="reference internal" href="pypot.dynamixel.html#pypot.dynamixel.io.DxlIO.enable_torque" title="pypot.dynamixel.io.DxlIO.enable_torque"><code class="xref py py-meth docutils literal"><span class="pre">enable_torque()</span></code></a> instead of set_torque_enabled). All the getter functions takes a list of ids as argument and the setter takes a dictionary of (id: value) pairs. You can refer to the documentation of <a class="reference internal" href="pypot.dynamixel.html#pypot.dynamixel.io.DxlIO" title="pypot.dynamixel.io.DxlIO"><code class="xref py py-class docutils literal"><span class="pre">DxlIO</span></code></a> for a complete list of all the available methods.</p>
+<p>Thanks to pypot, you can access all registers of your motors using the same syntax (e.g. <a class="reference internal" href="pypot.dynamixel.html#pypot.dynamixel.io.DxlIO.get_present_speed" title="pypot.dynamixel.io.DxlIO.get_present_speed"><code class="xref py py-meth docutils literal"><span class="pre">get_present_speed()</span></code></a>, <a class="reference internal" href="pypot.dynamixel.html#pypot.dynamixel.io.DxlIO.set_max_torque" title="pypot.dynamixel.io.DxlIO.set_max_torque"><code class="xref py py-meth docutils literal"><span class="pre">set_max_torque()</span></code></a>, <a class="reference internal" href="pypot.dynamixel.html#pypot.dynamixel.io.DxlIO.get_pid_gain" title="pypot.dynamixel.io.DxlIO.get_pid_gain"><code class="xref py py-meth docutils literal"><span class="pre">get_pid_gain()</span></code></a>). Some shortcuts have been provided to make the code more readable (e.g. <a class="reference internal" href="pypot.dynamixel.html#pypot.dynamixel.io.DxlIO.enable_torque" title="pypot.dynamixel.io.DxlIO.enable_torque"><code class="xref py py-meth docutils literal"><span class="pre">enable_torque()</span></code></a> instead of set_torque_enabled). All the getter functions takes a list of ids as argument and the setter takes a dictionary of (id: value) pairs. You can refer to the documentation of <a class="reference internal" href="pypot.dynamixel.html#pypot.dynamixel.io.DxlIO" title="pypot.dynamixel.io.DxlIO"><code class="xref py py-class docutils literal"><span class="pre">DxlIO</span></code></a> for a complete list of all the available methods.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">PyPot provides an easy way to extend the code and automatically create methods to access new registers added by robotis.</p>
+<p class="last">Pypot provides an easy way to extend the code and automatically create methods to access new registers added by robotis.</p>
 </div>
 </div>
 </div>
@@ -343,7 +343,7 @@ dxl_io.scan([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
 <div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
   <div class="navbar-inner">
     <ul class="nav navbar-nav">
-        <li><a href="index.html">PyPot 1.7.1 documentation</a></li>
+        <li><a href="index.html">pypot 1.7.1 documentation</a></li>
     </ul>
     <ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
       
@@ -360,7 +360,7 @@ dxl_io.scan([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
 
       <!-- footer -->
       <footer role="contentinfo">
-          &copy; Copyright 2012, Pierre Rouanet, Matthieu Lapeyre, Haylee Fogg.
+          &copy; Copyright 2012, Poppy-Project.
         Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.3b1.
       </footer>
       <!-- /footer -->

@@ -9,7 +9,7 @@
   <head>
     <meta charset="utf-8" />
     
-    <title>pypot.primitive.primitive &mdash; PyPot 1.7.1 documentation</title>
+    <title>pypot.primitive.primitive &mdash; pypot 1.7.1 documentation</title>
     <meta name="description" content="">
     <meta name="author" content="">
 
@@ -51,7 +51,7 @@
 <script type="text/javascript">
 </script>
     <link rel="author" title="About these documents" href="../../../about.html" />
-    <link rel="top" title="PyPot 1.7.1 documentation" href="../../../index.html" />
+    <link rel="top" title="pypot 1.7.1 documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body role="document">
@@ -64,7 +64,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="../../../index.html">PyPot 1.7.1 documentation</a>
+          <a class="navbar-brand" href="../../../index.html">pypot 1.7.1 documentation</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
@@ -129,17 +129,21 @@
                   
   <h1>Source code for pypot.primitive.primitive</h1><div class="highlight"><pre>
 <span class="kn">import</span> <span class="nn">sys</span>
-<span class="kn">import</span> <span class="nn">time</span>
+
 <span class="kn">import</span> <span class="nn">numpy</span>
 <span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">import</span> <span class="nn">threading</span>
 
 <span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">deque</span>
 
+<span class="kn">import</span> <span class="nn">pypot.utils.pypot_time</span> <span class="kn">as</span> <span class="nn">time</span>
+
+<span class="kn">from</span> <span class="nn">..utils.stoppablethread</span> <span class="kn">import</span> <span class="n">StoppableThread</span><span class="p">,</span> <span class="n">make_update_loop</span>
+
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="n">__name__</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="Primitive"><a class="viewcode-back" href="../../../pypot.primitive.html#pypot.primitive.primitive.Primitive">[docs]</a><span class="k">class</span> <span class="nc">Primitive</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="Primitive"><a class="viewcode-back" href="../../../pypot.primitive.html#pypot.primitive.primitive.Primitive">[docs]</a><span class="k">class</span> <span class="nc">Primitive</span><span class="p">(</span><span class="n">StoppableThread</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; A Primitive is an elementary behavior that can easily be combined to create more complex behaviors.</span>
 
 <span class="sd">        A primitive is basically a thread with access to a &quot;fake&quot; robot to ensure a sort of sandboxing. More precisely, it means that the primitives will be able to:</span>
@@ -164,26 +168,27 @@
 <span class="sd">        .. note:: This class should always be extended to define your particular behavior in the :meth:`~pypot.primitive.primitive.Primitive.run` method.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">robot</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; At instanciation, it automatically transforms the :class:`~pypot.robot.robot.Robot`</span>
-<span class="sd">            into a :class:`~pypot.primitive.primitive.MockupRobot`.</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">robot</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; At instanciation, it automatically transforms the :class:`~pypot.robot.robot.Robot` into a :class:`~pypot.primitive.primitive.MockupRobot`.</span>
 
-<span class="sd">            :param args: the arguments are automatically passed to the run method.</span>
-<span class="sd">            :param kwargs: the keywords arguments are automatically passed to the run method.</span>
+<span class="sd">        .. warning:: You should not directly pass motors as argument to the primitive. If you need to, use the method :meth:`~pypot.primitive.primitive.Primitive.get_mockup_motor` to transform them into &quot;fake&quot; motors. See the :ref:`write_own_prim` section for details.</span>
 
-<span class="sd">            .. warning:: You should not directly pass motors as argument to the primitive. If you need to, use the method :meth:`~pypot.primitive.primitive.Primitive.get_mockup_motor` to transform them into &quot;fake&quot; motors. See the :ref:`write_own_prim` section for details.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">StoppableThread</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                                 <span class="n">setup</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_prim_setup</span><span class="p">,</span>
+                                 <span class="n">target</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_prim_run</span><span class="p">,</span>
+                                 <span class="n">teardown</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_prim_teardown</span><span class="p">)</span>
 
-<span class="sd">            &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">robot</span> <span class="o">=</span> <span class="n">MockupRobot</span><span class="p">(</span><span class="n">robot</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">args</span> <span class="o">=</span> <span class="n">args</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">kwargs</span> <span class="o">=</span> <span class="n">kwargs</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">_started</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Event</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_stop</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Event</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_resume</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Event</span><span class="p">()</span>
-
         <span class="bp">self</span><span class="o">.</span><span class="n">_synced</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Event</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">_prim_setup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&quot;Primitive </span><span class="si">%s</span><span class="s"> setup.&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">robot</span><span class="o">.</span><span class="n">_primitive_manager</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setup</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">t0</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
 
 <div class="viewcode-block" id="Primitive.setup"><a class="viewcode-back" href="../../../pypot.primitive.html#pypot.primitive.primitive.Primitive.setup">[docs]</a>    <span class="k">def</span> <span class="nf">setup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Setup methods called before the run loop.</span>
@@ -192,23 +197,22 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">pass</span>
 </div>
-<div class="viewcode-block" id="Primitive.teardown"><a class="viewcode-back" href="../../../pypot.primitive.html#pypot.primitive.primitive.Primitive.teardown">[docs]</a>    <span class="k">def</span> <span class="nf">teardown</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Tear down methods called after the run loop.</span>
+    <span class="k">def</span> <span class="nf">_prim_run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
 
-<span class="sd">        You can override this method to clean up the environment needed by your primitive. This method will be called every time the primitive is stopped.</span>
+<div class="viewcode-block" id="Primitive.run"><a class="viewcode-back" href="../../../pypot.primitive.html#pypot.primitive.primitive.Primitive.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Run method of the primitive thread. You should always overwrite this method.</span>
+
+<span class="sd">        .. warning:: You are responsible of handling the :meth:`~pypot.utils.stoppablethread.StoppableThread.should_stop`, :meth:`~pypot.utils.stoppablethread.StoppableThread.should_pause` and :meth:`~pypot.utils.stoppablethread.StoppableThread.wait_to_resume` methods correctly so the code inside your run function matches the desired behavior. You can refer to the code of the :meth:`~pypot.utils.stoppablethread.StoppableLoopThread.run` method of the :class:`~pypot.primitive.primitive.LoopPrimitive` as an example.</span>
+
+<span class="sd">        After termination of the run function, the primitive will automatically be removed from the list of active primitives of the :class:`~pypot.primitive.manager.PrimitiveManager`.</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">pass</span>
 </div>
-    <span class="k">def</span> <span class="nf">_wrapped_run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&quot;Primitive </span><span class="si">%s</span><span class="s"> setup.&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">setup</span><span class="p">()</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">robot</span><span class="o">.</span><span class="n">_primitive_manager</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">t0</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_started</span><span class="o">.</span><span class="n">set</span><span class="p">()</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">_prim_teardown</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&quot;Primitive </span><span class="si">%s</span><span class="s"> teardown.&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">teardown</span><span class="p">()</span>
 
         <span class="c"># Forces a last synced to make sure that all values sent</span>
         <span class="c"># Within the primitives will be sent to the motors.</span>
@@ -217,20 +221,12 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">robot</span><span class="o">.</span><span class="n">_primitive_manager</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 
-        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&quot;Primitive </span><span class="si">%s</span><span class="s"> teardown.&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">teardown</span><span class="p">()</span>
+<div class="viewcode-block" id="Primitive.teardown"><a class="viewcode-back" href="../../../pypot.primitive.html#pypot.primitive.primitive.Primitive.teardown">[docs]</a>    <span class="k">def</span> <span class="nf">teardown</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Tear down methods called after the run loop.</span>
 
-<div class="viewcode-block" id="Primitive.run"><a class="viewcode-back" href="../../../pypot.primitive.html#pypot.primitive.primitive.Primitive.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Run method of the primitive thread. You should always overwrite this method.</span>
+<span class="sd">        You can override this method to clean up the environment needed by your primitive. This method will be called every time the primitive is stopped.</span>
 
-<span class="sd">            :param args: the arguments passed to the constructor are automatically passed to this method</span>
-<span class="sd">            :param kwargs: the arguments passed to the constructor are automatically passed to this method</span>
-
-<span class="sd">            .. warning:: You are responsible of handling the :meth:`~primitive.primitive.Primitive.should_stop`, :meth:`~primitive.primitive.Primitive.should_pause` and :meth:`~primitive.primitive.Primitive.wait_to_resume` methods correctly so the code inside your run function matches the desired behavior. You can refer to the code of the :meth:`~primitive.primitive.LoopPrimitive.run` method of the :class:`~primitive.primitive.LoopPrimitive` as an example.</span>
-
-<span class="sd">            After termination of the run function, the primitive will automatically be removed from the list of active primitives of the :class:`~pypot.primitive.manager.PrimitiveManager`.</span>
-
-<span class="sd">            &quot;&quot;&quot;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">pass</span>
 </div>
     <span class="nd">@property</span>
@@ -239,68 +235,28 @@
         <span class="k">return</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">t0</span>
 
     <span class="c"># MARK: - Start/Stop handling</span>
-
 <div class="viewcode-block" id="Primitive.start"><a class="viewcode-back" href="../../../pypot.primitive.html#pypot.primitive.primitive.Primitive.start">[docs]</a>    <span class="k">def</span> <span class="nf">start</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Start or restart (the :meth:`~pypot.primitive.primitive.Primitive.stop` method will automatically be called) the primitive. &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_alive</span><span class="p">():</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">wait_to_stop</span><span class="p">()</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">robot</span><span class="o">.</span><span class="n">_primitive_manager</span><span class="o">.</span><span class="n">running</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s">&#39;Cannot run a primitive when the sync is stopped!&#39;</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_started</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_resume</span><span class="o">.</span><span class="n">set</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_stop</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_synced</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">_thread</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_wrapped_run</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_thread</span><span class="o">.</span><span class="n">daemon</span> <span class="o">=</span> <span class="bp">True</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_thread</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">_started</span><span class="o">.</span><span class="n">wait</span><span class="p">()</span>
+        <span class="n">StoppableThread</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">wait_to_start</span><span class="p">()</span>
 
         <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&quot;Primitive </span><span class="si">%s</span><span class="s"> started.&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
 </div>
-<div class="viewcode-block" id="Primitive.stop"><a class="viewcode-back" href="../../../pypot.primitive.html#pypot.primitive.primitive.Primitive.stop">[docs]</a>    <span class="k">def</span> <span class="nf">stop</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Primitive.stop"><a class="viewcode-back" href="../../../pypot.primitive.html#pypot.primitive.primitive.Primitive.stop">[docs]</a>    <span class="k">def</span> <span class="nf">stop</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">wait</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Requests the primitive to stop. &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_resume</span><span class="o">.</span><span class="n">set</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_stop</span><span class="o">.</span><span class="n">set</span><span class="p">()</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&quot;Primitive </span><span class="si">%s</span><span class="s"> stopped.&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
-</div>
-<div class="viewcode-block" id="Primitive.should_stop"><a class="viewcode-back" href="../../../pypot.primitive.html#pypot.primitive.primitive.Primitive.should_stop">[docs]</a>    <span class="k">def</span> <span class="nf">should_stop</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Signals if the primitive should be stopped or not. &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stop</span><span class="o">.</span><span class="n">is_set</span><span class="p">()</span>
-</div>
-<div class="viewcode-block" id="Primitive.wait_to_stop"><a class="viewcode-back" href="../../../pypot.primitive.html#pypot.primitive.primitive.Primitive.wait_to_stop">[docs]</a>    <span class="k">def</span> <span class="nf">wait_to_stop</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Wait until the primitive actually stops. &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s">&#39;_thread&#39;</span><span class="p">):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_thread</span><span class="o">.</span><span class="n">join</span><span class="p">()</span>
+        <span class="n">StoppableThread</span><span class="o">.</span><span class="n">stop</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">wait</span><span class="p">)</span>
 </div>
 <div class="viewcode-block" id="Primitive.is_alive"><a class="viewcode-back" href="../../../pypot.primitive.html#pypot.primitive.primitive.Primitive.is_alive">[docs]</a>    <span class="k">def</span> <span class="nf">is_alive</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Determines whether the primitive is running or not.</span>
 
-<span class="sd">            The value will be true only when the :meth:`~primitive.primitive.Primitive.run` function is executed.</span>
+<span class="sd">        The value will be true only when the :meth:`~pypot.utils.stoppablethread.StoppableThread.run` function is executed.</span>
 
-<span class="sd">            &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s">&#39;_thread&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_thread</span><span class="o">.</span><span class="n">is_alive</span><span class="p">()</span>
-
-    <span class="c"># MARK: - Pause/Resume handling</span>
-</div>
-<div class="viewcode-block" id="Primitive.pause"><a class="viewcode-back" href="../../../pypot.primitive.html#pypot.primitive.primitive.Primitive.pause">[docs]</a>    <span class="k">def</span> <span class="nf">pause</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Requests the primitives to pause. &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_resume</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&quot;Primitive </span><span class="si">%s</span><span class="s"> paused.&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
-</div>
-<div class="viewcode-block" id="Primitive.resume"><a class="viewcode-back" href="../../../pypot.primitive.html#pypot.primitive.primitive.Primitive.resume">[docs]</a>    <span class="k">def</span> <span class="nf">resume</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Requests the primitives to resume. &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_resume</span><span class="o">.</span><span class="n">set</span><span class="p">()</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&quot;Primitive </span><span class="si">%s</span><span class="s"> resumed.&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
-</div>
-<div class="viewcode-block" id="Primitive.should_pause"><a class="viewcode-back" href="../../../pypot.primitive.html#pypot.primitive.primitive.Primitive.should_pause">[docs]</a>    <span class="k">def</span> <span class="nf">should_pause</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Signals if the primitive should be paused or not. &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_resume</span><span class="o">.</span><span class="n">is_set</span><span class="p">()</span>
-</div>
-<div class="viewcode-block" id="Primitive.wait_to_resume"><a class="viewcode-back" href="../../../pypot.primitive.html#pypot.primitive.primitive.Primitive.wait_to_resume">[docs]</a>    <span class="k">def</span> <span class="nf">wait_to_resume</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Waits until the primitive is resumed. &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_resume</span><span class="o">.</span><span class="n">wait</span><span class="p">()</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">running</span>
 </div>
 <div class="viewcode-block" id="Primitive.get_mockup_motor"><a class="viewcode-back" href="../../../pypot.primitive.html#pypot.primitive.primitive.Primitive.get_mockup_motor">[docs]</a>    <span class="k">def</span> <span class="nf">get_mockup_motor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">motor</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Gets the equivalent :class:`~pypot.primitive.primitive.MockupMotor`. &quot;&quot;&quot;</span>
@@ -310,12 +266,13 @@
 <div class="viewcode-block" id="LoopPrimitive"><a class="viewcode-back" href="../../../pypot.primitive.html#pypot.primitive.primitive.LoopPrimitive">[docs]</a><span class="k">class</span> <span class="nc">LoopPrimitive</span><span class="p">(</span><span class="n">Primitive</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; Simple primitive that call an update method at a predefined frequency.</span>
 
-<span class="sd">        You should write your own subclass where you only defined the :meth:`~pypot.primitive.primitive.Primitive.update` method.</span>
+<span class="sd">        You should write your own subclass where you only defined the :meth:`~pypot.primitive.primitive.LoopPrimitive.update` method.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">robot</span><span class="p">,</span> <span class="n">freq</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="n">Primitive</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">robot</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_period</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">freq</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">robot</span><span class="p">,</span> <span class="n">freq</span><span class="p">):</span>
+        <span class="n">Primitive</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">robot</span><span class="p">)</span>
+        <span class="c"># self._period = 1.0 / freq</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">period</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">freq</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_recent_updates</span> <span class="o">=</span> <span class="n">deque</span><span class="p">([],</span> <span class="mi">11</span><span class="p">)</span>
 
     <span class="nd">@property</span>
@@ -327,33 +284,17 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="nb">reversed</span><span class="p">([(</span><span class="mf">1.0</span> <span class="o">/</span> <span class="n">p</span><span class="p">)</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">numpy</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_recent_updates</span><span class="p">)]))</span>
 
-<div class="viewcode-block" id="LoopPrimitive.run"><a class="viewcode-back" href="../../../pypot.primitive.html#pypot.primitive.primitive.LoopPrimitive.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Calls the :meth:`~pypot.primitive.primitive.Primitive.update` method at a predefined frequency (runs until stopped). &quot;&quot;&quot;</span>
-
-        <span class="k">while</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">should_stop</span><span class="p">():</span>
-            <span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_wrapped_update</span><span class="p">(</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">kwargs</span><span class="p">)</span>
-            <span class="n">end</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
-
-            <span class="bp">self</span><span class="o">.</span><span class="n">_recent_updates</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">start</span><span class="p">)</span>
-
-            <span class="n">dt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_period</span> <span class="o">-</span> <span class="p">(</span><span class="n">end</span> <span class="o">-</span> <span class="n">start</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">dt</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-                <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">dt</span><span class="p">)</span>
-
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">should_pause</span><span class="p">():</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">wait_to_resume</span><span class="p">()</span>
+<div class="viewcode-block" id="LoopPrimitive.run"><a class="viewcode-back" href="../../../pypot.primitive.html#pypot.primitive.primitive.LoopPrimitive.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Calls the :meth:`~pypot.utils.stoppablethread.StoppableLoopThread.update` method at a predefined frequency (runs until stopped). &quot;&quot;&quot;</span>
+        <span class="n">make_update_loop</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_wrapped_update</span><span class="p">)</span>
 </div>
-    <span class="k">def</span> <span class="nf">_wrapped_update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_wrapped_update</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&#39;LoopPrimitive </span><span class="si">%s</span><span class="s"> updated.&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_recent_updates</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
 
-<div class="viewcode-block" id="LoopPrimitive.update"><a class="viewcode-back" href="../../../pypot.primitive.html#pypot.primitive.primitive.LoopPrimitive.update">[docs]</a>    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Update methods that will be called at a predefined frequency.</span>
-
-<span class="sd">            :param args: the arguments passed to the constructor are automatically passed to this method</span>
-<span class="sd">            :param kwargs: the arguments passed to the constructor are automatically passed to this method</span>
-<span class="sd">            &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="LoopPrimitive.update"><a class="viewcode-back" href="../../../pypot.primitive.html#pypot.primitive.primitive.LoopPrimitive.update">[docs]</a>    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Update methods that will be called at a predefined frequency. &quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span>
 
 </div></div>
@@ -468,7 +409,7 @@
 <div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
   <div class="navbar-inner">
     <ul class="nav navbar-nav">
-        <li><a href="../../../index.html">PyPot 1.7.1 documentation</a></li>
+        <li><a href="../../../index.html">pypot 1.7.1 documentation</a></li>
     </ul>
     <ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
       
@@ -483,7 +424,7 @@
 
       <!-- footer -->
       <footer role="contentinfo">
-          &copy; Copyright 2012, Pierre Rouanet, Matthieu Lapeyre, Haylee Fogg.
+          &copy; Copyright 2012, Poppy-Project.
         Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.3b1.
       </footer>
       <!-- /footer -->

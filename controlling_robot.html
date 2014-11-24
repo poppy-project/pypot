@@ -9,7 +9,7 @@
   <head>
     <meta charset="utf-8" />
     
-    <title>Controlling robot &mdash; PyPot 1.7.1 documentation</title>
+    <title>Controlling robot &mdash; pypot 1.7.1 documentation</title>
     <meta name="description" content="">
     <meta name="author" content="">
 
@@ -51,7 +51,7 @@
 <script type="text/javascript">
 </script>
     <link rel="author" title="About these documents" href="about.html" />
-    <link rel="top" title="PyPot 1.7.1 documentation" href="index.html" />
+    <link rel="top" title="pypot 1.7.1 documentation" href="index.html" />
     <link rel="next" title="Dynamixel Low-level IO" href="dynamixel.html" />
     <link rel="prev" title="QuickStart: playing with an Ergo-Robot" href="quickstart.html" /> 
   </head>
@@ -65,7 +65,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="index.html">PyPot 1.7.1 documentation</a>
+          <a class="navbar-brand" href="index.html">pypot 1.7.1 documentation</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
@@ -145,7 +145,7 @@
                   
   <div class="section" id="controlling-robot">
 <h1>Controlling robot<a class="headerlink" href="#controlling-robot" title="Permalink to this headline">¶</a></h1>
-<p>PyPot handles the communication with dynamixel motors from robotis. Using a USB communication device such as USB2DYNAMIXEL or USB2AX, you can open serial communication with robotis motors (MX, RX, AX) using communication protocols TTL or RS485. More specifically, it allows easy access (both reading and writing) to the different registers of any dynamixel motors. Those registers includes values such as position, speed or torque. The whole list of registers can directly be found on the robotis website <a class="reference external" href="http://support.robotis.com/en/product/dxl_main.htm">http://support.robotis.com/en/product/dxl_main.htm</a>.</p>
+<p>Pypot handles the communication with dynamixel motors from robotis. Using a USB communication device such as USB2DYNAMIXEL or USB2AX, you can open serial communication with robotis motors (MX, RX, AX) using communication protocols TTL or RS485. More specifically, it allows easy access (both reading and writing) to the different registers of any dynamixel motors. Those registers includes values such as position, speed or torque. The whole list of registers can directly be found on the <a class="reference external" href="http://support.robotis.com/en/product/dxl_main.htm">robotis website</a>.</p>
 <p>You can access the register of the motors through two different ways:</p>
 <ul class="simple">
 <li><strong>Low-level API:</strong> In the first case, you can get or set a value to a motor by directly sending a request and waiting for the motor to answer. Here, you only use the low level API to communicate with the motor (refer to section <a class="reference internal" href="dynamixel.html#low-level"><em>Dynamixel Low-level IO</em></a> for more details).</li>
@@ -163,6 +163,7 @@
 <li class="toctree-l1"><a class="reference internal" href="controller.html">Robot Controller</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="controller.html#using-the-robot-abstraction">Using the robot abstraction</a></li>
 <li class="toctree-l2"><a class="reference internal" href="controller.html#writing-the-configuration">Writing the configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="controller.html#auto-detection-and-generation-of-the-configuration">Auto-detection and generation of the configuration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="controller.html#dynamixel-controller-and-synchronization-loop">Dynamixel controller and Synchronization Loop</a></li>
 <li class="toctree-l2"><a class="reference internal" href="controller.html#controlling-your-robot">Controlling your robot</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="controller.html#controlling-in-position">Controlling in position</a></li>
@@ -191,7 +192,7 @@
 <div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
   <div class="navbar-inner">
     <ul class="nav navbar-nav">
-        <li><a href="index.html">PyPot 1.7.1 documentation</a></li>
+        <li><a href="index.html">pypot 1.7.1 documentation</a></li>
     </ul>
     <ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
       
@@ -207,7 +208,7 @@
 
       <!-- footer -->
       <footer role="contentinfo">
-          &copy; Copyright 2012, Pierre Rouanet, Matthieu Lapeyre, Haylee Fogg.
+          &copy; Copyright 2012, Poppy-Project.
         Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.3b1.
       </footer>
       <!-- /footer -->

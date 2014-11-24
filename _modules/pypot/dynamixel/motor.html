@@ -9,7 +9,7 @@
   <head>
     <meta charset="utf-8" />
     
-    <title>pypot.dynamixel.motor &mdash; PyPot 1.7.1 documentation</title>
+    <title>pypot.dynamixel.motor &mdash; pypot 1.7.1 documentation</title>
     <meta name="description" content="">
     <meta name="author" content="">
 
@@ -51,7 +51,7 @@
 <script type="text/javascript">
 </script>
     <link rel="author" title="About these documents" href="../../../about.html" />
-    <link rel="top" title="PyPot 1.7.1 documentation" href="../../../index.html" />
+    <link rel="top" title="pypot 1.7.1 documentation" href="../../../index.html" />
     <link rel="up" title="pypot.dynamixel" href="../dynamixel.html" /> 
   </head>
   <body role="document">
@@ -64,7 +64,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="../../../index.html">PyPot 1.7.1 documentation</a>
+          <a class="navbar-brand" href="../../../index.html">pypot 1.7.1 documentation</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
@@ -129,27 +129,70 @@
                 <div class="body">
                   
   <h1>Source code for pypot.dynamixel.motor</h1><div class="highlight"><pre>
-<span class="c"># -*- coding: utf-8 -*</span>
-
-<span class="kn">import</span> <span class="nn">sys</span>
-<span class="kn">import</span> <span class="nn">time</span>
 <span class="kn">import</span> <span class="nn">numpy</span>
 <span class="kn">import</span> <span class="nn">logging</span>
 
-<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">defaultdict</span>
-<span class="kn">from</span> <span class="nn">operator</span> <span class="kn">import</span> <span class="n">getitem</span><span class="p">,</span> <span class="n">setitem</span>
+<span class="kn">import</span> <span class="nn">pypot.utils.pypot_time</span> <span class="kn">as</span> <span class="nn">time</span>
 
+<span class="kn">from</span> <span class="nn">..robot.motor</span> <span class="kn">import</span> <span class="n">Motor</span>
 
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="n">__name__</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="DxlMotor"><a class="viewcode-back" href="../../../pypot.dynamixel.html#pypot.dynamixel.motor.DxlMotor">[docs]</a><span class="k">class</span> <span class="nc">DxlMotor</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">DxlRegister</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rw</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rw</span> <span class="o">=</span> <span class="n">rw</span>
+
+    <span class="k">def</span> <span class="nf">__get__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">owner</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">instance</span><span class="o">.</span><span class="n">__dict__</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">label</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__set__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">rw</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="s">&quot;can&#39;t set attribute&quot;</span><span class="p">)</span>
+
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;Setting &#39;</span><span class="si">%s</span><span class="s">.</span><span class="si">%s</span><span class="s">&#39; to </span><span class="si">%s</span><span class="s">&quot;</span><span class="p">,</span>
+                     <span class="n">instance</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">label</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+        <span class="n">instance</span><span class="o">.</span><span class="n">__dict__</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">label</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+
+
+<span class="k">class</span> <span class="nc">DxlOrientedRegister</span><span class="p">(</span><span class="n">DxlRegister</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__get__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">owner</span><span class="p">):</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="n">DxlRegister</span><span class="o">.</span><span class="n">__get__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">owner</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">value</span> <span class="k">if</span> <span class="n">instance</span><span class="o">.</span><span class="n">direct</span> <span class="k">else</span> <span class="o">-</span><span class="n">value</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__set__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="n">value</span> <span class="k">if</span> <span class="n">instance</span><span class="o">.</span><span class="n">direct</span> <span class="k">else</span> <span class="o">-</span><span class="n">value</span>
+        <span class="n">DxlRegister</span><span class="o">.</span><span class="n">__set__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">DxlPositionRegister</span><span class="p">(</span><span class="n">DxlOrientedRegister</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__get__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">owner</span><span class="p">):</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="n">DxlOrientedRegister</span><span class="o">.</span><span class="n">__get__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">owner</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">value</span> <span class="o">-</span> <span class="n">instance</span><span class="o">.</span><span class="n">offset</span>
+
+    <span class="k">def</span> <span class="nf">__set__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="n">value</span> <span class="o">+</span> <span class="n">instance</span><span class="o">.</span><span class="n">offset</span>
+        <span class="n">DxlOrientedRegister</span><span class="o">.</span><span class="n">__set__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">RegisterOwner</span><span class="p">(</span><span class="nb">type</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__new__</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">bases</span><span class="p">,</span> <span class="n">attrs</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">n</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">attrs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">DxlRegister</span><span class="p">):</span>
+                <span class="n">v</span><span class="o">.</span><span class="n">label</span> <span class="o">=</span> <span class="n">n</span>
+                <span class="n">attrs</span><span class="p">[</span><span class="s">&#39;registers&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">RegisterOwner</span><span class="p">,</span> <span class="n">cls</span><span class="p">)</span><span class="o">.</span><span class="n">__new__</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">bases</span><span class="p">,</span> <span class="n">attrs</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="DxlMotor"><a class="viewcode-back" href="../../../pypot.dynamixel.html#pypot.dynamixel.motor.DxlMotor">[docs]</a><span class="k">class</span> <span class="nc">DxlMotor</span><span class="p">(</span><span class="n">Motor</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; High-level class used to represent and control a generic dynamixel motor.</span>
 
-<span class="sd">        This class provides all level access to:</span>
+<span class="sd">        This class provides all level access to (see :attr:`~pypot.dynamixel.motor.DxlMotor.registers` for an exhaustive list):</span>
 <span class="sd">            * motor id</span>
 <span class="sd">            * motor name</span>
-<span class="sd">            * position/speed/load (read and write)</span>
+<span class="sd">            * motor model</span>
+<span class="sd">            * present position/speed/load</span>
+<span class="sd">            * goal position/speed/load</span>
 <span class="sd">            * compliant</span>
 <span class="sd">            * motor orientation and offset</span>
 <span class="sd">            * angle limit</span>
@@ -161,76 +204,46 @@
 <span class="sd">        Those properties are synchronized with the real motors values thanks to a :class:`~pypot.dynamixel.controller.DxlController`.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+    <span class="n">__metaclass__</span> <span class="o">=</span> <span class="n">RegisterOwner</span>
+
+    <span class="n">registers</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;registers&#39;</span><span class="p">,</span> <span class="s">&#39;goal_speed&#39;</span><span class="p">,</span> <span class="s">&#39;compliant&#39;</span><span class="p">]</span>
+
+    <span class="nb">id</span> <span class="o">=</span> <span class="n">DxlRegister</span><span class="p">()</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">DxlRegister</span><span class="p">()</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">DxlRegister</span><span class="p">()</span>
+
+    <span class="n">present_position</span> <span class="o">=</span> <span class="n">DxlPositionRegister</span><span class="p">()</span>
+    <span class="n">goal_position</span> <span class="o">=</span> <span class="n">DxlPositionRegister</span><span class="p">(</span><span class="n">rw</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">present_speed</span> <span class="o">=</span> <span class="n">DxlOrientedRegister</span><span class="p">()</span>
+    <span class="n">moving_speed</span> <span class="o">=</span> <span class="n">DxlRegister</span><span class="p">(</span><span class="n">rw</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">present_load</span> <span class="o">=</span> <span class="n">DxlOrientedRegister</span><span class="p">()</span>
+    <span class="n">torque_limit</span> <span class="o">=</span> <span class="n">DxlRegister</span><span class="p">(</span><span class="n">rw</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+    <span class="n">angle_limit</span> <span class="o">=</span> <span class="n">DxlRegister</span><span class="p">()</span>
+    <span class="n">present_voltage</span> <span class="o">=</span> <span class="n">DxlRegister</span><span class="p">()</span>
+    <span class="n">present_temperature</span> <span class="o">=</span> <span class="n">DxlRegister</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="s">&#39;&#39;</span><span class="p">,</span>
                  <span class="n">direct</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="mf">0.0</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_id</span> <span class="o">=</span> <span class="nb">id</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_name</span> <span class="o">=</span> <span class="n">name</span> <span class="k">if</span> <span class="n">name</span> <span class="k">else</span> <span class="s">&#39;motor_{}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">id</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__dict__</span><span class="p">[</span><span class="s">&#39;id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">id</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_direct</span> <span class="o">=</span> <span class="n">direct</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_offset</span> <span class="o">=</span> <span class="n">offset</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="n">name</span> <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="k">else</span> <span class="s">&#39;motor_{}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">id</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__dict__</span><span class="p">[</span><span class="s">&#39;name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">name</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_values</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_values</span><span class="p">[</span><span class="s">&#39;compliant&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__dict__</span><span class="p">[</span><span class="s">&#39;model&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">model</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__dict__</span><span class="p">[</span><span class="s">&#39;direct&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">direct</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__dict__</span><span class="p">[</span><span class="s">&#39;offset&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">offset</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">__dict__</span><span class="p">[</span><span class="s">&#39;compliant&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">True</span>
 
     <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="s">&#39;&lt;DxlMotor name={self.name} id={self.id} pos={self.present_position}&gt;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">(</span><span class="s">&#39;&lt;DxlMotor name={self.name} &#39;</span>
+                <span class="s">&#39;id={self.id} &#39;</span>
+                <span class="s">&#39;pos={self.present_position}&gt;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">json</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
-
-    <span class="k">def</span> <span class="nf">_setter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-        <span class="n">setitem</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_values</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;Setting &#39;</span><span class="si">%s</span><span class="s">.</span><span class="si">%s</span><span class="s">&#39; to </span><span class="si">%s</span><span class="s">&quot;</span><span class="p">,</span>
-                     <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
-
-    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">_make_accessor</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">rw</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">doc</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
-        <span class="k">def</span> <span class="nf">getter</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-            <span class="k">return</span> <span class="n">getitem</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_values</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
-
-        <span class="k">def</span> <span class="nf">setter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_setter</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
-
-        <span class="k">return</span> <span class="nb">property</span><span class="p">(</span><span class="n">fget</span><span class="o">=</span><span class="n">getter</span><span class="p">,</span>
-                        <span class="n">fset</span><span class="o">=</span><span class="n">setter</span> <span class="k">if</span> <span class="n">rw</span> <span class="k">else</span> <span class="bp">None</span><span class="p">,</span>
-                        <span class="n">doc</span><span class="o">=</span><span class="n">doc</span><span class="p">)</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">id</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Id of the motor (readonly). &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_id</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Name of the motor (readonly). &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_name</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">present_position</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Present position (in degrees) of the motor (readonly). &quot;&quot;&quot;</span>
-        <span class="n">pos</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_values</span><span class="p">[</span><span class="s">&#39;present_position&#39;</span><span class="p">]</span>
-        <span class="k">return</span> <span class="p">(</span><span class="n">pos</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">direct</span> <span class="k">else</span> <span class="o">-</span><span class="n">pos</span><span class="p">)</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">offset</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">goal_position</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Goal position (in degrees) of th motor. &quot;&quot;&quot;</span>
-        <span class="n">pos</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_values</span><span class="p">[</span><span class="s">&#39;goal_position&#39;</span><span class="p">]</span>
-        <span class="k">return</span> <span class="p">(</span><span class="n">pos</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">direct</span> <span class="k">else</span> <span class="o">-</span><span class="n">pos</span><span class="p">)</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">offset</span>
-
-    <span class="nd">@goal_position.setter</span>
-    <span class="k">def</span> <span class="nf">goal_position</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-        <span class="n">framed_value</span> <span class="o">=</span> <span class="p">(</span><span class="n">value</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">offset</span><span class="p">)</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">direct</span> <span class="k">else</span> <span class="o">-</span><span class="p">(</span><span class="n">value</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">offset</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_values</span><span class="p">[</span><span class="s">&#39;goal_position&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">framed_value</span>
-
-        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;Setting &#39;</span><span class="si">%s</span><span class="s">.goal_position&#39; to </span><span class="si">%s</span><span class="s"> (</span><span class="si">%s</span><span class="s">)&quot;</span><span class="p">,</span>
-                     <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">framed_value</span><span class="p">)</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">present_speed</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Present speed (in degrees per second) of the motor (readonly). &quot;&quot;&quot;</span>
-        <span class="n">speed</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_values</span><span class="p">[</span><span class="s">&#39;present_speed&#39;</span><span class="p">]</span>
-        <span class="k">return</span> <span class="p">(</span><span class="n">speed</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">direct</span> <span class="k">else</span> <span class="o">-</span><span class="n">speed</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">goal_speed</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -245,7 +258,7 @@
 
     <span class="nd">@goal_speed.setter</span>
     <span class="k">def</span> <span class="nf">goal_speed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-        <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">sys</span><span class="o">.</span><span class="n">float_info</span><span class="o">.</span><span class="n">epsilon</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">finfo</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">float</span><span class="p">)</span><span class="o">.</span><span class="n">eps</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">goal_position</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">present_position</span>
 
         <span class="k">else</span><span class="p">:</span>
@@ -257,36 +270,15 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">moving_speed</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">present_load</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Present load (in percentage of max load) of the motor (readonly). &quot;&quot;&quot;</span>
-        <span class="n">load</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_values</span><span class="p">[</span><span class="s">&#39;present_load&#39;</span><span class="p">]</span>
-        <span class="k">return</span> <span class="p">(</span><span class="n">load</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">direct</span> <span class="k">else</span> <span class="o">-</span><span class="n">load</span><span class="p">)</span>
-
-    <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">compliant</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Compliancy of the motor. &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_values</span><span class="p">[</span><span class="s">&#39;compliant&#39;</span><span class="p">])</span>
+        <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__dict__</span><span class="p">[</span><span class="s">&#39;compliant&#39;</span><span class="p">])</span>
 
     <span class="nd">@compliant.setter</span>
     <span class="k">def</span> <span class="nf">compliant</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="c"># Change the goal_position only if you switch from compliant to not compliant mode</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">value</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">compliant</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">goal_position</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">present_position</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_setter</span><span class="p">(</span><span class="s">&#39;compliant&#39;</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">direct</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Orientation of the motor. &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_direct</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">offset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Offset of the zero of the motor (in degrees). &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_offset</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">registers</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="p">[</span><span class="n">r</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="nb">dir</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">r</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&#39;_&#39;</span><span class="p">)]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__dict__</span><span class="p">[</span><span class="s">&#39;compliant&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
 
 <div class="viewcode-block" id="DxlMotor.goto_position"><a class="viewcode-back" href="../../../pypot.dynamixel.html#pypot.dynamixel.motor.DxlMotor.goto_position">[docs]</a>    <span class="k">def</span> <span class="nf">goto_position</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">position</span><span class="p">,</span> <span class="n">duration</span><span class="p">,</span> <span class="n">wait</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Automatically sets the goal position and the moving speed to reach the desired position within the duration. &quot;&quot;&quot;</span>
@@ -300,19 +292,6 @@
             <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">duration</span><span class="p">)</span>
 
 </div></div>
-<span class="n">DxlMotor</span><span class="o">.</span><span class="n">moving_speed</span> <span class="o">=</span> <span class="n">DxlMotor</span><span class="o">.</span><span class="n">_make_accessor</span><span class="p">(</span><span class="s">&#39;moving_speed&#39;</span><span class="p">,</span> <span class="n">rw</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
-                                                <span class="n">doc</span><span class="o">=</span><span class="s">&#39;Moving speed (in degrees per second) of the motor.&#39;</span><span class="p">)</span>
-<span class="n">DxlMotor</span><span class="o">.</span><span class="n">torque_limit</span> <span class="o">=</span> <span class="n">DxlMotor</span><span class="o">.</span><span class="n">_make_accessor</span><span class="p">(</span><span class="s">&#39;torque_limit&#39;</span><span class="p">,</span> <span class="n">rw</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
-                                                <span class="n">doc</span><span class="o">=</span><span class="s">&#39;Torque limit (in percentage of max torque) of the motor.&#39;</span><span class="p">)</span>
-
-<span class="n">DxlMotor</span><span class="o">.</span><span class="n">angle_limit</span> <span class="o">=</span> <span class="n">DxlMotor</span><span class="o">.</span><span class="n">_make_accessor</span><span class="p">(</span><span class="s">&#39;angle_limit&#39;</span><span class="p">,</span>
-                                               <span class="n">doc</span><span class="o">=</span><span class="s">&#39;Angle limit (in degrees) of the motor.&#39;</span><span class="p">)</span>
-<span class="n">DxlMotor</span><span class="o">.</span><span class="n">present_voltage</span> <span class="o">=</span> <span class="n">DxlMotor</span><span class="o">.</span><span class="n">_make_accessor</span><span class="p">(</span><span class="s">&#39;present_voltage&#39;</span><span class="p">,</span>
-                                                   <span class="n">doc</span><span class="o">=</span><span class="s">&#39;Present voltage (in V) of the motor.&#39;</span><span class="p">)</span>
-<span class="n">DxlMotor</span><span class="o">.</span><span class="n">present_temperature</span> <span class="o">=</span> <span class="n">DxlMotor</span><span class="o">.</span><span class="n">_make_accessor</span><span class="p">(</span><span class="s">&#39;present_temperature&#39;</span><span class="p">,</span>
-                                                       <span class="n">doc</span><span class="o">=</span><span class="s">&#39;Present temperature (in °C) of the motor.&#39;</span><span class="p">)</span>
-
-
 <div class="viewcode-block" id="DxlAXRXMotor"><a class="viewcode-back" href="../../../pypot.dynamixel.html#pypot.dynamixel.motor.DxlAXRXMotor">[docs]</a><span class="k">class</span> <span class="nc">DxlAXRXMotor</span><span class="p">(</span><span class="n">DxlMotor</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; This class represents the AX robotis motor.</span>
 
@@ -320,20 +299,23 @@
 <span class="sd">            * compliance margin/slope (see the robotis website for details)</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+    <span class="n">registers</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">DxlMotor</span><span class="o">.</span><span class="n">registers</span><span class="p">)</span>
+
+    <span class="n">compliance_margin</span> <span class="o">=</span> <span class="n">DxlRegister</span><span class="p">(</span><span class="n">rw</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">compliance_slope</span> <span class="o">=</span> <span class="n">DxlRegister</span><span class="p">(</span><span class="n">rw</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="s">&#39;&#39;</span><span class="p">,</span>
                  <span class="n">direct</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="mf">0.0</span><span class="p">):</span>
-        <span class="n">DxlMotor</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">direct</span><span class="p">,</span> <span class="n">offset</span><span class="p">)</span>
+        <span class="n">DxlMotor</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">direct</span><span class="p">,</span> <span class="n">offset</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">max_pos</span> <span class="o">=</span> <span class="mi">150</span>
 
 </div>
-<span class="n">DxlAXRXMotor</span><span class="o">.</span><span class="n">compliance_margin</span> <span class="o">=</span> <span class="n">DxlAXRXMotor</span><span class="o">.</span><span class="n">_make_accessor</span><span class="p">(</span><span class="s">&#39;compliance_margin&#39;</span><span class="p">,</span> <span class="n">rw</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
-                                                             <span class="n">doc</span><span class="o">=</span><span class="s">&#39;Compliance margin of the motor (see robotis website).&#39;</span><span class="p">)</span>
-<span class="n">DxlAXRXMotor</span><span class="o">.</span><span class="n">compliance_slope</span> <span class="o">=</span> <span class="n">DxlAXRXMotor</span><span class="o">.</span><span class="n">_make_accessor</span><span class="p">(</span><span class="s">&#39;compliance_slope&#39;</span><span class="p">,</span> <span class="n">rw</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
-                                                            <span class="n">doc</span><span class="o">=</span><span class="s">&#39;Compliance slope of the motor (see robotis website).&#39;</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">DxlMXMotor</span><span class="p">(</span><span class="n">DxlMotor</span><span class="p">):</span>
+    <span class="n">registers</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">DxlMotor</span><span class="o">.</span><span class="n">registers</span><span class="p">)</span>
 
+    <span class="n">pid</span> <span class="o">=</span> <span class="n">DxlRegister</span><span class="p">(</span><span class="n">rw</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
 
-<div class="viewcode-block" id="DxlMXMotor"><a class="viewcode-back" href="../../../pypot.dynamixel.html#pypot.dynamixel.motor.DxlMXMotor">[docs]</a><span class="k">class</span> <span class="nc">DxlMXMotor</span><span class="p">(</span><span class="n">DxlMotor</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="s">&#39;&#39;</span><span class="p">,</span>
                  <span class="n">direct</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="mf">0.0</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; This class represents the RX and MX robotis motor.</span>
 
@@ -341,11 +323,8 @@
 <span class="sd">                * PID gains (see the robotis website for details)</span>
 
 <span class="sd">            &quot;&quot;&quot;</span>
-        <span class="n">DxlMotor</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">direct</span><span class="p">,</span> <span class="n">offset</span><span class="p">)</span>
+        <span class="n">DxlMotor</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">direct</span><span class="p">,</span> <span class="n">offset</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">max_pos</span> <span class="o">=</span> <span class="mi">180</span>
-</div>
-<span class="n">DxlMXMotor</span><span class="o">.</span><span class="n">pid</span> <span class="o">=</span> <span class="n">DxlMXMotor</span><span class="o">.</span><span class="n">_make_accessor</span><span class="p">(</span><span class="s">&#39;pid&#39;</span><span class="p">,</span> <span class="n">rw</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
-                                           <span class="n">doc</span><span class="o">=</span><span class="s">&#39;PID gains of the motors (see robotis website).&#39;</span><span class="p">)</span>
 </pre></div>
 
                 </div>
@@ -362,7 +341,7 @@
 <div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
   <div class="navbar-inner">
     <ul class="nav navbar-nav">
-        <li><a href="../../../index.html">PyPot 1.7.1 documentation</a></li>
+        <li><a href="../../../index.html">pypot 1.7.1 documentation</a></li>
     </ul>
     <ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
       
@@ -378,7 +357,7 @@
 
       <!-- footer -->
       <footer role="contentinfo">
-          &copy; Copyright 2012, Pierre Rouanet, Matthieu Lapeyre, Haylee Fogg.
+          &copy; Copyright 2012, Poppy-Project.
         Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.3b1.
       </footer>
       <!-- /footer -->

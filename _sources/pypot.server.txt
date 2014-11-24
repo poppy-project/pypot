@@ -6,6 +6,13 @@
     :undoc-members:
     :show-inheritance:
 
+:mod:`rest` Module
+---------------------
+
+.. automodule:: pypot.server.rest
+    :members:
+    :undoc-members:
+    :show-inheritance:
 
 :mod:`request` Module
 ---------------------

@@ -9,7 +9,7 @@
   <head>
     <meta charset="utf-8" />
     
-    <title>REST API &mdash; PyPot 1.7.1 documentation</title>
+    <title>REST API &mdash; pypot 1.7.1 documentation</title>
     <meta name="description" content="">
     <meta name="author" content="">
 
@@ -51,7 +51,7 @@
 <script type="text/javascript">
 </script>
     <link rel="author" title="About these documents" href="about.html" />
-    <link rel="top" title="PyPot 1.7.1 documentation" href="index.html" />
+    <link rel="top" title="pypot 1.7.1 documentation" href="index.html" />
     <link rel="next" title="Herborist: the configuration tool" href="herborist.html" />
     <link rel="prev" title="Mastering the logging system" href="logging.html" /> 
   </head>
@@ -65,7 +65,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="index.html">PyPot 1.7.1 documentation</a>
+          <a class="navbar-brand" href="index.html">pypot 1.7.1 documentation</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
@@ -179,7 +179,7 @@
                   
   <div class="section" id="rest-api">
 <h1>REST API<a class="headerlink" href="#rest-api" title="Permalink to this headline">¶</a></h1>
-<p>We add the possibility to remotely access and control your robot through TCP network. This can be useful both to work with client/server architecture (e.g. to separate the low-level control running on an embedded computer and higher-level computation on a more powerful computer) and to allow you to plug your existing code written in another language to the PyPot&#8217;s API.</p>
+<p>We add the possibility to remotely access and control your robot through TCP network. This can be useful both to work with client/server architecture (e.g. to separate the low-level control running on an embedded computer and higher-level computation on a more powerful computer) and to allow you to plug your existing code written in another language to the pypot&#8217;s API.</p>
 <p>We defined a protocol which permits the access of all the robot variables and method (including motors and primitives) via a JSON request. The protocol is entirely described in the section <a class="reference internal" href="#remote-protocol"><em>Protocol</em></a> below. Two transport methods have been developed so far:</p>
 <ul class="simple">
 <li>HTTP via GET and POST request (see the <a class="reference internal" href="#http-server"><em>Http Server</em></a> section)</li>
@@ -194,7 +194,6 @@
 <div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">zmq</span>
 
 <span class="n">robot</span> <span class="o">=</span> <span class="n">pypot</span><span class="o">.</span><span class="n">robot</span><span class="o">.</span><span class="n">from_config</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
-<span class="n">robot</span><span class="o">.</span><span class="n">start_sync</span><span class="p">()</span>
 
 <span class="n">server</span> <span class="o">=</span> <span class="n">pypot</span><span class="o">.</span><span class="n">server</span><span class="o">.</span><span class="n">ZMQServer</span><span class="p">(</span><span class="n">robot</span><span class="p">,</span> <span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">)</span>
 <span class="n">server</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
@@ -315,12 +314,11 @@
 <div class="section" id="zmq-server">
 <span id="id1"></span><h2>Zmq Server<a class="headerlink" href="#zmq-server" title="Permalink to this headline">¶</a></h2>
 <p>The Zmq Server used a Zmq socket to send (resp. receive) JSON request (JSON answer). It is based on the REQ/REP pattern. So you should always alternate sending and receiving. It will probably be switched to PUB/SUB soon.</p>
-<p>Zmq has been chosen as it has been binded to most language (<a class="reference external" href="http://zeromq.org/bindings:_start">http://zeromq.org/bindings:_start</a>) and can thus be used to connect code from other language to PyPot. For instance, we used it to connect RLPark (a Java reinforcement learning library) to PyPot.</p>
+<p>Zmq has been chosen as it has been <a class="reference external" href="http://zeromq.org/bindings:_start">binded to most language</a> and can thus be used to connect code from other language to pypot. For instance, we used it to connect <a class="reference external" href="http://rlpark.github.io">RLPark</a> (a Java reinforcement learning library) to pypot.</p>
 <p>Here is an example of how you can create a zmq server and send request:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">zmq</span>
 
 <span class="n">robot</span> <span class="o">=</span> <span class="n">pypot</span><span class="o">.</span><span class="n">robot</span><span class="o">.</span><span class="n">from_config</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
-<span class="n">robot</span><span class="o">.</span><span class="n">start_sync</span><span class="p">()</span>
 
 <span class="n">server</span> <span class="o">=</span> <span class="n">pypot</span><span class="o">.</span><span class="n">server</span><span class="o">.</span><span class="n">ZMQServer</span><span class="p">(</span><span class="n">robot</span><span class="p">,</span> <span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">)</span>
 <span class="n">server</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
@@ -364,7 +362,6 @@
 <span class="kn">import</span> <span class="nn">pypot.server</span>
 
 <span class="n">robot</span> <span class="o">=</span> <span class="n">pypot</span><span class="o">.</span><span class="n">robot</span><span class="o">.</span><span class="n">from_config</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
-<span class="n">robot</span><span class="o">.</span><span class="n">start_sync</span><span class="p">()</span>
 
 <span class="n">server</span> <span class="o">=</span> <span class="n">pypot</span><span class="o">.</span><span class="n">server</span><span class="o">.</span><span class="n">HTTPServer</span><span class="p">(</span><span class="n">robot</span><span class="p">,</span> <span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">)</span>
 <span class="n">server</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
@@ -402,7 +399,7 @@
 <div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
   <div class="navbar-inner">
     <ul class="nav navbar-nav">
-        <li><a href="index.html">PyPot 1.7.1 documentation</a></li>
+        <li><a href="index.html">pypot 1.7.1 documentation</a></li>
     </ul>
     <ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
       
@@ -418,7 +415,7 @@
 
       <!-- footer -->
       <footer role="contentinfo">
-          &copy; Copyright 2012, Pierre Rouanet, Matthieu Lapeyre, Haylee Fogg.
+          &copy; Copyright 2012, Poppy-Project.
         Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.3b1.
       </footer>
       <!-- /footer -->

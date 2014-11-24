@@ -3,7 +3,7 @@
 QuickStart: playing with an Ergo-Robot
 ======================================
 
-To let you discover what you can do with PyPot, in this section we describe the few steps required to make a robot build from robotis motor dance. This short introduction will in particular describe you:
+To let you discover what you can do with pypot, in this section we describe the few steps required to make a robot build from robotis motor dance. This short introduction will in particular describe you:
 
 * how to define your robot within the software,
 * how to connect it to your computer,
@@ -30,16 +30,16 @@ Connecting the robot to your computer
 
 Now that you have your own robot, let's start writing the code necessary to control it.
 
-The first step is to setup the configuration for your robot. It will describe the motor configuration of your robot, the USB2serial controller used and make the initialization really easy. Configurations are described as Python dictionaries. Yet, they can be quite repetitive to write. Luckily, the PyPot package comes with an example of a configuration for an Ergo-Robot. You can first import it, so you can modify it::
+The first step is to setup the configuration for your robot. It will describe the motor configuration of your robot, the USB2serial controller used and make the initialization really easy. Configurations are described as Python dictionaries. Yet, they can be quite repetitive to write. Luckily, the pypot package comes with an example of a configuration for an Ergo-Robot. You can first import it, so you can modify it::
 
     from pypot.robot.config import ergo_robot_config
 
-If you do some introspection on this object, you will see that it is just a regular Python dictionary. So you can directly edit it like you will do with any other dict. You can also copy the one provided with PyPot and work with your own copy::
+If you do some introspection on this object, you will see that it is just a regular Python dictionary. So you can directly edit it like you will do with any other dict. You can also copy the one provided with pypot and work with your own copy::
 
     my_config = dict(ergo_robot_config)
     my_config['controllers']['my_dxl_controller']['port']  = 'COM6' # For Windows' users
 
-You will only have to modify the USB2serial port and the id of the motors so they correspond to your robot. If you do not know how to get this information, you can refer to the documentation on the :ref:`Herborist tool <herborist>`. Alternatively, you can directly ask PyPot::
+You will only have to modify the USB2serial port and the id of the motors so they correspond to your robot. If you do not know how to get this information, you can refer to the documentation on the :ref:`Herborist tool <herborist>`. Alternatively, you can directly ask pypot::
 
     import pypot.dynamixel
 
@@ -52,7 +52,7 @@ You will only have to modify the USB2serial port and the id of the motors so the
 
 .. note:: You can save/load configurations from any format that can be written/read as a Python dictionary. A wrapper for loading json configuration file is provided (see :func:`~pypot.robot.config.from_json`).
 
-.. note:: Since Pypot 1.7, you can now set the port to 'auto' in the dictionary. When loading the configuration, Pypot will automatically try to find the port with the corresponding attached motor ids.
+.. note:: Since pypot 1.7, you can now set the port to 'auto' in the dictionary. When loading the configuration, pypot will automatically try to find the port with the corresponding attached motor ids.
     For instance::
 
         my_config = dict(ergo_robot_config)
@@ -78,7 +78,6 @@ First, write the following lines to start you robot (we assume that you have cor
     import pypot.robot
 
     ergo_robot = pypot.robot.from_config(my_config)
-    ergo_robot.start_sync()
 
 Except from the last line, everything should be clear now. This new line starts the synchronization between the "software" robot and the real one, i.e. all commands that you will send in python code will automatically be sent to the physical Ergo-Robot (for details on the underlying mechanisms, see :ref:`Sync Loop <sync_loop>`).
 
@@ -129,4 +128,4 @@ We will now create a very simple dance just by applying two sinus with opposite 
         time.sleep(0.02)
 
 
-Your robot should start dancing for ten seconds. Now, that you have seen the very basic things that you can do with PyPot. It is time to jump on the :ref:`tutorial <tutorial>` to get a complete overview of the possibility.
+Your robot should start dancing for ten seconds. Now, that you have seen the very basic things that you can do with pypot. It is time to jump on the :ref:`tutorial <tutorial>` to get a complete overview of the possibility.

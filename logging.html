@@ -9,7 +9,7 @@
   <head>
     <meta charset="utf-8" />
     
-    <title>Mastering the logging system &mdash; PyPot 1.7.1 documentation</title>
+    <title>Mastering the logging system &mdash; pypot 1.7.1 documentation</title>
     <meta name="description" content="">
     <meta name="author" content="">
 
@@ -51,9 +51,9 @@
 <script type="text/javascript">
 </script>
     <link rel="author" title="About these documents" href="about.html" />
-    <link rel="top" title="PyPot 1.7.1 documentation" href="index.html" />
+    <link rel="top" title="pypot 1.7.1 documentation" href="index.html" />
     <link rel="next" title="REST API" href="remote_access.html" />
-    <link rel="prev" title="Primitives everywhere" href="primitive.html" /> 
+    <link rel="prev" title="Extending pypot" href="extending.html" /> 
   </head>
   <body role="document">
     <div id="navbar-top" class="navbar navbar-fixed-top navbar-default" role="navigation" aria-label="top navigation">
@@ -65,7 +65,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="index.html">PyPot 1.7.1 documentation</a>
+          <a class="navbar-brand" href="index.html">pypot 1.7.1 documentation</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
@@ -84,7 +84,7 @@
               </li>
 
             
-              <li><a href="primitive.html" title="Primitives everywhere" accesskey="P">previous </a></li>
+              <li><a href="extending.html" title="Extending pypot" accesskey="P">previous </a></li>
               <li><a href="remote_access.html" title="REST API" accesskey="N">next </a></li>
               <li><a href="py-modindex.html" title="Python Module Index" >modules </a></li>
               <li><a href="genindex.html" title="General Index" accesskey="I">index </a></li>
@@ -127,8 +127,8 @@
 </ul>
 
   <h4>Previous topic</h4>
-  <p class="topless"><a href="primitive.html"
-                        title="previous chapter">Primitives everywhere</a></p>
+  <p class="topless"><a href="extending.html"
+                        title="previous chapter">Extending pypot</a></p>
   <h4>Next topic</h4>
   <p class="topless"><a href="remote_access.html"
                         title="next chapter">REST API</a></p>
@@ -179,9 +179,9 @@
 </ul>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">As you probably do not want to log everything (Pypot is sending a lot of messages!!!), you have to select in the logging structure what is relevant in your program and define it in your logging configuration.</p>
+<p class="last">As you probably do not want to log everything (pypot is sending a lot of messages!!!), you have to select in the logging structure what is relevant in your program and define it in your logging configuration.</p>
 </div>
-<p>Pypot&#8217;s logging naming convention is following Pypot&#8217;s architecture. Here is the detail of what Pypot is logging with the associated logger&#8217;s name:</p>
+<p>Pypot&#8217;s logging naming convention is following pypot&#8217;s architecture. Here is the detail of what pypot is logging with the associated logger&#8217;s name:</p>
 <ul class="simple">
 <li>The logger&#8217;s name <strong>pypot.dynamixel.io</strong> is logging information related to opening/closing port (INFO) and each sent/received package (DEBUG). The communication and timeout error are also logged (WARNING). This logger always provides you the port name, the baudrate and timout of your connection as extra information.</li>
 <li>The logger <strong>pypot.dynamixel.motor</strong> is logging each time a register of a motor is set (DEBUG). The name of the register, the name of the motor and the set value are given in the message.</li>
@@ -229,7 +229,6 @@
     <span class="n">logging</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">dictConfig</span><span class="p">(</span><span class="n">LOGGING</span><span class="p">)</span>
 
     <span class="n">r</span> <span class="o">=</span> <span class="n">pypot</span><span class="o">.</span><span class="n">robot</span><span class="o">.</span><span class="n">from_config</span><span class="p">(</span><span class="n">ergo_config</span><span class="p">)</span>
-    <span class="n">r</span><span class="o">.</span><span class="n">start_sync</span><span class="p">()</span>
 
     <span class="k">class</span> <span class="nc">DummyPrimitive</span><span class="p">(</span><span class="n">LoopPrimitive</span><span class="p">):</span>
         <span class="k">pass</span>
@@ -276,11 +275,11 @@
 <div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
   <div class="navbar-inner">
     <ul class="nav navbar-nav">
-        <li><a href="index.html">PyPot 1.7.1 documentation</a></li>
+        <li><a href="index.html">pypot 1.7.1 documentation</a></li>
     </ul>
     <ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
       
-        <li><a href="primitive.html" title="Primitives everywhere" >previous</a></li>
+        <li><a href="extending.html" title="Extending pypot" >previous</a></li>
         <li><a href="remote_access.html" title="REST API" >next</a></li>
         <li><a href="py-modindex.html" title="Python Module Index" >modules</a></li>
         <li><a href="genindex.html" title="General Index" >index</a></li> 
@@ -292,7 +291,7 @@
 
       <!-- footer -->
       <footer role="contentinfo">
-          &copy; Copyright 2012, Pierre Rouanet, Matthieu Lapeyre, Haylee Fogg.
+          &copy; Copyright 2012, Poppy-Project.
         Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.3b1.
       </footer>
       <!-- /footer -->

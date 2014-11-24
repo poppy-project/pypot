@@ -9,7 +9,7 @@
   <head>
     <meta charset="utf-8" />
     
-    <title>server Package &mdash; PyPot 1.7.1 documentation</title>
+    <title>server Package &mdash; pypot 1.7.1 documentation</title>
     <meta name="description" content="">
     <meta name="author" content="">
 
@@ -51,9 +51,9 @@
 <script type="text/javascript">
 </script>
     <link rel="author" title="About these documents" href="about.html" />
-    <link rel="top" title="PyPot 1.7.1 documentation" href="index.html" />
-    <link rel="up" title="PyPot’s API" href="api.html" />
-    <link rel="next" title="FAQ" href="FAQ.html" />
+    <link rel="top" title="pypot 1.7.1 documentation" href="index.html" />
+    <link rel="up" title="Pypot’s API" href="api.html" />
+    <link rel="next" title="vrep Package" href="pypot.vrep.html" />
     <link rel="prev" title="sensor Package" href="pypot.sensor.html" /> 
   </head>
   <body role="document">
@@ -66,7 +66,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="index.html">PyPot 1.7.1 documentation</a>
+          <a class="navbar-brand" href="index.html">pypot 1.7.1 documentation</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
@@ -75,6 +75,7 @@
                 <ul class="dropdown-menu localtoc sp-localtoc" role="menu" aria-labelledby="localToc">
                 <ul>
 <li><a class="reference internal" href="#"><code class="docutils literal"><span class="pre">server</span></code> Package</a><ul>
+<li><a class="reference internal" href="#module-pypot.server.rest"><code class="docutils literal"><span class="pre">rest</span></code> Module</a></li>
 <li><a class="reference internal" href="#module-pypot.server.request"><code class="docutils literal"><span class="pre">request</span></code> Module</a></li>
 <li><a class="reference internal" href="#module-pypot.server.server"><code class="docutils literal"><span class="pre">server</span></code> Module</a></li>
 <li><a class="reference internal" href="#module-pypot.server.httpserver"><code class="docutils literal"><span class="pre">httpserver</span></code> Module</a></li>
@@ -88,10 +89,10 @@
 
             
               <li><a href="pypot.sensor.html" title="sensor Package" accesskey="P">previous </a></li>
-              <li><a href="FAQ.html" title="FAQ" accesskey="N">next </a></li>
+              <li><a href="pypot.vrep.html" title="vrep Package" accesskey="N">next </a></li>
               <li><a href="py-modindex.html" title="Python Module Index" >modules </a></li>
               <li><a href="genindex.html" title="General Index" accesskey="I">index </a></li>
-              <li><a href="api.html" accesskey="U">PyPot&#8217;s API</a></li>
+              <li><a href="api.html" accesskey="U">Pypot&#8217;s API</a></li>
             
             <li class="visible-xs"><a href="_sources/pypot.server.txt" rel="nofollow">Show Source</a></li>
 
@@ -124,6 +125,7 @@
   <h3><a href="index.html">Table Of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#"><code class="docutils literal"><span class="pre">server</span></code> Package</a><ul>
+<li><a class="reference internal" href="#module-pypot.server.rest"><code class="docutils literal"><span class="pre">rest</span></code> Module</a></li>
 <li><a class="reference internal" href="#module-pypot.server.request"><code class="docutils literal"><span class="pre">request</span></code> Module</a></li>
 <li><a class="reference internal" href="#module-pypot.server.server"><code class="docutils literal"><span class="pre">server</span></code> Module</a></li>
 <li><a class="reference internal" href="#module-pypot.server.httpserver"><code class="docutils literal"><span class="pre">httpserver</span></code> Module</a></li>
@@ -136,8 +138,8 @@
   <p class="topless"><a href="pypot.sensor.html"
                         title="previous chapter"><code class="docutils literal"><span class="pre">sensor</span></code> Package</a></p>
   <h4>Next topic</h4>
-  <p class="topless"><a href="FAQ.html"
-                        title="next chapter">FAQ</a></p>
+  <p class="topless"><a href="pypot.vrep.html"
+                        title="next chapter"><code class="docutils literal"><span class="pre">vrep</span></code> Package</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -183,6 +185,78 @@
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">All clients lives in the same primitive, so their requests are automatically combined. In future version, each client will spawn its own primitive.</p>
+</div>
+<div class="section" id="module-pypot.server.rest">
+<span id="rest-module"></span><h2><code class="xref py py-mod docutils literal"><span class="pre">rest</span></code> Module<a class="headerlink" href="#module-pypot.server.rest" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pypot.server.rest.RESTRobot">
+<em class="property">class </em><code class="descclassname">pypot.server.rest.</code><code class="descname">RESTRobot</code><span class="sig-paren">(</span><em>robot</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/server/rest.html#RESTRobot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.server.rest.RESTRobot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="http://docs.python.org/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<p>REST API for a Robot.</p>
+<dl class="docutils">
+<dt>Through the REST API you can currently access:</dt>
+<dd><ul class="first last simple">
+<li>the motors list (and the aliases)</li>
+<li>the registers list for a specific motor</li>
+<li>read/write a value from/to a register of a specific motor</li>
+<li>the sensors list</li>
+<li>the primitives list (and the active)</li>
+<li>start/stop primitives</li>
+</ul>
+</dd>
+</dl>
+<dl class="method">
+<dt id="pypot.server.rest.RESTRobot.get_motors_list">
+<code class="descname">get_motors_list</code><span class="sig-paren">(</span><em>alias='motors'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/server/rest.html#RESTRobot.get_motors_list"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.server.rest.RESTRobot.get_motors_list" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pypot.server.rest.RESTRobot.get_registers_list">
+<code class="descname">get_registers_list</code><span class="sig-paren">(</span><em>motor</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/server/rest.html#RESTRobot.get_registers_list"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.server.rest.RESTRobot.get_registers_list" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pypot.server.rest.RESTRobot.get_register_value">
+<code class="descname">get_register_value</code><span class="sig-paren">(</span><em>motor</em>, <em>register</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/server/rest.html#RESTRobot.get_register_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.server.rest.RESTRobot.get_register_value" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pypot.server.rest.RESTRobot.set_register_value">
+<code class="descname">set_register_value</code><span class="sig-paren">(</span><em>motor</em>, <em>register</em>, <em>value</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/server/rest.html#RESTRobot.set_register_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.server.rest.RESTRobot.set_register_value" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pypot.server.rest.RESTRobot.get_motors_alias">
+<code class="descname">get_motors_alias</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/server/rest.html#RESTRobot.get_motors_alias"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.server.rest.RESTRobot.get_motors_alias" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pypot.server.rest.RESTRobot.get_sensors_list">
+<code class="descname">get_sensors_list</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/server/rest.html#RESTRobot.get_sensors_list"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.server.rest.RESTRobot.get_sensors_list" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pypot.server.rest.RESTRobot.get_primitives_list">
+<code class="descname">get_primitives_list</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/server/rest.html#RESTRobot.get_primitives_list"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.server.rest.RESTRobot.get_primitives_list" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pypot.server.rest.RESTRobot.get_active_primitives_list">
+<code class="descname">get_active_primitives_list</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/server/rest.html#RESTRobot.get_active_primitives_list"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.server.rest.RESTRobot.get_active_primitives_list" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pypot.server.rest.RESTRobot.start_primitive">
+<code class="descname">start_primitive</code><span class="sig-paren">(</span><em>primitive_name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/server/rest.html#RESTRobot.start_primitive"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.server.rest.RESTRobot.start_primitive" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pypot.server.rest.RESTRobot.stop_primitive">
+<code class="descname">stop_primitive</code><span class="sig-paren">(</span><em>primitive_name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/server/rest.html#RESTRobot.stop_primitive"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.server.rest.RESTRobot.stop_primitive" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 </div>
 <div class="section" id="module-pypot.server.request">
 <span id="request-module"></span><h2><code class="xref py py-mod docutils literal"><span class="pre">request</span></code> Module<a class="headerlink" href="#module-pypot.server.request" title="Permalink to this headline">¶</a></h2>
@@ -429,15 +503,15 @@ The default is UTF-8.</p>
 <div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
   <div class="navbar-inner">
     <ul class="nav navbar-nav">
-        <li><a href="index.html">PyPot 1.7.1 documentation</a></li>
+        <li><a href="index.html">pypot 1.7.1 documentation</a></li>
     </ul>
     <ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
       
         <li><a href="pypot.sensor.html" title="sensor Package" >previous</a></li>
-        <li><a href="FAQ.html" title="FAQ" >next</a></li>
+        <li><a href="pypot.vrep.html" title="vrep Package" >next</a></li>
         <li><a href="py-modindex.html" title="Python Module Index" >modules</a></li>
         <li><a href="genindex.html" title="General Index" >index</a></li>
-        <li><a href="api.html" >PyPot&#8217;s API</a></li> 
+        <li><a href="api.html" >Pypot&#8217;s API</a></li> 
       
     </ul>
   </div>
@@ -446,7 +520,7 @@ The default is UTF-8.</p>
 
       <!-- footer -->
       <footer role="contentinfo">
-          &copy; Copyright 2012, Pierre Rouanet, Matthieu Lapeyre, Haylee Fogg.
+          &copy; Copyright 2012, Poppy-Project.
         Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.3b1.
       </footer>
       <!-- /footer -->

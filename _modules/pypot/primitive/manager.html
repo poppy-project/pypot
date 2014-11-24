@@ -9,7 +9,7 @@
   <head>
     <meta charset="utf-8" />
     
-    <title>pypot.primitive.manager &mdash; PyPot 1.7.1 documentation</title>
+    <title>pypot.primitive.manager &mdash; pypot 1.7.1 documentation</title>
     <meta name="description" content="">
     <meta name="author" content="">
 
@@ -51,7 +51,7 @@
 <script type="text/javascript">
 </script>
     <link rel="author" title="About these documents" href="../../../about.html" />
-    <link rel="top" title="PyPot 1.7.1 documentation" href="../../../index.html" />
+    <link rel="top" title="pypot 1.7.1 documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body role="document">
@@ -64,7 +64,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="../../../index.html">PyPot 1.7.1 documentation</a>
+          <a class="navbar-brand" href="../../../index.html">pypot 1.7.1 documentation</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
@@ -128,18 +128,19 @@
                 <div class="body">
                   
   <h1>Source code for pypot.primitive.manager</h1><div class="highlight"><pre>
-<span class="kn">import</span> <span class="nn">threading</span>
 <span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">import</span> <span class="nn">numpy</span>
-<span class="kn">import</span> <span class="nn">time</span>
 
 <span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">defaultdict</span>
 <span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">partial</span>
 
+<span class="kn">from</span> <span class="nn">..utils.stoppablethread</span> <span class="kn">import</span> <span class="n">StoppableLoopThread</span>
+
+
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="n">__name__</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="PrimitiveManager"><a class="viewcode-back" href="../../../pypot.primitive.html#pypot.primitive.manager.PrimitiveManager">[docs]</a><span class="k">class</span> <span class="nc">PrimitiveManager</span><span class="p">(</span><span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">):</span>
+<div class="viewcode-block" id="PrimitiveManager"><a class="viewcode-back" href="../../../pypot.primitive.html#pypot.primitive.manager.PrimitiveManager">[docs]</a><span class="k">class</span> <span class="nc">PrimitiveManager</span><span class="p">(</span><span class="n">StoppableLoopThread</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; Combines all :class:`~pypot.primitive.primitive.Primitive` orders and affect them to the real motors.</span>
 
 <span class="sd">        At a predefined frequency, the manager gathers all the orders sent by the primitive to the &quot;fake&quot; motors, combined them thanks to the filter function and affect them to the &quot;real&quot; motors.</span>
@@ -147,23 +148,19 @@
 <span class="sd">        .. note:: The primitives are automatically added (resp. removed) to the manager when they are started (resp. stopped).</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">motors</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="nb">filter</span><span class="o">=</span><span class="n">partial</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">sum</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)):</span>
-        <span class="sd">&quot;&quot;&quot; :param motors: list of real motors used by the attached primitives</span>
-<span class="sd">            :type motors: list of :class:`~pypot.dynamixel.motor.DxlMotor`</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">motors</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="nb">filter</span><span class="o">=</span><span class="n">partial</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">mean</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        :param motors: list of real motors used by the attached primitives</span>
+<span class="sd">        :type motors: list of :class:`~pypot.dynamixel.motor.DxlMotor`</span>
+<span class="sd">        :param int freq: update frequency</span>
+<span class="sd">        :param func filter: function used to combine the different request (default mean)</span>
 
-<span class="sd">            :param int freq: update frequency</span>
-<span class="sd">            :param func filter: function used to combine the different request (default mean)</span>
-
-<span class="sd">            &quot;&quot;&quot;</span>
-        <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s">&#39;Primitive Manager&#39;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">daemon</span> <span class="o">=</span> <span class="bp">True</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">StoppableLoopThread</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">freq</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_prim</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_period</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">freq</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_motors</span> <span class="o">=</span> <span class="n">motors</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_filter</span> <span class="o">=</span> <span class="nb">filter</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_running</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Event</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_running</span><span class="o">.</span><span class="n">set</span><span class="p">()</span>
 
 <div class="viewcode-block" id="PrimitiveManager.add"><a class="viewcode-back" href="../../../pypot.primitive.html#pypot.primitive.manager.PrimitiveManager.add">[docs]</a>    <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Add a primitive to the manager. The primitive automatically attached itself when started. &quot;&quot;&quot;</span>
@@ -178,35 +175,22 @@
         <span class="sd">&quot;&quot;&quot; List of all attached :class:`~pypot.primitive.primitive.Primitive`. &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_prim</span>
 
-<div class="viewcode-block" id="PrimitiveManager.run"><a class="viewcode-back" href="../../../pypot.primitive.html#pypot.primitive.manager.PrimitiveManager.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Combined at a predefined frequency the request orders and affect them to the real motors.</span>
+<div class="viewcode-block" id="PrimitiveManager.update"><a class="viewcode-back" href="../../../pypot.primitive.html#pypot.primitive.manager.PrimitiveManager.update">[docs]</a>    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Combined at a predefined frequency the request orders and affect them to the real motors. &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_motors</span><span class="p">:</span>
+            <span class="n">to_set</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span>
 
-<span class="sd">            .. note:: Should not be called directly but launched through the thread start method.</span>
+            <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_prim</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">robot</span><span class="p">,</span> <span class="n">m</span><span class="o">.</span><span class="n">name</span><span class="p">)</span><span class="o">.</span><span class="n">_to_set</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+                    <span class="n">to_set</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
 
-<span class="sd">            &quot;&quot;&quot;</span>
-        <span class="k">while</span> <span class="bp">self</span><span class="o">.</span><span class="n">_running</span><span class="o">.</span><span class="n">is_set</span><span class="p">():</span>
-            <span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">to_set</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+                <span class="n">filtred_val</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_filter</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&#39;Combined </span><span class="si">%s</span><span class="s">.</span><span class="si">%s</span><span class="s"> from </span><span class="si">%s</span><span class="s"> to </span><span class="si">%s</span><span class="s">&#39;</span><span class="p">,</span>
+                             <span class="n">m</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">val</span><span class="p">,</span> <span class="n">filtred_val</span><span class="p">)</span>
+                <span class="nb">setattr</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">filtred_val</span><span class="p">)</span>
 
-            <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_motors</span><span class="p">:</span>
-                <span class="n">to_set</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span>
-
-                <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_prim</span><span class="p">:</span>
-                    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">robot</span><span class="p">,</span> <span class="n">m</span><span class="o">.</span><span class="n">name</span><span class="p">)</span><span class="o">.</span><span class="n">_to_set</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
-                        <span class="n">to_set</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
-
-                <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">to_set</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
-                    <span class="n">filtred_val</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_filter</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
-                    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&#39;Combined </span><span class="si">%s</span><span class="s">.</span><span class="si">%s</span><span class="s"> from </span><span class="si">%s</span><span class="s"> to </span><span class="si">%s</span><span class="s">&#39;</span><span class="p">,</span>
-                                 <span class="n">m</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">val</span><span class="p">,</span> <span class="n">filtred_val</span><span class="p">)</span>
-                    <span class="nb">setattr</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">filtred_val</span><span class="p">)</span>
-
-                <span class="p">[</span><span class="n">p</span><span class="o">.</span><span class="n">_synced</span><span class="o">.</span><span class="n">set</span><span class="p">()</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_prim</span><span class="p">]</span>
-
-            <span class="n">end</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
-
-            <span class="n">dt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_period</span> <span class="o">-</span> <span class="p">(</span><span class="n">end</span> <span class="o">-</span> <span class="n">start</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">dt</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-                <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">dt</span><span class="p">)</span>
+            <span class="p">[</span><span class="n">p</span><span class="o">.</span><span class="n">_synced</span><span class="o">.</span><span class="n">set</span><span class="p">()</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_prim</span><span class="p">]</span>
 </div>
 <div class="viewcode-block" id="PrimitiveManager.stop"><a class="viewcode-back" href="../../../pypot.primitive.html#pypot.primitive.manager.PrimitiveManager.stop">[docs]</a>    <span class="k">def</span> <span class="nf">stop</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Stop the primitive manager. &quot;&quot;&quot;</span>
@@ -214,8 +198,7 @@
             <span class="n">p</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
             <span class="n">p</span><span class="o">.</span><span class="n">wait_to_stop</span><span class="p">()</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_running</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">join</span><span class="p">()</span></div></div>
+        <span class="n">StoppableLoopThread</span><span class="o">.</span><span class="n">stop</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div></div>
 </pre></div>
 
                 </div>
@@ -232,7 +215,7 @@
 <div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
   <div class="navbar-inner">
     <ul class="nav navbar-nav">
-        <li><a href="../../../index.html">PyPot 1.7.1 documentation</a></li>
+        <li><a href="../../../index.html">pypot 1.7.1 documentation</a></li>
     </ul>
     <ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
       
@@ -247,7 +230,7 @@
 
       <!-- footer -->
       <footer role="contentinfo">
-          &copy; Copyright 2012, Pierre Rouanet, Matthieu Lapeyre, Haylee Fogg.
+          &copy; Copyright 2012, Poppy-Project.
         Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.3b1.
       </footer>
       <!-- /footer -->

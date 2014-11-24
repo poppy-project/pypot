@@ -1,0 +1,233 @@
+
+
+<!DOCTYPE html>
+
+
+
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    
+    <title>pypot.server.rest &mdash; pypot 1.7.1 documentation</title>
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    
+
+<link rel="stylesheet" href="../../../_static/css/basicstrap-base.css" type="text/css" />
+<link rel="stylesheet" id="current-theme" href="../../../_static/css/bootstrap3/bootstrap.min.css" type="text/css" />
+<link rel="stylesheet" id="current-adjust-theme" type="text/css" />
+
+<link rel="stylesheet" href="../../../_static/css/font-awesome.min.css">
+
+<style type="text/css">
+  body {
+    padding-top: 60px;
+    padding-bottom: 40px;
+  }
+}
+</style>
+
+<link rel="stylesheet" href="../../../_static/css/basicstrap.css" type="text/css" />
+<link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+<link rel="stylesheet" href="../../../_static/my-css.css" type="text/css" />
+    
+<script type="text/javascript">
+  var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:    '../../../',
+            VERSION:     '1.7.1',
+            COLLAPSE_INDEX: false,
+            FILE_SUFFIX: '.html',
+            HAS_SOURCE:  true
+  };
+</script>
+    <script type="text/javascript" src="../../../_static/js/jquery.min.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/js/bootstrap3.min.js"></script>
+<script type="text/javascript" src="../../../_static/js/jquery.cookie.min.js"></script>
+<script type="text/javascript" src="../../../_static/js/basicstrap.js"></script>
+<script type="text/javascript">
+</script>
+    <link rel="author" title="About these documents" href="../../../about.html" />
+    <link rel="top" title="pypot 1.7.1 documentation" href="../../../index.html" />
+    <link rel="up" title="Module code" href="../../index.html" /> 
+  </head>
+  <body role="document">
+    <div id="navbar-top" class="navbar navbar-fixed-top navbar-default" role="navigation" aria-label="top navigation">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="../../../index.html">pypot 1.7.1 documentation</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
+
+            
+              <li><a href="../../../py-modindex.html" title="Python Module Index" >modules </a></li>
+              <li><a href="../../../genindex.html" title="General Index" accesskey="I">index </a></li>
+              <li><a href="../../index.html" accesskey="U">Module code</a></li>
+            
+
+            <li class="visible-xs">
+                <form class="search form-search form-inline navbar-form navbar-right sp-searchbox" action="../../../search.html" method="get">
+                  <div class="input-append input-group">
+                    <input type="text" class="search-query form-control" name="q" placeholder="Search...">
+                    <span class="input-group-btn">
+                    <input type="submit" class="btn" value="Go" />
+                    </span>
+                  </div>
+                  <input type="hidden" name="check_keywords" value="yes" />
+                  <input type="hidden" name="area" value="default" />
+                </form>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    
+
+    <!-- container -->
+    <div class="container-fluid">
+
+      <!-- row -->
+      <div class="row">
+         
+<div class="col-md-3 hidden-xs">
+  <div class="sidebar hidden-xs" role="navigation" aria-label="main navigation">
+<div id="searchbox" role="search">
+  <h3>Quick search</h3>
+  <form class="search form-inline" action="../../../search.html" method="get">
+      <div class="input-append input-group">
+        <input type="text" class="search-query form-control" name="q" placeholder="Search...">
+        <span class="input-group-btn">
+        <input type="submit" class="btn" value="Go" />
+        </span>
+      </div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+  </div>
+</div> 
+        
+
+        <div class="col-md-9">
+          <div class="document" role="main">
+            <div class="documentwrapper">
+              <div class="bodywrapper">
+                <div class="body">
+                  
+  <h1>Source code for pypot.server.rest</h1><div class="highlight"><pre>
+<span class="kn">from</span> <span class="nn">operator</span> <span class="kn">import</span> <span class="n">attrgetter</span>
+
+
+<div class="viewcode-block" id="RESTRobot"><a class="viewcode-back" href="../../../pypot.server.html#pypot.server.rest.RESTRobot">[docs]</a><span class="k">class</span> <span class="nc">RESTRobot</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; REST API for a Robot.</span>
+
+<span class="sd">    Through the REST API you can currently access:</span>
+<span class="sd">        * the motors list (and the aliases)</span>
+<span class="sd">        * the registers list for a specific motor</span>
+<span class="sd">        * read/write a value from/to a register of a specific motor</span>
+
+<span class="sd">        * the sensors list</span>
+
+<span class="sd">        * the primitives list (and the active)</span>
+<span class="sd">        * start/stop primitives</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">robot</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">robot</span> <span class="o">=</span> <span class="n">robot</span>
+
+    <span class="c"># Access motor related values</span>
+
+<div class="viewcode-block" id="RESTRobot.get_motors_list"><a class="viewcode-back" href="../../../pypot.server.html#pypot.server.rest.RESTRobot.get_motors_list">[docs]</a>    <span class="k">def</span> <span class="nf">get_motors_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">alias</span><span class="o">=</span><span class="s">&#39;motors&#39;</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">m</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">robot</span><span class="p">,</span> <span class="n">alias</span><span class="p">)]</span>
+</div>
+<div class="viewcode-block" id="RESTRobot.get_registers_list"><a class="viewcode-back" href="../../../pypot.server.html#pypot.server.rest.RESTRobot.get_registers_list">[docs]</a>    <span class="k">def</span> <span class="nf">get_registers_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">motor</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_register_value</span><span class="p">(</span><span class="n">motor</span><span class="p">,</span> <span class="s">&#39;registers&#39;</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="RESTRobot.get_register_value"><a class="viewcode-back" href="../../../pypot.server.html#pypot.server.rest.RESTRobot.get_register_value">[docs]</a>    <span class="k">def</span> <span class="nf">get_register_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">motor</span><span class="p">,</span> <span class="n">register</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">attrgetter</span><span class="p">(</span><span class="s">&#39;{}.{}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">motor</span><span class="p">,</span> <span class="n">register</span><span class="p">))(</span><span class="bp">self</span><span class="o">.</span><span class="n">robot</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="RESTRobot.set_register_value"><a class="viewcode-back" href="../../../pypot.server.html#pypot.server.rest.RESTRobot.set_register_value">[docs]</a>    <span class="k">def</span> <span class="nf">set_register_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">motor</span><span class="p">,</span> <span class="n">register</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="n">m</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">robot</span><span class="p">,</span> <span class="n">motor</span><span class="p">)</span>
+        <span class="nb">setattr</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">register</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="RESTRobot.get_motors_alias"><a class="viewcode-back" href="../../../pypot.server.html#pypot.server.rest.RESTRobot.get_motors_alias">[docs]</a>    <span class="k">def</span> <span class="nf">get_motors_alias</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">robot</span><span class="o">.</span><span class="n">alias</span>
+
+    <span class="c"># Access sensor related values</span>
+</div>
+<div class="viewcode-block" id="RESTRobot.get_sensors_list"><a class="viewcode-back" href="../../../pypot.server.html#pypot.server.rest.RESTRobot.get_sensors_list">[docs]</a>    <span class="k">def</span> <span class="nf">get_sensors_list</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">s</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">robot</span><span class="o">.</span><span class="n">sensors</span><span class="p">]</span>
+
+    <span class="c"># Access primitive related values</span>
+</div>
+<div class="viewcode-block" id="RESTRobot.get_primitives_list"><a class="viewcode-back" href="../../../pypot.server.html#pypot.server.rest.RESTRobot.get_primitives_list">[docs]</a>    <span class="k">def</span> <span class="nf">get_primitives_list</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">p</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">robot</span><span class="o">.</span><span class="n">primitives</span><span class="p">]</span>
+</div>
+<div class="viewcode-block" id="RESTRobot.get_active_primitives_list"><a class="viewcode-back" href="../../../pypot.server.html#pypot.server.rest.RESTRobot.get_active_primitives_list">[docs]</a>    <span class="k">def</span> <span class="nf">get_active_primitives_list</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">p</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">robot</span><span class="o">.</span><span class="n">active_primitives</span><span class="p">]</span>
+</div>
+<div class="viewcode-block" id="RESTRobot.start_primitive"><a class="viewcode-back" href="../../../pypot.server.html#pypot.server.rest.RESTRobot.start_primitive">[docs]</a>    <span class="k">def</span> <span class="nf">start_primitive</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">primitive_name</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_call_method_primitive</span><span class="p">(</span><span class="n">primitive_name</span><span class="p">,</span> <span class="s">&#39;start&#39;</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="RESTRobot.stop_primitive"><a class="viewcode-back" href="../../../pypot.server.html#pypot.server.rest.RESTRobot.stop_primitive">[docs]</a>    <span class="k">def</span> <span class="nf">stop_primitive</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">primitive_name</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_call_method_primitive</span><span class="p">(</span><span class="n">primitive_name</span><span class="p">,</span> <span class="s">&#39;stop&#39;</span><span class="p">)</span>
+</div>
+    <span class="k">def</span> <span class="nf">_call_method_primitive</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">primitive_name</span><span class="p">,</span> <span class="n">method_name</span><span class="p">,</span>
+                               <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">p</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">robot</span><span class="p">,</span> <span class="n">primitive_name</span><span class="p">)</span>
+        <span class="n">f</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">method_name</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">f</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+</pre></div>
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        
+      </div><!-- /row -->
+
+      <!-- row -->
+      <div class="row footer-relbar">
+<div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
+  <div class="navbar-inner">
+    <ul class="nav navbar-nav">
+        <li><a href="../../../index.html">pypot 1.7.1 documentation</a></li>
+    </ul>
+    <ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
+      
+        <li><a href="../../../py-modindex.html" title="Python Module Index" >modules</a></li>
+        <li><a href="../../../genindex.html" title="General Index" >index</a></li>
+        <li><a href="../../index.html" >Module code</a></li> 
+      
+    </ul>
+  </div>
+</div>
+      </div><!-- /row -->
+
+      <!-- footer -->
+      <footer role="contentinfo">
+          &copy; Copyright 2012, Poppy-Project.
+        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.3b1.
+      </footer>
+      <!-- /footer -->
+
+    </div>
+    <!-- /container -->
+
+  </body>
+</html>

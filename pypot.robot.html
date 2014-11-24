@@ -9,7 +9,7 @@
   <head>
     <meta charset="utf-8" />
     
-    <title>robot Package &mdash; PyPot 1.7.1 documentation</title>
+    <title>robot Package &mdash; pypot 1.7.1 documentation</title>
     <meta name="description" content="">
     <meta name="author" content="">
 
@@ -51,8 +51,8 @@
 <script type="text/javascript">
 </script>
     <link rel="author" title="About these documents" href="about.html" />
-    <link rel="top" title="PyPot 1.7.1 documentation" href="index.html" />
-    <link rel="up" title="PyPot’s API" href="api.html" />
+    <link rel="top" title="pypot 1.7.1 documentation" href="index.html" />
+    <link rel="up" title="Pypot’s API" href="api.html" />
     <link rel="next" title="sensor Package" href="pypot.sensor.html" />
     <link rel="prev" title="primitive Package" href="pypot.primitive.html" /> 
   </head>
@@ -66,7 +66,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="index.html">PyPot 1.7.1 documentation</a>
+          <a class="navbar-brand" href="index.html">pypot 1.7.1 documentation</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
@@ -76,7 +76,12 @@
                 <ul>
 <li><a class="reference internal" href="#"><code class="docutils literal"><span class="pre">robot</span></code> Package</a><ul>
 <li><a class="reference internal" href="#module-pypot.robot.robot"><code class="docutils literal"><span class="pre">robot</span></code> Module</a></li>
+<li><a class="reference internal" href="#module-pypot.robot.motor"><code class="docutils literal"><span class="pre">motor</span></code> Module</a></li>
+<li><a class="reference internal" href="#module-pypot.robot.sensor"><code class="docutils literal"><span class="pre">sensor</span></code> Module</a></li>
+<li><a class="reference internal" href="#module-pypot.robot.controller"><code class="docutils literal"><span class="pre">controller</span></code> Module</a></li>
+<li><a class="reference internal" href="#module-pypot.robot.io"><code class="docutils literal"><span class="pre">io</span></code> Module</a></li>
 <li><a class="reference internal" href="#module-pypot.robot.config"><code class="docutils literal"><span class="pre">config</span></code> Module</a></li>
+<li><a class="reference internal" href="#module-pypot.robot.remote"><code class="docutils literal"><span class="pre">remote</span></code> Module</a></li>
 </ul>
 </li>
 </ul>
@@ -89,7 +94,7 @@
               <li><a href="pypot.sensor.html" title="sensor Package" accesskey="N">next </a></li>
               <li><a href="py-modindex.html" title="Python Module Index" >modules </a></li>
               <li><a href="genindex.html" title="General Index" accesskey="I">index </a></li>
-              <li><a href="api.html" accesskey="U">PyPot&#8217;s API</a></li>
+              <li><a href="api.html" accesskey="U">Pypot&#8217;s API</a></li>
             
             <li class="visible-xs"><a href="_sources/pypot.robot.txt" rel="nofollow">Show Source</a></li>
 
@@ -123,7 +128,12 @@
   <ul>
 <li><a class="reference internal" href="#"><code class="docutils literal"><span class="pre">robot</span></code> Package</a><ul>
 <li><a class="reference internal" href="#module-pypot.robot.robot"><code class="docutils literal"><span class="pre">robot</span></code> Module</a></li>
+<li><a class="reference internal" href="#module-pypot.robot.motor"><code class="docutils literal"><span class="pre">motor</span></code> Module</a></li>
+<li><a class="reference internal" href="#module-pypot.robot.sensor"><code class="docutils literal"><span class="pre">sensor</span></code> Module</a></li>
+<li><a class="reference internal" href="#module-pypot.robot.controller"><code class="docutils literal"><span class="pre">controller</span></code> Module</a></li>
+<li><a class="reference internal" href="#module-pypot.robot.io"><code class="docutils literal"><span class="pre">io</span></code> Module</a></li>
 <li><a class="reference internal" href="#module-pypot.robot.config"><code class="docutils literal"><span class="pre">config</span></code> Module</a></li>
+<li><a class="reference internal" href="#module-pypot.robot.remote"><code class="docutils literal"><span class="pre">remote</span></code> Module</a></li>
 </ul>
 </li>
 </ul>
@@ -173,18 +183,24 @@
 <span id="robot-module"></span><h2><code class="xref py py-mod docutils literal"><span class="pre">robot</span></code> Module<a class="headerlink" href="#module-pypot.robot.robot" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="pypot.robot.robot.Robot">
-<em class="property">class </em><code class="descclassname">pypot.robot.robot.</code><code class="descname">Robot</code><a class="reference internal" href="_modules/pypot/robot/robot.html#Robot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.robot.robot.Robot" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">pypot.robot.robot.</code><code class="descname">Robot</code><span class="sig-paren">(</span><em>motor_controllers=[]</em>, <em>sensor_controllers=[]</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/robot/robot.html#Robot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.robot.robot.Robot" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference external" href="http://docs.python.org/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
 <p>This class is used to regroup all motors and sensors of your robots.</p>
-<p>Most of the time, you do not want to directly instantiate this class,
-but you rather want to use the factory which creates a robot instance
-from a python dictionnary (see <a class="reference internal" href="controller.html#config-file"><em>Writing the configuration</em></a>).</p>
-<p>This class encapsulates the different controllers (such as dynamixel ones)
-that automatically synchronize the virtual sensors/effectors instances held
-by the robot class with the real devices. By doing so, each sensor/effector
-can be synchronized at a different frequency.</p>
-<p>This class also provides a generic motors accessor in order to (more or less)
-easily extends this class to other types of motor.</p>
+<p>Most of the time, you do not want to directly instantiate this class, but you rather want to use a factory which creates a robot instance - e.g. from a python dictionnary (see <a class="reference internal" href="controller.html#config-file"><em>Writing the configuration</em></a>).</p>
+<p>This class encapsulates the different controllers (such as dynamixel ones) that automatically synchronize the virtual sensors/effectors instances held by the robot class with the real devices. By doing so, each sensor/effector can be synchronized at a different frequency.</p>
+<p>This class also provides a generic motors accessor in order to (more or less) easily extends this class to other types of motor.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>motor_controllers</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a>) &#8211; motors controllers to attach to the robot</li>
+<li><strong>sensor_controllers</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a>) &#8211; sensors controllers to attach to the robot</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
 <dl class="method">
 <dt id="pypot.robot.robot.Robot.close">
 <code class="descname">close</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/robot/robot.html#Robot.close"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.robot.robot.Robot.close" title="Permalink to this definition">¶</a></dt>
@@ -215,20 +231,14 @@ easily extends this class to other types of motor.</p>
 </dd></dl>
 
 <dl class="attribute">
+<dt id="pypot.robot.robot.Robot.active_primitives">
+<code class="descname">active_primitives</code><a class="headerlink" href="#pypot.robot.robot.Robot.active_primitives" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns all the primitives currently running on the robot.</p>
+</dd></dl>
+
+<dl class="attribute">
 <dt id="pypot.robot.robot.Robot.primitives">
 <code class="descname">primitives</code><a class="headerlink" href="#pypot.robot.robot.Robot.primitives" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns all the primitives attached to the robot.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="pypot.robot.robot.Robot.attached_primitives">
-<code class="descname">attached_primitives</code><a class="headerlink" href="#pypot.robot.robot.Robot.attached_primitives" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns all the primitives name attached to the robot.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="pypot.robot.robot.Robot.attached_primitives_name">
-<code class="descname">attached_primitives_name</code><a class="headerlink" href="#pypot.robot.robot.Robot.attached_primitives_name" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns all the primitives name attached to the robot.</p>
 </dd></dl>
 
@@ -263,6 +273,155 @@ easily extends this class to other types of motor.</p>
 <dd><p>Changes all settings to guarantee the motors will be used at their maximum power.</p>
 </dd></dl>
 
+<dl class="method">
+<dt id="pypot.robot.robot.Robot.to_config">
+<code class="descname">to_config</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/robot/robot.html#Robot.to_config"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.robot.robot.Robot.to_config" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates the config for the current robot.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The generated config should be used as a basis and must probably be modified.</p>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-pypot.robot.motor">
+<span id="motor-module"></span><h2><code class="xref py py-mod docutils literal"><span class="pre">motor</span></code> Module<a class="headerlink" href="#module-pypot.robot.motor" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pypot.robot.motor.Motor">
+<em class="property">class </em><code class="descclassname">pypot.robot.motor.</code><code class="descname">Motor</code><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/robot/motor.html#Motor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.robot.motor.Motor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="http://docs.python.org/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<p>Purely abstract class representing any motor object.</p>
+<dl class="attribute">
+<dt id="pypot.robot.motor.Motor.name">
+<code class="descname">name</code><a class="headerlink" href="#pypot.robot.motor.Motor.name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-pypot.robot.sensor">
+<span id="sensor-module"></span><h2><code class="xref py py-mod docutils literal"><span class="pre">sensor</span></code> Module<a class="headerlink" href="#module-pypot.robot.sensor" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pypot.robot.sensor.Sensor">
+<em class="property">class </em><code class="descclassname">pypot.robot.sensor.</code><code class="descname">Sensor</code><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/robot/sensor.html#Sensor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.robot.sensor.Sensor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="http://docs.python.org/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<p>Purely abstract class representing any sensor object.</p>
+<dl class="attribute">
+<dt id="pypot.robot.sensor.Sensor.name">
+<code class="descname">name</code><a class="headerlink" href="#pypot.robot.sensor.Sensor.name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pypot.robot.sensor.ObjectTracker">
+<em class="property">class </em><code class="descclassname">pypot.robot.sensor.</code><code class="descname">ObjectTracker</code><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/robot/sensor.html#ObjectTracker"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.robot.sensor.ObjectTracker" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pypot.robot.sensor.Sensor" title="pypot.robot.sensor.Sensor"><code class="xref py py-class docutils literal"><span class="pre">pypot.robot.sensor.Sensor</span></code></a></p>
+<dl class="attribute">
+<dt id="pypot.robot.sensor.ObjectTracker.position">
+<code class="descname">position</code><a class="headerlink" href="#pypot.robot.sensor.ObjectTracker.position" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pypot.robot.sensor.ObjectTracker.orientation">
+<code class="descname">orientation</code><a class="headerlink" href="#pypot.robot.sensor.ObjectTracker.orientation" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-pypot.robot.controller">
+<span id="controller-module"></span><h2><code class="xref py py-mod docutils literal"><span class="pre">controller</span></code> Module<a class="headerlink" href="#module-pypot.robot.controller" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pypot.robot.controller.AbstractController">
+<em class="property">class </em><code class="descclassname">pypot.robot.controller.</code><code class="descname">AbstractController</code><span class="sig-paren">(</span><em>io</em>, <em>sync_freq</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/robot/controller.html#AbstractController"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.robot.controller.AbstractController" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="pypot.utils.html#pypot.utils.stoppablethread.StoppableLoopThread" title="pypot.utils.stoppablethread.StoppableLoopThread"><code class="xref py py-class docutils literal"><span class="pre">pypot.utils.stoppablethread.StoppableLoopThread</span></code></a></p>
+<p>Abstract class for motor/sensor controller.</p>
+<p>The controller role is to synchronize the reading/writing of a set of instances with their &#8220;hardware&#8221; equivalent through an <a class="reference internal" href="#pypot.robot.io.AbstractIO" title="pypot.robot.io.AbstractIO"><code class="xref py py-class docutils literal"><span class="pre">AbstractIO</span></code></a> object. It is defined as a <a class="reference internal" href="pypot.utils.html#pypot.utils.stoppablethread.StoppableLoopThread" title="pypot.utils.stoppablethread.StoppableLoopThread"><code class="xref py py-class docutils literal"><span class="pre">StoppableLoopThread</span></code></a> where each loop update synchronizes  values from the &#8220;software&#8221; objects with their &#8220;hardware&#8221; equivalent.</p>
+<p>To define your Controller, you need to define the <a class="reference internal" href="pypot.utils.html#pypot.utils.stoppablethread.StoppableLoopThread.update" title="pypot.utils.stoppablethread.StoppableLoopThread.update"><code class="xref py py-meth docutils literal"><span class="pre">update()</span></code></a> method. This method will be called at the predefined frequency. An exemple of how to do it can be found in <a class="reference internal" href="pypot.dynamixel.html#pypot.dynamixel.controller.BaseDxlController" title="pypot.dynamixel.controller.BaseDxlController"><code class="xref py py-class docutils literal"><span class="pre">BaseDxlController</span></code></a>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>io</strong> (<a class="reference internal" href="#pypot.robot.io.AbstractIO" title="pypot.robot.io.AbstractIO"><code class="xref py py-class docutils literal"><span class="pre">AbstractIO</span></code></a>) &#8211; IO used to communicate with the hardware motors</li>
+<li><strong>sync_freq</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) &#8211; synchronization frequency</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="pypot.robot.controller.AbstractController.start">
+<code class="descname">start</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/robot/controller.html#AbstractController.start"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.robot.controller.AbstractController.start" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pypot.robot.controller.AbstractController.close">
+<code class="descname">close</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/robot/controller.html#AbstractController.close"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.robot.controller.AbstractController.close" title="Permalink to this definition">¶</a></dt>
+<dd><p>Cleans and closes the controller.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pypot.robot.controller.MotorsController">
+<em class="property">class </em><code class="descclassname">pypot.robot.controller.</code><code class="descname">MotorsController</code><span class="sig-paren">(</span><em>io</em>, <em>motors</em>, <em>sync_freq=50</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/robot/controller.html#MotorsController"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.robot.controller.MotorsController" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pypot.robot.controller.AbstractController" title="pypot.robot.controller.AbstractController"><code class="xref py py-class docutils literal"><span class="pre">pypot.robot.controller.AbstractController</span></code></a></p>
+<p>Abstract class for motors controller.</p>
+<p>The controller synchronizes the reading/writing of a set of motor instances with their &#8220;hardware&#8221;. Each update loop synchronizes values from the &#8220;software&#8221; <a class="reference internal" href="pypot.dynamixel.html#pypot.dynamixel.motor.DxlMotor" title="pypot.dynamixel.motor.DxlMotor"><code class="xref py py-class docutils literal"><span class="pre">DxlMotor</span></code></a> with their &#8220;hardware&#8221; equivalent.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>io</strong> (<a class="reference internal" href="#pypot.robot.io.AbstractIO" title="pypot.robot.io.AbstractIO"><code class="xref py py-class docutils literal"><span class="pre">AbstractIO</span></code></a>) &#8211; IO used to communicate with the hardware motors</li>
+<li><strong>motors</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a>) &#8211; list of motors attached to the controller</li>
+<li><strong>sync_freq</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) &#8211; synchronization frequency</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="pypot.robot.controller.SensorsController">
+<em class="property">class </em><code class="descclassname">pypot.robot.controller.</code><code class="descname">SensorsController</code><span class="sig-paren">(</span><em>io</em>, <em>sensors</em>, <em>sync_freq=50.0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/robot/controller.html#SensorsController"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.robot.controller.SensorsController" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pypot.robot.controller.AbstractController" title="pypot.robot.controller.AbstractController"><code class="xref py py-class docutils literal"><span class="pre">pypot.robot.controller.AbstractController</span></code></a></p>
+<p>Abstract class for sensors controller.</p>
+<p>The controller frequently pulls new data from a &#8220;real&#8221; sensor and updates its corresponding software instance.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>io</strong> (<a class="reference internal" href="#pypot.robot.io.AbstractIO" title="pypot.robot.io.AbstractIO"><code class="xref py py-class docutils literal"><span class="pre">AbstractIO</span></code></a>) &#8211; IO used to communicate with the hardware motors</li>
+<li><strong>sensors</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a>) &#8211; list of sensors attached to the controller</li>
+<li><strong>sync_freq</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) &#8211; synchronization frequency</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-pypot.robot.io">
+<span id="io-module"></span><h2><a class="reference external" href="http://docs.python.org/library/io.html#module-io" title="(in Python v2.7)"><code class="xref py py-mod docutils literal"><span class="pre">io</span></code></a> Module<a class="headerlink" href="#module-pypot.robot.io" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pypot.robot.io.AbstractIO">
+<em class="property">class </em><code class="descclassname">pypot.robot.io.</code><code class="descname">AbstractIO</code><a class="reference internal" href="_modules/pypot/robot/io.html#AbstractIO"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.robot.io.AbstractIO" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="http://docs.python.org/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<p>AbstractIO class which handles communication with &#8220;hardware&#8221; motors.</p>
+<dl class="method">
+<dt id="pypot.robot.io.AbstractIO.close">
+<code class="descname">close</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/robot/io.html#AbstractIO.close"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.robot.io.AbstractIO.close" title="Permalink to this definition">¶</a></dt>
+<dd><p>Clean and close the IO connection.</p>
+</dd></dl>
+
 </dd></dl>
 
 </div>
@@ -295,10 +454,55 @@ easily extends this class to other types of motor.</p>
 </dd></dl>
 
 <dl class="function">
+<dt id="pypot.robot.config.motor_from_confignode">
+<code class="descclassname">pypot.robot.config.</code><code class="descname">motor_from_confignode</code><span class="sig-paren">(</span><em>config</em>, <em>motor_name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/robot/config.html#motor_from_confignode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.robot.config.motor_from_confignode" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pypot.robot.config.dxl_io_from_confignode">
+<code class="descclassname">pypot.robot.config.</code><code class="descname">dxl_io_from_confignode</code><span class="sig-paren">(</span><em>config</em>, <em>c_params</em>, <em>ids</em>, <em>strict</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/robot/config.html#dxl_io_from_confignode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.robot.config.dxl_io_from_confignode" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pypot.robot.config.check_motor_limits">
+<code class="descclassname">pypot.robot.config.</code><code class="descname">check_motor_limits</code><span class="sig-paren">(</span><em>config</em>, <em>dxl_io</em>, <em>motor_names</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/robot/config.html#check_motor_limits"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.robot.config.check_motor_limits" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pypot.robot.config.instatiate_motors">
+<code class="descclassname">pypot.robot.config.</code><code class="descname">instatiate_motors</code><span class="sig-paren">(</span><em>config</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/robot/config.html#instatiate_motors"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.robot.config.instatiate_motors" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pypot.robot.config.make_alias">
+<code class="descclassname">pypot.robot.config.</code><code class="descname">make_alias</code><span class="sig-paren">(</span><em>config</em>, <em>robot</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/robot/config.html#make_alias"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.robot.config.make_alias" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
 <dt id="pypot.robot.config.from_json">
 <code class="descclassname">pypot.robot.config.</code><code class="descname">from_json</code><span class="sig-paren">(</span><em>json_file</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/robot/config.html#from_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.robot.config.from_json" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a <a class="reference internal" href="#pypot.robot.robot.Robot" title="pypot.robot.robot.Robot"><code class="xref py py-class docutils literal"><span class="pre">Robot</span></code></a> instance created from a JSON configuration file.</p>
 <p>For details on how to write such a configuration file, you should refer to the section <a class="reference internal" href="controller.html#config-file"><em>Writing the configuration</em></a>.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-pypot.robot.remote">
+<span id="remote-module"></span><h2><code class="xref py py-mod docutils literal"><span class="pre">remote</span></code> Module<a class="headerlink" href="#module-pypot.robot.remote" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pypot.robot.remote.RemoteRobot">
+<em class="property">class </em><code class="descclassname">pypot.robot.remote.</code><code class="descname">RemoteRobot</code><span class="sig-paren">(</span><em>host</em>, <em>port</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/robot/remote.html#RemoteRobot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.robot.remote.RemoteRobot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="http://docs.python.org/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<p>Remote Access to a Robot through the REST API.</p>
+<p>This RemoteRobot gives you access to motors and alias.
+For each motor you can read/write all of their registers.</p>
+<p>You also have access to primitives.
+More specifically you can start/stop them.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pypot.robot.remote.from_remote">
+<code class="descclassname">pypot.robot.remote.</code><code class="descname">from_remote</code><span class="sig-paren">(</span><em>host</em>, <em>port=4242</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/robot/remote.html#from_remote"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.robot.remote.from_remote" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remote access to a Robot through the REST API.</p>
 </dd></dl>
 
 </div>
@@ -319,7 +523,7 @@ easily extends this class to other types of motor.</p>
 <div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
   <div class="navbar-inner">
     <ul class="nav navbar-nav">
-        <li><a href="index.html">PyPot 1.7.1 documentation</a></li>
+        <li><a href="index.html">pypot 1.7.1 documentation</a></li>
     </ul>
     <ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
       
@@ -327,7 +531,7 @@ easily extends this class to other types of motor.</p>
         <li><a href="pypot.sensor.html" title="sensor Package" >next</a></li>
         <li><a href="py-modindex.html" title="Python Module Index" >modules</a></li>
         <li><a href="genindex.html" title="General Index" >index</a></li>
-        <li><a href="api.html" >PyPot&#8217;s API</a></li> 
+        <li><a href="api.html" >Pypot&#8217;s API</a></li> 
       
     </ul>
   </div>
@@ -336,7 +540,7 @@ easily extends this class to other types of motor.</p>
 
       <!-- footer -->
       <footer role="contentinfo">
-          &copy; Copyright 2012, Pierre Rouanet, Matthieu Lapeyre, Haylee Fogg.
+          &copy; Copyright 2012, Poppy-Project.
         Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.3b1.
       </footer>
       <!-- /footer -->

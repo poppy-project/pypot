@@ -15,9 +15,9 @@ Pypot is logging information at all different levels:
 * within each primitive
 * each request received by the server
 
-.. note:: As you probably do not want to log everything (Pypot is sending a lot of messages!!!), you have to select in the logging structure what is relevant in your program and define it in your logging configuration.
+.. note:: As you probably do not want to log everything (pypot is sending a lot of messages!!!), you have to select in the logging structure what is relevant in your program and define it in your logging configuration.
 
-Pypot's logging naming convention is following Pypot's architecture. Here is the detail of what Pypot is logging with the associated logger's name:
+Pypot's logging naming convention is following pypot's architecture. Here is the detail of what pypot is logging with the associated logger's name:
 
 * The logger's name **pypot.dynamixel.io** is logging information related to opening/closing port (INFO) and each sent/received package (DEBUG). The communication and timeout error are also logged (WARNING). This logger always provides you the port name, the baudrate and timout of your connection as extra information.
 
@@ -75,7 +75,6 @@ Then, we just have to write a simple program, where for instance we run our dumm
         logging.config.dictConfig(LOGGING)
 
         r = pypot.robot.from_config(ergo_config)
-        r.start_sync()
 
         class DummyPrimitive(LoopPrimitive):
             pass

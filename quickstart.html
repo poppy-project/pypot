@@ -9,7 +9,7 @@
   <head>
     <meta charset="utf-8" />
     
-    <title>QuickStart: playing with an Ergo-Robot &mdash; PyPot 1.7.1 documentation</title>
+    <title>QuickStart: playing with an Ergo-Robot &mdash; pypot 1.7.1 documentation</title>
     <meta name="description" content="">
     <meta name="author" content="">
 
@@ -51,7 +51,7 @@
 <script type="text/javascript">
 </script>
     <link rel="author" title="About these documents" href="about.html" />
-    <link rel="top" title="PyPot 1.7.1 documentation" href="index.html" />
+    <link rel="top" title="pypot 1.7.1 documentation" href="index.html" />
     <link rel="next" title="Controlling robot" href="controlling_robot.html" />
     <link rel="prev" title="Installation" href="installation.html" /> 
   </head>
@@ -65,7 +65,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="index.html">PyPot 1.7.1 documentation</a>
+          <a class="navbar-brand" href="index.html">pypot 1.7.1 documentation</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
@@ -169,7 +169,7 @@
                   
   <div class="section" id="quickstart-playing-with-an-ergo-robot">
 <span id="quickstart"></span><h1>QuickStart: playing with an Ergo-Robot<a class="headerlink" href="#quickstart-playing-with-an-ergo-robot" title="Permalink to this headline">¶</a></h1>
-<p>To let you discover what you can do with PyPot, in this section we describe the few steps required to make a robot build from robotis motor dance. This short introduction will in particular describe you:</p>
+<p>To let you discover what you can do with pypot, in this section we describe the few steps required to make a robot build from robotis motor dance. This short introduction will in particular describe you:</p>
 <ul class="simple">
 <li>how to define your robot within the software,</li>
 <li>how to connect it to your computer,</li>
@@ -186,16 +186,16 @@
 <div class="section" id="connecting-the-robot-to-your-computer">
 <h2>Connecting the robot to your computer<a class="headerlink" href="#connecting-the-robot-to-your-computer" title="Permalink to this headline">¶</a></h2>
 <p>Now that you have your own robot, let&#8217;s start writing the code necessary to control it.</p>
-<p>The first step is to setup the configuration for your robot. It will describe the motor configuration of your robot, the USB2serial controller used and make the initialization really easy. Configurations are described as Python dictionaries. Yet, they can be quite repetitive to write. Luckily, the PyPot package comes with an example of a configuration for an Ergo-Robot. You can first import it, so you can modify it:</p>
+<p>The first step is to setup the configuration for your robot. It will describe the motor configuration of your robot, the USB2serial controller used and make the initialization really easy. Configurations are described as Python dictionaries. Yet, they can be quite repetitive to write. Luckily, the pypot package comes with an example of a configuration for an Ergo-Robot. You can first import it, so you can modify it:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">pypot.robot.config</span> <span class="kn">import</span> <span class="n">ergo_robot_config</span>
 </pre></div>
 </div>
-<p>If you do some introspection on this object, you will see that it is just a regular Python dictionary. So you can directly edit it like you will do with any other dict. You can also copy the one provided with PyPot and work with your own copy:</p>
+<p>If you do some introspection on this object, you will see that it is just a regular Python dictionary. So you can directly edit it like you will do with any other dict. You can also copy the one provided with pypot and work with your own copy:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">my_config</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">ergo_robot_config</span><span class="p">)</span>
 <span class="n">my_config</span><span class="p">[</span><span class="s">&#39;controllers&#39;</span><span class="p">][</span><span class="s">&#39;my_dxl_controller&#39;</span><span class="p">][</span><span class="s">&#39;port&#39;</span><span class="p">]</span>  <span class="o">=</span> <span class="s">&#39;COM6&#39;</span> <span class="c"># For Windows&#39; users</span>
 </pre></div>
 </div>
-<p>You will only have to modify the USB2serial port and the id of the motors so they correspond to your robot. If you do not know how to get this information, you can refer to the documentation on the <a class="reference internal" href="herborist.html#herborist"><em>Herborist tool</em></a>. Alternatively, you can directly ask PyPot:</p>
+<p>You will only have to modify the USB2serial port and the id of the motors so they correspond to your robot. If you do not know how to get this information, you can refer to the documentation on the <a class="reference internal" href="herborist.html#herborist"><em>Herborist tool</em></a>. Alternatively, you can directly ask pypot:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">pypot.dynamixel</span>
 
 <span class="k">print</span> <span class="n">pypot</span><span class="o">.</span><span class="n">dynamixel</span><span class="o">.</span><span class="n">get_available_ports</span><span class="p">()</span>
@@ -212,7 +212,7 @@
 </div>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p>Since Pypot 1.7, you can now set the port to &#8216;auto&#8217; in the dictionary. When loading the configuration, Pypot will automatically try to find the port with the corresponding attached motor ids.
+<p>Since pypot 1.7, you can now set the port to &#8216;auto&#8217; in the dictionary. When loading the configuration, pypot will automatically try to find the port with the corresponding attached motor ids.
 For instance:</p>
 <div class="last highlight-python"><div class="highlight"><pre><span class="n">my_config</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">ergo_robot_config</span><span class="p">)</span>
 <span class="n">my_config</span><span class="p">[</span><span class="s">&#39;controllers&#39;</span><span class="p">][</span><span class="s">&#39;my_dxl_controller&#39;</span><span class="p">][</span><span class="s">&#39;port&#39;</span><span class="p">]</span>  <span class="o">=</span> <span class="s">&#39;auto&#39;</span>
@@ -234,7 +234,6 @@ For instance:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">pypot.robot</span>
 
 <span class="n">ergo_robot</span> <span class="o">=</span> <span class="n">pypot</span><span class="o">.</span><span class="n">robot</span><span class="o">.</span><span class="n">from_config</span><span class="p">(</span><span class="n">my_config</span><span class="p">)</span>
-<span class="n">ergo_robot</span><span class="o">.</span><span class="n">start_sync</span><span class="p">()</span>
 </pre></div>
 </div>
 <p>Except from the last line, everything should be clear now. This new line starts the synchronization between the &#8220;software&#8221; robot and the real one, i.e. all commands that you will send in python code will automatically be sent to the physical Ergo-Robot (for details on the underlying mechanisms, see <a class="reference internal" href="controller.html#sync-loop"><em>Sync Loop</em></a>).</p>
@@ -284,7 +283,7 @@ For instance:</p>
     <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.02</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Your robot should start dancing for ten seconds. Now, that you have seen the very basic things that you can do with PyPot. It is time to jump on the <a class="reference internal" href="index.html#tutorial"><em>tutorial</em></a> to get a complete overview of the possibility.</p>
+<p>Your robot should start dancing for ten seconds. Now, that you have seen the very basic things that you can do with pypot. It is time to jump on the <a class="reference internal" href="index.html#tutorial"><em>tutorial</em></a> to get a complete overview of the possibility.</p>
 </div>
 </div>
 
@@ -303,7 +302,7 @@ For instance:</p>
 <div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
   <div class="navbar-inner">
     <ul class="nav navbar-nav">
-        <li><a href="index.html">PyPot 1.7.1 documentation</a></li>
+        <li><a href="index.html">pypot 1.7.1 documentation</a></li>
     </ul>
     <ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
       
@@ -319,7 +318,7 @@ For instance:</p>
 
       <!-- footer -->
       <footer role="contentinfo">
-          &copy; Copyright 2012, Pierre Rouanet, Matthieu Lapeyre, Haylee Fogg.
+          &copy; Copyright 2012, Poppy-Project.
         Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.3b1.
       </footer>
       <!-- /footer -->
