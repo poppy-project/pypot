@@ -5,7 +5,9 @@ from ..robot.sensor import Sensor
 
 
 class VrepController(MotorsController):
+
     """ V-REP motors controller. """
+
     def __init__(self, vrep_io, scene, motors, sync_freq=50.):
         """
         :param vrep_io: vrep io instance
@@ -16,7 +18,9 @@ class VrepController(MotorsController):
 
         """
         MotorsController.__init__(self, vrep_io, motors, sync_freq)
-        vrep_io.load_scene(scene, start=True)
+
+        if scene is not None:
+            vrep_io.load_scene(scene, start=True)
 
     def setup(self):
         """ Setups the controller by reading/setting position for all motors. """
@@ -30,7 +34,8 @@ class VrepController(MotorsController):
         """
         for m in self.motors:
             # Read values from V-REP and set them to the Motor
-            p = round(rad2deg(self.io.get_motor_position(motor_name=m.name)), 1)
+            p = round(
+                rad2deg(self.io.get_motor_position(motor_name=m.name)), 1)
             m.__dict__['present_position'] = p
 
             # Send new values from Motor to V-REP
@@ -54,7 +59,7 @@ class VrepController(MotorsController):
         # Now actually retrieves all values
         pos = [self.io.get_motor_position(m.name) for m in self.motors]
 
-        # # Prepare streaming for setting position for each motor
+        # Prepare streaming for setting position for each motor
         for m, p in zip(self.motors, pos):
             self.io.call_remote_api('simxSetJointTargetPosition',
                                     self.io.get_object_handle(m.name),
@@ -69,6 +74,7 @@ class VrepController(MotorsController):
 
 
 class VrepObjectTracker(SensorsController):
+
     """ Tracks the 3D position and orientation of a V-REP object. """
 
     def setup(self):
@@ -83,6 +89,7 @@ class VrepObjectTracker(SensorsController):
 
 
 class VrepCollisionDetector(Sensor):
+
     def __init__(self, name):
         Sensor.__init__(self, name)
 
@@ -98,6 +105,7 @@ class VrepCollisionDetector(Sensor):
 
 
 class VrepCollisionTracker(SensorsController):
+
     """ Tracks collision state. """
 
     def setup(self):
