@@ -38,7 +38,7 @@ class vrep_time():
             sys_time.sleep(0.01)
 
 
-def from_vrep(config, vrep_host, vrep_port, vrep_scene,
+def from_vrep(config, vrep_host, vrep_port, vrep_scene=None,
               tracked_objects=[], tracked_collisions=[]):
     """ Create a robot from a V-REP instance.
 
