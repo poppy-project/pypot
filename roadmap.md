@@ -8,4 +8,4 @@
 
 ## Minor features
 * Working driver on mac os
-* Re-writes herborist to make it more robust and remote the Qt dependency
+* Re-writes herborist to make it more robust and remove the Qt dependency
