@@ -15,9 +15,9 @@
 * for running v-rep and connect to it using pypot on Win/Mac/Linux
 
 ### Implement other IOs
-  * for the dynamixel V2 protocol
-  * for gazebo
-  * IMU
+* for the dynamixel V2 protocol
+* for gazebo
+* IMU
 
 ### Primitives
 * Better defined primitives and how they can be combined (using paradigm such as [Esterel](http://www.esterel-technologies.com), [Antescofo](http://repmus.ircam.fr/antescofo))
