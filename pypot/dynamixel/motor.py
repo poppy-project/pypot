@@ -75,7 +75,7 @@ class DxlMotor(Motor):
         """
     __metaclass__ = RegisterOwner
 
-    registers = ['registers', 'goal_speed', 'compliant']
+    registers = Motor.registers + ['registers', 'goal_speed', 'compliant']
 
     id = DxlRegister()
     name = DxlRegister()
