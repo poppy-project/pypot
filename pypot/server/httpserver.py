@@ -1,14 +1,13 @@
 import bottle
 import logging
-import json
 
-from .server import AbstractServer, MyJSONEncoder
+from .server import AbstractServer
 
 
 logger = logging.getLogger(__name__)
 
 
-class HTTPServer(AbstractServer):
+class HTTPRobotServer(AbstractServer):
     """ Bottle based HTTPServer used to remote access a robot.
 
         The server answers to the following requests:
@@ -22,85 +21,110 @@ class HTTPServer(AbstractServer):
         * POST /request.json
 
      """
-    def __init__(self, robot, host='localhost', port=8080):
-        AbstractServer.__init__(self, robot)
-
-        self.host = host
-        self.port = port
+    def __init__(self, robot, host, port):
+        AbstractServer.__init__(self, robot, host, port)
 
         self.app = bottle.Bottle()
-        self.app.install(bottle.JSONPlugin(json_dumps=lambda s: json.dumps(s, cls=MyJSONEncoder)))
+
+        # Motors route
 
         @self.app.get('/motor/list.json')
-        def get_motor_list():
-            req = {
-                'get': {
-                    '': ['motors', ]
-                }
+        @self.app.get('/motor/<alias>/list.json')
+        def get_motor_list(alias='motors'):
+            return {
+                alias: self.restfull_robot.get_motors_list(alias)
             }
 
-            return self.request_handler.handle_request(req)['get']['']
+        @self.app.get('/motor/alias/list.json')
+        def get_motor_alias():
+            return {
+                'alias': self.restfull_robot.get_motors_alias()
+            }
 
+        @self.app.get('/motor/<motor_name>/register/list.json')
+        def get_motor_registers(motor_name):
+            return {
+                'registers': self.restfull_robot.get_registers_list(motor_name)
+            }
+
+        @self.app.get('/motor/<motor_name>/register/<register_name>')
+        def get_register_value(motor_name, register_name):
+            return {
+                register_name: self.restfull_robot.get_register_value(motor_name, register_name)
+            }
+
+        @self.app.post('/motor/<motor_name>/register/<register_name>/value.json')
+        def set_register_value(motor_name, register_name):
+            self.restfull_robot.set_register_value(motor_name, register_name,
+                                                   bottle.request.json)
+            return {}
+
+        # Sensors route
+
+        # Primitives route
         @self.app.get('/primitive/list.json')
-        def get_primitive_list():
-            req = {
-                'get': {
-                    '': ['attached_primitives_name', ]
-                }
-            }
-            return self.request_handler.handle_request(req)['get']['']
-
-        @self.app.get('/<name>/register.json')
-        @self.app.get('/motor/<name>/register.json')
-        def get_motor_register(name):
-            req = {
-                'get': {
-                    name: ['registers', ]
-                }
-            }
-            return self.request_handler.handle_request(req)['get'][name]
-
-        @self.app.get('/<name>/<register>')
-        @self.app.get('/motor/<name>/<register>')
-        def get_object_register(name, register):
-            req = {
-                'get': {
-                    name: [register, ]
-                }
+        def get_primitives_list(self):
+            return {
+                'primitives': self.restfull_robot.get_primitives_list()
             }
 
-            return self.request_handler.handle_request(req)['get'][name]
-
-        @self.app.post('/<name>/<register>')
-        @self.app.post('/motor/<name>/<register>')
-        def set_object_register(name, register):
-            req = {
-                'set': {
-                    name: {register: bottle.request.json}
-                }
+        @self.app.get('/primitive/running/list.json')
+        def get_running_primitives_list(self):
+            return {
+                'running_primitives': self.restfull_robot.get_running_primitives_list()
             }
 
-            return self.request_handler.handle_request(req)
+        @self.app.get('/primitive/<prim>/start.json')
+        def start_primitive(self, prim):
+            self.restfull_robot.start_primitive(prim)
 
-        @self.app.post('/<prim_name>/call/<meth_name>')
-        @self.app.post('/primitive/<prim_name>/call/<meth_name>')
-        def call_prim_meth(prim_name, meth_name):
-            req = {
-                'call': {
-                    prim_name: {meth_name: bottle.request.json}
-                }
+        @self.app.get('/primitive/<prim>/stop.json')
+        def stop_primitive(self, prim):
+            self.restfull_robot.stop_primitive(prim)
+
+        @self.app.get('/primitive/<prim>/pause.json')
+        def pause_primitive(self, prim):
+            self.restfull_robot.pause_primitive(prim)
+
+        @self.app.get('/primitive/<prim>/resume.json')
+        def resume_primitive(self, prim):
+            self.restfull_robot.resume_primitive(prim)
+
+        @self.app.get('/primitive/<prim>/property/list.json')
+        def get_primitive_properties_list(self, prim):
+            return {
+                'property': self.restfull_robot.get_primitive_properties_list(prim)
             }
-            return self.request_handler.handle_request(req)['call'][prim_name]
 
-        @self.app.post('/request.json')
-        def request():
-            return self.request_handler.handle_request(bottle.request.json)
+        @self.app.get('/primitive/<prim>/property/<prop>')
+        def get_primitive_property(self, prim, prop):
+            res = self.restfull_robot.get_primitive_property(prim, prop)
+            return {
+                '{}.{}'.format(prim, prop): res
+            }
 
-        logger.info('Starting HTTPServer on http://%s:%s', host, port)
+        @self.app.post('/primitive/<prim>/property/<prop>/value.json')
+        def set_primitive_property(self, prim, prop):
+            self.restfull_robot.set_primitive_property(prim, prop,
+                                                       bottle.request.json)
+
+        @self.app.get('/primitive/<prim>/method/list.json')
+        def get_primitive_methods_list(self, prim):
+            return {
+                'methods': self.restfull_robot.get_primitive_methods_list(self, prim)
+            }
+
+        @self.app.post('/primitive/<prim>/method/<meth>/args.json')
+        def call_primitive_method(self, prim, meth):
+            res = self.restfull_robot.call_primitive_method(prim, meth,
+                                                            bottle.request.json)
+            return {
+                '{}:{}'.format(prim, meth): res
+            }
 
     def run(self):
         """ Start the bottle server, run forever. """
         bottle.run(self.app,
                    host=self.host, port=self.port,
-                   quiet=True,
+                   quiet=False,
                    server='tornado')

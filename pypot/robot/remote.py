@@ -1,7 +1,7 @@
 import zerorpc
 
 
-class RemoteRobot(object):
+class RemoteRobotClient(object):
     """ Remote Access to a Robot through the REST API.
 
         This RemoteRobot gives you access to motors and alias.
@@ -63,6 +63,6 @@ class RemoteRobot(object):
             self.primitives.append(prim)
 
 
-def from_remote(host, port=4242):
+def from_remote(host, port):
     """ Remote access to a Robot through the REST API. """
-    return RemoteRobot(host, port)
+    return RemoteRobotClient(host, port)

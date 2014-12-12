@@ -46,17 +46,38 @@ class RESTRobot(object):
     def get_primitives_list(self):
         return [p.name for p in self.robot.primitives]
 
-    def get_active_primitives_list(self):
+    def get_running_primitives_list(self):
         return [p.name for p in self.robot.active_primitives]
 
-    def start_primitive(self, primitive_name):
-        self._call_method_primitive(primitive_name, 'start')
+    def start_primitive(self, primitive):
+        self._call_primitive_method(primitive, 'start')
 
-    def stop_primitive(self, primitive_name):
-        self._call_method_primitive(primitive_name, 'stop')
+    def stop_primitive(self, primitive):
+        self._call_primitive_method(primitive, 'stop')
 
-    def _call_method_primitive(self, primitive_name, method_name,
-                               *args, **kwargs):
-        p = getattr(self.robot, primitive_name)
+    def pause_primitive(self, primitive):
+        self._call_primitive_method(primitive, 'pause')
+
+    def resume_primitive(self, primitive):
+        self._call_primitive_method(primitive, 'resume')
+
+    def get_primitive_properties_list(self, primitive):
+        return getattr(self.robot, primitive).properties
+
+    def get_primitive_property(self, primitive, property):
+        return attrgetter('{}.{}'.format(primitive, property))(self.robot)
+
+    def set_primitive_property(self, primitive, property, value):
+        m = getattr(self.robot, primitive)
+        setattr(m, property, value)
+
+    def get_primitive_methods_list(self, primitive):
+        return getattr(self.robot, primitive).methods
+
+    def call_primitive_method(self, primitive, method, kwargs):
+        self._call_primitive_method(self, primitive, method, **kwargs)
+
+    def _call_primitive_method(self, primitive, method_name, *args, **kwargs):
+        p = getattr(self.robot, primitive)
         f = getattr(p, method_name)
         return f(*args, **kwargs)
