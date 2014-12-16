@@ -23,10 +23,10 @@ The pypot library provides a REST API which can be used to access the [Robot](ht
 |--------------------------------------------|:------------------------------------------------------------:|:---------------------------------------------------------------------------------------------------------------------------------------------------:|------------------------------------------------------------------------|
 | Get the motors list | GET /motor/list.json | {"robot": {"get_motors_list": {"alias": "motors"}}} | {'motors': ["l_elbow_y", "r_elbow_y", "r_knee_y", "head_y", "head_z"]} |
 | Get the motors alias list | GET /motor/alias/list.json | {"robot": {"get_motors_alias": {}}} | {'alias': ["r_leg", "torso", "l_leg_sagitall"]} |
-| Get the motors list of a specific alias | GET /motor/<alias>/list.json | {"robot": {"get_motors_list": {"alias": "<alias>"}}} | {<alias>: ["l_elbow_y", "r_elbow_y", "r_knee_y", "head_y", "head_z"]} |
-| Get the registers list of a specific motor | GET /motor/<motor_name>/register/list.json | {"robot": {"get_registers_list": {"motor": "<motor_name>"}}} | {'registers': ["goal_speed", "compliant", "present_load", "id"]} |
-| Get the register value | GET /motor/<motor_name>/register/<register_name> | {"robot": {"get_register_value": {"motor": "<motor_name>", "register": "<register_name>"}}} | {"present_position": 30} |
-| Set new value to a register | POST /motor/<motor_name>/register/<register_name>/value.json | {"robot": {"set_register_value": {"motor": "<motor_name>", "register": "<register_name>", "value": {"arg1": "val1", "arg2": "val2", "...": "..."}}} | {} |
+| Get the motors list of a specific alias | GET /motor/\<alias>/list.json | {"robot": {"get_motors_list": {"alias": "<alias>"}}} | {<alias>: ["l_elbow_y", "r_elbow_y", "r_knee_y", "head_y", "head_z"]} |
+| Get the registers list of a specific motor | GET /motor/\<motor_name>/register/list.json | {"robot": {"get_registers_list": {"motor": "<motor_name>"}}} | {'registers': ["goal_speed", "compliant", "present_load", "id"]} |
+| Get the register value | GET /motor/\<motor_name>/register/\<register_name> | {"robot": {"get_register_value": {"motor": "<motor_name>", "register": "<register_name>"}}} | {"present_position": 30} |
+| Set new value to a register | POST /motor/\<motor_name>/register/\<register_name>/value.json | {"robot": {"set_register_value": {"motor": "<motor_name>", "register": "<register_name>", "value": {"arg1": "val1", "arg2": "val2", "...": "..."}}} | {} |
 
 ### Sensor
 
@@ -38,12 +38,12 @@ The pypot library provides a REST API which can be used to access the [Robot](ht
 |-----------------------------------|:-------------------------------------------------:|:--------------------------------------------------------------------------------------------------------------------------------------------:|:----------------------------------------------------------------------:|
 | Get the primitives list | GET /primitive/list.json | {"robot": {"get_primitives_list": ""}} | {'primitives': ["stand_up", "sit", "head_tracking"]} |
 | Get the running primitives list | GET /primitive/running/list.json | {"robot": {"get_running_primitives_list": ""}} | {'primitives': ["head_tracking"]} |
-| Start a primitive | GET /primitive/<prim>/start.json | {"robot": {"start_primitive": {"primitive": "<prim>"}}} | {} |
-  | Stop a primitive | GET /primitive/<prim>/stop.json | {"robot": {"stop_primitive": {"primitive": "<prim>"}}} | {} |
-    | Pause a primitive | GET /primitive/<prim>/pause.json | {"robot": {"pause_primitive": {"primitive": "<prim>"}}} | {} |
-      | Resume a primitive | GET /primitive/<prim>/resume.json | {"robot": {"resume_primitive": {"primitive": "<prim>"}}} | {} |
-        | Get the primitive properties list | GET /primitive/<prim>/property/list.json | {"robot": {"get_primitive_properties_list": {"primitive": "<prim>"}}} | {"property": ["filter", "smooth"]} |
-        | Get a primitive property value | GET /primitive/<prim>/property/<prop> | {"robot": {"get_primitive_property": {"primitive": "<prim>", "property": "<prop>"}}} | {"sin.amp": 30.0} |
-        | Set a primitive property value | POST /primitive/<prim>/property/<prop>/value.json | {"robot": {"set_primitive_property": {"primitive": "<prim>", "property": "<prop>", "args": {"arg1": "val1", "arg2": "val2", "...": "..."}}}} | {} |
-          | Get the primitive methods list | GET /primitive/<prim>/method/list.json | {"robot": {"get_primitive_methods_list": {"primitive": "<prim>"}}} | {"methods": ["get_tracked_faces", "start", "stop", "pause", "resume"]} |
-          | Call a method of a primitive | POST /primitive/<prim>/method/<meth>/args.json | {"robot": {"call_primitive_method": {"primitive": "<prim>", "method": "<meth>", "args": {"arg1": "val1", "arg2": "val2", "...": "..."}}}} |  |
+| Start a primitive | GET /primitive/\<prim>/start.json | {"robot": {"start_primitive": {"primitive": "<prim>"}}} | {} |
+| Stop a primitive | GET /primitive/\<prim>/stop.json | {"robot": {"stop_primitive": {"primitive": "<prim>"}}} | {} |
+| Pause a primitive | GET /primitive/\<prim>/pause.json | {"robot": {"pause_primitive": {"primitive": "<prim>"}}} | {} |
+| Resume a primitive | GET /primitive/\<prim>/resume.json | {"robot": {"resume_primitive": {"primitive": "<prim>"}}} | {} |
+| Get the primitive properties list | GET /primitive/\<prim>/property/list.json | {"robot": {"get_primitive_properties_list": {"primitive": "<prim>"}}} | {"property": ["filter", "smooth"]} |
+| Get a primitive property value | GET /primitive/\<prim>/property/<prop> | {"robot": {"get_primitive_property": {"primitive": "<prim>", "property": "<prop>"}}} | {"sin.amp": 30.0} |
+| Set a primitive property value | POST /primitive/\<prim>/property/<prop>/value.json | {"robot": {"set_primitive_property": {"primitive": "<prim>", "property": "<prop>", "args": {"arg1": "val1", "arg2": "val2", "...": "..."}}}} | {} |
+| Get the primitive methods list | GET /primitive/\<prim>/method/list.json | {"robot": {"get_primitive_methods_list": {"primitive": "<prim>"}}} | {"methods": ["get_tracked_faces", "start", "stop", "pause", "resume"]} |
+| Call a method of a primitive | POST /primitive/\<prim>/method/\<meth>/args.json | {"robot": {"call_primitive_method": {"primitive": "<prim>", "method": "<meth>", "args": {"arg1": "val1", "arg2": "val2", "...": "..."}}}} |  |
