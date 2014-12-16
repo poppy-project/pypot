@@ -47,3 +47,12 @@ The pypot library provides a REST API which can be used to access the [Robot](ht
 | Set a primitive property value | POST /primitive/\<prim>/property/<prop>/value.json | {"robot": {"set_primitive_property": {"primitive": "<prim>", "property": "<prop>", "args": {"arg1": "val1", "arg2": "val2", "...": "..."}}}} | {} |
 | Get the primitive methods list | GET /primitive/\<prim>/method/list.json | {"robot": {"get_primitive_methods_list": {"primitive": "<prim>"}}} | {"methods": ["get_tracked_faces", "start", "stop", "pause", "resume"]} |
 | Call a method of a primitive | POST /primitive/\<prim>/method/\<meth>/args.json | {"robot": {"call_primitive_method": {"primitive": "<prim>", "method": "<meth>", "args": {"arg1": "val1", "arg2": "val2", "...": "..."}}}} |  |
+
+
+## Note for developers
+
+In order to **publicly** available through the REST API, the registers of the motors/sensors and the properties/methods of the primitives should be added to specific lists.
+
+More precisely, the [Motor](http://poppy-project.github.io/pypot/pypot.robot.html#pypot.robot.motor.Motor) class sets the [registers](http://poppy-project.github.io/pypot/pypot.dynamixel.html#pypot.dynamixel.motor.DxlMotor.registers) list (similarly for the [Sensor](http://poppy-project.github.io/pypot/pypot.sensor.html) class) and the [Primitives](http://poppy-project.github.io/pypot/pypot.primitive.html#pypot.primitive.primitive.Primitive) uses the [methods]() and [properties]() list.
+
+Those are class variables and can be extended when defining your own subclasses (see the [Sinus primitive](https://github.com/poppy-project/pypot/blob/REST-API-2.0/pypot/primitive/utils.py) as an example).
