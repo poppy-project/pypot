@@ -131,7 +131,7 @@
 <span class="kn">import</span> <span class="nn">zerorpc</span>
 
 
-<div class="viewcode-block" id="RemoteRobot"><a class="viewcode-back" href="../../../pypot.robot.html#pypot.robot.remote.RemoteRobot">[docs]</a><span class="k">class</span> <span class="nc">RemoteRobot</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="RemoteRobotClient"><a class="viewcode-back" href="../../../pypot.robot.html#pypot.robot.remote.RemoteRobotClient">[docs]</a><span class="k">class</span> <span class="nc">RemoteRobotClient</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; Remote Access to a Robot through the REST API.</span>
 
 <span class="sd">        This RemoteRobot gives you access to motors and alias.</span>
@@ -193,9 +193,9 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">primitives</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">prim</span><span class="p">)</span>
 
 </div>
-<div class="viewcode-block" id="from_remote"><a class="viewcode-back" href="../../../pypot.robot.html#pypot.robot.remote.from_remote">[docs]</a><span class="k">def</span> <span class="nf">from_remote</span><span class="p">(</span><span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="mi">4242</span><span class="p">):</span>
+<div class="viewcode-block" id="from_remote"><a class="viewcode-back" href="../../../pypot.robot.html#pypot.robot.remote.from_remote">[docs]</a><span class="k">def</span> <span class="nf">from_remote</span><span class="p">(</span><span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; Remote access to a Robot through the REST API. &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">RemoteRobot</span><span class="p">(</span><span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">)</span></div>
+    <span class="k">return</span> <span class="n">RemoteRobotClient</span><span class="p">(</span><span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">)</span></div>
 </pre></div>
 
                 </div>
@@ -228,7 +228,7 @@
       <!-- footer -->
       <footer role="contentinfo">
           &copy; Copyright 2012, Poppy-Project.
-        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.3b1.
+        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.3b2.
       </footer>
       <!-- /footer -->
 

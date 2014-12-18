@@ -294,6 +294,11 @@
 <dd><p>Bases: <a class="reference external" href="http://docs.python.org/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
 <p>Purely abstract class representing any motor object.</p>
 <dl class="attribute">
+<dt id="pypot.robot.motor.Motor.registers">
+<code class="descname">registers</code><em class="property"> = []</em><a class="headerlink" href="#pypot.robot.motor.Motor.registers" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
 <dt id="pypot.robot.motor.Motor.name">
 <code class="descname">name</code><a class="headerlink" href="#pypot.robot.motor.Motor.name" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
@@ -309,6 +314,11 @@
 <dd><p>Bases: <a class="reference external" href="http://docs.python.org/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
 <p>Purely abstract class representing any sensor object.</p>
 <dl class="attribute">
+<dt id="pypot.robot.sensor.Sensor.registers">
+<code class="descname">registers</code><em class="property"> = []</em><a class="headerlink" href="#pypot.robot.sensor.Sensor.registers" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
 <dt id="pypot.robot.sensor.Sensor.name">
 <code class="descname">name</code><a class="headerlink" href="#pypot.robot.sensor.Sensor.name" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
@@ -319,6 +329,11 @@
 <dt id="pypot.robot.sensor.ObjectTracker">
 <em class="property">class </em><code class="descclassname">pypot.robot.sensor.</code><code class="descname">ObjectTracker</code><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/robot/sensor.html#ObjectTracker"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.robot.sensor.ObjectTracker" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#pypot.robot.sensor.Sensor" title="pypot.robot.sensor.Sensor"><code class="xref py py-class docutils literal"><span class="pre">pypot.robot.sensor.Sensor</span></code></a></p>
+<dl class="attribute">
+<dt id="pypot.robot.sensor.ObjectTracker.registers">
+<code class="descname">registers</code><em class="property"> = ['position', 'orientation']</em><a class="headerlink" href="#pypot.robot.sensor.ObjectTracker.registers" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="attribute">
 <dt id="pypot.robot.sensor.ObjectTracker.position">
 <code class="descname">position</code><a class="headerlink" href="#pypot.robot.sensor.ObjectTracker.position" title="Permalink to this definition">¶</a></dt>
@@ -489,8 +504,8 @@
 <div class="section" id="module-pypot.robot.remote">
 <span id="remote-module"></span><h2><code class="xref py py-mod docutils literal"><span class="pre">remote</span></code> Module<a class="headerlink" href="#module-pypot.robot.remote" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
-<dt id="pypot.robot.remote.RemoteRobot">
-<em class="property">class </em><code class="descclassname">pypot.robot.remote.</code><code class="descname">RemoteRobot</code><span class="sig-paren">(</span><em>host</em>, <em>port</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/robot/remote.html#RemoteRobot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.robot.remote.RemoteRobot" title="Permalink to this definition">¶</a></dt>
+<dt id="pypot.robot.remote.RemoteRobotClient">
+<em class="property">class </em><code class="descclassname">pypot.robot.remote.</code><code class="descname">RemoteRobotClient</code><span class="sig-paren">(</span><em>host</em>, <em>port</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/robot/remote.html#RemoteRobotClient"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.robot.remote.RemoteRobotClient" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference external" href="http://docs.python.org/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
 <p>Remote Access to a Robot through the REST API.</p>
 <p>This RemoteRobot gives you access to motors and alias.
@@ -501,7 +516,7 @@ More specifically you can start/stop them.</p>
 
 <dl class="function">
 <dt id="pypot.robot.remote.from_remote">
-<code class="descclassname">pypot.robot.remote.</code><code class="descname">from_remote</code><span class="sig-paren">(</span><em>host</em>, <em>port=4242</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/robot/remote.html#from_remote"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.robot.remote.from_remote" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">pypot.robot.remote.</code><code class="descname">from_remote</code><span class="sig-paren">(</span><em>host</em>, <em>port</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/robot/remote.html#from_remote"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.robot.remote.from_remote" title="Permalink to this definition">¶</a></dt>
 <dd><p>Remote access to a Robot through the REST API.</p>
 </dd></dl>
 
@@ -541,7 +556,7 @@ More specifically you can start/stop them.</p>
       <!-- footer -->
       <footer role="contentinfo">
           &copy; Copyright 2012, Poppy-Project.
-        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.3b1.
+        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.3b2.
       </footer>
       <!-- /footer -->
 

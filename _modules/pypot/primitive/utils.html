@@ -138,6 +138,7 @@
 
     <span class="sd">&quot;&quot;&quot; Apply a sinus on the motor specified as argument. Parameters (amp, offset and phase) should be specified in degree</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">properties</span> <span class="o">=</span> <span class="n">LoopPrimitive</span><span class="o">.</span><span class="n">properties</span> <span class="o">+</span> <span class="p">[</span><span class="s">&#39;frequency&#39;</span><span class="p">,</span> <span class="s">&#39;amplitude&#39;</span><span class="p">,</span> <span class="s">&#39;offset&#39;</span><span class="p">,</span> <span class="s">&#39;phase&#39;</span><span class="p">]</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">robot</span><span class="p">,</span> <span class="n">refresh_freq</span><span class="p">,</span>
                  <span class="n">motor_list</span><span class="p">,</span>
@@ -270,7 +271,7 @@
       <!-- footer -->
       <footer role="contentinfo">
           &copy; Copyright 2012, Poppy-Project.
-        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.3b1.
+        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.3b2.
       </footer>
       <!-- /footer -->
 
