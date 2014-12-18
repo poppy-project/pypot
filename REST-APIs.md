@@ -30,7 +30,7 @@ The pypot library provides a REST API which can be used to access the [Robot](ht
 
 ### Sensor
 
-*Similar to the motor API. You just replace motor by sensor.*
+*Similar to the motor API. You just replace motor by sensor (for the moment there is no alias for sensors).*
 
 ## Primitive
 
