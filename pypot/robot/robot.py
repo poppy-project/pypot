@@ -25,6 +25,7 @@ class Robot(object):
 
         """
         self._motors = []
+        self._sensors = []
         self.alias = []
 
         self._controllers = sensor_controllers + motor_controllers
@@ -38,6 +39,8 @@ class Robot(object):
         for controller in sensor_controllers:
             for s in controller.sensors:
                 setattr(self, s.name, s)
+
+            self._sensors.extend(controller.sensors)
 
         self._attached_primitives = {}
         self._primitive_manager = PrimitiveManager(self.motors)
@@ -90,6 +93,11 @@ class Robot(object):
     def motors(self):
         """ Returns all the motors attached to the robot. """
         return self._motors
+
+    @property
+    def sensors(self):
+        """ Returns all the sensors attached to the robot. """
+        return self._sensors
 
     @property
     def active_primitives(self):
