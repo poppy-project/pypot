@@ -9,7 +9,7 @@
   <head>
     <meta charset="utf-8" />
     
-    <title>primitive Package &mdash; pypot 2.0 documentation</title>
+    <title>primitive Package &mdash; pypot 2.0.1 documentation</title>
     <meta name="description" content="">
     <meta name="author" content="">
 
@@ -36,7 +36,7 @@
 <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
             URL_ROOT:    './',
-            VERSION:     '2.0',
+            VERSION:     '2.0.1',
             COLLAPSE_INDEX: false,
             FILE_SUFFIX: '.html',
             HAS_SOURCE:  true
@@ -51,7 +51,7 @@
 <script type="text/javascript">
 </script>
     <link rel="author" title="About these documents" href="about.html" />
-    <link rel="top" title="pypot 2.0 documentation" href="index.html" />
+    <link rel="top" title="pypot 2.0.1 documentation" href="index.html" />
     <link rel="up" title="Pypot’s API" href="api.html" />
     <link rel="next" title="robot Package" href="pypot.robot.html" />
     <link rel="prev" title="dynamixel Package" href="pypot.dynamixel.html" /> 
@@ -66,7 +66,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="index.html">pypot 2.0 documentation</a>
+          <a class="navbar-brand" href="index.html">pypot 2.0.1 documentation</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
@@ -209,16 +209,6 @@
 <p class="first admonition-title">Warning</p>
 <p class="last">You should not directly pass motors as argument to the primitive. If you need to, use the method <a class="reference internal" href="#pypot.primitive.primitive.Primitive.get_mockup_motor" title="pypot.primitive.primitive.Primitive.get_mockup_motor"><code class="xref py py-meth docutils literal"><span class="pre">get_mockup_motor()</span></code></a> to transform them into &#8220;fake&#8221; motors. See the <a class="reference internal" href="primitive.html#write-own-prim"><em>Writing your own primitive</em></a> section for details.</p>
 </div>
-<dl class="attribute">
-<dt id="pypot.primitive.primitive.Primitive.methods">
-<code class="descname">methods</code><em class="property"> = ['start', 'stop', 'pause', 'resume']</em><a class="headerlink" href="#pypot.primitive.primitive.Primitive.methods" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pypot.primitive.primitive.Primitive.properties">
-<code class="descname">properties</code><em class="property"> = []</em><a class="headerlink" href="#pypot.primitive.primitive.Primitive.properties" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
 <dl class="method">
 <dt id="pypot.primitive.primitive.Primitive.setup">
 <code class="descname">setup</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/primitive/primitive.html#Primitive.setup"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.primitive.primitive.Primitive.setup" title="Permalink to this definition">¶</a></dt>
@@ -361,7 +351,7 @@ The 0th element of the list corresponds to the most recent frequency.</p>
 <span id="manager-module"></span><h2><a class="reference internal" href="#module-pypot.primitive.manager" title="pypot.primitive.manager"><code class="xref py py-mod docutils literal"><span class="pre">manager</span></code></a> Module<a class="headerlink" href="#module-pypot.primitive.manager" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="pypot.primitive.manager.PrimitiveManager">
-<em class="property">class </em><code class="descclassname">pypot.primitive.manager.</code><code class="descname">PrimitiveManager</code><span class="sig-paren">(</span><em>motors</em>, <em>freq=50</em>, <em>filter=&lt;functools.partial object at 0x10c106b50&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/primitive/manager.html#PrimitiveManager"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.primitive.manager.PrimitiveManager" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">pypot.primitive.manager.</code><code class="descname">PrimitiveManager</code><span class="sig-paren">(</span><em>motors</em>, <em>freq=50</em>, <em>filter=&lt;functools.partial object at 0x10f8f7b50&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/primitive/manager.html#PrimitiveManager"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.primitive.manager.PrimitiveManager" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="pypot.utils.html#pypot.utils.stoppablethread.StoppableLoopThread" title="pypot.utils.stoppablethread.StoppableLoopThread"><code class="xref py py-class docutils literal"><span class="pre">pypot.utils.stoppablethread.StoppableLoopThread</span></code></a></p>
 <p>Combines all <a class="reference internal" href="#pypot.primitive.primitive.Primitive" title="pypot.primitive.primitive.Primitive"><code class="xref py py-class docutils literal"><span class="pre">Primitive</span></code></a> orders and affect them to the real motors.</p>
 <p>At a predefined frequency, the manager gathers all the orders sent by the primitive to the &#8220;fake&#8221; motors, combined them thanks to the filter function and affect them to the &#8220;real&#8221; motors.</p>
@@ -523,11 +513,6 @@ The 0th element of the list corresponds to the most recent frequency.</p>
 <em class="property">class </em><code class="descclassname">pypot.primitive.utils.</code><code class="descname">Sinus</code><span class="sig-paren">(</span><em>robot</em>, <em>refresh_freq</em>, <em>motor_list</em>, <em>amp=1</em>, <em>freq=0.5</em>, <em>offset=0</em>, <em>phase=0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/primitive/utils.html#Sinus"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.primitive.utils.Sinus" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#pypot.primitive.primitive.LoopPrimitive" title="pypot.primitive.primitive.LoopPrimitive"><code class="xref py py-class docutils literal"><span class="pre">pypot.primitive.primitive.LoopPrimitive</span></code></a></p>
 <p>Apply a sinus on the motor specified as argument. Parameters (amp, offset and phase) should be specified in degree</p>
-<dl class="attribute">
-<dt id="pypot.primitive.utils.Sinus.properties">
-<code class="descname">properties</code><em class="property"> = ['frequency', 'amplitude', 'offset', 'phase']</em><a class="headerlink" href="#pypot.primitive.utils.Sinus.properties" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
 <dl class="method">
 <dt id="pypot.primitive.utils.Sinus.update">
 <code class="descname">update</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/primitive/utils.html#Sinus.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.primitive.utils.Sinus.update" title="Permalink to this definition">¶</a></dt>
@@ -598,7 +583,7 @@ The 0th element of the list corresponds to the most recent frequency.</p>
 <div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
   <div class="navbar-inner">
     <ul class="nav navbar-nav">
-        <li><a href="index.html">pypot 2.0 documentation</a></li>
+        <li><a href="index.html">pypot 2.0.1 documentation</a></li>
     </ul>
     <ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
       

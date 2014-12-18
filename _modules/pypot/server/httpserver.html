@@ -9,7 +9,7 @@
   <head>
     <meta charset="utf-8" />
     
-    <title>pypot.server.httpserver &mdash; pypot 2.0 documentation</title>
+    <title>pypot.server.httpserver &mdash; pypot 2.0.1 documentation</title>
     <meta name="description" content="">
     <meta name="author" content="">
 
@@ -36,7 +36,7 @@
 <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
             URL_ROOT:    '../../../',
-            VERSION:     '2.0',
+            VERSION:     '2.0.1',
             COLLAPSE_INDEX: false,
             FILE_SUFFIX: '.html',
             HAS_SOURCE:  true
@@ -51,7 +51,7 @@
 <script type="text/javascript">
 </script>
     <link rel="author" title="About these documents" href="../../../about.html" />
-    <link rel="top" title="pypot 2.0 documentation" href="../../../index.html" />
+    <link rel="top" title="pypot 2.0.1 documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body role="document">
@@ -64,7 +64,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="../../../index.html">pypot 2.0 documentation</a>
+          <a class="navbar-brand" href="../../../index.html">pypot 2.0.1 documentation</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
@@ -130,14 +130,15 @@
   <h1>Source code for pypot.server.httpserver</h1><div class="highlight"><pre>
 <span class="kn">import</span> <span class="nn">bottle</span>
 <span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">json</span>
 
-<span class="kn">from</span> <span class="nn">.server</span> <span class="kn">import</span> <span class="n">AbstractServer</span>
+<span class="kn">from</span> <span class="nn">.server</span> <span class="kn">import</span> <span class="n">AbstractServer</span><span class="p">,</span> <span class="n">MyJSONEncoder</span>
 
 
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="n">__name__</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="HTTPRobotServer"><a class="viewcode-back" href="../../../pypot.server.html#pypot.server.httpserver.HTTPRobotServer">[docs]</a><span class="k">class</span> <span class="nc">HTTPRobotServer</span><span class="p">(</span><span class="n">AbstractServer</span><span class="p">):</span>
+<div class="viewcode-block" id="HTTPServer"><a class="viewcode-back" href="../../../pypot.server.html#pypot.server.httpserver.HTTPServer">[docs]</a><span class="k">class</span> <span class="nc">HTTPServer</span><span class="p">(</span><span class="n">AbstractServer</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; Bottle based HTTPServer used to remote access a robot.</span>
 
 <span class="sd">        The server answers to the following requests:</span>
@@ -151,112 +152,87 @@
 <span class="sd">        * POST /request.json</span>
 
 <span class="sd">     &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">robot</span><span class="p">,</span> <span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">):</span>
-        <span class="n">AbstractServer</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">robot</span><span class="p">,</span> <span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">robot</span><span class="p">,</span> <span class="n">host</span><span class="o">=</span><span class="s">&#39;localhost&#39;</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="mi">8080</span><span class="p">):</span>
+        <span class="n">AbstractServer</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">robot</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">host</span> <span class="o">=</span> <span class="n">host</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">port</span> <span class="o">=</span> <span class="n">port</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">app</span> <span class="o">=</span> <span class="n">bottle</span><span class="o">.</span><span class="n">Bottle</span><span class="p">()</span>
-
-        <span class="c"># Motors route</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">install</span><span class="p">(</span><span class="n">bottle</span><span class="o">.</span><span class="n">JSONPlugin</span><span class="p">(</span><span class="n">json_dumps</span><span class="o">=</span><span class="k">lambda</span> <span class="n">s</span><span class="p">:</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">cls</span><span class="o">=</span><span class="n">MyJSONEncoder</span><span class="p">)))</span>
 
         <span class="nd">@self.app.get</span><span class="p">(</span><span class="s">&#39;/motor/list.json&#39;</span><span class="p">)</span>
-        <span class="nd">@self.app.get</span><span class="p">(</span><span class="s">&#39;/motor/&lt;alias&gt;/list.json&#39;</span><span class="p">)</span>
-        <span class="k">def</span> <span class="nf">get_motor_list</span><span class="p">(</span><span class="n">alias</span><span class="o">=</span><span class="s">&#39;motors&#39;</span><span class="p">):</span>
-            <span class="k">return</span> <span class="p">{</span>
-                <span class="n">alias</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">restfull_robot</span><span class="o">.</span><span class="n">get_motors_list</span><span class="p">(</span><span class="n">alias</span><span class="p">)</span>
+        <span class="k">def</span> <span class="nf">get_motor_list</span><span class="p">():</span>
+            <span class="n">req</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s">&#39;get&#39;</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="s">&#39;&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s">&#39;motors&#39;</span><span class="p">,</span> <span class="p">]</span>
+                <span class="p">}</span>
             <span class="p">}</span>
 
-        <span class="nd">@self.app.get</span><span class="p">(</span><span class="s">&#39;/motor/alias/list.json&#39;</span><span class="p">)</span>
-        <span class="k">def</span> <span class="nf">get_motor_alias</span><span class="p">():</span>
-            <span class="k">return</span> <span class="p">{</span>
-                <span class="s">&#39;alias&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">restfull_robot</span><span class="o">.</span><span class="n">get_motors_alias</span><span class="p">()</span>
-            <span class="p">}</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">request_handler</span><span class="o">.</span><span class="n">handle_request</span><span class="p">(</span><span class="n">req</span><span class="p">)[</span><span class="s">&#39;get&#39;</span><span class="p">][</span><span class="s">&#39;&#39;</span><span class="p">]</span>
 
-        <span class="nd">@self.app.get</span><span class="p">(</span><span class="s">&#39;/motor/&lt;motor_name&gt;/register/list.json&#39;</span><span class="p">)</span>
-        <span class="k">def</span> <span class="nf">get_motor_registers</span><span class="p">(</span><span class="n">motor_name</span><span class="p">):</span>
-            <span class="k">return</span> <span class="p">{</span>
-                <span class="s">&#39;registers&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">restfull_robot</span><span class="o">.</span><span class="n">get_registers_list</span><span class="p">(</span><span class="n">motor_name</span><span class="p">)</span>
-            <span class="p">}</span>
-
-        <span class="nd">@self.app.get</span><span class="p">(</span><span class="s">&#39;/motor/&lt;motor_name&gt;/register/&lt;register_name&gt;&#39;</span><span class="p">)</span>
-        <span class="k">def</span> <span class="nf">get_register_value</span><span class="p">(</span><span class="n">motor_name</span><span class="p">,</span> <span class="n">register_name</span><span class="p">):</span>
-            <span class="k">return</span> <span class="p">{</span>
-                <span class="n">register_name</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">restfull_robot</span><span class="o">.</span><span class="n">get_register_value</span><span class="p">(</span><span class="n">motor_name</span><span class="p">,</span> <span class="n">register_name</span><span class="p">)</span>
-            <span class="p">}</span>
-
-        <span class="nd">@self.app.post</span><span class="p">(</span><span class="s">&#39;/motor/&lt;motor_name&gt;/register/&lt;register_name&gt;/value.json&#39;</span><span class="p">)</span>
-        <span class="k">def</span> <span class="nf">set_register_value</span><span class="p">(</span><span class="n">motor_name</span><span class="p">,</span> <span class="n">register_name</span><span class="p">):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">restfull_robot</span><span class="o">.</span><span class="n">set_register_value</span><span class="p">(</span><span class="n">motor_name</span><span class="p">,</span> <span class="n">register_name</span><span class="p">,</span>
-                                                   <span class="n">bottle</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">json</span><span class="p">)</span>
-            <span class="k">return</span> <span class="p">{}</span>
-
-        <span class="c"># Sensors route</span>
-
-        <span class="c"># Primitives route</span>
         <span class="nd">@self.app.get</span><span class="p">(</span><span class="s">&#39;/primitive/list.json&#39;</span><span class="p">)</span>
-        <span class="k">def</span> <span class="nf">get_primitives_list</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-            <span class="k">return</span> <span class="p">{</span>
-                <span class="s">&#39;primitives&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">restfull_robot</span><span class="o">.</span><span class="n">get_primitives_list</span><span class="p">()</span>
+        <span class="k">def</span> <span class="nf">get_primitive_list</span><span class="p">():</span>
+            <span class="n">req</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s">&#39;get&#39;</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="s">&#39;&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s">&#39;attached_primitives_name&#39;</span><span class="p">,</span> <span class="p">]</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">request_handler</span><span class="o">.</span><span class="n">handle_request</span><span class="p">(</span><span class="n">req</span><span class="p">)[</span><span class="s">&#39;get&#39;</span><span class="p">][</span><span class="s">&#39;&#39;</span><span class="p">]</span>
+
+        <span class="nd">@self.app.get</span><span class="p">(</span><span class="s">&#39;/&lt;name&gt;/register.json&#39;</span><span class="p">)</span>
+        <span class="nd">@self.app.get</span><span class="p">(</span><span class="s">&#39;/motor/&lt;name&gt;/register.json&#39;</span><span class="p">)</span>
+        <span class="k">def</span> <span class="nf">get_motor_register</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+            <span class="n">req</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s">&#39;get&#39;</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="n">name</span><span class="p">:</span> <span class="p">[</span><span class="s">&#39;registers&#39;</span><span class="p">,</span> <span class="p">]</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">request_handler</span><span class="o">.</span><span class="n">handle_request</span><span class="p">(</span><span class="n">req</span><span class="p">)[</span><span class="s">&#39;get&#39;</span><span class="p">][</span><span class="n">name</span><span class="p">]</span>
+
+        <span class="nd">@self.app.get</span><span class="p">(</span><span class="s">&#39;/&lt;name&gt;/&lt;register&gt;&#39;</span><span class="p">)</span>
+        <span class="nd">@self.app.get</span><span class="p">(</span><span class="s">&#39;/motor/&lt;name&gt;/&lt;register&gt;&#39;</span><span class="p">)</span>
+        <span class="k">def</span> <span class="nf">get_object_register</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">register</span><span class="p">):</span>
+            <span class="n">req</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s">&#39;get&#39;</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="n">name</span><span class="p">:</span> <span class="p">[</span><span class="n">register</span><span class="p">,</span> <span class="p">]</span>
+                <span class="p">}</span>
             <span class="p">}</span>
 
-        <span class="nd">@self.app.get</span><span class="p">(</span><span class="s">&#39;/primitive/running/list.json&#39;</span><span class="p">)</span>
-        <span class="k">def</span> <span class="nf">get_running_primitives_list</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-            <span class="k">return</span> <span class="p">{</span>
-                <span class="s">&#39;running_primitives&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">restfull_robot</span><span class="o">.</span><span class="n">get_running_primitives_list</span><span class="p">()</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">request_handler</span><span class="o">.</span><span class="n">handle_request</span><span class="p">(</span><span class="n">req</span><span class="p">)[</span><span class="s">&#39;get&#39;</span><span class="p">][</span><span class="n">name</span><span class="p">]</span>
+
+        <span class="nd">@self.app.post</span><span class="p">(</span><span class="s">&#39;/&lt;name&gt;/&lt;register&gt;&#39;</span><span class="p">)</span>
+        <span class="nd">@self.app.post</span><span class="p">(</span><span class="s">&#39;/motor/&lt;name&gt;/&lt;register&gt;&#39;</span><span class="p">)</span>
+        <span class="k">def</span> <span class="nf">set_object_register</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">register</span><span class="p">):</span>
+            <span class="n">req</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s">&#39;set&#39;</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="n">name</span><span class="p">:</span> <span class="p">{</span><span class="n">register</span><span class="p">:</span> <span class="n">bottle</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">json</span><span class="p">}</span>
+                <span class="p">}</span>
             <span class="p">}</span>
 
-        <span class="nd">@self.app.get</span><span class="p">(</span><span class="s">&#39;/primitive/&lt;prim&gt;/start.json&#39;</span><span class="p">)</span>
-        <span class="k">def</span> <span class="nf">start_primitive</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prim</span><span class="p">):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">restfull_robot</span><span class="o">.</span><span class="n">start_primitive</span><span class="p">(</span><span class="n">prim</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">request_handler</span><span class="o">.</span><span class="n">handle_request</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
 
-        <span class="nd">@self.app.get</span><span class="p">(</span><span class="s">&#39;/primitive/&lt;prim&gt;/stop.json&#39;</span><span class="p">)</span>
-        <span class="k">def</span> <span class="nf">stop_primitive</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prim</span><span class="p">):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">restfull_robot</span><span class="o">.</span><span class="n">stop_primitive</span><span class="p">(</span><span class="n">prim</span><span class="p">)</span>
-
-        <span class="nd">@self.app.get</span><span class="p">(</span><span class="s">&#39;/primitive/&lt;prim&gt;/pause.json&#39;</span><span class="p">)</span>
-        <span class="k">def</span> <span class="nf">pause_primitive</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prim</span><span class="p">):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">restfull_robot</span><span class="o">.</span><span class="n">pause_primitive</span><span class="p">(</span><span class="n">prim</span><span class="p">)</span>
-
-        <span class="nd">@self.app.get</span><span class="p">(</span><span class="s">&#39;/primitive/&lt;prim&gt;/resume.json&#39;</span><span class="p">)</span>
-        <span class="k">def</span> <span class="nf">resume_primitive</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prim</span><span class="p">):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">restfull_robot</span><span class="o">.</span><span class="n">resume_primitive</span><span class="p">(</span><span class="n">prim</span><span class="p">)</span>
-
-        <span class="nd">@self.app.get</span><span class="p">(</span><span class="s">&#39;/primitive/&lt;prim&gt;/property/list.json&#39;</span><span class="p">)</span>
-        <span class="k">def</span> <span class="nf">get_primitive_properties_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prim</span><span class="p">):</span>
-            <span class="k">return</span> <span class="p">{</span>
-                <span class="s">&#39;property&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">restfull_robot</span><span class="o">.</span><span class="n">get_primitive_properties_list</span><span class="p">(</span><span class="n">prim</span><span class="p">)</span>
+        <span class="nd">@self.app.post</span><span class="p">(</span><span class="s">&#39;/&lt;prim_name&gt;/call/&lt;meth_name&gt;&#39;</span><span class="p">)</span>
+        <span class="nd">@self.app.post</span><span class="p">(</span><span class="s">&#39;/primitive/&lt;prim_name&gt;/call/&lt;meth_name&gt;&#39;</span><span class="p">)</span>
+        <span class="k">def</span> <span class="nf">call_prim_meth</span><span class="p">(</span><span class="n">prim_name</span><span class="p">,</span> <span class="n">meth_name</span><span class="p">):</span>
+            <span class="n">req</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s">&#39;call&#39;</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="n">prim_name</span><span class="p">:</span> <span class="p">{</span><span class="n">meth_name</span><span class="p">:</span> <span class="n">bottle</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">json</span><span class="p">}</span>
+                <span class="p">}</span>
             <span class="p">}</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">request_handler</span><span class="o">.</span><span class="n">handle_request</span><span class="p">(</span><span class="n">req</span><span class="p">)[</span><span class="s">&#39;call&#39;</span><span class="p">][</span><span class="n">prim_name</span><span class="p">]</span>
 
-        <span class="nd">@self.app.get</span><span class="p">(</span><span class="s">&#39;/primitive/&lt;prim&gt;/property/&lt;prop&gt;&#39;</span><span class="p">)</span>
-        <span class="k">def</span> <span class="nf">get_primitive_property</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prim</span><span class="p">,</span> <span class="n">prop</span><span class="p">):</span>
-            <span class="n">res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">restfull_robot</span><span class="o">.</span><span class="n">get_primitive_property</span><span class="p">(</span><span class="n">prim</span><span class="p">,</span> <span class="n">prop</span><span class="p">)</span>
-            <span class="k">return</span> <span class="p">{</span>
-                <span class="s">&#39;{}.{}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">prim</span><span class="p">,</span> <span class="n">prop</span><span class="p">):</span> <span class="n">res</span>
-            <span class="p">}</span>
+        <span class="nd">@self.app.post</span><span class="p">(</span><span class="s">&#39;/request.json&#39;</span><span class="p">)</span>
+        <span class="k">def</span> <span class="nf">request</span><span class="p">():</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">request_handler</span><span class="o">.</span><span class="n">handle_request</span><span class="p">(</span><span class="n">bottle</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">json</span><span class="p">)</span>
 
-        <span class="nd">@self.app.post</span><span class="p">(</span><span class="s">&#39;/primitive/&lt;prim&gt;/property/&lt;prop&gt;/value.json&#39;</span><span class="p">)</span>
-        <span class="k">def</span> <span class="nf">set_primitive_property</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prim</span><span class="p">,</span> <span class="n">prop</span><span class="p">):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">restfull_robot</span><span class="o">.</span><span class="n">set_primitive_property</span><span class="p">(</span><span class="n">prim</span><span class="p">,</span> <span class="n">prop</span><span class="p">,</span>
-                                                       <span class="n">bottle</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">json</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;Starting HTTPServer on http://</span><span class="si">%s</span><span class="s">:</span><span class="si">%s</span><span class="s">&#39;</span><span class="p">,</span> <span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">)</span>
 
-        <span class="nd">@self.app.get</span><span class="p">(</span><span class="s">&#39;/primitive/&lt;prim&gt;/method/list.json&#39;</span><span class="p">)</span>
-        <span class="k">def</span> <span class="nf">get_primitive_methods_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prim</span><span class="p">):</span>
-            <span class="k">return</span> <span class="p">{</span>
-                <span class="s">&#39;methods&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">restfull_robot</span><span class="o">.</span><span class="n">get_primitive_methods_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prim</span><span class="p">)</span>
-            <span class="p">}</span>
-
-        <span class="nd">@self.app.post</span><span class="p">(</span><span class="s">&#39;/primitive/&lt;prim&gt;/method/&lt;meth&gt;/args.json&#39;</span><span class="p">)</span>
-        <span class="k">def</span> <span class="nf">call_primitive_method</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prim</span><span class="p">,</span> <span class="n">meth</span><span class="p">):</span>
-            <span class="n">res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">restfull_robot</span><span class="o">.</span><span class="n">call_primitive_method</span><span class="p">(</span><span class="n">prim</span><span class="p">,</span> <span class="n">meth</span><span class="p">,</span>
-                                                            <span class="n">bottle</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">json</span><span class="p">)</span>
-            <span class="k">return</span> <span class="p">{</span>
-                <span class="s">&#39;{}:{}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">prim</span><span class="p">,</span> <span class="n">meth</span><span class="p">):</span> <span class="n">res</span>
-            <span class="p">}</span>
-
-<div class="viewcode-block" id="HTTPRobotServer.run"><a class="viewcode-back" href="../../../pypot.server.html#pypot.server.httpserver.HTTPRobotServer.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="HTTPServer.run"><a class="viewcode-back" href="../../../pypot.server.html#pypot.server.httpserver.HTTPServer.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Start the bottle server, run forever. &quot;&quot;&quot;</span>
         <span class="n">bottle</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="p">,</span>
                    <span class="n">host</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">port</span><span class="p">,</span>
-                   <span class="n">quiet</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                   <span class="n">quiet</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
                    <span class="n">server</span><span class="o">=</span><span class="s">&#39;tornado&#39;</span><span class="p">)</span></div></div>
 </pre></div>
 
@@ -274,7 +250,7 @@
 <div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
   <div class="navbar-inner">
     <ul class="nav navbar-nav">
-        <li><a href="../../../index.html">pypot 2.0 documentation</a></li>
+        <li><a href="../../../index.html">pypot 2.0.1 documentation</a></li>
     </ul>
     <ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
       
