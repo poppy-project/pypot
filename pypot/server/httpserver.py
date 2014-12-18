@@ -128,9 +128,9 @@ class HTTPRobotServer(AbstractServer):
                 '{}:{}'.format(prim, meth): res
             }
 
-    def run(self):
+    def run(self, quiet=False, server='tornado'):
         """ Start the bottle server, run forever. """
         bottle.run(self.app,
                    host=self.host, port=self.port,
-                   quiet=False,
-                   server='tornado')
+                   quiet=quiet,
+                   server=server)
