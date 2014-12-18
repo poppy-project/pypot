@@ -1,3 +1,5 @@
+import json
+import numpy
 import bottle
 import logging
 
@@ -7,24 +9,28 @@ from .server import AbstractServer
 logger = logging.getLogger(__name__)
 
 
+class MyJSONEncoder(json.JSONEncoder):
+    """ JSONEncoder which tries to call a json property before using the enconding default function. """
+    def default(self, obj):
+        if isinstance(obj, numpy.ndarray):
+            return list(obj)
+
+        return json.JSONEncoder.default(self, obj)
+
+
 class HTTPRobotServer(AbstractServer):
     """ Bottle based HTTPServer used to remote access a robot.
 
-        The server answers to the following requests:
-
-        * GET /motor/list.json
-        * GET /primitive/list.json
-        * GET /motor/<name>/register.json (or GET /<name>/register.json)
-        * GET /motor/<name>/<register> (or GET /<name>/<register>)
-        * POST /motor/<name>/<register> (or POST /<name>/<register>)
-        * POST /primitive/<prim_name>/call/<meth_name> (or GET /<prim_name>/call/<meth_name>)
-        * POST /request.json
+        Please refer to the REST API for an exhaustive list of the possible routes.
 
      """
     def __init__(self, robot, host, port):
         AbstractServer.__init__(self, robot, host, port)
 
         self.app = bottle.Bottle()
+
+        jd = lambda s: json.dumps(s, cls=MyJSONEncoder)
+        self.app.install(bottle.JSONPlugin(json_dumps=jd))
 
         # Motors route
 
