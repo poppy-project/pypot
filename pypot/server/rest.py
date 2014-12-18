@@ -23,15 +23,14 @@ class RESTRobot(object):
     def get_motors_list(self, alias='motors'):
         return [m.name for m in getattr(self.robot, alias)]
 
-    def get_registers_list(self, motor):
-        return self.get_register_value(motor, 'registers')
+    def get_motor_registers_list(self, motor):
+        return self._get_register_value(motor, 'registers')
 
-    def get_register_value(self, motor, register):
-        return attrgetter('{}.{}'.format(motor, register))(self.robot)
+    def get_motor_register_value(self, motor, register):
+        return self._get_register_value(motor, register)
 
-    def set_register_value(self, motor, register, value):
-        m = getattr(self.robot, motor)
-        setattr(m, register, value)
+    def set_motor_register_value(self, motor, register, value):
+        self._set_register_value(motor, register, value)
 
     def get_motors_alias(self):
         return self.robot.alias
@@ -40,6 +39,15 @@ class RESTRobot(object):
 
     def get_sensors_list(self):
         return [s.name for s in self.robot.sensors]
+
+    def get_sensors_registers_list(self, sensor):
+        return self._get_register_value(sensor, 'registers')
+
+    def get_sensor_register_value(self, sensor, register):
+        return self._get_register_value(sensor, register)
+
+    def set_sensor_register_value(self, sensor, register, value):
+        return self._set_register_value(sensor, register, value)
 
     # Access primitive related values
 
@@ -65,17 +73,23 @@ class RESTRobot(object):
         return getattr(self.robot, primitive).properties
 
     def get_primitive_property(self, primitive, property):
-        return attrgetter('{}.{}'.format(primitive, property))(self.robot)
+        return self._get_register_value(primitive, property)
 
     def set_primitive_property(self, primitive, property, value):
-        m = getattr(self.robot, primitive)
-        setattr(m, property, value)
+        self._set_register_value(primitive, property, value)
 
     def get_primitive_methods_list(self, primitive):
         return getattr(self.robot, primitive).methods
 
     def call_primitive_method(self, primitive, method, kwargs):
-        self._call_primitive_method(self, primitive, method, **kwargs)
+        self._call_primitive_method(primitive, method, **kwargs)
+
+    def _set_register_value(self, object, register, value):
+        o = getattr(self.robot, object)
+        setattr(o, register, value)
+
+    def _get_register_value(self, object, register):
+        return attrgetter('{}.{}'.format(object, register))(self.robot)
 
     def _call_primitive_method(self, primitive, method_name, *args, **kwargs):
         p = getattr(self.robot, primitive)
