@@ -10,6 +10,8 @@ class RESTRobot(object):
         * read/write a value from/to a register of a specific motor
 
         * the sensors list
+        * the registers list for a specific motor
+        * read/write a value from/to a register of a specific motor
 
         * the primitives list (and the active)
         * start/stop primitives
