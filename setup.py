@@ -38,7 +38,7 @@ setup(name='pypot',
       include_package_data=True,
       exclude_package_data={'': ['README', '.gitignore']},
 
-      zip_safe=True,
+      zip_safe=False,
 
       author='Pierre Rouanet, Steve N\'Guyen, Matthieu Lapeyre',
       author_email='pierre.rouanet@gmail.com',
