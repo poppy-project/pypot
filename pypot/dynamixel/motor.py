@@ -111,10 +111,6 @@ class DxlMotor(Motor):
                 'pos={self.present_position}>').format(self=self)
 
     @property
-    def json(self):
-        return self.name
-
-    @property
     def goal_speed(self):
         """ Goal speed (in degrees per second) of the motor.
 
@@ -180,17 +176,17 @@ class DxlAXRXMotor(DxlMotor):
 
 
 class DxlMXMotor(DxlMotor):
+    """ This class represents the RX and MX robotis motor.
+
+        This class adds access to:
+            * PID gains (see the robotis website for details)
+
+        """
     registers = list(DxlMotor.registers)
 
     pid = DxlRegister(rw=True)
 
     def __init__(self, id, name=None, model='',
                  direct=True, offset=0.0):
-        """ This class represents the RX and MX robotis motor.
-
-            This class adds access to:
-                * PID gains (see the robotis website for details)
-
-            """
         DxlMotor.__init__(self, id, name, model, direct, offset)
         self.max_pos = 180
