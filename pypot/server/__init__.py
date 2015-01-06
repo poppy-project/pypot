@@ -12,10 +12,10 @@
 
     """
 
-# try:
-from .httpserver import HTTPRobotServer
-# except ImportError:
-#     pass
+try:
+    from .httpserver import HTTPRobotServer
+except ImportError:
+    pass
 
 try:
     from .zmqserver import ZMQRobotServer
