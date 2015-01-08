@@ -38,14 +38,14 @@ class vrep_time():
             sys_time.sleep(0.01)
 
 
-def from_vrep(config, vrep_host, vrep_port, vrep_scene=None,
+def from_vrep(config, vrep_host='127.0.0.1', vrep_port=19997, scene=None,
               tracked_objects=[], tracked_collisions=[]):
     """ Create a robot from a V-REP instance.
 
     :param dict config: robot configuration dictionary
     :param str vrep_host: host of the V-REP server
     :param int vrep_port: port of the V-REP server
-    :param str vrep_scene: path to the V-REP scene to load and start
+    :param str scene: path to the V-REP scene to load and start
     :param list tracked_objects: list of V-REP dummy object to track
     :param list tracked_collisions: list of V-REP collision to track
 
@@ -83,7 +83,7 @@ def from_vrep(config, vrep_host, vrep_port, vrep_scene=None,
     motors = [motor_from_confignode(config, name)
               for name in config['motors'].keys()]
 
-    vc = VrepController(vrep_io, vrep_scene, motors)
+    vc = VrepController(vrep_io, scene, motors)
     vc._init_vrep_streaming()
 
     sensor_controllers = []
