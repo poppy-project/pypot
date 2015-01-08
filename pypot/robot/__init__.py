@@ -8,5 +8,5 @@ except ImportError:
 
 try:
     from ..vrep import from_vrep
-except ImportError:
+except (ImportError, OSError):
     pass

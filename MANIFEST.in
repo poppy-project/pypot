@@ -1,0 +1,1 @@
+include pypot/vrep/remoteApiBindings/lib/*/*/remoteApi.*
