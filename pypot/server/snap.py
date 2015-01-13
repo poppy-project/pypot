@@ -37,6 +37,14 @@ class SnapRobotServer(AbstractServer):
         def get_motor_register(motor, register):
             return str(rr.get_motor_register_value(motor, register))
 
+        @self.app.get('/motors/get/positions')
+        @make_snap_compatible_response
+        def get_motors_positions():
+            msg = '/'.join('{}:{}'.format(m,
+                                          rr.get_motor_register_value(m,
+                                                                      'present_position'))
+                           for m in rr.get_motors_list())
+            return msg
 
         @self.app.get('/motor/<motor>/set/<register>/<value>')
         @make_snap_compatible_response
