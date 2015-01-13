@@ -1,3 +1,4 @@
+import json
 import logging
 
 from .io import (VrepIO, close_all_connections,
@@ -42,7 +43,8 @@ def from_vrep(config, vrep_host='127.0.0.1', vrep_port=19997, scene=None,
               tracked_objects=[], tracked_collisions=[]):
     """ Create a robot from a V-REP instance.
 
-    :param dict config: robot configuration dictionary
+    :param config: robot configuration (either the path to the json or directly the dictionary)
+    :type config: str or dict
     :param str vrep_host: host of the V-REP server
     :param int vrep_port: port of the V-REP server
     :param str scene: path to the V-REP scene to load and start
@@ -73,6 +75,10 @@ def from_vrep(config, vrep_host='127.0.0.1', vrep_port=19997, scene=None,
     vreptime = vrep_time(vrep_io)
     pypot_time.time = vreptime.get_time
     pypot_time.sleep = vreptime.sleep
+
+    if isinstance(config, basestring):
+        with open(config) as f:
+            config = json.load(f)
 
     # The URDF uses the offset as the 0 for the motors equivalent
     # so we set all the offsets to 0
