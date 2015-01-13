@@ -2,8 +2,6 @@ import bottle
 
 from .server import AbstractServer
 
-import time
-t = []
 
 
 class SnapRobotServer(AbstractServer):
@@ -30,8 +28,6 @@ class SnapRobotServer(AbstractServer):
             r.set_header('Content-Length', len(s))
             r.set_header('Access-Control-Allow-Origin', '*')
 
-            if motor == 'head_z':
-                t.append(time.time())
 
             return s
 
@@ -51,17 +47,13 @@ class SnapRobotServer(AbstractServer):
             # t.append(time.time())
 
             return s
+        print 'Snap Server should now be ready!'
 
     def run(self):
         try:
             bottle.run(self.app,
-                    host=self.host, port=self.port,
-                   quiet=True,
-                   server='tornado')
+                       host=self.host, port=self.port,
+                       quiet=True,
+                       server='tornado')
         except KeyboardInterrupt:
             pass
-
-        print 'salut'
-
-        import numpy
-        numpy.save('t.npy', t)
