@@ -1,6 +1,8 @@
 import json
 import logging
 
+from functools import partial
+
 from .io import (VrepIO, close_all_connections,
                  VrepIOError, VrepConnectionError)
 
@@ -140,8 +142,10 @@ def from_vrep(config, vrep_host='127.0.0.1', vrep_port=19997, scene=None,
 
     def current_simulation_time(robot):
         return robot._controllers[0].io.get_simulation_current_time()
-    Robot.current_simulation_time = property(
+    Robot.current_simulation_time = property(lambda robot: current_simulation_time(robot))
 
-        lambda robot: current_simulation_time(robot))
+    def get_object_position(robot, object, relative_to_object=None):
+        return vrep_io.get_object_position(object, relative_to_object)
+    Robot.get_object_position = partial(get_object_position, robot)
 
     return robot
