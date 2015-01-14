@@ -14,7 +14,6 @@ import numpy
 import time
 import json
 
-
 import pypot.dynamixel
 import pypot.dynamixel.io
 import pypot.dynamixel.error
@@ -23,66 +22,6 @@ import pypot.dynamixel.controller
 
 from .robot import Robot
 
-
-ergo_robot_config = {
-    'controllers': {
-        'my_dxl_controller': {
-            'port': 'auto',  # It will automatically try to find the corresponding port depending on the attached motor ids.
-            'sync_read': False,
-            'attached_motors': ['base', 'head'],  # You can mix motorgroups or individual motors
-        },
-    },
-
-    'motorgroups': {
-        'base': ['base_pan', 'base_tilt_lower', 'base_tilt_upper'],
-        'head': ['head_pan', 'head_tilt_lower', 'head_tilt_upper'],
-    },
-
-    'motors': {
-        'base_pan': {
-            'id': 11,
-            'type': 'RX-64',
-            'orientation': 'direct',
-            'offset': 22.5,
-            'angle_limit': (-67.5, 112.5),
-        },
-        'base_tilt_lower': {
-            'id': 12,
-            'type': 'RX-64',
-            'orientation': 'direct',
-            'offset': 0.0,
-            'angle_limit': (-90.0, 90.0),
-        },
-        'base_tilt_upper': {
-            'id': 13,
-            'type': 'RX-64',
-            'orientation': 'direct',
-            'offset': 0.0,
-            'angle_limit': (-90.0, 90.0),
-        },
-        'head_pan': {
-            'id': 14,
-            'type': 'RX-28',
-            'orientation': 'direct',
-            'offset': 22.5,
-            'angle_limit': (-67.5, 112.5),
-        },
-        'head_tilt_lower': {
-            'id': 15,
-            'type': 'RX-28',
-            'orientation': 'indirect',
-            'offset': 0.0,
-            'angle_limit': (-90.0, 90.0),
-        },
-        'head_tilt_upper': {
-            'id': 16,
-            'type': 'RX-28',
-            'orientation': 'indirect',
-            'offset': 0.0,
-            'angle_limit': (-90.0, 90.0),
-        },
-    },
-}
 # This logger should always provides the config as extra
 logger = logging.getLogger(__name__)
 
@@ -240,48 +179,6 @@ def from_json(json_file):
         config = json.load(f)
 
     return from_config(config)
-
-
-def _oldxml_to_config(xml_file):
-    msg = 'Using XML file as configuration is deprecated, you should switch to Python dictionnary. You can save them as any format that can directly be transformed into a dictionnary (e.g. json files).'
-
-    warnings.warn(msg, DeprecationWarning)
-
-    import xml.dom.minidom
-
-    config = {}
-
-    dom = xml.dom.minidom.parse(xml_file)
-    robot_node = dom.firstChild
-
-    config['controllers'] = {}
-    for i, controller_node in enumerate(robot_node.getElementsByTagName('DxlController')):
-        name = 'controller_{}'.format(i + 1)
-        motors_node = controller_node.getElementsByTagName('DxlMotor')
-        config['controllers'][name] = {'port': str(controller_node.getAttribute('port')),
-                                       'sync_read': True if controller_node.getAttribute('sync_read') == 'True' else False,
-                                       'attached_motors': [m.getAttribute('name') for m in motors_node]}
-
-    config['motorgroups'] = {}
-    for motor_group_node in robot_node.getElementsByTagName('DxlMotorGroup'):
-        name = str(motor_group_node.getAttribute('name'))
-        motors_node = motor_group_node.getElementsByTagName('DxlMotor')
-        config['motorgroups'][name] = [str(m.getAttribute('name')) for m in motors_node]
-
-    config['motors'] = {}
-    for motor_node in robot_node.getElementsByTagName('DxlMotor'):
-        name = str(motor_node.getAttribute('name'))
-        angle_limit_node = motor_node.getElementsByTagName('angle_limits')[0]
-        angle_limit = eval(angle_limit_node.firstChild.data)
-        config['motors'][name] = {'id': int(motor_node.getAttribute('id')),
-                                  'type': str(motor_node.getAttribute('type')),
-                                  'orientation': str(motor_node.getAttribute('orientation')),
-                                  'offset': float(motor_node.getAttribute('offset')),
-                                  'angle_limit': angle_limit}
-
-    logger.warning(msg, extra={'config': config})
-
-    return config
 
 
 def _motor_extractor(alias, name):
