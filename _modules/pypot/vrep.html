@@ -9,7 +9,7 @@
   <head>
     <meta charset="utf-8" />
     
-    <title>pypot.vrep &mdash; pypot 2.0.1 documentation</title>
+    <title>pypot.vrep &mdash; pypot 2.0.3 documentation</title>
     <meta name="description" content="">
     <meta name="author" content="">
 
@@ -36,7 +36,7 @@
 <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
             URL_ROOT:    '../../',
-            VERSION:     '2.0.1',
+            VERSION:     '2.0.3',
             COLLAPSE_INDEX: false,
             FILE_SUFFIX: '.html',
             HAS_SOURCE:  true
@@ -51,7 +51,7 @@
 <script type="text/javascript">
 </script>
     <link rel="author" title="About these documents" href="../../about.html" />
-    <link rel="top" title="pypot 2.0.1 documentation" href="../../index.html" />
+    <link rel="top" title="pypot 2.0.3 documentation" href="../../index.html" />
     <link rel="up" title="Module code" href="../index.html" /> 
   </head>
   <body role="document">
@@ -64,7 +64,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="../../index.html">pypot 2.0.1 documentation</a>
+          <a class="navbar-brand" href="../../index.html">pypot 2.0.3 documentation</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
@@ -128,7 +128,10 @@
                 <div class="body">
                   
   <h1>Source code for pypot.vrep</h1><div class="highlight"><pre>
+<span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">import</span> <span class="nn">logging</span>
+
+<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">partial</span>
 
 <span class="kn">from</span> <span class="nn">.io</span> <span class="kn">import</span> <span class="p">(</span><span class="n">VrepIO</span><span class="p">,</span> <span class="n">close_all_connections</span><span class="p">,</span>
                  <span class="n">VrepIOError</span><span class="p">,</span> <span class="n">VrepConnectionError</span><span class="p">)</span>
@@ -168,14 +171,15 @@
             <span class="n">sys_time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.01</span><span class="p">)</span>
 
 </div></div>
-<div class="viewcode-block" id="from_vrep"><a class="viewcode-back" href="../../pypot.vrep.html#pypot.vrep.from_vrep">[docs]</a><span class="k">def</span> <span class="nf">from_vrep</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">vrep_host</span><span class="p">,</span> <span class="n">vrep_port</span><span class="p">,</span> <span class="n">vrep_scene</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+<div class="viewcode-block" id="from_vrep"><a class="viewcode-back" href="../../pypot.vrep.html#pypot.vrep.from_vrep">[docs]</a><span class="k">def</span> <span class="nf">from_vrep</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">vrep_host</span><span class="o">=</span><span class="s">&#39;127.0.0.1&#39;</span><span class="p">,</span> <span class="n">vrep_port</span><span class="o">=</span><span class="mi">19997</span><span class="p">,</span> <span class="n">scene</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
               <span class="n">tracked_objects</span><span class="o">=</span><span class="p">[],</span> <span class="n">tracked_collisions</span><span class="o">=</span><span class="p">[]):</span>
     <span class="sd">&quot;&quot;&quot; Create a robot from a V-REP instance.</span>
 
-<span class="sd">    :param dict config: robot configuration dictionary</span>
+<span class="sd">    :param config: robot configuration (either the path to the json or directly the dictionary)</span>
+<span class="sd">    :type config: str or dict</span>
 <span class="sd">    :param str vrep_host: host of the V-REP server</span>
 <span class="sd">    :param int vrep_port: port of the V-REP server</span>
-<span class="sd">    :param str vrep_scene: path to the V-REP scene to load and start</span>
+<span class="sd">    :param str scene: path to the V-REP scene to load and start</span>
 <span class="sd">    :param list tracked_objects: list of V-REP dummy object to track</span>
 <span class="sd">    :param list tracked_collisions: list of V-REP collision to track</span>
 
@@ -204,6 +208,10 @@
     <span class="n">pypot_time</span><span class="o">.</span><span class="n">time</span> <span class="o">=</span> <span class="n">vreptime</span><span class="o">.</span><span class="n">get_time</span>
     <span class="n">pypot_time</span><span class="o">.</span><span class="n">sleep</span> <span class="o">=</span> <span class="n">vreptime</span><span class="o">.</span><span class="n">sleep</span>
 
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="nb">basestring</span><span class="p">):</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">config</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">config</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+
     <span class="c"># The URDF uses the offset as the 0 for the motors equivalent</span>
     <span class="c"># so we set all the offsets to 0</span>
     <span class="n">config</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
@@ -213,7 +221,7 @@
     <span class="n">motors</span> <span class="o">=</span> <span class="p">[</span><span class="n">motor_from_confignode</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
               <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">config</span><span class="p">[</span><span class="s">&#39;motors&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">()]</span>
 
-    <span class="n">vc</span> <span class="o">=</span> <span class="n">VrepController</span><span class="p">(</span><span class="n">vrep_io</span><span class="p">,</span> <span class="n">vrep_scene</span><span class="p">,</span> <span class="n">motors</span><span class="p">)</span>
+    <span class="n">vc</span> <span class="o">=</span> <span class="n">VrepController</span><span class="p">(</span><span class="n">vrep_io</span><span class="p">,</span> <span class="n">scene</span><span class="p">,</span> <span class="n">motors</span><span class="p">)</span>
     <span class="n">vc</span><span class="o">.</span><span class="n">_init_vrep_streaming</span><span class="p">()</span>
 
     <span class="n">sensor_controllers</span> <span class="o">=</span> <span class="p">[]</span>
@@ -264,9 +272,11 @@
 
     <span class="k">def</span> <span class="nf">current_simulation_time</span><span class="p">(</span><span class="n">robot</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">robot</span><span class="o">.</span><span class="n">_controllers</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">get_simulation_current_time</span><span class="p">()</span>
-    <span class="n">Robot</span><span class="o">.</span><span class="n">current_simulation_time</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span>
+    <span class="n">Robot</span><span class="o">.</span><span class="n">current_simulation_time</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="k">lambda</span> <span class="n">robot</span><span class="p">:</span> <span class="n">current_simulation_time</span><span class="p">(</span><span class="n">robot</span><span class="p">))</span>
 
-        <span class="k">lambda</span> <span class="n">robot</span><span class="p">:</span> <span class="n">current_simulation_time</span><span class="p">(</span><span class="n">robot</span><span class="p">))</span>
+    <span class="k">def</span> <span class="nf">get_object_position</span><span class="p">(</span><span class="n">robot</span><span class="p">,</span> <span class="nb">object</span><span class="p">,</span> <span class="n">relative_to_object</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">vrep_io</span><span class="o">.</span><span class="n">get_object_position</span><span class="p">(</span><span class="nb">object</span><span class="p">,</span> <span class="n">relative_to_object</span><span class="p">)</span>
+    <span class="n">Robot</span><span class="o">.</span><span class="n">get_object_position</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span><span class="n">get_object_position</span><span class="p">,</span> <span class="n">robot</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">robot</span></div>
 </pre></div>
@@ -285,7 +295,7 @@
 <div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
   <div class="navbar-inner">
     <ul class="nav navbar-nav">
-        <li><a href="../../index.html">pypot 2.0.1 documentation</a></li>
+        <li><a href="../../index.html">pypot 2.0.3 documentation</a></li>
     </ul>
     <ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
       

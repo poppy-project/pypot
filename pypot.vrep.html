@@ -9,7 +9,7 @@
   <head>
     <meta charset="utf-8" />
     
-    <title>vrep Package &mdash; pypot 2.0.1 documentation</title>
+    <title>vrep Package &mdash; pypot 2.0.3 documentation</title>
     <meta name="description" content="">
     <meta name="author" content="">
 
@@ -36,7 +36,7 @@
 <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
             URL_ROOT:    './',
-            VERSION:     '2.0.1',
+            VERSION:     '2.0.3',
             COLLAPSE_INDEX: false,
             FILE_SUFFIX: '.html',
             HAS_SOURCE:  true
@@ -51,7 +51,7 @@
 <script type="text/javascript">
 </script>
     <link rel="author" title="About these documents" href="about.html" />
-    <link rel="top" title="pypot 2.0.1 documentation" href="index.html" />
+    <link rel="top" title="pypot 2.0.3 documentation" href="index.html" />
     <link rel="up" title="Pypot’s API" href="api.html" />
     <link rel="next" title="utils Package" href="pypot.utils.html" />
     <link rel="prev" title="server Package" href="pypot.server.html" /> 
@@ -66,7 +66,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="index.html">pypot 2.0.1 documentation</a>
+          <a class="navbar-brand" href="index.html">pypot 2.0.3 documentation</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
@@ -186,17 +186,17 @@
 
 <dl class="function">
 <dt id="pypot.vrep.from_vrep">
-<code class="descclassname">pypot.vrep.</code><code class="descname">from_vrep</code><span class="sig-paren">(</span><em>config</em>, <em>vrep_host</em>, <em>vrep_port</em>, <em>vrep_scene=None</em>, <em>tracked_objects=[]</em>, <em>tracked_collisions=[]</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/vrep.html#from_vrep"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.vrep.from_vrep" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">pypot.vrep.</code><code class="descname">from_vrep</code><span class="sig-paren">(</span><em>config</em>, <em>vrep_host='127.0.0.1'</em>, <em>vrep_port=19997</em>, <em>scene=None</em>, <em>tracked_objects=[]</em>, <em>tracked_collisions=[]</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/vrep.html#from_vrep"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.vrep.from_vrep" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a robot from a V-REP instance.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>config</strong> (<a class="reference external" href="http://docs.python.org/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; robot configuration dictionary</li>
+<li><strong>config</strong> (<em>str or dict</em>) &#8211; robot configuration (either the path to the json or directly the dictionary)</li>
 <li><strong>vrep_host</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; host of the V-REP server</li>
 <li><strong>vrep_port</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; port of the V-REP server</li>
-<li><strong>vrep_scene</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; path to the V-REP scene to load and start</li>
+<li><strong>scene</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; path to the V-REP scene to load and start</li>
 <li><strong>tracked_objects</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a>) &#8211; list of V-REP dummy object to track</li>
 <li><strong>tracked_collisions</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a>) &#8211; list of V-REP collision to track</li>
 </ul>
@@ -576,7 +576,7 @@ For instance:</p>
 <div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
   <div class="navbar-inner">
     <ul class="nav navbar-nav">
-        <li><a href="index.html">pypot 2.0.1 documentation</a></li>
+        <li><a href="index.html">pypot 2.0.3 documentation</a></li>
     </ul>
     <ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
       
