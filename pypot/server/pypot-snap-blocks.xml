@@ -1,0 +1,145 @@
+<blocks app="Snap! 4.0, http://snap.berkeley.edu" version="1">
+  <block-definition s="set motor %'name' register %'register' to %'value'" type="command" category="control">
+    <header/>
+    <code/>
+    <inputs>
+      <input type="%txt"/>
+      <input type="%txt"/>
+      <input type="%s"/>
+    </inputs>
+    <script>
+      <block s="doReport">
+        <block s="reportURL">
+          <block s="reportJoinWords">
+            <list>
+              <l>127.0.0.1:8080/motor/</l>
+              <block var="name"/>
+              <l>/set/</l>
+              <block var="register"/>
+              <l>/</l>
+              <block var="value"/>
+            </list>
+          </block>
+        </block>
+      </block>
+    </script>
+  </block-definition>
+  <block-definition s="set %'motor' goal position to %'position'" type="command" category="control">
+    <header/>
+    <code/>
+    <inputs>
+      <input type="%txt"/>
+      <input type="%n"/>
+    </inputs>
+    <script>
+      <custom-block s="set motor %txt register %txt to %s">
+        <block var="motor"/>
+        <l>goal_position</l>
+        <block var="position"/>
+      </custom-block>
+    </script>
+  </block-definition>
+  <block-definition s="make sinus on %'motor' with amp %'amp' and freq %'freq'" type="command" category="control">
+    <header/>
+    <code/>
+    <inputs>
+      <input type="%txt"/>
+      <input type="%n"/>
+      <input type="%n"/>
+    </inputs>
+    <script>
+      <custom-block s="set %txt goal position to %n">
+        <block var="motor"/>
+        <block s="reportProduct">
+          <block var="amp"/>
+          <block s="reportMonadic">
+            <l>
+              <option>sin</option>
+            </l>
+            <block s="reportProduct">
+              <l>2</l>
+              <block s="reportProduct">
+                <l>3.14</l>
+                <block s="reportProduct">
+                  <block var="freq"/>
+                  <block s="getTimer"/>
+                </block>
+              </block>
+            </block>
+          </block>
+        </block>
+      </custom-block>
+    </script>
+  </block-definition>
+  <block-definition s="get motor %'name' register %'register'" type="reporter" category="sensing">
+    <header/>
+    <code/>
+    <inputs>
+      <input type="%txt"/>
+      <input type="%txt"/>
+    </inputs>
+    <script>
+      <block s="doReport">
+        <block s="reportURL">
+          <block s="reportJoinWords">
+            <list>
+              <l>127.0.0.1:8080/motor/</l>
+              <block var="name"/>
+              <l>/get/</l>
+              <block var="register"/>
+            </list>
+          </block>
+        </block>
+      </block>
+    </script>
+  </block-definition>
+  <block-definition s="get %'motor' present position" type="reporter" category="sensing">
+    <header/>
+    <code/>
+    <inputs>
+      <input type="%txt"/>
+    </inputs>
+    <script>
+      <block s="doReport">
+        <custom-block s="get motor %txt register %txt">
+          <block var="motor"/>
+          <l>present_position</l>
+        </custom-block>
+      </block>
+    </script>
+  </block-definition>
+  <block-definition s="get motors of %'alias'" type="reporter" category="sensing">
+    <header/>
+    <code/>
+    <inputs>
+      <input type="%txt"/>
+    </inputs>
+    <script>
+      <block s="doReport">
+        <block s="reportTextSplit">
+          <block s="reportURL">
+            <block s="reportJoinWords">
+              <list>
+                <l>127.0.0.1:8080/motors/</l>
+                <block var="alias"/>
+              </list>
+            </block>
+          </block>
+          <l>/</l>
+        </block>
+      </block>
+    </script>
+  </block-definition>
+  <block-definition s="get all motors" type="reporter" category="sensing">
+    <header/>
+    <code/>
+    <inputs/>
+    <script>
+      <block s="doReport">
+        <custom-block s="get motors of %txt">
+          <l>motors</l>
+        </custom-block>
+      </block>
+    </script>
+  </block-definition>
+</blocks>
