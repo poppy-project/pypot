@@ -45,6 +45,8 @@ class Robot(object):
         self._syncing = False
         self.start_sync()
 
+        self._primitive_manager._running.wait()
+
     def close(self):
         """ Cleans the robot by stopping synchronization and all controllers."""
         self.stop_sync()
