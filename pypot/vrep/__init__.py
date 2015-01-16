@@ -82,12 +82,6 @@ def from_vrep(config, vrep_host='127.0.0.1', vrep_port=19997, scene=None,
         with open(config) as f:
             config = json.load(f)
 
-    # The URDF uses the offset as the 0 for the motors equivalent
-    # so we set all the offsets to 0
-    config = dict(config)
-    for m in config['motors'].itervalues():
-        m['offset'] = 0.0
-
     motors = [motor_from_confignode(config, name)
               for name in config['motors'].keys()]
 
