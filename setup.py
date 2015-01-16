@@ -25,6 +25,7 @@ setup(name='pypot',
           'doc': ['sphinx', 'sphinx-bootstrap-theme'],
           'server': ['bottle', 'tornado', 'zmq'],
           'remote-robot': ['zerorpc'],
+          'square-signal': ['scipy']
       },
 
       entry_points={
