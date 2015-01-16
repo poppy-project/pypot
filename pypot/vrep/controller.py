@@ -1,6 +1,7 @@
 from numpy import rad2deg, deg2rad
 
 from ..robot.controller import MotorsController, SensorsController
+from ..dynamixel.conversion import torque_max
 from ..robot.sensor import Sensor
 
 
@@ -33,14 +34,26 @@ class VrepController(MotorsController):
 
         """
         for m in self.motors:
+            tmax = torque_max[m.model]
+
             # Read values from V-REP and set them to the Motor
             p = round(
                 rad2deg(self.io.get_motor_position(motor_name=m.name)), 1)
             m.__dict__['present_position'] = p
 
+            l = 100. * self.io.get_motor_force(motor_name=m.name) / tmax
+            m.__dict__['present_load'] = l
+
             # Send new values from Motor to V-REP
             p = deg2rad(round(m.__dict__['goal_position'], 1))
             self.io.set_motor_position(motor_name=m.name, position=p)
+
+            t = m.__dict__['torque_limit'] * tmax / 100.
+
+            if m.__dict__['compliant']:
+                t = 0.
+
+            self.io.set_motor_force(motor_name=m.name, force=t)
 
     def _init_vrep_streaming(self):
         # While the code below may look redundant and that
@@ -51,10 +64,11 @@ class VrepController(MotorsController):
 
         # Prepare streaming for getting position for each motor
         for m in self.motors:
-            self.io.call_remote_api('simxGetJointPosition',
-                                    self.io.get_object_handle(m.name),
-                                    streaming=True,
-                                    _force=True)
+            for vrep_call in ['simxGetJointPosition', 'simxGetJointForce']:
+                self.io.call_remote_api(vrep_call,
+                                        self.io.get_object_handle(m.name),
+                                        streaming=True,
+                                        _force=True)
 
         # Now actually retrieves all values
         pos = [self.io.get_motor_position(m.name) for m in self.motors]
@@ -67,10 +81,22 @@ class VrepController(MotorsController):
                                     sending=True,
                                     _force=True)
 
+        for m in self.motors:
+            self.io.call_remote_api('simxSetJointForce',
+                                    self.io.get_object_handle(m.name),
+                                    torque_max[m.model],
+                                    sending=True,
+                                    _force=True)
+
         # And actually affect them
         for m, p in zip(self.motors, pos):
             self.io.set_motor_position(m.name, p)
             m.__dict__['goal_position'] = rad2deg(p)
+
+        for m in self.motors:
+            self.io.set_motor_force(m.name, torque_max[m.model])
+            m.__dict__['torque_limit'] = 100.
+            m.__dict__['compliant'] = False
 
 
 class VrepObjectTracker(SensorsController):

@@ -2,6 +2,7 @@
 
 ## V 2.1
 * now uses the poppy_creature package
+* add support for present_load/torque_limit/compliant in V-REP
 
 ## V. 2.0
 

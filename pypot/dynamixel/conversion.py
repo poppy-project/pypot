@@ -23,6 +23,28 @@ position_range = {
     '*': (1024, 300.0)
 }
 
+torque_max = {  # in N.m
+    'MX-106': 8.4,
+    'MX-64': 6.,
+    'MX-28': 2.5,
+    'MX-12': 1.2,
+    'AX-12': 1.2,
+    'AX-18': 1.8,
+    'RX-28': 2.5,
+    'RX-64': 4.,
+}
+
+velocity = {  # in degree/s
+    'MX-106': 270.,
+    'MX-64': 378.,
+    'MX-28': 330.,
+    'MX-12': 354.,
+    'AX-12': 354.,
+    'AX-18': 582.,
+    'RX-28': 402.,
+    'RX-64': 294.,
+}
+
 
 def dxl_to_degree(value, model):
     model = 'MX' if model.startswith('MX') else '*'
