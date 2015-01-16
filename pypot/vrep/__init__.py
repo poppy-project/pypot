@@ -107,19 +107,11 @@ def from_vrep(config, vrep_host='127.0.0.1', vrep_port=19997, scene=None,
 
     make_alias(config, robot)
 
-    def reset(robot):
+    def start_simu():
+        vrep_io.start_simulation()
+
         for m, p in init_pos.iteritems():
             m.goal_position = p
-
-        if tracked_objects:
-            vot.stop()
-
-        if tracked_collisions:
-            vct.stop()
-
-        vc.stop()
-
-        vrep_io.restart_simulation()
 
         vc.start()
 
@@ -132,7 +124,24 @@ def from_vrep(config, vrep_host='127.0.0.1', vrep_port=19997, scene=None,
         while vrep_io.get_simulation_current_time() < 1.:
             sys_time.sleep(0.1)
 
-    robot.reset_simulation = lambda: reset(robot)
+    def stop_simu():
+        if tracked_objects:
+            vot.stop()
+
+        if tracked_collisions:
+            vct.stop()
+
+        vc.stop()
+        vrep_io.stop_simulation()
+
+    def reset_simu():
+        stop_simu()
+        sys_time.sleep(0.5)
+        start_simu()
+
+    robot.start_simulation = start_simu
+    robot.stop_simulation = stop_simu
+    robot.reset_simulation = reset_simu
 
     def current_simulation_time(robot):
         return robot._controllers[0].io.get_simulation_current_time()
