@@ -1,5 +1,8 @@
 # Changelog
 
+## V 2.1
+* now uses the poppy_creature package
+
 ## V. 2.0
 
 ### Major changes
