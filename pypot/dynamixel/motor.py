@@ -4,6 +4,7 @@ import logging
 import pypot.utils.pypot_time as time
 
 from ..robot.motor import Motor
+from ..utils.stoppablethread import StoppableLoopThread
 
 logger = logging.getLogger(__name__)
 
@@ -106,6 +107,7 @@ class DxlMotor(Motor):
                                         else -1 * numpy.asarray(self._angle_limit)) - offset
 
         self.__dict__['compliant'] = True
+        self._safe_compliance = SafeCompliance(self)
 
     def __repr__(self):
         return ('<DxlMotor name={self.name} '
@@ -145,11 +147,22 @@ class DxlMotor(Motor):
         return bool(self.__dict__['compliant'])
 
     @compliant.setter
-    def compliant(self, value):
+    def compliant(self, is_compliant):
         # Change the goal_position only if you switch from compliant to not compliant mode
-        if not value and self.compliant:
+        if not is_compliant and self.compliant:
             self.goal_position = self.present_position
-        self.__dict__['compliant'] = value
+        self.__dict__['compliant'] = is_compliant
+
+    @property
+    def safe_compliant(self):
+        return self._safe_compliance.running
+
+    @safe_compliant.setter
+    def safe_compliant(self, is_compliant):
+        if is_compliant:
+            self._safe_compliance.start()
+        else:
+            self._safe_compliance.stop()
 
     def goto_position(self, position, duration, wait=False):
         """ Automatically sets the goal position and the moving speed to reach the desired position within the duration. """
@@ -196,3 +209,22 @@ class DxlMXMotor(DxlMotor):
             """
         DxlMotor.__init__(self, id, name, model, direct, offset)
         self.max_pos = 180
+
+
+class SafeCompliance(StoppableLoopThread):
+    """ This class creates a controller to active compliance only if the current motor position is included in the angle limit, else the compliance is turn off.
+        """
+    def __init__(self, DxlMotor, frequency=50):
+        StoppableLoopThread.__init__(self, frequency)
+
+        self.motor = DxlMotor
+
+    def update(self):
+        if (min(self.motor.angle_limit) > self.motor.present_position) or (self.motor.present_position > max(self.motor.angle_limit)):
+            self.motor.compliant = False
+        else:
+            self.motor.compliant = True
+
+    def stop(self):
+        self.motor.compliant = False
+        StoppableLoopThread.stop(self)
