@@ -88,7 +88,7 @@ class DxlMotor(Motor):
     present_load = DxlOrientedRegister()
     torque_limit = DxlRegister(rw=True)
 
-    angle_limit = DxlRegister()
+    _angle_limit = DxlRegister()
     present_voltage = DxlRegister()
     present_temperature = DxlRegister()
 
@@ -102,6 +102,8 @@ class DxlMotor(Motor):
         self.__dict__['model'] = model
         self.__dict__['direct'] = direct
         self.__dict__['offset'] = offset
+        self.__dict__['angle_limit'] = (numpy.asarray(self._angle_limit) if direct
+                                        else -1 * numpy.asarray(self._angle_limit)) - offset
 
         self.__dict__['compliant'] = True
 
