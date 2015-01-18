@@ -2,7 +2,7 @@ import bottle
 import logging
 import json
 
-from pypot.server.server import AbstractServer, MyJSONEncoder
+from .server import AbstractServer, MyJSONEncoder
 
 
 logger = logging.getLogger(__name__)

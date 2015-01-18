@@ -16,7 +16,7 @@ More precisely, Herborist can be used to:
 
 You can directly launch herborist by running the *herborist* command in your terminal.
 
-.. note:: When you install PyPot with the setup.py, herborist is automatically added to your $PATH. You can call it from anywhere thanks to the command::
+.. note:: When you install pypot with the setup.py, herborist is automatically added to your $PATH. You can call it from anywhere thanks to the command::
 
         herborist
 
@@ -24,4 +24,3 @@ You can directly launch herborist by running the *herborist* command in your ter
 
 .. image:: herborist.png
     :align: center
-

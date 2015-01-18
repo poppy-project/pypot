@@ -3,6 +3,11 @@
 
 .. autofunction:: pypot.dynamixel.get_available_ports
 
+.. autofunction:: pypot.dynamixel.find_port
+
+.. autofunction:: pypot.dynamixel.autodetect_robot
+
+
 :mod:`~pypot.dynamixel.io` Module
 ---------------------------------
 
@@ -17,10 +22,11 @@
 
 .. automodule:: pypot.dynamixel.motor
     :members:
-    :undoc-members:
     :show-inheritance:
 
-    
+.. autoattribute:: pypot.dynamixel.motor.DxlMotor.registers
+
+
 :mod:`controller` Module
 ------------------------
 
@@ -28,8 +34,8 @@
     :members:
     :undoc-members:
     :show-inheritance:
-    
-    
+
+
 :mod:`error` Module
 -------------------
 
@@ -37,7 +43,7 @@
     :members:
     :undoc-members:
     :show-inheritance:
-    
+
 :mod:`conversion` Module
 ------------------------
 
@@ -53,4 +59,3 @@
     :members:
     :undoc-members:
     :show-inheritance:
-

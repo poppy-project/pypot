@@ -31,7 +31,7 @@ The configuration, described as a Python dictionary, contains several important 
 
 .. note:: The configuration can be written programmatically or can be loaded from any file that can be loaded as a dict (e.g. a JSON file).
 
-Now let's detail each section. To better understand how the configuration is structure it is probably easier to start from one of the example provided with PyPot and modify it (e.g. :obj:`pypot.robot.config.ergo_robot_config`):
+Now let's detail each section. To better understand how the configuration is structure it is probably easier to start from one of the example provided with pypot and modify it (e.g. :obj:`pypot.robot.config.ergo_robot_config`):
 
 #. **controllers**: You can have a single or multiple :class:`~pypot.dynamixel.controller.DxlController`. For each of them, you should indicate whether or not to use the SYNC_READ instruction (only the USB2AX device currently supported it). When you describe your controller, you must also include the port that the device is connected to (see :ref:`open_connection`). You also have to specify which motors are attached to this bus. You can either give individual motors or groups (see the sections below)::
 
@@ -68,7 +68,6 @@ Now let's detail each section. To better understand how the configuration is str
         import pypot.robot
 
         robot = pypot.robot.from_config(my_config)
-        robot.start_sync()
 
         for m in robot.left_arm:
             print m.present_position
@@ -149,6 +148,42 @@ To give you a complete overview of what your config should look like, here is th
         },
     }
 
+Since pypot 1.7, you can now set the port to 'auto' in the dictionary. When loading the configuration, pypot will automatically try to find the port with the corresponding attached motor ids.
+
+.. note:: While this is convenient as the same config file can be use on multiple machine, it also slows the creation of the :class:`~pypot.robot.robot.Robot`.
+
+
+Auto-detection and generation of the configuration
+--------------------------------------------------
+
+Pypot provides another way of creating your :class:`~pypot.robot.robot.Robot`. The :func:`~pypot.dynamixel.autodetect_robot` can scan all dynamixel ports plugged and find all connected motors. It then returns the corresponding :class:`~pypot.robot.robot.Robot`. For instance::
+
+    from pypot.dynamixel import autodetect_robot
+
+    my_robot = autodetect_robot()
+
+    for m in my_robot.motors:
+        m.goal_position = 0.0
+
+.. note:: As the :func:`~pypot.dynamixel.autodetect_robot` function scans all available ports, it can be quite slow (few seconds). So this should be used to first discover the robot configuration and then export it (see below).
+
+If you have manually created your :class:`~pypot.robot.robot.Robot` (or thanks to the :func:`~pypot.dynamixel.autodetect_robot` function), you can then use the :meth:`~pypot.robot.Robot.to_config` method to export the :class:`~pypot.robot.robot.Robot` current configuration.
+
+This configuration can then be easily saved::
+
+    import json
+
+    config = my_robot.to_config()
+
+    with open('my_robot.json', 'wb') as f:
+        json.dump(config, f)
+
+You can then easily re-create your robot::
+
+    from pypot.robot import from_json
+
+    my_robot = from_json('my_robot.json')
+
 .. _sync_loop:
 
 Dynamixel controller and Synchronization Loop
@@ -167,16 +202,11 @@ If you looked closely at the example above, you could have noticed that even wit
 
 So, in most case you should not have to worry about synchronization loop and it should directly work. Off course, if you want to synchronize other values than the ones listed above you will have to modify this default behavior.
 
-.. note:: With the current version of PyPot, you can not indicate in the configuration which subclasses of :class:`~pypot.dynamixel.controller.DxlController` you want to use. This feature should be added in a future version. If you want to use your own controller, you should either modify the config parser, modify the :class:`~pypot.dynamixel.controller.BaseDxlController` class or directly instantiate the :class:`~pypot.robot.robot.Robot` class.
+.. note:: With the current version of pypot, you can not indicate in the configuration which subclasses of :class:`~pypot.dynamixel.controller.DxlController` you want to use. This feature should be added in a future version. If you want to use your own controller, you should either modify the config parser, modify the :class:`~pypot.dynamixel.controller.BaseDxlController` class or directly instantiate the :class:`~pypot.robot.robot.Robot` class.
 
-To start all the synchronization loops, you only need to call the :meth:`~pypot.robot.robot.Robot.start_sync` method. You can also stop the synchronization if needed (see the :meth:`~pypot.robot.robot.Robot.stop_sync` method)::
+To start all the synchronization loops, you only need to call the :meth:`~pypot.robot.robot.Robot.start_sync` method. You can also stop the synchronization if needed (see the :meth:`~pypot.robot.robot.Robot.stop_sync` method). Note that since version 2.x, the synchronization is started by default.
 
-    import pypot.robot
-
-    robot = pypot.robot.from_config(my_config)
-    robot.start_sync()
-
-.. warning:: You should never set values to motors before starting the synchronization loop.
+.. warning:: You should never set values to motors when the synchronization is not running.
 
 Now you have a robot that is reading and writing values to each motor in an infinite loop. Whenever you access these values, you are accessing only their most recent versions that have been read at the frequency of the loop. This automatically make the synchronization loop run in background. You do not need to wait the answer of a read command to access data (this can take some time) so that algorithms with heavy computation do not encounter a bottleneck when values from motors must be known.
 
@@ -198,7 +228,6 @@ As shown in the examples above, the robot class let you directly access the diff
     from pypot.robot.config import ergo_robot_config
 
     robot = pypot.robot.from_config(ergo_robot_config)
-    ergo_start_sync()
 
     # Note that all these calls will return immediately,
     # and the orders will not be directly sent
@@ -224,7 +253,7 @@ As an example of what you can easily do with the Robot API, we are going to writ
     amp = 30
     freq = 0.5
 
-    robot = pypot.robot.from_config(ergo_robot_config)    ergo_robot.start_sync()
+    robot = pypot.robot.from_config(ergo_robot_config)
 
     # Put the robot in its initial position
     for m in ergo_robot.motors: # Note that we always provide an alias for all motors.
@@ -282,3 +311,26 @@ As an example, you could write::
 
 .. warning:: If you set both :attr:`~pypot.dynamixel.motor.DxlMotor.goal_speed` and :attr:`~pypot.dynamixel.motor.DxlMotor.goal_position` only the last command will be executed. Unless you know what you are doing, you should avoid to mix these both approaches.
 
+Closing the robot
+-----------------
+
+To make sure that everything gets cleaned correctly after you are done using your :class:`~pypot.robot.robot.Robot`, you should always call the :meth:`~pypot.robot.robot.Robot.close` method. Doing so will ensure that all the controllers attached to this robot, and their associated dynamixel serial connection, are correctly stopped and cleaned.
+
+.. note:: Note calling the :meth:`~pypot.robot.robot.Robot.close` method on a :class:`~pypot.robot.robot.Robot` can prevent you from opening it again without terminating your current Python session. Indeed, as the destruction of object is handled by the garbage collector, there is no mechanism which guarantee that we can automatically clean it when destroyed.
+
+When closing the robot, we also send a stop signal to all the primitives running and wait for them to terminate. See section :ref:`my_prim` for details on what we call primitives.
+
+.. warning:: You should be careful that all your primitives correctly respond to the stop signal. Indeed, having a blocking primitive will prevent the :meth:`~pypot.robot.robot.Robot.close` method to terminate (please refer to :ref:`start_prim` for details).
+
+Thanks to the :func:`contextlib.closing` decorator you can easily make sure that the close function of your robot is always called whatever happened inside your code::
+
+  from contextlib import closing
+
+  import pypot.robot
+
+  # The closing decorator make sure that the close function will be called
+  # on the object passed as argument when the with block is exited.
+
+  with closing(pypot.robot.from_json('myconfig.json')) as my_robot:
+      # do stuff without having to make sure not to forget to close my_robot!
+      pass

@@ -3,7 +3,7 @@ import time
 import pickle
 import threading
 
-import pypot.sensor.optitrack as opti
+from . import optitrack
 
 
 class OptiBridgeServer(threading.Thread):
@@ -16,7 +16,7 @@ class OptiBridgeServer(threading.Thread):
         self.s = c.socket(zmq.PUB)
         self.s.bind('tcp://{}:{}'.format(bridge_host, bridge_port))
 
-        self.optitrack = opti.OptiTrackClient(opti_addr, opti_port, obj_name)
+        self.optitrack = optitrack.OptiTrackClient(opti_addr, opti_port, obj_name)
         self.optitrack.start()
 
         self.obj_name = obj_name

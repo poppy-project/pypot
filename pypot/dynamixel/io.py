@@ -9,8 +9,10 @@ import threading
 from collections import namedtuple, OrderedDict
 from contextlib import contextmanager
 
+from ..robot.io import AbstractIO
 from .conversion import *
 from .packet import *
+
 
 logger = logging.getLogger(__name__)
 # With this logger you should always provide as extra:
@@ -31,7 +33,7 @@ class _DxlAccess(object):
     readonly, writeonly, readwrite = range(3)
 
 
-class DxlIO(object):
+class DxlIO(AbstractIO):
     """ Low-level class to handle the serial communication with the robotis motors. """
 
     __used_ports = set()
@@ -65,6 +67,7 @@ class DxlIO(object):
         self._convert = convert
 
         self._serial_lock = threading.Lock()
+
         self.open(port, baudrate, timeout)
 
     def __enter__(self):
@@ -99,7 +102,8 @@ class DxlIO(object):
         # This is  used to circumvent a bug with the driver for the USB2AX on Mac.
         # Warning: If no motor is connected on the bus, this will run forever!!!
         import platform
-        import time
+        # import time
+        import pypot.utils.pypot_time as time
 
         for i in range(max_recursion):
             self._known_models.clear()
@@ -110,6 +114,14 @@ class DxlIO(object):
 
                 if port in self.__used_ports:
                     raise DxlError('port already used {}'.format(port))
+
+                # Dirty walkaround to fix a strange bug.
+                # Observed with the USB2AX on Linux with pyserial 2.7
+                # We have to first open/close the port in order to make it work
+                # at 1Mbauds
+                if platform.system() == 'Linux' and self._sync_read:
+                    self._serial = serial.Serial(port, 9600)
+                    self._serial.close()
 
                 self._serial = serial.Serial(port, baudrate, timeout=timeout)
                 self.__used_ports.add(port)
@@ -196,6 +208,7 @@ class DxlIO(object):
 
             """
         pp = DxlPingPacket(id)
+
         try:
             self._send_packet(pp, error_handler=None)
             return True
@@ -239,7 +252,7 @@ class DxlIO(object):
         """ Changes the baudrate of the specified motors. """
         self._change_baudrate(baudrate_for_ids)
 
-        for motor_id in baudrate_for_ids.iterkeys():
+        for motor_id in baudrate_for_ids:
             if motor_id in self._known_models:
                 del self._known_models[motor_id]
             if motor_id in self._known_mode:
@@ -367,7 +380,7 @@ class DxlIO(object):
 
             d = OrderedDict()
             for c in controls:
-                v = dxl_decode_all(sp.parameters[c.address:c.address+c.nb_elem*c.length], c.nb_elem)
+                v = dxl_decode_all(sp.parameters[c.address:c.address + c.nb_elem * c.length], c.nb_elem)
                 d[c.name] = c.dxl_to_si(v, model) if convert else v
 
             res.append(d)
@@ -510,7 +523,7 @@ class DxlIO(object):
                 status_packet = DxlStatusPacket.from_string(data)
 
             except ValueError:
-                msg = 'could not parse received data {}'.format(map(ord, data))
+                msg = 'could not parse received data {}'.format(bytearray(data))
                 raise DxlCommunicationError(self, msg, instruction_packet)
 
             logger.debug('Receiving %s', status_packet,
@@ -572,8 +585,8 @@ class DxlTimeoutError(DxlCommunicationError):
     def __str__(self):
         return 'motors {} did not respond after sending {}'.format(self.ids, self.instruction_packet)
 
-
 # MARK: - Generate the accessors
+
 
 def _add_control(name,
                  address, length=2, nb_elem=1,
@@ -681,17 +694,17 @@ _add_control('LED',
 
 _add_control('pid gain',
              address=0x1A, length=1, nb_elem=3,
-             models=('MX-28', 'MX-64', 'MX-106'),
+             models=('MX-12', 'MX-28', 'MX-64', 'MX-106'),
              dxl_to_si=dxl_to_pid,
              si_to_dxl=pid_to_dxl)
 
 _add_control('compliance margin',
              address=0x1A, length=1, nb_elem=2,
-             models=('AX-12', 'RX-28', 'RX-64'))
+             models=('AX-12', 'AX-18', 'RX-28', 'RX-64'))
 
 _add_control('compliance slope',
              address=0x1C, length=1, nb_elem=2,
-             models=('AX-12', 'RX-28', 'RX-64'))
+             models=('AX-12', 'AX-18', 'RX-28', 'RX-64'))
 
 _add_control('goal position',
              address=0x1E,

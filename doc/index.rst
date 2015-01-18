@@ -1,4 +1,4 @@
-.. PyPot documentation master file, created by
+.. Pypot documentation master file, created by
    sphinx-quickstart on Sat Sep 15 18:52:00 2012.
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
@@ -6,7 +6,7 @@
 Pypot
 *****
 
-Welcome to Pypot's documentation!
+Welcome to pypot's documentation!
 =================================
 
 **Introduction**
@@ -29,6 +29,8 @@ Welcome to Pypot's documentation!
 
     controlling_robot.rst
     primitive.rst
+    vrep.rst
+    extending.rst
     logging.rst
     remote_access.rst
 
@@ -51,7 +53,6 @@ Welcome to Pypot's documentation!
 
     api.rst
     FAQ.rst
-    knownissues.rst
 
 Indices and tables
 ==================

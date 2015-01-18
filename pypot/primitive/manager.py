@@ -1,15 +1,16 @@
-import threading
 import logging
 import numpy
-import time
 
 from collections import defaultdict
 from functools import partial
 
+from ..utils.stoppablethread import StoppableLoopThread
+
+
 logger = logging.getLogger(__name__)
 
 
-class PrimitiveManager(threading.Thread):
+class PrimitiveManager(StoppableLoopThread):
     """ Combines all :class:`~pypot.primitive.primitive.Primitive` orders and affect them to the real motors.
 
         At a predefined frequency, the manager gathers all the orders sent by the primitive to the "fake" motors, combined them thanks to the filter function and affect them to the "real" motors.
@@ -18,22 +19,18 @@ class PrimitiveManager(threading.Thread):
 
         """
     def __init__(self, motors, freq=50, filter=partial(numpy.mean, axis=0)):
-        """ :param motors: list of real motors used by the attached primitives
-            :type motors: list of :class:`~pypot.dynamixel.motor.DxlMotor`
+        """
+        :param motors: list of real motors used by the attached primitives
+        :type motors: list of :class:`~pypot.dynamixel.motor.DxlMotor`
+        :param int freq: update frequency
+        :param func filter: function used to combine the different request (default mean)
 
-            :param int freq: update frequency
-            :param func filter: function used to combine the different request (default mean)
-
-            """
-        threading.Thread.__init__(self, name='Primitive Manager')
-        self.daemon = True
+        """
+        StoppableLoopThread.__init__(self, freq)
 
         self._prim = []
-        self._period = 1.0 / freq
         self._motors = motors
         self._filter = filter
-        self._running = threading.Event()
-        self._running.set()
 
     def add(self, p):
         """ Add a primitive to the manager. The primitive automatically attached itself when started. """
@@ -48,35 +45,22 @@ class PrimitiveManager(threading.Thread):
         """ List of all attached :class:`~pypot.primitive.primitive.Primitive`. """
         return self._prim
 
-    def run(self):
-        """ Combined at a predefined frequency the request orders and affect them to the real motors.
+    def update(self):
+        """ Combined at a predefined frequency the request orders and affect them to the real motors. """
+        for m in self._motors:
+            to_set = defaultdict(list)
 
-            .. note:: Should not be called directly but launched through the thread start method.
+            for p in self._prim:
+                for key, val in getattr(p.robot, m.name)._to_set.iteritems():
+                    to_set[key].append(val)
 
-            """
-        while self._running.is_set():
-            start = time.time()
+            for key, val in to_set.iteritems():
+                filtred_val = self._filter(val)
+                logger.debug('Combined %s.%s from %s to %s',
+                             m.name, key, val, filtred_val)
+                setattr(m, key, filtred_val)
 
-            for m in self._motors:
-                to_set = defaultdict(list)
-
-                for p in self._prim:
-                    for key, val in getattr(p.robot, m.name)._to_set.iteritems():
-                        to_set[key].append(val)
-
-                for key, val in to_set.iteritems():
-                    filtred_val = self._filter(val)
-                    logger.debug('Combined %s.%s from %s to %s',
-                                 m.name, key, val, filtred_val)
-                    setattr(m, key, filtred_val)
-
-                [p._synced.set() for p in self._prim]
-
-            end = time.time()
-
-            dt = self._period - (end - start)
-            if dt > 0:
-                time.sleep(dt)
+            [p._synced.set() for p in self._prim]
 
     def stop(self):
         """ Stop the primitive manager. """
@@ -84,5 +68,4 @@ class PrimitiveManager(threading.Thread):
             p.stop()
             p.wait_to_stop()
 
-        self._running.clear()
-        self.join()
+        StoppableLoopThread.stop(self)
