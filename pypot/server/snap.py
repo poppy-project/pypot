@@ -40,25 +40,35 @@ class SnapRobotServer(AbstractServer):
         @self.app.get('/motors/get/positions')
         @make_snap_compatible_response
         def get_motors_positions():
-            msg = '/'.join('{}:{}'.format(m,
-                                          rr.get_motor_register_value(m,
-                                                                      'present_position'))
-                           for m in rr.get_motors_list())
+            get_pos = lambda m: rr.get_motor_register_value(m, 'present_position')
+            msg = '/'.join('{}'.format(get_pos(m)) for m in rr.get_motors_list())
             return msg
+
+        @self.app.get('/motors/set/positions/<positions>')
+        @make_snap_compatible_response
+        def set_motors_positions(positions):
+            positions = map(lambda s: float(s), positions[:-1].split(';'))
+
+            for m, p in zip(rr.get_motors_list(), positions):
+                rr.set_motor_register_value(m, 'goal_position', p)
+
+            return 'Done!'
 
         @self.app.get('/motor/<motor>/set/<register>/<value>')
         @make_snap_compatible_response
-        def set_pos(motor, register, value):
+        def set_reg(motor, register, value):
             rr.set_motor_register_value(motor, register, float(value))
-            return 'done!'
+            return 'Done!'
 
-        print 'Snap Server should now be ready!'
+        @self.app.get('/snap-blocks.xml')
+        @make_snap_compatible_response
+        def get_pypot_snap_blocks():
+            with open(os.path.join(os.path.dirname(__file__),
+                      'pypot-snap-blocks.xml')) as f:
+                return f.read()
 
     def run(self):
-        try:
-            bottle.run(self.app,
-                       host=self.host, port=self.port,
-                       quiet=True,
-                       server='tornado')
-        except KeyboardInterrupt:
-            pass
+        bottle.run(self.app,
+                   host=self.host, port=self.port,
+                   quiet=True,
+                   server='tornado')
