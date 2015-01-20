@@ -113,6 +113,7 @@ class DxlMotor(Motor):
 
         self._safe_compliance = SafeCompliance(self)
         self.default_control = 'dummy'
+        self.compliant_behavior = 'dummy'
 
     def __repr__(self):
         return ('<DxlMotor name={self.name} '
@@ -153,18 +154,20 @@ class DxlMotor(Motor):
 
     @compliant.setter
     def compliant(self, is_compliant):
+        if self.compliant_behavior == 'dummy':
+            self._set_compliancy(is_compliant)
+
+        elif self.compliant_behavior == 'safe':
+            self._safe_compliance.start() if is_compliant else self._safe_compliance.stop()
+
+        else:
+            raise ValueError('Wrong compliant type! It should be either "dummy" or "safe".')
+
+    def _set_compliancy(self, is_compliant):
         # Change the goal_position only if you switch from compliant to not compliant mode
         if not is_compliant and self.compliant:
             self.goal_position = self.present_position
         self.__dict__['compliant'] = is_compliant
-
-    @property
-    def safe_compliant(self):
-        return self._safe_compliance.running
-
-    @safe_compliant.setter
-    def safe_compliant(self, is_compliant):
-        self._safe_compliance.start() if is_compliant else self._safe_compliance.stop()
 
     @property
     def angle_limit(self):
@@ -198,7 +201,7 @@ class DxlMotor(Motor):
                 time.sleep(duration)
 
         else:
-            raise ValueError('Wrong control type! It should be either "dummy" or "minjerk" ')
+            raise ValueError('Wrong control type! It should be either "dummy" or "minjerk".')
 
 
 class DxlAXRXMotor(DxlMotor):
@@ -245,7 +248,7 @@ class SafeCompliance(StoppableLoopThread):
         self.motor = motor
 
     def update(self):
-        self.motor.compliant = (min(self.motor.angle_limit) < self.motor.present_position < max(self.motor.angle_limit))
+        self.motor._set_compliancy((min(self.motor.angle_limit) < self.motor.present_position < max(self.motor.angle_limit)))
 
     def teardown(self):
         self.motor.compliant = False
