@@ -107,10 +107,9 @@ class DxlMotor(Motor):
         self.__dict__['model'] = model
         self.__dict__['direct'] = direct
         self.__dict__['offset'] = offset
-        self.__dict__['angle_limit'] = (numpy.asarray(self._angle_limit) if direct
-                                        else -1 * numpy.asarray(self._angle_limit)) - offset
 
         self.__dict__['compliant'] = True
+
         self._safe_compliance = SafeCompliance(self)
 
     def __repr__(self):
@@ -163,10 +162,8 @@ class DxlMotor(Motor):
 
     @safe_compliant.setter
     def safe_compliant(self, is_compliant):
-        if is_compliant:
-            self._safe_compliance.start()
-        else:
-            self._safe_compliance.stop()
+        self._safe_compliance.start() if is_compliant else self._safe_compliance.stop()
+
     @property
     def angle_limit(self):
         return self.lower_limit, self.upper_limit
@@ -223,19 +220,15 @@ class DxlMXMotor(DxlMotor):
 
 
 class SafeCompliance(StoppableLoopThread):
-    """ This class creates a controller to active compliance only if the current motor position is included in the angle limit, else the compliance is turn off.
-        """
-    def __init__(self, DxlMotor, frequency=50):
+    """ This class creates a controller to active compliance only if the current motor position is included in the angle limit, else the compliance is turned off. """
+
+    def __init__(self, motor, frequency=50):
         StoppableLoopThread.__init__(self, frequency)
 
-        self.motor = DxlMotor
+        self.motor = motor
 
     def update(self):
-        if (min(self.motor.angle_limit) > self.motor.present_position) or (self.motor.present_position > max(self.motor.angle_limit)):
-            self.motor.compliant = False
-        else:
-            self.motor.compliant = True
+        self.motor.compliant = (min(self.motor.angle_limit) < self.motor.present_position < max(self.motor.angle_limit))
 
-    def stop(self):
+    def teardown(self):
         self.motor.compliant = False
-        StoppableLoopThread.stop(self)
