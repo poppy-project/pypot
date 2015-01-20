@@ -5,6 +5,7 @@ import pypot.utils.pypot_time as time
 
 from ..robot.motor import Motor
 from ..utils.stoppablethread import StoppableLoopThread
+from ..utils.trajectory import MinimumJerkTrajectory
 
 logger = logging.getLogger(__name__)
 
@@ -111,6 +112,7 @@ class DxlMotor(Motor):
         self.__dict__['compliant'] = True
 
         self._safe_compliance = SafeCompliance(self)
+        self.default_control = 'dummy'
 
     def __repr__(self):
         return ('<DxlMotor name={self.name} '
@@ -172,16 +174,31 @@ class DxlMotor(Motor):
     def angle_limit(self, limits):
         self.lower_limit, self.upper_limit = limits
 
-    def goto_position(self, position, duration, wait=False):
+    def goto_position(self, position, duration, control=None, wait=False):
         """ Automatically sets the goal position and the moving speed to reach the desired position within the duration. """
-        dp = abs(self.present_position - position)
-        speed = (dp / float(duration)) if duration > 0 else numpy.inf
 
-        self.moving_speed = speed
-        self.goal_position = position
+        if control is None:
+            control = self.default_control
 
-        if wait:
-            time.sleep(duration)
+        if control == 'minjerk':
+            goto_min_jerk = GotoMinJerk(self, position, duration)
+            goto_min_jerk.start()
+
+            if wait:
+                goto_min_jerk.wait_to_stop()
+
+        elif control == 'dummy':
+            dp = abs(self.present_position - position)
+            speed = (dp / float(duration)) if duration > 0 else numpy.inf
+
+            self.moving_speed = speed
+            self.goal_position = position
+
+            if wait:
+                time.sleep(duration)
+
+        else:
+            raise ValueError('Wrong control type! It should be either "dummy" or "minjerk" ')
 
 
 class DxlAXRXMotor(DxlMotor):
@@ -232,3 +249,28 @@ class SafeCompliance(StoppableLoopThread):
 
     def teardown(self):
         self.motor.compliant = False
+
+
+class GotoMinJerk(StoppableLoopThread):
+    def __init__(self, motor, position, duration, frequency=50):
+        StoppableLoopThread.__init__(self, frequency)
+
+        self.motor = motor
+        self.goal = position  # dict { 'motor1_name': x1, 'motor2_name': x2 }
+        self.duration = duration  # secondes
+
+    def setup(self):
+        self.trajs = MinimumJerkTrajectory(self.motor.present_position, self.goal, self.duration).get_generator()
+        self.t0 = time.time()
+
+    def update(self):
+        if self.elapsed_time > self.duration:
+            self.stop(wait=False)
+            return
+
+        self.motor.goal_position = self.trajs(self.elapsed_time)
+
+    @property
+    def elapsed_time(self):
+        """ Elapsed time (in seconds) since the primitive runs. """
+        return time.time() - self.t0

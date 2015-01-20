@@ -1,10 +1,6 @@
 import logging
 
-import pypot.utils.pypot_time as time
-
 from ..primitive.manager import PrimitiveManager
-from ..utils.stoppablethread import StoppableLoopThread
-from ..utils.trajectory import MinimumJerkTrajectory
 
 
 logger = logging.getLogger(__name__)
@@ -28,7 +24,6 @@ class Robot(object):
         """
         self._motors = []
         self.alias = []
-        self.default_control = 'dummy'
 
         self._controllers = sensor_controllers + motor_controllers
 
@@ -122,31 +117,17 @@ class Robot(object):
 
             :param dict position_for_motors: which motors you want to move {motor_name: pos, motor_name: pos,...}
             :param float duration: duration of the move
+            :param str control: control type ('dummy', 'minjerk')
             :param bool wait: whether or not to wait for the end of the move
 
             .. note::In case of dynamixel motors, the speed is automatically adjusted so the goal position is reached after the chosen duration.
 
             """
-        if control is None:
-            control = self.default_control
+        for i, (motor_name, position) in enumerate(position_for_motors.iteritems()):
 
-        if control == 'minjerk':
-            goto_min_jerk = GotoMinJerk(self, position_for_motors, duration)
-            goto_min_jerk.start()
-
-            if wait:
-                goto_min_jerk.wait_to_stop()
-
-        elif control == 'dummy':
-            for motor_name, position in position_for_motors.iteritems():
-                m = getattr(self, motor_name)
-                m.goto_position(position, duration)
-
-            if wait:
-                time.sleep(duration)
-
-        else:
-            raise ValueError('Unknown control type, it should be either "minjerk" or "dummy"')
+            w = False if i < len(position_for_motors) - 1 else wait
+            m = getattr(self, motor_name)
+            m.goto_position(position, duration, control, wait=w)
 
     def power_up(self):
         """ Changes all settings to guarantee the motors will be used at their maximum power. """
@@ -190,31 +171,3 @@ class Robot(object):
         config['motorgroups'] = {}
 
         return config
-
-
-class GotoMinJerk(StoppableLoopThread):
-    def __init__(self, robot, motors, duration, frequency=50):
-        StoppableLoopThread.__init__(self, frequency)
-
-        self.robot = robot
-        self.motors = motors  # dict { 'motor1_name': x1, 'motor2_name': x2 }
-        self.duration = duration  # secondes
-
-    def setup(self):
-        self.trajs = {m: MinimumJerkTrajectory(getattr(self.robot, m).present_position,
-                      g, self.duration).get_generator()
-                      for m, g in self.motors.iteritems()}
-        self.t0 = time.time()
-
-    def update(self):
-        if self.elapsed_time > self.duration:
-            self.stop(wait=False)
-            return
-
-        for motorname, mj in self.trajs.iteritems():
-            getattr(self.robot, motorname).goal_position = mj(self.elapsed_time)
-
-    @property
-    def elapsed_time(self):
-        """ Elapsed time (in seconds) since the primitive runs. """
-        return time.time() - self.t0
