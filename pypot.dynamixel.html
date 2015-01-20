@@ -9,7 +9,7 @@
   <head>
     <meta charset="utf-8" />
     
-    <title>dynamixel Package &mdash; pypot 2.1.0rc3 documentation</title>
+    <title>dynamixel Package &mdash; pypot 2.1.0rc5 documentation</title>
     <meta name="description" content="">
     <meta name="author" content="">
 
@@ -36,7 +36,7 @@
 <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
             URL_ROOT:    './',
-            VERSION:     '2.1.0rc3',
+            VERSION:     '2.1.0rc5',
             COLLAPSE_INDEX: false,
             FILE_SUFFIX: '.html',
             HAS_SOURCE:  true
@@ -51,7 +51,7 @@
 <script type="text/javascript">
 </script>
     <link rel="author" title="About these documents" href="about.html" />
-    <link rel="top" title="pypot 2.1.0rc3 documentation" href="index.html" />
+    <link rel="top" title="pypot 2.1.0rc5 documentation" href="index.html" />
     <link rel="up" title="Pypot’s API" href="api.html" />
     <link rel="next" title="primitive Package" href="pypot.primitive.html" />
     <link rel="prev" title="Pypot’s API" href="api.html" /> 
@@ -66,7 +66,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="index.html">pypot 2.1.0rc3 documentation</a>
+          <a class="navbar-brand" href="index.html">pypot 2.1.0rc5 documentation</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
@@ -685,7 +685,7 @@
 
 <dl class="method">
 <dt id="pypot.dynamixel.motor.DxlMotor.goto_position">
-<code class="descname">goto_position</code><span class="sig-paren">(</span><em>position</em>, <em>duration</em>, <em>wait=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/dynamixel/motor.html#DxlMotor.goto_position"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.motor.DxlMotor.goto_position" title="Permalink to this definition">¶</a></dt>
+<code class="descname">goto_position</code><span class="sig-paren">(</span><em>position</em>, <em>duration</em>, <em>control=None</em>, <em>wait=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/dynamixel/motor.html#DxlMotor.goto_position"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.motor.DxlMotor.goto_position" title="Permalink to this definition">¶</a></dt>
 <dd><p>Automatically sets the goal position and the moving speed to reach the desired position within the duration.</p>
 </dd></dl>
 
@@ -705,9 +705,16 @@
 </dl>
 </dd></dl>
 
+<dl class="class">
+<dt id="pypot.dynamixel.motor.SafeCompliance">
+<em class="property">class </em><code class="descclassname">pypot.dynamixel.motor.</code><code class="descname">SafeCompliance</code><span class="sig-paren">(</span><em>motor</em>, <em>frequency=50</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/dynamixel/motor.html#SafeCompliance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.motor.SafeCompliance" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="pypot.utils.html#pypot.utils.stoppablethread.StoppableLoopThread" title="pypot.utils.stoppablethread.StoppableLoopThread"><code class="xref py py-class docutils literal"><span class="pre">pypot.utils.stoppablethread.StoppableLoopThread</span></code></a></p>
+<p>This class creates a controller to active compliance only if the current motor position is included in the angle limit, else the compliance is turned off.</p>
+</dd></dl>
+
 <dl class="attribute">
 <dt id="pypot.dynamixel.motor.DxlMotor.registers">
-<code class="descclassname">DxlMotor.</code><code class="descname">registers</code><em class="property"> = ['registers', 'goal_speed', 'compliant', 'present_load', 'id', 'present_temperature', 'angle_limit', 'moving_speed', 'torque_limit', 'goal_position', 'name', 'present_speed', 'present_voltage', 'present_position', 'model']</em><a class="headerlink" href="#pypot.dynamixel.motor.DxlMotor.registers" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">DxlMotor.</code><code class="descname">registers</code><em class="property"> = ['registers', 'goal_speed', 'compliant', 'safe_compliant', 'angle_limit', 'present_load', 'id', 'present_temperature', 'moving_speed', 'torque_limit', 'goal_position', 'upper_limit', 'lower_limit', 'name', 'present_speed', 'present_voltage', 'present_position', 'model']</em><a class="headerlink" href="#pypot.dynamixel.motor.DxlMotor.registers" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </div>
@@ -757,6 +764,17 @@
 </ul>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="class">
+<dt id="pypot.dynamixel.controller.AngleLimitRegisterController">
+<em class="property">class </em><code class="descclassname">pypot.dynamixel.controller.</code><code class="descname">AngleLimitRegisterController</code><span class="sig-paren">(</span><em>io</em>, <em>motors</em>, <em>sync_freq</em>, <em>mode</em>, <em>regname</em>, <em>varname=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/dynamixel/controller.html#AngleLimitRegisterController"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.controller.AngleLimitRegisterController" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">pypot.dynamixel.controller._DxlRegisterController</span></code></p>
+<dl class="method">
+<dt id="pypot.dynamixel.controller.AngleLimitRegisterController.get_register">
+<code class="descname">get_register</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/dynamixel/controller.html#AngleLimitRegisterController.get_register"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.controller.AngleLimitRegisterController.get_register" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 </dd></dl>
 
 </div>
@@ -1184,7 +1202,7 @@
 <div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
   <div class="navbar-inner">
     <ul class="nav navbar-nav">
-        <li><a href="index.html">pypot 2.1.0rc3 documentation</a></li>
+        <li><a href="index.html">pypot 2.1.0rc5 documentation</a></li>
     </ul>
     <ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
       

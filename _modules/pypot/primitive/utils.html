@@ -9,7 +9,7 @@
   <head>
     <meta charset="utf-8" />
     
-    <title>pypot.primitive.utils &mdash; pypot 2.1.0rc3 documentation</title>
+    <title>pypot.primitive.utils &mdash; pypot 2.1.0rc5 documentation</title>
     <meta name="description" content="">
     <meta name="author" content="">
 
@@ -36,7 +36,7 @@
 <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
             URL_ROOT:    '../../../',
-            VERSION:     '2.1.0rc3',
+            VERSION:     '2.1.0rc5',
             COLLAPSE_INDEX: false,
             FILE_SUFFIX: '.html',
             HAS_SOURCE:  true
@@ -51,7 +51,7 @@
 <script type="text/javascript">
 </script>
     <link rel="author" title="About these documents" href="../../../about.html" />
-    <link rel="top" title="pypot 2.1.0rc3 documentation" href="../../../index.html" />
+    <link rel="top" title="pypot 2.1.0rc5 documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body role="document">
@@ -64,7 +64,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="../../../index.html">pypot 2.1.0rc3 documentation</a>
+          <a class="navbar-brand" href="../../../index.html">pypot 2.1.0rc5 documentation</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
@@ -129,7 +129,6 @@
                   
   <h1>Source code for pypot.primitive.utils</h1><div class="highlight"><pre>
 <span class="kn">import</span> <span class="nn">numpy</span>
-<span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">signal</span>
 
 <span class="kn">from</span> <span class="nn">.primitive</span> <span class="kn">import</span> <span class="n">LoopPrimitive</span>
 
@@ -205,39 +204,42 @@
         <span class="n">Sinus</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">robot</span><span class="p">,</span> <span class="n">refresh_freq</span><span class="p">,</span>
                        <span class="n">motor_list</span><span class="p">,</span>
                        <span class="n">amp</span><span class="p">,</span> <span class="n">freq</span><span class="p">,</span> <span class="n">offset</span><span class="p">,</span> <span class="n">phase</span><span class="o">=</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">phase</span><span class="p">))</span>
-
 </div>
-<div class="viewcode-block" id="Square"><a class="viewcode-back" href="../../../pypot.primitive.html#pypot.primitive.utils.Square">[docs]</a><span class="k">class</span> <span class="nc">Square</span><span class="p">(</span><span class="n">Sinus</span><span class="p">):</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">signal</span>
 
-    <span class="sd">&quot;&quot;&quot; Apply a square signal. Parameters (amp, freq, offset, phase, duty cycle)</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="Square"><a class="viewcode-back" href="../../../pypot.primitive.html#pypot.primitive.utils.Square">[docs]</a>    <span class="k">class</span> <span class="nc">Square</span><span class="p">(</span><span class="n">Sinus</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Apply a square signal. Param (amp, freq, offset, phase, duty cycle). &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">robot</span><span class="p">,</span> <span class="n">refresh_freq</span><span class="p">,</span>
-                 <span class="n">motor_list</span><span class="p">,</span>
-                 <span class="n">amp</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">phase</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">duty</span><span class="o">=</span><span class="mf">0.5</span><span class="p">):</span>
+        <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">robot</span><span class="p">,</span> <span class="n">refresh_freq</span><span class="p">,</span>
+                     <span class="n">motor_list</span><span class="p">,</span>
+                     <span class="n">amp</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">phase</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">duty</span><span class="o">=</span><span class="mf">0.5</span><span class="p">):</span>
 
-        <span class="n">Sinus</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">robot</span><span class="p">,</span> <span class="n">refresh_freq</span><span class="p">,</span>
-                       <span class="n">motor_list</span><span class="p">,</span>
-                       <span class="n">amp</span><span class="p">,</span> <span class="n">freq</span><span class="p">,</span> <span class="n">offset</span><span class="p">,</span> <span class="n">phase</span><span class="p">)</span>
+            <span class="n">Sinus</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">robot</span><span class="p">,</span> <span class="n">refresh_freq</span><span class="p">,</span>
+                           <span class="n">motor_list</span><span class="p">,</span>
+                           <span class="n">amp</span><span class="p">,</span> <span class="n">freq</span><span class="p">,</span> <span class="n">offset</span><span class="p">,</span> <span class="n">phase</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_duty</span> <span class="o">=</span> <span class="n">duty</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_duty</span> <span class="o">=</span> <span class="n">duty</span>
 
-<div class="viewcode-block" id="Square.update"><a class="viewcode-back" href="../../../pypot.primitive.html#pypot.primitive.utils.Square.update">[docs]</a>    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Square.update"><a class="viewcode-back" href="../../../pypot.primitive.html#pypot.primitive.utils.Square.update">[docs]</a>        <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
-        <span class="n">pos</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_amp</span> <span class="o">*</span> <span class="n">signal</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_freq</span> <span class="o">*</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">numpy</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span>
-                                        <span class="bp">self</span><span class="o">.</span><span class="n">elapsed_time</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_phase</span> <span class="o">*</span> <span class="n">numpy</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mf">180.0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_duty</span><span class="p">)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_offset</span>
+            <span class="n">pos</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_amp</span> <span class="o">*</span> <span class="n">signal</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_freq</span> <span class="o">*</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">numpy</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span>
+                                            <span class="bp">self</span><span class="o">.</span><span class="n">elapsed_time</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_phase</span> <span class="o">*</span> <span class="n">numpy</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mf">180.0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_duty</span><span class="p">)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_offset</span>
 
-        <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">motor_list</span><span class="p">:</span>
-            <span class="n">m</span><span class="o">.</span><span class="n">goal_position</span> <span class="o">=</span> <span class="n">pos</span>
-        <span class="k">print</span> <span class="n">pos</span>
+            <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">motor_list</span><span class="p">:</span>
+                <span class="n">m</span><span class="o">.</span><span class="n">goal_position</span> <span class="o">=</span> <span class="n">pos</span>
+            <span class="k">print</span> <span class="n">pos</span>
 </div>
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">duty</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_duty</span>
+        <span class="nd">@property</span>
+        <span class="k">def</span> <span class="nf">duty</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_duty</span>
 
-    <span class="nd">@duty.setter</span>
-    <span class="k">def</span> <span class="nf">duty</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_duty</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_duty</span> <span class="o">=</span> <span class="n">new_duty</span></div>
+        <span class="nd">@duty.setter</span>
+        <span class="k">def</span> <span class="nf">duty</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_duty</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_duty</span> <span class="o">=</span> <span class="n">new_duty</span>
+</div>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="k">pass</span>
 </pre></div>
 
                 </div>
@@ -254,7 +256,7 @@
 <div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
   <div class="navbar-inner">
     <ul class="nav navbar-nav">
-        <li><a href="../../../index.html">pypot 2.1.0rc3 documentation</a></li>
+        <li><a href="../../../index.html">pypot 2.1.0rc5 documentation</a></li>
     </ul>
     <ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
       
