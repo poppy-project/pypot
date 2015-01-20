@@ -104,7 +104,7 @@ def from_vrep(config, vrep_host='127.0.0.1', vrep_port=19997, scene=None,
                   sensor_controllers=sensor_controllers)
 
     for m in robot.motors:
-        m.default_goto_behavior = 'minjerk'
+        m.goto_behavior = 'minjerk'
 
     init_pos = {m: m.goal_position for m in robot.motors}
 
