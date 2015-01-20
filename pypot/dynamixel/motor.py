@@ -112,7 +112,7 @@ class DxlMotor(Motor):
         self.__dict__['compliant'] = True
 
         self._safe_compliance = SafeCompliance(self)
-        self.default_control = 'dummy'
+        self.default_goto_behavior = 'dummy'
         self.compliant_behavior = 'dummy'
 
     def __repr__(self):
@@ -184,11 +184,21 @@ class DxlMotor(Motor):
     def angle_limit(self, limits):
         self.lower_limit, self.upper_limit = limits
 
+    @property
+    def default_goto_behavior(self):
+        return self._default_goto_behavior
+
+    @default_goto_behavior.setter
+    def default_goto_behavior(self, value):
+        if value not in ('dummy', 'minjerk'):
+            raise ValueError('Wrong compliant type! It should be either "dummy" or "minjerk".')
+        self._default_goto_behavior = value
+
     def goto_position(self, position, duration, control=None, wait=False):
         """ Automatically sets the goal position and the moving speed to reach the desired position within the duration. """
 
         if control is None:
-            control = self.default_control
+            control = self.default_goto_behavior
 
         if control == 'minjerk':
             goto_min_jerk = GotoMinJerk(self, position, duration)
@@ -206,10 +216,6 @@ class DxlMotor(Motor):
 
             if wait:
                 time.sleep(duration)
-
-        else:
-            raise ValueError('Wrong control type! It should be either "dummy" or "minjerk".')
-
 
 class DxlAXRXMotor(DxlMotor):
     """ This class represents the AX robotis motor.

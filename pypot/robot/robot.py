@@ -124,8 +124,8 @@ class Robot(object):
 
             """
         for i, (motor_name, position) in enumerate(position_for_motors.iteritems()):
-
             w = False if i < len(position_for_motors) - 1 else wait
+
             m = getattr(self, motor_name)
             m.goto_position(position, duration, control, wait=w)
 
