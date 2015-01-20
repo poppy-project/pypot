@@ -4,6 +4,7 @@ import logging
 import pypot.utils.pypot_time as time
 
 from ..robot.motor import Motor
+from ..utils.stoppablethread import StoppableLoopThread
 
 logger = logging.getLogger(__name__)
 
@@ -75,7 +76,10 @@ class DxlMotor(Motor):
         """
     __metaclass__ = RegisterOwner
 
-    registers = ['registers', 'goal_speed', 'compliant']
+    registers = ['registers',
+                 'goal_speed',
+                 'compliant', 'safe_compliant',
+                 'angle_limit']
 
     id = DxlRegister()
     name = DxlRegister()
@@ -88,7 +92,8 @@ class DxlMotor(Motor):
     present_load = DxlOrientedRegister()
     torque_limit = DxlRegister(rw=True)
 
-    angle_limit = DxlRegister()
+    lower_limit = DxlPositionRegister()
+    upper_limit = DxlPositionRegister()
     present_voltage = DxlRegister()
     present_temperature = DxlRegister()
 
@@ -104,6 +109,8 @@ class DxlMotor(Motor):
         self.__dict__['offset'] = offset
 
         self.__dict__['compliant'] = True
+
+        self._safe_compliance = SafeCompliance(self)
 
     def __repr__(self):
         return ('<DxlMotor name={self.name} '
@@ -143,11 +150,27 @@ class DxlMotor(Motor):
         return bool(self.__dict__['compliant'])
 
     @compliant.setter
-    def compliant(self, value):
+    def compliant(self, is_compliant):
         # Change the goal_position only if you switch from compliant to not compliant mode
-        if not value and self.compliant:
+        if not is_compliant and self.compliant:
             self.goal_position = self.present_position
-        self.__dict__['compliant'] = value
+        self.__dict__['compliant'] = is_compliant
+
+    @property
+    def safe_compliant(self):
+        return self._safe_compliance.running
+
+    @safe_compliant.setter
+    def safe_compliant(self, is_compliant):
+        self._safe_compliance.start() if is_compliant else self._safe_compliance.stop()
+
+    @property
+    def angle_limit(self):
+        return self.lower_limit, self.upper_limit
+
+    @angle_limit.setter
+    def angle_limit(self, limits):
+        self.lower_limit, self.upper_limit = limits
 
     def goto_position(self, position, duration, wait=False):
         """ Automatically sets the goal position and the moving speed to reach the desired position within the duration. """
@@ -194,3 +217,18 @@ class DxlMXMotor(DxlMotor):
             """
         DxlMotor.__init__(self, id, name, model, direct, offset)
         self.max_pos = 180
+
+
+class SafeCompliance(StoppableLoopThread):
+    """ This class creates a controller to active compliance only if the current motor position is included in the angle limit, else the compliance is turned off. """
+
+    def __init__(self, motor, frequency=50):
+        StoppableLoopThread.__init__(self, frequency)
+
+        self.motor = motor
+
+    def update(self):
+        self.motor.compliant = (min(self.motor.angle_limit) < self.motor.present_position < max(self.motor.angle_limit))
+
+    def teardown(self):
+        self.motor.compliant = False
