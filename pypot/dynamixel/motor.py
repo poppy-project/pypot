@@ -76,7 +76,10 @@ class DxlMotor(Motor):
         """
     __metaclass__ = RegisterOwner
 
-    registers = ['registers', 'goal_speed', 'compliant']
+    registers = ['registers',
+                 'goal_speed',
+                 'compliant', 'safe_compliant',
+                 'angle_limit']
 
     id = DxlRegister()
     name = DxlRegister()
@@ -89,7 +92,8 @@ class DxlMotor(Motor):
     present_load = DxlOrientedRegister()
     torque_limit = DxlRegister(rw=True)
 
-    _angle_limit = DxlRegister()
+    lower_limit = DxlPositionRegister()
+    upper_limit = DxlPositionRegister()
     present_voltage = DxlRegister()
     present_temperature = DxlRegister()
 
@@ -163,6 +167,13 @@ class DxlMotor(Motor):
             self._safe_compliance.start()
         else:
             self._safe_compliance.stop()
+    @property
+    def angle_limit(self):
+        return self.lower_limit, self.upper_limit
+
+    @angle_limit.setter
+    def angle_limit(self, limits):
+        self.lower_limit, self.upper_limit = limits
 
     def goto_position(self, position, duration, wait=False):
         """ Automatically sets the goal position and the moving speed to reach the desired position within the duration. """
