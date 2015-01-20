@@ -42,6 +42,7 @@ class SnapRobotServer(AbstractServer):
         def get_motors_positions():
             get_pos = lambda m: rr.get_motor_register_value(m, 'present_position')
             msg = '/'.join('{}'.format(get_pos(m)) for m in rr.get_motors_list())
+            msg = ';'.join('{}'.format(get_pos(m)) for m in rr.get_motors_list())
             return msg
 
         @self.app.get('/motors/set/positions/<positions>')
