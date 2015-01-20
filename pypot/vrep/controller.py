@@ -3,6 +3,7 @@ from numpy import rad2deg, deg2rad
 from ..robot.controller import MotorsController, SensorsController
 from ..dynamixel.conversion import torque_max
 from ..robot.sensor import Sensor
+from .io import remote_api
 
 
 class VrepController(MotorsController):
@@ -33,6 +34,13 @@ class VrepController(MotorsController):
         At each update all motor position are read from vrep and set to the motors. The motors target position are also send to v-rep.
 
         """
+        # Read all the angle limits
+        h, _, l, _ = self.io.call_remote_api('simxGetObjectGroupData',
+                                             remote_api.sim_object_joint_type,
+                                             16,
+                                             streaming=True)
+        limits4handle = {hh: (ll, lr) for hh, ll, lr in zip(h, l[::2], l[1::2])}
+
         for m in self.motors:
             tmax = torque_max[m.model]
 
@@ -43,6 +51,10 @@ class VrepController(MotorsController):
 
             l = 100. * self.io.get_motor_force(motor_name=m.name) / tmax
             m.__dict__['present_load'] = l
+
+            ll, lr = limits4handle[self.io._object_handles[m.name]]
+            m.__dict__['lower_limit'] = rad2deg(ll)
+            m.__dict__['upper_limit'] = rad2deg(ll) + rad2deg(lr)
 
             # Send new values from Motor to V-REP
             p = deg2rad(round(m.__dict__['goal_position'], 1))
@@ -87,6 +99,13 @@ class VrepController(MotorsController):
                                     torque_max[m.model],
                                     sending=True,
                                     _force=True)
+
+        # Prepare streaming for the angle limit
+        self.io.call_remote_api('simxGetObjectGroupData',
+                                remote_api.sim_object_joint_type,
+                                16,
+                                streaming=True,
+                                _force=True)
 
         # And actually affect them
         for m, p in zip(self.motors, pos):
