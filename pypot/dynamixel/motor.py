@@ -149,6 +149,16 @@ class DxlMotor(Motor):
             self.moving_speed = abs(value)
 
     @property
+    def compliant_behavior(self):
+        return self._compliant_behavior
+
+    @compliant_behavior.setter
+    def compliant_behavior(self, value):
+        if value not in ('dummy', 'safe'):
+            raise ValueError('Wrong compliant type! It should be either "dummy" or "safe".')
+        self._compliant_behavior = value
+
+    @property
     def compliant(self):
         return bool(self.__dict__['compliant'])
 
@@ -159,9 +169,6 @@ class DxlMotor(Motor):
 
         elif self.compliant_behavior == 'safe':
             self._safe_compliance.start() if is_compliant else self._safe_compliance.stop()
-
-        else:
-            raise ValueError('Wrong compliant type! It should be either "dummy" or "safe".')
 
     def _set_compliancy(self, is_compliant):
         # Change the goal_position only if you switch from compliant to not compliant mode
