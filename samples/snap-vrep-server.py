@@ -25,4 +25,12 @@ if __name__ == '__main__':
                       tracked_objects=['head_visual'])
 
     http = SnapRobotServer(robot, '127.0.0.1', 8080)
+
+    snap_url = 'http://snap.berkeley.edu/snapsource/snap.html'
+    blocks_url = 'http://localhost:8080/snap-blocks.xml'
+    url = '{}#open:{}'.format(snap_url, blocks_url)
+
+    print 'Snap Server should now be ready!'
+    print 'You can now connect to "{}"'.format(url)
+
     http.run()
