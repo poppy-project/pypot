@@ -40,10 +40,11 @@ class BaseDxlController(DxlController):
         factory = _DxlRegisterController
 
         controllers = [_PosSpeedLoadDxlController(io, motors, 50),
+                       AngleLimitRegisterController(io, motors,
+                                                    1, 'get', 'angle_limit'),
                        factory(io, motors, 10, 'set', 'pid_gain', 'pid'),
                        factory(io, motors, 10, 'set', 'compliance_margin'),
                        factory(io, motors, 10, 'set', 'compliance_slope'),
-                       factory(io, motors, 1, 'get', 'angle_limit'),
                        factory(io, motors, 1, 'get', 'present_voltage'),
                        factory(io, motors, 1, 'get', 'present_temperature')]
 
@@ -95,6 +96,18 @@ class _DxlRegisterController(_DxlController):
         values = (m.__dict__[self.varname] for m in motors)
         getattr(self.io, 'set_{}'.format(self.regname))(dict(zip(ids, values)))
 
+
+class AngleLimitRegisterController(_DxlRegisterController):
+    def get_register(self):
+        motors = [m for m in self.motors if hasattr(m, self.varname)]
+        if not motors:
+            return
+
+        ids = [m.id for m in motors]
+        values = self.io.get_angle_limit(ids)
+
+        for m, val in zip(motors, values):
+            m.__dict__['lower_limit'], m.__dict__['upper_limit'] = val
 
 class _PosSpeedLoadDxlController(_DxlController):
     def setup(self):
