@@ -272,5 +272,4 @@ class GotoMinJerk(StoppableLoopThread):
 
     @property
     def elapsed_time(self):
-        """ Elapsed time (in seconds) since the primitive runs. """
         return time.time() - self.t0
