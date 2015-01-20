@@ -1,7 +1,5 @@
 import logging
 
-import pypot.utils.pypot_time as time
-
 from ..primitive.manager import PrimitiveManager
 
 
@@ -114,22 +112,22 @@ class Robot(object):
         for m in self.motors:
             m.compliant = is_compliant
 
-    def goto_position(self, position_for_motors, duration, wait=False):
+    def goto_position(self, position_for_motors, duration, control=None, wait=False):
         """ Moves a subset of the motors to a position within a specific duration.
 
             :param dict position_for_motors: which motors you want to move {motor_name: pos, motor_name: pos,...}
             :param float duration: duration of the move
+            :param str control: control type ('dummy', 'minjerk')
             :param bool wait: whether or not to wait for the end of the move
 
             .. note::In case of dynamixel motors, the speed is automatically adjusted so the goal position is reached after the chosen duration.
 
             """
-        for motor_name, position in position_for_motors.iteritems():
-            m = getattr(self, motor_name)
-            m.goto_position(position, duration)
+        for i, (motor_name, position) in enumerate(position_for_motors.iteritems()):
 
-        if wait:
-            time.sleep(duration)
+            w = False if i < len(position_for_motors) - 1 else wait
+            m = getattr(self, motor_name)
+            m.goto_position(position, duration, control, wait=w)
 
     def power_up(self):
         """ Changes all settings to guarantee the motors will be used at their maximum power. """

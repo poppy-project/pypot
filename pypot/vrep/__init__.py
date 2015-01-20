@@ -103,6 +103,9 @@ def from_vrep(config, vrep_host='127.0.0.1', vrep_port=19997, scene=None,
     robot = Robot(motor_controllers=[vc],
                   sensor_controllers=sensor_controllers)
 
+    for m in robot.motors:
+        m.default_control = 'minjerk'
+
     init_pos = {m: m.goal_position for m in robot.motors}
 
     make_alias(config, robot)
