@@ -4,8 +4,9 @@ import logging
 import pypot.utils.pypot_time as time
 
 from ..robot.motor import Motor
+from ..utils.trajectory import GotoMinJerk
 from ..utils.stoppablethread import StoppableLoopThread
-from ..utils.trajectory import MinimumJerkTrajectory
+
 
 logger = logging.getLogger(__name__)
 
@@ -266,27 +267,3 @@ class SafeCompliance(StoppableLoopThread):
 
     def teardown(self):
         self.motor.compliant = False
-
-
-class GotoMinJerk(StoppableLoopThread):
-    def __init__(self, motor, position, duration, frequency=50):
-        StoppableLoopThread.__init__(self, frequency)
-
-        self.motor = motor
-        self.goal = position  # dict { 'motor1_name': x1, 'motor2_name': x2 }
-        self.duration = duration  # secondes
-
-    def setup(self):
-        self.trajs = MinimumJerkTrajectory(self.motor.present_position, self.goal, self.duration).get_generator()
-        self.t0 = time.time()
-
-    def update(self):
-        if self.elapsed_time > self.duration:
-            self.stop(wait=False)
-            return
-
-        self.motor.goal_position = self.trajs(self.elapsed_time)
-
-    @property
-    def elapsed_time(self):
-        return time.time() - self.t0

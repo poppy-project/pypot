@@ -9,6 +9,7 @@ from collections import deque
 import pypot.utils.pypot_time as time
 
 from ..utils.stoppablethread import StoppableThread, make_update_loop
+from ..utils.trajectory import GotoMinJerk
 
 logger = logging.getLogger(__name__)
 
@@ -188,13 +189,13 @@ class MockupRobot(object):
     def __getattr__(self, attr):
         return getattr(self._robot, attr)
 
-    def goto_position(self, position_for_motors, duration, wait=False):
-        for motor_name, position in position_for_motors.iteritems():
-            m = getattr(self, motor_name)
-            m.goto_position(position, duration)
+    def goto_position(self, position_for_motors, duration, control=None, wait=False):
+        for i, (motor_name, position) in enumerate(position_for_motors.iteritems()):
+            w = False if i < len(position_for_motors) - 1 else wait
 
-        if wait:
-            time.sleep(duration)
+            m = getattr(self, motor_name)
+            m.goto_position(position, duration, control, wait=w)
+
 
     @property
     def motors(self):
@@ -230,15 +231,27 @@ class MockupMotor(object):
             logger.debug("Setting MockupMotor '%s.%s' to %s",
                          self.name, attr, val)
 
-    def goto_position(self, position, duration, wait=False):
+    def goto_position(self, position, duration, control=None, wait=False):
         """ Automatically sets the goal position and the moving speed to reach the desired position within the duration. """
-        dp = abs(self.present_position - position)
-        speed = (dp / float(duration)) if duration > 0 else numpy.inf
-        self.moving_speed = speed
-        self.goal_position = position
 
-        if wait:
-            time.sleep(duration)
+        if control is None:
+            control = self.goto_behavior
+
+        if control == 'minjerk':
+            goto_min_jerk = GotoMinJerk(self, position, duration)
+            goto_min_jerk.start()
+            if wait:
+                goto_min_jerk.wait_to_stop()
+
+        elif control == 'dummy':
+            dp = abs(self.present_position - position)
+            speed = (dp / float(duration)) if duration > 0 else numpy.inf
+
+            self.moving_speed = speed
+            self.goal_position = position
+
+            if wait:
+                time.sleep(duration)
 
     @property
     def goal_speed(self):

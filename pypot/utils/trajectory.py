@@ -3,6 +3,9 @@ from __future__ import division
 import numpy
 import collections
 
+import pypot.utils.pypot_time as time
+from ..utils.stoppablethread import StoppableLoopThread
+
 
 class MinimumJerkTrajectory(object):
     def __init__(self, initial, final, duration, init_vel=0.0, init_acc=0.0, final_vel=0.0, final_acc=0.0):
@@ -60,3 +63,27 @@ class MinimumJerkTrajectory(object):
 
     def get_generator(self):
         return lambda x: numpy.piecewise(x, self.domain(x), [self._generators[j] for j in xrange(len(self._generators))] + [self.finals[-1]])
+
+
+class GotoMinJerk(StoppableLoopThread):
+    def __init__(self, motor, position, duration, frequency=50):
+        StoppableLoopThread.__init__(self, frequency)
+
+        self.motor = motor
+        self.goal = position  # dict { 'motor1_name': x1, 'motor2_name': x2 }
+        self.duration = duration  # seconds
+
+    def setup(self):
+        self.trajs = MinimumJerkTrajectory(self.motor.present_position, self.goal, self.duration).get_generator()
+        self.t0 = time.time()
+
+    def update(self):
+        if self.elapsed_time > self.duration:
+            self.stop(wait=False)
+            return
+
+        self.motor.goal_position = self.trajs(self.elapsed_time)
+
+    @property
+    def elapsed_time(self):
+        return time.time() - self.t0
