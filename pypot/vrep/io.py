@@ -152,6 +152,17 @@ class VrepIO(AbstractIO):
                              position,
                              sending=True)
 
+    def get_motor_force(self, motor_name):
+        return self.call_remote_api('simxGetJointForce',
+                                    self.get_object_handle(motor_name),
+                                    streaming=True)
+
+    def set_motor_force(self, motor_name, force):
+        self.call_remote_api('simxSetJointForce',
+                             self.get_object_handle(motor_name),
+                             force,
+                             sending=True)
+
     def get_object_position(self, object_name, relative_to_object=None):
         """ Gets the object position. """
         h = self.get_object_handle(object_name)

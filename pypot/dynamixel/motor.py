@@ -4,6 +4,9 @@ import logging
 import pypot.utils.pypot_time as time
 
 from ..robot.motor import Motor
+from ..utils.trajectory import GotoMinJerk
+from ..utils.stoppablethread import StoppableLoopThread
+
 
 logger = logging.getLogger(__name__)
 
@@ -75,7 +78,10 @@ class DxlMotor(Motor):
         """
     __metaclass__ = RegisterOwner
 
-    registers = Motor.registers + ['registers', 'goal_speed', 'compliant']
+    registers = Motor.registers + ['registers',
+                                   'goal_speed',
+                                   'compliant', 'safe_compliant',
+                                   'angle_limit']
 
     id = DxlRegister()
     name = DxlRegister()
@@ -88,12 +94,14 @@ class DxlMotor(Motor):
     present_load = DxlOrientedRegister()
     torque_limit = DxlRegister(rw=True)
 
-    angle_limit = DxlRegister()
+    lower_limit = DxlPositionRegister()
+    upper_limit = DxlPositionRegister()
     present_voltage = DxlRegister()
     present_temperature = DxlRegister()
 
     def __init__(self, id, name=None, model='',
-                 direct=True, offset=0.0):
+                 direct=True, offset=0.0,
+                 broken=False):
         self.__dict__['id'] = id
 
         name = name if name is not None else 'motor_{}'.format(id)
@@ -104,6 +112,12 @@ class DxlMotor(Motor):
         self.__dict__['offset'] = offset
 
         self.__dict__['compliant'] = True
+
+        self._safe_compliance = SafeCompliance(self)
+        self.goto_behavior = 'dummy'
+        self.compliant_behavior = 'dummy'
+
+        self._broken = broken
 
     def __repr__(self):
         return ('<DxlMotor name={self.name} '
@@ -135,26 +149,73 @@ class DxlMotor(Motor):
             self.moving_speed = abs(value)
 
     @property
+    def compliant_behavior(self):
+        return self._compliant_behavior
+
+    @compliant_behavior.setter
+    def compliant_behavior(self, value):
+        if value not in ('dummy', 'safe'):
+            raise ValueError('Wrong compliant type! It should be either "dummy" or "safe".')
+        self._compliant_behavior = value
+
+    @property
     def compliant(self):
         return bool(self.__dict__['compliant'])
 
     @compliant.setter
-    def compliant(self, value):
+    def compliant(self, is_compliant):
+        if self.compliant_behavior == 'dummy':
+            self._set_compliancy(is_compliant)
+
+        elif self.compliant_behavior == 'safe':
+            self._safe_compliance.start() if is_compliant else self._safe_compliance.stop()
+
+    def _set_compliancy(self, is_compliant):
         # Change the goal_position only if you switch from compliant to not compliant mode
-        if not value and self.compliant:
+        if not is_compliant and self.compliant:
             self.goal_position = self.present_position
-        self.__dict__['compliant'] = value
+        self.__dict__['compliant'] = is_compliant
 
-    def goto_position(self, position, duration, wait=False):
+    @property
+    def angle_limit(self):
+        return self.lower_limit, self.upper_limit
+
+    @angle_limit.setter
+    def angle_limit(self, limits):
+        self.lower_limit, self.upper_limit = limits
+
+    @property
+    def goto_behavior(self):
+        return self._default_goto_behavior
+
+    @goto_behavior.setter
+    def goto_behavior(self, value):
+        if value not in ('dummy', 'minjerk'):
+            raise ValueError('Wrong compliant type! It should be either "dummy" or "minjerk".')
+        self._default_goto_behavior = value
+
+    def goto_position(self, position, duration, control=None, wait=False):
         """ Automatically sets the goal position and the moving speed to reach the desired position within the duration. """
-        dp = abs(self.present_position - position)
-        speed = (dp / float(duration)) if duration > 0 else numpy.inf
 
-        self.moving_speed = speed
-        self.goal_position = position
+        if control is None:
+            control = self.goto_behavior
 
-        if wait:
-            time.sleep(duration)
+        if control == 'minjerk':
+            goto_min_jerk = GotoMinJerk(self, position, duration)
+            goto_min_jerk.start()
+
+            if wait:
+                goto_min_jerk.wait_to_stop()
+
+        elif control == 'dummy':
+            dp = abs(self.present_position - position)
+            speed = (dp / float(duration)) if duration > 0 else numpy.inf
+
+            self.moving_speed = speed
+            self.goal_position = position
+
+            if wait:
+                time.sleep(duration)
 
 
 class DxlAXRXMotor(DxlMotor):
@@ -170,8 +231,8 @@ class DxlAXRXMotor(DxlMotor):
     compliance_slope = DxlRegister(rw=True)
 
     def __init__(self, id, name=None, model='',
-                 direct=True, offset=0.0):
-        DxlMotor.__init__(self, id, name, model, direct, offset)
+                 direct=True, offset=0.0, broken=False):
+        DxlMotor.__init__(self, id, name, model, direct, offset, broken)
         self.max_pos = 150
 
 
@@ -187,6 +248,27 @@ class DxlMXMotor(DxlMotor):
     pid = DxlRegister(rw=True)
 
     def __init__(self, id, name=None, model='',
-                 direct=True, offset=0.0):
-        DxlMotor.__init__(self, id, name, model, direct, offset)
+                 direct=True, offset=0.0, broken=False):
+        """ This class represents the RX and MX robotis motor.
+
+            This class adds access to:
+                * PID gains (see the robotis website for details)
+
+            """
+        DxlMotor.__init__(self, id, name, model, direct, offset, broken)
         self.max_pos = 180
+
+
+class SafeCompliance(StoppableLoopThread):
+    """ This class creates a controller to active compliance only if the current motor position is included in the angle limit, else the compliance is turned off. """
+
+    def __init__(self, motor, frequency=50):
+        StoppableLoopThread.__init__(self, frequency)
+
+        self.motor = motor
+
+    def update(self):
+        self.motor._set_compliancy((min(self.motor.angle_limit) < self.motor.present_position < max(self.motor.angle_limit)))
+
+    def teardown(self):
+        self.motor.compliant = False

@@ -26,6 +26,7 @@ setup(name='pypot',
           'http-server': ['bottle', 'tornado'],
           'zmq-server': ['zmq'],
           'remote-robot': ['zerorpc'],
+          'square-signal': ['scipy']
       },
 
       entry_points={
