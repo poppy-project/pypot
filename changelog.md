@@ -1,5 +1,12 @@
 # Changelog
 
+## V 2.1
+* now uses the poppy_creature package
+* add support for present_load/torque_limit/compliant in V-REP
+* fix a bug when using setup.py install
+* add minimum jerk of Steve N'Guyen
+* add safe compliance behavior
+
 ## V. 2.0
 
 ### Major changes

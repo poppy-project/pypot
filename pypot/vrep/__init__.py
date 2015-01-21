@@ -1,4 +1,7 @@
+import json
 import logging
+
+from functools import partial
 
 from .io import (VrepIO, close_all_connections,
                  VrepIOError, VrepConnectionError)
@@ -42,7 +45,8 @@ def from_vrep(config, vrep_host='127.0.0.1', vrep_port=19997, scene=None,
               tracked_objects=[], tracked_collisions=[]):
     """ Create a robot from a V-REP instance.
 
-    :param dict config: robot configuration dictionary
+    :param config: robot configuration (either the path to the json or directly the dictionary)
+    :type config: str or dict
     :param str vrep_host: host of the V-REP server
     :param int vrep_port: port of the V-REP server
     :param str scene: path to the V-REP scene to load and start
@@ -74,11 +78,9 @@ def from_vrep(config, vrep_host='127.0.0.1', vrep_port=19997, scene=None,
     pypot_time.time = vreptime.get_time
     pypot_time.sleep = vreptime.sleep
 
-    # The URDF uses the offset as the 0 for the motors equivalent
-    # so we set all the offsets to 0
-    config = dict(config)
-    for m in config['motors'].itervalues():
-        m['offset'] = 0.0
+    if isinstance(config, basestring):
+        with open(config) as f:
+            config = json.load(f)
 
     motors = [motor_from_confignode(config, name)
               for name in config['motors'].keys()]
@@ -101,23 +103,18 @@ def from_vrep(config, vrep_host='127.0.0.1', vrep_port=19997, scene=None,
     robot = Robot(motor_controllers=[vc],
                   sensor_controllers=sensor_controllers)
 
+    for m in robot.motors:
+        m.goto_behavior = 'minjerk'
+
     init_pos = {m: m.goal_position for m in robot.motors}
 
     make_alias(config, robot)
 
-    def reset(robot):
+    def start_simu():
+        vrep_io.start_simulation()
+
         for m, p in init_pos.iteritems():
             m.goal_position = p
-
-        if tracked_objects:
-            vot.stop()
-
-        if tracked_collisions:
-            vct.stop()
-
-        vc.stop()
-
-        vrep_io.restart_simulation()
 
         vc.start()
 
@@ -130,12 +127,31 @@ def from_vrep(config, vrep_host='127.0.0.1', vrep_port=19997, scene=None,
         while vrep_io.get_simulation_current_time() < 1.:
             sys_time.sleep(0.1)
 
-    robot.reset_simulation = lambda: reset(robot)
+    def stop_simu():
+        if tracked_objects:
+            vot.stop()
+
+        if tracked_collisions:
+            vct.stop()
+
+        vc.stop()
+        vrep_io.stop_simulation()
+
+    def reset_simu():
+        stop_simu()
+        sys_time.sleep(0.5)
+        start_simu()
+
+    robot.start_simulation = start_simu
+    robot.stop_simulation = stop_simu
+    robot.reset_simulation = reset_simu
 
     def current_simulation_time(robot):
         return robot._controllers[0].io.get_simulation_current_time()
-    Robot.current_simulation_time = property(
+    Robot.current_simulation_time = property(lambda robot: current_simulation_time(robot))
 
-        lambda robot: current_simulation_time(robot))
+    def get_object_position(robot, object, relative_to_object=None):
+        return vrep_io.get_object_position(object, relative_to_object)
+    Robot.get_object_position = partial(get_object_position, robot)
 
     return robot

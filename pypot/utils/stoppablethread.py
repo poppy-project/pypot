@@ -86,8 +86,9 @@ class StoppableThread(object):
 
     def wait_to_stop(self):
         """ Wait for the thread to terminate. """
-        if self.started:
-            self.join()
+        if not self.started:
+            self.wait_to_start()
+        self.join()
 
     def setup(self):
         """ Setup method call just before the run. """

@@ -1,7 +1,7 @@
 # Roadmap
 
 ### Connect pypot with a visual programming tool
-* e.g. Scratch/Snap/Blockly (see [the internship proposal](https://forum.poppy-project.org/t/developpement-d-un-outil-de-programmation-visuelle-pour-la-plateforme-open-source-humanoide-poppy-base-sur-l-utilisation-de-scratch-snap-blockly/684))
+* e.g. Scratch/Snap/Blockly (see [the snap branch ](https://github.com/poppy-project/pypot/tree/snap))
 
 ### REST API
 * Specify, document and to implement (partially done: working for motors and primitives)

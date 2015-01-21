@@ -40,10 +40,11 @@ class BaseDxlController(DxlController):
         factory = _DxlRegisterController
 
         controllers = [_PosSpeedLoadDxlController(io, motors, 50),
+                       AngleLimitRegisterController(io, motors,
+                                                    1, 'get', 'angle_limit'),
                        factory(io, motors, 10, 'set', 'pid_gain', 'pid'),
                        factory(io, motors, 10, 'set', 'compliance_margin'),
                        factory(io, motors, 10, 'set', 'compliance_slope'),
-                       factory(io, motors, 1, 'get', 'angle_limit'),
                        factory(io, motors, 1, 'get', 'present_voltage'),
                        factory(io, motors, 1, 'get', 'present_temperature')]
 
@@ -54,7 +55,11 @@ class _DxlController(MotorsController):
     def __init__(self, io, motors, sync_freq=50.):
         MotorsController.__init__(self, io, motors, sync_freq)
 
-        self.ids = [m.id for m in motors]
+        self.ids = [m.id for m in self.working_motors]
+
+    @property
+    def working_motors(self):
+        return [m for m in self.motors if not m._broken]
 
 
 class _DxlRegisterController(_DxlController):
@@ -75,7 +80,7 @@ class _DxlRegisterController(_DxlController):
 
     def get_register(self):
         """ Gets the value from the specified register and sets it to the :class:`~pypot.dynamixel.motor.DxlMotor`. """
-        motors = [m for m in self.motors if hasattr(m, self.varname)]
+        motors = [m for m in self.working_motors if hasattr(m, self.varname)]
         if not motors:
             return
         ids = [m.id for m in motors]
@@ -86,7 +91,7 @@ class _DxlRegisterController(_DxlController):
 
     def set_register(self):
         """ Gets the value from :class:`~pypot.dynamixel.motor.DxlMotor` and sets it to the specified register. """
-        motors = [m for m in self.motors if hasattr(m, self.varname)]
+        motors = [m for m in self.working_motors if hasattr(m, self.varname)]
 
         if not motors:
             return
@@ -96,16 +101,29 @@ class _DxlRegisterController(_DxlController):
         getattr(self.io, 'set_{}'.format(self.regname))(dict(zip(ids, values)))
 
 
+class AngleLimitRegisterController(_DxlRegisterController):
+    def get_register(self):
+        motors = [m for m in self.working_motors if hasattr(m, self.varname)]
+        if not motors:
+            return
+
+        ids = [m.id for m in motors]
+        values = self.io.get_angle_limit(ids)
+
+        for m, val in zip(motors, values):
+            m.__dict__['lower_limit'], m.__dict__['upper_limit'] = val
+
+
 class _PosSpeedLoadDxlController(_DxlController):
     def setup(self):
         torques = self.io.is_torque_enabled(self.ids)
-        for m, c in zip(self.motors, torques):
+        for m, c in zip(self.working_motors, torques):
             m.compliant = not c
         self._old_torques = torques
 
         values = self.io.get_goal_position_speed_load(self.ids)
         positions, speeds, loads = zip(*values)
-        for m, p, s, l in zip(self.motors, positions, speeds, loads):
+        for m, p, s, l in zip(self.working_motors, positions, speeds, loads):
             m.__dict__['goal_position'] = p
             m.__dict__['moving_speed'] = s
             m.__dict__['torque_limit'] = l
@@ -122,22 +140,22 @@ class _PosSpeedLoadDxlController(_DxlController):
 
         positions, speeds, loads = zip(*values)
 
-        for m, p, s, l in zip(self.motors, positions, speeds, loads):
+        for m, p, s, l in zip(self.working_motors, positions, speeds, loads):
             m.__dict__['present_position'] = p
             m.__dict__['present_speed'] = s
             m.__dict__['present_load'] = l
 
     def set_goal_position_speed_load(self):
         change_torque = {}
-        torques = [not m.compliant for m in self.motors]
-        for m, t, old_t in zip(self.motors, torques, self._old_torques):
+        torques = [not m.compliant for m in self.working_motors]
+        for m, t, old_t in zip(self.working_motors, torques, self._old_torques):
             if t != old_t:
                 change_torque[m.id] = t
         self._old_torques = torques
         if change_torque:
             self.io._set_torque_enable(change_torque)
 
-        rigid_motors = [m for m in self.motors if not m.compliant]
+        rigid_motors = [m for m in self.working_motors if not m.compliant]
         ids = tuple(m.id for m in rigid_motors)
 
         if not ids:
