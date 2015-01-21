@@ -100,7 +100,8 @@ class DxlMotor(Motor):
     present_temperature = DxlRegister()
 
     def __init__(self, id, name=None, model='',
-                 direct=True, offset=0.0):
+                 direct=True, offset=0.0,
+                 broken=False):
         self.__dict__['id'] = id
 
         name = name if name is not None else 'motor_{}'.format(id)
@@ -115,6 +116,8 @@ class DxlMotor(Motor):
         self._safe_compliance = SafeCompliance(self)
         self.goto_behavior = 'dummy'
         self.compliant_behavior = 'dummy'
+
+        self._broken = broken
 
     def __repr__(self):
         return ('<DxlMotor name={self.name} '
@@ -232,8 +235,8 @@ class DxlAXRXMotor(DxlMotor):
     compliance_slope = DxlRegister(rw=True)
 
     def __init__(self, id, name=None, model='',
-                 direct=True, offset=0.0):
-        DxlMotor.__init__(self, id, name, model, direct, offset)
+                 direct=True, offset=0.0, broken=False):
+        DxlMotor.__init__(self, id, name, model, direct, offset, broken)
         self.max_pos = 150
 
 
@@ -243,14 +246,14 @@ class DxlMXMotor(DxlMotor):
     pid = DxlRegister(rw=True)
 
     def __init__(self, id, name=None, model='',
-                 direct=True, offset=0.0):
+                 direct=True, offset=0.0, broken=False):
         """ This class represents the RX and MX robotis motor.
 
             This class adds access to:
                 * PID gains (see the robotis website for details)
 
             """
-        DxlMotor.__init__(self, id, name, model, direct, offset)
+        DxlMotor.__init__(self, id, name, model, direct, offset, broken)
         self.max_pos = 180
 
 

@@ -8,7 +8,6 @@ Configuration are written as Python dictionary so you can define/modify them pro
 * motorgroups: It allows to define alias of group of motors. They can be nested.
 
 """
-import warnings
 import logging
 import numpy
 import time
@@ -47,6 +46,10 @@ def from_config(config, strict=True):
 
         attached_motors = [motor_from_confignode(config, name) for name in motor_names]
 
+        # at least one of the motor is set as broken
+        if [m for m in attached_motors if m._broken]:
+            strict = False
+
         attached_ids = [m.id for m in attached_motors]
         dxl_io = dxl_io_from_confignode(config, c_params, attached_ids, strict)
 
@@ -78,7 +81,8 @@ def motor_from_confignode(config, motor_name):
                  name=motor_name,
                  model=params['type'],
                  direct=True if params['orientation'] == 'direct' else False,
-                 offset=params['offset'])
+                 offset=params['offset'],
+                 broken='broken' in params)
 
     logger.info("Instantiating motor '%s' id=%d direct=%s offset=%s",
                 m.name, m.id, m.direct, m.offset,
@@ -119,7 +123,10 @@ def check_motor_limits(config, dxl_io, motor_names):
         m = config['motors'][name]
         id = m['id']
 
-        old_limits = dxl_io.get_angle_limit((id, ))[0]
+        try:
+            old_limits = dxl_io.get_angle_limit((id, ))[0]
+        except IndexError: # probably a broken motor so we just skip
+            continue
         new_limits = m['angle_limit']
 
         d = numpy.linalg.norm(numpy.asarray(new_limits) - numpy.asarray(old_limits))
