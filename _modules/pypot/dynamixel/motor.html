@@ -9,7 +9,7 @@
   <head>
     <meta charset="utf-8" />
     
-    <title>pypot.dynamixel.motor &mdash; pypot 2.1.0rc5 documentation</title>
+    <title>pypot.dynamixel.motor &mdash; pypot 2.1.0cr7 documentation</title>
     <meta name="description" content="">
     <meta name="author" content="">
 
@@ -36,7 +36,7 @@
 <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
             URL_ROOT:    '../../../',
-            VERSION:     '2.1.0rc5',
+            VERSION:     '2.1.0cr7',
             COLLAPSE_INDEX: false,
             FILE_SUFFIX: '.html',
             HAS_SOURCE:  true
@@ -51,7 +51,7 @@
 <script type="text/javascript">
 </script>
     <link rel="author" title="About these documents" href="../../../about.html" />
-    <link rel="top" title="pypot 2.1.0rc5 documentation" href="../../../index.html" />
+    <link rel="top" title="pypot 2.1.0cr7 documentation" href="../../../index.html" />
     <link rel="up" title="pypot.dynamixel" href="../dynamixel.html" /> 
   </head>
   <body role="document">
@@ -64,7 +64,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="../../../index.html">pypot 2.1.0rc5 documentation</a>
+          <a class="navbar-brand" href="../../../index.html">pypot 2.1.0cr7 documentation</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
@@ -135,8 +135,9 @@
 <span class="kn">import</span> <span class="nn">pypot.utils.pypot_time</span> <span class="kn">as</span> <span class="nn">time</span>
 
 <span class="kn">from</span> <span class="nn">..robot.motor</span> <span class="kn">import</span> <span class="n">Motor</span>
+<span class="kn">from</span> <span class="nn">..utils.trajectory</span> <span class="kn">import</span> <span class="n">GotoMinJerk</span>
 <span class="kn">from</span> <span class="nn">..utils.stoppablethread</span> <span class="kn">import</span> <span class="n">StoppableLoopThread</span>
-<span class="kn">from</span> <span class="nn">..utils.trajectory</span> <span class="kn">import</span> <span class="n">MinimumJerkTrajectory</span>
+
 
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="n">__name__</span><span class="p">)</span>
 
@@ -243,7 +244,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">__dict__</span><span class="p">[</span><span class="s">&#39;compliant&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">True</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_safe_compliance</span> <span class="o">=</span> <span class="n">SafeCompliance</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">default_control</span> <span class="o">=</span> <span class="s">&#39;dummy&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">goto_behavior</span> <span class="o">=</span> <span class="s">&#39;dummy&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">compliant_behavior</span> <span class="o">=</span> <span class="s">&#39;dummy&#39;</span>
 
     <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="p">(</span><span class="s">&#39;&lt;DxlMotor name={self.name} &#39;</span>
@@ -279,23 +281,32 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">moving_speed</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
 
     <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">compliant_behavior</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_compliant_behavior</span>
+
+    <span class="nd">@compliant_behavior.setter</span>
+    <span class="k">def</span> <span class="nf">compliant_behavior</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">value</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="s">&#39;dummy&#39;</span><span class="p">,</span> <span class="s">&#39;safe&#39;</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;Wrong compliant type! It should be either &quot;dummy&quot; or &quot;safe&quot;.&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_compliant_behavior</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">compliant</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__dict__</span><span class="p">[</span><span class="s">&#39;compliant&#39;</span><span class="p">])</span>
 
     <span class="nd">@compliant.setter</span>
     <span class="k">def</span> <span class="nf">compliant</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">is_compliant</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">compliant_behavior</span> <span class="o">==</span> <span class="s">&#39;dummy&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_set_compliancy</span><span class="p">(</span><span class="n">is_compliant</span><span class="p">)</span>
+
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">compliant_behavior</span> <span class="o">==</span> <span class="s">&#39;safe&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_safe_compliance</span><span class="o">.</span><span class="n">start</span><span class="p">()</span> <span class="k">if</span> <span class="n">is_compliant</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">_safe_compliance</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">_set_compliancy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">is_compliant</span><span class="p">):</span>
         <span class="c"># Change the goal_position only if you switch from compliant to not compliant mode</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">is_compliant</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">compliant</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">goal_position</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">present_position</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__dict__</span><span class="p">[</span><span class="s">&#39;compliant&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">is_compliant</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">safe_compliant</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_safe_compliance</span><span class="o">.</span><span class="n">running</span>
-
-    <span class="nd">@safe_compliant.setter</span>
-    <span class="k">def</span> <span class="nf">safe_compliant</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">is_compliant</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_safe_compliance</span><span class="o">.</span><span class="n">start</span><span class="p">()</span> <span class="k">if</span> <span class="n">is_compliant</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">_safe_compliance</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">angle_limit</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -305,11 +316,21 @@
     <span class="k">def</span> <span class="nf">angle_limit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">limits</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">lower_limit</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">upper_limit</span> <span class="o">=</span> <span class="n">limits</span>
 
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">goto_behavior</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_default_goto_behavior</span>
+
+    <span class="nd">@goto_behavior.setter</span>
+    <span class="k">def</span> <span class="nf">goto_behavior</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">value</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="s">&#39;dummy&#39;</span><span class="p">,</span> <span class="s">&#39;minjerk&#39;</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;Wrong compliant type! It should be either &quot;dummy&quot; or &quot;minjerk&quot;.&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_default_goto_behavior</span> <span class="o">=</span> <span class="n">value</span>
+
 <div class="viewcode-block" id="DxlMotor.goto_position"><a class="viewcode-back" href="../../../pypot.dynamixel.html#pypot.dynamixel.motor.DxlMotor.goto_position">[docs]</a>    <span class="k">def</span> <span class="nf">goto_position</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">position</span><span class="p">,</span> <span class="n">duration</span><span class="p">,</span> <span class="n">control</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">wait</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Automatically sets the goal position and the moving speed to reach the desired position within the duration. &quot;&quot;&quot;</span>
 
         <span class="k">if</span> <span class="n">control</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="n">control</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_control</span>
+            <span class="n">control</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">goto_behavior</span>
 
         <span class="k">if</span> <span class="n">control</span> <span class="o">==</span> <span class="s">&#39;minjerk&#39;</span><span class="p">:</span>
             <span class="n">goto_min_jerk</span> <span class="o">=</span> <span class="n">GotoMinJerk</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">position</span><span class="p">,</span> <span class="n">duration</span><span class="p">)</span>
@@ -327,9 +348,6 @@
 
             <span class="k">if</span> <span class="n">wait</span><span class="p">:</span>
                 <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">duration</span><span class="p">)</span>
-
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;Wrong control type! It should be either &quot;dummy&quot; or &quot;minjerk&quot; &#39;</span><span class="p">)</span>
 
 </div></div>
 <div class="viewcode-block" id="DxlAXRXMotor"><a class="viewcode-back" href="../../../pypot.dynamixel.html#pypot.dynamixel.motor.DxlAXRXMotor">[docs]</a><span class="k">class</span> <span class="nc">DxlAXRXMotor</span><span class="p">(</span><span class="n">DxlMotor</span><span class="p">):</span>
@@ -376,34 +394,10 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">motor</span> <span class="o">=</span> <span class="n">motor</span>
 
     <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">motor</span><span class="o">.</span><span class="n">compliant</span> <span class="o">=</span> <span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">motor</span><span class="o">.</span><span class="n">angle_limit</span><span class="p">)</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">motor</span><span class="o">.</span><span class="n">present_position</span> <span class="o">&lt;</span> <span class="nb">max</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">motor</span><span class="o">.</span><span class="n">angle_limit</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">motor</span><span class="o">.</span><span class="n">_set_compliancy</span><span class="p">((</span><span class="nb">min</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">motor</span><span class="o">.</span><span class="n">angle_limit</span><span class="p">)</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">motor</span><span class="o">.</span><span class="n">present_position</span> <span class="o">&lt;</span> <span class="nb">max</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">motor</span><span class="o">.</span><span class="n">angle_limit</span><span class="p">)))</span>
 
     <span class="k">def</span> <span class="nf">teardown</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">motor</span><span class="o">.</span><span class="n">compliant</span> <span class="o">=</span> <span class="bp">False</span>
-
-</div>
-<span class="k">class</span> <span class="nc">GotoMinJerk</span><span class="p">(</span><span class="n">StoppableLoopThread</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">motor</span><span class="p">,</span> <span class="n">position</span><span class="p">,</span> <span class="n">duration</span><span class="p">,</span> <span class="n">frequency</span><span class="o">=</span><span class="mi">50</span><span class="p">):</span>
-        <span class="n">StoppableLoopThread</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">frequency</span><span class="p">)</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">motor</span> <span class="o">=</span> <span class="n">motor</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">goal</span> <span class="o">=</span> <span class="n">position</span>  <span class="c"># dict { &#39;motor1_name&#39;: x1, &#39;motor2_name&#39;: x2 }</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">duration</span> <span class="o">=</span> <span class="n">duration</span>  <span class="c"># secondes</span>
-
-    <span class="k">def</span> <span class="nf">setup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">trajs</span> <span class="o">=</span> <span class="n">MinimumJerkTrajectory</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">motor</span><span class="o">.</span><span class="n">present_position</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">goal</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">duration</span><span class="p">)</span><span class="o">.</span><span class="n">get_generator</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">t0</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
-
-    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">elapsed_time</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">duration</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">stop</span><span class="p">(</span><span class="n">wait</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
-            <span class="k">return</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">motor</span><span class="o">.</span><span class="n">goal_position</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">trajs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">elapsed_time</span><span class="p">)</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">elapsed_time</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">t0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">motor</span><span class="o">.</span><span class="n">compliant</span> <span class="o">=</span> <span class="bp">False</span></div>
 </pre></div>
 
                 </div>
@@ -420,7 +414,7 @@
 <div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
   <div class="navbar-inner">
     <ul class="nav navbar-nav">
-        <li><a href="../../../index.html">pypot 2.1.0rc5 documentation</a></li>
+        <li><a href="../../../index.html">pypot 2.1.0cr7 documentation</a></li>
     </ul>
     <ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
       

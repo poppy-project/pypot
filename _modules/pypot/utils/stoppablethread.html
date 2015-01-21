@@ -9,7 +9,7 @@
   <head>
     <meta charset="utf-8" />
     
-    <title>pypot.utils.stoppablethread &mdash; pypot 2.1.0rc5 documentation</title>
+    <title>pypot.utils.stoppablethread &mdash; pypot 2.1.0cr7 documentation</title>
     <meta name="description" content="">
     <meta name="author" content="">
 
@@ -36,7 +36,7 @@
 <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
             URL_ROOT:    '../../../',
-            VERSION:     '2.1.0rc5',
+            VERSION:     '2.1.0cr7',
             COLLAPSE_INDEX: false,
             FILE_SUFFIX: '.html',
             HAS_SOURCE:  true
@@ -51,7 +51,7 @@
 <script type="text/javascript">
 </script>
     <link rel="author" title="About these documents" href="../../../about.html" />
-    <link rel="top" title="pypot 2.1.0rc5 documentation" href="../../../index.html" />
+    <link rel="top" title="pypot 2.1.0cr7 documentation" href="../../../index.html" />
     <link rel="up" title="pypot.utils" href="../utils.html" /> 
   </head>
   <body role="document">
@@ -64,7 +64,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="../../../index.html">pypot 2.1.0rc5 documentation</a>
+          <a class="navbar-brand" href="../../../index.html">pypot 2.1.0cr7 documentation</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
@@ -217,8 +217,9 @@
 </div>
 <div class="viewcode-block" id="StoppableThread.wait_to_stop"><a class="viewcode-back" href="../../../pypot.utils.html#pypot.utils.stoppablethread.StoppableThread.wait_to_stop">[docs]</a>    <span class="k">def</span> <span class="nf">wait_to_stop</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Wait for the thread to terminate. &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">started</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">join</span><span class="p">()</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">started</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">wait_to_start</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">join</span><span class="p">()</span>
 </div>
 <div class="viewcode-block" id="StoppableThread.setup"><a class="viewcode-back" href="../../../pypot.utils.html#pypot.utils.stoppablethread.StoppableThread.setup">[docs]</a>    <span class="k">def</span> <span class="nf">setup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Setup method call just before the run. &quot;&quot;&quot;</span>
@@ -329,7 +330,7 @@
 <div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
   <div class="navbar-inner">
     <ul class="nav navbar-nav">
-        <li><a href="../../../index.html">pypot 2.1.0rc5 documentation</a></li>
+        <li><a href="../../../index.html">pypot 2.1.0cr7 documentation</a></li>
     </ul>
     <ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
       
