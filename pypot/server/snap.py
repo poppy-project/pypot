@@ -1,5 +1,6 @@
 import os
 import bottle
+import socket
 
 from .server import AbstractServer
 
@@ -68,6 +69,11 @@ class SnapRobotServer(AbstractServer):
             with open(os.path.join(os.path.dirname(__file__),
                       'pypot-snap-blocks.xml')) as f:
                 return f.read()
+
+        @self.app.get('/ip')
+        @make_snap_compatible_response
+        def get_ip():
+            return socket.gethostbyname(socket.gethostname())
 
     def run(self):
         bottle.run(self.app,
