@@ -51,7 +51,7 @@ This should open a connection through a virtual communication port to your devic
 
 To set up a connection with another baud rate you can write::
 
-    dxl_io = pypot.dynamixel.DxlIO(port, baudrate=57140)
+    dxl_io = pypot.dynamixel.DxlIO(port, baudrate=57600)
 
 The communication can be closed using the :meth:`~pypot.dynamixel.io.DxlIO.close` method.
 

@@ -9,7 +9,7 @@
   <head>
     <meta charset="utf-8" />
     
-    <title>pypot.robot.config &mdash; pypot 2.1.0cr7 documentation</title>
+    <title>pypot.robot.config &mdash; pypot 2.1.0rc9 documentation</title>
     <meta name="description" content="">
     <meta name="author" content="">
 
@@ -36,7 +36,7 @@
 <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
             URL_ROOT:    '../../../',
-            VERSION:     '2.1.0cr7',
+            VERSION:     '2.1.0rc9',
             COLLAPSE_INDEX: false,
             FILE_SUFFIX: '.html',
             HAS_SOURCE:  true
@@ -51,7 +51,7 @@
 <script type="text/javascript">
 </script>
     <link rel="author" title="About these documents" href="../../../about.html" />
-    <link rel="top" title="pypot 2.1.0cr7 documentation" href="../../../index.html" />
+    <link rel="top" title="pypot 2.1.0rc9 documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body role="document">
@@ -64,7 +64,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="../../../index.html">pypot 2.1.0cr7 documentation</a>
+          <a class="navbar-brand" href="../../../index.html">pypot 2.1.0rc9 documentation</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
@@ -138,7 +138,6 @@
 <span class="sd">* motorgroups: It allows to define alias of group of motors. They can be nested.</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="kn">import</span> <span class="nn">warnings</span>
 <span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">import</span> <span class="nn">numpy</span>
 <span class="kn">import</span> <span class="nn">time</span>
@@ -177,6 +176,10 @@
 
         <span class="n">attached_motors</span> <span class="o">=</span> <span class="p">[</span><span class="n">motor_from_confignode</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">motor_names</span><span class="p">]</span>
 
+        <span class="c"># at least one of the motor is set as broken</span>
+        <span class="k">if</span> <span class="p">[</span><span class="n">m</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">attached_motors</span> <span class="k">if</span> <span class="n">m</span><span class="o">.</span><span class="n">_broken</span><span class="p">]:</span>
+            <span class="n">strict</span> <span class="o">=</span> <span class="bp">False</span>
+
         <span class="n">attached_ids</span> <span class="o">=</span> <span class="p">[</span><span class="n">m</span><span class="o">.</span><span class="n">id</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">attached_motors</span><span class="p">]</span>
         <span class="n">dxl_io</span> <span class="o">=</span> <span class="n">dxl_io_from_confignode</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">c_params</span><span class="p">,</span> <span class="n">attached_ids</span><span class="p">,</span> <span class="n">strict</span><span class="p">)</span>
 
@@ -208,7 +211,8 @@
                  <span class="n">name</span><span class="o">=</span><span class="n">motor_name</span><span class="p">,</span>
                  <span class="n">model</span><span class="o">=</span><span class="n">params</span><span class="p">[</span><span class="s">&#39;type&#39;</span><span class="p">],</span>
                  <span class="n">direct</span><span class="o">=</span><span class="bp">True</span> <span class="k">if</span> <span class="n">params</span><span class="p">[</span><span class="s">&#39;orientation&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;direct&#39;</span> <span class="k">else</span> <span class="bp">False</span><span class="p">,</span>
-                 <span class="n">offset</span><span class="o">=</span><span class="n">params</span><span class="p">[</span><span class="s">&#39;offset&#39;</span><span class="p">])</span>
+                 <span class="n">offset</span><span class="o">=</span><span class="n">params</span><span class="p">[</span><span class="s">&#39;offset&#39;</span><span class="p">],</span>
+                 <span class="n">broken</span><span class="o">=</span><span class="s">&#39;broken&#39;</span> <span class="ow">in</span> <span class="n">params</span><span class="p">)</span>
 
     <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&quot;Instantiating motor &#39;</span><span class="si">%s</span><span class="s">&#39; id=</span><span class="si">%d</span><span class="s"> direct=</span><span class="si">%s</span><span class="s"> offset=</span><span class="si">%s</span><span class="s">&quot;</span><span class="p">,</span>
                 <span class="n">m</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">m</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">m</span><span class="o">.</span><span class="n">direct</span><span class="p">,</span> <span class="n">m</span><span class="o">.</span><span class="n">offset</span><span class="p">,</span>
@@ -249,7 +253,10 @@
         <span class="n">m</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s">&#39;motors&#39;</span><span class="p">][</span><span class="n">name</span><span class="p">]</span>
         <span class="nb">id</span> <span class="o">=</span> <span class="n">m</span><span class="p">[</span><span class="s">&#39;id&#39;</span><span class="p">]</span>
 
-        <span class="n">old_limits</span> <span class="o">=</span> <span class="n">dxl_io</span><span class="o">.</span><span class="n">get_angle_limit</span><span class="p">((</span><span class="nb">id</span><span class="p">,</span> <span class="p">))[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">old_limits</span> <span class="o">=</span> <span class="n">dxl_io</span><span class="o">.</span><span class="n">get_angle_limit</span><span class="p">((</span><span class="nb">id</span><span class="p">,</span> <span class="p">))[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span> <span class="c"># probably a broken motor so we just skip</span>
+            <span class="k">continue</span>
         <span class="n">new_limits</span> <span class="o">=</span> <span class="n">m</span><span class="p">[</span><span class="s">&#39;angle_limit&#39;</span><span class="p">]</span>
 
         <span class="n">d</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">new_limits</span><span class="p">)</span> <span class="o">-</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">old_limits</span><span class="p">))</span>
@@ -336,7 +343,7 @@
 <div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
   <div class="navbar-inner">
     <ul class="nav navbar-nav">
-        <li><a href="../../../index.html">pypot 2.1.0cr7 documentation</a></li>
+        <li><a href="../../../index.html">pypot 2.1.0rc9 documentation</a></li>
     </ul>
     <ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
       
