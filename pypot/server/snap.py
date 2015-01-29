@@ -78,5 +78,4 @@ class SnapRobotServer(AbstractServer):
     def run(self):
         bottle.run(self.app,
                    host=self.host, port=self.port,
-                   quiet=True,
-                   server='tornado')
+                   quiet=True)
