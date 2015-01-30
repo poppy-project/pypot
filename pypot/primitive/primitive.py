@@ -196,7 +196,6 @@ class MockupRobot(object):
             m = getattr(self, motor_name)
             m.goto_position(position, duration, control, wait=w)
 
-
     @property
     def motors(self):
         """ List of all attached :class:`~pypot.primitive.primitive.MockupMotor`. """

@@ -51,10 +51,8 @@ class StoppableThread(object):
         if self.started:
             self._running.clear()
 
-            if wait:
-                if threading.current_thread() == self._thread:
-                    raise RuntimeError('Cannot wait for current thread')
-
+            # We cannot wait for ourself
+            if wait and (threading.current_thread != self._thread):
                 self._thread.join()
 
             self._started.clear()
