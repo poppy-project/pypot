@@ -25,7 +25,8 @@ setup(name='pypot',
           'doc': ['sphinx', 'sphinx-bootstrap-theme'],
           'server': ['bottle', 'tornado', 'pyzmq'],
           'remote-robot': ['zerorpc'],
-          'square-signal': ['scipy']
+          'square-signal': ['scipy'],
+          'camera': []  # Extras require: opencv (not a PyPi packet)
       },
 
       entry_points={

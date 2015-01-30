@@ -6,6 +6,7 @@
 * fix a bug when using setup.py install
 * add minimum jerk of Steve N'Guyen
 * add safe compliance behavior
+* add camera sensor based on opencv
 
 ## V. 2.0
 
