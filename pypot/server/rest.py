@@ -10,6 +10,8 @@ class RESTRobot(object):
         * read/write a value from/to a register of a specific motor
 
         * the sensors list
+        * the registers list for a specific motor
+        * read/write a value from/to a register of a specific motor
 
         * the primitives list (and the active)
         * start/stop primitives
@@ -23,15 +25,14 @@ class RESTRobot(object):
     def get_motors_list(self, alias='motors'):
         return [m.name for m in getattr(self.robot, alias)]
 
-    def get_registers_list(self, motor):
-        return self.get_register_value(motor, 'registers')
+    def get_motor_registers_list(self, motor):
+        return self._get_register_value(motor, 'registers')
 
-    def get_register_value(self, motor, register):
-        return attrgetter('{}.{}'.format(motor, register))(self.robot)
+    def get_motor_register_value(self, motor, register):
+        return self._get_register_value(motor, register)
 
-    def set_register_value(self, motor, register, value):
-        m = getattr(self.robot, motor)
-        setattr(m, register, value)
+    def set_motor_register_value(self, motor, register, value):
+        self._set_register_value(motor, register, value)
 
     def get_motors_alias(self):
         return self.robot.alias
@@ -41,22 +42,58 @@ class RESTRobot(object):
     def get_sensors_list(self):
         return [s.name for s in self.robot.sensors]
 
+    def get_sensors_registers_list(self, sensor):
+        return self._get_register_value(sensor, 'registers')
+
+    def get_sensor_register_value(self, sensor, register):
+        return self._get_register_value(sensor, register)
+
+    def set_sensor_register_value(self, sensor, register, value):
+        return self._set_register_value(sensor, register, value)
+
     # Access primitive related values
 
     def get_primitives_list(self):
         return [p.name for p in self.robot.primitives]
 
-    def get_active_primitives_list(self):
+    def get_running_primitives_list(self):
         return [p.name for p in self.robot.active_primitives]
 
-    def start_primitive(self, primitive_name):
-        self._call_method_primitive(primitive_name, 'start')
+    def start_primitive(self, primitive):
+        self._call_primitive_method(primitive, 'start')
 
-    def stop_primitive(self, primitive_name):
-        self._call_method_primitive(primitive_name, 'stop')
+    def stop_primitive(self, primitive):
+        self._call_primitive_method(primitive, 'stop')
 
-    def _call_method_primitive(self, primitive_name, method_name,
-                               *args, **kwargs):
-        p = getattr(self.robot, primitive_name)
+    def pause_primitive(self, primitive):
+        self._call_primitive_method(primitive, 'pause')
+
+    def resume_primitive(self, primitive):
+        self._call_primitive_method(primitive, 'resume')
+
+    def get_primitive_properties_list(self, primitive):
+        return getattr(self.robot, primitive).properties
+
+    def get_primitive_property(self, primitive, property):
+        return self._get_register_value(primitive, property)
+
+    def set_primitive_property(self, primitive, property, value):
+        self._set_register_value(primitive, property, value)
+
+    def get_primitive_methods_list(self, primitive):
+        return getattr(self.robot, primitive).methods
+
+    def call_primitive_method(self, primitive, method, kwargs):
+        self._call_primitive_method(primitive, method, **kwargs)
+
+    def _set_register_value(self, object, register, value):
+        o = getattr(self.robot, object)
+        setattr(o, register, value)
+
+    def _get_register_value(self, object, register):
+        return attrgetter('{}.{}'.format(object, register))(self.robot)
+
+    def _call_primitive_method(self, primitive, method_name, *args, **kwargs):
+        p = getattr(self.robot, primitive)
         f = getattr(p, method_name)
         return f(*args, **kwargs)

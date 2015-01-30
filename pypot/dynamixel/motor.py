@@ -78,10 +78,10 @@ class DxlMotor(Motor):
         """
     __metaclass__ = RegisterOwner
 
-    registers = ['registers',
-                 'goal_speed',
-                 'compliant', 'safe_compliant',
-                 'angle_limit']
+    registers = Motor.registers + ['registers',
+                                   'goal_speed',
+                                   'compliant', 'safe_compliant',
+                                   'angle_limit']
 
     id = DxlRegister()
     name = DxlRegister()
@@ -123,10 +123,6 @@ class DxlMotor(Motor):
         return ('<DxlMotor name={self.name} '
                 'id={self.id} '
                 'pos={self.present_position}>').format(self=self)
-
-    @property
-    def json(self):
-        return self.name
 
     @property
     def goal_speed(self):
@@ -245,6 +241,12 @@ class DxlAXRXMotor(DxlMotor):
 
 
 class DxlMXMotor(DxlMotor):
+    """ This class represents the RX and MX robotis motor.
+
+        This class adds access to:
+            * PID gains (see the robotis website for details)
+
+        """
     registers = list(DxlMotor.registers)
 
     pid = DxlRegister(rw=True)

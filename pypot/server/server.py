@@ -1,21 +1,22 @@
-import json
-
-from ..primitive import Primitive
-from .request import BaseRequestHandler
+from .rest import RESTRobot
 
 
-# TODO: The server should spawn a new primitive for each client
+class AbstractServer(object):
+    def __init__(self, robot, host, port):
+        self.restfull_robot = RESTRobot(robot)
+        self.host, self.port = host, port
 
+    def run(self):
+        raise NotImplementedError
 
-class AbstractServer(Primitive):
-    """ Abstract Server which mostly delegate the work to a request handler. """
-    def __init__(self, robot, handler=BaseRequestHandler):
-        Primitive.__init__(self, robot)
+try:
+    import zerorpc
 
-        self.request_handler = BaseRequestHandler(self.robot)
+    class RemoteRobotServer(AbstractServer):
+        def run(self):
+            server = zerorpc.Server(self.restfull_robot)
+            server.bind('tcp://{}:{}'.format(self.host, self.port))
+            server.run()
 
-
-class MyJSONEncoder(json.JSONEncoder):
-    """ JSONEncoder which tries to call a json property before using the enconding default function. """
-    def default(self, obj):
-        return obj.json if hasattr(obj, 'json') else json.JSONEncoder.default(self, obj)
+except ImportError:
+    pass

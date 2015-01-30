@@ -3,6 +3,7 @@ from numpy import array, zeros
 
 class Sensor(object):
     """ Purely abstract class representing any sensor object. """
+    registers = []
 
     def __init__(self, name):
         self._name = name
@@ -13,6 +14,8 @@ class Sensor(object):
 
 
 class ObjectTracker(Sensor):
+    registers = Sensor.registers + ['position', 'orientation']
+
     def __init__(self, name):
         Sensor.__init__(self, name)
 

@@ -7,6 +7,7 @@ class Sinus(LoopPrimitive):
 
     """ Apply a sinus on the motor specified as argument. Parameters (amp, offset and phase) should be specified in degree
     """
+    properties = LoopPrimitive.properties + ['frequency', 'amplitude', 'offset', 'phase']
 
     def __init__(self, robot, refresh_freq,
                  motor_list,

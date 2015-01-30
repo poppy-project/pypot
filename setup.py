@@ -23,7 +23,8 @@ setup(name='pypot',
       extras_require={
           'tools': [],  # Extras require: PyQt4 (not a PyPi packet)
           'doc': ['sphinx', 'sphinx-bootstrap-theme'],
-          'server': ['bottle', 'tornado', 'pyzmq'],
+          'http-server': ['bottle', 'tornado'],
+          'zmq-server': ['zmq'],
           'remote-robot': ['zerorpc'],
           'square-signal': ['scipy'],
           'camera': []  # Extras require: opencv (not a PyPi packet)

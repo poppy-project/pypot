@@ -1,1 +1,2 @@
 include pypot/vrep/remoteApiBindings/lib/*/*/remoteApi.*
+include pypot/server/pypot-snap-blocks.xml

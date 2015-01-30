@@ -39,6 +39,9 @@ class Primitive(StoppableThread):
         .. note:: This class should always be extended to define your particular behavior in the :meth:`~pypot.primitive.primitive.Primitive.run` method.
 
         """
+    methods = ['start', 'stop', 'pause', 'resume']
+    properties = []
+
     def __init__(self, robot):
         """ At instanciation, it automatically transforms the :class:`~pypot.robot.robot.Robot` into a :class:`~pypot.primitive.primitive.MockupRobot`.
 
