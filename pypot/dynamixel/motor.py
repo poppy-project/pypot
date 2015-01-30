@@ -162,6 +162,10 @@ class DxlMotor(Motor):
             raise ValueError('Wrong compliant type! It should be either "dummy" or "safe".')
         self._compliant_behavior = value
 
+        # Start the safe compliance behavior when the motor should be compliant
+        if value is 'safe' and self.compliant:
+            self.compliant = True
+
     @property
     def compliant(self):
         return bool(self.__dict__['compliant'])
@@ -269,4 +273,4 @@ class SafeCompliance(StoppableLoopThread):
         self.motor._set_compliancy((min(self.motor.angle_limit) < self.motor.present_position < max(self.motor.angle_limit)))
 
     def teardown(self):
-        self.motor.compliant = False
+        self.motor._set_compliancy(False)
