@@ -9,7 +9,7 @@
   <head>
     <meta charset="utf-8" />
     
-    <title>pypot.dynamixel.motor &mdash; pypot 2.1.0rc9 documentation</title>
+    <title>pypot.dynamixel.motor &mdash; pypot 2.1.0 documentation</title>
     <meta name="description" content="">
     <meta name="author" content="">
 
@@ -36,7 +36,7 @@
 <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
             URL_ROOT:    '../../../',
-            VERSION:     '2.1.0rc9',
+            VERSION:     '2.1.0',
             COLLAPSE_INDEX: false,
             FILE_SUFFIX: '.html',
             HAS_SOURCE:  true
@@ -51,7 +51,7 @@
 <script type="text/javascript">
 </script>
     <link rel="author" title="About these documents" href="../../../about.html" />
-    <link rel="top" title="pypot 2.1.0rc9 documentation" href="../../../index.html" />
+    <link rel="top" title="pypot 2.1.0 documentation" href="../../../index.html" />
     <link rel="up" title="pypot.dynamixel" href="../dynamixel.html" /> 
   </head>
   <body role="document">
@@ -64,7 +64,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="../../../index.html">pypot 2.1.0rc9 documentation</a>
+          <a class="navbar-brand" href="../../../index.html">pypot 2.1.0 documentation</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
@@ -209,10 +209,10 @@
 <span class="sd">        &quot;&quot;&quot;</span>
     <span class="n">__metaclass__</span> <span class="o">=</span> <span class="n">RegisterOwner</span>
 
-    <span class="n">registers</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;registers&#39;</span><span class="p">,</span>
-                 <span class="s">&#39;goal_speed&#39;</span><span class="p">,</span>
-                 <span class="s">&#39;compliant&#39;</span><span class="p">,</span> <span class="s">&#39;safe_compliant&#39;</span><span class="p">,</span>
-                 <span class="s">&#39;angle_limit&#39;</span><span class="p">]</span>
+    <span class="n">registers</span> <span class="o">=</span> <span class="n">Motor</span><span class="o">.</span><span class="n">registers</span> <span class="o">+</span> <span class="p">[</span><span class="s">&#39;registers&#39;</span><span class="p">,</span>
+                                   <span class="s">&#39;goal_speed&#39;</span><span class="p">,</span>
+                                   <span class="s">&#39;compliant&#39;</span><span class="p">,</span> <span class="s">&#39;safe_compliant&#39;</span><span class="p">,</span>
+                                   <span class="s">&#39;angle_limit&#39;</span><span class="p">]</span>
 
     <span class="nb">id</span> <span class="o">=</span> <span class="n">DxlRegister</span><span class="p">()</span>
     <span class="n">name</span> <span class="o">=</span> <span class="n">DxlRegister</span><span class="p">()</span>
@@ -256,10 +256,6 @@
                 <span class="s">&#39;pos={self.present_position}&gt;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">json</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
-
-    <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">goal_speed</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Goal speed (in degrees per second) of the motor.</span>
 
@@ -292,6 +288,10 @@
         <span class="k">if</span> <span class="n">value</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="s">&#39;dummy&#39;</span><span class="p">,</span> <span class="s">&#39;safe&#39;</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;Wrong compliant type! It should be either &quot;dummy&quot; or &quot;safe&quot;.&#39;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_compliant_behavior</span> <span class="o">=</span> <span class="n">value</span>
+
+        <span class="c"># Start the safe compliance behavior when the motor should be compliant</span>
+        <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="s">&#39;safe&#39;</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">compliant</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">compliant</span> <span class="o">=</span> <span class="bp">True</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">compliant</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -371,7 +371,13 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">max_pos</span> <span class="o">=</span> <span class="mi">150</span>
 
 </div>
-<span class="k">class</span> <span class="nc">DxlMXMotor</span><span class="p">(</span><span class="n">DxlMotor</span><span class="p">):</span>
+<div class="viewcode-block" id="DxlMXMotor"><a class="viewcode-back" href="../../../pypot.dynamixel.html#pypot.dynamixel.motor.DxlMXMotor">[docs]</a><span class="k">class</span> <span class="nc">DxlMXMotor</span><span class="p">(</span><span class="n">DxlMotor</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; This class represents the RX and MX robotis motor.</span>
+
+<span class="sd">        This class adds access to:</span>
+<span class="sd">            * PID gains (see the robotis website for details)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
     <span class="n">registers</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">DxlMotor</span><span class="o">.</span><span class="n">registers</span><span class="p">)</span>
 
     <span class="n">pid</span> <span class="o">=</span> <span class="n">DxlRegister</span><span class="p">(</span><span class="n">rw</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
@@ -387,7 +393,7 @@
         <span class="n">DxlMotor</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">direct</span><span class="p">,</span> <span class="n">offset</span><span class="p">,</span> <span class="n">broken</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">max_pos</span> <span class="o">=</span> <span class="mi">180</span>
 
-
+</div>
 <div class="viewcode-block" id="SafeCompliance"><a class="viewcode-back" href="../../../pypot.dynamixel.html#pypot.dynamixel.motor.SafeCompliance">[docs]</a><span class="k">class</span> <span class="nc">SafeCompliance</span><span class="p">(</span><span class="n">StoppableLoopThread</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; This class creates a controller to active compliance only if the current motor position is included in the angle limit, else the compliance is turned off. &quot;&quot;&quot;</span>
 
@@ -400,7 +406,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">motor</span><span class="o">.</span><span class="n">_set_compliancy</span><span class="p">((</span><span class="nb">min</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">motor</span><span class="o">.</span><span class="n">angle_limit</span><span class="p">)</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">motor</span><span class="o">.</span><span class="n">present_position</span> <span class="o">&lt;</span> <span class="nb">max</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">motor</span><span class="o">.</span><span class="n">angle_limit</span><span class="p">)))</span>
 
     <span class="k">def</span> <span class="nf">teardown</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">motor</span><span class="o">.</span><span class="n">compliant</span> <span class="o">=</span> <span class="bp">False</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">motor</span><span class="o">.</span><span class="n">_set_compliancy</span><span class="p">(</span><span class="bp">False</span><span class="p">)</span></div>
 </pre></div>
 
                 </div>
@@ -417,7 +423,7 @@
 <div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
   <div class="navbar-inner">
     <ul class="nav navbar-nav">
-        <li><a href="../../../index.html">pypot 2.1.0rc9 documentation</a></li>
+        <li><a href="../../../index.html">pypot 2.1.0 documentation</a></li>
     </ul>
     <ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
       

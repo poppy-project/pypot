@@ -9,7 +9,7 @@
   <head>
     <meta charset="utf-8" />
     
-    <title>pypot.server.rest &mdash; pypot 2.1.0rc9 documentation</title>
+    <title>pypot.server.rest &mdash; pypot 2.1.0 documentation</title>
     <meta name="description" content="">
     <meta name="author" content="">
 
@@ -36,7 +36,7 @@
 <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
             URL_ROOT:    '../../../',
-            VERSION:     '2.1.0rc9',
+            VERSION:     '2.1.0',
             COLLAPSE_INDEX: false,
             FILE_SUFFIX: '.html',
             HAS_SOURCE:  true
@@ -51,7 +51,7 @@
 <script type="text/javascript">
 </script>
     <link rel="author" title="About these documents" href="../../../about.html" />
-    <link rel="top" title="pypot 2.1.0rc9 documentation" href="../../../index.html" />
+    <link rel="top" title="pypot 2.1.0 documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body role="document">
@@ -64,7 +64,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="../../../index.html">pypot 2.1.0rc9 documentation</a>
+          <a class="navbar-brand" href="../../../index.html">pypot 2.1.0 documentation</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
@@ -140,6 +140,8 @@
 <span class="sd">        * read/write a value from/to a register of a specific motor</span>
 
 <span class="sd">        * the sensors list</span>
+<span class="sd">        * the registers list for a specific motor</span>
+<span class="sd">        * read/write a value from/to a register of a specific motor</span>
 
 <span class="sd">        * the primitives list (and the active)</span>
 <span class="sd">        * start/stop primitives</span>
@@ -153,15 +155,14 @@
 <div class="viewcode-block" id="RESTRobot.get_motors_list"><a class="viewcode-back" href="../../../pypot.server.html#pypot.server.rest.RESTRobot.get_motors_list">[docs]</a>    <span class="k">def</span> <span class="nf">get_motors_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">alias</span><span class="o">=</span><span class="s">&#39;motors&#39;</span><span class="p">):</span>
         <span class="k">return</span> <span class="p">[</span><span class="n">m</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">robot</span><span class="p">,</span> <span class="n">alias</span><span class="p">)]</span>
 </div>
-<div class="viewcode-block" id="RESTRobot.get_registers_list"><a class="viewcode-back" href="../../../pypot.server.html#pypot.server.rest.RESTRobot.get_registers_list">[docs]</a>    <span class="k">def</span> <span class="nf">get_registers_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">motor</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_register_value</span><span class="p">(</span><span class="n">motor</span><span class="p">,</span> <span class="s">&#39;registers&#39;</span><span class="p">)</span>
+<div class="viewcode-block" id="RESTRobot.get_motor_registers_list"><a class="viewcode-back" href="../../../pypot.server.html#pypot.server.rest.RESTRobot.get_motor_registers_list">[docs]</a>    <span class="k">def</span> <span class="nf">get_motor_registers_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">motor</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_register_value</span><span class="p">(</span><span class="n">motor</span><span class="p">,</span> <span class="s">&#39;registers&#39;</span><span class="p">)</span>
 </div>
-<div class="viewcode-block" id="RESTRobot.get_register_value"><a class="viewcode-back" href="../../../pypot.server.html#pypot.server.rest.RESTRobot.get_register_value">[docs]</a>    <span class="k">def</span> <span class="nf">get_register_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">motor</span><span class="p">,</span> <span class="n">register</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">attrgetter</span><span class="p">(</span><span class="s">&#39;{}.{}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">motor</span><span class="p">,</span> <span class="n">register</span><span class="p">))(</span><span class="bp">self</span><span class="o">.</span><span class="n">robot</span><span class="p">)</span>
+<div class="viewcode-block" id="RESTRobot.get_motor_register_value"><a class="viewcode-back" href="../../../pypot.server.html#pypot.server.rest.RESTRobot.get_motor_register_value">[docs]</a>    <span class="k">def</span> <span class="nf">get_motor_register_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">motor</span><span class="p">,</span> <span class="n">register</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_register_value</span><span class="p">(</span><span class="n">motor</span><span class="p">,</span> <span class="n">register</span><span class="p">)</span>
 </div>
-<div class="viewcode-block" id="RESTRobot.set_register_value"><a class="viewcode-back" href="../../../pypot.server.html#pypot.server.rest.RESTRobot.set_register_value">[docs]</a>    <span class="k">def</span> <span class="nf">set_register_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">motor</span><span class="p">,</span> <span class="n">register</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-        <span class="n">m</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">robot</span><span class="p">,</span> <span class="n">motor</span><span class="p">)</span>
-        <span class="nb">setattr</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">register</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+<div class="viewcode-block" id="RESTRobot.set_motor_register_value"><a class="viewcode-back" href="../../../pypot.server.html#pypot.server.rest.RESTRobot.set_motor_register_value">[docs]</a>    <span class="k">def</span> <span class="nf">set_motor_register_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">motor</span><span class="p">,</span> <span class="n">register</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_set_register_value</span><span class="p">(</span><span class="n">motor</span><span class="p">,</span> <span class="n">register</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
 </div>
 <div class="viewcode-block" id="RESTRobot.get_motors_alias"><a class="viewcode-back" href="../../../pypot.server.html#pypot.server.rest.RESTRobot.get_motors_alias">[docs]</a>    <span class="k">def</span> <span class="nf">get_motors_alias</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">robot</span><span class="o">.</span><span class="n">alias</span>
@@ -170,24 +171,60 @@
 </div>
 <div class="viewcode-block" id="RESTRobot.get_sensors_list"><a class="viewcode-back" href="../../../pypot.server.html#pypot.server.rest.RESTRobot.get_sensors_list">[docs]</a>    <span class="k">def</span> <span class="nf">get_sensors_list</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="p">[</span><span class="n">s</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">robot</span><span class="o">.</span><span class="n">sensors</span><span class="p">]</span>
+</div>
+<div class="viewcode-block" id="RESTRobot.get_sensors_registers_list"><a class="viewcode-back" href="../../../pypot.server.html#pypot.server.rest.RESTRobot.get_sensors_registers_list">[docs]</a>    <span class="k">def</span> <span class="nf">get_sensors_registers_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sensor</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_register_value</span><span class="p">(</span><span class="n">sensor</span><span class="p">,</span> <span class="s">&#39;registers&#39;</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="RESTRobot.get_sensor_register_value"><a class="viewcode-back" href="../../../pypot.server.html#pypot.server.rest.RESTRobot.get_sensor_register_value">[docs]</a>    <span class="k">def</span> <span class="nf">get_sensor_register_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sensor</span><span class="p">,</span> <span class="n">register</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_register_value</span><span class="p">(</span><span class="n">sensor</span><span class="p">,</span> <span class="n">register</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="RESTRobot.set_sensor_register_value"><a class="viewcode-back" href="../../../pypot.server.html#pypot.server.rest.RESTRobot.set_sensor_register_value">[docs]</a>    <span class="k">def</span> <span class="nf">set_sensor_register_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sensor</span><span class="p">,</span> <span class="n">register</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_set_register_value</span><span class="p">(</span><span class="n">sensor</span><span class="p">,</span> <span class="n">register</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
 
     <span class="c"># Access primitive related values</span>
 </div>
 <div class="viewcode-block" id="RESTRobot.get_primitives_list"><a class="viewcode-back" href="../../../pypot.server.html#pypot.server.rest.RESTRobot.get_primitives_list">[docs]</a>    <span class="k">def</span> <span class="nf">get_primitives_list</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="p">[</span><span class="n">p</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">robot</span><span class="o">.</span><span class="n">primitives</span><span class="p">]</span>
 </div>
-<div class="viewcode-block" id="RESTRobot.get_active_primitives_list"><a class="viewcode-back" href="../../../pypot.server.html#pypot.server.rest.RESTRobot.get_active_primitives_list">[docs]</a>    <span class="k">def</span> <span class="nf">get_active_primitives_list</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="RESTRobot.get_running_primitives_list"><a class="viewcode-back" href="../../../pypot.server.html#pypot.server.rest.RESTRobot.get_running_primitives_list">[docs]</a>    <span class="k">def</span> <span class="nf">get_running_primitives_list</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="p">[</span><span class="n">p</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">robot</span><span class="o">.</span><span class="n">active_primitives</span><span class="p">]</span>
 </div>
-<div class="viewcode-block" id="RESTRobot.start_primitive"><a class="viewcode-back" href="../../../pypot.server.html#pypot.server.rest.RESTRobot.start_primitive">[docs]</a>    <span class="k">def</span> <span class="nf">start_primitive</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">primitive_name</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_call_method_primitive</span><span class="p">(</span><span class="n">primitive_name</span><span class="p">,</span> <span class="s">&#39;start&#39;</span><span class="p">)</span>
+<div class="viewcode-block" id="RESTRobot.start_primitive"><a class="viewcode-back" href="../../../pypot.server.html#pypot.server.rest.RESTRobot.start_primitive">[docs]</a>    <span class="k">def</span> <span class="nf">start_primitive</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">primitive</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_call_primitive_method</span><span class="p">(</span><span class="n">primitive</span><span class="p">,</span> <span class="s">&#39;start&#39;</span><span class="p">)</span>
 </div>
-<div class="viewcode-block" id="RESTRobot.stop_primitive"><a class="viewcode-back" href="../../../pypot.server.html#pypot.server.rest.RESTRobot.stop_primitive">[docs]</a>    <span class="k">def</span> <span class="nf">stop_primitive</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">primitive_name</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_call_method_primitive</span><span class="p">(</span><span class="n">primitive_name</span><span class="p">,</span> <span class="s">&#39;stop&#39;</span><span class="p">)</span>
+<div class="viewcode-block" id="RESTRobot.stop_primitive"><a class="viewcode-back" href="../../../pypot.server.html#pypot.server.rest.RESTRobot.stop_primitive">[docs]</a>    <span class="k">def</span> <span class="nf">stop_primitive</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">primitive</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_call_primitive_method</span><span class="p">(</span><span class="n">primitive</span><span class="p">,</span> <span class="s">&#39;stop&#39;</span><span class="p">)</span>
 </div>
-    <span class="k">def</span> <span class="nf">_call_method_primitive</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">primitive_name</span><span class="p">,</span> <span class="n">method_name</span><span class="p">,</span>
-                               <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="n">p</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">robot</span><span class="p">,</span> <span class="n">primitive_name</span><span class="p">)</span>
+<div class="viewcode-block" id="RESTRobot.pause_primitive"><a class="viewcode-back" href="../../../pypot.server.html#pypot.server.rest.RESTRobot.pause_primitive">[docs]</a>    <span class="k">def</span> <span class="nf">pause_primitive</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">primitive</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_call_primitive_method</span><span class="p">(</span><span class="n">primitive</span><span class="p">,</span> <span class="s">&#39;pause&#39;</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="RESTRobot.resume_primitive"><a class="viewcode-back" href="../../../pypot.server.html#pypot.server.rest.RESTRobot.resume_primitive">[docs]</a>    <span class="k">def</span> <span class="nf">resume_primitive</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">primitive</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_call_primitive_method</span><span class="p">(</span><span class="n">primitive</span><span class="p">,</span> <span class="s">&#39;resume&#39;</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="RESTRobot.get_primitive_properties_list"><a class="viewcode-back" href="../../../pypot.server.html#pypot.server.rest.RESTRobot.get_primitive_properties_list">[docs]</a>    <span class="k">def</span> <span class="nf">get_primitive_properties_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">primitive</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">robot</span><span class="p">,</span> <span class="n">primitive</span><span class="p">)</span><span class="o">.</span><span class="n">properties</span>
+</div>
+<div class="viewcode-block" id="RESTRobot.get_primitive_property"><a class="viewcode-back" href="../../../pypot.server.html#pypot.server.rest.RESTRobot.get_primitive_property">[docs]</a>    <span class="k">def</span> <span class="nf">get_primitive_property</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">primitive</span><span class="p">,</span> <span class="nb">property</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_register_value</span><span class="p">(</span><span class="n">primitive</span><span class="p">,</span> <span class="nb">property</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="RESTRobot.set_primitive_property"><a class="viewcode-back" href="../../../pypot.server.html#pypot.server.rest.RESTRobot.set_primitive_property">[docs]</a>    <span class="k">def</span> <span class="nf">set_primitive_property</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">primitive</span><span class="p">,</span> <span class="nb">property</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_set_register_value</span><span class="p">(</span><span class="n">primitive</span><span class="p">,</span> <span class="nb">property</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="RESTRobot.get_primitive_methods_list"><a class="viewcode-back" href="../../../pypot.server.html#pypot.server.rest.RESTRobot.get_primitive_methods_list">[docs]</a>    <span class="k">def</span> <span class="nf">get_primitive_methods_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">primitive</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">robot</span><span class="p">,</span> <span class="n">primitive</span><span class="p">)</span><span class="o">.</span><span class="n">methods</span>
+</div>
+<div class="viewcode-block" id="RESTRobot.call_primitive_method"><a class="viewcode-back" href="../../../pypot.server.html#pypot.server.rest.RESTRobot.call_primitive_method">[docs]</a>    <span class="k">def</span> <span class="nf">call_primitive_method</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">primitive</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_call_primitive_method</span><span class="p">(</span><span class="n">primitive</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</div>
+    <span class="k">def</span> <span class="nf">_set_register_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">object</span><span class="p">,</span> <span class="n">register</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="n">o</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">robot</span><span class="p">,</span> <span class="nb">object</span><span class="p">)</span>
+        <span class="nb">setattr</span><span class="p">(</span><span class="n">o</span><span class="p">,</span> <span class="n">register</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_get_register_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">object</span><span class="p">,</span> <span class="n">register</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">attrgetter</span><span class="p">(</span><span class="s">&#39;{}.{}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">object</span><span class="p">,</span> <span class="n">register</span><span class="p">))(</span><span class="bp">self</span><span class="o">.</span><span class="n">robot</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_call_primitive_method</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">primitive</span><span class="p">,</span> <span class="n">method_name</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">p</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">robot</span><span class="p">,</span> <span class="n">primitive</span><span class="p">)</span>
         <span class="n">f</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">method_name</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">f</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 </pre></div>
@@ -206,7 +243,7 @@
 <div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
   <div class="navbar-inner">
     <ul class="nav navbar-nav">
-        <li><a href="../../../index.html">pypot 2.1.0rc9 documentation</a></li>
+        <li><a href="../../../index.html">pypot 2.1.0 documentation</a></li>
     </ul>
     <ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
       
