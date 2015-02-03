@@ -24,7 +24,7 @@ setup(name='pypot',
           'tools': [],  # Extras require: PyQt4 (not a PyPi packet)
           'doc': ['sphinx', 'sphinx-bootstrap-theme'],
           'http-server': ['bottle', 'tornado'],
-          'zmq-server': ['zmq'],
+          'zmq-server': ['pyzmq'],
           'remote-robot': ['zerorpc'],
           'square-signal': ['scipy'],
           'camera': []  # Extras require: opencv (not a PyPi packet)
