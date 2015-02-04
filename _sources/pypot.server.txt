@@ -46,3 +46,11 @@
     :members:
     :undoc-members:
     :show-inheritance:
+
+:mod:`snap` Module
+-----------------------
+
+.. automodule:: pypot.server.snap
+    :members:
+    :undoc-members:
+    :show-inheritance:
