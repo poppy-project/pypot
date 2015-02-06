@@ -16,10 +16,11 @@ class Robot(object):
     This class also provides a generic motors accessor in order to (more or less) easily extends this class to other types of motor.
 
         """
-    def __init__(self, motor_controllers=[], sensor_controllers=[]):
+    def __init__(self, motor_controllers=[], sensor_controllers=[], sync=True):
         """
         :param list motor_controllers: motors controllers to attach to the robot
         :param list sensor_controllers: sensors controllers to attach to the robot
+        :param bool sync: choose if automatically starts the synchronization loops
 
         """
         self._motors = []
@@ -44,9 +45,8 @@ class Robot(object):
         self._primitive_manager = PrimitiveManager(self.motors)
 
         self._syncing = False
-        self.start_sync()
-
-        self._primitive_manager._running.wait()
+        if sync:
+            self.start_sync()
 
     def close(self):
         """ Cleans the robot by stopping synchronization and all controllers."""
@@ -64,6 +64,7 @@ class Robot(object):
         [c.start() for c in self._controllers]
         [c.wait_to_start() for c in self._controllers]
         self._primitive_manager.start()
+        self._primitive_manager._running.wait()
 
         self._syncing = True
 

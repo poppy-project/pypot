@@ -25,11 +25,12 @@ from .robot import Robot
 logger = logging.getLogger(__name__)
 
 
-def from_config(config, strict=True):
+def from_config(config, strict=True, sync=True):
     """ Returns a :class:`~pypot.robot.robot.Robot` instance created from a configuration dictionnary.
 
         :param dict config: robot configuration dictionary
         :param bool strict: make sure that all ports, motors are availaible.
+        :param bool sync: choose if automatically starts the synchronization loops
 
         For details on how to write such a configuration dictionnary, you should refer to the section :ref:`config_file`.
 
@@ -62,7 +63,7 @@ def from_config(config, strict=True):
 
         controllers.append(c)
 
-    robot = Robot(motor_controllers=controllers)
+    robot = Robot(motor_controllers=controllers, sync=sync)
     make_alias(config, robot)
 
     logger.info('Loading complete!',
@@ -176,7 +177,7 @@ def make_alias(config, robot):
                     extra={'config': config})
 
 
-def from_json(json_file):
+def from_json(json_file, sync=True):
     """ Returns a :class:`~pypot.robot.robot.Robot` instance created from a JSON configuration file.
 
     For details on how to write such a configuration file, you should refer to the section :ref:`config_file`.
@@ -185,7 +186,7 @@ def from_json(json_file):
     with open(json_file) as f:
         config = json.load(f)
 
-    return from_config(config)
+    return from_config(config, sync=sync)
 
 
 def _motor_extractor(alias, name):
