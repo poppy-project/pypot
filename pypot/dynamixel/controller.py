@@ -1,7 +1,6 @@
 import time
 
 from ..robot.controller import MotorsController
-from .io import DxlError
 
 
 class DxlController(MotorsController):
@@ -87,7 +86,8 @@ class _DxlRegisterController(_DxlController):
                     break
                 time.sleep(0.1)
             else:
-                raise DxlError('Cannot initialize syncloop for "{}"'.format(self.regname))
+                raise IOError('Cannot initialize syncloop for "{}"'.format(
+                              self.regname))
 
     def update(self):
         self.get_register() if self.mode == 'get' else self.set_register()

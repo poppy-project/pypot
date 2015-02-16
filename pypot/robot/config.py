@@ -106,6 +106,7 @@ def dxl_io_from_confignode(config, c_params, ids, strict):
         logger.info('Found port {} for ids {}'.format(port, ids))
 
     handler = pypot.dynamixel.error.BaseErrorHandler
+
     DxlIOCls = (pypot.dynamixel.io.Dxl320IO
                 if 'protocol' in c_params and c_params['protocol'] == 2
                 else pypot.dynamixel.io.DxlIO)
@@ -136,7 +137,7 @@ def check_motor_limits(config, dxl_io, motor_names):
 
         try:
             old_limits = dxl_io.get_angle_limit((id, ))[0]
-        except IndexError: # probably a broken motor so we just skip
+        except IndexError:  # probably a broken motor so we just skip
             continue
         new_limits = m['angle_limit']
 
