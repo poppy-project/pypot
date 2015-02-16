@@ -1,7 +1,7 @@
 import platform
 import glob
 
-from .io import DxlIO, DxlError
+from .io import DxlIO, Dxl320IO, DxlError
 from .error import BaseErrorHandler
 from .controller import BaseDxlController
 from .motor import DxlMXMotor, DxlAXRXMotor
@@ -44,17 +44,18 @@ def find_port(ids, strict=True):
 
     """
     for port in get_available_ports():
-        try:
-            with DxlIO(port) as dxl:
-                founds = len(dxl.scan(ids))
+        for DxlIOCls in (DxlIO, Dxl320IO):
+            try:
+                with DxlIOCls(port) as dxl:
+                    founds = len(dxl.scan(ids))
 
-                if strict and founds == len(ids):
-                    return port
+                    if strict and founds == len(ids):
+                        return port
 
-                if not strict and founds >= len(ids) / 2:
-                    return port
-        except DxlError:
-            continue
+                    if not strict and founds >= len(ids) / 2:
+                        return port
+            except DxlError:
+                continue
 
     raise IndexError('No suitable port found for ids {}!'.format(ids))
 
