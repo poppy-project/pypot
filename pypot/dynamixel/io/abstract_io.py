@@ -420,13 +420,27 @@ class AbstractDxlIO(AbstractIO):
         convert = kwargs['convert'] if ('convert' in kwargs) else self._convert
 
         if self._sync_read and len(ids) > 1:
-            rp = self._protocol.DxlSyncReadPacket(ids, control.address, control.length * control.nb_elem)
-            sp = self._send_packet(rp, error_handler=error_handler)
+            rp = self._protocol.DxlSyncReadPacket(ids, control.address,
+                                                  control.length * control.nb_elem)
 
+            sp = self._send_packet(rp, error_handler=error_handler)
             if not sp:
                 return ()
 
-            values = sp.parameters
+            if self._protocol.name == 'v1':
+                values = sp.parameters
+
+            elif self._protocol.name == 'v2':
+                values = list(sp.parameters)
+                for i in range(len(ids) - 1):
+                    try:
+                        sp = self.__real_read(rp, _force_lock=False)
+                    except (DxlTimeoutError, DxlCommunicationError):
+                        return ()
+                    values.extend(sp.parameters)
+
+                if len(values) < len(ids):
+                    return ()
 
         else:
             values = []
@@ -447,7 +461,7 @@ class AbstractDxlIO(AbstractIO):
 
         # when using SYNC_READ instead of getting a timeout
         # a non existing motor will "return" the maximum value
-        if self._sync_read:
+        if self._sync_read and self._protocol.name == 'v1':
             max_val = 2 ** (8 * control.length) - 1
             if max_val in (itertools.chain(*values) if control.nb_elem > 1 else values):
                 lost_ids = []
@@ -514,6 +528,17 @@ class AbstractDxlIO(AbstractIO):
             if not wait_for_status_packet:
                 return
 
+            status_packet = self.__real_read(instruction_packet, _force_lock=True)
+
+            logger.debug('Receiving %s', status_packet,
+                         extra={'port': self.port,
+                                'baudrate': self.baudrate,
+                                'timeout': self.timeout})
+
+            return status_packet
+
+    def __real_read(self, instruction_packet, _force_lock):
+        with self.__force_lock(_force_lock) or self._serial_lock:
             data = self._serial.read(self._protocol.DxlPacketHeader.length)
             if not data:
                 raise DxlTimeoutError(self, instruction_packet, instruction_packet.id)
@@ -526,11 +551,6 @@ class AbstractDxlIO(AbstractIO):
             except ValueError:
                 msg = 'could not parse received data {}'.format(bytearray(data))
                 raise DxlCommunicationError(self, msg, instruction_packet)
-
-            logger.debug('Receiving %s', status_packet,
-                         extra={'port': self.port,
-                                'baudrate': self.baudrate,
-                                'timeout': self.timeout})
 
             return status_packet
 

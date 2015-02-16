@@ -5,6 +5,7 @@ from collections import namedtuple
 
 from ..conversion import dxl_code, dxl_decode
 
+name = 'v2'
 
 DxlBroadcast = 254
 
