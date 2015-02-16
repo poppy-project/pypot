@@ -1,4 +1,7 @@
+import time
+
 from ..robot.controller import MotorsController
+from .io import DxlError
 
 
 class DxlController(MotorsController):
@@ -42,11 +45,16 @@ class BaseDxlController(DxlController):
         controllers = [_PosSpeedLoadDxlController(io, motors, 50),
                        AngleLimitRegisterController(io, motors,
                                                     1, 'get', 'angle_limit'),
-                       factory(io, motors, 10, 'set', 'pid_gain', 'pid'),
-                       factory(io, motors, 10, 'set', 'compliance_margin'),
-                       factory(io, motors, 10, 'set', 'compliance_slope'),
                        factory(io, motors, 1, 'get', 'present_voltage'),
                        factory(io, motors, 1, 'get', 'present_temperature')]
+
+        models = set(m.model for m in motors)
+
+        if [m for m in models if m.startswith('MX') or m.startswith('XL-320')]:
+            controllers.append(factory(io, motors, 10, 'set', 'pid_gain', 'pid'))
+        elif [m for m in models if m.startswith('AX') or m.startswith('RX')]:
+            controllers.append(factory(io, motors, 10, 'set', 'compliance_margin'))
+            controllers.append(factory(io, motors, 10, 'set', 'compliance_slope'))
 
         DxlController.__init__(self, io, motors, controllers)
 
@@ -73,7 +81,13 @@ class _DxlRegisterController(_DxlController):
 
     def setup(self):
         if self.mode == 'set':
-            self.get_register()
+            MAX_TRIALS = 25
+            for _ in range(MAX_TRIALS):
+                if self.get_register():
+                    break
+                time.sleep(0.1)
+            else:
+                raise DxlError('Cannot initialize syncloop for "{}"'.format(self.regname))
 
     def update(self):
         self.get_register() if self.mode == 'get' else self.set_register()
@@ -82,12 +96,17 @@ class _DxlRegisterController(_DxlController):
         """ Gets the value from the specified register and sets it to the :class:`~pypot.dynamixel.motor.DxlMotor`. """
         motors = [m for m in self.working_motors if hasattr(m, self.varname)]
         if not motors:
-            return
+            return False
         ids = [m.id for m in motors]
 
         values = getattr(self.io, 'get_{}'.format(self.regname))(ids)
+        if not values:
+            return False
+
         for m, val in zip(motors, values):
             m.__dict__[self.varname] = val
+
+        return True
 
     def set_register(self):
         """ Gets the value from :class:`~pypot.dynamixel.motor.DxlMotor` and sets it to the specified register. """
