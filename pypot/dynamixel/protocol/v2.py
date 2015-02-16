@@ -13,6 +13,7 @@ class DxlInstruction(object):
     PING = 0x01
     READ_DATA = 0x02
     WRITE_DATA = 0x03
+    SYNC_READ = 0x82
     SYNC_WRITE = 0x83
 
 
@@ -95,6 +96,22 @@ class DxlReadDataPacket(DxlInstructionPacket):
             self.id,
             dxl_decode(list(reversed(self.parameters[0:2]))),
             dxl_decode(list(reversed(self.parameters[2:4]))))
+
+
+class DxlSyncReadPacket(DxlInstructionPacket):
+    """ This class is used to represent sync read packet (to synchronously read values). """
+    def __new__(cls, ids, address, length):
+        return DxlInstructionPacket.__new__(cls, DxlBroadcast,
+                                            DxlInstruction.SYNC_READ,
+                                            list(dxl_code(address, 2)) +
+                                            list(dxl_code(length, 2)) +
+                                            list(ids))
+
+    def __repr__(self):
+        return ('DxlSyncReadDataPacket(ids={}, '
+                'address={}, length={})'.format(self.parameters[4:],
+                                                dxl_decode(self.parameters[0:2]),
+                                                dxl_decode(self.parameters[2:4])))
 
 
 class DxlWriteDataPacket(DxlInstructionPacket):
