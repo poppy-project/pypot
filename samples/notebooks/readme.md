@@ -4,7 +4,13 @@ In the [Poppy Project](https://www.poppy-project.org), we are huge fans of [IPyt
 
 We strongly believe that they have an amazing potential 
 
+# Connecting to a Remote Notebook
+
+**TODO**
+
 # Running Notebooks Locally
+
+**TODO**
 
 # Open Source
 All the resources content from the Poppy Project is open source. This naturally also extends to the notebooks. 
