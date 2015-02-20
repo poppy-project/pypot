@@ -20,7 +20,7 @@ At the moment we already proposed a few Poppy Creatures:
 
 * the [Poppy Humanoid](https://github.com/poppy-project/poppy-humanoid): a kid-size humanoid robot designed for biped locomotion and physical human-robot interaction,
 * a [Poppy Ergo](https://www.poppy-project.org/project/mathematics-a-beautiful-elsewhere/): an art/science project where robotic creatures, endowed with algorithmic models of curiosity-driven learning and language formation, were hacked by moviemaker David Lynch,
-* and a [Poppy Ergo Mini](https://github.com/poppy-project/poppy-ergo-mini) with low-cost [XL-320 robotis motors](http://support.robotis.com/en/product/dynamixel/xl-series/xl-320.htm) and modular 3D printed parts created using [OpenSCAD](https://github.com/openscad/openscad/).
+* and a [PoppyErgoJr](https://github.com/poppy-project/poppy-ergo-jr) with low-cost [XL-320 robotis motors](http://support.robotis.com/en/product/dynamixel/xl-series/xl-320.htm) and modular 3D printed parts created using [OpenSCAD](https://github.com/openscad/openscad/).
 
 ![Poppy Humanoid](./doc/poppy-creatures.jpg)
 
@@ -45,7 +45,7 @@ The full pypot documentation on a html format can be found [here](http://poppy-p
 
 ## Installation ##
 
-Pypot is a library entirelly written in [Python](https://www.python.org). It is known to work with Python *2.7*, *3.4* and *pypy-2.5*. It is crossed platform and has been tested on Windows, Mac, Linux - yet specific usb to serial driver may be required depending on your system (see below). 
+Pypot is a library entirelly written in [Python](https://www.python.org). It is known to work with Python *2.7*, *3.4* and *pypy-2.5*. It is crossed platform and has been tested on Windows, Mac, Linux - yet specific usb to serial driver may be required depending on your system (see below).
 
 Pypot also requires the following python package:
 * [pyserial](http://pyserial.sourceforge.net) 2.6 (or later)
@@ -55,7 +55,7 @@ You can build and install pypot with the typically python way:
 
     cd pypot
     python setup.py install
-    
+
 or directly via [pip](https://pip.pypa.io/en/latest/index.html):
 
     pip install pypot
@@ -63,9 +63,9 @@ or directly via [pip](https://pip.pypa.io/en/latest/index.html):
 *Note: Linux users may have to run the commands above using sudo depending on their python installation*
 
     sudo python setup.py install
-    or 
+    or
     sudo pip install pypot
-    
+
 *If you are new to Python and don't know how to install python packages please refer to [the official pip documentation](https://pip.pypa.io/en/latest/index.html) or see our tutorial on how you can [connect to one the notebook example](https://github.com/poppy-project/pypot/blob/master/samples/notebooks/readme.md#ipython-notebooks-everywhere).*
 
 You will also have to install the driver for the USB2serial port. There are two devices that have been tested with pypot that could be used:

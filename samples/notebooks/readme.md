@@ -4,7 +4,7 @@ In the [Poppy Project](https://www.poppy-project.org), we are huge fans of [IPyt
 
 We strongly believe that they have an amazing potential:
 * for writing pedalogical contents - by **mixing code, explanation, results in an integrated form**
-* for easily sharing - they can be easily [review online]() and then [run locally]() 
+* for easily sharing - they can be easily [review online]() and then [run locally]()
 * they can also be run remotely on the robot and thus **no installation at all is required on the client side, you just need a web browser**
 
 We already have written a few tutorial notebooks describing:
@@ -16,7 +16,7 @@ Other notebooks should shorty extend this list!
 In the next sections, we decribe how those notebooks can be [viewed](), [installed](), [run](), shared and how you can [contribute]() by writting your own notebooks!
 
 # Open Source
-All the resources content from the Poppy Project is open source. This naturally also extends to the notebooks. 
+All the resources content from the Poppy Project is open source. This naturally also extends to the notebooks.
 
   License     |     Notebooks    |   Library      |
 | ----------- | :-------------: | :-------------: |
@@ -35,15 +35,15 @@ Yet this technique is limited to reading a Notebook. If you want to run it yours
 
 The Poppy Creature we developed are usually provided with an embedded board (e.g. a [raspberry pi](http://www.raspberrypi.org)) with all the software tools needed to run [pypot](https://github.com/poppy-project/pypot) already installed - this means a python interpreter, the pypot and poppy pacakges and an [IPython Notebook](http://ipython.org/notebook.html). Thus, you do not need to install anything specific to pypot on your personal computer (Of course this is still an option if you prefer to do so, you can refer to this [tutorial](https://github.com/pierre-rouanet/Rasp-Poppy) if you are interested).
 
-When plugged, the embedded board of the Poppy Creature should automatically starts an IPython Notebook server providing access to all the notebooks tutorials. 
+When plugged, the embedded board of the Poppy Creature should automatically starts an IPython Notebook server providing access to all the notebooks tutorials.
 
-Assuming that you creature is connected to the same network as your computer (see [here](https://github.com/pierre-rouanet/Rasp-Poppy) for details), they can be accessed just by connecting to an url such as: http://poppy-ergo-mini.local:8080/notebooks where poppy-ergo-mini is the hostname of your creature. This could be replaced by *poppy-humanoid*, *poppy-torso*... depending on the creature you are working with.
+Assuming that you creature is connected to the same network as your computer (see [here](https://github.com/pierre-rouanet/Rasp-Poppy) for details), they can be accessed just by connecting to an url such as: http://poppy-ergo-jr.local:8080/notebooks where *poppy-ergo-jr* is the hostname of your creature. This could be replaced by *poppy-humanoid*, *poppy-torso*... depending on the creature you are working with.
 
 **It's important to note here that the notebook will actually run on the embedded board and not on your local machine!** You will thus not be able to easily access a file on your machine using this approach. Similarly, if you need to install an extra python package, you will have to install it directly on the board (e.g. using an [ssh connection](https://github.com/pierre-rouanet/Rasp-Poppy)).
 
 # Running Notebooks Locally
 
-If you want to run Notebooks on your local machine, for instance because you are working with the simulator, you will have to start the ipython notebook server yourself. 
+If you want to run Notebooks on your local machine, for instance because you are working with the simulator, you will have to start the ipython notebook server yourself.
 
 To do this, you will need to find your way in the sometimes [confusing](http://captiongenerator.com/30052/Hitler-reacts-to-the-Python-ecosystem) [python packaging system](https://python-packaging-user-guide.readthedocs.org/en/latest/current.html). In details, you will need:
 * a [python](https://www.python.org) interpreter (we tested with *2.7*, *3.4* or *pypy-2.5*) see how to install it on your os on [python website](https://www.python.org/downloads/).
@@ -60,9 +60,9 @@ Linux users may have to run (depending on their python installation):
 sudo pip install ipython[all]
 ```
 
-Then, you need to install pypot and the software for your creature. For instance, to use a Poppy Ergo Mini:
+Then, you need to install pypot and the software for your creature. For instance, to use a PoppyErgoJr:
 ```bash
-pip install pypot poppy-ergo-mini
+pip install pypot poppy-ergo-jr
 ```
 
 Finally, you can now run the notebook server from a terminal:
