@@ -41,7 +41,7 @@ The full pypot documentation on a html format can be found [here](http://poppy-p
 
 **The documentation is slowly moving toward [IPython Notebooks](http://ipython.org/notebook.html) are they are such a powerful tool for writing and sharing tutorials, experiments or pedalogical contents.**
 
-**They can be found [here](https://github.com/poppy-project/pypot/tree/master/samples/notebooks#ipython-notebooks-everywhere) with a detailed explanation on how they can be used, installed, and modified.**
+**They can be found [here](https://github.com/poppy-project/pypot/tree/master/samples/notebooks#notebooks-everywhere) with a detailed explanation on how they can be used, installed, and modified.**
 
 ## Installation ##
 
