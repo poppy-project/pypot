@@ -20,7 +20,7 @@ At the moment we already proposed a few Poppy Creatures:
 
 * the [Poppy Humanoid](https://github.com/poppy-project/poppy-humanoid): a kid-size humanoid robot designed for biped locomotion and physical human-robot interaction,
 * a [Poppy Ergo](https://www.poppy-project.org/project/mathematics-a-beautiful-elsewhere/): an art/science project where robotic creatures, endowed with algorithmic models of curiosity-driven learning and language formation, were hacked by moviemaker David Lynch,
-* and a [Poppy Ergo Mini](https://github.com/poppy-project/poppy-ergo-mini) with low-cost [XL-320 robotis motors](http://support.robotis.com/en/product/dynamixel/xl-series/xl-320.htm) and modular 3D printed parts created using [OpenSCAD](https://github.com/openscad/openscad/)
+* and a [Poppy Ergo Mini](https://github.com/poppy-project/poppy-ergo-mini) with low-cost [XL-320 robotis motors](http://support.robotis.com/en/product/dynamixel/xl-series/xl-320.htm) and modular 3D printed parts created using [OpenSCAD](https://github.com/openscad/openscad/).
 
 ![Poppy Humanoid](./doc/poppy-creatures.jpg)
 
@@ -66,7 +66,7 @@ or directly via [pip](https://pip.pypa.io/en/latest/index.html):
     or 
     sudo pip install pypot
     
-*If you are new to Python and don't know how to install python packages please refer to [the official pip documentation](https://pip.pypa.io/en/latest/index.html) or see our tutorial on how you can [connect to a remote notebook](https://github.com/poppy-project/pypot/tree/master/samples/notebooks#connecting-to-a-remote-notebook).*
+*If you are new to Python and don't know how to install python packages please refer to [the official pip documentation](https://pip.pypa.io/en/latest/index.html) or see our tutorial on how you can [connect to one the notebook example](https://github.com/poppy-project/pypot/blob/master/samples/notebooks/readme.md#ipython-notebooks-everywhere).*
 
 You will also have to install the driver for the USB2serial port. There are two devices that have been tested with pypot that could be used:
 
