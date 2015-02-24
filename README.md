@@ -45,7 +45,7 @@ The full pypot documentation on a html format can be found [here](http://poppy-p
 
 ## Installation ##
 
-Pypot is a library entirelly written in [Python](https://www.python.org). It is known to work with Python *2.7*, *3.4* and *pypy-2.5*. It is crossed platform and has been tested on Windows, Mac, Linux - yet specific usb to serial driver may be required depending on your system (see below).
+Pypot is a library entirelly written in [Python](https://www.python.org). It works with Python *2.7*, *3.4* and *pypy-2.5*. It is crossed platform and has been tested on Windows, Mac, Linux - yet specific usb to serial driver may be required depending on your system (see below).
 
 Pypot also requires the following python package:
 * [pyserial](http://pyserial.sourceforge.net) 2.6 (or later)
@@ -66,7 +66,7 @@ or directly via [pip](https://pip.pypa.io/en/latest/index.html):
     or
     sudo pip install pypot
 
-*If you are new to Python and don't know how to install python packages please refer to [the official pip documentation](https://pip.pypa.io/en/latest/index.html) or see our tutorial on how you can [connect to one the notebook example](https://github.com/poppy-project/pypot/blob/master/samples/notebooks/readme.md#ipython-notebooks-everywhere).*
+*If you are new to Python and don't know how to install python packages please refer to [the official pip documentation](https://pip.pypa.io/en/latest/index.html) or see our tutorial on how you can [connect to one of the notebook examples](https://github.com/poppy-project/pypot/blob/master/samples/notebooks/readme.md#ipython-notebooks-everywhere).*
 
 You will also have to install the driver for the USB2serial port. There are two devices that have been tested with pypot that could be used:
 
