@@ -263,6 +263,13 @@ class DxlMXMotor(DxlMotor):
         self.max_pos = 180
 
 
+class DxlXL320Motor(DxlMXMotor):
+    """ This class represents the XL-320 robotis motor. """
+    def __init__(self, id, name=None, model='XL-320',
+                 direct=True, offset=0.0, broken=False):
+        DxlMXMotor.__init__(self, id, name, model, direct, offset, broken)
+        self.max_pos = 150
+
 class SafeCompliance(StoppableLoopThread):
     """ This class creates a controller to active compliance only if the current motor position is included in the angle limit, else the compliance is turned off. """
 

@@ -45,7 +45,8 @@ def from_config(config, strict=True, sync=True):
         motor_names = sum([_motor_extractor(alias, name)
                            for name in c_params['attached_motors']], [])
 
-        attached_motors = [motor_from_confignode(config, name) for name in motor_names]
+        attached_motors = [motor_from_confignode(config, name)
+                           for name in motor_names]
 
         # at least one of the motor is set as broken
         if [m for m in attached_motors if m._broken]:
@@ -75,12 +76,17 @@ def from_config(config, strict=True, sync=True):
 def motor_from_confignode(config, motor_name):
     params = config['motors'][motor_name]
 
-    MotorCls = (pypot.dynamixel.motor.DxlMXMotor if params['type'].startswith('MX')
-                else pypot.dynamixel.motor.DxlAXRXMotor)
+    type = params['type']
+    if type == 'XL-320':
+        MotorCls = pypot.dynamixel.motor.DxlXL320Motor
+    elif type.startswith('MX'):
+        MotorCls = pypot.dynamixel.motor.DxlMXMotor
+    elif type.startswith('AX') or type.startswith('RX'):
+        MotorCls = pypot.dynamixel.motor.DxlAXRXMotor
 
     m = MotorCls(id=params['id'],
                  name=motor_name,
-                 model=params['type'],
+                 model=type,
                  direct=True if params['orientation'] == 'direct' else False,
                  offset=params['offset'],
                  broken='broken' in params)
@@ -100,9 +106,14 @@ def dxl_io_from_confignode(config, c_params, ids, strict):
         logger.info('Found port {} for ids {}'.format(port, ids))
 
     handler = pypot.dynamixel.error.BaseErrorHandler
-    dxl_io = pypot.dynamixel.io.DxlIO(port=port,
-                                      use_sync_read=c_params['sync_read'],
-                                      error_handler_cls=handler)
+
+    DxlIOCls = (pypot.dynamixel.io.Dxl320IO
+                if 'protocol' in c_params and c_params['protocol'] == 2
+                else pypot.dynamixel.io.DxlIO)
+
+    dxl_io = DxlIOCls(port=port,
+                      use_sync_read=c_params['sync_read'],
+                      error_handler_cls=handler)
 
     found_ids = dxl_io.scan(ids)
     if ids != found_ids:
@@ -126,7 +137,7 @@ def check_motor_limits(config, dxl_io, motor_names):
 
         try:
             old_limits = dxl_io.get_angle_limit((id, ))[0]
-        except IndexError: # probably a broken motor so we just skip
+        except IndexError:  # probably a broken motor so we just skip
             continue
         new_limits = m['angle_limit']
 

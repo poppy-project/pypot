@@ -1,10 +1,10 @@
 import platform
 import glob
 
-from .io import DxlIO, DxlError
+from .io import DxlIO, Dxl320IO, DxlError
 from .error import BaseErrorHandler
 from .controller import BaseDxlController
-from .motor import DxlMXMotor, DxlAXRXMotor
+from .motor import DxlMXMotor, DxlAXRXMotor, DxlXL320Motor
 
 from ..robot import Robot
 
@@ -44,17 +44,18 @@ def find_port(ids, strict=True):
 
     """
     for port in get_available_ports():
-        try:
-            with DxlIO(port) as dxl:
-                founds = len(dxl.scan(ids))
+        for DxlIOCls in (DxlIO, Dxl320IO):
+            try:
+                with DxlIOCls(port) as dxl:
+                    founds = len(dxl.scan(ids))
 
-                if strict and founds == len(ids):
-                    return port
+                    if strict and founds == len(ids):
+                        return port
 
-                if not strict and founds >= len(ids) / 2:
-                    return port
-        except DxlError:
-            continue
+                    if not strict and founds >= len(ids) / 2:
+                        return port
+            except DxlError:
+                continue
 
     raise IndexError('No suitable port found for ids {}!'.format(ids))
 
@@ -64,14 +65,27 @@ def autodetect_robot():
     motor_controllers = []
 
     for port in get_available_ports():
-        dxl_io = DxlIO(port)
-        ids = dxl_io.scan()
-        models = dxl_io.get_model(ids)
-        motors = [(DxlMXMotor(id, model=model) if model.startswith('MX')
-                   else DxlAXRXMotor(id, model=model))
-                  for id, model in zip(ids, models)]
+        for DxlIOCls in (DxlIO, Dxl320IO):
+            dxl_io = DxlIOCls(port)
+            ids = dxl_io.scan()
 
-        c = BaseDxlController(dxl_io, motors)
-        motor_controllers.append(c)
+            if not ids:
+                dxl_io.close()
+                continue
+
+            models = dxl_io.get_model(ids)
+
+            motorcls = {
+                'MX': DxlMXMotor,
+                'RX': DxlAXRXMotor,
+                'AX': DxlAXRXMotor,
+                'XL': DxlXL320Motor
+            }
+
+            motors = [motorcls[model[:2]](id, model=model)
+                      for id, model in zip(ids, models)]
+
+            c = BaseDxlController(dxl_io, motors)
+            motor_controllers.append(c)
 
     return Robot(motor_controllers)

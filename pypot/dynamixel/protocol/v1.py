@@ -5,6 +5,7 @@ import itertools
 
 from collections import namedtuple
 
+name = 'v1'
 
 DxlBroadcast = 254
 

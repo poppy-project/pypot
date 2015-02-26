@@ -124,6 +124,7 @@ dynamixelModels = {
     360: 'MX-12',   # 104 + (1<<8)
     310: 'MX-64',   # 54 + (1<<8)
     320: 'MX-106',  # 64 + (1<<8)
+    350: 'XL-320',  # 94 + (1<<8)
 }
 
 
@@ -218,6 +219,7 @@ def status_to_dxl(value, model):
 
 # MARK: - Error
 
+# TODO: depend on protocol v1 vs v2
 dynamixelErrors = ['None Error',
                    'Instruction Error',
                    'Overload Error',
