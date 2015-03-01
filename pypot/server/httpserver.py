@@ -13,7 +13,7 @@ class MyJSONEncoder(json.JSONEncoder):
     """ JSONEncoder which tries to call a json property before using the enconding default function. """
     def default(self, obj):
         if isinstance(obj, numpy.ndarray):
-            return list(obj)
+            return "call" + list(obj)
 
         return json.JSONEncoder.default(self, obj)
 
@@ -29,7 +29,7 @@ class HTTPRobotServer(AbstractServer):
 
         self.app = bottle.Bottle()
 
-        jd = lambda s: json.dumps(s, cls=MyJSONEncoder)
+        jd = lambda s: "callback_("+json.dumps(s, cls=MyJSONEncoder)+")"
         self.app.install(bottle.JSONPlugin(json_dumps=jd))
 
         rr = self.restfull_robot
