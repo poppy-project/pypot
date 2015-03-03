@@ -37,6 +37,10 @@ class RESTRobot(object):
     def get_motors_alias(self):
         return self.robot.alias
 
+    def set_goto_position_for_motor(self, motor, position, duration):
+        m = getattr(self.robot, motor)
+        m.goto_position(position, duration, wait=False)
+
     # Access sensor related values
 
     def get_sensors_list(self):
