@@ -48,7 +48,7 @@
 
             $(document).on('pageinit', '#home', function() {
                 $.ajax({
-                    url: 'http://0.0.0.0:4242/motor/list.json',
+                    url: 'http://0.0.0.0:4242/motor/list.json?response_type=jsonp',
                     dataType: 'jsonp',
                     contents: 'json',
                     jsonp: 'callback',
@@ -62,7 +62,7 @@
 
             $(document).on('pagebeforeshow', '#headline', function() {
                 $.ajax({
-                    url: 'http://0.0.0.0:4242/motor/' + motor + '/register/list.json',
+                    url: 'http://0.0.0.0:4242/motor/' + motor + '/register/list.json?response_type=jsonp',
                     dataType: 'jsonp',
                     contents: 'json',
                     jsonp: 'callback',
