@@ -33,21 +33,21 @@ class HTTPRobotServer(AbstractServer):
         @self.app.get('/motor/list.json')
         @self.app.get('/motor/<alias>/list.json')
         def get_motor_list(alias='motors'):
-            self.initJsonPlugin()
+            self.init_json_plugin()
             return {
                 alias: rr.get_motors_list(alias)
             }
 
         @self.app.get('/sensor/list.json')
         def get_sensor_list():
-            self.initJsonPlugin()
+            self.init_json_plugin()
             return {
                 'sensors': rr.get_sensors_list()
             }
 
         @self.app.get('/motor/alias/list.json')
         def get_motor_alias():
-            self.initJsonPlugin()
+            self.init_json_plugin()
             return {
                 'alias': rr.get_motors_alias()
             }
@@ -55,7 +55,7 @@ class HTTPRobotServer(AbstractServer):
         @self.app.get('/motor/<motor_name>/register/list.json')
         @self.app.get('/sensor/<motor_name>/register/list.json')
         def get_motor_registers(motor_name):
-            self.initJsonPlugin()
+            self.init_json_plugin()
             return {
                 'registers': rr.get_motor_registers_list(motor_name)
             }
@@ -63,7 +63,7 @@ class HTTPRobotServer(AbstractServer):
         @self.app.get('/motor/<motor_name>/register/<register_name>')
         @self.app.get('/sensor/<motor_name>/register/<register_name>')
         def get_register_value(motor_name, register_name):
-            self.initJsonPlugin()
+            self.init_json_plugin()
             return {
                 register_name: rr.get_motor_register_value(motor_name, register_name)
             }
@@ -80,14 +80,14 @@ class HTTPRobotServer(AbstractServer):
         # Primitives route
         @self.app.get('/primitive/list.json')
         def get_primitives_list(self):
-            self.initJsonPlugin()
+            self.init_json_plugin()
             return {
                 'primitives': rr.get_primitives_list()
             }
 
         @self.app.get('/primitive/running/list.json')
         def get_running_primitives_list(self):
-            self.initJsonPlugin()
+            self.init_json_plugin()
             return {
                 'running_primitives': rr.get_running_primitives_list()
             }
@@ -110,7 +110,7 @@ class HTTPRobotServer(AbstractServer):
 
         @self.app.get('/primitive/<prim>/property/list.json')
         def get_primitive_properties_list(self, prim):
-            self.initJsonPlugin()
+            self.init_json_plugin()
             return {
                 'property': rr.get_primitive_properties_list(prim)
             }
@@ -118,7 +118,7 @@ class HTTPRobotServer(AbstractServer):
         @self.app.get('/primitive/<prim>/property/<prop>')
         def get_primitive_property(self, prim, prop):
             res = rr.get_primitive_property(prim, prop)
-            self.initJsonPlugin()
+            self.init_json_plugin()
             return {
                 '{}.{}'.format(prim, prop): res
             }
@@ -130,7 +130,7 @@ class HTTPRobotServer(AbstractServer):
 
         @self.app.get('/primitive/<prim>/method/list.json')
         def get_primitive_methods_list(self, prim):
-            self.initJsonPlugin()
+            self.init_json_plugin()
             return {
                 'methods': rr.get_primitive_methods_list(self, prim)
             }
@@ -139,19 +139,20 @@ class HTTPRobotServer(AbstractServer):
         def call_primitive_method(self, prim, meth):
             res = rr.call_primitive_method(prim, meth,
                                            bottle.request.json)
-            self.initJsonPlugin()
+            self.init_json_plugin()
             return {
                 '{}:{}'.format(prim, meth): res
             }
 
-    def initJsonPlugin(self):
-       response_type = bottle.request.query.response_type
-       if response_type is not None and response_type == "jsonp":
-          jd = lambda s: "callback_("+json.dumps(s, cls=MyJSONEncoder)+")"
-          self.app.install(bottle.JSONPlugin(json_dumps=jd))
-       else:
-          jd = lambda s: json.dumps(s, cls=MyJSONEncoder)
-          self.app.install(bottle.JSONPlugin(json_dumps=jd))
+    def init_json_plugin(self):
+        response_type = bottle.request.query.response_type
+
+        if response_type == "jsonp":
+            jd = lambda s: 'call_back_({})'.format(json.dumps(s, cls=MyJSONEncoder))
+        else:
+            jd = lambda s: json.dumps(s, cls=MyJSONEncoder)
+
+        self.app.install(bottle.JSONPlugin(json_dumps=jd))
 
     def run(self, quiet=False, server='tornado'):
         """ Start the bottle server, run forever. """
