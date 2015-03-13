@@ -82,6 +82,13 @@ class SnapRobotServer(AbstractServer):
         def get_ip():
             return socket.gethostbyname(socket.gethostname())
 
+        @self.app.get('/reset-simulation')
+        @make_snap_compatible_response
+        def reset_simulation():
+            if hasattr(robot, 'reset_simulation'):
+                robot.reset_simulation()
+            return 'Done!'
+
     def run(self):
         bottle.run(self.app,
                    host=self.host, port=self.port,

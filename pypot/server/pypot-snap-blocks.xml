@@ -70,11 +70,11 @@ data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAeAAAAFoCAYAAACPNyggAAAAAXNSR0IArs
 </script>
 </scripts>
 </sprite>
-<watcher var="present positions" style="normal" x="0.15625" y="0.15625" color="243,118,29" hidden="true"/>
-<watcher var="goal positions" style="normal" x="0.3125" y="0.3125" color="243,118,29" hidden="true"/>
-<watcher var="motors" style="normal" x="2.5" y="2.5" color="243,118,29" hidden="true"/>
-<watcher var="host" style="normal" x="5" y="5" color="243,118,29" hidden="true"/>
-<watcher var="port" style="normal" x="5" y="15.500000999999997" color="243,118,29" hidden="true"/>
+<watcher var="present positions" style="normal" x="0.078125" y="0.078125" color="243,118,29" hidden="true"/>
+<watcher var="goal positions" style="normal" x="0.15625" y="0.15625" color="243,118,29" hidden="true"/>
+<watcher var="motors" style="normal" x="1.25" y="1.25" color="243,118,29" hidden="true"/>
+<watcher var="host" style="normal" x="2.5" y="2.5" color="243,118,29" hidden="true"/>
+<watcher var="port" style="normal" x="2.5" y="7.750000499999999" color="243,118,29" hidden="true"/>
 </sprites>
 </stage>
 <hidden/>
@@ -1064,50 +1064,210 @@ data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAeAAAAFoCAYAAACPNyggAAAAAXNSR0IArs
 </block>
 </script>
 </block-definition>
+<block-definition s="poppy reset simulation" type="command" category="control">
+<header/>
+<code/>
+<inputs/>
+<script>
+<block s="doReport">
+<block s="reportURL">
+<block s="reportJoinWords">
+<list>
+<custom-block s="pypot server"/>
+<l>/reset-simulation</l>
+</list>
+</block>
+</block>
+</block>
+</script>
+</block-definition>
 </blocks>
 <variables>
 <variable name="present positions">
-<list id="757">
+<list id="769">
 <item>
-<l>-130.56</l>
+<l>0.0</l>
 </item>
 <item>
-<l>14.22</l>
+<l>-0.0</l>
 </item>
 <item>
-<l>-51.17</l>
+<l>0.2</l>
 </item>
 <item>
-<l>78.23</l>
+<l>-22.6</l>
 </item>
 <item>
-<l>9.24</l>
+<l>0.0</l>
+</item>
+<item>
+<l>-0.0</l>
+</item>
+<item>
+<l>1.6</l>
+</item>
+<item>
+<l>1.1</l>
+</item>
+<item>
+<l>0.0</l>
+</item>
+<item>
+<l>0.1</l>
+</item>
+<item>
+<l>1.2</l>
+</item>
+<item>
+<l>-0.0</l>
+</item>
+<item>
+<l>-0.0</l>
+</item>
+<item>
+<l>0.0</l>
+</item>
+<item>
+<l>-0.1</l>
+</item>
+<item>
+<l>0.1</l>
+</item>
+<item>
+<l>0.0</l>
+</item>
+<item>
+<l>0.4</l>
+</item>
+<item>
+<l>-0.0</l>
+</item>
+<item>
+<l>0.7</l>
+</item>
+<item>
+<l>0.8</l>
+</item>
+<item>
+<l>0.2</l>
+</item>
+<item>
+<l>0.0</l>
+</item>
+<item>
+<l>0.4</l>
+</item>
+<item>
+<l>0.0</l>
 </item>
 </list>
 </variable>
 <variable name="goal positions">
-<list id="758">
-<item>
-<l>0</l>
-</item>
+<list linked="linked" id="770">
+<item/>
+<item/>
+<item/>
+<item/>
+<item/>
+<item/>
+<item/>
+<item/>
+<item/>
+<item/>
+<item/>
+<item/>
+<item/>
+<item/>
+<item/>
+<item/>
+<item/>
+<item/>
+<item/>
+<item/>
+<item/>
+<item/>
+<item/>
+<item/>
+<item/>
+<item/>
 </list>
 </variable>
 <variable name="motors">
-<list id="759">
+<list id="771">
 <item>
-<l>base_pan</l>
+<l>l_elbow_y</l>
 </item>
 <item>
-<l>base_tilt_lower</l>
+<l>r_elbow_y</l>
 </item>
 <item>
-<l>base_tilt_upper</l>
+<l>r_knee_y</l>
 </item>
 <item>
-<l>head_pan</l>
+<l>head_y</l>
 </item>
 <item>
-<l>head_tilt_lower</l>
+<l>head_z</l>
+</item>
+<item>
+<l>r_arm_z</l>
+</item>
+<item>
+<l>r_ankle_y</l>
+</item>
+<item>
+<l>r_shoulder_x</l>
+</item>
+<item>
+<l>r_shoulder_y</l>
+</item>
+<item>
+<l>r_hip_z</l>
+</item>
+<item>
+<l>r_hip_x</l>
+</item>
+<item>
+<l>r_hip_y</l>
+</item>
+<item>
+<l>l_arm_z</l>
+</item>
+<item>
+<l>l_hip_x</l>
+</item>
+<item>
+<l>l_hip_y</l>
+</item>
+<item>
+<l>l_hip_z</l>
+</item>
+<item>
+<l>abs_x</l>
+</item>
+<item>
+<l>abs_y</l>
+</item>
+<item>
+<l>abs_z</l>
+</item>
+<item>
+<l>l_ankle_y</l>
+</item>
+<item>
+<l>bust_y</l>
+</item>
+<item>
+<l>bust_x</l>
+</item>
+<item>
+<l>l_knee_y</l>
+</item>
+<item>
+<l>l_shoulder_x</l>
+</item>
+<item>
+<l>l_shoulder_y</l>
 </item>
 </list>
 </variable>
