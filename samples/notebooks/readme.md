@@ -10,6 +10,8 @@ We strongly believe that they have an amazing potential:
 We already have written a few tutorial notebooks describing:
 * [how to control a simulated Poppy Humanoid using a robot simulator](http://nbviewer.ipython.org/github/poppy-project/pypot/blob/master/samples/notebooks/Controlling%20a%20Poppy%20humanoid%20in%20V-REP%20using%20pypot.ipynb)
 * [how you can control a Poppy Creature uing Snap!, a Scratch-like visual programming language](http://nbviewer.ipython.org/github/poppy-project/pypot/blob/master/samples/notebooks/Controlling%20a%20Poppy%20Creature%20using%20SNAP.ipynb)
+* [a Quick Start for you Poppy Ergo robot](http://nbviewer.ipython.org/github/poppy-project/pypot/blob/master/samples/notebooks/QuickStart%20playing%20with%20a%20PoppyErgo.ipynb) (it also applies for PoppyErgoJr)
+* [how to record, save, and play moves on a Poppy Creature](http://nbviewer.ipython.org/github/poppy-project/pypot/blob/master/samples/notebooks/Record%2C%20Save%2C%20and%20Play%20Moves%20on%20a%20Poppy%20Creature.ipynb) 
 
 Other notebooks should shorty extend this list!
 
