@@ -52,7 +52,7 @@ class StoppableThread(object):
             self._running.clear()
 
             # We cannot wait for ourself
-            if wait and (threading.current_thread != self._thread):
+            if wait and (threading.current_thread() != self._thread):
                 self._thread.join()
 
             self._started.clear()
