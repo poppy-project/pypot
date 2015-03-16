@@ -66,7 +66,9 @@ or directly via [pip](https://pip.pypa.io/en/latest/index.html):
     or
     sudo pip install pypot
 
-*If you are new to Python and don't know how to install python packages please refer to [the official pip documentation](https://pip.pypa.io/en/latest/index.html) or see our tutorial on how you can [connect to one of the notebook examples](https://github.com/poppy-project/pypot/blob/master/samples/notebooks/readme.md#ipython-notebooks-everywhere).*
+*Note: These commands must be run in a terminal (command prompt) and not directly from within a Python IDE. If you are new to Python and don't know how to install python packages please refer to [the official pip documentation](https://pip.pypa.io/en/latest/index.html) or see our tutorial on how you can [connect to one of the notebook examples](https://github.com/poppy-project/pypot/blob/master/samples/notebooks/readme.md#ipython-notebooks-everywhere).*
+
+**If you are new to the Python's world, we strongly recommand using a pre-packaged distribution as  [Anaconda](http://continuum.io/downloads). It comes will all dependencies pre-compiled (pip, numpy, scipy...) and it works well on Windows, Mac and Linux!**
 
 You will also have to install the driver for the USB2serial port. There are two devices that have been tested with pypot that could be used:
 
