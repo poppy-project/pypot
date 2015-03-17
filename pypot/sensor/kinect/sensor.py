@@ -1,3 +1,16 @@
+"""
+This code has been developed by Baptiste Busch: https://github.com/buschbapti
+
+This module allows you to retrieve Skeleton information from a Kinect device.
+It is only the client side of a zmq client/server application.
+
+The server part can be found at: https://bitbucket.org/buschbapti/kinectserver/src
+It used the Microsoft Kinect SDK and thus only work on Windows.
+
+Of course, the client side can be used on any platform.
+
+"""
+
 import zmq
 import numpy
 import threading
@@ -19,7 +32,7 @@ class Skeleton(namedtuple('Skeleton', ('timestamp', 'user_id') + skeleton_joints
 
 
 Joint = namedtuple('Joint', ('position', 'orientation', 'pixel_coordinate'))
-    
+
 class KinectSensor(object):
     def __init__(self, addr, port):
         self._lock = threading.Lock()
@@ -41,7 +54,7 @@ class KinectSensor(object):
     def remove_all_users(self):
         with self._lock:
             self._skeleton = {}
-    
+
     @property
     def tracked_skeleton(self):
         with self._lock:
@@ -83,7 +96,7 @@ class KinectSensor(object):
                 kinect.remove_all_users()
             cv2.imshow('Skeleton', img)
             cv2.waitKey(50)
-        
+
 
 if __name__ == '__main__':
     import cv2
