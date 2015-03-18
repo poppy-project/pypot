@@ -66,7 +66,6 @@ class SnapRobotServer(AbstractServer):
         @self.app.get('/motor/<motor>/goto/<position>/<duration>')
         @make_snap_compatible_response
         def set_goto(motor, position, duration):
-            print 'salut!!!!', motor, position, duration
             rr.set_goto_position_for_motor(motor, float(position), float(duration))
             return 'Done!'
 
