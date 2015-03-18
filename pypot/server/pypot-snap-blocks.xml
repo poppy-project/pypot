@@ -39,14 +39,14 @@ data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAeAAAAFoCAYAAACPNyggAAAAAXNSR0IArs
 </block>
 <block s="doSetVar">
 <l>motors</l>
-<custom-block s="all motors"/>
+<custom-block s="poppy all motors"/>
 </block>
 <block s="doSetVar">
 <l>goal positions</l>
 <custom-block s="map %repRing over %mult%l">
 <block s="reifyReporter">
 <autolambda>
-<custom-block s="get motor %txt register %txt">
+<custom-block s="poppy get motor %txt register %txt">
 <l/>
 <l>goal_position</l>
 </custom-block>
@@ -62,26 +62,26 @@ data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAeAAAAFoCAYAAACPNyggAAAAAXNSR0IArs
 <script>
 <block s="doSetVar">
 <l>present positions</l>
-<custom-block s="poll all motor present positions"/>
+<custom-block s="poppy poll all motor present positions"/>
 </block>
-<custom-block s="push all motors goal positions"/>
+<custom-block s="poppy push all motors goal positions"/>
 </script>
 </block>
 </script>
 </scripts>
 </sprite>
-<watcher var="present positions" style="normal" x="0.078125" y="0.078125" color="243,118,29" hidden="true"/>
-<watcher var="goal positions" style="normal" x="0.15625" y="0.15625" color="243,118,29" hidden="true"/>
-<watcher var="motors" style="normal" x="1.25" y="1.25" color="243,118,29" hidden="true"/>
-<watcher var="host" style="normal" x="2.5" y="2.5" color="243,118,29" hidden="true"/>
-<watcher var="port" style="normal" x="2.5" y="7.750000499999999" color="243,118,29" hidden="true"/>
+<watcher var="present positions" style="normal" x="0.0390625" y="0.0390625" color="243,118,29" hidden="true"/>
+<watcher var="goal positions" style="normal" x="0.078125" y="0.078125" color="243,118,29" hidden="true"/>
+<watcher var="motors" style="normal" x="0.625" y="0.625" color="243,118,29" hidden="true"/>
+<watcher var="host" style="normal" x="1.25" y="1.25" color="243,118,29" hidden="true"/>
+<watcher var="port" style="normal" x="1.25" y="3.8750002499999994" color="243,118,29" hidden="true"/>
 </sprites>
 </stage>
 <hidden/>
 <headers/>
 <code/>
 <blocks>
-<block-definition s="motors from alias %'alias'" type="reporter" category="sensing">
+<block-definition s="poppy motors from alias %'alias'" type="reporter" category="sensing">
 <header/>
 <code/>
 <inputs>
@@ -93,7 +93,7 @@ data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAeAAAAFoCAYAAACPNyggAAAAAXNSR0IArs
 <block s="reportURL">
 <block s="reportJoinWords">
 <list>
-<custom-block s="pypot server"/>
+<custom-block s="poppy server"/>
 <l>/motors/</l>
 <block var="alias"/>
 </list>
@@ -104,19 +104,19 @@ data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAeAAAAFoCAYAAACPNyggAAAAAXNSR0IArs
 </block>
 </script>
 </block-definition>
-<block-definition s="all motors" type="reporter" category="sensing">
+<block-definition s="poppy all motors" type="reporter" category="sensing">
 <header/>
 <code/>
 <inputs/>
 <script>
 <block s="doReport">
-<custom-block s="motors from alias %txt">
+<custom-block s="poppy motors from alias %txt">
 <l>motors</l>
 </custom-block>
 </block>
 </script>
 </block-definition>
-<block-definition s="poll all motor present positions" type="reporter" category="sensing">
+<block-definition s="poppy poll all motor present positions" type="reporter" category="sensing">
 <header/>
 <code/>
 <inputs/>
@@ -126,7 +126,7 @@ data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAeAAAAFoCAYAAACPNyggAAAAAXNSR0IArs
 <block s="reportURL">
 <block s="reportJoinWords">
 <list>
-<custom-block s="pypot server"/>
+<custom-block s="poppy server"/>
 <l>/motors/get/positions</l>
 </list>
 </block>
@@ -826,7 +826,7 @@ data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAeAAAAFoCAYAAACPNyggAAAAAXNSR0IArs
 <input type="%s"/>
 </inputs>
 </block-definition>
-<block-definition s="get motor %'motor' present position" type="reporter" category="sensing">
+<block-definition s="poppy get motor %'motor' present position" type="reporter" category="sensing">
 <header/>
 <code/>
 <inputs>
@@ -835,7 +835,7 @@ data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAeAAAAFoCAYAAACPNyggAAAAAXNSR0IArs
 <script>
 <block s="doReport">
 <block s="reportListItem">
-<custom-block s="motor %txt index">
+<custom-block s="poppy motor %txt index">
 <block var="motor"/>
 </custom-block>
 <block var="present positions"/>
@@ -843,7 +843,7 @@ data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAeAAAAFoCAYAAACPNyggAAAAAXNSR0IArs
 </block>
 </script>
 </block-definition>
-<block-definition s="push all motors goal positions" type="command" category="control">
+<block-definition s="poppy push all motors goal positions" type="command" category="control">
 <header/>
 <code/>
 <inputs/>
@@ -852,7 +852,7 @@ data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAeAAAAFoCAYAAACPNyggAAAAAXNSR0IArs
 <block s="reportURL">
 <block s="reportJoinWords">
 <list>
-<custom-block s="pypot server"/>
+<custom-block s="poppy server"/>
 <l>/motors/set/positions/</l>
 <custom-block s="combine with %repRing items of %l">
 <block s="reifyReporter">
@@ -878,7 +878,7 @@ data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAeAAAAFoCAYAAACPNyggAAAAAXNSR0IArs
 </block>
 </script>
 </block-definition>
-<block-definition s="set motor %'motor' goal position to %'position'" type="command" category="control">
+<block-definition s="poppy set motor %'motor' goal position to %'position'" type="command" category="control">
 <header/>
 <code/>
 <inputs>
@@ -887,7 +887,7 @@ data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAeAAAAFoCAYAAACPNyggAAAAAXNSR0IArs
 </inputs>
 <script>
 <block s="doReplaceInList">
-<custom-block s="motor %txt index">
+<custom-block s="poppy motor %txt index">
 <block var="motor"/>
 </custom-block>
 <block var="goal positions"/>
@@ -895,7 +895,7 @@ data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAeAAAAFoCAYAAACPNyggAAAAAXNSR0IArs
 </block>
 </script>
 </block-definition>
-<block-definition s="get motor %'motor' register %'register'" type="reporter" category="sensing">
+<block-definition s="poppy get motor %'motor' register %'register'" type="reporter" category="sensing">
 <header/>
 <code/>
 <inputs>
@@ -907,7 +907,7 @@ data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAeAAAAFoCAYAAACPNyggAAAAAXNSR0IArs
 <block s="reportURL">
 <block s="reportJoinWords">
 <list>
-<custom-block s="pypot server"/>
+<custom-block s="poppy server"/>
 <l>/motor/</l>
 <block var="motor"/>
 <l>/get/</l>
@@ -918,7 +918,7 @@ data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAeAAAAFoCAYAAACPNyggAAAAAXNSR0IArs
 </block>
 </script>
 </block-definition>
-<block-definition s="motor %'motor' index" type="reporter" category="sensing">
+<block-definition s="poppy motor %'motor' index" type="reporter" category="sensing">
 <header/>
 <code/>
 <inputs>
@@ -957,7 +957,7 @@ data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAeAAAAFoCAYAAACPNyggAAAAAXNSR0IArs
 </custom-block>
 </script>
 </block-definition>
-<block-definition s="set motor %'motor' register %'register' to %'value'" type="command" category="control">
+<block-definition s="poppy set motor %'motor' register %'register' to %'value'" type="command" category="control">
 <header/>
 <code/>
 <inputs>
@@ -970,7 +970,7 @@ data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAeAAAAFoCAYAAACPNyggAAAAAXNSR0IArs
 <block s="reportURL">
 <block s="reportJoinWords">
 <list>
-<custom-block s="pypot server"/>
+<custom-block s="poppy server"/>
 <l>/motor/</l>
 <block var="motor"/>
 <l>/set/</l>
@@ -983,7 +983,7 @@ data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAeAAAAFoCAYAAACPNyggAAAAAXNSR0IArs
 </block>
 </script>
 </block-definition>
-<block-definition s="pypot server" type="reporter" category="sensing">
+<block-definition s="poppy server" type="reporter" category="sensing">
 <header/>
 <code/>
 <inputs/>
@@ -999,7 +999,7 @@ data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAeAAAAFoCAYAAACPNyggAAAAAXNSR0IArs
 </block>
 </script>
 </block-definition>
-<block-definition s="turn motor %'motor' compliant %'compliant'" type="command" category="control">
+<block-definition s="poppy turn motor %'motor' compliant %'compliant'" type="command" category="control">
 <header/>
 <code/>
 <inputs>
@@ -1020,14 +1020,14 @@ data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAeAAAAFoCAYAAACPNyggAAAAAXNSR0IArs
 <l>0</l>
 </custom-block>
 </block>
-<custom-block s="set motor %txt register %txt to %s">
+<custom-block s="poppy set motor %txt register %txt to %s">
 <block var="motor"/>
 <l>compliant</l>
 <block var="comp"/>
 </custom-block>
 </script>
 </block-definition>
-<block-definition s="goto %'motor' to %'position' in %'duration'" type="command" category="control">
+<block-definition s="poppy goto %'motor' to %'position' in %'duration'" type="command" category="control">
 <header/>
 <code/>
 <inputs>
@@ -1043,7 +1043,7 @@ data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAeAAAAFoCAYAAACPNyggAAAAAXNSR0IArs
 <block s="reportURL">
 <block s="reportJoinWords">
 <list>
-<custom-block s="pypot server"/>
+<custom-block s="poppy server"/>
 <l>/motor/</l>
 <block var="motor"/>
 <l>/goto/</l>
@@ -1073,7 +1073,7 @@ data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAeAAAAFoCAYAAACPNyggAAAAAXNSR0IArs
 <block s="reportURL">
 <block s="reportJoinWords">
 <list>
-<custom-block s="pypot server"/>
+<custom-block s="poppy server"/>
 <l>/reset-simulation</l>
 </list>
 </block>
@@ -1163,33 +1163,10 @@ data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAeAAAAFoCAYAAACPNyggAAAAAXNSR0IArs
 </list>
 </variable>
 <variable name="goal positions">
-<list linked="linked" id="770">
-<item/>
-<item/>
-<item/>
-<item/>
-<item/>
-<item/>
-<item/>
-<item/>
-<item/>
-<item/>
-<item/>
-<item/>
-<item/>
-<item/>
-<item/>
-<item/>
-<item/>
-<item/>
-<item/>
-<item/>
-<item/>
-<item/>
-<item/>
-<item/>
-<item/>
-<item/>
+<list id="770">
+<item>
+<l>0</l>
+</item>
 </list>
 </variable>
 <variable name="motors">
