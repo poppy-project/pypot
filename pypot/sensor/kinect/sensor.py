@@ -38,10 +38,10 @@ class KinectSensor(object):
         self._lock = threading.Lock()
         self._skeleton = {}
 
-        context = zmq.Context()
-        self.socket = context.socket(zmq.SUB)
-        self.socket.connect('tcp://{}:{}'.format(addr, port))
-        self.socket.setsockopt(zmq.SUBSCRIBE, '')
+        self.context = zmq.Context()
+        self.sub_skel = self.context.socket(zmq.SUB)
+        self.sub_skel.connect('tcp://{}:{}'.format(addr, port))
+        self.sub_skel.setsockopt(zmq.SUBSCRIBE, '')
 
         t = threading.Thread(target=self.get_skeleton)
         t.daemon = True
@@ -67,11 +67,12 @@ class KinectSensor(object):
 
     def get_skeleton(self):
         while True:
-            md = self.socket.recv_json()
-            msg = self.socket.recv_json()
+            md = self.sub_skel.recv_json()
+            msg = self.sub_skel.recv()
+            skel_array = numpy.fromstring(msg, dtype=float, sep=",")
+            skel_array = skel_array.reshape(md['shape'])
 
             nb_joints = md['shape'][0]
-            skel_array = msg['skeleton']
             joints = []
             for i in range(nb_joints):
                 x, y, z, w = skel_array[i][0:4]
@@ -97,6 +98,8 @@ class KinectSensor(object):
             cv2.imshow('Skeleton', img)
             cv2.waitKey(50)
 
+        self.sub_skel.close()
+        self.context.term()
 
 if __name__ == '__main__':
     import cv2
