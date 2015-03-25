@@ -45,7 +45,6 @@ def do_reset(dxl,baudrate):
         pass
 
 
-
 if __name__ == '__main__':
     import sys
     from argparse import ArgumentParser
@@ -85,13 +84,13 @@ if __name__ == '__main__':
 
     with DxlIO(args.port, baudrate=TARGET_BAUDRATE) as dxl:
             target_id = int(args.id)
-            sleep(0.25)
 
             dxl.switch_led_on((1,))
             sleep(0.25)
 
             dxl.change_id({1:target_id})
             sleep(0.25)
+            dxl.set_return_delay_time({target_id:0})
 
             ## test move
             #dxl.set_goal_position({target_id:60})
@@ -104,3 +103,4 @@ if __name__ == '__main__':
 
             sleep(0.1) # sans ce sleep, la led reste allumée
             dxl.switch_led_off((target_id,))
+            dxl.flush()
