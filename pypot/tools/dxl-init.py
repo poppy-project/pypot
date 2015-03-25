@@ -30,20 +30,20 @@ FACTORY_BAUDRATE = 57142
 """Poppy software settings"""
 TARGET_BAUDRATE = 1000000
 
-def send_reset(port,baudrate):
+def do_reset(dxl,baudrate):
     """
-    Broadcasts a reset on given port/baudrate
+    Broadcasts a reset on given DxlIO / baudrate
     """
-    dxl = DxlIO(port,baudrate=baudrate)
-    proto = dxl._protocol
-    msg = proto.DxlInstructionPacket(id=proto.DxlBroadcast, instruction=0x06,
-                                     parameters=[])
+    reset_msg = dxl._protocol.DxlInstructionPacket(id=dxl._protocol.DxlBroadcast,
+                                                instruction=0x06, parameters=[])
+
+    logger.info('Broadcast reset at baudrate = {}'.format(br))
+    setattr(dxl,'baudrate',br) # calls AbstractIO.baudrate setter
     try:
-        dxl._send_packet(msg, error_handler=None)
+        dxl._send_packet(reset_msg, error_handler=None)
     except DxlTimeoutError as e:
         pass
-    finally:
-        dxl.close()
+
 
 
 if __name__ == '__main__':
@@ -71,34 +71,36 @@ if __name__ == '__main__':
     Note: les appels à sleep() peuvent sans doute être remplacés par des flush
           ou des accusés de réception des actuateurs.
     """
-    for br in [TARGET_BAUDRATE, FACTORY_BAUDRATE]:
-        logger.info('Braodcast reset at baudrate = {}'.format(br))
-        send_reset(args.port,br)
-        sleep(0.2)
 
-    dxl = DxlIO(args.port,baudrate=FACTORY_BAUDRATE)
-    if dxl.ping(1):
-        # AX-12 factory default = 1000000 bps
-        dxl.change_baudrate({1:TARGET_BAUDRATE})
-    dxl.close()
-    sleep(0.2)
+    with DxlIO(args.port) as dxl:
+        for br in [TARGET_BAUDRATE, FACTORY_BAUDRATE]:
+            do_reset(dxl,br)
+            sleep(0.25)
 
-    target_id = int(args.id)
+        setattr(dxl,'baudrate',FACTORY_BAUDRATE)
+        if dxl.ping(1):
+            # AX-12 factory default = 1000000 bps
+            dxl.change_baudrate({1:TARGET_BAUDRATE})
+            sleep(0.25)
 
-    dxl = DxlIO(args.port,baudrate=TARGET_BAUDRATE)
+    with DxlIO(args.port, baudrate=TARGET_BAUDRATE) as dxl:
+            target_id = int(args.id)
+            sleep(0.25)
 
-    dxl.switch_led_on((1,))
-    dxl.change_id({1:target_id})
-    sleep(0.1)
+            dxl.switch_led_on((1,))
+            sleep(0.25)
 
-    # test move
-    #dxl.set_goal_position({target_id:60})
-    #while dxl.is_moving((target_id,))[0]:
-    #    pass
+            dxl.change_id({1:target_id})
+            sleep(0.25)
 
-    dxl.set_goal_position({target_id:0})
-    while dxl.is_moving((target_id,))[0]:
-        pass
-    sleep(0.1) # sans ce sleep, la led reste allumée
-    dxl.switch_led_off((target_id,))
-    dxl.close()
+            ## test move
+            #dxl.set_goal_position({target_id:60})
+            #while dxl.is_moving((target_id,))[0]:
+            #    pass
+
+            dxl.set_goal_position({target_id:0})
+            while dxl.is_moving((target_id,))[0]:
+                pass
+
+            sleep(0.1) # sans ce sleep, la led reste allumée
+            dxl.switch_led_off((target_id,))
