@@ -154,7 +154,7 @@ dynamixelBaudrates = {
     7: 250000.0,
     9: 200000.0,
     16: 117647.1,
-    34: 57142.9,
+    34: 57600.0,
     103: 19230.8,
     207: 9615.4,
     250: 2250000.0,
@@ -169,7 +169,7 @@ def dxl_to_baudrate(value, model):
 
 def baudrate_to_dxl(value, model):
     for k, v in dynamixelBaudrates.iteritems():
-        if v == value:
+        if (abs(v - value) / float(value)) < 0.05:
             return k
     raise ValueError('incorrect baudrate {} (possible values {})'.format(value, dynamixelBaudrates.values()))
 

@@ -133,7 +133,7 @@
          </item>
          <item>
           <property name="text">
-           <string>57142</string>
+           <string>57600</string>
           </property>
           <property name="checkState">
            <enum>Checked</enum>
@@ -409,7 +409,7 @@
          </item>
          <item>
           <property name="text">
-           <string>57142</string>
+           <string>57600</string>
           </property>
          </item>
          <item>
