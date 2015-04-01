@@ -14,6 +14,7 @@ class DxlInstruction(object):
     PING = 0x01
     READ_DATA = 0x02
     WRITE_DATA = 0x03
+    RESET = 0x06
     SYNC_WRITE = 0x83
     SYNC_READ = 0x84
 
@@ -79,6 +80,13 @@ class DxlPingPacket(DxlInstructionPacket):
 
     def __repr__(self):
         return 'DxlPingPacket(id={})'.format(self.id)
+
+
+class DxlResetPacket(DxlInstructionPacket):
+    """ This class is used to represent reset packet. """
+    def __new__(cls):
+        return DxlInstructionPacket.__new__(cls, DxlBroadcast,
+                                            DxlInstruction.RESET, ())
 
 
 class DxlReadDataPacket(DxlInstructionPacket):

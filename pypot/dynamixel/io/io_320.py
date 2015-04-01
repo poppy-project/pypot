@@ -1,4 +1,5 @@
-from .abstract_io import AbstractDxlIO, _DxlControl, _DxlAccess
+from .abstract_io import (AbstractDxlIO, _DxlControl,
+                          _DxlAccess, DxlTimeoutError)
 from .. import conversion as conv
 from ..protocol import v2 as v2
 
@@ -20,6 +21,18 @@ class Dxl320IO(AbstractDxlIO):
 
         self.set_torque_limit(dict(zip(value_for_ids.keys(), values[2])))
 
+    def factory_reset(self, ids, except_ids=False, except_baudrate_and_ids=False):
+        """ Reset all motors on the bus to their factory default settings. """
+
+        mode = (0x02 if except_baudrate_and_ids else
+                0x01 if except_ids else 0xFF)
+
+        for id in ids:
+            try:
+                self._send_packet(self._protocol.DxlResetPacket(id, mode))
+
+            except DxlTimeoutError:
+                pass
 
 # TODO:
 #   * error
