@@ -9,7 +9,7 @@
   <head>
     <meta charset="utf-8" />
     
-    <title>pypot.dynamixel.motor &mdash; pypot 2.1.1 documentation</title>
+    <title>pypot.dynamixel.motor &mdash; pypot 2.3.1 documentation</title>
     <meta name="description" content="">
     <meta name="author" content="">
 
@@ -26,7 +26,6 @@
     padding-top: 60px;
     padding-bottom: 40px;
   }
-}
 </style>
 
 <link rel="stylesheet" href="../../../_static/css/basicstrap.css" type="text/css" />
@@ -36,7 +35,7 @@
 <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
             URL_ROOT:    '../../../',
-            VERSION:     '2.1.1',
+            VERSION:     '2.3.1',
             COLLAPSE_INDEX: false,
             FILE_SUFFIX: '.html',
             HAS_SOURCE:  true
@@ -51,7 +50,7 @@
 <script type="text/javascript">
 </script>
     <link rel="author" title="About these documents" href="../../../about.html" />
-    <link rel="top" title="pypot 2.1.1 documentation" href="../../../index.html" />
+    <link rel="top" title="pypot 2.3.1 documentation" href="../../../index.html" />
     <link rel="up" title="pypot.dynamixel" href="../dynamixel.html" /> 
   </head>
   <body role="document">
@@ -64,7 +63,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="../../../index.html">pypot 2.1.1 documentation</a>
+          <a class="navbar-brand" href="../../../index.html">pypot 2.3.1 documentation</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
@@ -88,7 +87,11 @@
                   <input type="hidden" name="area" value="default" />
                 </form>
             </li>
+
+            
+
           </ul>
+
         </div>
       </div>
     </div>
@@ -100,7 +103,7 @@
       <!-- row -->
       <div class="row">
          
-<div class="col-md-3 hidden-xs">
+<div class="col-md-3 hidden-xs" id="sidebar-wrapper">
   <div class="sidebar hidden-xs" role="navigation" aria-label="main navigation">
 <div id="searchbox" role="search">
   <h3>Quick search</h3>
@@ -394,6 +397,13 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">max_pos</span> <span class="o">=</span> <span class="mi">180</span>
 
 </div>
+<div class="viewcode-block" id="DxlXL320Motor"><a class="viewcode-back" href="../../../pypot.dynamixel.html#pypot.dynamixel.motor.DxlXL320Motor">[docs]</a><span class="k">class</span> <span class="nc">DxlXL320Motor</span><span class="p">(</span><span class="n">DxlMXMotor</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; This class represents the XL-320 robotis motor. &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="s">&#39;XL-320&#39;</span><span class="p">,</span>
+                 <span class="n">direct</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">broken</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+        <span class="n">DxlMXMotor</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">direct</span><span class="p">,</span> <span class="n">offset</span><span class="p">,</span> <span class="n">broken</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">max_pos</span> <span class="o">=</span> <span class="mi">150</span>
+</div>
 <div class="viewcode-block" id="SafeCompliance"><a class="viewcode-back" href="../../../pypot.dynamixel.html#pypot.dynamixel.motor.SafeCompliance">[docs]</a><span class="k">class</span> <span class="nc">SafeCompliance</span><span class="p">(</span><span class="n">StoppableLoopThread</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; This class creates a controller to active compliance only if the current motor position is included in the angle limit, else the compliance is turned off. &quot;&quot;&quot;</span>
 
@@ -422,15 +432,16 @@
       <div class="row footer-relbar">
 <div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
   <div class="navbar-inner">
-    <ul class="nav navbar-nav">
-        <li><a href="../../../index.html">pypot 2.1.1 documentation</a></li>
+    <ul class="nav navbar-nav ">
+        <li><a href="../../../index.html">pypot 2.3.1 documentation</a></li>
     </ul>
-    <ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
+<ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
       
         <li><a href="../../../py-modindex.html" title="Python Module Index" >modules</a></li>
         <li><a href="../../../genindex.html" title="General Index" >index</a></li>
         <li><a href="../../index.html" >Module code</a></li>
-        <li><a href="../dynamixel.html" >pypot.dynamixel</a></li> 
+        <li><a href="../dynamixel.html" >pypot.dynamixel</a></li>
+        <li><a href="#">top</a></li> 
       
     </ul>
   </div>
@@ -440,7 +451,7 @@
       <!-- footer -->
       <footer role="contentinfo">
           &copy; Copyright 2012, Poppy-Project.
-        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.3b2.
+        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.3.1.
       </footer>
       <!-- /footer -->
 

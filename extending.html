@@ -9,7 +9,7 @@
   <head>
     <meta charset="utf-8" />
     
-    <title>Extending pypot &mdash; pypot 2.1.1 documentation</title>
+    <title>Extending pypot &mdash; pypot 2.3.1 documentation</title>
     <meta name="description" content="">
     <meta name="author" content="">
 
@@ -26,7 +26,6 @@
     padding-top: 60px;
     padding-bottom: 40px;
   }
-}
 </style>
 
 <link rel="stylesheet" href="_static/css/basicstrap.css" type="text/css" />
@@ -36,7 +35,7 @@
 <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
             URL_ROOT:    './',
-            VERSION:     '2.1.1',
+            VERSION:     '2.3.1',
             COLLAPSE_INDEX: false,
             FILE_SUFFIX: '.html',
             HAS_SOURCE:  true
@@ -51,7 +50,7 @@
 <script type="text/javascript">
 </script>
     <link rel="author" title="About these documents" href="about.html" />
-    <link rel="top" title="pypot 2.1.1 documentation" href="index.html" />
+    <link rel="top" title="pypot 2.3.1 documentation" href="index.html" />
     <link rel="next" title="Mastering the logging system" href="logging.html" />
     <link rel="prev" title="Using a simulated robot with V-REP" href="vrep.html" /> 
   </head>
@@ -65,7 +64,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="index.html">pypot 2.1.1 documentation</a>
+          <a class="navbar-brand" href="index.html">pypot 2.3.1 documentation</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
@@ -108,7 +107,11 @@
                   <input type="hidden" name="area" value="default" />
                 </form>
             </li>
+
+            
+
           </ul>
+
         </div>
       </div>
     </div>
@@ -120,7 +123,7 @@
       <!-- row -->
       <div class="row">
          
-<div class="col-md-3 hidden-xs">
+<div class="col-md-3 hidden-xs" id="sidebar-wrapper">
   <div class="sidebar hidden-xs" role="navigation" aria-label="main navigation">
   <h3><a href="index.html">Table Of Contents</a></h3>
   <ul>
@@ -216,15 +219,15 @@
 <li>open/close the communication channel,</li>
 <li>encapsulate the protocol.</li>
 </ul>
-<p>For example, the <a class="reference internal" href="pypot.dynamixel.html#pypot.dynamixel.io.DxlIO" title="pypot.dynamixel.io.DxlIO"><code class="xref py py-class docutils literal"><span class="pre">DxlIO</span></code></a> (for dynamixel buses) open/closes the serial port and provides high-level methods for sending dynamixel packet - e.g. for getting a motor position. Similarly, writing the <a class="reference internal" href="pypot.vrep.html#pypot.vrep.io.VrepIO" title="pypot.vrep.io.VrepIO"><code class="xref py py-class docutils literal"><span class="pre">VrepIO</span></code></a> consists in opening the communication socket to the V-REP simulator (thanks to <a class="reference external" href="http://www.coppeliarobotics.com/helpFiles/en/remoteApiFunctionsPython.htm">V-REP&#8217;s remote API</a>) and then encapsulating all methods for getting/setting all the simulated motors registers.</p>
+<p>For example, the <code class="xref py py-class docutils literal"><span class="pre">DxlIO</span></code> (for dynamixel buses) open/closes the serial port and provides high-level methods for sending dynamixel packet - e.g. for getting a motor position. Similarly, writing the <a class="reference internal" href="pypot.vrep.html#pypot.vrep.io.VrepIO" title="pypot.vrep.io.VrepIO"><code class="xref py py-class docutils literal"><span class="pre">VrepIO</span></code></a> consists in opening the communication socket to the V-REP simulator (thanks to <a class="reference external" href="http://www.coppeliarobotics.com/helpFiles/en/remoteApiFunctionsPython.htm">V-REP&#8217;s remote API</a>) and then encapsulating all methods for getting/setting all the simulated motors registers.</p>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
 <p class="last">While this is not by any mean mandatory, it is often a good practice to write all IO access as synchronous calls. The higher-level synchronization loop is usually written as a <a class="reference internal" href="pypot.robot.html#pypot.robot.controller.AbstractController" title="pypot.robot.controller.AbstractController"><code class="xref py py-class docutils literal"><span class="pre">AbstractController</span></code></a>.</p>
 </div>
-<p>The IO should also handle the low-level communication errors. For instance, the <a class="reference internal" href="pypot.dynamixel.html#pypot.dynamixel.io.DxlIO" title="pypot.dynamixel.io.DxlIO"><code class="xref py py-class docutils literal"><span class="pre">DxlIO</span></code></a> automatically handles the timeout error to prevent the whole communication to stop.</p>
+<p>The IO should also handle the low-level communication errors. For instance, the <code class="xref py py-class docutils literal"><span class="pre">DxlIO</span></code> automatically handles the timeout error to prevent the whole communication to stop.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">Once the new IO is written most of the integration into pypot should be done! To facilitate the integration of the new IO with the higher layer, we strongly recommend to take inspiration from the existing IO - especially the <a class="reference internal" href="pypot.dynamixel.html#pypot.dynamixel.io.DxlIO" title="pypot.dynamixel.io.DxlIO"><code class="xref py py-class docutils literal"><span class="pre">DxlIO</span></code></a> and the <a class="reference internal" href="pypot.vrep.html#pypot.vrep.io.VrepIO" title="pypot.vrep.io.VrepIO"><code class="xref py py-class docutils literal"><span class="pre">VrepIO</span></code></a> ones.</p>
+<p class="last">Once the new IO is written most of the integration into pypot should be done! To facilitate the integration of the new IO with the higher layer, we strongly recommend to take inspiration from the existing IO - especially the <code class="xref py py-class docutils literal"><span class="pre">DxlIO</span></code> and the <a class="reference internal" href="pypot.vrep.html#pypot.vrep.io.VrepIO" title="pypot.vrep.io.VrepIO"><code class="xref py py-class docutils literal"><span class="pre">VrepIO</span></code></a> ones.</p>
 </div>
 </div>
 <div class="section" id="writing-a-new-controller">
@@ -260,15 +263,16 @@
       <div class="row footer-relbar">
 <div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
   <div class="navbar-inner">
-    <ul class="nav navbar-nav">
-        <li><a href="index.html">pypot 2.1.1 documentation</a></li>
+    <ul class="nav navbar-nav ">
+        <li><a href="index.html">pypot 2.3.1 documentation</a></li>
     </ul>
-    <ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
+<ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
       
         <li><a href="vrep.html" title="Using a simulated robot with V-REP" >previous</a></li>
         <li><a href="logging.html" title="Mastering the logging system" >next</a></li>
         <li><a href="py-modindex.html" title="Python Module Index" >modules</a></li>
-        <li><a href="genindex.html" title="General Index" >index</a></li> 
+        <li><a href="genindex.html" title="General Index" >index</a></li>
+        <li><a href="#">top</a></li> 
       
     </ul>
   </div>
@@ -278,7 +282,7 @@
       <!-- footer -->
       <footer role="contentinfo">
           &copy; Copyright 2012, Poppy-Project.
-        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.3b2.
+        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.3.1.
       </footer>
       <!-- /footer -->
 

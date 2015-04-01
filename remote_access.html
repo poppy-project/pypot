@@ -9,7 +9,7 @@
   <head>
     <meta charset="utf-8" />
     
-    <title>REST API &mdash; pypot 2.1.1 documentation</title>
+    <title>REST API &mdash; pypot 2.3.1 documentation</title>
     <meta name="description" content="">
     <meta name="author" content="">
 
@@ -26,7 +26,6 @@
     padding-top: 60px;
     padding-bottom: 40px;
   }
-}
 </style>
 
 <link rel="stylesheet" href="_static/css/basicstrap.css" type="text/css" />
@@ -36,7 +35,7 @@
 <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
             URL_ROOT:    './',
-            VERSION:     '2.1.1',
+            VERSION:     '2.3.1',
             COLLAPSE_INDEX: false,
             FILE_SUFFIX: '.html',
             HAS_SOURCE:  true
@@ -51,7 +50,7 @@
 <script type="text/javascript">
 </script>
     <link rel="author" title="About these documents" href="about.html" />
-    <link rel="top" title="pypot 2.1.1 documentation" href="index.html" />
+    <link rel="top" title="pypot 2.3.1 documentation" href="index.html" />
     <link rel="next" title="Herborist: the configuration tool" href="herborist.html" />
     <link rel="prev" title="Mastering the logging system" href="logging.html" /> 
   </head>
@@ -65,7 +64,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="index.html">pypot 2.1.1 documentation</a>
+          <a class="navbar-brand" href="index.html">pypot 2.3.1 documentation</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
@@ -109,7 +108,11 @@
                   <input type="hidden" name="area" value="default" />
                 </form>
             </li>
+
+            
+
           </ul>
+
         </div>
       </div>
     </div>
@@ -121,7 +124,7 @@
       <!-- row -->
       <div class="row">
          
-<div class="col-md-3 hidden-xs">
+<div class="col-md-3 hidden-xs" id="sidebar-wrapper">
   <div class="sidebar hidden-xs" role="navigation" aria-label="main navigation">
   <h3><a href="index.html">Table Of Contents</a></h3>
   <ul>
@@ -180,10 +183,10 @@
   <div class="section" id="rest-api">
 <h1>REST API<a class="headerlink" href="#rest-api" title="Permalink to this headline">¶</a></h1>
 <p>We add the possibility to remotely access and control your robot through TCP network. This can be useful both to work with client/server architecture (e.g. to separate the low-level control running on an embedded computer and higher-level computation on a more powerful computer) and to allow you to plug your existing code written in another language to the pypot&#8217;s API.</p>
-<p>We defined a protocol which permits the access of all the robot variables and method (including motors and primitives) via a JSON request. The protocol is entirely described in the section <a class="reference internal" href="#remote-protocol"><em>Protocol</em></a> below. Two transport methods have been developed so far:</p>
+<p>We defined a protocol which permits the access of all the robot variables and method (including motors and primitives) via a JSON request. The protocol is entirely described in the section <a class="reference internal" href="#remote-protocol"><span>Protocol</span></a> below. Two transport methods have been developed so far:</p>
 <ul class="simple">
-<li>HTTP via GET and POST request (see the <a class="reference internal" href="#http-server"><em>Http Server</em></a> section)</li>
-<li>ZMQ socket (see the <a class="reference internal" href="#zmq-server"><em>Zmq Server</em></a> section)</li>
+<li>HTTP via GET and POST request (see the <a class="reference internal" href="#http-server"><span>Http Server</span></a> section)</li>
+<li>ZMQ socket (see the <a class="reference internal" href="#zmq-server"><span>Zmq Server</span></a> section)</li>
 </ul>
 <p>The <a class="reference internal" href="pypot.server.html#pypot.server.request.BaseRequestHandler" title="pypot.server.request.BaseRequestHandler"><code class="xref py py-class docutils literal"><span class="pre">BaseRequestHandler</span></code></a> has been separated from the server, so you can easily add new transport methods if needed.</p>
 <div class="admonition warning">
@@ -214,9 +217,9 @@
 <span id="remote-protocol"></span><h2>Protocol<a class="headerlink" href="#protocol" title="Permalink to this headline">¶</a></h2>
 <p>Our protocol allows you define three types of requests:</p>
 <ul class="simple">
-<li><a class="reference internal" href="#get-req"><em>Get Request</em></a> (to retrieve a motor register value, access a primitive variable)</li>
-<li><a class="reference internal" href="#set-req"><em>Set Request</em></a> (to set a motor register value, modify any variable within the robot instance)</li>
-<li><a class="reference internal" href="#call-req"><em>Call Request</em></a> (to call a method of any object defined within the robot instance, e.g. a primitive)</li>
+<li><a class="reference internal" href="#get-req"><span>Get Request</span></a> (to retrieve a motor register value, access a primitive variable)</li>
+<li><a class="reference internal" href="#set-req"><span>Set Request</span></a> (to set a motor register value, modify any variable within the robot instance)</li>
+<li><a class="reference internal" href="#call-req"><span>Call Request</span></a> (to call a method of any object defined within the robot instance, e.g. a primitive)</li>
 </ul>
 <p>An entire request is defined as follows:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">req</span> <span class="o">=</span> <span class="p">{</span>
@@ -398,15 +401,16 @@
       <div class="row footer-relbar">
 <div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
   <div class="navbar-inner">
-    <ul class="nav navbar-nav">
-        <li><a href="index.html">pypot 2.1.1 documentation</a></li>
+    <ul class="nav navbar-nav ">
+        <li><a href="index.html">pypot 2.3.1 documentation</a></li>
     </ul>
-    <ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
+<ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
       
         <li><a href="logging.html" title="Mastering the logging system" >previous</a></li>
         <li><a href="herborist.html" title="Herborist: the configuration tool" >next</a></li>
         <li><a href="py-modindex.html" title="Python Module Index" >modules</a></li>
-        <li><a href="genindex.html" title="General Index" >index</a></li> 
+        <li><a href="genindex.html" title="General Index" >index</a></li>
+        <li><a href="#">top</a></li> 
       
     </ul>
   </div>
@@ -416,7 +420,7 @@
       <!-- footer -->
       <footer role="contentinfo">
           &copy; Copyright 2012, Poppy-Project.
-        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.3b2.
+        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.3.1.
       </footer>
       <!-- /footer -->
 

@@ -9,7 +9,7 @@
   <head>
     <meta charset="utf-8" />
     
-    <title>pypot.dynamixel.conversion &mdash; pypot 2.1.1 documentation</title>
+    <title>pypot.dynamixel.conversion &mdash; pypot 2.3.1 documentation</title>
     <meta name="description" content="">
     <meta name="author" content="">
 
@@ -26,7 +26,6 @@
     padding-top: 60px;
     padding-bottom: 40px;
   }
-}
 </style>
 
 <link rel="stylesheet" href="../../../_static/css/basicstrap.css" type="text/css" />
@@ -36,7 +35,7 @@
 <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
             URL_ROOT:    '../../../',
-            VERSION:     '2.1.1',
+            VERSION:     '2.3.1',
             COLLAPSE_INDEX: false,
             FILE_SUFFIX: '.html',
             HAS_SOURCE:  true
@@ -51,7 +50,7 @@
 <script type="text/javascript">
 </script>
     <link rel="author" title="About these documents" href="../../../about.html" />
-    <link rel="top" title="pypot 2.1.1 documentation" href="../../../index.html" />
+    <link rel="top" title="pypot 2.3.1 documentation" href="../../../index.html" />
     <link rel="up" title="pypot.dynamixel" href="../dynamixel.html" /> 
   </head>
   <body role="document">
@@ -64,7 +63,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="../../../index.html">pypot 2.1.1 documentation</a>
+          <a class="navbar-brand" href="../../../index.html">pypot 2.3.1 documentation</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
@@ -88,7 +87,11 @@
                   <input type="hidden" name="area" value="default" />
                 </form>
             </li>
+
+            
+
           </ul>
+
         </div>
       </div>
     </div>
@@ -100,7 +103,7 @@
       <!-- row -->
       <div class="row">
          
-<div class="col-md-3 hidden-xs">
+<div class="col-md-3 hidden-xs" id="sidebar-wrapper">
   <div class="sidebar hidden-xs" role="navigation" aria-label="main navigation">
 <div id="searchbox" role="search">
   <h3>Quick search</h3>
@@ -255,6 +258,7 @@
     <span class="mi">360</span><span class="p">:</span> <span class="s">&#39;MX-12&#39;</span><span class="p">,</span>   <span class="c"># 104 + (1&lt;&lt;8)</span>
     <span class="mi">310</span><span class="p">:</span> <span class="s">&#39;MX-64&#39;</span><span class="p">,</span>   <span class="c"># 54 + (1&lt;&lt;8)</span>
     <span class="mi">320</span><span class="p">:</span> <span class="s">&#39;MX-106&#39;</span><span class="p">,</span>  <span class="c"># 64 + (1&lt;&lt;8)</span>
+    <span class="mi">350</span><span class="p">:</span> <span class="s">&#39;XL-320&#39;</span><span class="p">,</span>  <span class="c"># 94 + (1&lt;&lt;8)</span>
 <span class="p">}</span>
 
 
@@ -284,7 +288,7 @@
     <span class="mi">7</span><span class="p">:</span> <span class="mf">250000.0</span><span class="p">,</span>
     <span class="mi">9</span><span class="p">:</span> <span class="mf">200000.0</span><span class="p">,</span>
     <span class="mi">16</span><span class="p">:</span> <span class="mf">117647.1</span><span class="p">,</span>
-    <span class="mi">34</span><span class="p">:</span> <span class="mf">57142.9</span><span class="p">,</span>
+    <span class="mi">34</span><span class="p">:</span> <span class="mf">57600.0</span><span class="p">,</span>
     <span class="mi">103</span><span class="p">:</span> <span class="mf">19230.8</span><span class="p">,</span>
     <span class="mi">207</span><span class="p">:</span> <span class="mf">9615.4</span><span class="p">,</span>
     <span class="mi">250</span><span class="p">:</span> <span class="mf">2250000.0</span><span class="p">,</span>
@@ -299,7 +303,7 @@
 </div>
 <div class="viewcode-block" id="baudrate_to_dxl"><a class="viewcode-back" href="../../../pypot.dynamixel.html#pypot.dynamixel.conversion.baudrate_to_dxl">[docs]</a><span class="k">def</span> <span class="nf">baudrate_to_dxl</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">model</span><span class="p">):</span>
     <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">dynamixelBaudrates</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
-        <span class="k">if</span> <span class="n">v</span> <span class="o">==</span> <span class="n">value</span><span class="p">:</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">v</span> <span class="o">-</span> <span class="n">value</span><span class="p">)</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">value</span><span class="p">))</span> <span class="o">&lt;</span> <span class="mf">0.05</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">k</span>
     <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;incorrect baudrate {} (possible values {})&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">dynamixelBaudrates</span><span class="o">.</span><span class="n">values</span><span class="p">()))</span>
 
@@ -348,7 +352,8 @@
     <span class="k">return</span> <span class="n">status_level</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
 
 <span class="c"># MARK: - Error</span>
-</div>
+
+<span class="c"># TODO: depend on protocol v1 vs v2</span></div>
 <span class="n">dynamixelErrors</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;None Error&#39;</span><span class="p">,</span>
                    <span class="s">&#39;Instruction Error&#39;</span><span class="p">,</span>
                    <span class="s">&#39;Overload Error&#39;</span><span class="p">,</span>
@@ -436,15 +441,16 @@
       <div class="row footer-relbar">
 <div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
   <div class="navbar-inner">
-    <ul class="nav navbar-nav">
-        <li><a href="../../../index.html">pypot 2.1.1 documentation</a></li>
+    <ul class="nav navbar-nav ">
+        <li><a href="../../../index.html">pypot 2.3.1 documentation</a></li>
     </ul>
-    <ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
+<ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
       
         <li><a href="../../../py-modindex.html" title="Python Module Index" >modules</a></li>
         <li><a href="../../../genindex.html" title="General Index" >index</a></li>
         <li><a href="../../index.html" >Module code</a></li>
-        <li><a href="../dynamixel.html" >pypot.dynamixel</a></li> 
+        <li><a href="../dynamixel.html" >pypot.dynamixel</a></li>
+        <li><a href="#">top</a></li> 
       
     </ul>
   </div>
@@ -454,7 +460,7 @@
       <!-- footer -->
       <footer role="contentinfo">
           &copy; Copyright 2012, Poppy-Project.
-        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.3b2.
+        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.3.1.
       </footer>
       <!-- /footer -->
 

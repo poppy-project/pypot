@@ -9,7 +9,7 @@
   <head>
     <meta charset="utf-8" />
     
-    <title>pypot.dynamixel &mdash; pypot 2.1.1 documentation</title>
+    <title>pypot.dynamixel &mdash; pypot 2.3.1 documentation</title>
     <meta name="description" content="">
     <meta name="author" content="">
 
@@ -26,7 +26,6 @@
     padding-top: 60px;
     padding-bottom: 40px;
   }
-}
 </style>
 
 <link rel="stylesheet" href="../../_static/css/basicstrap.css" type="text/css" />
@@ -36,7 +35,7 @@
 <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
             URL_ROOT:    '../../',
-            VERSION:     '2.1.1',
+            VERSION:     '2.3.1',
             COLLAPSE_INDEX: false,
             FILE_SUFFIX: '.html',
             HAS_SOURCE:  true
@@ -51,7 +50,7 @@
 <script type="text/javascript">
 </script>
     <link rel="author" title="About these documents" href="../../about.html" />
-    <link rel="top" title="pypot 2.1.1 documentation" href="../../index.html" />
+    <link rel="top" title="pypot 2.3.1 documentation" href="../../index.html" />
     <link rel="up" title="Module code" href="../index.html" /> 
   </head>
   <body role="document">
@@ -64,7 +63,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="../../index.html">pypot 2.1.1 documentation</a>
+          <a class="navbar-brand" href="../../index.html">pypot 2.3.1 documentation</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
@@ -87,7 +86,11 @@
                   <input type="hidden" name="area" value="default" />
                 </form>
             </li>
+
+            
+
           </ul>
+
         </div>
       </div>
     </div>
@@ -99,7 +102,7 @@
       <!-- row -->
       <div class="row">
          
-<div class="col-md-3 hidden-xs">
+<div class="col-md-3 hidden-xs" id="sidebar-wrapper">
   <div class="sidebar hidden-xs" role="navigation" aria-label="main navigation">
 <div id="searchbox" role="search">
   <h3>Quick search</h3>
@@ -131,10 +134,10 @@
 <span class="kn">import</span> <span class="nn">platform</span>
 <span class="kn">import</span> <span class="nn">glob</span>
 
-<span class="kn">from</span> <span class="nn">.io</span> <span class="kn">import</span> <span class="n">DxlIO</span><span class="p">,</span> <span class="n">DxlError</span>
+<span class="kn">from</span> <span class="nn">.io</span> <span class="kn">import</span> <span class="n">DxlIO</span><span class="p">,</span> <span class="n">Dxl320IO</span><span class="p">,</span> <span class="n">DxlError</span>
 <span class="kn">from</span> <span class="nn">.error</span> <span class="kn">import</span> <span class="n">BaseErrorHandler</span>
 <span class="kn">from</span> <span class="nn">.controller</span> <span class="kn">import</span> <span class="n">BaseDxlController</span>
-<span class="kn">from</span> <span class="nn">.motor</span> <span class="kn">import</span> <span class="n">DxlMXMotor</span><span class="p">,</span> <span class="n">DxlAXRXMotor</span>
+<span class="kn">from</span> <span class="nn">.motor</span> <span class="kn">import</span> <span class="n">DxlMXMotor</span><span class="p">,</span> <span class="n">DxlAXRXMotor</span><span class="p">,</span> <span class="n">DxlXL320Motor</span>
 
 <span class="kn">from</span> <span class="nn">..robot</span> <span class="kn">import</span> <span class="n">Robot</span>
 
@@ -174,17 +177,18 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">for</span> <span class="n">port</span> <span class="ow">in</span> <span class="n">get_available_ports</span><span class="p">():</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="k">with</span> <span class="n">DxlIO</span><span class="p">(</span><span class="n">port</span><span class="p">)</span> <span class="k">as</span> <span class="n">dxl</span><span class="p">:</span>
-                <span class="n">founds</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">dxl</span><span class="o">.</span><span class="n">scan</span><span class="p">(</span><span class="n">ids</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">DxlIOCls</span> <span class="ow">in</span> <span class="p">(</span><span class="n">DxlIO</span><span class="p">,</span> <span class="n">Dxl320IO</span><span class="p">):</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">with</span> <span class="n">DxlIOCls</span><span class="p">(</span><span class="n">port</span><span class="p">)</span> <span class="k">as</span> <span class="n">dxl</span><span class="p">:</span>
+                    <span class="n">founds</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">dxl</span><span class="o">.</span><span class="n">scan</span><span class="p">(</span><span class="n">ids</span><span class="p">))</span>
 
-                <span class="k">if</span> <span class="n">strict</span> <span class="ow">and</span> <span class="n">founds</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">ids</span><span class="p">):</span>
-                    <span class="k">return</span> <span class="n">port</span>
+                    <span class="k">if</span> <span class="n">strict</span> <span class="ow">and</span> <span class="n">founds</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">ids</span><span class="p">):</span>
+                        <span class="k">return</span> <span class="n">port</span>
 
-                <span class="k">if</span> <span class="ow">not</span> <span class="n">strict</span> <span class="ow">and</span> <span class="n">founds</span> <span class="o">&gt;=</span> <span class="nb">len</span><span class="p">(</span><span class="n">ids</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">:</span>
-                    <span class="k">return</span> <span class="n">port</span>
-        <span class="k">except</span> <span class="n">DxlError</span><span class="p">:</span>
-            <span class="k">continue</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="n">strict</span> <span class="ow">and</span> <span class="n">founds</span> <span class="o">&gt;=</span> <span class="nb">len</span><span class="p">(</span><span class="n">ids</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">:</span>
+                        <span class="k">return</span> <span class="n">port</span>
+            <span class="k">except</span> <span class="n">DxlError</span><span class="p">:</span>
+                <span class="k">continue</span>
 
     <span class="k">raise</span> <span class="ne">IndexError</span><span class="p">(</span><span class="s">&#39;No suitable port found for ids {}!&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">ids</span><span class="p">))</span>
 
@@ -194,15 +198,28 @@
     <span class="n">motor_controllers</span> <span class="o">=</span> <span class="p">[]</span>
 
     <span class="k">for</span> <span class="n">port</span> <span class="ow">in</span> <span class="n">get_available_ports</span><span class="p">():</span>
-        <span class="n">dxl_io</span> <span class="o">=</span> <span class="n">DxlIO</span><span class="p">(</span><span class="n">port</span><span class="p">)</span>
-        <span class="n">ids</span> <span class="o">=</span> <span class="n">dxl_io</span><span class="o">.</span><span class="n">scan</span><span class="p">()</span>
-        <span class="n">models</span> <span class="o">=</span> <span class="n">dxl_io</span><span class="o">.</span><span class="n">get_model</span><span class="p">(</span><span class="n">ids</span><span class="p">)</span>
-        <span class="n">motors</span> <span class="o">=</span> <span class="p">[(</span><span class="n">DxlMXMotor</span><span class="p">(</span><span class="nb">id</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">)</span> <span class="k">if</span> <span class="n">model</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&#39;MX&#39;</span><span class="p">)</span>
-                   <span class="k">else</span> <span class="n">DxlAXRXMotor</span><span class="p">(</span><span class="nb">id</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">))</span>
-                  <span class="k">for</span> <span class="nb">id</span><span class="p">,</span> <span class="n">model</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">ids</span><span class="p">,</span> <span class="n">models</span><span class="p">)]</span>
+        <span class="k">for</span> <span class="n">DxlIOCls</span> <span class="ow">in</span> <span class="p">(</span><span class="n">DxlIO</span><span class="p">,</span> <span class="n">Dxl320IO</span><span class="p">):</span>
+            <span class="n">dxl_io</span> <span class="o">=</span> <span class="n">DxlIOCls</span><span class="p">(</span><span class="n">port</span><span class="p">)</span>
+            <span class="n">ids</span> <span class="o">=</span> <span class="n">dxl_io</span><span class="o">.</span><span class="n">scan</span><span class="p">()</span>
 
-        <span class="n">c</span> <span class="o">=</span> <span class="n">BaseDxlController</span><span class="p">(</span><span class="n">dxl_io</span><span class="p">,</span> <span class="n">motors</span><span class="p">)</span>
-        <span class="n">motor_controllers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">ids</span><span class="p">:</span>
+                <span class="n">dxl_io</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+                <span class="k">continue</span>
+
+            <span class="n">models</span> <span class="o">=</span> <span class="n">dxl_io</span><span class="o">.</span><span class="n">get_model</span><span class="p">(</span><span class="n">ids</span><span class="p">)</span>
+
+            <span class="n">motorcls</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s">&#39;MX&#39;</span><span class="p">:</span> <span class="n">DxlMXMotor</span><span class="p">,</span>
+                <span class="s">&#39;RX&#39;</span><span class="p">:</span> <span class="n">DxlAXRXMotor</span><span class="p">,</span>
+                <span class="s">&#39;AX&#39;</span><span class="p">:</span> <span class="n">DxlAXRXMotor</span><span class="p">,</span>
+                <span class="s">&#39;XL&#39;</span><span class="p">:</span> <span class="n">DxlXL320Motor</span>
+            <span class="p">}</span>
+
+            <span class="n">motors</span> <span class="o">=</span> <span class="p">[</span><span class="n">motorcls</span><span class="p">[</span><span class="n">model</span><span class="p">[:</span><span class="mi">2</span><span class="p">]](</span><span class="nb">id</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">)</span>
+                      <span class="k">for</span> <span class="nb">id</span><span class="p">,</span> <span class="n">model</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">ids</span><span class="p">,</span> <span class="n">models</span><span class="p">)]</span>
+
+            <span class="n">c</span> <span class="o">=</span> <span class="n">BaseDxlController</span><span class="p">(</span><span class="n">dxl_io</span><span class="p">,</span> <span class="n">motors</span><span class="p">)</span>
+            <span class="n">motor_controllers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">Robot</span><span class="p">(</span><span class="n">motor_controllers</span><span class="p">)</span></div>
 </pre></div>
@@ -220,14 +237,15 @@
       <div class="row footer-relbar">
 <div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
   <div class="navbar-inner">
-    <ul class="nav navbar-nav">
-        <li><a href="../../index.html">pypot 2.1.1 documentation</a></li>
+    <ul class="nav navbar-nav ">
+        <li><a href="../../index.html">pypot 2.3.1 documentation</a></li>
     </ul>
-    <ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
+<ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
       
         <li><a href="../../py-modindex.html" title="Python Module Index" >modules</a></li>
         <li><a href="../../genindex.html" title="General Index" >index</a></li>
-        <li><a href="../index.html" >Module code</a></li> 
+        <li><a href="../index.html" >Module code</a></li>
+        <li><a href="#">top</a></li> 
       
     </ul>
   </div>
@@ -237,7 +255,7 @@
       <!-- footer -->
       <footer role="contentinfo">
           &copy; Copyright 2012, Poppy-Project.
-        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.3b2.
+        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.3.1.
       </footer>
       <!-- /footer -->
 

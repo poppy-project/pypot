@@ -9,7 +9,7 @@
   <head>
     <meta charset="utf-8" />
     
-    <title>pypot.dynamixel.controller &mdash; pypot 2.1.1 documentation</title>
+    <title>pypot.dynamixel.controller &mdash; pypot 2.3.1 documentation</title>
     <meta name="description" content="">
     <meta name="author" content="">
 
@@ -26,7 +26,6 @@
     padding-top: 60px;
     padding-bottom: 40px;
   }
-}
 </style>
 
 <link rel="stylesheet" href="../../../_static/css/basicstrap.css" type="text/css" />
@@ -36,7 +35,7 @@
 <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
             URL_ROOT:    '../../../',
-            VERSION:     '2.1.1',
+            VERSION:     '2.3.1',
             COLLAPSE_INDEX: false,
             FILE_SUFFIX: '.html',
             HAS_SOURCE:  true
@@ -51,7 +50,7 @@
 <script type="text/javascript">
 </script>
     <link rel="author" title="About these documents" href="../../../about.html" />
-    <link rel="top" title="pypot 2.1.1 documentation" href="../../../index.html" />
+    <link rel="top" title="pypot 2.3.1 documentation" href="../../../index.html" />
     <link rel="up" title="pypot.dynamixel" href="../dynamixel.html" /> 
   </head>
   <body role="document">
@@ -64,7 +63,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="../../../index.html">pypot 2.1.1 documentation</a>
+          <a class="navbar-brand" href="../../../index.html">pypot 2.3.1 documentation</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
@@ -88,7 +87,11 @@
                   <input type="hidden" name="area" value="default" />
                 </form>
             </li>
+
+            
+
           </ul>
+
         </div>
       </div>
     </div>
@@ -100,7 +103,7 @@
       <!-- row -->
       <div class="row">
          
-<div class="col-md-3 hidden-xs">
+<div class="col-md-3 hidden-xs" id="sidebar-wrapper">
   <div class="sidebar hidden-xs" role="navigation" aria-label="main navigation">
 <div id="searchbox" role="search">
   <h3>Quick search</h3>
@@ -129,6 +132,8 @@
                 <div class="body">
                   
   <h1>Source code for pypot.dynamixel.controller</h1><div class="highlight"><pre>
+<span class="kn">import</span> <span class="nn">time</span>
+
 <span class="kn">from</span> <span class="nn">..robot.controller</span> <span class="kn">import</span> <span class="n">MotorsController</span>
 
 
@@ -173,11 +178,16 @@
         <span class="n">controllers</span> <span class="o">=</span> <span class="p">[</span><span class="n">_PosSpeedLoadDxlController</span><span class="p">(</span><span class="n">io</span><span class="p">,</span> <span class="n">motors</span><span class="p">,</span> <span class="mi">50</span><span class="p">),</span>
                        <span class="n">AngleLimitRegisterController</span><span class="p">(</span><span class="n">io</span><span class="p">,</span> <span class="n">motors</span><span class="p">,</span>
                                                     <span class="mi">1</span><span class="p">,</span> <span class="s">&#39;get&#39;</span><span class="p">,</span> <span class="s">&#39;angle_limit&#39;</span><span class="p">),</span>
-                       <span class="n">factory</span><span class="p">(</span><span class="n">io</span><span class="p">,</span> <span class="n">motors</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="s">&#39;set&#39;</span><span class="p">,</span> <span class="s">&#39;pid_gain&#39;</span><span class="p">,</span> <span class="s">&#39;pid&#39;</span><span class="p">),</span>
-                       <span class="n">factory</span><span class="p">(</span><span class="n">io</span><span class="p">,</span> <span class="n">motors</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="s">&#39;set&#39;</span><span class="p">,</span> <span class="s">&#39;compliance_margin&#39;</span><span class="p">),</span>
-                       <span class="n">factory</span><span class="p">(</span><span class="n">io</span><span class="p">,</span> <span class="n">motors</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="s">&#39;set&#39;</span><span class="p">,</span> <span class="s">&#39;compliance_slope&#39;</span><span class="p">),</span>
                        <span class="n">factory</span><span class="p">(</span><span class="n">io</span><span class="p">,</span> <span class="n">motors</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s">&#39;get&#39;</span><span class="p">,</span> <span class="s">&#39;present_voltage&#39;</span><span class="p">),</span>
                        <span class="n">factory</span><span class="p">(</span><span class="n">io</span><span class="p">,</span> <span class="n">motors</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s">&#39;get&#39;</span><span class="p">,</span> <span class="s">&#39;present_temperature&#39;</span><span class="p">)]</span>
+
+        <span class="n">models</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">model</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">motors</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="p">[</span><span class="n">m</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">models</span> <span class="k">if</span> <span class="n">m</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&#39;MX&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">m</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&#39;XL-320&#39;</span><span class="p">)]:</span>
+            <span class="n">controllers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">factory</span><span class="p">(</span><span class="n">io</span><span class="p">,</span> <span class="n">motors</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="s">&#39;set&#39;</span><span class="p">,</span> <span class="s">&#39;pid_gain&#39;</span><span class="p">,</span> <span class="s">&#39;pid&#39;</span><span class="p">))</span>
+        <span class="k">elif</span> <span class="p">[</span><span class="n">m</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">models</span> <span class="k">if</span> <span class="n">m</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&#39;AX&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">m</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&#39;RX&#39;</span><span class="p">)]:</span>
+            <span class="n">controllers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">factory</span><span class="p">(</span><span class="n">io</span><span class="p">,</span> <span class="n">motors</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="s">&#39;set&#39;</span><span class="p">,</span> <span class="s">&#39;compliance_margin&#39;</span><span class="p">))</span>
+            <span class="n">controllers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">factory</span><span class="p">(</span><span class="n">io</span><span class="p">,</span> <span class="n">motors</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="s">&#39;set&#39;</span><span class="p">,</span> <span class="s">&#39;compliance_slope&#39;</span><span class="p">))</span>
 
         <span class="n">DxlController</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">io</span><span class="p">,</span> <span class="n">motors</span><span class="p">,</span> <span class="n">controllers</span><span class="p">)</span>
 
@@ -204,7 +214,14 @@
 
     <span class="k">def</span> <span class="nf">setup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">mode</span> <span class="o">==</span> <span class="s">&#39;set&#39;</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">get_register</span><span class="p">()</span>
+            <span class="n">MAX_TRIALS</span> <span class="o">=</span> <span class="mi">25</span>
+            <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">MAX_TRIALS</span><span class="p">):</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_register</span><span class="p">():</span>
+                    <span class="k">break</span>
+                <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s">&#39;Cannot initialize syncloop for &quot;{}&quot;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                              <span class="bp">self</span><span class="o">.</span><span class="n">regname</span><span class="p">))</span>
 
     <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">get_register</span><span class="p">()</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">mode</span> <span class="o">==</span> <span class="s">&#39;get&#39;</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">set_register</span><span class="p">()</span>
@@ -213,12 +230,17 @@
         <span class="sd">&quot;&quot;&quot; Gets the value from the specified register and sets it to the :class:`~pypot.dynamixel.motor.DxlMotor`. &quot;&quot;&quot;</span>
         <span class="n">motors</span> <span class="o">=</span> <span class="p">[</span><span class="n">m</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">working_motors</span> <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">varname</span><span class="p">)]</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">motors</span><span class="p">:</span>
-            <span class="k">return</span>
+            <span class="k">return</span> <span class="bp">False</span>
         <span class="n">ids</span> <span class="o">=</span> <span class="p">[</span><span class="n">m</span><span class="o">.</span><span class="n">id</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">motors</span><span class="p">]</span>
 
         <span class="n">values</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">io</span><span class="p">,</span> <span class="s">&#39;get_{}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">regname</span><span class="p">))(</span><span class="n">ids</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">values</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">False</span>
+
         <span class="k">for</span> <span class="n">m</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">motors</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
             <span class="n">m</span><span class="o">.</span><span class="n">__dict__</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">varname</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span>
+
+        <span class="k">return</span> <span class="bp">True</span>
 
     <span class="k">def</span> <span class="nf">set_register</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Gets the value from :class:`~pypot.dynamixel.motor.DxlMotor` and sets it to the specified register. &quot;&quot;&quot;</span>
@@ -311,15 +333,16 @@
       <div class="row footer-relbar">
 <div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
   <div class="navbar-inner">
-    <ul class="nav navbar-nav">
-        <li><a href="../../../index.html">pypot 2.1.1 documentation</a></li>
+    <ul class="nav navbar-nav ">
+        <li><a href="../../../index.html">pypot 2.3.1 documentation</a></li>
     </ul>
-    <ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
+<ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
       
         <li><a href="../../../py-modindex.html" title="Python Module Index" >modules</a></li>
         <li><a href="../../../genindex.html" title="General Index" >index</a></li>
         <li><a href="../../index.html" >Module code</a></li>
-        <li><a href="../dynamixel.html" >pypot.dynamixel</a></li> 
+        <li><a href="../dynamixel.html" >pypot.dynamixel</a></li>
+        <li><a href="#">top</a></li> 
       
     </ul>
   </div>
@@ -329,7 +352,7 @@
       <!-- footer -->
       <footer role="contentinfo">
           &copy; Copyright 2012, Poppy-Project.
-        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.3b2.
+        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.3.1.
       </footer>
       <!-- /footer -->
 

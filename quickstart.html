@@ -9,7 +9,7 @@
   <head>
     <meta charset="utf-8" />
     
-    <title>QuickStart: playing with an Ergo-Robot &mdash; pypot 2.1.1 documentation</title>
+    <title>QuickStart: playing with an Ergo-Robot &mdash; pypot 2.3.1 documentation</title>
     <meta name="description" content="">
     <meta name="author" content="">
 
@@ -26,7 +26,6 @@
     padding-top: 60px;
     padding-bottom: 40px;
   }
-}
 </style>
 
 <link rel="stylesheet" href="_static/css/basicstrap.css" type="text/css" />
@@ -36,7 +35,7 @@
 <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
             URL_ROOT:    './',
-            VERSION:     '2.1.1',
+            VERSION:     '2.3.1',
             COLLAPSE_INDEX: false,
             FILE_SUFFIX: '.html',
             HAS_SOURCE:  true
@@ -51,7 +50,7 @@
 <script type="text/javascript">
 </script>
     <link rel="author" title="About these documents" href="about.html" />
-    <link rel="top" title="pypot 2.1.1 documentation" href="index.html" />
+    <link rel="top" title="pypot 2.3.1 documentation" href="index.html" />
     <link rel="next" title="Controlling robot" href="controlling_robot.html" />
     <link rel="prev" title="Installation" href="installation.html" /> 
   </head>
@@ -65,7 +64,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="index.html">pypot 2.1.1 documentation</a>
+          <a class="navbar-brand" href="index.html">pypot 2.3.1 documentation</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
@@ -104,7 +103,11 @@
                   <input type="hidden" name="area" value="default" />
                 </form>
             </li>
+
+            
+
           </ul>
+
         </div>
       </div>
     </div>
@@ -116,7 +119,7 @@
       <!-- row -->
       <div class="row">
          
-<div class="col-md-3 hidden-xs">
+<div class="col-md-3 hidden-xs" id="sidebar-wrapper">
   <div class="sidebar hidden-xs" role="navigation" aria-label="main navigation">
   <h3><a href="index.html">Table Of Contents</a></h3>
   <ul>
@@ -195,7 +198,7 @@
 <span class="n">my_config</span><span class="p">[</span><span class="s">&#39;controllers&#39;</span><span class="p">][</span><span class="s">&#39;my_dxl_controller&#39;</span><span class="p">][</span><span class="s">&#39;port&#39;</span><span class="p">]</span>  <span class="o">=</span> <span class="s">&#39;COM6&#39;</span> <span class="c"># For Windows&#39; users</span>
 </pre></div>
 </div>
-<p>You will only have to modify the USB2serial port and the id of the motors so they correspond to your robot. If you do not know how to get this information, you can refer to the documentation on the <a class="reference internal" href="herborist.html#herborist"><em>Herborist tool</em></a>. Alternatively, you can directly ask pypot:</p>
+<p>You will only have to modify the USB2serial port and the id of the motors so they correspond to your robot. If you do not know how to get this information, you can refer to the documentation on the <a class="reference internal" href="herborist.html#herborist"><span>Herborist tool</span></a>. Alternatively, you can directly ask pypot:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">pypot.dynamixel</span>
 
 <span class="k">print</span> <span class="n">pypot</span><span class="o">.</span><span class="n">dynamixel</span><span class="o">.</span><span class="n">get_available_ports</span><span class="p">()</span>
@@ -225,7 +228,7 @@ For instance:</p>
 <span class="n">ergo_robot</span> <span class="o">=</span> <span class="n">pypot</span><span class="o">.</span><span class="n">robot</span><span class="o">.</span><span class="n">from_config</span><span class="p">(</span><span class="n">my_config</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>At this point, if you have not seen any errors it means that you are successfully connected to your robot! You can find details on how to write more complex configuration file in the <a class="reference internal" href="controller.html#config-file"><em>Writing the configuration</em></a> section.</p>
+<p>At this point, if you have not seen any errors it means that you are successfully connected to your robot! You can find details on how to write more complex configuration file in the <a class="reference internal" href="controller.html#config-file"><span>Writing the configuration</span></a> section.</p>
 </div>
 <div class="section" id="controlling-your-ergo-robot">
 <span id="dance"></span><h2>Controlling your Ergo-Robot<a class="headerlink" href="#controlling-your-ergo-robot" title="Permalink to this headline">¶</a></h2>
@@ -236,7 +239,7 @@ For instance:</p>
 <span class="n">ergo_robot</span> <span class="o">=</span> <span class="n">pypot</span><span class="o">.</span><span class="n">robot</span><span class="o">.</span><span class="n">from_config</span><span class="p">(</span><span class="n">my_config</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Except from the last line, everything should be clear now. This new line starts the synchronization between the &#8220;software&#8221; robot and the real one, i.e. all commands that you will send in python code will automatically be sent to the physical Ergo-Robot (for details on the underlying mechanisms, see <a class="reference internal" href="controller.html#sync-loop"><em>Sync Loop</em></a>).</p>
+<p>Except from the last line, everything should be clear now. This new line starts the synchronization between the &#8220;software&#8221; robot and the real one, i.e. all commands that you will send in python code will automatically be sent to the physical Ergo-Robot (for details on the underlying mechanisms, see <a class="reference internal" href="controller.html#sync-loop"><span>Sync Loop</span></a>).</p>
 <p>Now, we are going to put the robot in its initial position:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">ergo_robot</span><span class="o">.</span><span class="n">motors</span><span class="p">:</span>
     <span class="n">m</span><span class="o">.</span><span class="n">compliant</span> <span class="o">=</span> <span class="bp">False</span>
@@ -283,7 +286,7 @@ For instance:</p>
     <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.02</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Your robot should start dancing for ten seconds. Now, that you have seen the very basic things that you can do with pypot. It is time to jump on the <a class="reference internal" href="index.html#tutorial"><em>tutorial</em></a> to get a complete overview of the possibility.</p>
+<p>Your robot should start dancing for ten seconds. Now, that you have seen the very basic things that you can do with pypot. It is time to jump on the <a class="reference internal" href="index.html#tutorial"><span>tutorial</span></a> to get a complete overview of the possibility.</p>
 </div>
 </div>
 
@@ -301,15 +304,16 @@ For instance:</p>
       <div class="row footer-relbar">
 <div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
   <div class="navbar-inner">
-    <ul class="nav navbar-nav">
-        <li><a href="index.html">pypot 2.1.1 documentation</a></li>
+    <ul class="nav navbar-nav ">
+        <li><a href="index.html">pypot 2.3.1 documentation</a></li>
     </ul>
-    <ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
+<ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
       
         <li><a href="installation.html" title="Installation" >previous</a></li>
         <li><a href="controlling_robot.html" title="Controlling robot" >next</a></li>
         <li><a href="py-modindex.html" title="Python Module Index" >modules</a></li>
-        <li><a href="genindex.html" title="General Index" >index</a></li> 
+        <li><a href="genindex.html" title="General Index" >index</a></li>
+        <li><a href="#">top</a></li> 
       
     </ul>
   </div>
@@ -319,7 +323,7 @@ For instance:</p>
       <!-- footer -->
       <footer role="contentinfo">
           &copy; Copyright 2012, Poppy-Project.
-        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.3b2.
+        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.3.1.
       </footer>
       <!-- /footer -->
 

@@ -163,6 +163,13 @@ div.sidebar ul:second-child {
   list-style: none !important;
 }
 
+/* Definition lists
+   ----------------------------------------------------------- */
+
+dl dd {
+ padding-left: 1em;
+}
+
 /* Admonition styles
    ----------------------------------------------------------- */
 div.admonition {

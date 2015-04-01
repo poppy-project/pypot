@@ -9,7 +9,7 @@
   <head>
     <meta charset="utf-8" />
     
-    <title>pypot.server.snap &mdash; pypot 2.1.1 documentation</title>
+    <title>pypot.server.snap &mdash; pypot 2.3.1 documentation</title>
     <meta name="description" content="">
     <meta name="author" content="">
 
@@ -26,7 +26,6 @@
     padding-top: 60px;
     padding-bottom: 40px;
   }
-}
 </style>
 
 <link rel="stylesheet" href="../../../_static/css/basicstrap.css" type="text/css" />
@@ -36,7 +35,7 @@
 <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
             URL_ROOT:    '../../../',
-            VERSION:     '2.1.1',
+            VERSION:     '2.3.1',
             COLLAPSE_INDEX: false,
             FILE_SUFFIX: '.html',
             HAS_SOURCE:  true
@@ -51,7 +50,7 @@
 <script type="text/javascript">
 </script>
     <link rel="author" title="About these documents" href="../../../about.html" />
-    <link rel="top" title="pypot 2.1.1 documentation" href="../../../index.html" />
+    <link rel="top" title="pypot 2.3.1 documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body role="document">
@@ -64,7 +63,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="../../../index.html">pypot 2.1.1 documentation</a>
+          <a class="navbar-brand" href="../../../index.html">pypot 2.3.1 documentation</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
@@ -87,7 +86,11 @@
                   <input type="hidden" name="area" value="default" />
                 </form>
             </li>
+
+            
+
           </ul>
+
         </div>
       </div>
     </div>
@@ -99,7 +102,7 @@
       <!-- row -->
       <div class="row">
          
-<div class="col-md-3 hidden-xs">
+<div class="col-md-3 hidden-xs" id="sidebar-wrapper">
   <div class="sidebar hidden-xs" role="navigation" aria-label="main navigation">
 <div id="searchbox" role="search">
   <h3>Quick search</h3>
@@ -193,6 +196,12 @@
             <span class="n">rr</span><span class="o">.</span><span class="n">set_motor_register_value</span><span class="p">(</span><span class="n">motor</span><span class="p">,</span> <span class="n">register</span><span class="p">,</span> <span class="nb">float</span><span class="p">(</span><span class="n">value</span><span class="p">))</span>
             <span class="k">return</span> <span class="s">&#39;Done!&#39;</span>
 
+        <span class="nd">@self.app.get</span><span class="p">(</span><span class="s">&#39;/motor/&lt;motor&gt;/goto/&lt;position&gt;/&lt;duration&gt;&#39;</span><span class="p">)</span>
+        <span class="nd">@make_snap_compatible_response</span>
+        <span class="k">def</span> <span class="nf">set_goto</span><span class="p">(</span><span class="n">motor</span><span class="p">,</span> <span class="n">position</span><span class="p">,</span> <span class="n">duration</span><span class="p">):</span>
+            <span class="n">rr</span><span class="o">.</span><span class="n">set_goto_position_for_motor</span><span class="p">(</span><span class="n">motor</span><span class="p">,</span> <span class="nb">float</span><span class="p">(</span><span class="n">position</span><span class="p">),</span> <span class="nb">float</span><span class="p">(</span><span class="n">duration</span><span class="p">))</span>
+            <span class="k">return</span> <span class="s">&#39;Done!&#39;</span>
+
         <span class="nd">@self.app.get</span><span class="p">(</span><span class="s">&#39;/snap-blocks.xml&#39;</span><span class="p">)</span>
         <span class="nd">@make_snap_compatible_response</span>
         <span class="k">def</span> <span class="nf">get_pypot_snap_blocks</span><span class="p">():</span>
@@ -204,6 +213,13 @@
         <span class="nd">@make_snap_compatible_response</span>
         <span class="k">def</span> <span class="nf">get_ip</span><span class="p">():</span>
             <span class="k">return</span> <span class="n">socket</span><span class="o">.</span><span class="n">gethostbyname</span><span class="p">(</span><span class="n">socket</span><span class="o">.</span><span class="n">gethostname</span><span class="p">())</span>
+
+        <span class="nd">@self.app.get</span><span class="p">(</span><span class="s">&#39;/reset-simulation&#39;</span><span class="p">)</span>
+        <span class="nd">@make_snap_compatible_response</span>
+        <span class="k">def</span> <span class="nf">reset_simulation</span><span class="p">():</span>
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">robot</span><span class="p">,</span> <span class="s">&#39;reset_simulation&#39;</span><span class="p">):</span>
+                <span class="n">robot</span><span class="o">.</span><span class="n">reset_simulation</span><span class="p">()</span>
+            <span class="k">return</span> <span class="s">&#39;Done!&#39;</span>
 
 <div class="viewcode-block" id="SnapRobotServer.run"><a class="viewcode-back" href="../../../pypot.server.html#pypot.server.snap.SnapRobotServer.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">bottle</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="p">,</span>
@@ -224,14 +240,15 @@
       <div class="row footer-relbar">
 <div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
   <div class="navbar-inner">
-    <ul class="nav navbar-nav">
-        <li><a href="../../../index.html">pypot 2.1.1 documentation</a></li>
+    <ul class="nav navbar-nav ">
+        <li><a href="../../../index.html">pypot 2.3.1 documentation</a></li>
     </ul>
-    <ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
+<ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
       
         <li><a href="../../../py-modindex.html" title="Python Module Index" >modules</a></li>
         <li><a href="../../../genindex.html" title="General Index" >index</a></li>
-        <li><a href="../../index.html" >Module code</a></li> 
+        <li><a href="../../index.html" >Module code</a></li>
+        <li><a href="#">top</a></li> 
       
     </ul>
   </div>
@@ -241,7 +258,7 @@
       <!-- footer -->
       <footer role="contentinfo">
           &copy; Copyright 2012, Poppy-Project.
-        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.3b2.
+        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.3.1.
       </footer>
       <!-- /footer -->
 
