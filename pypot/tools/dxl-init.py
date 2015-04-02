@@ -16,91 +16,126 @@ Testé avec:
     AX-12
 """
 
-from pypot.dynamixel import DxlIO, get_available_ports
-from pypot.dynamixel.io.abstract_io import DxlTimeoutError
-from time import sleep
 import logging
+import time
+import sys
 
-logging.basicConfig(level=logging.INFO)
+from argparse import ArgumentParser
+
+from pypot.dynamixel import DxlIO, get_available_ports
+from pypot.dynamixel.io import DxlError
+
+
+logging.basicConfig(level=logging.ERROR)
 logger = logging.getLogger(__name__)
 
-"""Default settings"""
-FACTORY_BAUDRATE = 57142
-
-"""Poppy software settings"""
+FACTORY_BAUDRATE = 57600
 TARGET_BAUDRATE = 1000000
 
-def do_reset(dxl,baudrate):
-    """
-    Broadcasts a reset on given DxlIO / baudrate
-    """
-    reset_msg = dxl._protocol.DxlInstructionPacket(id=dxl._protocol.DxlBroadcast,
-                                                instruction=0x06, parameters=[])
 
-    logger.info('Broadcast reset at baudrate = {}'.format(br))
-    setattr(dxl,'baudrate',br) # calls AbstractIO.baudrate setter
-    try:
-        dxl._send_packet(reset_msg, error_handler=None)
-    except DxlTimeoutError as e:
-        pass
+def leave(msg):
+    print('{} Exiting now...'.format(msg))
+    sys.exit(1)
+
+def almost_equal(a, b):
+    return abs(a - b) < 5.
 
 
-if __name__ == '__main__':
-    import sys
-    from argparse import ArgumentParser
-    parser = ArgumentParser(description='Sets dynamixel id and baudrate')
-    parser.add_argument('-p','--port',dest='port',default=None,nargs='?',
+def main():
+    parser = ArgumentParser(description='Set a dynamixel motor to'
+                                        ' a "poppy-like" configuration. '
+                                        'Only one motor should be connected!')
+
+    parser.add_argument(dest='id', type=int,
+                        help='Dynamixel target #id.')
+
+    parser.add_argument('-p', '--port', default=None,
+                        choices=get_available_ports(),
                         help='Serial port, default: autoselect')
-    parser.add_argument('--log-level', default='INFO',
+
+    parser.add_argument('--log-level', default='ERROR',
                         help='Log level : CRITICAL, ERROR, WARNING, INFO, DEBUG')
-    parser.add_argument(dest='id',help='Dynamixel #id.')
+
+    parser.add_argument('--position', type=float, default=0.0,
+                        help='Position set to the motor (in degrees)')
+
+    parser.add_argument('--angle-limit', type=float, nargs=2, default=[-150, 150],
+                        help='Angle limits of the motor (in degrees)')
+
     args = parser.parse_args()
+
+    if not (1 <= args.id <= 253):
+        leave('Motor id should be in range [1:253]!')
 
     log_level = args.log_level.upper()
     logger.setLevel(log_level)
 
-    if args.port is None:
-        ports = get_available_ports()
-        if not len(ports):
-            logger.error('No available ports')
-            sys.exit(1)
-        setattr(args,'port',ports[0])
+    # First, we make sure that there is at least one available ports
+    try:
+        port = get_available_ports()[0]
+    except IndexError:
+        leave('You need to connect at least one dynamixel port!')
 
-    """
-    Note: les appels à sleep() peuvent sans doute être remplacés par des flush
-          ou des accusés de réception des actuateurs.
-    """
+    print('Resetting to factory settings...')
+    for br in [FACTORY_BAUDRATE, TARGET_BAUDRATE]:
+        with DxlIO(port, br) as dxl:
+            dxl.factory_reset()
+            time.sleep(.5)
+    print('Done!')
 
-    with DxlIO(args.port) as dxl:
-        for br in [TARGET_BAUDRATE, FACTORY_BAUDRATE]:
-            do_reset(dxl,br)
-            sleep(0.25)
+    print('Setting the motor to a "poppy" configuration')
+    with DxlIO(port, FACTORY_BAUDRATE) as dxl:
+        # We make sure that there was only one motor on the bus
+        try:
+            assert dxl.scan([1]) == [1]
+        except AssertionError:
+            leave('No motor found, check the connection!')
+        except DxlError:
+            leave('You should only connect one motor at'
+                  ' a time when doing factory reset!')
 
-        setattr(dxl,'baudrate',FACTORY_BAUDRATE)
-        if dxl.ping(1):
-            # AX-12 factory default = 1000000 bps
-            dxl.change_baudrate({1:TARGET_BAUDRATE})
-            sleep(0.25)
+        if args.id != 1:
+            print('Changing the id to {}...'.format(args.id))
+            dxl.change_id({1: args.id})
 
-    with DxlIO(args.port, baudrate=TARGET_BAUDRATE) as dxl:
-            target_id = int(args.id)
+        print('Changing the return delay time to {}...'.format(0))
+        dxl.set_return_delay_time({args.id: 0})
 
-            dxl.switch_led_on((1,))
-            sleep(0.25)
+        print('Changing the angle limit to {}...').format(args.angle_limit)
+        dxl.set_angle_limit({args.id: args.angle_limit})
 
-            dxl.change_id({1:target_id})
-            sleep(0.25)
-            dxl.set_return_delay_time({target_id:0})
+        print('Changing the baudrate to {}...'.format(TARGET_BAUDRATE))
+        dxl.change_baudrate({args.id: TARGET_BAUDRATE})
+        time.sleep(.5)
+    print('Done!')
 
-            ## test move
-            #dxl.set_goal_position({target_id:60})
-            #while dxl.is_moving((target_id,))[0]:
-            #    pass
+    print('Now, checking that everything went well...')
+    with DxlIO(port) as dxl:
+        try:
+            assert dxl.ping(args.id)
+            assert dxl.get_return_delay_time([args.id]) == (0, )
 
-            dxl.set_goal_position({target_id:0})
-            while dxl.is_moving((target_id,))[0]:
-                pass
+        except AssertionError:
+            leave('Something went wrong with the settings of "Poppy-like"'
+                  ' motors configuration.\nThis is probably due to'
+                  ' a communication error. Please try again.')
 
-            sleep(0.1) # sans ce sleep, la led reste allumée
-            dxl.switch_led_off((target_id,))
-            dxl.flush()
+        lim = dxl.get_angle_limit([args.id])[0]
+        if not all(map(almost_equal, lim, args.angle_limit)):
+            print('Angle limit incorrect set {} instead of {}'.format(
+                  lim, args.angle_limit))
+
+        dxl.set_goal_position({args.id: args.position})
+        while any(dxl.is_moving((args.id, ))):
+            time.sleep(.1)
+
+        pos = dxl.get_present_position((args.id, ))[0]
+        if not almost_equal(args.position, pos):
+            print('Target position not reached: {} instead of {}.'.format(
+                  pos, args.position))
+
+    print('Done!')
+
+
+if __name__ == '__main__':
+    main()
