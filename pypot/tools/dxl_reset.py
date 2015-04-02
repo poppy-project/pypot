@@ -1,19 +1,19 @@
 #!/usr/bin/env python
 # coding: utf-8
+
 """
-Reset un dynamixel et lui affecte un nouvel id,
+Reset a dynamixel motor to "poppy" configuration.
 
-Mode d'emploi:
+This utility should only be used with a single motor connected to the bus. For the moment it's only working with robotis protocol v1 (AX, RX, MX motors).
 
-Connecter un actuateur unique est sur le bus dynamixel et lancer:
-$ ./dxl-init.py 42
-Le moteur porte maintenant le n°42 et répond à la poppy-vitesse de 1000000 bauds,
-de plus sa position est remise à zéro.
+To run it:
+$ poppy-reset-motor 42
 
-Testé avec:
-    MX-64
-    MX-28
-    AX-12
+The motor will now have the id 42, use a 1000000 baud rates, a 0µs return delay time. The angle limit are also set (by default to (-150, 150)). Its position is also set to its base position (default: 0).
+
+For more complex use cases, see:
+$ poppy-reset-motor --help
+
 """
 
 import logging

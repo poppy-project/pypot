@@ -31,6 +31,9 @@ setup(name='pypot',
       },
 
       entry_points={
+          'console_scripts': [
+              'poppy-motor-reset = pypot.tools.dxl_reset:main'
+          ],
           'gui_scripts': [
               'herborist = pypot.tools.herborist.herborist:main [tools]',
           ],
