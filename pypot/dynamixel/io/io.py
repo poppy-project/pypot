@@ -1,10 +1,19 @@
-from .abstract_io import AbstractDxlIO, _DxlControl, _DxlAccess
+from .abstract_io import (AbstractDxlIO, _DxlControl,
+                          _DxlAccess, DxlTimeoutError)
 from ..protocol import v1 as v1
 from ..conversion import *
 
 
 class DxlIO(AbstractDxlIO):
     _protocol = v1
+
+    def factory_reset(self):
+        """ Reset all motors on the bus to their factory default settings. """
+        try:
+            self._send_packet(self._protocol.DxlResetPacket())
+
+        except DxlTimeoutError:
+            pass
 
 # MARK: - Generate the accessors
 
