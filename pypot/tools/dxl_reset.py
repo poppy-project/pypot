@@ -100,9 +100,11 @@ def main():
 
         print('Changing the return delay time to {}...'.format(0))
         dxl.set_return_delay_time({args.id: 0})
+        time.sleep(.5)
 
         print('Changing the angle limit to {}...').format(args.angle_limit)
         dxl.set_angle_limit({args.id: args.angle_limit})
+        time.sleep(.5)
 
         print('Changing the baudrate to {}...'.format(TARGET_BAUDRATE))
         dxl.change_baudrate({args.id: TARGET_BAUDRATE})
