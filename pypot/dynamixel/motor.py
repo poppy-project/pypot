@@ -156,11 +156,21 @@ class DxlMotor(Motor):
     def compliant_behavior(self, value):
         if value not in ('dummy', 'safe'):
             raise ValueError('Wrong compliant type! It should be either "dummy" or "safe".')
+
+        if hasattr(self, '_compliant_behavior') and self._compliant_behavior == value:
+            return
+
         self._compliant_behavior = value
 
         # Start the safe compliance behavior when the motor should be compliant
         if value is 'safe' and self.compliant:
-            self.compliant = True
+            self._safe_compliance.start()
+
+        if value is 'dummy':
+            use_safe = self._safe_compliance.started
+            if use_safe:
+                self._safe_compliance.stop()
+            self.compliant = self.compliant or use_safe
 
     @property
     def compliant(self):
@@ -168,11 +178,17 @@ class DxlMotor(Motor):
 
     @compliant.setter
     def compliant(self, is_compliant):
+        if self._safe_compliance.started and is_compliant:
+            return
+
         if self.compliant_behavior == 'dummy':
             self._set_compliancy(is_compliant)
 
         elif self.compliant_behavior == 'safe':
-            self._safe_compliance.start() if is_compliant else self._safe_compliance.stop()
+            if is_compliant:
+                self._safe_compliance.start()
+            elif self._safe_compliance.started:
+                self._safe_compliance.stop()
 
     def _set_compliancy(self, is_compliant):
         # Change the goal_position only if you switch from compliant to not compliant mode
@@ -269,6 +285,7 @@ class DxlXL320Motor(DxlMXMotor):
                  direct=True, offset=0.0, broken=False):
         DxlMXMotor.__init__(self, id, name, model, direct, offset, broken)
         self.max_pos = 150
+
 
 class SafeCompliance(StoppableLoopThread):
     """ This class creates a controller to active compliance only if the current motor position is included in the angle limit, else the compliance is turned off. """
