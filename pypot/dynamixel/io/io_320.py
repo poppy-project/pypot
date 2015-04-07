@@ -130,6 +130,14 @@ controls = {
         'setter_name': '_set_LED',
         'getter_name': 'is_led_on'
     },
+    'LEDRGB': {
+        'address': 0x19,
+        'length': 1,
+        'dxl_to_si': lambda v,_ : int(v),
+        'si_to_dxl': lambda v,_ : int(v) & 0b111,
+        'setter_name': '_set_LEDRGB',
+        'getter_name': '_get_LEDRGB'
+    },
     'pid gain': {
         'address': 0x1B,
         'length': 1,
