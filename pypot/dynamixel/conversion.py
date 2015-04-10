@@ -15,6 +15,7 @@
 import numpy
 import itertools
 
+from enum import Enum
 
 # MARK: - Position
 
@@ -246,6 +247,17 @@ def alarm_to_dxl(value, model):
     indices = [len(dynamixelErrors) - 1 - dynamixelErrors.index(e) for e in value]
     return sum(2 ** i for i in indices)
 
+
+XL320LEDColors = Enum('Colors', 'off red green yellow '
+                       'blue pink cyan white')
+
+def dxl_to_led_color(value, model):
+    return XL320LEDColors(value + 1).name
+
+def led_color_to_dxl(value, model):
+    value = getattr(XL320LEDColors, value).value - 1
+    value = int(value) & 0b111
+    return value
 
 # MARK: - Various utility functions
 
