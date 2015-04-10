@@ -9,7 +9,7 @@
   <head>
     <meta charset="utf-8" />
     
-    <title>server Package &mdash; pypot 2.3.1 documentation</title>
+    <title>server Package &mdash; pypot 2.4.0 documentation</title>
     <meta name="description" content="">
     <meta name="author" content="">
 
@@ -35,7 +35,7 @@
 <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
             URL_ROOT:    './',
-            VERSION:     '2.3.1',
+            VERSION:     '2.4.0',
             COLLAPSE_INDEX: false,
             FILE_SUFFIX: '.html',
             HAS_SOURCE:  true
@@ -50,7 +50,7 @@
 <script type="text/javascript">
 </script>
     <link rel="author" title="About these documents" href="about.html" />
-    <link rel="top" title="pypot 2.3.1 documentation" href="index.html" />
+    <link rel="top" title="pypot 2.4.0 documentation" href="index.html" />
     <link rel="up" title="Pypot’s API" href="api.html" />
     <link rel="next" title="vrep Package" href="pypot.vrep.html" />
     <link rel="prev" title="sensor Package" href="pypot.sensor.html" /> 
@@ -65,7 +65,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="index.html">pypot 2.3.1 documentation</a>
+          <a class="navbar-brand" href="index.html">pypot 2.4.0 documentation</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
@@ -75,8 +75,6 @@
                 <ul>
 <li><a class="reference internal" href="#"><code class="docutils literal"><span class="pre">server</span></code> Package</a><ul>
 <li><a class="reference internal" href="#module-pypot.server.rest"><code class="docutils literal"><span class="pre">rest</span></code> Module</a></li>
-<li><a class="reference internal" href="#module-pypot.server.request"><code class="docutils literal"><span class="pre">request</span></code> Module</a></li>
-<li><a class="reference internal" href="#module-pypot.server.server"><code class="docutils literal"><span class="pre">server</span></code> Module</a></li>
 <li><a class="reference internal" href="#module-pypot.server.httpserver"><code class="docutils literal"><span class="pre">httpserver</span></code> Module</a></li>
 <li><a class="reference internal" href="#module-pypot.server.zmqserver"><code class="docutils literal"><span class="pre">zmqserver</span></code> Module</a></li>
 <li><a class="reference internal" href="#module-pypot.server.snap"><code class="docutils literal"><span class="pre">snap</span></code> Module</a></li>
@@ -130,8 +128,6 @@
   <ul>
 <li><a class="reference internal" href="#"><code class="docutils literal"><span class="pre">server</span></code> Package</a><ul>
 <li><a class="reference internal" href="#module-pypot.server.rest"><code class="docutils literal"><span class="pre">rest</span></code> Module</a></li>
-<li><a class="reference internal" href="#module-pypot.server.request"><code class="docutils literal"><span class="pre">request</span></code> Module</a></li>
-<li><a class="reference internal" href="#module-pypot.server.server"><code class="docutils literal"><span class="pre">server</span></code> Module</a></li>
 <li><a class="reference internal" href="#module-pypot.server.httpserver"><code class="docutils literal"><span class="pre">httpserver</span></code> Module</a></li>
 <li><a class="reference internal" href="#module-pypot.server.zmqserver"><code class="docutils literal"><span class="pre">zmqserver</span></code> Module</a></li>
 <li><a class="reference internal" href="#module-pypot.server.snap"><code class="docutils literal"><span class="pre">snap</span></code> Module</a></li>
@@ -309,157 +305,6 @@
 </dd></dl>
 
 </div>
-<div class="section" id="module-pypot.server.request">
-<span id="request-module"></span><h2><code class="xref py py-mod docutils literal"><span class="pre">request</span></code> Module<a class="headerlink" href="#module-pypot.server.request" title="Permalink to this headline">¶</a></h2>
-<dl class="class">
-<dt id="pypot.server.request.BaseRequestHandler">
-<em class="property">class </em><code class="descclassname">pypot.server.request.</code><code class="descname">BaseRequestHandler</code><span class="sig-paren">(</span><em>robot</em><span class="sig-paren">)</span><a class="headerlink" href="#pypot.server.request.BaseRequestHandler" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference external" href="http://docs.python.org/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
-<p>JSON request (get, set or call) handler.</p>
-<dl class="method">
-<dt id="pypot.server.request.BaseRequestHandler.handle_call">
-<code class="descname">handle_call</code><span class="sig-paren">(</span><em>request</em><span class="sig-paren">)</span><a class="headerlink" href="#pypot.server.request.BaseRequestHandler.handle_call" title="Permalink to this definition">¶</a></dt>
-<dd><p>Handles the call field of a request.</p>
-<p>The call field is constructed as follows:</p>
-<div class="highlight-python"><div class="highlight"><pre>&#39;call&#39;: {
-    &#39;obj_name_1&#39;: {&#39;meth_path_1&#39;: (arg1, arg2, ...),
-                    &#39;meth_path_2&#39;: (arg1, arg2, ...),
-                    ...
-                    },
-
-    &#39;obj_name_2&#39;: {&#39;meth_path_1&#39;: (arg1, arg2, ...),
-                    &#39;meth_path_2&#39;: (arg1, arg2, ...),
-                    ...
-                    },
-        ...
-        }
-</pre></div>
-</div>
-<p>For each tuple obj_name_1, meth_path_1 and args  the handler will call the corresponding method of the object with the args: i.e. if we want to call the switch_mode method of a primitive named &#8216;balance&#8217; to switch to the third mode we would use:</p>
-<div class="highlight-python"><div class="highlight"><pre>&#39;call&#39;: {
-    &#39;balance&#39;: {&#39;switch_mode&#39;: (3, )}
-    }
-</pre></div>
-</div>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p>To call a method without argument juste use an empty list as args:</p>
-<div class="last highlight-python"><div class="highlight"><pre>&#39;call&#39;: {&#39;balance&#39;: {&#39;start&#39;: ()}}
-</pre></div>
-</div>
-</div>
-</dd></dl>
-
-<dl class="method">
-<dt id="pypot.server.request.BaseRequestHandler.handle_get">
-<code class="descname">handle_get</code><span class="sig-paren">(</span><em>request</em><span class="sig-paren">)</span><a class="headerlink" href="#pypot.server.request.BaseRequestHandler.handle_get" title="Permalink to this definition">¶</a></dt>
-<dd><p>Handles the get field of a request.</p>
-<p>The get field is constructed as follows:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="p">{</span>
-    <span class="s">&#39;get&#39;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s">&#39;obj_name_1&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s">&#39;var_path_1&#39;</span><span class="p">,</span> <span class="s">&#39;var_path_2&#39;</span><span class="p">,</span> <span class="o">...</span><span class="p">),</span>
-        <span class="s">&#39;obj_name_2&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s">&#39;var_path_1&#39;</span><span class="p">,</span> <span class="s">&#39;var_path_2&#39;</span><span class="p">,</span> <span class="o">...</span><span class="p">),</span>
-        <span class="c"># ...</span>
-        <span class="p">}</span>
-    <span class="p">}</span>
-</pre></div>
-</div>
-<p>For each couple obj_name_1, var_path_1, the handler will get the value corresponding to self.robot.obj_name_1.var_path_1: i.e. if we want to get the present_position and present_speed of the motor named l_knee_y we would use:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="p">{</span>
-    <span class="s">&#39;get&#39;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s">&#39;l_knee_y&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s">&#39;present_position&#39;</span><span class="p">,</span> <span class="s">&#39;present_speed&#39;</span><span class="p">),</span>
-        <span class="p">}</span>
-    <span class="p">}</span>
-</pre></div>
-</div>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">The var_path could be complete path, e.g. &#8220;skeleton.left_foot.position.x&#8221;.</p>
-</div>
-</dd></dl>
-
-<dl class="method">
-<dt id="pypot.server.request.BaseRequestHandler.handle_request">
-<code class="descname">handle_request</code><span class="sig-paren">(</span><em>request</em><span class="sig-paren">)</span><a class="headerlink" href="#pypot.server.request.BaseRequestHandler.handle_request" title="Permalink to this definition">¶</a></dt>
-<dd><p>Handles a JSON request from the client.</p>
-<p>The request can contain at the same time a get, a set and a call request. Each of these requests can retrieve (resp. affect and call) multiple values at the same time, so for instance you can get the position, speed, load and temperature of multiple motors and get the pressure value of a sensor in the same request.</p>
-<p>The request are constructed as follows:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="p">{</span>
-    <span class="s">&#39;get&#39;</span><span class="p">:</span> <span class="p">{</span> <span class="o">...</span> <span class="p">},</span>
-    <span class="s">&#39;set&#39;</span><span class="p">:</span> <span class="p">{</span> <span class="o">...</span> <span class="p">},</span>
-    <span class="s">&#39;call&#39;</span><span class="p">:</span> <span class="p">{</span> <span class="o">...</span> <span class="p">}</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">It is not mandatory to give a get, a set and a call request, you can build a request with only a get field.</p>
-</div>
-<p>Each field of the request will be detailed in their respective handler.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="pypot.server.request.BaseRequestHandler.handle_set">
-<code class="descname">handle_set</code><span class="sig-paren">(</span><em>request</em><span class="sig-paren">)</span><a class="headerlink" href="#pypot.server.request.BaseRequestHandler.handle_set" title="Permalink to this definition">¶</a></dt>
-<dd><p>Handles the set field of a request.</p>
-<p>The set field is constructed as follows:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="p">{</span>
-    <span class="s">&#39;set&#39;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s">&#39;obj_name_1&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;var_path_1&#39;</span><span class="p">:</span> <span class="n">value</span><span class="p">,</span>
-                        <span class="s">&#39;var_path_2&#39;</span><span class="p">:</span> <span class="n">value</span><span class="p">,</span>
-                        <span class="c"># ...</span>
-                        <span class="p">},</span>
-        <span class="s">&#39;obj_name_2&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;var_path_1&#39;</span><span class="p">:</span> <span class="n">value</span><span class="p">,</span>
-                        <span class="s">&#39;var_path_2&#39;</span><span class="p">:</span> <span class="n">value</span><span class="p">,</span>
-                       <span class="c"># ...</span>
-                        <span class="p">},</span>
-        <span class="c"># ...</span>
-    <span class="p">}</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-<p>For each triple obj_name_1, var_path_1, value the handler will set the corresponding value to self.robot.obj_name_1.var_path_1: i.e. if we want to set the goal_position and goal_speed of the motor named l_knee_y to resp. 0 and 100 we would use:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="p">{</span>
-    <span class="s">&#39;set&#39;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s">&#39;l_knee_y&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;goal_position&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s">&#39;present_speed&#39;</span><span class="p">:</span> <span class="mi">100</span><span class="p">},</span>
-        <span class="p">}</span>
-    <span class="p">}</span>
-</pre></div>
-</div>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">The var_path could be complete path, e.g. &#8220;skeleton.left_foot.position.x&#8221;.</p>
-</div>
-</dd></dl>
-
-</dd></dl>
-
-</div>
-<div class="section" id="module-pypot.server.server">
-<span id="server-module"></span><h2><code class="xref py py-mod docutils literal"><span class="pre">server</span></code> Module<a class="headerlink" href="#module-pypot.server.server" title="Permalink to this headline">¶</a></h2>
-<dl class="class">
-<dt id="pypot.server.server.AbstractServer">
-<em class="property">class </em><code class="descclassname">pypot.server.server.</code><code class="descname">AbstractServer</code><span class="sig-paren">(</span><em>robot</em>, <em>host</em>, <em>port</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/server/server.html#AbstractServer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.server.server.AbstractServer" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference external" href="http://docs.python.org/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
-<dl class="method">
-<dt id="pypot.server.server.AbstractServer.run">
-<code class="descname">run</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/server/server.html#AbstractServer.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.server.server.AbstractServer.run" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="pypot.server.server.RemoteRobotServer">
-<em class="property">class </em><code class="descclassname">pypot.server.server.</code><code class="descname">RemoteRobotServer</code><span class="sig-paren">(</span><em>robot</em>, <em>host</em>, <em>port</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/server/server.html#RemoteRobotServer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.server.server.RemoteRobotServer" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#pypot.server.server.AbstractServer" title="pypot.server.server.AbstractServer"><code class="xref py py-class docutils literal"><span class="pre">pypot.server.server.AbstractServer</span></code></a></p>
-<dl class="method">
-<dt id="pypot.server.server.RemoteRobotServer.run">
-<code class="descname">run</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/server/server.html#RemoteRobotServer.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.server.server.RemoteRobotServer.run" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-</div>
 <div class="section" id="module-pypot.server.httpserver">
 <span id="httpserver-module"></span><h2><code class="xref py py-mod docutils literal"><span class="pre">httpserver</span></code> Module<a class="headerlink" href="#module-pypot.server.httpserver" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
@@ -514,7 +359,7 @@ The default is UTF-8.</p>
 <dl class="class">
 <dt id="pypot.server.httpserver.HTTPRobotServer">
 <em class="property">class </em><code class="descclassname">pypot.server.httpserver.</code><code class="descname">HTTPRobotServer</code><span class="sig-paren">(</span><em>robot</em>, <em>host</em>, <em>port</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/server/httpserver.html#HTTPRobotServer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.server.httpserver.HTTPRobotServer" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#pypot.server.server.AbstractServer" title="pypot.server.server.AbstractServer"><code class="xref py py-class docutils literal"><span class="pre">pypot.server.server.AbstractServer</span></code></a></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">pypot.server.server.AbstractServer</span></code></p>
 <p>Bottle based HTTPServer used to remote access a robot.</p>
 <p>Please refer to the REST API for an exhaustive list of the possible routes.</p>
 <dl class="method">
@@ -531,7 +376,7 @@ The default is UTF-8.</p>
 <dl class="class">
 <dt id="pypot.server.zmqserver.ZMQRobotServer">
 <em class="property">class </em><code class="descclassname">pypot.server.zmqserver.</code><code class="descname">ZMQRobotServer</code><span class="sig-paren">(</span><em>robot</em>, <em>host</em>, <em>port</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/server/zmqserver.html#ZMQRobotServer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.server.zmqserver.ZMQRobotServer" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#pypot.server.server.AbstractServer" title="pypot.server.server.AbstractServer"><code class="xref py py-class docutils literal"><span class="pre">pypot.server.server.AbstractServer</span></code></a></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">pypot.server.server.AbstractServer</span></code></p>
 <p>A ZMQServer allowing remote access of a robot instance.</p>
 <p>The server used the REQ/REP zmq pattern. You should always first send a request and then read the answer.</p>
 <dl class="method">
@@ -558,7 +403,7 @@ The default is UTF-8.</p>
 <dl class="class">
 <dt id="pypot.server.snap.SnapRobotServer">
 <em class="property">class </em><code class="descclassname">pypot.server.snap.</code><code class="descname">SnapRobotServer</code><span class="sig-paren">(</span><em>robot</em>, <em>host</em>, <em>port</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/server/snap.html#SnapRobotServer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.server.snap.SnapRobotServer" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#pypot.server.server.AbstractServer" title="pypot.server.server.AbstractServer"><code class="xref py py-class docutils literal"><span class="pre">pypot.server.server.AbstractServer</span></code></a></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">pypot.server.server.AbstractServer</span></code></p>
 <dl class="method">
 <dt id="pypot.server.snap.SnapRobotServer.run">
 <code class="descname">run</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/server/snap.html#SnapRobotServer.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.server.snap.SnapRobotServer.run" title="Permalink to this definition">¶</a></dt>
@@ -584,7 +429,7 @@ The default is UTF-8.</p>
 <div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
   <div class="navbar-inner">
     <ul class="nav navbar-nav ">
-        <li><a href="index.html">pypot 2.3.1 documentation</a></li>
+        <li><a href="index.html">pypot 2.4.0 documentation</a></li>
     </ul>
 <ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
       

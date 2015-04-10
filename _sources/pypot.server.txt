@@ -14,22 +14,6 @@
     :undoc-members:
     :show-inheritance:
 
-:mod:`request` Module
----------------------
-
-.. automodule:: pypot.server.request
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-:mod:`server` Module
---------------------
-
-.. automodule:: pypot.server.server
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
 :mod:`httpserver` Module
 ------------------------
 

@@ -9,7 +9,7 @@
   <head>
     <meta charset="utf-8" />
     
-    <title>dynamixel Package &mdash; pypot 2.3.1 documentation</title>
+    <title>dynamixel Package &mdash; pypot 2.4.0 documentation</title>
     <meta name="description" content="">
     <meta name="author" content="">
 
@@ -35,7 +35,7 @@
 <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
             URL_ROOT:    './',
-            VERSION:     '2.3.1',
+            VERSION:     '2.4.0',
             COLLAPSE_INDEX: false,
             FILE_SUFFIX: '.html',
             HAS_SOURCE:  true
@@ -50,7 +50,7 @@
 <script type="text/javascript">
 </script>
     <link rel="author" title="About these documents" href="about.html" />
-    <link rel="top" title="pypot 2.3.1 documentation" href="index.html" />
+    <link rel="top" title="pypot 2.4.0 documentation" href="index.html" />
     <link rel="up" title="Pypot’s API" href="api.html" />
     <link rel="next" title="primitive Package" href="pypot.primitive.html" />
     <link rel="prev" title="Pypot’s API" href="api.html" /> 
@@ -65,7 +65,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="index.html">pypot 2.3.1 documentation</a>
+          <a class="navbar-brand" href="index.html">pypot 2.4.0 documentation</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
@@ -79,7 +79,11 @@
 <li><a class="reference internal" href="#module-pypot.dynamixel.controller"><code class="docutils literal"><span class="pre">controller</span></code> Module</a></li>
 <li><a class="reference internal" href="#module-pypot.dynamixel.error"><code class="docutils literal"><span class="pre">error</span></code> Module</a></li>
 <li><a class="reference internal" href="#module-pypot.dynamixel.conversion"><code class="docutils literal"><span class="pre">conversion</span></code> Module</a></li>
-<li><a class="reference internal" href="#module-pypot.dynamixel.packet"><code class="docutils literal"><span class="pre">packet</span></code> Module</a></li>
+<li><a class="reference internal" href="#protocol-package"><code class="docutils literal"><span class="pre">protocol</span></code> Package</a><ul>
+<li><a class="reference internal" href="#module-pypot.dynamixel.protocol.v1"><code class="docutils literal"><span class="pre">v1</span></code> Module</a></li>
+<li><a class="reference internal" href="#module-pypot.dynamixel.protocol.v2"><code class="docutils literal"><span class="pre">v2</span></code> Module</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -134,7 +138,11 @@
 <li><a class="reference internal" href="#module-pypot.dynamixel.controller"><code class="docutils literal"><span class="pre">controller</span></code> Module</a></li>
 <li><a class="reference internal" href="#module-pypot.dynamixel.error"><code class="docutils literal"><span class="pre">error</span></code> Module</a></li>
 <li><a class="reference internal" href="#module-pypot.dynamixel.conversion"><code class="docutils literal"><span class="pre">conversion</span></code> Module</a></li>
-<li><a class="reference internal" href="#module-pypot.dynamixel.packet"><code class="docutils literal"><span class="pre">packet</span></code> Module</a></li>
+<li><a class="reference internal" href="#protocol-package"><code class="docutils literal"><span class="pre">protocol</span></code> Package</a><ul>
+<li><a class="reference internal" href="#module-pypot.dynamixel.protocol.v1"><code class="docutils literal"><span class="pre">v1</span></code> Module</a></li>
+<li><a class="reference internal" href="#module-pypot.dynamixel.protocol.v2"><code class="docutils literal"><span class="pre">v2</span></code> Module</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -609,6 +617,22 @@
 <code class="descclassname">pypot.dynamixel.conversion.</code><code class="descname">alarm_to_dxl</code><span class="sig-paren">(</span><em>value</em>, <em>model</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/dynamixel/conversion.html#alarm_to_dxl"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.conversion.alarm_to_dxl" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
+<dl class="attribute">
+<dt id="pypot.dynamixel.conversion.XL320LEDColors">
+<code class="descclassname">pypot.dynamixel.conversion.</code><code class="descname">XL320LEDColors</code><a class="headerlink" href="#pypot.dynamixel.conversion.XL320LEDColors" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal"><span class="pre">Colors</span></code></p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pypot.dynamixel.conversion.dxl_to_led_color">
+<code class="descclassname">pypot.dynamixel.conversion.</code><code class="descname">dxl_to_led_color</code><span class="sig-paren">(</span><em>value</em>, <em>model</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/dynamixel/conversion.html#dxl_to_led_color"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.conversion.dxl_to_led_color" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pypot.dynamixel.conversion.led_color_to_dxl">
+<code class="descclassname">pypot.dynamixel.conversion.</code><code class="descname">led_color_to_dxl</code><span class="sig-paren">(</span><em>value</em>, <em>model</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/dynamixel/conversion.html#led_color_to_dxl"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.conversion.led_color_to_dxl" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="function">
 <dt id="pypot.dynamixel.conversion.dxl_to_bool">
 <code class="descclassname">pypot.dynamixel.conversion.</code><code class="descname">dxl_to_bool</code><span class="sig-paren">(</span><em>value</em>, <em>model</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/dynamixel/conversion.html#dxl_to_bool"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.conversion.dxl_to_bool" title="Permalink to this definition">¶</a></dt>
@@ -640,73 +664,50 @@
 <dd></dd></dl>
 
 </div>
-<div class="section" id="module-pypot.dynamixel.packet">
-<span id="packet-module"></span><h2><code class="xref py py-mod docutils literal"><span class="pre">packet</span></code> Module<a class="headerlink" href="#module-pypot.dynamixel.packet" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="protocol-package">
+<h2><code class="xref py py-mod docutils literal"><span class="pre">protocol</span></code> Package<a class="headerlink" href="#protocol-package" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-pypot.dynamixel.protocol.v1">
+<span id="v1-module"></span><h3><code class="xref py py-mod docutils literal"><span class="pre">v1</span></code> Module<a class="headerlink" href="#module-pypot.dynamixel.protocol.v1" title="Permalink to this headline">¶</a></h3>
 <dl class="class">
-<dt id="pypot.dynamixel.packet.DxlInstruction">
-<em class="property">class </em><code class="descclassname">pypot.dynamixel.packet.</code><code class="descname">DxlInstruction</code><a class="headerlink" href="#pypot.dynamixel.packet.DxlInstruction" title="Permalink to this definition">¶</a></dt>
+<dt id="pypot.dynamixel.protocol.v1.DxlInstruction">
+<em class="property">class </em><code class="descclassname">pypot.dynamixel.protocol.v1.</code><code class="descname">DxlInstruction</code><a class="reference internal" href="_modules/pypot/dynamixel/protocol/v1.html#DxlInstruction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.protocol.v1.DxlInstruction" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference external" href="http://docs.python.org/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
 <dl class="attribute">
-<dt id="pypot.dynamixel.packet.DxlInstruction.PING">
-<code class="descname">PING</code><em class="property"> = 1</em><a class="headerlink" href="#pypot.dynamixel.packet.DxlInstruction.PING" title="Permalink to this definition">¶</a></dt>
+<dt id="pypot.dynamixel.protocol.v1.DxlInstruction.PING">
+<code class="descname">PING</code><em class="property"> = 1</em><a class="headerlink" href="#pypot.dynamixel.protocol.v1.DxlInstruction.PING" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
-<dt id="pypot.dynamixel.packet.DxlInstruction.READ_DATA">
-<code class="descname">READ_DATA</code><em class="property"> = 2</em><a class="headerlink" href="#pypot.dynamixel.packet.DxlInstruction.READ_DATA" title="Permalink to this definition">¶</a></dt>
+<dt id="pypot.dynamixel.protocol.v1.DxlInstruction.READ_DATA">
+<code class="descname">READ_DATA</code><em class="property"> = 2</em><a class="headerlink" href="#pypot.dynamixel.protocol.v1.DxlInstruction.READ_DATA" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
-<dt id="pypot.dynamixel.packet.DxlInstruction.SYNC_READ">
-<code class="descname">SYNC_READ</code><em class="property"> = 132</em><a class="headerlink" href="#pypot.dynamixel.packet.DxlInstruction.SYNC_READ" title="Permalink to this definition">¶</a></dt>
+<dt id="pypot.dynamixel.protocol.v1.DxlInstruction.WRITE_DATA">
+<code class="descname">WRITE_DATA</code><em class="property"> = 3</em><a class="headerlink" href="#pypot.dynamixel.protocol.v1.DxlInstruction.WRITE_DATA" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
-<dt id="pypot.dynamixel.packet.DxlInstruction.SYNC_WRITE">
-<code class="descname">SYNC_WRITE</code><em class="property"> = 131</em><a class="headerlink" href="#pypot.dynamixel.packet.DxlInstruction.SYNC_WRITE" title="Permalink to this definition">¶</a></dt>
+<dt id="pypot.dynamixel.protocol.v1.DxlInstruction.RESET">
+<code class="descname">RESET</code><em class="property"> = 6</em><a class="headerlink" href="#pypot.dynamixel.protocol.v1.DxlInstruction.RESET" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
-<dt id="pypot.dynamixel.packet.DxlInstruction.WRITE_DATA">
-<code class="descname">WRITE_DATA</code><em class="property"> = 3</em><a class="headerlink" href="#pypot.dynamixel.packet.DxlInstruction.WRITE_DATA" title="Permalink to this definition">¶</a></dt>
+<dt id="pypot.dynamixel.protocol.v1.DxlInstruction.SYNC_WRITE">
+<code class="descname">SYNC_WRITE</code><em class="property"> = 131</em><a class="headerlink" href="#pypot.dynamixel.protocol.v1.DxlInstruction.SYNC_WRITE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pypot.dynamixel.protocol.v1.DxlInstruction.SYNC_READ">
+<code class="descname">SYNC_READ</code><em class="property"> = 132</em><a class="headerlink" href="#pypot.dynamixel.protocol.v1.DxlInstruction.SYNC_READ" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
 <dl class="class">
-<dt id="pypot.dynamixel.packet.DxlInstructionPacket">
-<em class="property">class </em><code class="descclassname">pypot.dynamixel.packet.</code><code class="descname">DxlInstructionPacket</code><a class="headerlink" href="#pypot.dynamixel.packet.DxlInstructionPacket" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#pypot.dynamixel.packet.DxlInstructionPacket" title="pypot.dynamixel.packet.DxlInstructionPacket"><code class="xref py py-class docutils literal"><span class="pre">pypot.dynamixel.packet.DxlInstructionPacket</span></code></a></p>
-<p>This class is used to represent a dynamixel instruction packet.</p>
-<p>An instruction packet is constructed as follows:
-[0xFF, 0xFF, ID, LENGTH, INSTRUCTION, PARAM 1, PARAM 2, ..., PARAM N, CHECKSUM]</p>
-<p>(for more details see <a class="reference external" href="http://support.robotis.com/en/product/dxl_main.htm">http://support.robotis.com/en/product/dxl_main.htm</a>)</p>
-<dl class="attribute">
-<dt id="pypot.dynamixel.packet.DxlInstructionPacket.checksum">
-<code class="descname">checksum</code><a class="headerlink" href="#pypot.dynamixel.packet.DxlInstructionPacket.checksum" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pypot.dynamixel.packet.DxlInstructionPacket.length">
-<code class="descname">length</code><a class="headerlink" href="#pypot.dynamixel.packet.DxlInstructionPacket.length" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="pypot.dynamixel.packet.DxlInstructionPacket.to_array">
-<code class="descname">to_array</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pypot.dynamixel.packet.DxlInstructionPacket.to_array" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="pypot.dynamixel.packet.DxlInstructionPacket.to_string">
-<code class="descname">to_string</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pypot.dynamixel.packet.DxlInstructionPacket.to_string" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="pypot.dynamixel.packet.DxlPacketHeader">
-<em class="property">class </em><code class="descclassname">pypot.dynamixel.packet.</code><code class="descname">DxlPacketHeader</code><a class="headerlink" href="#pypot.dynamixel.packet.DxlPacketHeader" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#pypot.dynamixel.packet.DxlPacketHeader" title="pypot.dynamixel.packet.DxlPacketHeader"><code class="xref py py-class docutils literal"><span class="pre">pypot.dynamixel.packet.DxlPacketHeader</span></code></a></p>
+<dt id="pypot.dynamixel.protocol.v1.DxlPacketHeader">
+<em class="property">class </em><code class="descclassname">pypot.dynamixel.protocol.v1.</code><code class="descname">DxlPacketHeader</code><a class="reference internal" href="_modules/pypot/dynamixel/protocol/v1.html#DxlPacketHeader"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.protocol.v1.DxlPacketHeader" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pypot.dynamixel.protocol.v1.DxlPacketHeader" title="pypot.dynamixel.protocol.v1.DxlPacketHeader"><code class="xref py py-class docutils literal"><span class="pre">pypot.dynamixel.protocol.v1.DxlPacketHeader</span></code></a></p>
 <p>This class represents the header of a Dxl Packet.</p>
 <dl class="docutils">
 <dt>They are constructed as follows [0xFF, 0xFF, ID, LENGTH] where:</dt>
@@ -716,73 +717,272 @@
 </ul>
 </dd>
 </dl>
+<dl class="attribute">
+<dt id="pypot.dynamixel.protocol.v1.DxlPacketHeader.length">
+<code class="descname">length</code><em class="property"> = 4</em><a class="headerlink" href="#pypot.dynamixel.protocol.v1.DxlPacketHeader.length" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pypot.dynamixel.protocol.v1.DxlPacketHeader.marker">
+<code class="descname">marker</code><em class="property"> = bytearray(b'\xff\xff')</em><a class="headerlink" href="#pypot.dynamixel.protocol.v1.DxlPacketHeader.marker" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="classmethod">
-<dt id="pypot.dynamixel.packet.DxlPacketHeader.from_string">
-<em class="property">classmethod </em><code class="descname">from_string</code><span class="sig-paren">(</span><em>data</em><span class="sig-paren">)</span><a class="headerlink" href="#pypot.dynamixel.packet.DxlPacketHeader.from_string" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pypot.dynamixel.packet.DxlPacketHeader.length">
-<code class="descname">length</code><em class="property"> = 4</em><a class="headerlink" href="#pypot.dynamixel.packet.DxlPacketHeader.length" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pypot.dynamixel.packet.DxlPacketHeader.marker">
-<code class="descname">marker</code><em class="property"> = bytearray(b'\xff\xff')</em><a class="headerlink" href="#pypot.dynamixel.packet.DxlPacketHeader.marker" title="Permalink to this definition">¶</a></dt>
+<dt id="pypot.dynamixel.protocol.v1.DxlPacketHeader.from_string">
+<em class="property">classmethod </em><code class="descname">from_string</code><span class="sig-paren">(</span><em>data</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/dynamixel/protocol/v1.html#DxlPacketHeader.from_string"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.protocol.v1.DxlPacketHeader.from_string" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
 <dl class="class">
-<dt id="pypot.dynamixel.packet.DxlPingPacket">
-<em class="property">class </em><code class="descclassname">pypot.dynamixel.packet.</code><code class="descname">DxlPingPacket</code><a class="headerlink" href="#pypot.dynamixel.packet.DxlPingPacket" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#pypot.dynamixel.packet.DxlInstructionPacket" title="pypot.dynamixel.packet.DxlInstructionPacket"><code class="xref py py-class docutils literal"><span class="pre">pypot.dynamixel.packet.DxlInstructionPacket</span></code></a></p>
+<dt id="pypot.dynamixel.protocol.v1.DxlInstructionPacket">
+<em class="property">class </em><code class="descclassname">pypot.dynamixel.protocol.v1.</code><code class="descname">DxlInstructionPacket</code><a class="reference internal" href="_modules/pypot/dynamixel/protocol/v1.html#DxlInstructionPacket"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.protocol.v1.DxlInstructionPacket" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pypot.dynamixel.protocol.v1.DxlInstructionPacket" title="pypot.dynamixel.protocol.v1.DxlInstructionPacket"><code class="xref py py-class docutils literal"><span class="pre">pypot.dynamixel.protocol.v1.DxlInstructionPacket</span></code></a></p>
+<p>This class is used to represent a dynamixel instruction packet.</p>
+<p>An instruction packet is constructed as follows:
+[0xFF, 0xFF, ID, LENGTH, INSTRUCTION, PARAM 1, PARAM 2, ..., PARAM N, CHECKSUM]</p>
+<p>(for more details see <a class="reference external" href="http://support.robotis.com/en/product/dxl_main.htm">http://support.robotis.com/en/product/dxl_main.htm</a>)</p>
+<dl class="method">
+<dt id="pypot.dynamixel.protocol.v1.DxlInstructionPacket.to_array">
+<code class="descname">to_array</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/dynamixel/protocol/v1.html#DxlInstructionPacket.to_array"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.protocol.v1.DxlInstructionPacket.to_array" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.protocol.v1.DxlInstructionPacket.to_string">
+<code class="descname">to_string</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/dynamixel/protocol/v1.html#DxlInstructionPacket.to_string"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.protocol.v1.DxlInstructionPacket.to_string" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pypot.dynamixel.protocol.v1.DxlInstructionPacket.length">
+<code class="descname">length</code><a class="headerlink" href="#pypot.dynamixel.protocol.v1.DxlInstructionPacket.length" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pypot.dynamixel.protocol.v1.DxlInstructionPacket.checksum">
+<code class="descname">checksum</code><a class="headerlink" href="#pypot.dynamixel.protocol.v1.DxlInstructionPacket.checksum" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pypot.dynamixel.protocol.v1.DxlPingPacket">
+<em class="property">class </em><code class="descclassname">pypot.dynamixel.protocol.v1.</code><code class="descname">DxlPingPacket</code><a class="reference internal" href="_modules/pypot/dynamixel/protocol/v1.html#DxlPingPacket"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.protocol.v1.DxlPingPacket" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pypot.dynamixel.protocol.v1.DxlInstructionPacket" title="pypot.dynamixel.protocol.v1.DxlInstructionPacket"><code class="xref py py-class docutils literal"><span class="pre">pypot.dynamixel.protocol.v1.DxlInstructionPacket</span></code></a></p>
 <p>This class is used to represent ping packet.</p>
 </dd></dl>
 
 <dl class="class">
-<dt id="pypot.dynamixel.packet.DxlReadDataPacket">
-<em class="property">class </em><code class="descclassname">pypot.dynamixel.packet.</code><code class="descname">DxlReadDataPacket</code><a class="headerlink" href="#pypot.dynamixel.packet.DxlReadDataPacket" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#pypot.dynamixel.packet.DxlInstructionPacket" title="pypot.dynamixel.packet.DxlInstructionPacket"><code class="xref py py-class docutils literal"><span class="pre">pypot.dynamixel.packet.DxlInstructionPacket</span></code></a></p>
+<dt id="pypot.dynamixel.protocol.v1.DxlResetPacket">
+<em class="property">class </em><code class="descclassname">pypot.dynamixel.protocol.v1.</code><code class="descname">DxlResetPacket</code><a class="reference internal" href="_modules/pypot/dynamixel/protocol/v1.html#DxlResetPacket"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.protocol.v1.DxlResetPacket" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pypot.dynamixel.protocol.v1.DxlInstructionPacket" title="pypot.dynamixel.protocol.v1.DxlInstructionPacket"><code class="xref py py-class docutils literal"><span class="pre">pypot.dynamixel.protocol.v1.DxlInstructionPacket</span></code></a></p>
+<p>This class is used to represent reset packet.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="pypot.dynamixel.protocol.v1.DxlReadDataPacket">
+<em class="property">class </em><code class="descclassname">pypot.dynamixel.protocol.v1.</code><code class="descname">DxlReadDataPacket</code><a class="reference internal" href="_modules/pypot/dynamixel/protocol/v1.html#DxlReadDataPacket"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.protocol.v1.DxlReadDataPacket" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pypot.dynamixel.protocol.v1.DxlInstructionPacket" title="pypot.dynamixel.protocol.v1.DxlInstructionPacket"><code class="xref py py-class docutils literal"><span class="pre">pypot.dynamixel.protocol.v1.DxlInstructionPacket</span></code></a></p>
 <p>This class is used to represent read data packet (to read value).</p>
 </dd></dl>
 
 <dl class="class">
-<dt id="pypot.dynamixel.packet.DxlStatusPacket">
-<em class="property">class </em><code class="descclassname">pypot.dynamixel.packet.</code><code class="descname">DxlStatusPacket</code><a class="headerlink" href="#pypot.dynamixel.packet.DxlStatusPacket" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#pypot.dynamixel.packet.DxlStatusPacket" title="pypot.dynamixel.packet.DxlStatusPacket"><code class="xref py py-class docutils literal"><span class="pre">pypot.dynamixel.packet.DxlStatusPacket</span></code></a></p>
+<dt id="pypot.dynamixel.protocol.v1.DxlSyncReadPacket">
+<em class="property">class </em><code class="descclassname">pypot.dynamixel.protocol.v1.</code><code class="descname">DxlSyncReadPacket</code><a class="reference internal" href="_modules/pypot/dynamixel/protocol/v1.html#DxlSyncReadPacket"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.protocol.v1.DxlSyncReadPacket" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pypot.dynamixel.protocol.v1.DxlInstructionPacket" title="pypot.dynamixel.protocol.v1.DxlInstructionPacket"><code class="xref py py-class docutils literal"><span class="pre">pypot.dynamixel.protocol.v1.DxlInstructionPacket</span></code></a></p>
+<p>This class is used to represent sync read packet (to synchronously read values).</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="pypot.dynamixel.protocol.v1.DxlWriteDataPacket">
+<em class="property">class </em><code class="descclassname">pypot.dynamixel.protocol.v1.</code><code class="descname">DxlWriteDataPacket</code><a class="reference internal" href="_modules/pypot/dynamixel/protocol/v1.html#DxlWriteDataPacket"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.protocol.v1.DxlWriteDataPacket" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pypot.dynamixel.protocol.v1.DxlInstructionPacket" title="pypot.dynamixel.protocol.v1.DxlInstructionPacket"><code class="xref py py-class docutils literal"><span class="pre">pypot.dynamixel.protocol.v1.DxlInstructionPacket</span></code></a></p>
+<p>This class is used to reprensent write data packet (to write value).</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="pypot.dynamixel.protocol.v1.DxlSyncWritePacket">
+<em class="property">class </em><code class="descclassname">pypot.dynamixel.protocol.v1.</code><code class="descname">DxlSyncWritePacket</code><a class="reference internal" href="_modules/pypot/dynamixel/protocol/v1.html#DxlSyncWritePacket"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.protocol.v1.DxlSyncWritePacket" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pypot.dynamixel.protocol.v1.DxlInstructionPacket" title="pypot.dynamixel.protocol.v1.DxlInstructionPacket"><code class="xref py py-class docutils literal"><span class="pre">pypot.dynamixel.protocol.v1.DxlInstructionPacket</span></code></a></p>
+<p>This class is used to represent sync write packet (to synchronously write values).</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="pypot.dynamixel.protocol.v1.DxlStatusPacket">
+<em class="property">class </em><code class="descclassname">pypot.dynamixel.protocol.v1.</code><code class="descname">DxlStatusPacket</code><a class="reference internal" href="_modules/pypot/dynamixel/protocol/v1.html#DxlStatusPacket"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.protocol.v1.DxlStatusPacket" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pypot.dynamixel.protocol.v1.DxlStatusPacket" title="pypot.dynamixel.protocol.v1.DxlStatusPacket"><code class="xref py py-class docutils literal"><span class="pre">pypot.dynamixel.protocol.v1.DxlStatusPacket</span></code></a></p>
 <p>This class is used to represent a dynamixel status packet.</p>
 <p>A status packet is constructed as follows:
 [0xFF, 0xFF, ID, LENGTH, ERROR, PARAM 1, PARAM 2, ..., PARAM N, CHECKSUM]</p>
 <p>(for more details see <a class="reference external" href="http://support.robotis.com/en/product/dxl_main.htm">http://support.robotis.com/en/product/dxl_main.htm</a>)</p>
 <dl class="classmethod">
-<dt id="pypot.dynamixel.packet.DxlStatusPacket.from_string">
-<em class="property">classmethod </em><code class="descname">from_string</code><span class="sig-paren">(</span><em>data</em><span class="sig-paren">)</span><a class="headerlink" href="#pypot.dynamixel.packet.DxlStatusPacket.from_string" title="Permalink to this definition">¶</a></dt>
+<dt id="pypot.dynamixel.protocol.v1.DxlStatusPacket.from_string">
+<em class="property">classmethod </em><code class="descname">from_string</code><span class="sig-paren">(</span><em>data</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/dynamixel/protocol/v1.html#DxlStatusPacket.from_string"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.protocol.v1.DxlStatusPacket.from_string" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-pypot.dynamixel.protocol.v2">
+<span id="v2-module"></span><h3><code class="xref py py-mod docutils literal"><span class="pre">v2</span></code> Module<a class="headerlink" href="#module-pypot.dynamixel.protocol.v2" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="pypot.dynamixel.protocol.v2.DxlInstruction">
+<em class="property">class </em><code class="descclassname">pypot.dynamixel.protocol.v2.</code><code class="descname">DxlInstruction</code><a class="reference internal" href="_modules/pypot/dynamixel/protocol/v2.html#DxlInstruction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.protocol.v2.DxlInstruction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="http://docs.python.org/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<dl class="attribute">
+<dt id="pypot.dynamixel.protocol.v2.DxlInstruction.PING">
+<code class="descname">PING</code><em class="property"> = 1</em><a class="headerlink" href="#pypot.dynamixel.protocol.v2.DxlInstruction.PING" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pypot.dynamixel.protocol.v2.DxlInstruction.READ_DATA">
+<code class="descname">READ_DATA</code><em class="property"> = 2</em><a class="headerlink" href="#pypot.dynamixel.protocol.v2.DxlInstruction.READ_DATA" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pypot.dynamixel.protocol.v2.DxlInstruction.WRITE_DATA">
+<code class="descname">WRITE_DATA</code><em class="property"> = 3</em><a class="headerlink" href="#pypot.dynamixel.protocol.v2.DxlInstruction.WRITE_DATA" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pypot.dynamixel.protocol.v2.DxlInstruction.RESET">
+<code class="descname">RESET</code><em class="property"> = 6</em><a class="headerlink" href="#pypot.dynamixel.protocol.v2.DxlInstruction.RESET" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pypot.dynamixel.protocol.v2.DxlInstruction.SYNC_READ">
+<code class="descname">SYNC_READ</code><em class="property"> = 130</em><a class="headerlink" href="#pypot.dynamixel.protocol.v2.DxlInstruction.SYNC_READ" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pypot.dynamixel.protocol.v2.DxlInstruction.SYNC_WRITE">
+<code class="descname">SYNC_WRITE</code><em class="property"> = 131</em><a class="headerlink" href="#pypot.dynamixel.protocol.v2.DxlInstruction.SYNC_WRITE" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
 <dl class="class">
-<dt id="pypot.dynamixel.packet.DxlSyncReadPacket">
-<em class="property">class </em><code class="descclassname">pypot.dynamixel.packet.</code><code class="descname">DxlSyncReadPacket</code><a class="headerlink" href="#pypot.dynamixel.packet.DxlSyncReadPacket" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#pypot.dynamixel.packet.DxlInstructionPacket" title="pypot.dynamixel.packet.DxlInstructionPacket"><code class="xref py py-class docutils literal"><span class="pre">pypot.dynamixel.packet.DxlInstructionPacket</span></code></a></p>
+<dt id="pypot.dynamixel.protocol.v2.DxlPacketHeader">
+<em class="property">class </em><code class="descclassname">pypot.dynamixel.protocol.v2.</code><code class="descname">DxlPacketHeader</code><a class="reference internal" href="_modules/pypot/dynamixel/protocol/v2.html#DxlPacketHeader"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.protocol.v2.DxlPacketHeader" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pypot.dynamixel.protocol.v2.DxlPacketHeader" title="pypot.dynamixel.protocol.v2.DxlPacketHeader"><code class="xref py py-class docutils literal"><span class="pre">pypot.dynamixel.protocol.v2.DxlPacketHeader</span></code></a></p>
+<p>This class represents the header of a Dxl Packet.</p>
+<dl class="docutils">
+<dt>They are constructed as follows [0xFF, 0xFF, 0xFD, 0x00, ID, LEN_L, LEN_H] where:</dt>
+<dd><ul class="first last simple">
+<li>ID represents the ID of the motor who received (resp. sent) the intruction (resp. status) packet.</li>
+<li>LEN_L, LEN_H represents the length of the rest of the packet</li>
+</ul>
+</dd>
+</dl>
+<dl class="attribute">
+<dt id="pypot.dynamixel.protocol.v2.DxlPacketHeader.length">
+<code class="descname">length</code><em class="property"> = 7</em><a class="headerlink" href="#pypot.dynamixel.protocol.v2.DxlPacketHeader.length" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pypot.dynamixel.protocol.v2.DxlPacketHeader.marker">
+<code class="descname">marker</code><em class="property"> = bytearray(b'\xff\xff\xfd\x00')</em><a class="headerlink" href="#pypot.dynamixel.protocol.v2.DxlPacketHeader.marker" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="classmethod">
+<dt id="pypot.dynamixel.protocol.v2.DxlPacketHeader.from_string">
+<em class="property">classmethod </em><code class="descname">from_string</code><span class="sig-paren">(</span><em>data</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/dynamixel/protocol/v2.html#DxlPacketHeader.from_string"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.protocol.v2.DxlPacketHeader.from_string" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pypot.dynamixel.protocol.v2.DxlInstructionPacket">
+<em class="property">class </em><code class="descclassname">pypot.dynamixel.protocol.v2.</code><code class="descname">DxlInstructionPacket</code><a class="reference internal" href="_modules/pypot/dynamixel/protocol/v2.html#DxlInstructionPacket"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.protocol.v2.DxlInstructionPacket" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pypot.dynamixel.protocol.v2.DxlInstructionPacket" title="pypot.dynamixel.protocol.v2.DxlInstructionPacket"><code class="xref py py-class docutils literal"><span class="pre">pypot.dynamixel.protocol.v2.DxlInstructionPacket</span></code></a></p>
+<p>This class is used to represent a dynamixel instruction packet.</p>
+<p>An instruction packet is constructed as follows:
+[0xFF, 0xFF, 0xFD, 0x00, ID, LEN_L, LEN_H, INST, PARAM 1, PARAM 2, ..., PARAM N, CRC_L, CRC_H]</p>
+<p>(for more details see <a class="reference external" href="http://support.robotis.com/en/product/dxl_main.htm">http://support.robotis.com/en/product/dxl_main.htm</a>)</p>
+<dl class="method">
+<dt id="pypot.dynamixel.protocol.v2.DxlInstructionPacket.to_array">
+<code class="descname">to_array</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/dynamixel/protocol/v2.html#DxlInstructionPacket.to_array"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.protocol.v2.DxlInstructionPacket.to_array" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.protocol.v2.DxlInstructionPacket.to_string">
+<code class="descname">to_string</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/dynamixel/protocol/v2.html#DxlInstructionPacket.to_string"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.protocol.v2.DxlInstructionPacket.to_string" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pypot.dynamixel.protocol.v2.DxlInstructionPacket.length">
+<code class="descname">length</code><a class="headerlink" href="#pypot.dynamixel.protocol.v2.DxlInstructionPacket.length" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pypot.dynamixel.protocol.v2.DxlInstructionPacket.checksum">
+<code class="descname">checksum</code><a class="headerlink" href="#pypot.dynamixel.protocol.v2.DxlInstructionPacket.checksum" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pypot.dynamixel.protocol.v2.DxlPingPacket">
+<em class="property">class </em><code class="descclassname">pypot.dynamixel.protocol.v2.</code><code class="descname">DxlPingPacket</code><a class="reference internal" href="_modules/pypot/dynamixel/protocol/v2.html#DxlPingPacket"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.protocol.v2.DxlPingPacket" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pypot.dynamixel.protocol.v2.DxlInstructionPacket" title="pypot.dynamixel.protocol.v2.DxlInstructionPacket"><code class="xref py py-class docutils literal"><span class="pre">pypot.dynamixel.protocol.v2.DxlInstructionPacket</span></code></a></p>
+<p>This class is used to represent ping packet.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="pypot.dynamixel.protocol.v2.DxlResetPacket">
+<em class="property">class </em><code class="descclassname">pypot.dynamixel.protocol.v2.</code><code class="descname">DxlResetPacket</code><a class="reference internal" href="_modules/pypot/dynamixel/protocol/v2.html#DxlResetPacket"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.protocol.v2.DxlResetPacket" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pypot.dynamixel.protocol.v2.DxlInstructionPacket" title="pypot.dynamixel.protocol.v2.DxlInstructionPacket"><code class="xref py py-class docutils literal"><span class="pre">pypot.dynamixel.protocol.v2.DxlInstructionPacket</span></code></a></p>
+<p>This class is used to represent factory reset packet.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="pypot.dynamixel.protocol.v2.DxlReadDataPacket">
+<em class="property">class </em><code class="descclassname">pypot.dynamixel.protocol.v2.</code><code class="descname">DxlReadDataPacket</code><a class="reference internal" href="_modules/pypot/dynamixel/protocol/v2.html#DxlReadDataPacket"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.protocol.v2.DxlReadDataPacket" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pypot.dynamixel.protocol.v2.DxlInstructionPacket" title="pypot.dynamixel.protocol.v2.DxlInstructionPacket"><code class="xref py py-class docutils literal"><span class="pre">pypot.dynamixel.protocol.v2.DxlInstructionPacket</span></code></a></p>
+<p>This class is used to represent read data packet (to read value).</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="pypot.dynamixel.protocol.v2.DxlSyncReadPacket">
+<em class="property">class </em><code class="descclassname">pypot.dynamixel.protocol.v2.</code><code class="descname">DxlSyncReadPacket</code><a class="reference internal" href="_modules/pypot/dynamixel/protocol/v2.html#DxlSyncReadPacket"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.protocol.v2.DxlSyncReadPacket" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pypot.dynamixel.protocol.v2.DxlInstructionPacket" title="pypot.dynamixel.protocol.v2.DxlInstructionPacket"><code class="xref py py-class docutils literal"><span class="pre">pypot.dynamixel.protocol.v2.DxlInstructionPacket</span></code></a></p>
 <p>This class is used to represent sync read packet (to synchronously read values).</p>
 </dd></dl>
 
 <dl class="class">
-<dt id="pypot.dynamixel.packet.DxlSyncWritePacket">
-<em class="property">class </em><code class="descclassname">pypot.dynamixel.packet.</code><code class="descname">DxlSyncWritePacket</code><a class="headerlink" href="#pypot.dynamixel.packet.DxlSyncWritePacket" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#pypot.dynamixel.packet.DxlInstructionPacket" title="pypot.dynamixel.packet.DxlInstructionPacket"><code class="xref py py-class docutils literal"><span class="pre">pypot.dynamixel.packet.DxlInstructionPacket</span></code></a></p>
+<dt id="pypot.dynamixel.protocol.v2.DxlWriteDataPacket">
+<em class="property">class </em><code class="descclassname">pypot.dynamixel.protocol.v2.</code><code class="descname">DxlWriteDataPacket</code><a class="reference internal" href="_modules/pypot/dynamixel/protocol/v2.html#DxlWriteDataPacket"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.protocol.v2.DxlWriteDataPacket" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pypot.dynamixel.protocol.v2.DxlInstructionPacket" title="pypot.dynamixel.protocol.v2.DxlInstructionPacket"><code class="xref py py-class docutils literal"><span class="pre">pypot.dynamixel.protocol.v2.DxlInstructionPacket</span></code></a></p>
+<p>This class is used to reprensent write data packet (to write value).</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="pypot.dynamixel.protocol.v2.DxlSyncWritePacket">
+<em class="property">class </em><code class="descclassname">pypot.dynamixel.protocol.v2.</code><code class="descname">DxlSyncWritePacket</code><a class="reference internal" href="_modules/pypot/dynamixel/protocol/v2.html#DxlSyncWritePacket"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.protocol.v2.DxlSyncWritePacket" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pypot.dynamixel.protocol.v2.DxlInstructionPacket" title="pypot.dynamixel.protocol.v2.DxlInstructionPacket"><code class="xref py py-class docutils literal"><span class="pre">pypot.dynamixel.protocol.v2.DxlInstructionPacket</span></code></a></p>
 <p>This class is used to represent sync write packet (to synchronously write values).</p>
 </dd></dl>
 
 <dl class="class">
-<dt id="pypot.dynamixel.packet.DxlWriteDataPacket">
-<em class="property">class </em><code class="descclassname">pypot.dynamixel.packet.</code><code class="descname">DxlWriteDataPacket</code><a class="headerlink" href="#pypot.dynamixel.packet.DxlWriteDataPacket" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#pypot.dynamixel.packet.DxlInstructionPacket" title="pypot.dynamixel.packet.DxlInstructionPacket"><code class="xref py py-class docutils literal"><span class="pre">pypot.dynamixel.packet.DxlInstructionPacket</span></code></a></p>
-<p>This class is used to reprensent write data packet (to write value).</p>
+<dt id="pypot.dynamixel.protocol.v2.DxlStatusPacket">
+<em class="property">class </em><code class="descclassname">pypot.dynamixel.protocol.v2.</code><code class="descname">DxlStatusPacket</code><a class="reference internal" href="_modules/pypot/dynamixel/protocol/v2.html#DxlStatusPacket"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.protocol.v2.DxlStatusPacket" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pypot.dynamixel.protocol.v2.DxlStatusPacket" title="pypot.dynamixel.protocol.v2.DxlStatusPacket"><code class="xref py py-class docutils literal"><span class="pre">pypot.dynamixel.protocol.v2.DxlStatusPacket</span></code></a></p>
+<p>This class is used to represent a dynamixel status packet.</p>
+<p>A status packet is constructed as follows:
+[0xFF, 0xFF, 0xFD, 0x00, ID, LEN_L, LEN_H, 0x55, ERROR, PARAM 1, PARAM 2, ..., PARAM N, CRC_L, CRC_H]</p>
+<p>(for more details see <a class="reference external" href="http://support.robotis.com/en/product/dxl_main.htm">http://support.robotis.com/en/product/dxl_main.htm</a>)</p>
+<dl class="classmethod">
+<dt id="pypot.dynamixel.protocol.v2.DxlStatusPacket.from_string">
+<em class="property">classmethod </em><code class="descname">from_string</code><span class="sig-paren">(</span><em>data</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/dynamixel/protocol/v2.html#DxlStatusPacket.from_string"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.protocol.v2.DxlStatusPacket.from_string" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 </dd></dl>
 
+<dl class="function">
+<dt id="pypot.dynamixel.protocol.v2.crc16">
+<code class="descclassname">pypot.dynamixel.protocol.v2.</code><code class="descname">crc16</code><span class="sig-paren">(</span><em>data_blk</em>, <em>data_blk_size</em>, <em>crc_accum=0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/dynamixel/protocol/v2.html#crc16"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.protocol.v2.crc16" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
 </div>
 </div>
 
@@ -801,7 +1001,7 @@
 <div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
   <div class="navbar-inner">
     <ul class="nav navbar-nav ">
-        <li><a href="index.html">pypot 2.3.1 documentation</a></li>
+        <li><a href="index.html">pypot 2.4.0 documentation</a></li>
     </ul>
 <ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
       

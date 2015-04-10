@@ -10,7 +10,7 @@
   <head>
     <meta charset="utf-8" />
     
-    <title>Index &mdash; pypot 2.3.1 documentation</title>
+    <title>Index &mdash; pypot 2.4.0 documentation</title>
     <meta name="description" content="">
     <meta name="author" content="">
 
@@ -36,7 +36,7 @@
 <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
             URL_ROOT:    './',
-            VERSION:     '2.3.1',
+            VERSION:     '2.4.0',
             COLLAPSE_INDEX: false,
             FILE_SUFFIX: '.html',
             HAS_SOURCE:  true
@@ -51,7 +51,7 @@
 <script type="text/javascript">
 </script>
     <link rel="author" title="About these documents" href="about.html" />
-    <link rel="top" title="pypot 2.3.1 documentation" href="index.html" /> 
+    <link rel="top" title="pypot 2.4.0 documentation" href="index.html" /> 
   </head>
   <body role="document">
     <div id="navbar-top" class="navbar navbar-fixed-top navbar-default" role="navigation" aria-label="top navigation">
@@ -63,7 +63,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="index.html">pypot 2.3.1 documentation</a>
+          <a class="navbar-brand" href="index.html">pypot 2.4.0 documentation</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
@@ -176,10 +176,6 @@
   </dt>
 
       
-  <dt><a href="pypot.server.html#pypot.server.server.AbstractServer">AbstractServer (class in pypot.server.server)</a>
-  </dt>
-
-      
   <dt><a href="pypot.robot.html#pypot.robot.robot.Robot.active_primitives">active_primitives (pypot.robot.robot.Robot attribute)</a>
   </dt>
 
@@ -191,12 +187,12 @@
   <dt><a href="pypot.primitive.html#pypot.primitive.move.Move.add_position">add_position() (pypot.primitive.move.Move method)</a>
   </dt>
 
-  </dl></td>
-  <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="pypot.dynamixel.html#pypot.dynamixel.conversion.alarm_to_dxl">alarm_to_dxl() (in module pypot.dynamixel.conversion)</a>
   </dt>
 
+  </dl></td>
+  <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="pypot.primitive.html#pypot.primitive.utils.Sinus.amplitude">amplitude (pypot.primitive.utils.Sinus attribute)</a>
   </dt>
@@ -229,10 +225,6 @@
 
       
   <dt><a href="pypot.dynamixel.html#pypot.dynamixel.error.BaseErrorHandler">BaseErrorHandler (class in pypot.dynamixel.error)</a>
-  </dt>
-
-      
-  <dt><a href="pypot.server.html#pypot.server.request.BaseRequestHandler">BaseRequestHandler (class in pypot.server.request)</a>
   </dt>
 
   </dl></td>
@@ -268,11 +260,15 @@
   </dt>
 
       
-  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.packet.DxlInstructionPacket.checksum">checksum (pypot.dynamixel.packet.DxlInstructionPacket attribute)</a>
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.protocol.v1.DxlInstructionPacket.checksum">checksum (pypot.dynamixel.protocol.v1.DxlInstructionPacket attribute)</a>
   </dt>
 
-  </dl></td>
-  <td style="width: 33%" valign="top"><dl>
+      <dd><dl>
+        
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.protocol.v2.DxlInstructionPacket.checksum">(pypot.dynamixel.protocol.v2.DxlInstructionPacket attribute)</a>
+  </dt>
+
+      </dl></dd>
       
   <dt><a href="pypot.robot.html#pypot.robot.controller.AbstractController.close">close() (pypot.robot.controller.AbstractController method)</a>
   </dt>
@@ -291,6 +287,8 @@
   </dt>
 
       </dl></dd>
+  </dl></td>
+  <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="pypot.vrep.html#pypot.vrep.io.close_all_connections">close_all_connections() (in module pypot.vrep.io)</a>
   </dt>
@@ -305,6 +303,10 @@
 
       
   <dt><a href="pypot.primitive.html#pypot.primitive.utils.Cosinus">Cosinus (class in pypot.primitive.utils)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.protocol.v2.crc16">crc16() (in module pypot.dynamixel.protocol.v2)</a>
   </dt>
 
   </dl></td>
@@ -374,6 +376,10 @@
   </dt>
 
       
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.conversion.dxl_to_led_color">dxl_to_led_color() (in module pypot.dynamixel.conversion)</a>
+  </dt>
+
+      
   <dt><a href="pypot.dynamixel.html#pypot.dynamixel.conversion.dxl_to_load">dxl_to_load() (in module pypot.dynamixel.conversion)</a>
   </dt>
 
@@ -424,13 +430,25 @@
   </dt>
 
       
-  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.packet.DxlInstruction">DxlInstruction (class in pypot.dynamixel.packet)</a>
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.protocol.v1.DxlInstruction">DxlInstruction (class in pypot.dynamixel.protocol.v1)</a>
   </dt>
 
+      <dd><dl>
+        
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.protocol.v2.DxlInstruction">(class in pypot.dynamixel.protocol.v2)</a>
+  </dt>
+
+      </dl></dd>
       
-  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.packet.DxlInstructionPacket">DxlInstructionPacket (class in pypot.dynamixel.packet)</a>
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.protocol.v1.DxlInstructionPacket">DxlInstructionPacket (class in pypot.dynamixel.protocol.v1)</a>
   </dt>
 
+      <dd><dl>
+        
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.protocol.v2.DxlInstructionPacket">(class in pypot.dynamixel.protocol.v2)</a>
+  </dt>
+
+      </dl></dd>
       
   <dt><a href="pypot.dynamixel.html#pypot.dynamixel.motor.DxlMotor">DxlMotor (class in pypot.dynamixel.motor)</a>
   </dt>
@@ -440,33 +458,85 @@
   </dt>
 
       
-  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.packet.DxlPacketHeader">DxlPacketHeader (class in pypot.dynamixel.packet)</a>
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.protocol.v1.DxlPacketHeader">DxlPacketHeader (class in pypot.dynamixel.protocol.v1)</a>
   </dt>
 
+      <dd><dl>
+        
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.protocol.v2.DxlPacketHeader">(class in pypot.dynamixel.protocol.v2)</a>
+  </dt>
+
+      </dl></dd>
       
-  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.packet.DxlPingPacket">DxlPingPacket (class in pypot.dynamixel.packet)</a>
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.protocol.v1.DxlPingPacket">DxlPingPacket (class in pypot.dynamixel.protocol.v1)</a>
   </dt>
 
+      <dd><dl>
+        
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.protocol.v2.DxlPingPacket">(class in pypot.dynamixel.protocol.v2)</a>
+  </dt>
+
+      </dl></dd>
       
-  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.packet.DxlReadDataPacket">DxlReadDataPacket (class in pypot.dynamixel.packet)</a>
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.protocol.v1.DxlReadDataPacket">DxlReadDataPacket (class in pypot.dynamixel.protocol.v1)</a>
   </dt>
 
+      <dd><dl>
+        
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.protocol.v2.DxlReadDataPacket">(class in pypot.dynamixel.protocol.v2)</a>
+  </dt>
+
+      </dl></dd>
       
-  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.packet.DxlStatusPacket">DxlStatusPacket (class in pypot.dynamixel.packet)</a>
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.protocol.v1.DxlResetPacket">DxlResetPacket (class in pypot.dynamixel.protocol.v1)</a>
   </dt>
 
+      <dd><dl>
+        
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.protocol.v2.DxlResetPacket">(class in pypot.dynamixel.protocol.v2)</a>
+  </dt>
+
+      </dl></dd>
       
-  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.packet.DxlSyncReadPacket">DxlSyncReadPacket (class in pypot.dynamixel.packet)</a>
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.protocol.v1.DxlStatusPacket">DxlStatusPacket (class in pypot.dynamixel.protocol.v1)</a>
   </dt>
 
+      <dd><dl>
+        
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.protocol.v2.DxlStatusPacket">(class in pypot.dynamixel.protocol.v2)</a>
+  </dt>
+
+      </dl></dd>
       
-  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.packet.DxlSyncWritePacket">DxlSyncWritePacket (class in pypot.dynamixel.packet)</a>
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.protocol.v1.DxlSyncReadPacket">DxlSyncReadPacket (class in pypot.dynamixel.protocol.v1)</a>
   </dt>
 
+      <dd><dl>
+        
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.protocol.v2.DxlSyncReadPacket">(class in pypot.dynamixel.protocol.v2)</a>
+  </dt>
+
+      </dl></dd>
       
-  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.packet.DxlWriteDataPacket">DxlWriteDataPacket (class in pypot.dynamixel.packet)</a>
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.protocol.v1.DxlSyncWritePacket">DxlSyncWritePacket (class in pypot.dynamixel.protocol.v1)</a>
   </dt>
 
+      <dd><dl>
+        
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.protocol.v2.DxlSyncWritePacket">(class in pypot.dynamixel.protocol.v2)</a>
+  </dt>
+
+      </dl></dd>
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.protocol.v1.DxlWriteDataPacket">DxlWriteDataPacket (class in pypot.dynamixel.protocol.v1)</a>
+  </dt>
+
+      <dd><dl>
+        
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.protocol.v2.DxlWriteDataPacket">(class in pypot.dynamixel.protocol.v2)</a>
+  </dt>
+
+      </dl></dd>
       
   <dt><a href="pypot.dynamixel.html#pypot.dynamixel.motor.DxlXL320Motor">DxlXL320Motor (class in pypot.dynamixel.motor)</a>
   </dt>
@@ -514,12 +584,20 @@
   </dt>
 
       
-  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.packet.DxlPacketHeader.from_string">from_string() (pypot.dynamixel.packet.DxlPacketHeader class method)</a>
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.protocol.v1.DxlPacketHeader.from_string">from_string() (pypot.dynamixel.protocol.v1.DxlPacketHeader class method)</a>
   </dt>
 
       <dd><dl>
         
-  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.packet.DxlStatusPacket.from_string">(pypot.dynamixel.packet.DxlStatusPacket class method)</a>
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.protocol.v1.DxlStatusPacket.from_string">(pypot.dynamixel.protocol.v1.DxlStatusPacket class method)</a>
+  </dt>
+
+        
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.protocol.v2.DxlPacketHeader.from_string">(pypot.dynamixel.protocol.v2.DxlPacketHeader class method)</a>
+  </dt>
+
+        
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.protocol.v2.DxlStatusPacket.from_string">(pypot.dynamixel.protocol.v2.DxlStatusPacket class method)</a>
   </dt>
 
       </dl></dd>
@@ -674,10 +752,6 @@
   </dt>
 
       
-  <dt><a href="pypot.server.html#pypot.server.request.BaseRequestHandler.handle_call">handle_call() (pypot.server.request.BaseRequestHandler method)</a>
-  </dt>
-
-      
   <dt><a href="pypot.dynamixel.html#pypot.dynamixel.error.DxlErrorHandler.handle_checksum_error">handle_checksum_error() (pypot.dynamixel.error.DxlErrorHandler method)</a>
   </dt>
 
@@ -691,10 +765,6 @@
   </dt>
 
       </dl></dd>
-      
-  <dt><a href="pypot.server.html#pypot.server.request.BaseRequestHandler.handle_get">handle_get() (pypot.server.request.BaseRequestHandler method)</a>
-  </dt>
-
       
   <dt><a href="pypot.dynamixel.html#pypot.dynamixel.error.DxlErrorHandler.handle_input_voltage_error">handle_input_voltage_error() (pypot.dynamixel.error.DxlErrorHandler method)</a>
   </dt>
@@ -722,17 +792,7 @@
   </dt>
 
       
-  <dt><a href="pypot.server.html#pypot.server.request.BaseRequestHandler.handle_request">handle_request() (pypot.server.request.BaseRequestHandler method)</a>
-  </dt>
-
-      <dd><dl>
-        
-  <dt><a href="pypot.server.html#pypot.server.zmqserver.ZMQRobotServer.handle_request">(pypot.server.zmqserver.ZMQRobotServer method)</a>
-  </dt>
-
-      </dl></dd>
-      
-  <dt><a href="pypot.server.html#pypot.server.request.BaseRequestHandler.handle_set">handle_set() (pypot.server.request.BaseRequestHandler method)</a>
+  <dt><a href="pypot.server.html#pypot.server.zmqserver.ZMQRobotServer.handle_request">handle_request() (pypot.server.zmqserver.ZMQRobotServer method)</a>
   </dt>
 
       
@@ -806,12 +866,24 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%" valign="top"><dl>
       
-  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.packet.DxlInstructionPacket.length">length (pypot.dynamixel.packet.DxlInstructionPacket attribute)</a>
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.conversion.led_color_to_dxl">led_color_to_dxl() (in module pypot.dynamixel.conversion)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.protocol.v1.DxlInstructionPacket.length">length (pypot.dynamixel.protocol.v1.DxlInstructionPacket attribute)</a>
   </dt>
 
       <dd><dl>
         
-  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.packet.DxlPacketHeader.length">(pypot.dynamixel.packet.DxlPacketHeader attribute)</a>
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.protocol.v1.DxlPacketHeader.length">(pypot.dynamixel.protocol.v1.DxlPacketHeader attribute)</a>
+  </dt>
+
+        
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.protocol.v2.DxlInstructionPacket.length">(pypot.dynamixel.protocol.v2.DxlInstructionPacket attribute)</a>
+  </dt>
+
+        
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.protocol.v2.DxlPacketHeader.length">(pypot.dynamixel.protocol.v2.DxlPacketHeader attribute)</a>
   </dt>
 
       </dl></dd>
@@ -848,9 +920,15 @@
   </dt>
 
       
-  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.packet.DxlPacketHeader.marker">marker (pypot.dynamixel.packet.DxlPacketHeader attribute)</a>
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.protocol.v1.DxlPacketHeader.marker">marker (pypot.dynamixel.protocol.v1.DxlPacketHeader attribute)</a>
   </dt>
 
+      <dd><dl>
+        
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.protocol.v2.DxlPacketHeader.marker">(pypot.dynamixel.protocol.v2.DxlPacketHeader attribute)</a>
+  </dt>
+
+      </dl></dd>
       
   <dt><a href="pypot.vrep.html#pypot.vrep.io.VrepIO.MAX_ITER">MAX_ITER (pypot.vrep.io.VrepIO attribute)</a>
   </dt>
@@ -992,9 +1070,15 @@
   </dt>
 
       
-  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.packet.DxlInstruction.PING">PING (pypot.dynamixel.packet.DxlInstruction attribute)</a>
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.protocol.v1.DxlInstruction.PING">PING (pypot.dynamixel.protocol.v1.DxlInstruction attribute)</a>
   </dt>
 
+      <dd><dl>
+        
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.protocol.v2.DxlInstruction.PING">(pypot.dynamixel.protocol.v2.DxlInstruction attribute)</a>
+  </dt>
+
+      </dl></dd>
       
   <dt><a href="pypot.sensor.html#pypot.sensor.kinect.sensor.Joint.pixel_coordinate">pixel_coordinate (pypot.sensor.kinect.sensor.Joint attribute)</a>
   </dt>
@@ -1086,15 +1170,19 @@
   </dt>
 
       
-  <dt><a href="pypot.dynamixel.html#module-pypot.dynamixel.packet">pypot.dynamixel.packet (module)</a>
+  <dt><a href="pypot.dynamixel.html#module-pypot.dynamixel.protocol.v1">pypot.dynamixel.protocol.v1 (module)</a>
   </dt>
 
       
-  <dt><a href="pypot.primitive.html#module-pypot.primitive.manager">pypot.primitive.manager (module)</a>
+  <dt><a href="pypot.dynamixel.html#module-pypot.dynamixel.protocol.v2">pypot.dynamixel.protocol.v2 (module)</a>
   </dt>
 
   </dl></td>
   <td style="width: 33%" valign="top"><dl>
+      
+  <dt><a href="pypot.primitive.html#module-pypot.primitive.manager">pypot.primitive.manager (module)</a>
+  </dt>
+
       
   <dt><a href="pypot.primitive.html#module-pypot.primitive.move">pypot.primitive.move (module)</a>
   </dt>
@@ -1160,15 +1248,7 @@
   </dt>
 
       
-  <dt><a href="pypot.server.html#module-pypot.server.request">pypot.server.request (module)</a>
-  </dt>
-
-      
   <dt><a href="pypot.server.html#module-pypot.server.rest">pypot.server.rest (module)</a>
-  </dt>
-
-      
-  <dt><a href="pypot.server.html#module-pypot.server.server">pypot.server.server (module)</a>
   </dt>
 
       
@@ -1230,9 +1310,15 @@
   </dt>
 
       
-  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.packet.DxlInstruction.READ_DATA">READ_DATA (pypot.dynamixel.packet.DxlInstruction attribute)</a>
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.protocol.v1.DxlInstruction.READ_DATA">READ_DATA (pypot.dynamixel.protocol.v1.DxlInstruction attribute)</a>
   </dt>
 
+      <dd><dl>
+        
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.protocol.v2.DxlInstruction.READ_DATA">(pypot.dynamixel.protocol.v2.DxlInstruction attribute)</a>
+  </dt>
+
+      </dl></dd>
       
   <dt><a href="pypot.primitive.html#pypot.primitive.primitive.LoopPrimitive.recent_update_frequencies">recent_update_frequencies (pypot.primitive.primitive.LoopPrimitive attribute)</a>
   </dt>
@@ -1260,10 +1346,6 @@
   </dt>
 
       
-  <dt><a href="pypot.server.html#pypot.server.server.RemoteRobotServer">RemoteRobotServer (class in pypot.server.server)</a>
-  </dt>
-
-      
   <dt><a href="pypot.primitive.html#pypot.primitive.manager.PrimitiveManager.remove">remove() (pypot.primitive.manager.PrimitiveManager method)</a>
   </dt>
 
@@ -1275,6 +1357,16 @@
   <dt><a href="pypot.sensor.html#pypot.sensor.kinect.sensor.KinectSensor.remove_user">remove_user() (pypot.sensor.kinect.sensor.KinectSensor method)</a>
   </dt>
 
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.protocol.v1.DxlInstruction.RESET">RESET (pypot.dynamixel.protocol.v1.DxlInstruction attribute)</a>
+  </dt>
+
+      <dd><dl>
+        
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.protocol.v2.DxlInstruction.RESET">(pypot.dynamixel.protocol.v2.DxlInstruction attribute)</a>
+  </dt>
+
+      </dl></dd>
   </dl></td>
   <td style="width: 33%" valign="top"><dl>
       
@@ -1316,14 +1408,6 @@
 
         
   <dt><a href="pypot.server.html#pypot.server.httpserver.HTTPRobotServer.run">(pypot.server.httpserver.HTTPRobotServer method)</a>
-  </dt>
-
-        
-  <dt><a href="pypot.server.html#pypot.server.server.AbstractServer.run">(pypot.server.server.AbstractServer method)</a>
-  </dt>
-
-        
-  <dt><a href="pypot.server.html#pypot.server.server.RemoteRobotServer.run">(pypot.server.server.RemoteRobotServer method)</a>
   </dt>
 
         
@@ -1534,13 +1618,25 @@
   </dt>
 
       
-  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.packet.DxlInstruction.SYNC_READ">SYNC_READ (pypot.dynamixel.packet.DxlInstruction attribute)</a>
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.protocol.v1.DxlInstruction.SYNC_READ">SYNC_READ (pypot.dynamixel.protocol.v1.DxlInstruction attribute)</a>
   </dt>
 
+      <dd><dl>
+        
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.protocol.v2.DxlInstruction.SYNC_READ">(pypot.dynamixel.protocol.v2.DxlInstruction attribute)</a>
+  </dt>
+
+      </dl></dd>
       
-  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.packet.DxlInstruction.SYNC_WRITE">SYNC_WRITE (pypot.dynamixel.packet.DxlInstruction attribute)</a>
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.protocol.v1.DxlInstruction.SYNC_WRITE">SYNC_WRITE (pypot.dynamixel.protocol.v1.DxlInstruction attribute)</a>
   </dt>
 
+      <dd><dl>
+        
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.protocol.v2.DxlInstruction.SYNC_WRITE">(pypot.dynamixel.protocol.v2.DxlInstruction attribute)</a>
+  </dt>
+
+      </dl></dd>
   </dl></td>
 </tr></table>
 
@@ -1574,9 +1670,15 @@
   </dt>
 
       
-  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.packet.DxlInstructionPacket.to_array">to_array() (pypot.dynamixel.packet.DxlInstructionPacket method)</a>
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.protocol.v1.DxlInstructionPacket.to_array">to_array() (pypot.dynamixel.protocol.v1.DxlInstructionPacket method)</a>
   </dt>
 
+      <dd><dl>
+        
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.protocol.v2.DxlInstructionPacket.to_array">(pypot.dynamixel.protocol.v2.DxlInstructionPacket method)</a>
+  </dt>
+
+      </dl></dd>
   </dl></td>
   <td style="width: 33%" valign="top"><dl>
       
@@ -1584,9 +1686,15 @@
   </dt>
 
       
-  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.packet.DxlInstructionPacket.to_string">to_string() (pypot.dynamixel.packet.DxlInstructionPacket method)</a>
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.protocol.v1.DxlInstructionPacket.to_string">to_string() (pypot.dynamixel.protocol.v1.DxlInstructionPacket method)</a>
   </dt>
 
+      <dd><dl>
+        
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.protocol.v2.DxlInstructionPacket.to_string">(pypot.dynamixel.protocol.v2.DxlInstructionPacket method)</a>
+  </dt>
+
+      </dl></dd>
       
   <dt><a href="pypot.dynamixel.html#pypot.dynamixel.conversion.torque_to_dxl">torque_to_dxl() (in module pypot.dynamixel.conversion)</a>
   </dt>
@@ -1732,9 +1840,15 @@
   </dt>
 
       
-  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.packet.DxlInstruction.WRITE_DATA">WRITE_DATA (pypot.dynamixel.packet.DxlInstruction attribute)</a>
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.protocol.v1.DxlInstruction.WRITE_DATA">WRITE_DATA (pypot.dynamixel.protocol.v1.DxlInstruction attribute)</a>
   </dt>
 
+      <dd><dl>
+        
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.protocol.v2.DxlInstruction.WRITE_DATA">(pypot.dynamixel.protocol.v2.DxlInstruction attribute)</a>
+  </dt>
+
+      </dl></dd>
   </dl></td>
 </tr></table>
 
@@ -1759,6 +1873,12 @@
   </dt>
 
       </dl></dd>
+  </dl></td>
+  <td style="width: 33%" valign="top"><dl>
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.conversion.XL320LEDColors">XL320LEDColors (in module pypot.dynamixel.conversion)</a>
+  </dt>
+
   </dl></td>
 </tr></table>
 
@@ -1828,7 +1948,7 @@
 <div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
   <div class="navbar-inner">
     <ul class="nav navbar-nav ">
-        <li><a href="index.html">pypot 2.3.1 documentation</a></li>
+        <li><a href="index.html">pypot 2.4.0 documentation</a></li>
     </ul>
 <ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
       
