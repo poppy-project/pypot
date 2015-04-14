@@ -52,10 +52,21 @@
     :undoc-members:
     :show-inheritance:
 
-:mod:`packet` Module
---------------------
+:mod:`protocol` Package
+-----------------------
 
-.. automodule:: pypot.dynamixel.packet
+:mod:`v1` Module
+++++++++++++++++
+
+.. automodule:: pypot.dynamixel.protocol.v1
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`v2` Module
+++++++++++++++++
+
+.. automodule:: pypot.dynamixel.protocol.v2
     :members:
     :undoc-members:
     :show-inheritance:

@@ -130,6 +130,12 @@ controls = {
         'setter_name': '_set_LED',
         'getter_name': 'is_led_on'
     },
+    'LED color': {
+        'address': 0x19,
+        'length': 1,
+        'dxl_to_si': conv.dxl_to_led_color,
+        'si_to_dxl': conv.led_color_to_dxl,
+    },
     'pid gain': {
         'address': 0x1B,
         'length': 1,
