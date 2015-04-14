@@ -1,7 +1,12 @@
+import os
+
 from operator import attrgetter
+from pypot.primitive.move import MovePlayer, MoveRecorder, Move
+from pypot.primitive.utils import Cosinus, Sinus, LoopPrimitive, numpy
 
 
 class RESTRobot(object):
+
     """ REST API for a Robot.
 
     Through the REST API you can currently access:
@@ -15,8 +20,8 @@ class RESTRobot(object):
 
         * the primitives list (and the active)
         * start/stop primitives
-
     """
+
     def __init__(self, robot):
         self.robot = robot
 
@@ -101,3 +106,40 @@ class RESTRobot(object):
         p = getattr(self.robot, primitive)
         f = getattr(p, method_name)
         return f(*args, **kwargs)
+
+    def start_move_recorder(self, move_name, motors_name):
+        motors = [getattr(self.robot, m) for m in motors_name]
+        recorder = MoveRecorder(self.robot, 50, motors)
+        # for m in motors:
+        #     m.compilant = True
+        self.robot.attach_primitive(recorder, move_name)
+        recorder.start()
+
+    def stop_move_recorder(self, move_name):
+        """Allow more easily than stop_primitive() to save in a filename the recorcded move"""
+        recorder = getattr(self.robot, move_name)
+        recorder.stop()
+        # for m in recorder.
+        move_name += '.record'
+        with open(move_name, 'w') as f:
+            recorder.move.save(f)
+
+    def start_move_player(self, move_name):
+        """Move player need to have a move file <move_name.json>
+            in th PATH to play it"""
+        with open(move_name + '.record') as f:
+            loaded_move = Move.load(f)
+        move_name += '_player'
+        player = MovePlayer(self.robot, loaded_move)
+        self.robot.attach_primitive(player, move_name)
+        player.start()
+        player.wait_to_stop()
+        return move_name
+
+    def get_available_record_list(self):
+        """Get list of json recorded movement files"""
+        return [f.split('.record')[0] for f in os.listdir('.') if f.endswith('.record')]
+
+    def remove_move_record(self, move_name):
+        """Remove the json recorded movement file"""
+        return os.remove(move_name + '.record')
