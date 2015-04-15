@@ -4,11 +4,13 @@ from .primitive import LoopPrimitive
 
 
 class Move(object):
+
     """ Simple class used to represent a movement.
 
     This class simply wraps a sequence of positions of specified motors. The sequence must be recorded at a predefined frequency. This move can be recorded through the :class:`~pypot.primitive.move.MoveRecorder` class and played thanks to a :class:`~pypot.primitive.move.MovePlayer`.
 
     """
+
     def __init__(self, freq):
         self._framerate = freq
         self._positions = []
@@ -61,6 +63,7 @@ class Move(object):
 
 
 class MoveRecorder(LoopPrimitive):
+
     """ Primitive used to record a :class:`~pypot.primitive.move.Move`.
 
     The recording can be :meth:`~pypot.primitive.primitive.Primitive.start` and :meth:`~pypot.primitive.primitive.Primitive.stop` by using the :class:`~pypot.primitive.primitive.LoopPrimitive` methods.
@@ -68,6 +71,7 @@ class MoveRecorder(LoopPrimitive):
     .. note:: Re-starting the recording will create a new :class:`~pypot.primitive.move.Move` losing all the previously stored data.
 
     """
+
     def __init__(self, robot, freq, tracked_motors):
         LoopPrimitive.__init__(self, robot, freq)
         self.freq = freq
@@ -86,8 +90,14 @@ class MoveRecorder(LoopPrimitive):
         """ Returns the currently recorded :class:`~pypot.primitive.move.Move`. """
         return self._move
 
+    def add_tracked_motors(tracked_motors):
+        """Add new motors to the recording"""
+        new_mockup_motors = map(self.get_mockup_motor, tracked_motors)
+        self.tracked_motors = list(set(self.tracked_motors + new_mockup_motors))
+
 
 class MovePlayer(LoopPrimitive):
+
     """ Primitive used to play a :class:`~pypot.primitive.move.Move`.
 
     The playing can be :meth:`~pypot.primitive.primitive.Primitive.start` and :meth:`~pypot.primitive.primitive.Primitive.stop` by using the :class:`~pypot.primitive.primitive.LoopPrimitive` methods.
@@ -95,9 +105,9 @@ class MovePlayer(LoopPrimitive):
     .. warning:: You should be careful that you primitive actually runs at the same speed that the move has been recorded. If the player can not run as fast as the framerate of the :class:`~pypot.primitive.move.Move`, it will be played slowly resulting in a slower version of your move.
     """
 
-    def __init__(self, robot, move):
-        LoopPrimitive.__init__(self, robot, move.framerate)
+    def __init__(self, robot, move=move, framerate=None):
         self.move = move
+        LoopPrimitive.__init__(self, robot, move.framerate)
 
     def setup(self):
         self.positions = self.move.iterpositions()

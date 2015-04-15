@@ -108,33 +108,32 @@ class RESTRobot(object):
         return f(*args, **kwargs)
 
     def start_move_recorder(self, move_name, motors_name):
-        motors = [getattr(self.robot, m) for m in motors_name]
-        recorder = MoveRecorder(self.robot, 50, motors)
-        # for m in motors:
-        #     m.compilant = True
-        self.robot.attach_primitive(recorder, move_name)
-        recorder.start()
+        if not hasattr(self.robot, '_{}_recorder'.format(move_name)):
+            motors = [getattr(self.robot, m) for m in motors_name]
+            recorder = MoveRecorder(self.robot, 50, motors)
+            self.robot.attach_primitive(recorder, '_{}_recorder'.format(move_name))
+            recorder.start()
+        else:
+            recorder = getattr(self.robot, '_{}_recorder'.format(move_name))
+            recorder.start()
 
     def stop_move_recorder(self, move_name):
         """Allow more easily than stop_primitive() to save in a filename the recorcded move"""
-        recorder = getattr(self.robot, move_name)
+        recorder = getattr(self.robot, '_{}_recorder'.format(move_name))
         recorder.stop()
-        # for m in recorder.
-        move_name += '.record'
-        with open(move_name, 'w') as f:
+        with open('{}.record'.format(move_name), 'w') as f:
             recorder.move.save(f)
 
     def start_move_player(self, move_name):
-        """Move player need to have a move file <move_name.json>
-            in th PATH to play it"""
-        with open(move_name + '.record') as f:
+        """Move player need to have a move file
+        <move_name.record> in the working directory to play it"""
+
+        with open('{}.record'.format(move_name)) as f:
             loaded_move = Move.load(f)
-        move_name += '_player'
         player = MovePlayer(self.robot, loaded_move)
-        self.robot.attach_primitive(player, move_name)
+        self.robot.attach_primitive(player, '_{}_player'.format(move_name))
         player.start()
         player.wait_to_stop()
-        return move_name
 
     def get_available_record_list(self):
         """Get list of json recorded movement files"""
@@ -142,4 +141,15 @@ class RESTRobot(object):
 
     def remove_move_record(self, move_name):
         """Remove the json recorded movement file"""
-        return os.remove(move_name + '.record')
+        return os.remove('{}.record'.format(move_name))
+
+    # Good idea ? Ask to pierre !
+    # def __modify_names__(move_name, modify=None):
+    #     if modify == 'player':
+    #         return '_{}_player'.format(move_name)
+    #     elif modify == 'recorder':
+    #         return '_{}_recorder'.format(move_name)
+    #     elif modify == 'save':
+    #         return '{}.record'.format(move_name)
+    #     else:
+    #         raise NameError()
