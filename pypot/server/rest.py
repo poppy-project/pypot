@@ -143,7 +143,7 @@ class RESTRobot(object):
         """Remove the json recorded movement file"""
         return os.remove('{}.record'.format(move_name))
 
-    # Good idea ? Ask to pierre !
+    # TO_CHECK
     # def __modify_names__(move_name, modify=None):
     #     if modify == 'player':
     #         return '_{}_player'.format(move_name)

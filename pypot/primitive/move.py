@@ -90,7 +90,7 @@ class MoveRecorder(LoopPrimitive):
         """ Returns the currently recorded :class:`~pypot.primitive.move.Move`. """
         return self._move
 
-    def add_tracked_motors(tracked_motors):
+    def add_tracked_motors(self, tracked_motors):
         """Add new motors to the recording"""
         new_mockup_motors = map(self.get_mockup_motor, tracked_motors)
         self.tracked_motors = list(set(self.tracked_motors + new_mockup_motors))
@@ -105,11 +105,14 @@ class MovePlayer(LoopPrimitive):
     .. warning:: You should be careful that you primitive actually runs at the same speed that the move has been recorded. If the player can not run as fast as the framerate of the :class:`~pypot.primitive.move.Move`, it will be played slowly resulting in a slower version of your move.
     """
 
-    def __init__(self, robot, move=move, framerate=None):
+    # TODO : add position interpolation if framerate < Move.framerate
+    def __init__(self, robot, move=None, framerate=None):
         self.move = move
-        LoopPrimitive.__init__(self, robot, move.framerate)
+        self.framerate = framerate if framerate is not None else self.move.framerate if self.move is not None else 50
+        LoopPrimitive.__init__(self, robot, self.framerate)
 
     def setup(self):
+        self.period = 1.0 / self.framerate
         self.positions = self.move.iterpositions()
 
     def update(self):
@@ -121,3 +124,8 @@ class MovePlayer(LoopPrimitive):
 
         except StopIteration:
             self.stop()
+
+    # TO_CHECK
+    # @property
+    # def move(self):
+    #     return self.move
