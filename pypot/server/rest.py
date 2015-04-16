@@ -134,6 +134,7 @@ class RESTRobot(object):
             self.robot.attach_primitive(player, '_{}_player'.format(move_name))
         else:
             player = getattr(self.robot, '_{}_player'.format(move_name))
+
         player.speed = speed
         player.start()
         player.wait_to_stop()
