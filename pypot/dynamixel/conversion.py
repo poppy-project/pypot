@@ -259,6 +259,15 @@ def led_color_to_dxl(value, model):
     value = int(value) & 0b111
     return value
 
+control_modes = {
+    1: 'wheel',
+    2: 'joint',
+}
+
+dxl_to_control_mode = lambda value, _: control_modes[value]
+control_mode_to_dxl = lambda mode, _: (next((v for v, m in control_modes.items()
+                                       if m == mode), None))
+
 # MARK: - Various utility functions
 
 def dxl_to_bool(value, model):
