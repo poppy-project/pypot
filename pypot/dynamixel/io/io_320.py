@@ -1,3 +1,5 @@
+from itertools import repeat
+
 from .abstract_io import (AbstractDxlIO, _DxlControl,
                           _DxlAccess, DxlTimeoutError)
 from .. import conversion as conv
@@ -6,6 +8,12 @@ from ..protocol import v2 as v2
 
 class Dxl320IO(AbstractDxlIO):
     _protocol = v2
+
+    def set_wheel_mode(self, ids):
+        self.set_control_mode(dict(zip(ids, repeat('wheel'))))
+
+    def set_joint_mode(self, ids):
+        self.set_control_mode(dict(zip(ids, repeat('joint'))))
 
     def get_goal_position_speed_load(self, ids):
         a = self._get_goal_pos_speed(ids)
@@ -36,8 +44,6 @@ class Dxl320IO(AbstractDxlIO):
 
 # TODO:
 #   * error
-#   * control mode
-#   * led
 
 # MARK: - Generate the accessors
 
@@ -80,6 +86,12 @@ controls = {
                                            conv.dxl_to_degree(value[1], model)),
         'si_to_dxl': lambda value, model: (conv.degree_to_dxl(value[0], model),
                                            conv.degree_to_dxl(value[1], model))
+    },
+    'control mode': {
+        'address': 0x0B,
+        'length': 1,
+        'dxl_to_si': conv.dxl_to_control_mode,
+        'si_to_dxl': conv.control_mode_to_dxl,
     },
     'highest temperature limit': {
         'address': 0x0C,

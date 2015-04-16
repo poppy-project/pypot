@@ -287,45 +287,6 @@ class AbstractDxlIO(AbstractIO):
                               [('never', 'read', 'always').index(s) for s in srl_for_id.values()]))
         self._set_status_return_level(srl_for_id, convert=False)
 
-    def get_mode(self, ids):
-        """ Gets the mode ('joint' or 'wheel') for the specified motors. """
-        to_get_ids = [id for id in ids if id not in self._known_mode]
-        limits = self.get_angle_limit(to_get_ids, convert=False)
-        modes = ('wheel' if limit == (0, 0) else 'joint' for limit in limits)
-
-        self._known_mode.update(zip(to_get_ids, modes))
-
-        return tuple(self._known_mode[id] for id in ids)
-
-    def set_wheel_mode(self, ids):
-        """ Sets the specified motors to wheel mode. """
-        self._set_mode(dict(zip(ids, itertools.repeat('wheel'))))
-
-    def set_joint_mode(self, ids):
-        """ Sets the specified motors to joint mode. """
-        self._set_mode(dict(zip(ids, itertools.repeat('joint'))))
-
-    def _set_mode(self, mode_for_id):
-        models = ['MX' if m.startswith('MX') else '*' for m in self.get_model(list(mode_for_id.keys()))]
-        pos_max = [position_range[m][0] for m in models]
-        limits = ((0, 0) if mode == 'wheel' else (0, pos_max[i] - 1)
-                  for i, mode in enumerate(mode_for_id.itervalues()))
-
-        self._set_angle_limit(dict(zip(mode_for_id.keys(), limits)), convert=False)
-        self._known_mode.update(mode_for_id.items())
-
-    def set_angle_limit(self, limit_for_id, **kwargs):
-        """ Sets the angle limit to the specified motors. """
-        convert = kwargs['convert'] if 'convert' in kwargs else self._convert
-
-        if 'wheel' in self.get_mode(limit_for_id.keys()):
-            raise ValueError('can not change the angle limit of a motor in wheel mode')
-
-        if (0, 0) in limit_for_id.values():
-            raise ValueError('can not set limit to (0, 0)')
-
-        self._set_angle_limit(limit_for_id, convert=convert)
-
     def switch_led_on(self, ids):
         """ Switches on the LED of the motors with the specified ids. """
         self._set_LED(dict(zip(ids, itertools.repeat(True))))
@@ -558,6 +519,7 @@ class AbstractDxlIO(AbstractIO):
                      instruction_packet, wait_for_status_packet=True,
                      error_handler=None,
                      _force_lock=False):
+
         if not error_handler:
             return self.__real_send(instruction_packet, wait_for_status_packet, _force_lock)
 
