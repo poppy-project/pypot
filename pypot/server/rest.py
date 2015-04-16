@@ -124,14 +124,17 @@ class RESTRobot(object):
         with open('{}.record'.format(move_name), 'w') as f:
             recorder.move.save(f)
 
-    def start_move_player(self, move_name):
+    def start_move_player(self, move_name, speed=1.0):
         """Move player need to have a move file
         <move_name.record> in the working directory to play it"""
-
-        with open('{}.record'.format(move_name)) as f:
-            loaded_move = Move.load(f)
-        player = MovePlayer(self.robot, loaded_move)
-        self.robot.attach_primitive(player, '_{}_player'.format(move_name))
+        if not hasattr(self.robot, '_{}_player'.format(move_name)):
+            with open('{}.record'.format(move_name)) as f:
+                loaded_move = Move.load(f)
+            player = MovePlayer(self.robot, loaded_move)
+            self.robot.attach_primitive(player, '_{}_player'.format(move_name))
+        else:
+            player = getattr(self.robot, '_{}_player'.format(move_name))
+        player.speed = speed
         player.start()
         player.wait_to_stop()
 
@@ -143,13 +146,43 @@ class RESTRobot(object):
         """Remove the json recorded movement file"""
         return os.remove('{}.record'.format(move_name))
 
-    # TO_CHECK
-    # def __modify_names__(move_name, modify=None):
-    #     if modify == 'player':
-    #         return '_{}_player'.format(move_name)
-    #     elif modify == 'recorder':
-    #         return '_{}_recorder'.format(move_name)
-    #     elif modify == 'save':
-    #         return '{}.record'.format(move_name)
-    #     else:
-    #         raise NameError()
+        # TO_CHECK
+        # def __modify_names__(move_name, modify=None):
+        #     if modify == 'player':
+        #         return '_{}_player'.format(move_name)
+        #     elif modify == 'recorder':
+        #         return '_{}_recorder'.format(move_name)
+        #     elif modify == 'save':
+        #         return '{}.record'.format(move_name)
+        #     else:
+        #         raise NameError()
+        #         raise NameError()
+
+    def __find_words__(instring, words, prefix=''):
+        """ Quick and dirty snippet to split string without space
+            to a list of known words.
+            Used to pass over a bug of Snap!"""
+        if not instring:
+            return []
+
+        if (not prefix) and (instring in words):
+            return [instring]
+        prefix, suffix = prefix + instring[0], instring[1:]
+        solutions = []
+        # Case 1: prefix in solution
+        if prefix in words:
+            try:
+                solutions.append([prefix] + __find_words__(suffix, words, ''))
+            except ValueError:
+                pass
+        # Case 2: prefix not in solution
+        try:
+            solutions.append(__find_words__(suffix, words, prefix))
+        except ValueError:
+            pass
+        if solutions:
+            return sorted(solutions,
+                          key=lambda solution: [len(word) for word in solution],
+                          reverse=True)[0]
+        else:
+            return instring

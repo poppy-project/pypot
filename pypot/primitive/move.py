@@ -106,13 +106,16 @@ class MovePlayer(LoopPrimitive):
     """
 
     # TODO : add position interpolation if framerate < Move.framerate
-    def __init__(self, robot, move=None, framerate=None):
+    def __init__(self, robot, move=None, speed=1.0):
         self.move = move
-        self.framerate = framerate if framerate is not None else self.move.framerate if self.move is not None else 50
-        LoopPrimitive.__init__(self, robot, self.framerate)
+        self.speed = speed if speed != 0 and isinstance(speed, float) else 1.0
+        framerate = self.move.framerate * self.speed if self.move is not None else self.speed * 50
+        LoopPrimitive.__init__(self, robot, framerate)
 
     def setup(self):
-        self.period = 1.0 / self.framerate
+        if self.move is None:
+            raise AttributeError("Attribute move is not defined")
+        self.period = 1.0 / (self.move.framerate * self.speed)
         self.positions = self.move.iterpositions()
 
     def update(self):
