@@ -33,10 +33,19 @@ class RESTRobot(object):
     def get_motor_registers_list(self, motor):
         return self._get_register_value(motor, 'registers')
 
+    def get_registers_list(self, motor):
+        return self._get_register_value(motor, 'registers')
+
     def get_motor_register_value(self, motor, register):
         return self._get_register_value(motor, register)
 
+    def get_register_value(self, motor, register):
+        return self._get_register_value(motor, register)
+
     def set_motor_register_value(self, motor, register, value):
+        self._set_register_value(motor, register, value)
+
+    def set_register_value(self, motor, register, value):
         self._set_register_value(motor, register, value)
 
     def get_motors_alias(self):
