@@ -1,6 +1,8 @@
 import json
+from collections import OrderedDict
 
 from .primitive import LoopPrimitive
+from pypot.utils.interpolation import KDDict
 
 
 class Move(object):
@@ -13,33 +15,36 @@ class Move(object):
 
     def __init__(self, freq):
         self._framerate = freq
-        self._positions = []
+        self._timed_positions = KDDict()
 
     def __repr__(self):
         return '<Move framerate={} #keyframes={}>'.format(self.framerate,
                                                           len(self.positions()))
 
     def __getitem__(self, i):
-        return self._positions[i]
+        return list(_timed_positions.items())[i]
 
     @property
     def framerate(self):
         return self._framerate
 
-    def add_position(self, pos):
+    def add_position(self, pos, time):
         """ Add a new position to the movement sequence.
 
-        Each position is typically stored as a dict of (motor_name, motor_position).
+        Each position is typically stored as a dict of (time, (motor_name,motor_position)).
         """
-        self._positions.append(pos)
+        self._timed_positions[time] = pos
 
     def iterpositions(self):
         """ Returns an iterator on the stored positions. """
-        return iter(self._positions)
+        return self._timed_positions.items()
+        # return iter(self._timed_positions.items())
 
+    @property
     def positions(self):
         """ Returns a copy of the stored positions. """
-        return list(self.iterpositions())
+        return self._timed_positions
+        # return list(self.iterpositions())
 
     def save(self, file):
         """ Saves the :class:`~pypot.primitive.move.Move` to a json file.
@@ -48,7 +53,7 @@ class Move(object):
         """
         d = {
             'framerate': self.framerate,
-            'positions': self.positions(),
+            'positions': self._timed_positions,
         }
         json.dump(d, file, indent=2)
 
@@ -58,7 +63,10 @@ class Move(object):
         d = json.load(file)
 
         move = cls(d['framerate'])
-        move._positions = d['positions']
+
+        # dirty :
+        for k, v in d['positions'].items():
+            move._timed_positions[k] = v
         return move
 
 
@@ -75,15 +83,15 @@ class MoveRecorder(LoopPrimitive):
     def __init__(self, robot, freq, tracked_motors):
         LoopPrimitive.__init__(self, robot, freq)
         self.freq = freq
-
         self.tracked_motors = map(self.get_mockup_motor, tracked_motors)
 
     def setup(self):
         self._move = Move(self.freq)
 
     def update(self):
-        position = dict([(m.name, m.present_position) for m in self.tracked_motors])
-        self._move.add_position(position)
+        position = dict([(m.name, (m.present_position, m.present_speed))
+                         for m in self.tracked_motors])
+        self._move.add_position(position, self.elapsed_time)
 
     @property
     def move(self):
@@ -106,27 +114,33 @@ class MovePlayer(LoopPrimitive):
     """
 
     # TODO : add position interpolation if framerate < Move.framerate
-    def __init__(self, robot, move=None, speed=1.0):
+    def __init__(self, robot, move=None, play_speed=1.0):
         self.move = move
-        self.speed = speed if speed != 0 and isinstance(speed, float) else 1.0
-        framerate = self.move.framerate * self.speed if self.move is not None else self.speed * 50
+        self.play_speed = play_speed if play_speed != 0 and isinstance(play_speed, float) else 1.0
+        framerate = self.move.framerate * \
+            self.play_speed if self.move is not None else self.play_speed * 50
         LoopPrimitive.__init__(self, robot, framerate)
 
     def setup(self):
         if self.move is None:
             raise AttributeError("Attribute move is not defined")
-        self.period = 1.0 / (self.move.framerate * self.speed)
-        self.positions = self.move.iterpositions()
+        self.period = 1.0 / (self.move.framerate * self.play_speed)
+        self.positions = self.move.positions()
 
     def update(self):
         try:
-            position = self.positions.next()
-
+            position = self.positions[self.elapsed_time]
+            # position = self.positions.next()
             for m, v in position.iteritems():
-                getattr(self.robot, m).goal_position = v
+                getattr(self.robot, m).goal_position = v[0]
+                getattr(self.robot, m).goal_speed = v[1]
 
         except StopIteration:
             self.stop()
+
+    def __interpolate__(timed_positions):
+        # TODO
+        pass
 
     # TO_CHECK
     # @property
