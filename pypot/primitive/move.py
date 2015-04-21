@@ -2,7 +2,7 @@ import json
 from collections import OrderedDict
 
 from .primitive import LoopPrimitive
-from pypot.utils.interpolation import KDDict
+from pypot.utils.interpolation import KDTreeDict
 
 
 class Move(object):
@@ -15,7 +15,7 @@ class Move(object):
 
     def __init__(self, freq):
         self._framerate = freq
-        self._timed_positions = KDDict()
+        self._timed_positions = KDTreeDict()
 
     def __repr__(self):
         return '<Move framerate={} #keyframes={}>'.format(self.framerate,
@@ -24,7 +24,7 @@ class Move(object):
     def __getitem__(self, i):
         return list(_timed_positions.items())[i]
 
-    @property
+    # @property
     def framerate(self):
         return self._framerate
 
@@ -40,7 +40,6 @@ class Move(object):
         return self._timed_positions.items()
         # return iter(self._timed_positions.items())
 
-    @property
     def positions(self):
         """ Returns a copy of the stored positions. """
         return self._timed_positions
@@ -61,12 +60,11 @@ class Move(object):
     def load(cls, file):
         """ Loads a :class:`~pypot.primitive.move.Move` from a json file. """
         d = json.load(file)
-
         move = cls(d['framerate'])
 
-        # dirty :
+        # TODO : rewrite with more style
         for k, v in d['positions'].items():
-            move._timed_positions[k] = v
+            move._timed_positions[float(k)] = v
         return move
 
 
@@ -117,8 +115,13 @@ class MovePlayer(LoopPrimitive):
     def __init__(self, robot, move=None, play_speed=1.0):
         self.move = move
         self.play_speed = play_speed if play_speed != 0 and isinstance(play_speed, float) else 1.0
-        framerate = self.move.framerate * \
-            self.play_speed if self.move is not None else self.play_speed * 50
+        # framerate = self.move.framerate * \
+        # self.play_speed if self.move is not None else self.play_speed * 50.0
+        print self.play_speed, self.move.framerate
+        if self.move is not None:
+            framerate = self.play_speed * self.move.framerate
+        else:
+            framerate = self.play_speed * 50.0
         LoopPrimitive.__init__(self, robot, framerate)
 
     def setup(self):
@@ -130,19 +133,14 @@ class MovePlayer(LoopPrimitive):
     def update(self):
         try:
             position = self.positions[self.elapsed_time]
-            # position = self.positions.next()
+            # print position
             for m, v in position.iteritems():
                 getattr(self.robot, m).goal_position = v[0]
-                getattr(self.robot, m).goal_speed = v[1]
+                # getattr(self.robot, m).goal_speed = v[1]
 
-        except StopIteration:
+        except KeyError:
             self.stop()
 
     def __interpolate__(timed_positions):
         # TODO
         pass
-
-    # TO_CHECK
-    # @property
-    # def move(self):
-    #     return self.move
