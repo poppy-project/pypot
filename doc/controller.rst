@@ -56,10 +56,10 @@ Now let's detail each section. To better understand how the configuration is str
         my_config['motors'] = {}
         my_config['motors']['l_hip_y'] = {
             'id': 11,
-            'type': 'RX-64',
+            'type': 'MX-28',
             'orientation': 'direct',
-            'offset': 22.5,
-            'angle_limit': (-67.5, 112.5),
+            'offset': 0.0,
+            'angle_limit': (-90.0, 90.0),
         }
 
 
@@ -91,62 +91,60 @@ To give you a complete overview of what your config should look like, here is th
     ergo_robot_config = {
         'controllers': {
             'my_dxl_controller': {
-                'port': '/dev/ttyUSB0', # Depends on your OS
                 'sync_read': False,
-                'attached_motors': ['base', 'head'], # You can mix motorgroups or individual motors
-            },
+                'attached_motors': ['base', 'tip'],
+                'port': 'auto'
+            }
         },
-
         'motorgroups': {
-            'base': ['base_pan', 'base_tilt_lower', 'base_tilt_upper'],
-            'head': ['head_pan', 'head_tilt_lower', 'head_tilt_upper'],
+            'base': ['m1', 'm2', 'm3'],
+            'tip': ['m4', 'm5', 'm6']
         },
-
         'motors': {
-            'base_pan': {
-                'id': 11,
-                'type': 'RX-64',
-                'orientation': 'direct',
-                'offset': 22.5,
-                'angle_limit': (-67.5, 112.5),
-            },
-            'base_tilt_lower': {
-                'id': 12,
-                'type': 'RX-64',
-                'orientation': 'direct',
-                'offset': 0.0,
-                'angle_limit': (-90.0, 90.0),
-            },
-            'base_tilt_upper': {
-                'id': 13,
-                'type': 'RX-64',
-                'orientation': 'direct',
-                'offset': 0.0,
-                'angle_limit': (-90.0, 90.0),
-            },
-            'head_pan': {
-                'id': 14,
-                'type': 'RX-28',
-                'orientation': 'direct',
-                'offset': 22.5,
-                'angle_limit': (-67.5, 112.5),
-            },
-            'head_tilt_lower': {
+            'm5': {
+                'orientation': 'indirect',
+                'type': 'MX-28',
                 'id': 15,
-                'type': 'RX-28',
-                'orientation': 'indirect',
-                'offset': 0.0,
-                'angle_limit': (-90.0, 90.0),
+                'angle_limit': [-90.0, 90.0],
+                'offset': 0.0
             },
-            'head_tilt_upper': {
+            'm4': {
+                'orientation': 'direct',
+                'type': 'MX-28',
+                'id': 14,
+                'angle_limit': [-90.0, 90.0],
+                'offset': 0.0
+            },
+            'm6': {
+                'orientation': 'indirect',
+                'type': 'MX-28',
                 'id': 16,
-                'type': 'RX-28',
-                'orientation': 'indirect',
-                'offset': 0.0,
-                'angle_limit': (-90.0, 90.0),
+                'angle_limit': [-90.0, 90.0],
+                'offset': 0.0
             },
-        },
+            'm1': {
+                'orientation': 'direct',
+                'type': 'MX-28', 'id': 11,
+                'angle_limit': [-90.0, 90.0],
+                'offset': 0.0
+            },
+            'm3': {
+                'orientation': 'indirect',
+                'type': 'MX-28',
+                'id': 13,
+                'angle_limit': [-90.0, 90.0],
+                'offset': 0.0
+            },
+            'm2': {
+                'orientation': 'indirect',
+                'type': 'MX-28',
+                'id': 12,
+                'angle_limit': [-90.0, 90.0],
+                'offset': 0.0
+            }
+        }
     }
+
 
 Since pypot 1.7, you can now set the port to 'auto' in the dictionary. When loading the configuration, pypot will automatically try to find the port with the corresponding attached motor ids.
 
