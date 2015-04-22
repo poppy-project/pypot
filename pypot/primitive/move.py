@@ -24,7 +24,7 @@ class Move(object):
     def __getitem__(self, i):
         return list(_timed_positions.items())[i]
 
-    # @property
+    @property
     def framerate(self):
         return self._framerate
 
@@ -112,16 +112,16 @@ class MovePlayer(LoopPrimitive):
     """
 
     # TODO : add position interpolation if framerate < Move.framerate
-    def __init__(self, robot, move=None, play_speed=1.0):
+    def __init__(self, robot, move=None, play_speed=1.0, control='position'):
         self.move = move
         self.play_speed = play_speed if play_speed != 0 and isinstance(play_speed, float) else 1.0
-        # framerate = self.move.framerate * \
-        # self.play_speed if self.move is not None else self.play_speed * 50.0
-        print self.play_speed, self.move.framerate
-        if self.move is not None:
-            framerate = self.play_speed * self.move.framerate
-        else:
-            framerate = self.play_speed * 50.0
+        framerate = self.move.framerate * \
+            self.play_speed if self.move is not None else self.play_speed * 50.0
+        self.control = control if control == 'position' or control == 'speed' else 'position'
+        # if self.move is not None:
+        #     framerate = self.play_speed * self.move.framerate
+        # else:
+        #     framerate = self.play_speed * 50.0
         LoopPrimitive.__init__(self, robot, framerate)
 
     def setup(self):
@@ -135,8 +135,10 @@ class MovePlayer(LoopPrimitive):
             position = self.positions[self.elapsed_time]
             # print position
             for m, v in position.iteritems():
-                getattr(self.robot, m).goal_position = v[0]
-                # getattr(self.robot, m).goal_speed = v[1]
+                if self.control == 'position':
+                    getattr(self.robot, m).goal_position = v[0]
+                elif self.control == 'speed':
+                    getattr(self.robot, m).goal_speed = v[1]
 
         except KeyError:
             self.stop()

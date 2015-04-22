@@ -5,7 +5,7 @@ import numpy as np
 
 class KDTreeDict(dict):
 
-    def __init__(self, gen_tree_on_add=True, distance_upper_bound=0.2, k_neighbors=2):
+    def __init__(self, gen_tree_on_add=False, distance_upper_bound=0.2, k_neighbors=2):
         super(KDTreeDict, self).__init__()
         self.gen_tree_on_add = gen_tree_on_add
         self.distance_upper_bound = distance_upper_bound
@@ -17,18 +17,21 @@ class KDTreeDict(dict):
     def __setitem__(self, key, val):
 
         if not isinstance(key, tuple):
-            key = (key,)
-        if key not in self.__keys:
-            self.__keys.append(key)
+            _key = (key,)
+        if _key not in self.__keys:
+            self.__keys.append(_key)
             self.__stale = True
             if self.gen_tree_on_add:
                 self.generate_tree()
         super(KDTreeDict, self).__setitem__(key, val)
 
     def __getitem__(self, key):
-        if not isinstance(key, tuple):
-            key = (key,)
+        # if not isinstance(key, tuple):
+        #     key = (key,)
         return super(KDTreeDict, self).__getitem__(key)
+
+    def __iter__(self):
+        return iter(self.store)
 
     def __len__(self):
         return len(self.__keys)
@@ -42,11 +45,11 @@ class KDTreeDict(dict):
         # print 'debug', key
         # print 'self', self
         if not isinstance(key, tuple):
-            key = (key,)
+            _key = (key,)
         if self.__stale:
             self.generate_tree()
         d, idx = self.__tree.query(
-            key, self.k_neighbors, distance_upper_bound=self.distance_upper_bound)
+            _key, self.k_neighbors, distance_upper_bound=self.distance_upper_bound)
 
         try:
             return [self.__keys[id][0] for id in idx if id < len(self.__keys)]
@@ -57,9 +60,13 @@ class KDTreeDict(dict):
     def interpolate_motors(self, input_key, nearest_keys):
         """ Process linear interpolation to estimate actual speed and position of motors
             Method specific to the ~pypot.primitive.move.Move.position() structure
-            it is a KDTreeDict[timestamp] = {dict[motor]=(position,speed)} """
+            it is a KDTreeDict[timestamp] = {dict[motor]=(position,speed)}
+        """
+
         # TODO : to be rewrited with more style (map ?)
 
+        # debug
+        # print 'nearest keys', nearest_keys, len(nearest_keys), input_key
         if len(nearest_keys) == 1:
             return self[nearest_keys[0]]
         elif len(nearest_keys) == 0:
@@ -67,6 +74,16 @@ class KDTreeDict(dict):
                 input_key, self.distance_upper_bound))
         elif len(nearest_keys) != 2:
             raise NotImplementedError("interpolation works only for k_neighbors = 2")
+        elif nearest_keys[0] == nearest_keys[1]:
+            # Bug from nearest key ?
+            return self[nearest_keys[0]]
+
+        # Problem if ValueError: A value in x_new is above the interpolation range.
+        elif input_key < min(nearest_keys):
+            return self[min(nearest_keys)]
+        elif input_key > max(nearest_keys):
+            return self[max(nearest_keys)]
+
         interpolated_positions = {}
         for (k, v), (k2, v2) in zip(self[nearest_keys[0]].items(), self[nearest_keys[1]].items()):
             if k == k2:
@@ -77,7 +94,7 @@ class KDTreeDict(dict):
                 f_speed = interp1d(x, y_speed)
                 # print k, input_key, (float(f_pos(input_key[0])), float(f_speed(input_key[0])))
                 interpolated_positions[k] = (
-                    float(f_pos(input_key[0])), float(f_speed(input_key[0])))
+                    float(f_pos(input_key)), float(f_speed(input_key)))
             else:
                 raise IndexError("key are not identics. Motor added during the record ?")
         return interpolated_positions
