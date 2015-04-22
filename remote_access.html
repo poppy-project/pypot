@@ -51,8 +51,8 @@
 </script>
     <link rel="author" title="About these documents" href="about.html" />
     <link rel="top" title="pypot 2.5.0 documentation" href="index.html" />
-    <link rel="next" title="Herborist: the configuration tool" href="herborist.html" />
-    <link rel="prev" title="Mastering the logging system" href="logging.html" /> 
+    <link rel="next" title="Mastering the logging system" href="logging.html" />
+    <link rel="prev" title="Extending pypot" href="extending.html" /> 
   </head>
   <body role="document">
     <div id="navbar-top" class="navbar navbar-fixed-top navbar-default" role="navigation" aria-label="top navigation">
@@ -73,14 +73,7 @@
                 <ul class="dropdown-menu localtoc sp-localtoc" role="menu" aria-labelledby="localToc">
                 <ul>
 <li><a class="reference internal" href="#">REST API</a><ul>
-<li><a class="reference internal" href="#protocol">Protocol</a><ul>
-<li><a class="reference internal" href="#get-request">Get Request</a></li>
-<li><a class="reference internal" href="#set-request">Set Request</a></li>
-<li><a class="reference internal" href="#call-request">Call Request</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#zmq-server">Zmq Server</a></li>
-<li><a class="reference internal" href="#http-server">Http Server</a></li>
+<li><a class="reference internal" href="#protocol">Protocol</a></li>
 </ul>
 </li>
 </ul>
@@ -89,8 +82,8 @@
               </li>
 
             
-              <li><a href="logging.html" title="Mastering the logging system" accesskey="P">previous </a></li>
-              <li><a href="herborist.html" title="Herborist: the configuration tool" accesskey="N">next </a></li>
+              <li><a href="extending.html" title="Extending pypot" accesskey="P">previous </a></li>
+              <li><a href="logging.html" title="Mastering the logging system" accesskey="N">next </a></li>
               <li><a href="py-modindex.html" title="Python Module Index" >modules </a></li>
               <li><a href="genindex.html" title="General Index" accesskey="I">index </a></li>
             
@@ -129,24 +122,17 @@
   <h3><a href="index.html">Table Of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">REST API</a><ul>
-<li><a class="reference internal" href="#protocol">Protocol</a><ul>
-<li><a class="reference internal" href="#get-request">Get Request</a></li>
-<li><a class="reference internal" href="#set-request">Set Request</a></li>
-<li><a class="reference internal" href="#call-request">Call Request</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#zmq-server">Zmq Server</a></li>
-<li><a class="reference internal" href="#http-server">Http Server</a></li>
+<li><a class="reference internal" href="#protocol">Protocol</a></li>
 </ul>
 </li>
 </ul>
 
   <h4>Previous topic</h4>
-  <p class="topless"><a href="logging.html"
-                        title="previous chapter">Mastering the logging system</a></p>
+  <p class="topless"><a href="extending.html"
+                        title="previous chapter">Extending pypot</a></p>
   <h4>Next topic</h4>
-  <p class="topless"><a href="herborist.html"
-                        title="next chapter">Herborist: the configuration tool</a></p>
+  <p class="topless"><a href="logging.html"
+                        title="next chapter">Mastering the logging system</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -185,205 +171,37 @@
 <p>We add the possibility to remotely access and control your robot through TCP network. This can be useful both to work with client/server architecture (e.g. to separate the low-level control running on an embedded computer and higher-level computation on a more powerful computer) and to allow you to plug your existing code written in another language to the pypot&#8217;s API.</p>
 <p>We defined a protocol which permits the access of all the robot variables and method (including motors and primitives) via a JSON request. The protocol is entirely described in the section <a class="reference internal" href="#remote-protocol"><span>Protocol</span></a> below. Two transport methods have been developed so far:</p>
 <ul class="simple">
-<li>HTTP via GET and POST request (see the <a class="reference internal" href="#http-server"><span>Http Server</span></a> section)</li>
-<li>ZMQ socket (see the <a class="reference internal" href="#zmq-server"><span>Zmq Server</span></a> section)</li>
+<li>HTTP via GET and POST request (see the <a class="reference internal" href="pypot.server.html#pypot.server.httpserver.HTTPRobotServer" title="pypot.server.httpserver.HTTPRobotServer"><code class="xref py py-class docutils literal"><span class="pre">HTTPRobotServer</span></code></a>)</li>
+<li>ZMQ socket (see the <a class="reference internal" href="pypot.server.html#pypot.server.zmqserver.ZMQRobotServer" title="pypot.server.zmqserver.ZMQRobotServer"><code class="xref py py-class docutils literal"><span class="pre">ZMQRobotServer</span></code></a>)</li>
 </ul>
-<p>The <code class="xref py py-class docutils literal"><span class="pre">BaseRequestHandler</span></code> has been separated from the server, so you can easily add new transport methods if needed.</p>
-<div class="admonition warning">
-<p class="first admonition-title">Warning</p>
-<p class="last">For the moment, the server is defined as a primitive, so multiple requests will not be automatically combined but instead the last request will win. In further version, it will be possible to spawn each client in a separate primitive.</p>
-</div>
+<p>The <a class="reference internal" href="pypot.server.html#pypot.server.rest.RESTRobot" title="pypot.server.rest.RESTRobot"><code class="xref py py-class docutils literal"><span class="pre">RESTRobot</span></code></a> has been abstracted from the server, so you can easily add new transport methods if needed.</p>
 <p>As an example of what you can do, here is the code of getting the load of a motor and changing its position:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">zmq</span>
+<span class="kn">import</span> <span class="nn">threading</span>
 
 <span class="n">robot</span> <span class="o">=</span> <span class="n">pypot</span><span class="o">.</span><span class="n">robot</span><span class="o">.</span><span class="n">from_config</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
 
 <span class="n">server</span> <span class="o">=</span> <span class="n">pypot</span><span class="o">.</span><span class="n">server</span><span class="o">.</span><span class="n">ZMQServer</span><span class="p">(</span><span class="n">robot</span><span class="p">,</span> <span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">)</span>
-<span class="n">server</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+<span class="c"># We launch the server inside a thread</span>
+<span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="n">server</span><span class="o">.</span><span class="n">run</span><span class="p">())</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
 
 <span class="n">c</span> <span class="o">=</span> <span class="n">zmq</span><span class="o">.</span><span class="n">Context</span><span class="p">()</span>
 <span class="n">s</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">socket</span><span class="p">(</span><span class="n">zmq</span><span class="o">.</span><span class="n">REQ</span><span class="p">)</span>
 
-<span class="n">req</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s">&#39;get&#39;</span><span class="p">:</span> <span class="p">{</span><span class="n">motor_name</span><span class="p">:</span> <span class="p">(</span><span class="s">&#39;present_load&#39;</span><span class="p">,</span> <span class="p">)},</span>
-    <span class="s">&#39;set&#39;</span><span class="p">:</span> <span class="p">{</span><span class="n">motor_name</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;goal_position&#39;</span><span class="p">:</span> <span class="mf">20.0</span><span class="p">}}</span>
-<span class="p">}</span>
-
+<span class="n">req</span> <span class="o">=</span> <span class="p">{</span><span class="s">&quot;robot&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s">&quot;get_register_value&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s">&quot;motor&quot;</span><span class="p">:</span> <span class="s">&quot;m2&quot;</span><span class="p">,</span> <span class="s">&quot;register&quot;</span><span class="p">:</span> <span class="s">&quot;present_load&quot;</span><span class="p">}}}</span>
 <span class="n">s</span><span class="o">.</span><span class="n">send_json</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
 <span class="n">answer</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">recv_json</span><span class="p">()</span>
+<span class="k">print</span><span class="p">(</span><span class="n">answer</span><span class="p">)</span>
+
+<span class="n">req</span> <span class="o">=</span> <span class="p">{</span><span class="s">&quot;robot&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s">&quot;set_register_value&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s">&quot;motor&quot;</span><span class="p">:</span> <span class="s">&quot;m2&quot;</span><span class="p">,</span> <span class="s">&quot;register&quot;</span><span class="p">:</span> <span class="s">&quot;goal_position&quot;</span><span class="p">,</span> <span class="s">&quot;value&quot;</span><span class="p">:</span> <span class="mi">20</span><span class="p">}}}</span>
+<span class="n">s</span><span class="o">.</span><span class="n">send_json</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
+<span class="n">answer</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">recv_json</span><span class="p">()</span>
+<span class="k">print</span><span class="p">(</span><span class="n">answer</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="section" id="protocol">
 <span id="remote-protocol"></span><h2>Protocol<a class="headerlink" href="#protocol" title="Permalink to this headline">¶</a></h2>
-<p>Our protocol allows you define three types of requests:</p>
-<ul class="simple">
-<li><a class="reference internal" href="#get-req"><span>Get Request</span></a> (to retrieve a motor register value, access a primitive variable)</li>
-<li><a class="reference internal" href="#set-req"><span>Set Request</span></a> (to set a motor register value, modify any variable within the robot instance)</li>
-<li><a class="reference internal" href="#call-req"><span>Call Request</span></a> (to call a method of any object defined within the robot instance, e.g. a primitive)</li>
-</ul>
-<p>An entire request is defined as follows:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">req</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s">&#39;get&#39;</span><span class="p">:</span> <span class="n">get_request</span><span class="p">,</span>
-    <span class="s">&#39;set&#39;</span><span class="p">:</span> <span class="n">set_request</span><span class="p">,</span>
-    <span class="s">&#39;call&#39;</span><span class="p">:</span> <span class="n">call_request</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">The field are optional, so you can define a request with only a get field for instance.</p>
-</div>
-<div class="section" id="get-request">
-<span id="get-req"></span><h3>Get Request<a class="headerlink" href="#get-request" title="Permalink to this headline">¶</a></h3>
-<p>The get request is constructed as follows:</p>
-<div class="highlight-python"><div class="highlight"><pre>get_request = {
-    obj_name_1: (var_path_1, var_path_2, ...),
-    obj_name_2: (var_path_1, var_path_2, ...),
-    ...
-}
-</pre></div>
-</div>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">The var_path can be a complete path such as skeleton.hip.position.x.</p>
-</div>
-<p>For instance, if you write the following get request:</p>
-<div class="highlight-python"><div class="highlight"><pre>get_request = {
-    &#39;base_tilt_lower&#39;: (&#39;present_position&#39;, &#39;present_load&#39;),
-    &#39;base_tilt_upper&#39;: (&#39;present_temperature&#39;, ),
-    &#39;dance&#39;, (&#39;current_song.filename&#39;, ) # Where dance is an attached primitive
-}
-</pre></div>
-</div>
-<p>It will retrieve the variables robot.base_tilt_lower.present_position, robot.base_tilt_lower.present_load, robot.base_tilt_upper.present_temperature, and robot.dance.current_song.</p>
-<p>The server will return something like:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">answer</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s">&#39;get&#39;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s">&#39;base_tilt_lower&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;present_position&#39;</span><span class="p">:</span> <span class="mf">10.0</span><span class="p">,</span> <span class="s">&#39;present_load&#39;</span><span class="p">:</span> <span class="mf">23.0</span><span class="p">},</span>
-        <span class="s">&#39;base_tilt_upper&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;present_temperature&#39;</span><span class="p">:</span> <span class="mi">40</span><span class="p">},</span>
-        <span class="s">&#39;dance&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;current_song.filename&#39;</span><span class="p">:</span> <span class="s">&#39;never_gonna_give_you_up.mp3&#39;</span><span class="p">}</span>
-    <span class="p">}</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-</div>
-<div class="section" id="set-request">
-<span id="set-req"></span><h3>Set Request<a class="headerlink" href="#set-request" title="Permalink to this headline">¶</a></h3>
-<p>The set request is really similar to the get request. Instead of giving a list of the var_path you want to access, you provide dictionary of (var_path: desired_value):</p>
-<div class="highlight-python"><div class="highlight"><pre>set_request = {
-    obj_name_1: {var_path_1: value1, var_path_2: value2, ...},
-    obj_name_2: {var_path_1: value1, var_path_2: value2, ...},
-    ...
-}
-</pre></div>
-</div>
-<p>The server will return an empty set field used as an acknowledgment:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">answer</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s">&#39;set&#39;</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-</div>
-<div class="section" id="call-request">
-<span id="call-req"></span><h3>Call Request<a class="headerlink" href="#call-request" title="Permalink to this headline">¶</a></h3>
-<p>You can also build call request as follows:</p>
-<div class="highlight-python"><div class="highlight"><pre>call_request = {
-    obj_name_1: {meth_name_1: args, meth_name_2: args, ...},
-    obj_name_2: {meth_name_1: args, meth_name_2: args, ...},
-    ...
-}
-</pre></div>
-</div>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">The argument as passed as a list.</p>
-</div>
-<p>For instance, this request will start the dance primitive:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">call_request</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s">&#39;dance&#39;</span><span class="p">,</span> <span class="p">{</span><span class="s">&#39;start&#39;</span><span class="p">:</span> <span class="p">()}</span> <span class="c"># The start method does not take any argument so we pass the empty list.</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-<p>The server will return the result of the called methods:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">answer</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s">&#39;call&#39;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s">&#39;dance&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;start&#39;</span><span class="p">:</span> <span class="bp">None</span><span class="p">},</span> <span class="c"># The start methods does not return anything.</span>
-    <span class="p">}</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="section" id="zmq-server">
-<span id="id1"></span><h2>Zmq Server<a class="headerlink" href="#zmq-server" title="Permalink to this headline">¶</a></h2>
-<p>The Zmq Server used a Zmq socket to send (resp. receive) JSON request (JSON answer). It is based on the REQ/REP pattern. So you should always alternate sending and receiving. It will probably be switched to PUB/SUB soon.</p>
-<p>Zmq has been chosen as it has been <a class="reference external" href="http://zeromq.org/bindings:_start">binded to most language</a> and can thus be used to connect code from other language to pypot. For instance, we used it to connect <a class="reference external" href="http://rlpark.github.io">RLPark</a> (a Java reinforcement learning library) to pypot.</p>
-<p>Here is an example of how you can create a zmq server and send request:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">zmq</span>
-
-<span class="n">robot</span> <span class="o">=</span> <span class="n">pypot</span><span class="o">.</span><span class="n">robot</span><span class="o">.</span><span class="n">from_config</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
-
-<span class="n">server</span> <span class="o">=</span> <span class="n">pypot</span><span class="o">.</span><span class="n">server</span><span class="o">.</span><span class="n">ZMQServer</span><span class="p">(</span><span class="n">robot</span><span class="p">,</span> <span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">)</span>
-<span class="n">server</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
-
-<span class="n">c</span> <span class="o">=</span> <span class="n">zmq</span><span class="o">.</span><span class="n">Context</span><span class="p">()</span>
-<span class="n">s</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">socket</span><span class="p">(</span><span class="n">zmq</span><span class="o">.</span><span class="n">REQ</span><span class="p">)</span>
-<span class="n">s</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s">&#39;tcp://{}:{}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">))</span>
-
-<span class="n">req</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s">&#39;get&#39;</span><span class="p">:</span> <span class="p">{</span><span class="n">motor_name</span><span class="p">:</span> <span class="p">(</span><span class="s">&#39;present_load&#39;</span><span class="p">,</span> <span class="p">)},</span>
-    <span class="s">&#39;set&#39;</span><span class="p">:</span> <span class="p">{</span><span class="n">motor_name</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;goal_position&#39;</span><span class="p">:</span> <span class="mf">20.0</span><span class="p">}}</span>
-<span class="p">}</span>
-
-<span class="n">s</span><span class="o">.</span><span class="n">send_json</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
-<span class="n">answer</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">recv_json</span><span class="p">()</span>
-</pre></div>
-</div>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">The zmq server is faster than the HTTP version and should be preferred when working with high frequency control loops.</p>
-</div>
-</div>
-<div class="section" id="http-server">
-<span id="id2"></span><h2>Http Server<a class="headerlink" href="#http-server" title="Permalink to this headline">¶</a></h2>
-<p>The HTTPServer is based on the bottle python framework (<a class="reference external" href="http://bottlepy.org/">http://bottlepy.org/</a>). We have developed a sort of REST API based on the protocol described above:</p>
-<ul class="simple">
-<li>GET /motor/list.json</li>
-<li>GET /primitive/list.json</li>
-<li>GET /motor/&lt;name&gt;/register.json (or GET /&lt;name&gt;/register.json)</li>
-<li>GET /motor/&lt;name&gt;/&lt;register&gt; (or GET /&lt;name&gt;/&lt;register&gt;)</li>
-<li>POST /motor/&lt;name&gt;/&lt;register&gt; (or POST /&lt;name&gt;/&lt;register&gt;)</li>
-<li>POST /primitive/&lt;prim_name&gt;/call/&lt;meth_name&gt; (or GET /&lt;prim_name&gt;/call/&lt;meth_name&gt;)</li>
-<li>POST /request.json</li>
-</ul>
-<p>An example of how you can use the HTTP server:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">urllib2</span>
-<span class="kn">import</span> <span class="nn">json</span>
-<span class="kn">import</span> <span class="nn">time</span>
-
-<span class="kn">import</span> <span class="nn">pypot.robot</span>
-<span class="kn">import</span> <span class="nn">pypot.server</span>
-
-<span class="n">robot</span> <span class="o">=</span> <span class="n">pypot</span><span class="o">.</span><span class="n">robot</span><span class="o">.</span><span class="n">from_config</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
-
-<span class="n">server</span> <span class="o">=</span> <span class="n">pypot</span><span class="o">.</span><span class="n">server</span><span class="o">.</span><span class="n">HTTPServer</span><span class="p">(</span><span class="n">robot</span><span class="p">,</span> <span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">)</span>
-<span class="n">server</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
-
-<span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="c"># Make sure the server is really started</span>
-
-<span class="n">url</span> <span class="o">=</span> <span class="s">&#39;http://{}:{}/motor/list.json&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">)</span>
-<span class="k">print</span> <span class="n">urllib2</span><span class="o">.</span><span class="n">urlopen</span><span class="p">(</span><span class="n">url</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
-
-<span class="n">url</span> <span class="o">=</span> <span class="s">&#39;http://{}:{}/motor/base_tilt_lower/goal_position&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">)</span>
-<span class="n">data</span> <span class="o">=</span> <span class="mf">20.0</span>
-<span class="n">r</span> <span class="o">=</span> <span class="n">urllib2</span><span class="o">.</span><span class="n">Request</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">data</span><span class="p">),</span> <span class="n">headers</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;Content-Type&#39;</span><span class="p">:</span> <span class="s">&#39;application/json&#39;</span><span class="p">})</span>
-<span class="k">print</span> <span class="n">urllib2</span><span class="o">.</span><span class="n">urlopen</span><span class="p">(</span><span class="n">r</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
-</pre></div>
-</div>
-<div class="admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">Note that the http server will always return a dictionary (see <a class="reference external" href="http://haacked.com/archive/2009/06/24/json-hijacking.aspx">http://haacked.com/archive/2009/06/24/json-hijacking.aspx</a> for an explanation).</p>
-</div>
+<p>The entire protocol is entirely described <a class="reference external" href="https://github.com/pierre-rouanet/pypot/blob/master/REST-APIs.md">here</a>.</p>
 </div>
 </div>
 
@@ -406,8 +224,8 @@
     </ul>
 <ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
       
-        <li><a href="logging.html" title="Mastering the logging system" >previous</a></li>
-        <li><a href="herborist.html" title="Herborist: the configuration tool" >next</a></li>
+        <li><a href="extending.html" title="Extending pypot" >previous</a></li>
+        <li><a href="logging.html" title="Mastering the logging system" >next</a></li>
         <li><a href="py-modindex.html" title="Python Module Index" >modules</a></li>
         <li><a href="genindex.html" title="General Index" >index</a></li>
         <li><a href="#">top</a></li> 

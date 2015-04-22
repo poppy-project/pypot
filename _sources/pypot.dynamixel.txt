@@ -8,14 +8,23 @@
 .. autofunction:: pypot.dynamixel.autodetect_robot
 
 
-:mod:`~pypot.dynamixel.io` Module
----------------------------------
+:mod:`~pypot.dynamixel.io` Package
+----------------------------------
 
 .. automodule:: pypot.dynamixel.io
     :members:
     :undoc-members:
     :show-inheritance:
 
+.. automodule:: pypot.dynamixel.io.io
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+.. automodule:: pypot.dynamixel.io.io_320
+    :members:
+    :undoc-members:
+    :show-inheritance:
 
 :mod:`motor` Module
 -------------------

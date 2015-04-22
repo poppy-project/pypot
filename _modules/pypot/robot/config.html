@@ -342,6 +342,64 @@
     <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">alias</span><span class="p">[</span><span class="n">name</span><span class="p">]:</span>
         <span class="n">l</span> <span class="o">+=</span> <span class="n">_motor_extractor</span><span class="p">(</span><span class="n">alias</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span> <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">alias</span> <span class="k">else</span> <span class="p">[</span><span class="n">key</span><span class="p">]</span>
     <span class="k">return</span> <span class="n">l</span>
+
+
+<span class="n">ergo_robot_config</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s">&#39;controllers&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">&#39;my_dxl_controller&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&#39;sync_read&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>
+            <span class="s">&#39;attached_motors&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s">&#39;base&#39;</span><span class="p">,</span> <span class="s">&#39;tip&#39;</span><span class="p">],</span>
+            <span class="s">&#39;port&#39;</span><span class="p">:</span> <span class="s">&#39;auto&#39;</span>
+        <span class="p">}</span>
+    <span class="p">},</span>
+    <span class="s">&#39;motorgroups&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">&#39;base&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s">&#39;m1&#39;</span><span class="p">,</span> <span class="s">&#39;m2&#39;</span><span class="p">,</span> <span class="s">&#39;m3&#39;</span><span class="p">],</span>
+        <span class="s">&#39;tip&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s">&#39;m4&#39;</span><span class="p">,</span> <span class="s">&#39;m5&#39;</span><span class="p">,</span> <span class="s">&#39;m6&#39;</span><span class="p">]</span>
+    <span class="p">},</span>
+    <span class="s">&#39;motors&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">&#39;m5&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&#39;orientation&#39;</span><span class="p">:</span> <span class="s">&#39;indirect&#39;</span><span class="p">,</span>
+            <span class="s">&#39;type&#39;</span><span class="p">:</span> <span class="s">&#39;MX-28&#39;</span><span class="p">,</span>
+            <span class="s">&#39;id&#39;</span><span class="p">:</span> <span class="mi">15</span><span class="p">,</span>
+            <span class="s">&#39;angle_limit&#39;</span><span class="p">:</span> <span class="p">[</span><span class="o">-</span><span class="mf">90.0</span><span class="p">,</span> <span class="mf">90.0</span><span class="p">],</span>
+            <span class="s">&#39;offset&#39;</span><span class="p">:</span> <span class="mf">0.0</span>
+        <span class="p">},</span>
+        <span class="s">&#39;m4&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&#39;orientation&#39;</span><span class="p">:</span> <span class="s">&#39;direct&#39;</span><span class="p">,</span>
+            <span class="s">&#39;type&#39;</span><span class="p">:</span> <span class="s">&#39;MX-28&#39;</span><span class="p">,</span>
+            <span class="s">&#39;id&#39;</span><span class="p">:</span> <span class="mi">14</span><span class="p">,</span>
+            <span class="s">&#39;angle_limit&#39;</span><span class="p">:</span> <span class="p">[</span><span class="o">-</span><span class="mf">90.0</span><span class="p">,</span> <span class="mf">90.0</span><span class="p">],</span>
+            <span class="s">&#39;offset&#39;</span><span class="p">:</span> <span class="mf">0.0</span>
+        <span class="p">},</span>
+        <span class="s">&#39;m6&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&#39;orientation&#39;</span><span class="p">:</span> <span class="s">&#39;indirect&#39;</span><span class="p">,</span>
+            <span class="s">&#39;type&#39;</span><span class="p">:</span> <span class="s">&#39;MX-28&#39;</span><span class="p">,</span>
+            <span class="s">&#39;id&#39;</span><span class="p">:</span> <span class="mi">16</span><span class="p">,</span>
+            <span class="s">&#39;angle_limit&#39;</span><span class="p">:</span> <span class="p">[</span><span class="o">-</span><span class="mf">90.0</span><span class="p">,</span> <span class="mf">90.0</span><span class="p">],</span>
+            <span class="s">&#39;offset&#39;</span><span class="p">:</span> <span class="mf">0.0</span>
+        <span class="p">},</span>
+        <span class="s">&#39;m1&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&#39;orientation&#39;</span><span class="p">:</span> <span class="s">&#39;direct&#39;</span><span class="p">,</span>
+            <span class="s">&#39;type&#39;</span><span class="p">:</span> <span class="s">&#39;MX-28&#39;</span><span class="p">,</span> <span class="s">&#39;id&#39;</span><span class="p">:</span> <span class="mi">11</span><span class="p">,</span>
+            <span class="s">&#39;angle_limit&#39;</span><span class="p">:</span> <span class="p">[</span><span class="o">-</span><span class="mf">90.0</span><span class="p">,</span> <span class="mf">90.0</span><span class="p">],</span>
+            <span class="s">&#39;offset&#39;</span><span class="p">:</span> <span class="mf">0.0</span>
+        <span class="p">},</span>
+        <span class="s">&#39;m3&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&#39;orientation&#39;</span><span class="p">:</span> <span class="s">&#39;indirect&#39;</span><span class="p">,</span>
+            <span class="s">&#39;type&#39;</span><span class="p">:</span> <span class="s">&#39;MX-28&#39;</span><span class="p">,</span>
+            <span class="s">&#39;id&#39;</span><span class="p">:</span> <span class="mi">13</span><span class="p">,</span>
+            <span class="s">&#39;angle_limit&#39;</span><span class="p">:</span> <span class="p">[</span><span class="o">-</span><span class="mf">90.0</span><span class="p">,</span> <span class="mf">90.0</span><span class="p">],</span>
+            <span class="s">&#39;offset&#39;</span><span class="p">:</span> <span class="mf">0.0</span>
+        <span class="p">},</span>
+        <span class="s">&#39;m2&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">&#39;orientation&#39;</span><span class="p">:</span> <span class="s">&#39;indirect&#39;</span><span class="p">,</span>
+            <span class="s">&#39;type&#39;</span><span class="p">:</span> <span class="s">&#39;MX-28&#39;</span><span class="p">,</span>
+            <span class="s">&#39;id&#39;</span><span class="p">:</span> <span class="mi">12</span><span class="p">,</span>
+            <span class="s">&#39;angle_limit&#39;</span><span class="p">:</span> <span class="p">[</span><span class="o">-</span><span class="mf">90.0</span><span class="p">,</span> <span class="mf">90.0</span><span class="p">],</span>
+            <span class="s">&#39;offset&#39;</span><span class="p">:</span> <span class="mf">0.0</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
 </pre></div>
 
                 </div>

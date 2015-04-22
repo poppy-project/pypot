@@ -43,11 +43,11 @@ You will only have to modify the USB2serial port and the id of the motors so the
 
     import pypot.dynamixel
 
-    print pypot.dynamixel.get_available_ports()
+    print(pypot.dynamixel.get_available_ports())
     ['/dev/tty.usbserial-A4008aCD', '/dev/tty.usbmodemfd1311']
 
     dxl_io = pypot.dynamixel.DxlIO('/dev/tty.usbserial-A4008aCD')
-    print dxl_io.scan()
+    print(dxl_io.scan())
     [11, 12, 13, 14, 15, 16]
 
 .. note:: You can save/load configurations from any format that can be written/read as a Python dictionary. A wrapper for loading json configuration file is provided (see :func:`~pypot.robot.config.from_json`).
@@ -79,7 +79,7 @@ First, write the following lines to start you robot (we assume that you have cor
 
     ergo_robot = pypot.robot.from_config(my_config)
 
-Except from the last line, everything should be clear now. This new line starts the synchronization between the "software" robot and the real one, i.e. all commands that you will send in python code will automatically be sent to the physical Ergo-Robot (for details on the underlying mechanisms, see :ref:`Sync Loop <sync_loop>`).
+Everything should be clear now. When creating your robot, it automatically starts the synchronization between the "software" robot and the real one, i.e. all commands that you will send in python code will automatically be sent to the physical Ergo-Robot (for details on the underlying mechanisms, see :ref:`Sync Loop <sync_loop>`).
 
 Now, we are going to put the robot in its initial position::
 

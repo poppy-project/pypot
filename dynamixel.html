@@ -174,7 +174,7 @@
                   
   <div class="section" id="dynamixel-low-level-io">
 <span id="low-level"></span><h1>Dynamixel Low-level IO<a class="headerlink" href="#dynamixel-low-level-io" title="Permalink to this headline">¶</a></h1>
-<p>The low-level API almost directly encapsulates the communication protocol used by dynamixel motors. This protocol can be used to access any register of these motors. The <code class="xref py py-class docutils literal"><span class="pre">DxlIO</span></code> class is used to handle the communication with a particular port.</p>
+<p>The low-level API almost directly encapsulates the communication protocol used by dynamixel motors. This protocol can be used to access any register of these motors. The <a class="reference internal" href="pypot.dynamixel.html#pypot.dynamixel.io.io.DxlIO" title="pypot.dynamixel.io.io.DxlIO"><code class="xref py py-class docutils literal"><span class="pre">DxlIO</span></code></a> class is used to handle the communication with a particular port.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">The port can only be accessed by a single DxlIO instance.</p>
@@ -187,12 +187,18 @@
 </ul>
 <p>The communication is thread-safe to avoid collision in the communication buses.</p>
 <p>As an example, you can write:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="k">with</span> <span class="n">DxlIO</span><span class="p">(</span><span class="s">&#39;/dev/USB0&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">dxl_io</span><span class="p">:</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">itertools</span>
+
+<span class="k">with</span> <span class="n">DxlIO</span><span class="p">(</span><span class="s">&#39;/dev/USB0&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">dxl_io</span><span class="p">:</span>
     <span class="n">ids</span> <span class="o">=</span> <span class="n">dxl_io</span><span class="o">.</span><span class="n">scan</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">])</span>
 
-    <span class="k">print</span> <span class="n">dxl_io</span><span class="o">.</span><span class="n">get_present_position</span><span class="p">(</span><span class="n">ids</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">dxl_io</span><span class="o">.</span><span class="n">get_present_position</span><span class="p">(</span><span class="n">ids</span><span class="p">))</span>
     <span class="n">dxl_io</span><span class="o">.</span><span class="n">set_goal_position</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">ids</span><span class="p">,</span> <span class="n">itertools</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="mi">0</span><span class="p">))))</span>
 </pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Since pypot version 2.2, support for the robotis protocol v2 and for XL-320 motors has been added. To avoid confusion there is a another class that should be used: <a class="reference internal" href="pypot.dynamixel.html#pypot.dynamixel.io.io_320.Dxl320IO" title="pypot.dynamixel.io.io_320.Dxl320IO"><code class="xref py py-class docutils literal"><span class="pre">Dxl320IO</span></code></a> in this case.</p>
 </div>
 <div class="section" id="opening-closing-a-communication-port">
 <span id="open-connection"></span><h2>Opening/Closing a communication port<a class="headerlink" href="#opening-closing-a-communication-port" title="Permalink to this headline">¶</a></h2>
@@ -205,9 +211,9 @@
 <span class="k">if</span> <span class="ow">not</span> <span class="n">ports</span><span class="p">:</span>
     <span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s">&#39;no port found!&#39;</span><span class="p">)</span>
 
-<span class="k">print</span> <span class="s">&#39;ports found&#39;</span><span class="p">,</span> <span class="n">ports</span>
+<span class="k">print</span><span class="p">(</span><span class="s">&#39;ports found&#39;</span><span class="p">,</span> <span class="n">ports</span><span class="p">)</span>
 
-<span class="k">print</span> <span class="s">&#39;connecting on the first available port:&#39;</span><span class="p">,</span> <span class="n">ports</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="k">print</span><span class="p">(</span><span class="s">&#39;connecting on the first available port:&#39;</span><span class="p">,</span> <span class="n">ports</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
 <span class="n">dxl_io</span> <span class="o">=</span> <span class="n">pypot</span><span class="o">.</span><span class="n">dynamixel</span><span class="o">.</span><span class="n">DxlIO</span><span class="p">(</span><span class="n">ports</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
 </pre></div>
 </div>
@@ -283,19 +289,19 @@ dxl_io.scan([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
 
 <span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
     <span class="n">ports</span> <span class="o">=</span> <span class="n">pypot</span><span class="o">.</span><span class="n">dynamixel</span><span class="o">.</span><span class="n">get_available_ports</span><span class="p">()</span>
-    <span class="k">print</span> <span class="s">&#39;available ports:&#39;</span><span class="p">,</span> <span class="n">ports</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">&#39;available ports:&#39;</span><span class="p">,</span> <span class="n">ports</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="ow">not</span> <span class="n">ports</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s">&#39;No port available.&#39;</span><span class="p">)</span>
 
     <span class="n">port</span> <span class="o">=</span> <span class="n">ports</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-    <span class="k">print</span> <span class="s">&#39;Using the first on the list&#39;</span><span class="p">,</span> <span class="n">port</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">&#39;Using the first on the list&#39;</span><span class="p">,</span> <span class="n">port</span><span class="p">)</span>
 
     <span class="n">dxl_io</span> <span class="o">=</span> <span class="n">pypot</span><span class="o">.</span><span class="n">dynamixel</span><span class="o">.</span><span class="n">DxlIO</span><span class="p">(</span><span class="n">port</span><span class="p">)</span>
-    <span class="k">print</span> <span class="s">&#39;Connected!&#39;</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">&#39;Connected!&#39;</span><span class="p">)</span>
 
     <span class="n">found_ids</span> <span class="o">=</span> <span class="n">dxl_io</span><span class="o">.</span><span class="n">scan</span><span class="p">()</span>
-    <span class="k">print</span> <span class="s">&#39;Found ids:&#39;</span><span class="p">,</span> <span class="n">found_ids</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">&#39;Found ids:&#39;</span><span class="p">,</span> <span class="n">found_ids</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">found_ids</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s">&#39;You should connect at least two motors on the bus for this test.&#39;</span><span class="p">)</span>

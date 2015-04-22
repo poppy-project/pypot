@@ -74,7 +74,7 @@
                 <ul class="dropdown-menu localtoc sp-localtoc" role="menu" aria-labelledby="localToc">
                 <ul>
 <li><a class="reference internal" href="#"><code class="docutils literal"><span class="pre">dynamixel</span></code> Package</a><ul>
-<li><a class="reference internal" href="#module-pypot.dynamixel.io"><code class="docutils literal"><span class="pre">io</span></code> Module</a></li>
+<li><a class="reference internal" href="#module-pypot.dynamixel.io"><code class="docutils literal"><span class="pre">io</span></code> Package</a></li>
 <li><a class="reference internal" href="#module-pypot.dynamixel.motor"><code class="docutils literal"><span class="pre">motor</span></code> Module</a></li>
 <li><a class="reference internal" href="#module-pypot.dynamixel.controller"><code class="docutils literal"><span class="pre">controller</span></code> Module</a></li>
 <li><a class="reference internal" href="#module-pypot.dynamixel.error"><code class="docutils literal"><span class="pre">error</span></code> Module</a></li>
@@ -133,7 +133,7 @@
   <h3><a href="index.html">Table Of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#"><code class="docutils literal"><span class="pre">dynamixel</span></code> Package</a><ul>
-<li><a class="reference internal" href="#module-pypot.dynamixel.io"><code class="docutils literal"><span class="pre">io</span></code> Module</a></li>
+<li><a class="reference internal" href="#module-pypot.dynamixel.io"><code class="docutils literal"><span class="pre">io</span></code> Package</a></li>
 <li><a class="reference internal" href="#module-pypot.dynamixel.motor"><code class="docutils literal"><span class="pre">motor</span></code> Module</a></li>
 <li><a class="reference internal" href="#module-pypot.dynamixel.controller"><code class="docutils literal"><span class="pre">controller</span></code> Module</a></li>
 <li><a class="reference internal" href="#module-pypot.dynamixel.error"><code class="docutils literal"><span class="pre">error</span></code> Module</a></li>
@@ -223,7 +223,534 @@
 </dd></dl>
 
 <div class="section" id="module-pypot.dynamixel.io">
-<span id="io-module"></span><h2><a class="reference internal" href="#module-pypot.dynamixel.io" title="pypot.dynamixel.io"><code class="xref py py-mod docutils literal"><span class="pre">io</span></code></a> Module<a class="headerlink" href="#module-pypot.dynamixel.io" title="Permalink to this headline">¶</a></h2>
+<span id="io-package"></span><h2><a class="reference internal" href="#module-pypot.dynamixel.io" title="pypot.dynamixel.io"><code class="xref py py-mod docutils literal"><span class="pre">io</span></code></a> Package<a class="headerlink" href="#module-pypot.dynamixel.io" title="Permalink to this headline">¶</a></h2>
+<span class="target" id="module-pypot.dynamixel.io.io"></span><dl class="class">
+<dt id="pypot.dynamixel.io.io.DxlIO">
+<em class="property">class </em><code class="descclassname">pypot.dynamixel.io.io.</code><code class="descname">DxlIO</code><span class="sig-paren">(</span><em>port</em>, <em>baudrate=1000000</em>, <em>timeout=0.05</em>, <em>use_sync_read=False</em>, <em>error_handler_cls=None</em>, <em>convert=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/dynamixel/io/io.html#DxlIO"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.io.io.DxlIO" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">pypot.dynamixel.io.abstract_io.AbstractDxlIO</span></code></p>
+<p>At instanciation, it opens the serial port and sets the communication parameters.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>port</strong> (<a class="reference external" href="http://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; the serial port to use (e.g. Unix (/dev/tty...), Windows (COM...)).</li>
+<li><strong>baudrate</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; default for new motors: 57600, for PyPot motors: 1000000</li>
+<li><strong>timeout</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) &#8211; read timeout in seconds</li>
+<li><strong>use_sync_read</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; whether or not to use the SYNC_READ instruction</li>
+<li><strong>error_handler</strong> (<a class="reference internal" href="#pypot.dynamixel.error.DxlErrorHandler" title="pypot.dynamixel.error.DxlErrorHandler"><code class="xref py py-class docutils literal"><span class="pre">DxlErrorHandler</span></code></a>) &#8211; set a handler that will receive the different errors</li>
+<li><strong>convert</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; whether or not convert values to units expressed in the standard system</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><code class="xref py py-exc docutils literal"><span class="pre">DxlError</span></code> if the port is already used.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="pypot.dynamixel.io.io.DxlIO.factory_reset">
+<code class="descname">factory_reset</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/dynamixel/io/io.html#DxlIO.factory_reset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.io.io.DxlIO.factory_reset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reset all motors on the bus to their factory default settings.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.io.io.DxlIO.get_control_mode">
+<code class="descname">get_control_mode</code><span class="sig-paren">(</span><em>ids</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/dynamixel/io/io.html#DxlIO.get_control_mode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.io.io.DxlIO.get_control_mode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the mode (&#8216;joint&#8217; or &#8216;wheel&#8217;) for the specified motors.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.io.io.DxlIO.set_wheel_mode">
+<code class="descname">set_wheel_mode</code><span class="sig-paren">(</span><em>ids</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/dynamixel/io/io.html#DxlIO.set_wheel_mode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.io.io.DxlIO.set_wheel_mode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the specified motors to wheel mode.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.io.io.DxlIO.set_joint_mode">
+<code class="descname">set_joint_mode</code><span class="sig-paren">(</span><em>ids</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/dynamixel/io/io.html#DxlIO.set_joint_mode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.io.io.DxlIO.set_joint_mode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the specified motors to joint mode.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.io.io.DxlIO.set_control_mode">
+<code class="descname">set_control_mode</code><span class="sig-paren">(</span><em>mode_for_id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/dynamixel/io/io.html#DxlIO.set_control_mode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.io.io.DxlIO.set_control_mode" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.io.io.DxlIO.set_angle_limit">
+<code class="descname">set_angle_limit</code><span class="sig-paren">(</span><em>limit_for_id</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/dynamixel/io/io.html#DxlIO.set_angle_limit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.io.io.DxlIO.set_angle_limit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the angle limit to the specified motors.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.io.io.DxlIO.get_alarm_LED">
+<code class="descname">get_alarm_LED</code><span class="sig-paren">(</span><em>ids</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pypot.dynamixel.io.io.DxlIO.get_alarm_LED" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets alarm LED from the specified motors.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.io.io.DxlIO.get_alarm_shutdown">
+<code class="descname">get_alarm_shutdown</code><span class="sig-paren">(</span><em>ids</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pypot.dynamixel.io.io.DxlIO.get_alarm_shutdown" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets alarm shutdown from the specified motors.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.io.io.DxlIO.get_angle_limit">
+<code class="descname">get_angle_limit</code><span class="sig-paren">(</span><em>ids</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pypot.dynamixel.io.io.DxlIO.get_angle_limit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets angle limit from the specified motors.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.io.io.DxlIO.get_compliance_margin">
+<code class="descname">get_compliance_margin</code><span class="sig-paren">(</span><em>ids</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pypot.dynamixel.io.io.DxlIO.get_compliance_margin" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets compliance margin from the specified motors.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.io.io.DxlIO.get_compliance_slope">
+<code class="descname">get_compliance_slope</code><span class="sig-paren">(</span><em>ids</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pypot.dynamixel.io.io.DxlIO.get_compliance_slope" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets compliance slope from the specified motors.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.io.io.DxlIO.get_drive_mode">
+<code class="descname">get_drive_mode</code><span class="sig-paren">(</span><em>ids</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pypot.dynamixel.io.io.DxlIO.get_drive_mode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets drive mode from the specified motors.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.io.io.DxlIO.get_firmware">
+<code class="descname">get_firmware</code><span class="sig-paren">(</span><em>ids</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pypot.dynamixel.io.io.DxlIO.get_firmware" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets firmware from the specified motors.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.io.io.DxlIO.get_goal_position">
+<code class="descname">get_goal_position</code><span class="sig-paren">(</span><em>ids</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pypot.dynamixel.io.io.DxlIO.get_goal_position" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets goal position from the specified motors.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.io.io.DxlIO.get_goal_position_speed_load">
+<code class="descname">get_goal_position_speed_load</code><span class="sig-paren">(</span><em>ids</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pypot.dynamixel.io.io.DxlIO.get_goal_position_speed_load" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets goal position speed load from the specified motors.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.io.io.DxlIO.get_highest_temperature_limit">
+<code class="descname">get_highest_temperature_limit</code><span class="sig-paren">(</span><em>ids</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pypot.dynamixel.io.io.DxlIO.get_highest_temperature_limit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets highest temperature limit from the specified motors.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.io.io.DxlIO.get_max_torque">
+<code class="descname">get_max_torque</code><span class="sig-paren">(</span><em>ids</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pypot.dynamixel.io.io.DxlIO.get_max_torque" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets max torque from the specified motors.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.io.io.DxlIO.get_moving_speed">
+<code class="descname">get_moving_speed</code><span class="sig-paren">(</span><em>ids</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pypot.dynamixel.io.io.DxlIO.get_moving_speed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets moving speed from the specified motors.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.io.io.DxlIO.get_present_load">
+<code class="descname">get_present_load</code><span class="sig-paren">(</span><em>ids</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pypot.dynamixel.io.io.DxlIO.get_present_load" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets present load from the specified motors.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.io.io.DxlIO.get_present_position">
+<code class="descname">get_present_position</code><span class="sig-paren">(</span><em>ids</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pypot.dynamixel.io.io.DxlIO.get_present_position" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets present position from the specified motors.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.io.io.DxlIO.get_present_position_speed_load">
+<code class="descname">get_present_position_speed_load</code><span class="sig-paren">(</span><em>ids</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pypot.dynamixel.io.io.DxlIO.get_present_position_speed_load" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets present position speed load from the specified motors.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.io.io.DxlIO.get_present_speed">
+<code class="descname">get_present_speed</code><span class="sig-paren">(</span><em>ids</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pypot.dynamixel.io.io.DxlIO.get_present_speed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets present speed from the specified motors.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.io.io.DxlIO.get_present_temperature">
+<code class="descname">get_present_temperature</code><span class="sig-paren">(</span><em>ids</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pypot.dynamixel.io.io.DxlIO.get_present_temperature" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets present temperature from the specified motors.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.io.io.DxlIO.get_present_voltage">
+<code class="descname">get_present_voltage</code><span class="sig-paren">(</span><em>ids</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pypot.dynamixel.io.io.DxlIO.get_present_voltage" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets present voltage from the specified motors.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.io.io.DxlIO.get_return_delay_time">
+<code class="descname">get_return_delay_time</code><span class="sig-paren">(</span><em>ids</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pypot.dynamixel.io.io.DxlIO.get_return_delay_time" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets return delay time from the specified motors.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.io.io.DxlIO.get_torque_limit">
+<code class="descname">get_torque_limit</code><span class="sig-paren">(</span><em>ids</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pypot.dynamixel.io.io.DxlIO.get_torque_limit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets torque limit from the specified motors.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.io.io.DxlIO.get_voltage_limit">
+<code class="descname">get_voltage_limit</code><span class="sig-paren">(</span><em>ids</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pypot.dynamixel.io.io.DxlIO.get_voltage_limit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets voltage limit from the specified motors.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.io.io.DxlIO.is_led_on">
+<code class="descname">is_led_on</code><span class="sig-paren">(</span><em>ids</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pypot.dynamixel.io.io.DxlIO.is_led_on" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets LED from the specified motors.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.io.io.DxlIO.is_moving">
+<code class="descname">is_moving</code><span class="sig-paren">(</span><em>ids</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pypot.dynamixel.io.io.DxlIO.is_moving" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets moving from the specified motors.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.io.io.DxlIO.is_torque_enabled">
+<code class="descname">is_torque_enabled</code><span class="sig-paren">(</span><em>ids</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pypot.dynamixel.io.io.DxlIO.is_torque_enabled" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets torque_enable from the specified motors.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.io.io.DxlIO.set_alarm_LED">
+<code class="descname">set_alarm_LED</code><span class="sig-paren">(</span><em>value_for_id</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pypot.dynamixel.io.io.DxlIO.set_alarm_LED" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets alarm LED to the specified motors.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.io.io.DxlIO.set_alarm_shutdown">
+<code class="descname">set_alarm_shutdown</code><span class="sig-paren">(</span><em>value_for_id</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pypot.dynamixel.io.io.DxlIO.set_alarm_shutdown" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets alarm shutdown to the specified motors.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.io.io.DxlIO.set_compliance_margin">
+<code class="descname">set_compliance_margin</code><span class="sig-paren">(</span><em>value_for_id</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pypot.dynamixel.io.io.DxlIO.set_compliance_margin" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets compliance margin to the specified motors.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.io.io.DxlIO.set_compliance_slope">
+<code class="descname">set_compliance_slope</code><span class="sig-paren">(</span><em>value_for_id</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pypot.dynamixel.io.io.DxlIO.set_compliance_slope" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets compliance slope to the specified motors.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.io.io.DxlIO.set_drive_mode">
+<code class="descname">set_drive_mode</code><span class="sig-paren">(</span><em>value_for_id</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pypot.dynamixel.io.io.DxlIO.set_drive_mode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets drive mode to the specified motors.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.io.io.DxlIO.set_goal_position">
+<code class="descname">set_goal_position</code><span class="sig-paren">(</span><em>value_for_id</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pypot.dynamixel.io.io.DxlIO.set_goal_position" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets goal position to the specified motors.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.io.io.DxlIO.set_goal_position_speed_load">
+<code class="descname">set_goal_position_speed_load</code><span class="sig-paren">(</span><em>value_for_id</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pypot.dynamixel.io.io.DxlIO.set_goal_position_speed_load" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets goal position speed load to the specified motors.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.io.io.DxlIO.set_highest_temperature_limit">
+<code class="descname">set_highest_temperature_limit</code><span class="sig-paren">(</span><em>value_for_id</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pypot.dynamixel.io.io.DxlIO.set_highest_temperature_limit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets highest temperature limit to the specified motors.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.io.io.DxlIO.set_max_torque">
+<code class="descname">set_max_torque</code><span class="sig-paren">(</span><em>value_for_id</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pypot.dynamixel.io.io.DxlIO.set_max_torque" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets max torque to the specified motors.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.io.io.DxlIO.set_moving_speed">
+<code class="descname">set_moving_speed</code><span class="sig-paren">(</span><em>value_for_id</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pypot.dynamixel.io.io.DxlIO.set_moving_speed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets moving speed to the specified motors.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.io.io.DxlIO.set_return_delay_time">
+<code class="descname">set_return_delay_time</code><span class="sig-paren">(</span><em>value_for_id</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pypot.dynamixel.io.io.DxlIO.set_return_delay_time" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets return delay time to the specified motors.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.io.io.DxlIO.set_torque_limit">
+<code class="descname">set_torque_limit</code><span class="sig-paren">(</span><em>value_for_id</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pypot.dynamixel.io.io.DxlIO.set_torque_limit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets torque limit to the specified motors.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.io.io.DxlIO.set_voltage_limit">
+<code class="descname">set_voltage_limit</code><span class="sig-paren">(</span><em>value_for_id</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pypot.dynamixel.io.io.DxlIO.set_voltage_limit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets voltage limit to the specified motors.</p>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-pypot.dynamixel.io.io_320"></span><dl class="class">
+<dt id="pypot.dynamixel.io.io_320.Dxl320IO">
+<em class="property">class </em><code class="descclassname">pypot.dynamixel.io.io_320.</code><code class="descname">Dxl320IO</code><span class="sig-paren">(</span><em>port</em>, <em>baudrate=1000000</em>, <em>timeout=0.05</em>, <em>use_sync_read=False</em>, <em>error_handler_cls=None</em>, <em>convert=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/dynamixel/io/io_320.html#Dxl320IO"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.io.io_320.Dxl320IO" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">pypot.dynamixel.io.abstract_io.AbstractDxlIO</span></code></p>
+<p>At instanciation, it opens the serial port and sets the communication parameters.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>port</strong> (<a class="reference external" href="http://docs.python.org/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; the serial port to use (e.g. Unix (/dev/tty...), Windows (COM...)).</li>
+<li><strong>baudrate</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; default for new motors: 57600, for PyPot motors: 1000000</li>
+<li><strong>timeout</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) &#8211; read timeout in seconds</li>
+<li><strong>use_sync_read</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; whether or not to use the SYNC_READ instruction</li>
+<li><strong>error_handler</strong> (<a class="reference internal" href="#pypot.dynamixel.error.DxlErrorHandler" title="pypot.dynamixel.error.DxlErrorHandler"><code class="xref py py-class docutils literal"><span class="pre">DxlErrorHandler</span></code></a>) &#8211; set a handler that will receive the different errors</li>
+<li><strong>convert</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; whether or not convert values to units expressed in the standard system</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><code class="xref py py-exc docutils literal"><span class="pre">DxlError</span></code> if the port is already used.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="pypot.dynamixel.io.io_320.Dxl320IO.set_wheel_mode">
+<code class="descname">set_wheel_mode</code><span class="sig-paren">(</span><em>ids</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/dynamixel/io/io_320.html#Dxl320IO.set_wheel_mode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.io.io_320.Dxl320IO.set_wheel_mode" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.io.io_320.Dxl320IO.set_joint_mode">
+<code class="descname">set_joint_mode</code><span class="sig-paren">(</span><em>ids</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/dynamixel/io/io_320.html#Dxl320IO.set_joint_mode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.io.io_320.Dxl320IO.set_joint_mode" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.io.io_320.Dxl320IO.get_goal_position_speed_load">
+<code class="descname">get_goal_position_speed_load</code><span class="sig-paren">(</span><em>ids</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/dynamixel/io/io_320.html#Dxl320IO.get_goal_position_speed_load"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.io.io_320.Dxl320IO.get_goal_position_speed_load" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.io.io_320.Dxl320IO.set_goal_position_speed_load">
+<code class="descname">set_goal_position_speed_load</code><span class="sig-paren">(</span><em>value_for_ids</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/dynamixel/io/io_320.html#Dxl320IO.set_goal_position_speed_load"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.io.io_320.Dxl320IO.set_goal_position_speed_load" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.io.io_320.Dxl320IO.factory_reset">
+<code class="descname">factory_reset</code><span class="sig-paren">(</span><em>ids</em>, <em>except_ids=False</em>, <em>except_baudrate_and_ids=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/dynamixel/io/io_320.html#Dxl320IO.factory_reset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.io.io_320.Dxl320IO.factory_reset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reset all motors on the bus to their factory default settings.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.io.io_320.Dxl320IO.get_LED_color">
+<code class="descname">get_LED_color</code><span class="sig-paren">(</span><em>ids</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pypot.dynamixel.io.io_320.Dxl320IO.get_LED_color" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets LED color from the specified motors.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.io.io_320.Dxl320IO.get_alarm_shutdown">
+<code class="descname">get_alarm_shutdown</code><span class="sig-paren">(</span><em>ids</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pypot.dynamixel.io.io_320.Dxl320IO.get_alarm_shutdown" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets alarm shutdown from the specified motors.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.io.io_320.Dxl320IO.get_angle_limit">
+<code class="descname">get_angle_limit</code><span class="sig-paren">(</span><em>ids</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pypot.dynamixel.io.io_320.Dxl320IO.get_angle_limit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets angle limit from the specified motors.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.io.io_320.Dxl320IO.get_control_mode">
+<code class="descname">get_control_mode</code><span class="sig-paren">(</span><em>ids</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pypot.dynamixel.io.io_320.Dxl320IO.get_control_mode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets control mode from the specified motors.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.io.io_320.Dxl320IO.get_firmware">
+<code class="descname">get_firmware</code><span class="sig-paren">(</span><em>ids</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pypot.dynamixel.io.io_320.Dxl320IO.get_firmware" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets firmware from the specified motors.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.io.io_320.Dxl320IO.get_goal_position">
+<code class="descname">get_goal_position</code><span class="sig-paren">(</span><em>ids</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pypot.dynamixel.io.io_320.Dxl320IO.get_goal_position" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets goal position from the specified motors.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.io.io_320.Dxl320IO.get_highest_temperature_limit">
+<code class="descname">get_highest_temperature_limit</code><span class="sig-paren">(</span><em>ids</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pypot.dynamixel.io.io_320.Dxl320IO.get_highest_temperature_limit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets highest temperature limit from the specified motors.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.io.io_320.Dxl320IO.get_max_torque">
+<code class="descname">get_max_torque</code><span class="sig-paren">(</span><em>ids</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pypot.dynamixel.io.io_320.Dxl320IO.get_max_torque" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets max torque from the specified motors.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.io.io_320.Dxl320IO.get_moving_speed">
+<code class="descname">get_moving_speed</code><span class="sig-paren">(</span><em>ids</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pypot.dynamixel.io.io_320.Dxl320IO.get_moving_speed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets moving speed from the specified motors.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.io.io_320.Dxl320IO.get_present_load">
+<code class="descname">get_present_load</code><span class="sig-paren">(</span><em>ids</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pypot.dynamixel.io.io_320.Dxl320IO.get_present_load" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets present load from the specified motors.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.io.io_320.Dxl320IO.get_present_position">
+<code class="descname">get_present_position</code><span class="sig-paren">(</span><em>ids</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pypot.dynamixel.io.io_320.Dxl320IO.get_present_position" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets present position from the specified motors.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.io.io_320.Dxl320IO.get_present_position_speed_load">
+<code class="descname">get_present_position_speed_load</code><span class="sig-paren">(</span><em>ids</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pypot.dynamixel.io.io_320.Dxl320IO.get_present_position_speed_load" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets present position speed load from the specified motors.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.io.io_320.Dxl320IO.get_present_speed">
+<code class="descname">get_present_speed</code><span class="sig-paren">(</span><em>ids</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pypot.dynamixel.io.io_320.Dxl320IO.get_present_speed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets present speed from the specified motors.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.io.io_320.Dxl320IO.get_present_temperature">
+<code class="descname">get_present_temperature</code><span class="sig-paren">(</span><em>ids</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pypot.dynamixel.io.io_320.Dxl320IO.get_present_temperature" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets present temperature from the specified motors.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.io.io_320.Dxl320IO.get_present_voltage">
+<code class="descname">get_present_voltage</code><span class="sig-paren">(</span><em>ids</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pypot.dynamixel.io.io_320.Dxl320IO.get_present_voltage" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets present voltage from the specified motors.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.io.io_320.Dxl320IO.get_return_delay_time">
+<code class="descname">get_return_delay_time</code><span class="sig-paren">(</span><em>ids</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pypot.dynamixel.io.io_320.Dxl320IO.get_return_delay_time" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets return delay time from the specified motors.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.io.io_320.Dxl320IO.get_torque_limit">
+<code class="descname">get_torque_limit</code><span class="sig-paren">(</span><em>ids</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pypot.dynamixel.io.io_320.Dxl320IO.get_torque_limit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets torque limit from the specified motors.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.io.io_320.Dxl320IO.get_voltage_limit">
+<code class="descname">get_voltage_limit</code><span class="sig-paren">(</span><em>ids</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pypot.dynamixel.io.io_320.Dxl320IO.get_voltage_limit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets voltage limit from the specified motors.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.io.io_320.Dxl320IO.is_led_on">
+<code class="descname">is_led_on</code><span class="sig-paren">(</span><em>ids</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pypot.dynamixel.io.io_320.Dxl320IO.is_led_on" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets LED from the specified motors.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.io.io_320.Dxl320IO.is_moving">
+<code class="descname">is_moving</code><span class="sig-paren">(</span><em>ids</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pypot.dynamixel.io.io_320.Dxl320IO.is_moving" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets moving from the specified motors.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.io.io_320.Dxl320IO.is_torque_enabled">
+<code class="descname">is_torque_enabled</code><span class="sig-paren">(</span><em>ids</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pypot.dynamixel.io.io_320.Dxl320IO.is_torque_enabled" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets torque_enable from the specified motors.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.io.io_320.Dxl320IO.set_LED_color">
+<code class="descname">set_LED_color</code><span class="sig-paren">(</span><em>value_for_id</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pypot.dynamixel.io.io_320.Dxl320IO.set_LED_color" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets LED color to the specified motors.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.io.io_320.Dxl320IO.set_alarm_shutdown">
+<code class="descname">set_alarm_shutdown</code><span class="sig-paren">(</span><em>value_for_id</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pypot.dynamixel.io.io_320.Dxl320IO.set_alarm_shutdown" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets alarm shutdown to the specified motors.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.io.io_320.Dxl320IO.set_angle_limit">
+<code class="descname">set_angle_limit</code><span class="sig-paren">(</span><em>value_for_id</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pypot.dynamixel.io.io_320.Dxl320IO.set_angle_limit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets angle limit to the specified motors.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.io.io_320.Dxl320IO.set_control_mode">
+<code class="descname">set_control_mode</code><span class="sig-paren">(</span><em>value_for_id</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pypot.dynamixel.io.io_320.Dxl320IO.set_control_mode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets control mode to the specified motors.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.io.io_320.Dxl320IO.set_goal_position">
+<code class="descname">set_goal_position</code><span class="sig-paren">(</span><em>value_for_id</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pypot.dynamixel.io.io_320.Dxl320IO.set_goal_position" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets goal position to the specified motors.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.io.io_320.Dxl320IO.set_highest_temperature_limit">
+<code class="descname">set_highest_temperature_limit</code><span class="sig-paren">(</span><em>value_for_id</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pypot.dynamixel.io.io_320.Dxl320IO.set_highest_temperature_limit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets highest temperature limit to the specified motors.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.io.io_320.Dxl320IO.set_max_torque">
+<code class="descname">set_max_torque</code><span class="sig-paren">(</span><em>value_for_id</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pypot.dynamixel.io.io_320.Dxl320IO.set_max_torque" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets max torque to the specified motors.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.io.io_320.Dxl320IO.set_moving_speed">
+<code class="descname">set_moving_speed</code><span class="sig-paren">(</span><em>value_for_id</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pypot.dynamixel.io.io_320.Dxl320IO.set_moving_speed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets moving speed to the specified motors.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.io.io_320.Dxl320IO.set_return_delay_time">
+<code class="descname">set_return_delay_time</code><span class="sig-paren">(</span><em>value_for_id</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pypot.dynamixel.io.io_320.Dxl320IO.set_return_delay_time" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets return delay time to the specified motors.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.io.io_320.Dxl320IO.set_torque_limit">
+<code class="descname">set_torque_limit</code><span class="sig-paren">(</span><em>value_for_id</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pypot.dynamixel.io.io_320.Dxl320IO.set_torque_limit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets torque limit to the specified motors.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.io.io_320.Dxl320IO.set_voltage_limit">
+<code class="descname">set_voltage_limit</code><span class="sig-paren">(</span><em>value_for_id</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pypot.dynamixel.io.io_320.Dxl320IO.set_voltage_limit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets voltage limit to the specified motors.</p>
+</dd></dl>
+
+</dd></dl>
+
 </div>
 <div class="section" id="module-pypot.dynamixel.motor">
 <span id="motor-module"></span><h2><code class="xref py py-mod docutils literal"><span class="pre">motor</span></code> Module<a class="headerlink" href="#module-pypot.dynamixel.motor" title="Permalink to this headline">¶</a></h2>
