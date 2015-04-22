@@ -136,7 +136,7 @@ class MovePlayer(LoopPrimitive):
             # print position
             for m, v in position.iteritems():
                 getattr(self.robot, m).goal_position = v[0]
-                getattr(self.robot, m).goal_speed = v[1]
+                # getattr(self.robot, m).goal_speed = v[1]
 
         except KeyError:
             self.stop()
