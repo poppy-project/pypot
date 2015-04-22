@@ -151,17 +151,17 @@ class SnapRobotServer(AbstractServer):
             return rr.get_primitive_properties_list(primitive)
 
         # Hacks (no restfull) to record movements
-        # TODO allow to choose motors motors
         @self.app.get('/primitive/MoveRecorder/<move_name>/start')
         @make_snap_compatible_response
         def start_move_recorder(move_name):
             rr.start_move_recorder(move_name, rr.get_motors_list('motors'))
             return 'Done!'
 
-        @self.app.get('/primitive/MoveRecorder/<move_name>/start/')
+        @self.app.get('/primitive/MoveRecorder/<move_name>/start/<motors>')
         @make_snap_compatible_response
-        def start_move_recorder(move_name):
-            rr.start_move_recorder(move_name, rr.get_motors_list('motors'))
+        def start_move_recorder(move_name,motors):
+            motors = [m for m in motors[:-1].split(';')]
+            rr.start_move_recorder(move_name, motors)
             return 'Done!'
 
         @self.app.get('/primitive/MoveRecorder/<move_name>/stop')
