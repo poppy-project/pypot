@@ -23,7 +23,7 @@ As an example, you can write::
     with DxlIO('/dev/USB0') as dxl_io:
         ids = dxl_io.scan([1, 2, 3, 4, 5])
 
-        print dxl_io.get_present_position(ids)
+        print(dxl_io.get_present_position(ids))
         dxl_io.set_goal_position(dict(zip(ids, itertools.repeat(0))))
 
 .. _open_connection:
@@ -42,9 +42,9 @@ To create a connection, open up a python terminal and type the following code::
     if not ports:
         raise IOError('no port found!')
 
-    print 'ports found', ports
+    print('ports found', ports)
 
-    print 'connecting on the first available port:', ports[0]
+    print('connecting on the first available port:', ports[0])
     dxl_io = pypot.dynamixel.DxlIO(ports[0])
 
 This should open a connection through a virtual communication port to your device.
@@ -119,19 +119,19 @@ As an example of what you can do with the low-level API, we are going to apply a
 
     if __name__ == '__main__':
         ports = pypot.dynamixel.get_available_ports()
-        print 'available ports:', ports
+        print('available ports:', ports)
 
         if not ports:
             raise IOError('No port available.')
 
         port = ports[0]
-        print 'Using the first on the list', port
+        print('Using the first on the list', port)
 
         dxl_io = pypot.dynamixel.DxlIO(port)
-        print 'Connected!'
+        print('Connected!')
 
         found_ids = dxl_io.scan()
-        print 'Found ids:', found_ids
+        print('Found ids:', found_ids)
 
         if len(found_ids) < 2:
             raise IOError('You should connect at least two motors on the bus for this test.')

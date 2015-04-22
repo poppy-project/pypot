@@ -43,11 +43,11 @@ You will only have to modify the USB2serial port and the id of the motors so the
 
     import pypot.dynamixel
 
-    print pypot.dynamixel.get_available_ports()
+    print(pypot.dynamixel.get_available_ports())
     ['/dev/tty.usbserial-A4008aCD', '/dev/tty.usbmodemfd1311']
 
     dxl_io = pypot.dynamixel.DxlIO('/dev/tty.usbserial-A4008aCD')
-    print dxl_io.scan()
+    print(dxl_io.scan())
     [11, 12, 13, 14, 15, 16]
 
 .. note:: You can save/load configurations from any format that can be written/read as a Python dictionary. A wrapper for loading json configuration file is provided (see :func:`~pypot.robot.config.from_json`).

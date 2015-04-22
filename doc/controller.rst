@@ -70,7 +70,7 @@ Now let's detail each section. To better understand how the configuration is str
         robot = pypot.robot.from_config(my_config)
 
         for m in robot.left_arm:
-            print m.present_position
+            print(m.present_position)
 
 #. (optional) If you prefer working with file, you can read/write your config to any format that can be transformed into a dictionary. For instance, you can easily use the JSON format::
 
@@ -235,7 +235,7 @@ As shown in the examples above, the robot class let you directly access the diff
         m.goal_position = 0
 
     # This will return the last synchronized value
-    print ergo_robot.base_pan.present_position
+    print(ergo_robot.base_pan.present_position)
 
 For a complete list of all the attributes that you can access, you should refer to the :class:`~pypot.dynamixel.motor.DxlMotor` API.
 
