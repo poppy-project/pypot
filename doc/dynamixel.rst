@@ -18,6 +18,8 @@ The communication is thread-safe to avoid collision in the communication buses.
 
 As an example, you can write::
 
+    import itertools
+
     with DxlIO('/dev/USB0') as dxl_io:
         ids = dxl_io.scan([1, 2, 3, 4, 5])
 

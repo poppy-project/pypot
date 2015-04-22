@@ -23,14 +23,16 @@ You can also install it from the source. You can clone/fork our repo directly on
 
 Before you start building pypot, you need to make sure that the following packages are already installed on your computer:
 
-* `python <http://www.python.org>`_ 2.7 or 3
+* `python <http://www.python.org>`_ developed on 2.7 (also works on 3)
 * `pyserial <http://pyserial.sourceforge.net/>`_ 2.6 (or later)
 * `numpy <http://www.numpy.org>`_
+* `enum34 <https://pypi.python.org/pypi/enum34>`_
 
 Other optional packages may be installed depending on your needs:
 
-* `sphinx <http://sphinx-doc.org/index.html>`_ (to build the doc)
+* `sphinx <http://sphinx-doc.org/index.html>`_ and `sphinx-bootstrap-theme <http://ryan-roemer.github.io/sphinx-bootstrap-theme/>`_ (to build the doc)
 * `PyQt4 <http://www.riverbankcomputing.com/software/pyqt/intro>`_ (for the graphical tools)
+* `bottle <http://bottlepy.org/>`_ and `tornado <http://www.tornadoweb.org>`_ for REST API support and http-server
 
 Once it is done, you can build and install pypot with the classical::
 

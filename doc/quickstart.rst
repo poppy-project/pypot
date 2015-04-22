@@ -79,7 +79,7 @@ First, write the following lines to start you robot (we assume that you have cor
 
     ergo_robot = pypot.robot.from_config(my_config)
 
-Except from the last line, everything should be clear now. This new line starts the synchronization between the "software" robot and the real one, i.e. all commands that you will send in python code will automatically be sent to the physical Ergo-Robot (for details on the underlying mechanisms, see :ref:`Sync Loop <sync_loop>`).
+Everything should be clear now. When creating your robot, it automatically starts the synchronization between the "software" robot and the real one, i.e. all commands that you will send in python code will automatically be sent to the physical Ergo-Robot (for details on the underlying mechanisms, see :ref:`Sync Loop <sync_loop>`).
 
 Now, we are going to put the robot in its initial position::
 

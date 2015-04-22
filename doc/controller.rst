@@ -202,7 +202,7 @@ So, in most case you should not have to worry about synchronization loop and it 
 
 .. note:: With the current version of pypot, you can not indicate in the configuration which subclasses of :class:`~pypot.dynamixel.controller.DxlController` you want to use. This feature should be added in a future version. If you want to use your own controller, you should either modify the config parser, modify the :class:`~pypot.dynamixel.controller.BaseDxlController` class or directly instantiate the :class:`~pypot.robot.robot.Robot` class.
 
-To start all the synchronization loops, you only need to call the :meth:`~pypot.robot.robot.Robot.start_sync` method. You can also stop the synchronization if needed (see the :meth:`~pypot.robot.robot.Robot.stop_sync` method). Note that since version 2.x, the synchronization is started by default.
+The synchronization loops are automatically started when instantiating your robot, the method :meth:`~pypot.robot.robot.Robot.start_sync` is directly called. You can also stop the synchronization if needed (see the :meth:`~pypot.robot.robot.Robot.stop_sync` method). Note that prior to version 2, the synchronization is not started by default.
 
 .. warning:: You should never set values to motors when the synchronization is not running.
 

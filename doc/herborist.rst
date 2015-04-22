@@ -24,3 +24,6 @@ You can directly launch herborist by running the *herborist* command in your ter
 
 .. image:: herborist.png
     :align: center
+
+
+.. warning:: Herborist is not actively maintained and will hopefully be replaced by a better solution. So its stability is somewhat questionable.
