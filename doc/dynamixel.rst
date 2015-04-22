@@ -3,7 +3,7 @@
 Dynamixel Low-level IO
 ======================
 
-The low-level API almost directly encapsulates the communication protocol used by dynamixel motors. This protocol can be used to access any register of these motors. The :py:class:`~pypot.dynamixel.io.DxlIO` class is used to handle the communication with a particular port.
+The low-level API almost directly encapsulates the communication protocol used by dynamixel motors. This protocol can be used to access any register of these motors. The :py:class:`~pypot.dynamixel.io.io.DxlIO` class is used to handle the communication with a particular port.
 
 .. note:: The port can only be accessed by a single DxlIO instance.
 
@@ -25,6 +25,9 @@ As an example, you can write::
 
         print(dxl_io.get_present_position(ids))
         dxl_io.set_goal_position(dict(zip(ids, itertools.repeat(0))))
+
+
+.. note:: Since pypot version 2.2, support for the robotis protocol v2 and for XL-320 motors has been added. To avoid confusion there is a another class that should be used: :py:class:`~pypot.dynamixel.io.io_320.Dxl320IO` in this case.
 
 .. _open_connection:
 

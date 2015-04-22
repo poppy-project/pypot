@@ -33,13 +33,14 @@ The configuration, described as a Python dictionary, contains several important 
 
 Now let's detail each section. To better understand how the configuration is structure it is probably easier to start from one of the example provided with pypot and modify it (e.g. :obj:`pypot.robot.config.ergo_robot_config`):
 
-#. **controllers**: You can have a single or multiple :class:`~pypot.dynamixel.controller.DxlController`. For each of them, you should indicate whether or not to use the SYNC_READ instruction (only the USB2AX device currently supported it). When you describe your controller, you must also include the port that the device is connected to (see :ref:`open_connection`). You also have to specify which motors are attached to this bus. You can either give individual motors or groups (see the sections below)::
+#. **controllers**: You can have a single or multiple :class:`~pypot.dynamixel.controller.DxlController`. For each of them, you should indicate whether or not to use the SYNC_READ instruction (only the USB2AX device currently supported it). When you describe your controller, you must also include the port that the device is connected to (see :ref:`open_connection`). In this section, you can also specify which robotis protocol to use (if not specified it uses the v1). You also have to specify which motors are attached to this bus. You can either give individual motors or groups (see the sections below)::
 
         my_config['controllers'] = {}
         my_config['controllers']['upper_body_controler'] = {
             'port': '/dev/ttyUSB0',
             'sync_read': False,
-            'attached_motors': ['torso', 'head', 'arms']
+            'attached_motors': ['torso', 'head', 'arms'],
+            'protocol': 1,
         }
 
 #. **motorgroups**: Here, you can define the different motors group corresponding to the structure of your robot. It will automatically create an alias for the group. Groups can be nested, i.e. a group can be included inside another group, as in the example below::

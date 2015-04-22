@@ -8,7 +8,7 @@ What is pypot?
 
 Pypot is a framework developed in the `Inria FLOWERS <https://flowers.inria.fr/>`_ team to make it easy and fast to control custom robots based on dynamixel motors. This framework provides different level of abstraction corresponding to different types of use. More precisely, you can use pypot to:
 
-* directly control robotis motors through a USB2serial device,
+* directly control robotis motors through a USB2serial device (both protocols v1 and v2 are supported: you can use it with AX, RX, MX and XL320 motors),
 * define the structure of your particular robot and control it through high-level commands.
 
 .. * define primitives and easily combine them to create complex behavior.
