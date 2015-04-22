@@ -57,9 +57,9 @@ class KDTreeDict(dict):
             # if k_neighbors = 1 query is not returnng arrays
             return self.__keys[idx]
 
-    def interpolate_motors(self, input_key, nearest_keys):
+    def interpolate_motor_positions(self, input_key, nearest_keys):
         """ Process linear interpolation to estimate actual speed and position of motors
-            Method specific to the ~pypot.primitive.move.Move.position() structure
+            Method specific to the :meth:~pypot.primitive.move.Move.position() structure
             it is a KDTreeDict[timestamp] = {dict[motor]=(position,speed)}
         """
 
@@ -90,11 +90,10 @@ class KDTreeDict(dict):
                 x = np.array(nearest_keys)
                 y_pos = np.array([v[0], v2[0]])
                 y_speed = np.array([v[1], v2[1]])
-                f_pos = interp1d(x, y_pos)
-                f_speed = interp1d(x, y_speed)
+                f_pos = interp1d(x, y_pos, bounds_error=False)
+                f_speed = interp1d(x, y_speed, bounds_error=False)
                 # print k, input_key, (float(f_pos(input_key[0])), float(f_speed(input_key[0])))
-                interpolated_positions[k] = (
-                    float(f_pos(input_key)), float(f_speed(input_key)))
+                interpolated_positions[k] = (f_pos(input_key), f_speed(input_key))
             else:
                 raise IndexError("key are not identics. Motor added during the record ?")
         return interpolated_positions
@@ -102,4 +101,4 @@ class KDTreeDict(dict):
     def __missing__(self, key):
         if key is None:
             raise SyntaxError('invalid syntax, you must provide a key')
-        return self.interpolate_motors(key, self.nearest_keys(key))
+        return self.interpolate_motor_positions(key, self.nearest_keys(key))

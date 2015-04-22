@@ -32,7 +32,7 @@ class RESTRobot(object):
 
     def get_motor_registers_list(self, motor):
         return self._get_register_value(motor, 'registers')
-    
+
     #   alias to above method
     def get_registers_list(self, motor):
         return self.get_motor_registers_list(motor)
@@ -139,17 +139,22 @@ class RESTRobot(object):
     def start_move_player(self, move_name, speed=1.0):
         """Move player need to have a move file
         <move_name.record> in the working directory to play it"""
-        if not hasattr(self.robot, '_{}_player'.format(move_name)):
-            with open('{}.record'.format(move_name)) as f:
-                loaded_move = Move.load(f)
-            player = MovePlayer(self.robot, loaded_move)
-            self.robot.attach_primitive(player, '_{}_player'.format(move_name))
-        else:
-            player = getattr(self.robot, '_{}_player'.format(move_name))
 
+        # check if running
+        try:
+            mov = getattr(self.robot, '_{}_player'.format(move_name))
+            if mov.running:
+                return
+        except AttributeError:
+            pass
+
+        # if not running, override th play primitive
+        with open('{}.record'.format(move_name)) as f:
+            loaded_move = Move.load(f)
+        player = MovePlayer(self.robot, loaded_move)
+        self.robot.attach_primitive(player, '_{}_player'.format(move_name))
         player.speed = speed
         player.start()
-        player.wait_to_stop()
 
     def get_available_record_list(self):
         """Get list of json recorded movement files"""

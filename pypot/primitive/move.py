@@ -108,12 +108,16 @@ class MovePlayer(LoopPrimitive):
 
     The playing can be :meth:`~pypot.primitive.primitive.Primitive.start` and :meth:`~pypot.primitive.primitive.Primitive.stop` by using the :class:`~pypot.primitive.primitive.LoopPrimitive` methods.
 
-    .. warning:: You should be careful that you primitive actually runs at the same speed that the move has been recorded. If the player can not run as fast as the framerate of the :class:`~pypot.primitive.move.Move`, it will be played slowly resulting in a slower version of your move.
+    .. warning:: the primitive is run automatically the same framerate than the move record. 
+        The play_speed attribute change only time lockup/interpolation
     """
 
-    # TODO : add position interpolation if framerate < Move.framerate
-    def __init__(self, robot, move=None, play_speed=1.0):
+    def __init__(self, robot, move=None, play_speed=1.0, move_filename=None):
         self.move = move
+        if move_filename is not None:
+            with open(move_filename, 'r') as f:
+                self.move = Move.load(f)
+
         self.play_speed = play_speed if play_speed != 0 and isinstance(play_speed, float) else 1.0
         framerate = self.move.framerate if self.move is not None else 50.0
         LoopPrimitive.__init__(self, robot, framerate)
@@ -126,7 +130,7 @@ class MovePlayer(LoopPrimitive):
 
     def update(self):
         try:
-            position = self.positions[self.elapsed_time*self.play_speed]
+            position = self.positions[self.elapsed_time * self.play_speed]
             # print position
             for m, v in position.iteritems():
                 getattr(self.robot, m).goal_position = v[0]
