@@ -15,6 +15,46 @@ class DxlIO(AbstractDxlIO):
         except DxlTimeoutError:
             pass
 
+    def get_control_mode(self, ids):
+        """ Gets the mode ('joint' or 'wheel') for the specified motors. """
+        to_get_ids = [id for id in ids if id not in self._known_mode]
+        limits = self.get_angle_limit(to_get_ids, convert=False)
+        modes = ('wheel' if limit == (0, 0) else 'joint' for limit in limits)
+
+        self._known_mode.update(zip(to_get_ids, modes))
+
+        return tuple(self._known_mode[id] for id in ids)
+
+    def set_wheel_mode(self, ids):
+        """ Sets the specified motors to wheel mode. """
+        self.set_control_mode(dict(zip(ids, itertools.repeat('wheel'))))
+
+    def set_joint_mode(self, ids):
+        """ Sets the specified motors to joint mode. """
+        self.set_control_mode(dict(zip(ids, itertools.repeat('joint'))))
+
+    def set_control_mode(self, mode_for_id):
+        models = ['MX' if m.startswith('MX') else '*'
+                  for m in self.get_model(list(mode_for_id.keys()))]
+        pos_max = [position_range[m][0] for m in models]
+        limits = ((0, 0) if mode == 'wheel' else (0, pos_max[i] - 1)
+                  for i, mode in enumerate(mode_for_id.itervalues()))
+
+        self._set_angle_limit(dict(zip(mode_for_id.keys(), limits)), convert=False)
+        self._known_mode.update(mode_for_id.items())
+
+    def set_angle_limit(self, limit_for_id, **kwargs):
+        """ Sets the angle limit to the specified motors. """
+        convert = kwargs['convert'] if 'convert' in kwargs else self._convert
+
+        if 'wheel' in self.get_control_mode(limit_for_id.keys()):
+            raise ValueError('can not change the angle limit of a motor in wheel mode')
+
+        if (0, 0) in limit_for_id.values():
+            raise ValueError('can not set limit to (0, 0)')
+
+        self._set_angle_limit(limit_for_id, convert=convert)
+
 # MARK: - Generate the accessors
 
 

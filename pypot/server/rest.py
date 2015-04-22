@@ -32,12 +32,24 @@ class RESTRobot(object):
 
     def get_motor_registers_list(self, motor):
         return self._get_register_value(motor, 'registers')
+    
+    #   alias to above method
+    def get_registers_list(self, motor):
+        return self.get_motor_registers_list(motor)
 
     def get_motor_register_value(self, motor, register):
         return self._get_register_value(motor, register)
 
+    #   alias to above method
+    def get_register_value(self, motor, register):
+        return self.get_motor_register_value(motor, register)
+
     def set_motor_register_value(self, motor, register, value):
         self._set_register_value(motor, register, value)
+
+    #   alias to above method
+    def set_register_value(self, motor, register, value):
+        self.set_motor_register_value(motor, register, value)
 
     def get_motors_alias(self):
         return self.robot.alias

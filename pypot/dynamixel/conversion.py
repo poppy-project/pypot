@@ -39,7 +39,7 @@ velocity = {  # in degree/s
     'MX-106': 270.,
     'MX-64': 378.,
     'MX-28': 330.,
-    'MX-12': 354.,
+    'MX-12': 2820.,
     'AX-12': 354.,
     'AX-18': 582.,
     'RX-28': 402.,
@@ -258,6 +258,15 @@ def led_color_to_dxl(value, model):
     value = getattr(XL320LEDColors, value).value - 1
     value = int(value) & 0b111
     return value
+
+control_modes = {
+    1: 'wheel',
+    2: 'joint',
+}
+
+dxl_to_control_mode = lambda value, _: control_modes[value]
+control_mode_to_dxl = lambda mode, _: (next((v for v, m in control_modes.items()
+                                       if m == mode), None))
 
 # MARK: - Various utility functions
 
