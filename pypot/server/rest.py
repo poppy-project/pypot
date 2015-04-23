@@ -136,25 +136,34 @@ class RESTRobot(object):
         with open('{}.record'.format(move_name), 'w') as f:
             recorder.move.save(f)
 
+        # Stop player if running : to discuss
+        # Recording a playing move can produce strange outputs, but could be a good feature
+        try:
+            player = getattr(self.robot, '_{}_player'.format(move_name))
+            if player.running:
+                player.stop()
+        except AttributeError:
+            pass
+
     def start_move_player(self, move_name, speed=1.0):
         """Move player need to have a move file
         <move_name.record> in the working directory to play it"""
 
         # check if running
         try:
-            mov = getattr(self.robot, '_{}_player'.format(move_name))
-            if mov.running:
+            player = getattr(self.robot, '_{}_player'.format(move_name))
+            if player.running:
                 return
         except AttributeError:
             pass
 
-        # if not running, override th play primitive
+        # if not running, override the play primitive
         with open('{}.record'.format(move_name)) as f:
             loaded_move = Move.load(f)
-        player = MovePlayer(self.robot, loaded_move)
+        player = MovePlayer(self.robot, loaded_move, play_speed=speed)
         self.robot.attach_primitive(player, '_{}_player'.format(move_name))
-        player.speed = speed
         player.start()
+        return player.duration()
 
     def get_available_record_list(self):
         """Get list of json recorded movement files"""
@@ -176,31 +185,4 @@ class RESTRobot(object):
         #         raise NameError()
         #         raise NameError()
 
-    def __find_words__(instring, words, prefix=''):
-        """ Quick and dirty snippet to split string without space
-            to a list of known words.
-            Used to pass over a bug of Snap!"""
-        if not instring:
-            return []
-
-        if (not prefix) and (instring in words):
-            return [instring]
-        prefix, suffix = prefix + instring[0], instring[1:]
-        solutions = []
-        # Case 1: prefix in solution
-        if prefix in words:
-            try:
-                solutions.append([prefix] + __find_words__(suffix, words, ''))
-            except ValueError:
-                pass
-        # Case 2: prefix not in solution
-        try:
-            solutions.append(__find_words__(suffix, words, prefix))
-        except ValueError:
-            pass
-        if solutions:
-            return sorted(solutions,
-                          key=lambda solution: [len(word) for word in solution],
-                          reverse=True)[0]
-        else:
-            return instring
+    # Useless

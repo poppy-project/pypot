@@ -117,7 +117,6 @@ class MovePlayer(LoopPrimitive):
         if move_filename is not None:
             with open(move_filename, 'r') as f:
                 self.move = Move.load(f)
-
         self.play_speed = play_speed if play_speed != 0 and isinstance(play_speed, float) else 1.0
         framerate = self.move.framerate if self.move is not None else 50.0
         LoopPrimitive.__init__(self, robot, framerate)
@@ -127,17 +126,18 @@ class MovePlayer(LoopPrimitive):
             raise AttributeError("Attribute move is not defined")
         self.period = 1.0 / self.move.framerate
         self.positions = self.move.positions()
+        self.__duration = self.duration()
 
     def update(self):
-        try:
+        if self.elapsed_time < self.__duration:
             position = self.positions[self.elapsed_time * self.play_speed]
-            # print position
             for m, v in position.iteritems():
                 getattr(self.robot, m).goal_position = v[0]
-
-        except KeyError:
+        else:
             self.stop()
 
-    def __interpolate__(timed_positions):
-        # TODO
-        pass
+    def duration(self):
+        if self.move is not None:
+            return (len(self.move.positions()) / self.move.framerate) / self.play_speed
+        else:
+            return 1.0

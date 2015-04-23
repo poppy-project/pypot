@@ -65,8 +65,6 @@ class KDTreeDict(dict):
 
         # TODO : to be rewrited with more style (map ?)
 
-        # debug
-        # print 'nearest keys', nearest_keys, len(nearest_keys), input_key
         if len(nearest_keys) == 1:
             return self[nearest_keys[0]]
         elif len(nearest_keys) == 0:
