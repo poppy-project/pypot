@@ -1,6 +1,7 @@
 import json
 import numpy
 import bottle
+from bottle import response
 import logging
 
 from .server import AbstractServer
@@ -20,6 +21,29 @@ class MyJSONEncoder(json.JSONEncoder):
         return json.JSONEncoder.default(self, obj)
 
 
+class EnableCors(object):
+
+    """Enable CORS (Cross-Origin Resource Sharing) headers"""
+    name = 'enable_cors'
+    api = 2
+
+    def __init__(self, origin="*"):
+        self.origin = origin
+
+    def apply(self, fn, context):
+        def _enable_cors(*args, **kwargs):
+            # set CORS headers
+            response.headers['Access-Control-Allow-Origin'] = self.origin
+            response.headers['Access-Control-Allow-Methods'] = 'GET, POST, PUT, OPTIONS'
+            response.headers['Access-Control-Allow-Headers'] = 'Origin, Accept, Content-Type, X-Requested-With, X-CSRF-Token'
+
+            if bottle.request.method != 'OPTIONS':
+                # actual request; reply with the actual response
+                return fn(*args, **kwargs)
+
+        return _enable_cors
+
+
 class HTTPRobotServer(AbstractServer):
 
     """ Bottle based HTTPServer used to remote access a robot.
@@ -28,13 +52,16 @@ class HTTPRobotServer(AbstractServer):
 
      """
 
-    def __init__(self, robot, host, port):
+    def __init__(self, robot, host, port, cross_domain_origin='*'):
         AbstractServer.__init__(self, robot, host, port)
 
         self.app = bottle.Bottle()
 
         jd = lambda s: json.dumps(s, cls=MyJSONEncoder)
         self.app.install(bottle.JSONPlugin(json_dumps=jd))
+
+        if(cross_domain_origin):
+            self.app.install(EnableCors(cross_domain_origin))
 
         rr = self.restfull_robot
 
