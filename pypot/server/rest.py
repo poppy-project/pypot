@@ -119,6 +119,7 @@ class RESTRobot(object):
         f = getattr(p, method_name)
         return f(*args, **kwargs)
 
+    # TODO (Theo) : change names with a dic instead of ugly format
     def start_move_recorder(self, move_name, motors_name):
         if not hasattr(self.robot, '_{}_recorder'.format(move_name)):
             motors = [getattr(self.robot, m) for m in motors_name]
@@ -184,5 +185,3 @@ class RESTRobot(object):
         #     else:
         #         raise NameError()
         #         raise NameError()
-
-    # Useless

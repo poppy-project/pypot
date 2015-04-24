@@ -1,6 +1,8 @@
+
 import os
 import bottle
 import socket
+from string import Template
 
 from .server import AbstractServer
 
@@ -21,6 +23,17 @@ def make_snap_compatible_response(f):
     return wrapped_f
 
 
+def make_xml_from_templates(host, port, template_extension='.snapTemplate'):
+    """ Allow to change dynamically port and host variable in xml Snap! project file"""
+    template_files = [f for f in os.listdir('.') if f.endswith(template_extension)]
+    d = {'host': host, 'port': port}
+    for template in template_files:
+        with open(template, 'r') as tf:
+            xml = Template(tf.read()).substitute(d)
+            with open(template.split(template_extension)[0], 'w') as xf:
+                xf.write(xml)
+
+
 class SnapRobotServer(AbstractServer):
 
     def __init__(self, robot, host, port):
@@ -29,6 +42,8 @@ class SnapRobotServer(AbstractServer):
         self.app = bottle.Bottle()
 
         rr = self.restfull_robot
+
+        make_xml_from_templates(host, port)
 
         @self.app.get('/motors/<alias>')
         @make_snap_compatible_response
@@ -50,6 +65,11 @@ class SnapRobotServer(AbstractServer):
             msg = ';'.join('{}'.format(get_pos(m))
                            for m in rr.get_motors_list())
             return msg
+
+        @self.app.get('/motors/alias')
+        @make_snap_compatible_response
+        def get_robot_alias():
+            return ';'.join('{}'.format(alias) for alias in rr.get_motors_alias())
 
         @self.app.get('/motors/set/goto/<motors_position_duration>')
         @make_snap_compatible_response
@@ -97,6 +117,7 @@ class SnapRobotServer(AbstractServer):
                 motor, float(position), float(duration))
             return 'Done!'
 
+        # TODO (Theo) : dynamic modification to change host and port automatically
         @self.app.get('/snap-blocks.xml')
         @make_snap_compatible_response
         def get_pypot_snap_blocks():
