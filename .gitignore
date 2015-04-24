@@ -5,4 +5,6 @@
 *.gitignore
 doc/_build
 
+build/
+
 .DS_Store
