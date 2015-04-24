@@ -1,7 +1,8 @@
 *.pyc
 *.egg
+*.eggs
 *.egg-info
-
+*.gitignore
 doc/_build
 
 .DS_Store
