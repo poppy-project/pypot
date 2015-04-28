@@ -82,7 +82,7 @@ class GotoMinJerk(StoppableLoopThread):
         self.t0 = time.time()
 
     def update(self):
-        if numpy.finfo(float).eps < self.duration < self.elapsed_time:
+        if numpy.finfo(float).eps < self.duration > self.elapsed_time:
             self.motor.goal_position = self.trajs(self.elapsed_time)
         else:
             self.stop(wait=False)
