@@ -149,7 +149,10 @@ class HerboristApp(PyQt4.QtGui.QApplication):
         for i in range(len(self.window.baudrate_list)):
             checkbox = self.window.baudrate_list.item(i)
             if checkbox.checkState() == 2:
-                baudrates.append(int(checkbox.text()))
+                b = int(checkbox.text())
+                if b == 57600 and self.usb_device=="USB2DYNAMIXEL":
+                    b=57142
+                baudrates.append(b)
 
         id_range = range(self.window.min_id.value(), self.window.max_id.value() + 1)
 
@@ -398,6 +401,10 @@ class HerboristApp(PyQt4.QtGui.QApplication):
     @property
     def protocol(self):
         return str(self.window.protocol_box.currentText())
+        
+    @property
+    def usb_device(self):
+        return str(self.window.usb_device_box.currentText())
 
     @property
     def baudrate(self):
