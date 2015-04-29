@@ -54,6 +54,60 @@
          <widget class="QComboBox" name="port_box"/>
         </item>
         <item>
+         <widget class="QLabel" name="label">
+          <property name="font">
+           <font>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>Protocol:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QComboBox" name="protocol_box">
+         <item>
+              <property name="text">
+               <string>MX</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>XL</string>
+              </property>
+             </item>
+             </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="label">
+          <property name="font">
+           <font>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>USB Device:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QComboBox" name="usb_device_box">
+         <item>
+              <property name="text">
+               <string>USB2AX</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>USB2DYNAMIXEL</string>
+              </property>
+             </item>
+             </widget>
+        </item>
+        <item>
          <widget class="QLabel" name="label_2">
           <property name="font">
            <font>

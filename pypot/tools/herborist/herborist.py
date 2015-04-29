@@ -19,11 +19,14 @@ __dxl_io = None
 __lock = threading.Lock()
 
 
-def get_dxl_connection(port, baudrate):
+def get_dxl_connection(port, baudrate, protocol="MX"):
     global __dxl_io
 
     __lock.acquire()
-    __dxl_io = pypot.dynamixel.DxlIO(port, baudrate, use_sync_read=False)
+    if protocol == "XL":
+        __dxl_io = pypot.dynamixel.Dxl320IO(port, baudrate, use_sync_read=False)
+    else:
+        __dxl_io = pypot.dynamixel.DxlIO(port, baudrate, use_sync_read=False)
     return __dxl_io
 
 
@@ -36,6 +39,7 @@ class HerboristApp(PyQt4.QtGui.QApplication):
     def __init__(self, argv):
         PyQt4.QtGui.QApplication.__init__(self, argv)
         self.window = PyQt4.uic.loadUi(resource_filename('pypot', '/tools/herborist/herborist.ui'))
+        #~ self.window = PyQt4.uic.loadUi('herborist.ui')
 
         self.enable_motor_view(False)
 
@@ -127,7 +131,7 @@ class HerboristApp(PyQt4.QtGui.QApplication):
             f = int(baud_root.flags()) - int(PyQt4.QtCore.Qt.ItemIsSelectable)
             baud_root.setFlags(PyQt4.QtCore.Qt.ItemFlags(f))
 
-            dxl_io = get_dxl_connection(self.port, b)
+            dxl_io = get_dxl_connection(self.port, b, self.protocol)
             models = dxl_io.get_model(ids)
             release_dxl_connection()
 
@@ -145,14 +149,17 @@ class HerboristApp(PyQt4.QtGui.QApplication):
         for i in range(len(self.window.baudrate_list)):
             checkbox = self.window.baudrate_list.item(i)
             if checkbox.checkState() == 2:
-                baudrates.append(int(checkbox.text()))
+                b = int(checkbox.text())
+                if b == 57600 and self.usb_device=="USB2DYNAMIXEL":
+                    b=57142
+                baudrates.append(b)
 
         id_range = range(self.window.min_id.value(), self.window.max_id.value() + 1)
 
         self.window.scan_progress.setValue(0)
         self.window.scan_progress.setMaximum(len(baudrates) * len(id_range) - 1)
 
-        self.scan_thread = self.ScanThread(self.port, baudrates, id_range,
+        self.scan_thread = self.ScanThread(self.port, baudrates, self.protocol, id_range,
                                            self.window.motor_tree, self.window.scan_progress)
         self.scan_thread.done.connect(self.done_scanning)
         self.scan_thread.part_done.connect(self.window.scan_progress.setValue)
@@ -170,7 +177,7 @@ class HerboristApp(PyQt4.QtGui.QApplication):
         done = PyQt4.QtCore.pyqtSignal()
         part_done = PyQt4.QtCore.pyqtSignal(int)
 
-        def __init__(self, port, baudrates, id_range,
+        def __init__(self, port, baudrates, protocol, id_range,
                      motor_tree, scan_progress):
 
             PyQt4.QtCore.QThread.__init__(self)
@@ -181,6 +188,7 @@ class HerboristApp(PyQt4.QtGui.QApplication):
 
             self.port = port
             self.baudrates = baudrates
+            self.protocol = protocol
             self.id_range = id_range
 
             self.motor_tree = motor_tree
@@ -193,7 +201,7 @@ class HerboristApp(PyQt4.QtGui.QApplication):
                 f = int(baud_root.flags()) - int(PyQt4.QtCore.Qt.ItemIsSelectable)
                 baud_root.setFlags(PyQt4.QtCore.Qt.ItemFlags(f))
 
-                dxl_io = get_dxl_connection(self.port, b)
+                dxl_io = get_dxl_connection(self.port, b, self.protocol)
 
                 for id in self.id_range:
                     if not self.running.is_set():
@@ -233,7 +241,7 @@ class HerboristApp(PyQt4.QtGui.QApplication):
                                 'goal_position_lcd'):
                 getattr(self.window, widget_name).setEnabled(False)
 
-        dxl_io = get_dxl_connection(self.port, self.baudrate)
+        dxl_io = get_dxl_connection(self.port, self.baudrate, self.protocol)
         srl = dxl_io.get_status_return_level((self.id, ), convert=False)[0]
         if srl != 0:
             model = dxl_io.get_model((self.id, ))[0]
@@ -270,13 +278,13 @@ class HerboristApp(PyQt4.QtGui.QApplication):
             self.window.goal_position_dial.setValue(goal_pos)
             self.window.torque_checkbox.setChecked(torque_enable)
 
-        self.refresh_motor_thread = self.UpdateMotorThread(self.port, self.baudrate, self.id)
+        self.refresh_motor_thread = self.UpdateMotorThread(self.port, self.baudrate, self.protocol, self.id)
         self.refresh_motor_thread.position_updated.connect(self.motor_position_updated)
         self.refresh_motor_thread.start()
 
     def update_motor_position(self, pos):
         if self.window.torque_checkbox.checkState():
-            dxl_io = get_dxl_connection(self.port, self.baudrate)
+            dxl_io = get_dxl_connection(self.port, self.baudrate, self.protocol)
             dxl_io.set_goal_position({self.id: pos})
             time.sleep(0.05)
             release_dxl_connection()
@@ -293,7 +301,7 @@ class HerboristApp(PyQt4.QtGui.QApplication):
             self.window.goal_position_lcd.setEnabled(False)
 
         for b, ids in self.selected_motors.iteritems():
-            dxl_io = get_dxl_connection(self.port, b)
+            dxl_io = get_dxl_connection(self.port, b, self.protocol)
             (dxl_io.enable_torque if torque_enable else dxl_io.disable_torque)(ids)
             time.sleep(0.05)
             release_dxl_connection()
@@ -315,7 +323,7 @@ class HerboristApp(PyQt4.QtGui.QApplication):
         new_id = self.window.id_spinbox.value()
 
         for b, ids in self.selected_motors.iteritems():
-            dxl_io = get_dxl_connection(self.port, b)
+            dxl_io = get_dxl_connection(self.port, b, self.protocol)
             dxl_io.set_return_delay_time(dict(zip(ids, itertools.repeat(rdt))))
             dxl_io.set_status_return_level(dict(zip(ids, itertools.repeat(srl))), convert=False)
             dxl_io.set_max_torque(dict(zip(ids, itertools.repeat(torque_max))))
@@ -328,7 +336,7 @@ class HerboristApp(PyQt4.QtGui.QApplication):
         old_ids = self.selected_motors.values()
         if len(old_ids) == 1 and len(old_ids[0]) == 1 and new_id != old_ids[0][0]:
             b, old_id = self.selected_motors.keys()[0], old_ids[0][0]
-            dxl_io = get_dxl_connection(self.port, b)
+            dxl_io = get_dxl_connection(self.port, b, self.protocol)
             try:
                 dxl_io.change_id({old_id: new_id})
 
@@ -347,7 +355,7 @@ class HerboristApp(PyQt4.QtGui.QApplication):
         for b, ids in self.selected_motors.iteritems():
             new_b = int(self.window.baud_combobox.currentText())
             if b != new_b:
-                dxl_io = get_dxl_connection(self.port, b)
+                dxl_io = get_dxl_connection(self.port, b, self.protocol)
                 dxl_io.change_baudrate(dict(zip(ids, itertools.repeat(new_b))))
                 time.sleep(0.1)
                 release_dxl_connection()
@@ -362,13 +370,14 @@ class HerboristApp(PyQt4.QtGui.QApplication):
     class UpdateMotorThread(PyQt4.QtCore.QThread):
         position_updated = PyQt4.QtCore.pyqtSignal(int)
 
-        def __init__(self, port, baudrate, mid):
+        def __init__(self, port, baudrate, protocol, mid):
             PyQt4.QtCore.QThread.__init__(self)
             self.running = threading.Event()
             self.running.set()
 
             self.port = port
             self.baudrate = baudrate
+            self.protocol = protocol
             self.mid = mid
 
         def stop(self):
@@ -376,7 +385,7 @@ class HerboristApp(PyQt4.QtGui.QApplication):
 
         def run(self):
             while self.running.is_set():
-                dxl_io = get_dxl_connection(self.port, self.baudrate)
+                dxl_io = get_dxl_connection(self.port, self.baudrate, self.protocol)
                 pos = dxl_io.get_present_position((self.mid, ))[0]
                 release_dxl_connection()
 
@@ -388,6 +397,14 @@ class HerboristApp(PyQt4.QtGui.QApplication):
     @property
     def port(self):
         return str(self.window.port_box.currentText())
+        
+    @property
+    def protocol(self):
+        return str(self.window.protocol_box.currentText())
+        
+    @property
+    def usb_device(self):
+        return str(self.window.usb_device_box.currentText())
 
     @property
     def baudrate(self):
