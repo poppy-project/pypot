@@ -173,6 +173,14 @@ class VrepIO(AbstractIO):
                                     h, relative_handle,
                                     streaming=True)
 
+    def set_object_position(self, object_name, position=[0,0,0]):
+        """ Sets the object position. """
+        h = self.get_object_handle(object_name)
+
+        return self.call_remote_api('simxSetObjectPosition',
+                                    h, -1, position,
+                                    sending=True)
+
     def get_object_orientation(self, object_name, relative_to_object=None):
         """ Gets the object orientation. """
         h = self.get_object_handle(object_name)
