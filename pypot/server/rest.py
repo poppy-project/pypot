@@ -32,7 +32,7 @@ class RESTRobot(object):
 
     def get_motor_registers_list(self, motor):
         return self._get_register_value(motor, 'registers')
-    
+
     #   alias to above method
     def get_registers_list(self, motor):
         return self.get_motor_registers_list(motor)
@@ -124,15 +124,30 @@ class RESTRobot(object):
         return f(*args, **kwargs)
 
     # TODO (Theo) : change names with a dic instead of ugly format
-    def start_move_recorder(self, move_name, motors_name):
+    def start_move_recorder(self, move_name, motors_name=None):
         if not hasattr(self.robot, '_{}_recorder'.format(move_name)):
-            motors = [getattr(self.robot, m) for m in motors_name]
+            if motors_name is not None:
+                motors = [getattr(self.robot, m) for m in motors_name]
+            else:
+                motors = self.get_motors_list()
             recorder = MoveRecorder(self.robot, 50, motors)
             self.robot.attach_primitive(recorder, '_{}_recorder'.format(move_name))
             recorder.start()
         else:
             recorder = getattr(self.robot, '_{}_recorder'.format(move_name))
             recorder.start()
+
+    def attach_move_recorder(self, move_name, motors_name):
+        motors = [getattr(self.robot, m) for m in motors_name]
+        recorder = MoveRecorder(self.robot, 50, motors)
+        self.robot.attach_primitive(recorder, '_{}_recorder'.format(move_name))
+
+    def get_move_recorder_motors(self, move_name):
+        try:
+            recorder = getattr(self.robot, '_{}_recorder'.format(move_name))
+            return [str(m.name) for m in recorder.tracked_motors]
+        except AttributeError:
+            return None
 
     def stop_move_recorder(self, move_name):
         """Allow more easily than stop_primitive() to save in a filename the recorcded move"""
@@ -167,6 +182,7 @@ class RESTRobot(object):
             loaded_move = Move.load(f)
         player = MovePlayer(self.robot, loaded_move, play_speed=speed)
         self.robot.attach_primitive(player, '_{}_player'.format(move_name))
+
         player.start()
         return player.duration()
 

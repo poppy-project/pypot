@@ -199,19 +199,32 @@ class SnapRobotServer(AbstractServer):
         @self.app.get('/primitive/MoveRecorder/<move_name>/start')
         @make_snap_compatible_response
         def start_move_recorder(move_name):
-            rr.start_move_recorder(move_name, rr.get_motors_list('motors'))
-            return 'Done!'
-
-        @self.app.get('/primitive/MoveRecorder/<move_name>/start/<motors>')
-        @make_snap_compatible_response
-        def start_move_recorder(move_name, motors):
-            rr.start_move_recorder(move_name, motors.split(';'))
+            rr.start_move_recorder(move_name)
             return 'Done!'
 
         @self.app.get('/primitive/MoveRecorder/<move_name>/stop')
         @make_snap_compatible_response
         def stop_move_recorder(move_name):
             rr.stop_move_recorder(move_name)
+            return 'Done!'
+
+        @self.app.get('/primitive/MoveRecorder/<move_name>/attach/<motors>')
+        @make_snap_compatible_response
+        def start_move_recorder(move_name, motors):
+            rr.attach_move_recorder(move_name, motors.split(';'))
+            return 'Done!'
+
+        @self.app.get('/primitive/MoveRecorder/<move_name>/get_motors')
+        @make_snap_compatible_response
+        def get_move_recorder_motors(move_name):
+            motors = rr.get_move_recorder_motors(move_name)
+            return '/'.join(motors) if motors is not None else 'None'
+
+        # Obsolete ?
+        @self.app.get('/primitive/MoveRecorder/<move_name>/start/<motors>')
+        @make_snap_compatible_response
+        def start_move_recorder(move_name, motors):
+            rr.start_move_recorder(move_name, motors.split(';'))
             return 'Done!'
 
         @self.app.get('/primitive/MoveRecorder/<move_name>/remove')
