@@ -173,7 +173,7 @@ class VrepIO(AbstractIO):
                                     h, relative_handle,
                                     streaming=True)
 
-    def set_object_position(self, object_name, position=[0,0,0]):
+    def set_object_position(self, object_name, position=[0, 0, 0]):
         """ Sets the object position. """
         h = self.get_object_handle(object_name)
 
