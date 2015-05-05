@@ -1,5 +1,6 @@
 import os
 import time
+import ctypes
 
 from threading import Lock
 
@@ -216,6 +217,11 @@ class VrepIO(AbstractIO):
             return self.call_remote_api('simxGetFloatSignal', timer, streaming=True)
         except VrepIOErrors:
             return 0.0
+
+    def _inject_lua_code(self, lua_code):
+        """ Sends raw lua code and evaluate it wihtout any checking! """
+        msg = (ctypes.c_ubyte * len(lua_code)).from_buffer_copy(lua_code)
+        self.call_remote_api('simxWriteStringStream', 'my_lua_code', msg)
 
     def call_remote_api(self, func_name, *args, **kwargs):
         """ Calls any remote API func in a thread_safe way.
