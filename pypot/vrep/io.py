@@ -228,9 +228,27 @@ class VrepIO(AbstractIO):
 
     def add_cube(self, name, position, sizes, mass):
 	""" Add Cube """
-	self._create_pure_shape(0, 239, sizes, mass, [0.5, 0.5])
+	self._create_pure_shape(0, 239, sizes, mass, [0, 0])
 	self.set_object_position("Cuboid", position)
 	self.change_object_name("Cuboid", name)
+
+    def add_sphere(self, name, position, sizes, mass, precision=[10,10]):
+	""" Add Sphere """
+	self._create_pure_shape(1, 239, sizes, mass, precision)
+	self.set_object_position("Sphere", position)
+	self.change_object_name("Sphere", name)
+
+    def add_cylinder(self, name, position, sizes, mass, precision=[10,10]):
+	""" Add Cylinder """
+	self._create_pure_shape(2, 239, sizes, mass, precision)
+	self.set_object_position("Cylinder", position)
+	self.change_object_name("Cylinder", name)
+
+    def add_cone(self, name, position, sizes, mass, precision=[10,10]):
+	""" Add Cone """
+	self._create_pure_shape(3, 239, sizes, mass, precision)
+	self.set_object_position("Cylinder", position)
+	self.change_object_name("Cylinder", name)
 
     def change_object_name(self, old_name, new_name):
         """ Change object name """
