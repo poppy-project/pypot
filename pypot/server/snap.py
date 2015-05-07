@@ -3,6 +3,9 @@ import os
 import bottle
 import socket
 from string import Template
+import re
+import time
+import datetime
 
 from .server import AbstractServer
 
@@ -23,15 +26,38 @@ def make_snap_compatible_response(f):
     return wrapped_f
 
 
+# TODO: improve reliability to avoid erase xml backup with old template
 def make_xml_from_templates(host, port, template_extension='.snapTemplate'):
     """ Allow to change dynamically port and host variable in xml Snap! project file"""
     template_files = [f for f in os.listdir('.') if f.endswith(template_extension)]
     d = {'host': host, 'port': port}
     for template in template_files:
+        xml_filename = template.split(template_extension)[0]
         with open(template, 'r') as tf:
-            xml = Template(tf.read()).substitute(d)
-            with open(template.split(template_extension)[0], 'w') as xf:
+            try:
+                xml = Template(tf.read()).substitute(d)
+            except KeyError:
+                # $robot and others Snap! build in icon are considered as python template keys
+                pass
+            time_template = os.path.getmtime(template)
+            if os.path.exists(xml_filename):
+                if time_template < os.path.getmtime(xml_filename):
+                    # Should we raise error ?
+                    return
+            with open(xml_filename, 'w+') as xf:
                 xf.write(xml)
+
+
+def make_templates_from_xml(template_extension='.snapTemplate'):
+    xml_files = [f for f in os.listdir('.') if f.endswith('xml')]
+    for xml_file in xml_files:
+        with open(xml_file, 'r') as xf:
+            xml_content = xf.read()
+            if "app=\"Snap!" in xml_content:
+                with open('{}{}'.format(xml_file, template_extension), 'w+') as tf:
+                    xml_content = re.sub('localhost', '$host', xml_content)
+                    xml_content = re.sub('6969', '$port', xml_content)
+                    tf.write(xml_content)
 
 
 class SnapRobotServer(AbstractServer):
