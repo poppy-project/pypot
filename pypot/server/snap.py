@@ -68,8 +68,8 @@ class SnapRobotServer(AbstractServer):
 
         @self.app.get('/motors/alias')
         @make_snap_compatible_response
-        def get_robot_alias():
-            return ';'.join('{}'.format(alias) for alias in rr.get_motors_alias())
+        def get_robot_aliases():
+            return '/'.join('{}'.format(alias) for alias in rr.get_motors_alias())
 
         @self.app.get('/motors/set/goto/<motors_position_duration>')
         @make_snap_compatible_response
