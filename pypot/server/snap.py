@@ -29,26 +29,33 @@ def make_snap_compatible_response(f):
 # TODO: improve reliability to avoid erase xml backup with old template
 def make_xml_from_templates(host, port, template_extension='.snapTemplate'):
     """ Allow to change dynamically port and host variable in xml Snap! project file"""
+    os.chdir(os.path.dirname(os.path.realpath(__file__)))
     template_files = [f for f in os.listdir('.') if f.endswith(template_extension)]
     d = {'host': host, 'port': port}
+    print template_files
     for template in template_files:
         xml_filename = template.split(template_extension)[0]
         with open(template, 'r') as tf:
-            try:
-                xml = Template(tf.read()).substitute(d)
-            except KeyError:
-                # $robot and others Snap! build in icon are considered as python template keys
-                pass
+
+            # Avoid error of Snap! build in icon like $robot or $arrow
+            real_keys = re.findall(r'\$[a-z]+', tf.read())
+            for k in real_keys:
+                if k not in d.keys():
+                    d[k] = k
+            # try:
+            xml = Template(tf.read()).substitute(d)
+            # except KeyError:
+            # $robot and others
+            # print 'Key Error'
             time_template = os.path.getmtime(template)
-            if os.path.exists(xml_filename):
-                if time_template < os.path.getmtime(xml_filename):
-                    # Should we raise error ?
-                    return
-            with open(xml_filename, 'w+') as xf:
-                xf.write(xml)
+            if not(os.path.exists(xml_filename) and time_template < os.path.getmtime(xml_filename)):
+                    print 'time error'
+                with open(xml_filename, 'w+') as xf:
+                    xf.write(xml)
 
 
 def make_templates_from_xml(template_extension='.snapTemplate'):
+    os.chdir(os.path.dirname(os.path.realpath(__file__)))
     xml_files = [f for f in os.listdir('.') if f.endswith('xml')]
     for xml_file in xml_files:
         with open(xml_file, 'r') as xf:
