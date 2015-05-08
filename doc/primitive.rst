@@ -53,7 +53,41 @@ To run this primitive on your robot, you simply have to do::
     dance = DancePrimitive(ergo_robot)
     dance.start()
 
+Note that in this example you can not change the arguments amp and freq when calling the primitive. If you want to pass arguments to your primitive, you have to override the :meth:`~pypot.primitive.primitive.Primitive.__init__` method.
 
+As an example, let's adapt the DancePrimitive::
+
+    import time
+
+    import pypot.primitive
+
+    class DancePrimitive(pypot.primitive.Primitive):
+        
+        def __init__(self, robot, amp=30, freq=0.5):
+            self.robot = robot
+            self.amp = amp
+            self.freq = freq
+            pypot.primitive.Primitive.__init__(self, robot)
+        
+        def run(self):
+            amp = self.amp
+            freq = self.freq
+            # self.elapsed_time gives you the time (in s) since the primitive has been running
+            while self.elapsed_time < 30:
+                x = amp * numpy.sin(2 * numpy.pi * freq * self.elapsed_time)
+
+                self.robot.base_pan.goal_position = x
+                self.robot.head_pan.goal_position = -x
+
+                time.sleep(0.02)
+ 
+To run this primitive on your robot, you simply have to do::
+
+    ergo_robot = pypot.robot.from_config(...)
+
+    dance = DancePrimitive(ergo_robot,amp=60, freq=0.6)
+    dance.start()
+    
 If you want to make the dance primitive infinite you can use the :class:`~pypot.primitive.primitive.LoopPrimitive` class::
 
     class LoopDancePrimitive(pypot.primitive.LoopPrimitive):
