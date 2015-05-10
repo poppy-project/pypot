@@ -26,45 +26,19 @@ def make_snap_compatible_response(f):
     return wrapped_f
 
 
-# TODO: improve reliability to avoid erase xml backup with old template
-def make_xml_from_templates(host, port, template_extension='.snapTemplate'):
+def set_snap_xml_server(host, port, snap_extension='.xml'):
     """ Allow to change dynamically port and host variable in xml Snap! project file"""
     os.chdir(os.path.dirname(os.path.realpath(__file__)))
-    template_files = [f for f in os.listdir('.') if f.endswith(template_extension)]
-    d = {'host': host, 'port': port}
-    print template_files
-    for template in template_files:
-        xml_filename = template.split(template_extension)[0]
-        with open(template, 'r') as tf:
-
-            # Avoid error of Snap! build in icon like $robot or $arrow
-            real_keys = re.findall(r'\$[a-z]+', tf.read())
-            for k in real_keys:
-                if k not in d.keys():
-                    d[k] = k
-            # try:
-            xml = Template(tf.read()).substitute(d)
-            # except KeyError:
-            # $robot and others
-            # print 'Key Error'
-            time_template = os.path.getmtime(template)
-            if not(os.path.exists(xml_filename) and time_template < os.path.getmtime(xml_filename)):
-                    print 'time error'
-                with open(xml_filename, 'w+') as xf:
-                    xf.write(xml)
-
-
-def make_templates_from_xml(template_extension='.snapTemplate'):
-    os.chdir(os.path.dirname(os.path.realpath(__file__)))
-    xml_files = [f for f in os.listdir('.') if f.endswith('xml')]
-    for xml_file in xml_files:
-        with open(xml_file, 'r') as xf:
-            xml_content = xf.read()
-            if "app=\"Snap!" in xml_content:
-                with open('{}{}'.format(xml_file, template_extension), 'w+') as tf:
-                    xml_content = re.sub('localhost', '$host', xml_content)
-                    xml_content = re.sub('6969', '$port', xml_content)
-                    tf.write(xml_content)
+    xml_files = [f for f in os.listdir('.') if f.endswith(snap_extension)]
+    for filename in xml_files:
+        with open(filename, 'r') as xf:
+            xml = xf.read()
+        with open(filename, 'w') as xf:
+            xml = re.sub(r'''<variable name="host"><l>[\s\S]*?<\/l><\/variable>''',
+                         '''<variable name="host"><l>{}</l></variable>'''.format(host), xml)
+            xml = re.sub(r'''<variable name="port"><l>[\s\S]*?<\/l><\/variable>''',
+                         '''<variable name="port"><l>{}</l></variable>'''.format(port), xml)
+            xf.write(xml)
 
 
 class SnapRobotServer(AbstractServer):
@@ -76,7 +50,7 @@ class SnapRobotServer(AbstractServer):
 
         rr = self.restfull_robot
 
-        make_xml_from_templates(host, port)
+        set_snap_xml_server(host, port)
 
         @self.app.get('/motors/<alias>')
         @make_snap_compatible_response
@@ -106,7 +80,7 @@ class SnapRobotServer(AbstractServer):
 
         @self.app.get('/motors/set/goto/<motors_position_duration>')
         @make_snap_compatible_response
-        def set_motors_positions(motors_position_duration):
+        def set_motors_goto(motors_position_duration):
             """ Allow lot of motors position settings with a single http request
                 Be carefull: with lot of motors, it could overlap the GET max
                     lentgh of your web browser
