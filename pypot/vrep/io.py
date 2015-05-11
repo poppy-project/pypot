@@ -1,10 +1,6 @@
 import os
 import time
-<<<<<<< HEAD
-import ctypes  
-=======
 import ctypes
->>>>>>> upstream/master
 
 from threading import Lock
 
@@ -230,18 +226,6 @@ class VrepIO(AbstractIO):
         except VrepIOErrors:
             return 0.0
 
-<<<<<<< HEAD
-    def set_VREP_force(self,vector_force,shape_name):
-        """ Set a force to apply on poppy """
-        raw_bytes = (ctypes.c_ubyte * len(shape_name)).from_buffer_copy(shape_name)
-        self.call_remote_api('simxSetStringSignal','shape',raw_bytes,sending=True)
-        packedData=remote_api.simxPackFloats(vector_force)
-        raw_bytes = (ctypes.c_ubyte * len(packedData)).from_buffer_copy(packedData)   
-        self.call_remote_api('simxSetStringSignal','force',raw_bytes,sending=True)
-			
-			
-			
-=======
     def add_cube(self, name, position, sizes, mass):
 	""" Add Cube """
 	self._create_pure_shape(0, 239, sizes, mass, [0, 0])
@@ -285,7 +269,6 @@ class VrepIO(AbstractIO):
         msg = (ctypes.c_ubyte * len(lua_code)).from_buffer_copy(lua_code)
         self.call_remote_api('simxWriteStringStream', 'my_lua_code', msg)
 
->>>>>>> upstream/master
     def call_remote_api(self, func_name, *args, **kwargs):
         """ Calls any remote API func in a thread_safe way.
 

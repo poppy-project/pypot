@@ -157,10 +157,5 @@ def from_vrep(config, vrep_host='127.0.0.1', vrep_port=19997, scene=None,
     def get_object_orientation(robot, object, relative_to_object=None):
         return vrep_io.get_object_orientation(object, relative_to_object)
     Robot.get_object_orientation = partial(get_object_orientation, robot)
-    
-    def set_VREP_force(robot,vector_force,shape_name):
-		vrep_io.set_VREP_force(vector_force,shape_name)
-    Robot.set_VREP_force = partial(set_VREP_force,robot)
-    
 
     return robot
