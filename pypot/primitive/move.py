@@ -61,10 +61,7 @@ class Move(object):
         """ Loads a :class:`~pypot.primitive.move.Move` from a json file. """
         d = json.load(file)
         move = cls(d['framerate'])
-
-        # TODO : rewrite with more style
-        for k, v in d['positions'].items():
-            move._timed_positions[float(k)] = v
+        move._timed_positions.update(d['positions'])
         return move
 
 

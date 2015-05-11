@@ -36,6 +36,13 @@ class KDTreeDict(dict):
     def __len__(self):
         return len(self.__keys)
 
+    def update(self, *args, **kwargs):
+        if len(args) > 1:
+            raise TypeError("update expected at most 1 arguments, got %d" % len(args))
+        other = dict(*args, **kwargs)
+        for key in other:
+            self[key] = other[key]
+
     def generate_tree(self):
         self.__tree = cKDTree(self.__keys)
         self.__stale = False
