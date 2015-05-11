@@ -38,7 +38,7 @@ Adding another layer
 
 If you want to add support for the brand new servo-motors in pypot or the new mindblowing sensor, you are in the right section. As an example of how you should proceed, we will describe how support for the `V-REP simulator <http://www.coppeliarobotics.com>`_ was added and how it allows for a seamless switch from real to simulated robot.
 
-Adding support for the V-REP simulator in pypot could be sum up in two main steps:
+Adding support for the V-REP simulator in pypot could be sum up in three main steps:
 
 * Writing the low-level IO for V-REP.
 * Writing the controller to synchronize pypot's :class:`~pypot.robot.robot.Robot` with the V-REP's one.

@@ -6,6 +6,9 @@
 ### REST API
 * Specify, document and to implement (partially done: working for motors and primitives)
 
+### Computer Vision
+* Integrate computer vision libraries (OpenCV, VISP)
+
 ### Develop graphical tools
 * for monitoring
 * for managing the way primitives are combined

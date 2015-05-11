@@ -209,3 +209,61 @@ def _motor_extractor(alias, name):
     for key in alias[name]:
         l += _motor_extractor(alias, key) if key in alias else [key]
     return l
+
+
+ergo_robot_config = {
+    'controllers': {
+        'my_dxl_controller': {
+            'sync_read': False,
+            'attached_motors': ['base', 'tip'],
+            'port': 'auto'
+        }
+    },
+    'motorgroups': {
+        'base': ['m1', 'm2', 'm3'],
+        'tip': ['m4', 'm5', 'm6']
+    },
+    'motors': {
+        'm5': {
+            'orientation': 'indirect',
+            'type': 'MX-28',
+            'id': 15,
+            'angle_limit': [-90.0, 90.0],
+            'offset': 0.0
+        },
+        'm4': {
+            'orientation': 'direct',
+            'type': 'MX-28',
+            'id': 14,
+            'angle_limit': [-90.0, 90.0],
+            'offset': 0.0
+        },
+        'm6': {
+            'orientation': 'indirect',
+            'type': 'MX-28',
+            'id': 16,
+            'angle_limit': [-90.0, 90.0],
+            'offset': 0.0
+        },
+        'm1': {
+            'orientation': 'direct',
+            'type': 'MX-28', 'id': 11,
+            'angle_limit': [-90.0, 90.0],
+            'offset': 0.0
+        },
+        'm3': {
+            'orientation': 'indirect',
+            'type': 'MX-28',
+            'id': 13,
+            'angle_limit': [-90.0, 90.0],
+            'offset': 0.0
+        },
+        'm2': {
+            'orientation': 'indirect',
+            'type': 'MX-28',
+            'id': 12,
+            'angle_limit': [-90.0, 90.0],
+            'offset': 0.0
+        }
+    }
+}
