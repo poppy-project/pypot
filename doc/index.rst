@@ -31,8 +31,8 @@ Welcome to pypot's documentation!
     primitive.rst
     vrep.rst
     extending.rst
-    logging.rst
     remote_access.rst
+    logging.rst
 
 
 **Tools**

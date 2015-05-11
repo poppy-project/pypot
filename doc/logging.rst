@@ -97,7 +97,7 @@ The execution of the program above will create a file named 'pypot.log' where ea
     dt = map(lambda dt: dt.total_seconds(), numpy.diff(t))
     dt = numpy.array(dt) * 1000
 
-    print numpy.mean(dt), numpy.std(dt)
+    print(numpy.mean(dt), numpy.std(dt))
 
     plot(dt)
     show()

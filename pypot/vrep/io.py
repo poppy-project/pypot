@@ -1,5 +1,6 @@
 import os
 import time
+import ctypes
 
 from threading import Lock
 
@@ -173,6 +174,14 @@ class VrepIO(AbstractIO):
                                     h, relative_handle,
                                     streaming=True)
 
+    def set_object_position(self, object_name, position=[0, 0, 0]):
+        """ Sets the object position. """
+        h = self.get_object_handle(object_name)
+
+        return self.call_remote_api('simxSetObjectPosition',
+                                    h, -1, position,
+                                    sending=True)
+
     def get_object_orientation(self, object_name, relative_to_object=None):
         """ Gets the object orientation. """
         h = self.get_object_handle(object_name)
@@ -216,6 +225,49 @@ class VrepIO(AbstractIO):
             return self.call_remote_api('simxGetFloatSignal', timer, streaming=True)
         except VrepIOErrors:
             return 0.0
+
+    def add_cube(self, name, position, sizes, mass):
+	""" Add Cube """
+	self._create_pure_shape(0, 239, sizes, mass, [0, 0])
+	self.set_object_position("Cuboid", position)
+	self.change_object_name("Cuboid", name)
+
+    def add_sphere(self, name, position, sizes, mass, precision=[10,10]):
+	""" Add Sphere """
+	self._create_pure_shape(1, 239, sizes, mass, precision)
+	self.set_object_position("Sphere", position)
+	self.change_object_name("Sphere", name)
+
+    def add_cylinder(self, name, position, sizes, mass, precision=[10,10]):
+	""" Add Cylinder """
+	self._create_pure_shape(2, 239, sizes, mass, precision)
+	self.set_object_position("Cylinder", position)
+	self.change_object_name("Cylinder", name)
+
+    def add_cone(self, name, position, sizes, mass, precision=[10,10]):
+	""" Add Cone """
+	self._create_pure_shape(3, 239, sizes, mass, precision)
+	self.set_object_position("Cylinder", position)
+	self.change_object_name("Cylinder", name)
+
+    def change_object_name(self, old_name, new_name):
+        """ Change object name """
+        h = self._get_object_handle(old_name)
+        if old_name in self._object_handles:
+            self._object_handles.pop(old_name)
+        lua_code = "simSetObjectName({}, '{}')".format(h, new_name)
+        self._inject_lua_code(lua_code)
+
+    def _create_pure_shape(self, primitive_type, options, sizes, mass, precision):
+        """ Create Pure Shape """
+        lua_code = "simCreatePureShape({}, {}, {{{}, {}, {}}}, {}, {{{}, {}}})".format(primitive_type, options, sizes[0], sizes[1], sizes[2], mass, precision[0], precision[1])
+        self._inject_lua_code(lua_code)
+
+
+    def _inject_lua_code(self, lua_code):
+        """ Sends raw lua code and evaluate it wihtout any checking! """
+        msg = (ctypes.c_ubyte * len(lua_code)).from_buffer_copy(lua_code)
+        self.call_remote_api('simxWriteStringStream', 'my_lua_code', msg)
 
     def call_remote_api(self, func_name, *args, **kwargs):
         """ Calls any remote API func in a thread_safe way.

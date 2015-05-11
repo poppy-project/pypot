@@ -33,13 +33,14 @@ The configuration, described as a Python dictionary, contains several important 
 
 Now let's detail each section. To better understand how the configuration is structure it is probably easier to start from one of the example provided with pypot and modify it (e.g. :obj:`pypot.robot.config.ergo_robot_config`):
 
-#. **controllers**: You can have a single or multiple :class:`~pypot.dynamixel.controller.DxlController`. For each of them, you should indicate whether or not to use the SYNC_READ instruction (only the USB2AX device currently supported it). When you describe your controller, you must also include the port that the device is connected to (see :ref:`open_connection`). You also have to specify which motors are attached to this bus. You can either give individual motors or groups (see the sections below)::
+#. **controllers**: You can have a single or multiple :class:`~pypot.dynamixel.controller.DxlController`. For each of them, you should indicate whether or not to use the SYNC_READ instruction (only the USB2AX device currently supported it). When you describe your controller, you must also include the port that the device is connected to (see :ref:`open_connection`). In this section, you can also specify which robotis protocol to use (if not specified it uses the v1). You also have to specify which motors are attached to this bus. You can either give individual motors or groups (see the sections below)::
 
         my_config['controllers'] = {}
         my_config['controllers']['upper_body_controler'] = {
             'port': '/dev/ttyUSB0',
             'sync_read': False,
-            'attached_motors': ['torso', 'head', 'arms']
+            'attached_motors': ['torso', 'head', 'arms'],
+            'protocol': 1,
         }
 
 #. **motorgroups**: Here, you can define the different motors group corresponding to the structure of your robot. It will automatically create an alias for the group. Groups can be nested, i.e. a group can be included inside another group, as in the example below::
@@ -56,10 +57,10 @@ Now let's detail each section. To better understand how the configuration is str
         my_config['motors'] = {}
         my_config['motors']['l_hip_y'] = {
             'id': 11,
-            'type': 'RX-64',
+            'type': 'MX-28',
             'orientation': 'direct',
-            'offset': 22.5,
-            'angle_limit': (-67.5, 112.5),
+            'offset': 0.0,
+            'angle_limit': (-90.0, 90.0),
         }
 
 
@@ -70,7 +71,7 @@ Now let's detail each section. To better understand how the configuration is str
         robot = pypot.robot.from_config(my_config)
 
         for m in robot.left_arm:
-            print m.present_position
+            print(m.present_position)
 
 #. (optional) If you prefer working with file, you can read/write your config to any format that can be transformed into a dictionary. For instance, you can easily use the JSON format::
 
@@ -91,62 +92,60 @@ To give you a complete overview of what your config should look like, here is th
     ergo_robot_config = {
         'controllers': {
             'my_dxl_controller': {
-                'port': '/dev/ttyUSB0', # Depends on your OS
                 'sync_read': False,
-                'attached_motors': ['base', 'head'], # You can mix motorgroups or individual motors
-            },
+                'attached_motors': ['base', 'tip'],
+                'port': 'auto'
+            }
         },
-
         'motorgroups': {
-            'base': ['base_pan', 'base_tilt_lower', 'base_tilt_upper'],
-            'head': ['head_pan', 'head_tilt_lower', 'head_tilt_upper'],
+            'base': ['m1', 'm2', 'm3'],
+            'tip': ['m4', 'm5', 'm6']
         },
-
         'motors': {
-            'base_pan': {
-                'id': 11,
-                'type': 'RX-64',
-                'orientation': 'direct',
-                'offset': 22.5,
-                'angle_limit': (-67.5, 112.5),
-            },
-            'base_tilt_lower': {
-                'id': 12,
-                'type': 'RX-64',
-                'orientation': 'direct',
-                'offset': 0.0,
-                'angle_limit': (-90.0, 90.0),
-            },
-            'base_tilt_upper': {
-                'id': 13,
-                'type': 'RX-64',
-                'orientation': 'direct',
-                'offset': 0.0,
-                'angle_limit': (-90.0, 90.0),
-            },
-            'head_pan': {
-                'id': 14,
-                'type': 'RX-28',
-                'orientation': 'direct',
-                'offset': 22.5,
-                'angle_limit': (-67.5, 112.5),
-            },
-            'head_tilt_lower': {
+            'm5': {
+                'orientation': 'indirect',
+                'type': 'MX-28',
                 'id': 15,
-                'type': 'RX-28',
-                'orientation': 'indirect',
-                'offset': 0.0,
-                'angle_limit': (-90.0, 90.0),
+                'angle_limit': [-90.0, 90.0],
+                'offset': 0.0
             },
-            'head_tilt_upper': {
+            'm4': {
+                'orientation': 'direct',
+                'type': 'MX-28',
+                'id': 14,
+                'angle_limit': [-90.0, 90.0],
+                'offset': 0.0
+            },
+            'm6': {
+                'orientation': 'indirect',
+                'type': 'MX-28',
                 'id': 16,
-                'type': 'RX-28',
-                'orientation': 'indirect',
-                'offset': 0.0,
-                'angle_limit': (-90.0, 90.0),
+                'angle_limit': [-90.0, 90.0],
+                'offset': 0.0
             },
-        },
+            'm1': {
+                'orientation': 'direct',
+                'type': 'MX-28', 'id': 11,
+                'angle_limit': [-90.0, 90.0],
+                'offset': 0.0
+            },
+            'm3': {
+                'orientation': 'indirect',
+                'type': 'MX-28',
+                'id': 13,
+                'angle_limit': [-90.0, 90.0],
+                'offset': 0.0
+            },
+            'm2': {
+                'orientation': 'indirect',
+                'type': 'MX-28',
+                'id': 12,
+                'angle_limit': [-90.0, 90.0],
+                'offset': 0.0
+            }
+        }
     }
+
 
 Since pypot 1.7, you can now set the port to 'auto' in the dictionary. When loading the configuration, pypot will automatically try to find the port with the corresponding attached motor ids.
 
@@ -204,7 +203,7 @@ So, in most case you should not have to worry about synchronization loop and it 
 
 .. note:: With the current version of pypot, you can not indicate in the configuration which subclasses of :class:`~pypot.dynamixel.controller.DxlController` you want to use. This feature should be added in a future version. If you want to use your own controller, you should either modify the config parser, modify the :class:`~pypot.dynamixel.controller.BaseDxlController` class or directly instantiate the :class:`~pypot.robot.robot.Robot` class.
 
-To start all the synchronization loops, you only need to call the :meth:`~pypot.robot.robot.Robot.start_sync` method. You can also stop the synchronization if needed (see the :meth:`~pypot.robot.robot.Robot.stop_sync` method). Note that since version 2.x, the synchronization is started by default.
+The synchronization loops are automatically started when instantiating your robot, the method :meth:`~pypot.robot.robot.Robot.start_sync` is directly called. You can also stop the synchronization if needed (see the :meth:`~pypot.robot.robot.Robot.stop_sync` method). Note that prior to version 2, the synchronization is not started by default.
 
 .. warning:: You should never set values to motors when the synchronization is not running.
 
@@ -237,7 +236,7 @@ As shown in the examples above, the robot class let you directly access the diff
         m.goal_position = 0
 
     # This will return the last synchronized value
-    print ergo_robot.base_pan.present_position
+    print(ergo_robot.base_pan.present_position)
 
 For a complete list of all the attributes that you can access, you should refer to the :class:`~pypot.dynamixel.motor.DxlMotor` API.
 
