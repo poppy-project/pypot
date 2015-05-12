@@ -65,6 +65,11 @@ class HTTPRobotServer(AbstractServer):
 
         rr = self.restfull_robot
 
+        @self.app.route("/", method=['OPTIONS'])
+        @self.app.route("/<p:path>", method=['OPTIONS'])
+        def options(p=""):
+            return ""
+
         # Motors route
 
         @self.app.get('/motor/list.json')
