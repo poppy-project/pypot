@@ -71,6 +71,34 @@ class HTTPRobotServer(AbstractServer):
             return ""
 
         # Motors route
+        @self.app.get('/')
+        @self.app.get('/robot.json')
+        def robot():
+            out = {
+                'motors': [],
+                'primitives': []
+            }
+            for m in rr.get_motors_list('motors'):
+                motor = {}
+                for r in rr.get_motor_registers_list(m):
+                    try:
+                        motor[r] = rr.get_motor_register_value(m, r)
+                    except AttributeError:
+                        pass
+                out['motors'].append(motor)
+
+            running_primitives = rr.get_running_primitives_list()
+            for prim in rr.get_primitives_list():
+                primitve = {'primitive': prim,
+                            'running': prim in running_primitives,
+                            'properties': [],
+                            'methods': rr.get_primitive_methods_list(prim)
+                            }
+                for prop in rr.get_primitive_properties_list(prim):
+                    primitve['properties'].append({'property': prop, 'value': rr.get_primitive_property(prim, prop)})
+                out['primitives'].append(primitve)
+
+            return out
 
         @self.app.get('/motor/list.json')
         @self.app.get('/motor/<alias>/list.json')
