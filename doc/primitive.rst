@@ -64,7 +64,7 @@ To run this primitive on your robot, you simply have to do::
 If you want to make the dance primitive infinite you can use the :class:`~pypot.primitive.primitive.LoopPrimitive` class::
 
     class LoopDancePrimitive(pypot.primitive.LoopPrimitive):
-        def __init__(self, robot, amp=30, freq=0.5):
+        def __init__(self, robot, refresh_freq, amp=30, freq=0.5):
             self.robot = robot
             self.amp = amp
             self.freq = freq
