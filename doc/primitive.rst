@@ -1,4 +1,4 @@
-.. _my_prim:
+﻿.. _my_prim:
 
 Primitives everywhere
 =====================
@@ -29,15 +29,13 @@ To write you own primitive, you have to subclass the :class:`~pypot.primitive.pr
 
 .. note:: You should always call the super constructor if you override the :meth:`~pypot.primitive.primitive.Primitive.__init__` method.
 
-As an example, let's write a simple primitive that recreate the dance behavior written in the :ref:`dance_` section::
-Notice that to pass arguments to your primitive, you have to override the :meth:`~pypot.primitive.primitive.Primitive.__init__` method.
+As an example, let's write a simple primitive that recreate the dance behavior written in the :ref:`dance_` section. Notice that to pass arguments to your primitive, you have to override the :meth:`~pypot.primitive.primitive.Primitive.__init__` method::
 
     import time
 
     import pypot.primitive
-
     class DancePrimitive(pypot.primitive.Primitive):
-        
+    
         def __init__(self, robot, amp=30, freq=0.5):
             self.robot = robot
             self.amp = amp
