@@ -26,7 +26,14 @@ def make_snap_compatible_response(f):
     return wrapped_f
 
 
-def set_snap_xml_server(host, port, snap_extension='.xml'):
+def find_local_ip():
+    # This is rather obscure...
+    # go see here: http://stackoverflow.com/questions/166506/
+    return [(s.connect(('8.8.8.8', 80)), s.getsockname()[0], s.close())
+            for s in [socket.socket(socket.AF_INET, socket.SOCK_DGRAM)]][0][1]
+
+
+def set_snap_server_variables(host, port, snap_extension='.xml'):
     """ Allow to change dynamically port and host variable in xml Snap! project file"""
     os.chdir(os.path.dirname(os.path.realpath(__file__)))
     xml_files = [f for f in os.listdir('.') if f.endswith(snap_extension)]
@@ -50,7 +57,7 @@ class SnapRobotServer(AbstractServer):
 
         rr = self.restfull_robot
 
-        set_snap_xml_server(host, port)
+        set_snap_server_variables(find_local_ip(), port)
 
         @self.app.get('/motors/<alias>')
         @make_snap_compatible_response
