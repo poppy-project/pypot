@@ -267,6 +267,11 @@ class SnapRobotServer(AbstractServer):
         def start_move_player_with_speed(move_name, move_speed):
             return str(rr.start_move_player(move_name, float(move_speed)))
 
+        @self.app.get('/primitive/MovePlayer/<move_name>/start/<move_speed>/backwards')
+        @make_snap_compatible_response
+        def start_move_player_backwards_with_speed(move_name, move_speed):
+            return str(rr.start_move_player(move_name, float(move_speed), backwards=True))
+
         @self.app.get('/primitive/MovePlayer/<move_name>/stop')
         @make_snap_compatible_response
         def stop_move_player(move_name):

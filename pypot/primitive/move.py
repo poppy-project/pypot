@@ -126,8 +126,13 @@ class MovePlayer(LoopPrimitive):
         self.__duration = self.duration()
 
     def update(self):
+
         if self.elapsed_time < self.__duration:
-            position = self.positions[self.elapsed_time * self.play_speed]
+            if self.backwards:
+                position = self.positions[(self.__duration - self.elapsed_time) * self.play_speed]
+            else:
+                position = self.positions[self.elapsed_time * self.play_speed]
+
             for m, v in position.iteritems():
                 # TODO: Ask pierre if its not a fgi to turn off the compliance
                 getattr(self.robot, m).compliant = False

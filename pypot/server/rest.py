@@ -165,7 +165,7 @@ class RESTRobot(object):
         except AttributeError:
             pass
 
-    def start_move_player(self, move_name, speed=1.0):
+    def start_move_player(self, move_name, speed=1.0, backwards=False):
         """Move player need to have a move file
         <move_name.record> in the working directory to play it"""
 
@@ -180,7 +180,7 @@ class RESTRobot(object):
         # if not running, override the play primitive
         with open('{}.record'.format(move_name)) as f:
             loaded_move = Move.load(f)
-        player = MovePlayer(self.robot, loaded_move, play_speed=speed)
+        player = MovePlayer(self.robot, loaded_move, play_speed=speed, backwards=backwards)
         self.robot.attach_primitive(player, '_{}_player'.format(move_name))
 
         player.start()
