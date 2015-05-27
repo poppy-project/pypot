@@ -27,7 +27,9 @@ class AbstractController(StoppableLoopThread):
     def close(self):
         """ Cleans and closes the controller. """
         self.stop()
-        self.io.close()
+
+        if self.io is not None:
+            self.io.close()
 
 
 class MotorsController(AbstractController):
