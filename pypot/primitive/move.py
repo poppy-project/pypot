@@ -1,5 +1,4 @@
 import json
-from collections import OrderedDict
 
 from .primitive import LoopPrimitive
 from pypot.utils.interpolation import KDTreeDict
@@ -109,13 +108,15 @@ class MovePlayer(LoopPrimitive):
         The play_speed attribute change only time lockup/interpolation
     """
 
-    def __init__(self, robot, move=None, play_speed=1.0, move_filename=None):
+    def __init__(self, robot, move=None, play_speed=1.0, move_filename=None, **kwargs):
         self.move = move
         if move_filename is not None:
             with open(move_filename, 'r') as f:
                 self.move = Move.load(f)
         self.play_speed = play_speed if play_speed != 0 and isinstance(play_speed, float) else 1.0
         framerate = self.move.framerate if self.move is not None else 50.0
+        for key, value in kwargs.items():
+            setattr(self, key, value)
         LoopPrimitive.__init__(self, robot, framerate)
 
     def setup(self):

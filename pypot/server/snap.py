@@ -2,10 +2,8 @@
 import os
 import bottle
 import socket
-from string import Template
 import re
-import time
-import datetime
+
 
 from .server import AbstractServer
 
@@ -131,7 +129,6 @@ class SnapRobotServer(AbstractServer):
                 motor, float(position), float(duration))
             return 'Done!'
 
-        # TODO (Theo) : dynamic modification to change host and port automatically
         @self.app.get('/snap-blocks.xml')
         @make_snap_compatible_response
         def get_pypot_snap_blocks():
