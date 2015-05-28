@@ -1,11 +1,11 @@
+
 import os
 import bottle
 import socket
+import re
+
 
 from .server import AbstractServer
-
-from pypot.primitive.move import MovePlayer, MoveRecorder, Move
-from pypot.primitive.utils import Cosinus, Sinus, LoopPrimitive, numpy
 
 
 def make_snap_compatible_response(f):
@@ -24,6 +24,28 @@ def make_snap_compatible_response(f):
     return wrapped_f
 
 
+def find_local_ip():
+    # This is rather obscure...
+    # go see here: http://stackoverflow.com/questions/166506/
+    return [(s.connect(('8.8.8.8', 80)), s.getsockname()[0], s.close())
+            for s in [socket.socket(socket.AF_INET, socket.SOCK_DGRAM)]][0][1]
+
+
+def set_snap_server_variables(host, port, snap_extension='.xml'):
+    """ Allow to change dynamically port and host variable in xml Snap! project file"""
+    os.chdir(os.path.dirname(os.path.realpath(__file__)))
+    xml_files = [f for f in os.listdir('.') if f.endswith(snap_extension)]
+    for filename in xml_files:
+        with open(filename, 'r') as xf:
+            xml = xf.read()
+        with open(filename, 'w') as xf:
+            xml = re.sub(r'''<variable name="host"><l>[\s\S]*?<\/l><\/variable>''',
+                         '''<variable name="host"><l>{}</l></variable>'''.format(host), xml)
+            xml = re.sub(r'''<variable name="port"><l>[\s\S]*?<\/l><\/variable>''',
+                         '''<variable name="port"><l>{}</l></variable>'''.format(port), xml)
+            xf.write(xml)
+
+
 class SnapRobotServer(AbstractServer):
 
     def __init__(self, robot, host, port):
@@ -32,6 +54,8 @@ class SnapRobotServer(AbstractServer):
         self.app = bottle.Bottle()
 
         rr = self.restfull_robot
+
+        set_snap_server_variables(find_local_ip(), port)
 
         @self.app.get('/motors/<alias>')
         @make_snap_compatible_response
@@ -54,11 +78,40 @@ class SnapRobotServer(AbstractServer):
                            for m in rr.get_motors_list())
             return msg
 
+        @self.app.get('/motors/alias')
+        @make_snap_compatible_response
+        def get_robot_aliases():
+            return '/'.join('{}'.format(alias) for alias in rr.get_motors_alias())
+
+        @self.app.get('/motors/set/goto/<motors_position_duration>')
+        @make_snap_compatible_response
+        def set_motors_goto(motors_position_duration):
+            """ Allow lot of motors position settings with a single http request
+                Be carefull: with lot of motors, it could overlap the GET max
+                    lentgh of your web browser
+                """
+            for m_settings in motors_position_duration.split(';'):
+                settings = m_settings.split(':')
+                rr.set_goto_position_for_motor(settings[0], float(settings[1]), float(settings[2]))
+            return 'Done!'
+
+        @self.app.get('/motors/set/registers/<motors_register_value>')
+        @make_snap_compatible_response
+        def set_motors_registers(motors_register_value):
+            """ Allow lot of motors register settings with a single http request
+                Be carefull: with lot of motors, it could overlap the GET max
+                    lentgh of your web browser
+                """
+            for m_settings in motors_register_value.split(';'):
+                settings = m_settings.split(':')
+                rr.set_motor_register_value(settings[0], settings[1], float(settings[2]))
+            return 'Done!'
+
+        # TODO : delete ?
         @self.app.get('/motors/set/positions/<positions>')
         @make_snap_compatible_response
         def set_motors_positions(positions):
             positions = map(lambda s: float(s), positions[:-1].split(';'))
-
             for m, p in zip(rr.get_motors_list(), positions):
                 rr.set_motor_register_value(m, 'goal_position', p)
             return 'Done!'
@@ -154,17 +207,35 @@ class SnapRobotServer(AbstractServer):
             return rr.get_primitive_properties_list(primitive)
 
         # Hacks (no restfull) to record movements
-        # TODO allow to choose motors motors
         @self.app.get('/primitive/MoveRecorder/<move_name>/start')
         @make_snap_compatible_response
         def start_move_recorder(move_name):
-            rr.start_move_recorder(move_name, rr.get_motors_list('motors'))
+            rr.start_move_recorder(move_name)
             return 'Done!'
 
         @self.app.get('/primitive/MoveRecorder/<move_name>/stop')
         @make_snap_compatible_response
         def stop_move_recorder(move_name):
             rr.stop_move_recorder(move_name)
+            return 'Done!'
+
+        @self.app.get('/primitive/MoveRecorder/<move_name>/attach/<motors>')
+        @make_snap_compatible_response
+        def start_move_recorder(move_name, motors):
+            rr.attach_move_recorder(move_name, motors.split(';'))
+            return 'Done!'
+
+        @self.app.get('/primitive/MoveRecorder/<move_name>/get_motors')
+        @make_snap_compatible_response
+        def get_move_recorder_motors(move_name):
+            motors = rr.get_move_recorder_motors(move_name)
+            return '/'.join(motors) if motors is not None else 'None'
+
+        # Obsolete ?
+        @self.app.get('/primitive/MoveRecorder/<move_name>/start/<motors>')
+        @make_snap_compatible_response
+        def start_move_recorder(move_name, motors):
+            rr.start_move_recorder(move_name, motors.split(';'))
             return 'Done!'
 
         @self.app.get('/primitive/MoveRecorder/<move_name>/remove')
@@ -186,13 +257,22 @@ class SnapRobotServer(AbstractServer):
         @self.app.get('/primitive/MovePlayer/<move_name>/start')
         @make_snap_compatible_response
         def start_move_player(move_name):
-            primitive_name = rr.start_move_player(move_name)
-            return 'Done!'
+            return str(rr.start_move_player(move_name))
+
+        @self.app.get('/primitive/MovePlayer/<move_name>/start/<move_speed>')
+        @make_snap_compatible_response
+        def start_move_player_with_speed(move_name, move_speed):
+            return str(rr.start_move_player(move_name, float(move_speed)))
+
+        @self.app.get('/primitive/MovePlayer/<move_name>/start/<move_speed>/backwards')
+        @make_snap_compatible_response
+        def start_move_player_backwards_with_speed(move_name, move_speed):
+            return str(rr.start_move_player(move_name, float(move_speed), backwards=True))
 
         @self.app.get('/primitive/MovePlayer/<move_name>/stop')
         @make_snap_compatible_response
         def stop_move_player(move_name):
-            rr.stop_primitive(move_name + '_player')
+            rr.stop_primitive('{}_player'.format(move_name))
             return 'Done!'
 
     def run(self):
