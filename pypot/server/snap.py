@@ -33,6 +33,8 @@ def find_local_ip():
 
 def set_snap_server_variables(host, port, snap_extension='.xml'):
     """ Allow to change dynamically port and host variable in xml Snap! project file"""
+
+    localdir = os.getcwd()
     os.chdir(os.path.dirname(os.path.realpath(__file__)))
     xml_files = [f for f in os.listdir('.') if f.endswith(snap_extension)]
     for filename in xml_files:
@@ -44,7 +46,7 @@ def set_snap_server_variables(host, port, snap_extension='.xml'):
             xml = re.sub(r'''<variable name="port"><l>[\s\S]*?<\/l><\/variable>''',
                          '''<variable name="port"><l>{}</l></variable>'''.format(port), xml)
             xf.write(xml)
-
+    os.chdir(localdir)
 
 class SnapRobotServer(AbstractServer):
 
