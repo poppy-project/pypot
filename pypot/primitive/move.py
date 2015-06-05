@@ -110,6 +110,7 @@ class MovePlayer(LoopPrimitive):
 
     def __init__(self, robot, move=None, play_speed=1.0, move_filename=None, **kwargs):
         self.move = move
+        self.backwards = False
         if move_filename is not None:
             with open(move_filename, 'r') as f:
                 self.move = Move.load(f)
