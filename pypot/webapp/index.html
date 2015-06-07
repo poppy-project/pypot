@@ -1,0 +1,121 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1"> 
+        <title>Poppy Web App</title> 
+        <link rel="stylesheet"  href="http://demos.jquerymobile.com/1.1.1/css/themes/default/jquery.mobile-1.1.1.css" />  
+        <style type="text/css">
+            .ui-content {
+                padding: 0 !important;
+            }
+
+            .ui-listview {
+                margin: 0 !important;
+            }
+
+            .example-wrapper, .example-wrapper div.iscroll-scroller {
+                width: 100% !important;
+            }
+        </style>
+        <script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+        <script src="http://demos.jquerymobile.com/1.1.1/js/jquery.mobile-1.1.1.js"></script>
+       
+        <script type="text/javascript">
+
+            function callback_(data) {
+
+                if (data.motors != undefined) {
+                    console.log(data.motors);
+                    $.each(data.motors, function(i, row) {
+                        console.log(JSON.stringify(row));
+                        $('#motor-list').append('<li><a href="" data-id="' + row + '"><h3>' + row + '</h3></a></li>');
+                    });
+                    $('#motor-list').listview('refresh');
+                }
+
+                if (data.registers != undefined) {
+                    console.log(data.registers);
+                    $('#motor-data').empty();
+
+                    $.each(data.registers, function(i, row) {
+                        console.log(JSON.stringify(row));
+                        $('#motor-data').append('<li><a href="" data-id="' + row + '"><h3>' + row + '</h3></a></li>');
+                    });
+                    $('#motor-data').listview('refresh');
+                }
+
+            }
+
+            $(document).on('pageinit', '#home', function() {
+                $.ajax({
+                    url: 'http://0.0.0.0:4242/motor/list.json?response_type=jsonp',
+                    dataType: 'jsonp',
+                    contents: 'json',
+                    jsonp: 'callback',
+                    crossDomain: true,
+                    jsonpCallback: 'callback_',
+                    success: function() {
+
+                    }
+                });
+            });
+
+            $(document).on('pagebeforeshow', '#headline', function() {
+                $.ajax({
+                    url: 'http://0.0.0.0:4242/motor/' + motor + '/register/list.json?response_type=jsonp',
+                    dataType: 'jsonp',
+                    contents: 'json',
+                    jsonp: 'callback',
+                    crossDomain: true,
+                    jsonpCallback: 'callback_',
+                    success: function() {
+
+                    }
+                });
+// 
+
+
+
+            });
+
+            $(document).on('vclick', '#motor-list li a', function() {
+                motor = $(this).attr('data-id');
+                $.mobile.changePage("#headline", {transition: "slide", changeHash: false});
+            });
+
+        </script>
+
+    </head>
+
+    <body>
+
+        <div data-role="page" id="home">
+            <div data-theme="a" data-role="header">
+                <h3>
+                    Motors List
+                </h3>
+            </div>        
+            <div data-role="content">
+                <div class="example-wrapper" data-iscroll>
+                    <ul data-role="listview"  id="motor-list" data-theme="a">
+
+                    </ul>
+                </div>
+            </div>             
+        </div>
+        <div data-role="page" id="headline">
+            <div data-theme="a" data-role="header">
+                <a href="#home" class="ui-btn-left" data-transition="slide" data-direction="reverse">Back</a>                        
+                <h3>
+                    Motor registers
+                </h3>
+            </div>        
+            <div data-role="content">
+                <ul data-role="listview"  id="motor-data" data-theme="a">
+
+                </ul>
+            </div>
+        </div>    
+
+    </body>
+</html>
