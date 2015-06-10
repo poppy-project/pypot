@@ -82,7 +82,7 @@ class RESTRobot(object):
         return [p.name for p in self.robot.primitives]
 
     def get_running_primitives_list(self):
-        return [p.name for p in self.robot.active_primitives]
+        return [p.name for p in self.robot.active_primitives if hasattr(p, 'name')]
 
     def start_primitive(self, primitive):
         self._call_primitive_method(primitive, 'start')

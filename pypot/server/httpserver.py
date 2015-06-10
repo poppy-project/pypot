@@ -1,6 +1,7 @@
 import json
 import numpy
 import bottle
+from bottle import response
 import logging
 
 from .server import AbstractServer
@@ -10,7 +11,9 @@ logger = logging.getLogger(__name__)
 
 
 class MyJSONEncoder(json.JSONEncoder):
+
     """ JSONEncoder which tries to call a json property before using the enconding default function. """
+
     def default(self, obj):
         if isinstance(obj, numpy.ndarray):
             return list(obj)
@@ -18,13 +21,38 @@ class MyJSONEncoder(json.JSONEncoder):
         return json.JSONEncoder.default(self, obj)
 
 
+class EnableCors(object):
+
+    """Enable CORS (Cross-Origin Resource Sharing) headers"""
+    name = 'enable_cors'
+    api = 2
+
+    def __init__(self, origin="*"):
+        self.origin = origin
+
+    def apply(self, fn, context):
+        def _enable_cors(*args, **kwargs):
+            # set CORS headers
+            response.headers['Access-Control-Allow-Origin'] = self.origin
+            response.headers['Access-Control-Allow-Methods'] = 'GET, POST, PUT, OPTIONS'
+            response.headers['Access-Control-Allow-Headers'] = 'Origin, Accept, Content-Type, X-Requested-With, X-CSRF-Token'
+
+            if bottle.request.method != 'OPTIONS':
+                # actual request; reply with the actual response
+                return fn(*args, **kwargs)
+
+        return _enable_cors
+
+
 class HTTPRobotServer(AbstractServer):
+
     """ Bottle based HTTPServer used to remote access a robot.
 
         Please refer to the REST API for an exhaustive list of the possible routes.
 
      """
-    def __init__(self, robot, host, port):
+
+    def __init__(self, robot, host, port, cross_domain_origin='*'):
         AbstractServer.__init__(self, robot, host, port)
 
         self.app = bottle.Bottle()
@@ -32,9 +60,45 @@ class HTTPRobotServer(AbstractServer):
         jd = lambda s: json.dumps(s, cls=MyJSONEncoder)
         self.app.install(bottle.JSONPlugin(json_dumps=jd))
 
+        if(cross_domain_origin):
+            self.app.install(EnableCors(cross_domain_origin))
+
         rr = self.restfull_robot
 
+        @self.app.route("/", method=['OPTIONS'])
+        @self.app.route("/<p:path>", method=['OPTIONS'])
+        def options(p=""):
+            return ""
+
         # Motors route
+        @self.app.get('/')
+        @self.app.get('/robot.json')
+        def robot():
+            out = {
+                'motors': [],
+                'primitives': []
+            }
+            for m in rr.get_motors_list('motors'):
+                motor = {}
+                for r in rr.get_motor_registers_list(m):
+                    try:
+                        motor[r] = rr.get_motor_register_value(m, r)
+                    except AttributeError:
+                        pass
+                out['motors'].append(motor)
+
+            running_primitives = rr.get_running_primitives_list()
+            for prim in rr.get_primitives_list():
+                primitve = {'primitive': prim,
+                            'running': prim in running_primitives,
+                            'properties': [],
+                            'methods': rr.get_primitive_methods_list(prim)
+                            }
+                for prop in rr.get_primitive_properties_list(prim):
+                    primitve['properties'].append({'property': prop, 'value': rr.get_primitive_property(prim, prop)})
+                out['primitives'].append(primitve)
+
+            return out
 
         @self.app.get('/motor/list.json')
         @self.app.get('/motor/<alias>/list.json')
@@ -80,59 +144,59 @@ class HTTPRobotServer(AbstractServer):
 
         # Primitives route
         @self.app.get('/primitive/list.json')
-        def get_primitives_list(self):
+        def get_primitives_list():
             return {
                 'primitives': rr.get_primitives_list()
             }
 
         @self.app.get('/primitive/running/list.json')
-        def get_running_primitives_list(self):
+        def get_running_primitives_list():
             return {
                 'running_primitives': rr.get_running_primitives_list()
             }
 
         @self.app.get('/primitive/<prim>/start.json')
-        def start_primitive(self, prim):
+        def start_primitive(prim):
             rr.start_primitive(prim)
 
         @self.app.get('/primitive/<prim>/stop.json')
-        def stop_primitive(self, prim):
+        def stop_primitive(prim):
             rr.stop_primitive(prim)
 
         @self.app.get('/primitive/<prim>/pause.json')
-        def pause_primitive(self, prim):
+        def pause_primitive(prim):
             rr.pause_primitive(prim)
 
         @self.app.get('/primitive/<prim>/resume.json')
-        def resume_primitive(self, prim):
+        def resume_primitive(prim):
             rr.resume_primitive(prim)
 
         @self.app.get('/primitive/<prim>/property/list.json')
-        def get_primitive_properties_list(self, prim):
+        def get_primitive_properties_list(prim):
             return {
                 'property': rr.get_primitive_properties_list(prim)
             }
 
         @self.app.get('/primitive/<prim>/property/<prop>')
-        def get_primitive_property(self, prim, prop):
+        def get_primitive_property(prim, prop):
             res = rr.get_primitive_property(prim, prop)
             return {
                 '{}.{}'.format(prim, prop): res
             }
 
         @self.app.post('/primitive/<prim>/property/<prop>/value.json')
-        def set_primitive_property(self, prim, prop):
+        def set_primitive_property(prim, prop):
             rr.set_primitive_property(prim, prop,
                                       bottle.request.json)
 
         @self.app.get('/primitive/<prim>/method/list.json')
-        def get_primitive_methods_list(self, prim):
+        def get_primitive_methods_list(prim):
             return {
                 'methods': rr.get_primitive_methods_list(self, prim)
             }
 
         @self.app.post('/primitive/<prim>/method/<meth>/args.json')
-        def call_primitive_method(self, prim, meth):
+        def call_primitive_method(prim, meth):
             res = rr.call_primitive_method(prim, meth,
                                            bottle.request.json)
             return {
