@@ -274,7 +274,7 @@ class SnapRobotServer(AbstractServer):
         @self.app.get('/primitive/MovePlayer/<move_name>/stop')
         @make_snap_compatible_response
         def stop_move_player(move_name):
-            rr.stop_primitive('{}_player'.format(move_name))
+            rr.stop_primitive('_{}_player'.format(move_name))
             return 'Done!'
 
     def run(self):
