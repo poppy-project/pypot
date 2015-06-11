@@ -201,12 +201,13 @@ class SnapRobotServer(AbstractServer):
         @self.app.get('/primitive/<primitive>/methodes')
         @make_snap_compatible_response
         def get_primitive_methodes_list(primitive):
-            return rr.get_primitive_properties_list(primitive)
+            return rr.get_primitive_methods_list(primitive)
 
-        @self.app.get('/primitive/<primitive>/call/<methode_name>/<arg>')
+        @self.app.get('/primitive/<primitive>/call/<method>/<args>')
         @make_snap_compatible_response
-        def call_primitive_methode(primitive):
-            return rr.get_primitive_properties_list(primitive)
+        def call_primitive_methode(primitive, method, args):
+            kwargs = dict(item.split(":") for item in args.split(";"))
+            return rr._call_primitive_method(primitive, method, **kwargs)
 
         # Hacks (no restfull) to record movements
         @self.app.get('/primitive/MoveRecorder/<move_name>/start')
