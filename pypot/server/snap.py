@@ -186,7 +186,7 @@ class SnapRobotServer(AbstractServer):
         @self.app.get('/primitive/<primitive>/properties')
         @make_snap_compatible_response
         def get_primitive_properties_list(primitive):
-            return rr.get_primitive_properties_list(primitive)
+            return '/'.join(rr.get_primitive_properties_list(primitive))
 
         @self.app.get('/primitive/<primitive>/get/<property>')
         @make_snap_compatible_response
@@ -201,7 +201,7 @@ class SnapRobotServer(AbstractServer):
         @self.app.get('/primitive/<primitive>/methodes')
         @make_snap_compatible_response
         def get_primitive_methodes_list(primitive):
-            return rr.get_primitive_methods_list(primitive)
+            return '/'.join(rr.get_primitive_methods_list(primitive))
 
         @self.app.get('/primitive/<primitive>/call/<method>/<args>')
         @make_snap_compatible_response
