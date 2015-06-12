@@ -126,6 +126,11 @@ class MovePlayer(LoopPrimitive):
         self.period = 1.0 / self.move.framerate
         self.positions = self.move.positions()
         self.__duration = self.duration()
+        if self.play_speed < 0:
+            self.play_speed = -self.play_speed
+            self.backwards = not self.backwards
+        if self.play_speed == 0:
+            self.play_speed = 1.0
 
     def update(self):
 
