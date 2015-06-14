@@ -1,16 +1,17 @@
 
 import os
 import bottle
-from bottle import hook
 import socket
 import re
+import logging
 
 from .server import AbstractServer
 from.httpserver import EnableCors
 
+logger = logging.getLogger(__name__)
+
 def find_local_ip():
-    # This is rather obscure...
-    # go see here: http://stackoverflow.com/questions/166506/
+    # see here: http://stackoverflow.com/questions/166506/
     return [(s.connect(('8.8.8.8', 80)), s.getsockname()[0], s.close())
             for s in [socket.socket(socket.AF_INET, socket.SOCK_DGRAM)]][0][1]
 
@@ -37,9 +38,9 @@ def set_snap_server_variables(host, port, snap_extension='.xml', path=None):
 
 class SnapRobotServer(AbstractServer):
 
-    def __init__(self, robot, host, port):
+    def __init__(self, robot, host, port, quiet=True):
         AbstractServer.__init__(self, robot, host, port)
-
+        self.quiet = quiet
         self.app = bottle.Bottle()
         self.app.install(EnableCors())
 
@@ -232,4 +233,4 @@ class SnapRobotServer(AbstractServer):
             return 'Done!'
 
     def run(self):
-        bottle.run(self.app, host=self.host, port=self.port, quiet=True)
+        bottle.run(self.app, host=self.host, port=self.port, quiet=self.quiet)
