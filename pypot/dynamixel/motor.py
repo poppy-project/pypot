@@ -296,7 +296,7 @@ class SafeCompliance(StoppableLoopThread):
         self.motor = motor
 
     def update(self):
-        self.motor._set_compliancy((min(self.motor.angle_limit) < self.motor.present_position < max(self.motor.angle_limit)))
+        self.motor._set_compliancy((min(self.motor.angle_limit) <= self.motor.present_position <= max(self.motor.angle_limit)))
 
     def teardown(self):
         self.motor._set_compliancy(False)
