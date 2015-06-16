@@ -50,6 +50,7 @@ Pypot is a library entirelly written in [Python](https://www.python.org). It wor
 Pypot also requires the following python package:
 * [pyserial](http://pyserial.sourceforge.net) 2.6 (or later)
 * [numpy](http://www.numpy.org)
+* [scipy](http://www.scipy.org/)
 
 You can build and install pypot with the typically python way:
 
