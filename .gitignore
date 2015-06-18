@@ -43,6 +43,3 @@ Thumbs.db
 # Pypot record files
 *.record
 
-
-# Snap! projects file
-*.xml
