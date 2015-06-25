@@ -39,8 +39,8 @@ def from_config(config, strict=True, possible_ports=None, sync=True):
         :param bool strict: make sure that all ports, motors are availaible.
         :param bool sync: choose if automatically starts the synchronization loops
         :param dictionary possible_ports: dictionary giving, for each manufacturer, a list of ports where the motors should be looked for if not already specified in the config
-        if the port is not specifiec in the config and possible_port is None, then all serial ports can be scanned (possibly causing a mess)
-
+        if the port is not specified in the config and possible_port is None, then all serial ports can be scanned (possibly causing a mess)
+        example of syntax for possible_ports: {'Herkulex' : ('COM4',),'Dynamixel' : ('COM3',)}
         For details on how to write such a configuration dictionnary, you should refer to the section :ref:`config_file`.
 
         """
