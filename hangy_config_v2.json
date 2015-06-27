@@ -1,0 +1,117 @@
+{
+  "controllers": {
+	"hkx_controller": {
+      "sync_read": false,
+      "attached_motors": [
+        "leg1",
+        "leg2"
+      ],
+      "port": "auto"
+    },
+    "dxl_controller": {
+      "sync_read": false,
+      "attached_motors": [
+        "pullers"
+      ],
+      "port": "auto"
+    }
+  },
+  "motorgroups": {
+    "leg1": [
+      "leg1_base",
+	 "leg1_joint1",
+	 "leg1_joint2"
+    ],
+    "leg2": [
+      "leg2_base",
+	 "leg2_joint1",
+	 "leg2_joint2"
+    ],
+    "pullers": [
+      "puller1",
+	 "puller2"
+    ]
+  },
+  "motors": {
+    "puller1": {
+      "offset": 0.0,
+      "type": "AX-12",
+      "id": 1,
+      "angle_limit": [
+        -100.0,
+        100.0
+      ],
+      "orientation": "direct"
+    },
+    "puller2": {
+      "offset": 0.0,
+      "type": "AX-12",
+      "id": 2,
+      "angle_limit": [
+        -100.0,
+        100.0
+      ],
+      "orientation": "indirect"
+    },
+    "leg1_base": {
+      "offset": 0.0,
+      "type": "DRS-0101",
+      "id": 1,
+      "angle_limit": [
+        -150.0,
+        150.0
+      ],
+      "orientation": "direct"
+    },
+    "leg1_joint1": {
+      "offset": 0.0,
+      "type": "DRS-0101",
+      "id": 2,
+      "angle_limit": [
+        -150.0,
+        150.0
+      ],
+      "orientation": "direct"
+    },
+    "leg1_joint2": {
+      "offset": 0.0,
+      "type": "DRS-0101",
+      "id": 3,
+      "angle_limit": [
+        -150.0,
+        150.0
+      ],
+      "orientation": "direct"
+    },
+    "leg2_base": {
+      "offset": 0.0,
+      "type": "DRS-0101",
+      "id": 4,
+      "angle_limit": [
+        -150.0,
+        150.0
+      ],
+      "orientation": "indirect"
+    },
+    "leg2_joint1": {
+      "offset": 0.0,
+      "type": "DRS-0101",
+      "id": 5,
+      "angle_limit": [
+        -150.0,
+        150.0
+      ],
+      "orientation": "indirect"
+    },
+    "leg2_joint2": {
+      "offset": 0.0,
+      "type": "DRS-0101",
+      "id": 6,
+      "angle_limit": [
+        -150.0,
+        150.0
+      ],
+      "orientation": "indirect"
+    }
+  }
+}

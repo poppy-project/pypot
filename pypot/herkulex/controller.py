@@ -120,6 +120,7 @@ class AngleLimitRegisterController(_HkxRegisterController):
 
         ids = [m.id for m in motors]
         values = self.io.get_angle_limit(ids)
+        print('controller getting angle limit')
 
         for m, val in zip(motors, values):
             m.__dict__['lower_limit'], m.__dict__['upper_limit'] = val
@@ -139,7 +140,7 @@ class _PosSpeedLoadHkxController(_HkxController):
         goalpos = self.io.get_goal_position(self.ids)
         for m, l, p in zip(self.working_motors, loads, goalpos):
             m.__dict__['torque_limit'] = l
-            m.__dict__['_goal_position'] = p
+            m.__dict__['goal_position'] = p
         self.get_present_position_speed_load()
 
     def update(self):
@@ -169,12 +170,15 @@ class _PosSpeedLoadHkxController(_HkxController):
         ids = tuple(m.id for m in rigid_motors)
         if not ids:
             return
-        #only issue a jog command if a goto_position was called i.e. exec time > 0
-        values = ((m.__dict__['_goal_position'],
+        #ask all motors to apply the logic required to generate a valid a jog command
+        for m in rigid_motors:
+            m._enforce_jog_logic()
+        #only issue a jog command if the result has an exec time > 0
+        values = ((m.__dict__['goal_position'],
                    m.__dict__['_exec_time'],
                    m.__dict__['torque_limit']) for m in rigid_motors if m.__dict__['_exec_time'] > 0)
         rigid_motors_to_jog = [m for m in rigid_motors if m.__dict__['_exec_time'] > 0]
         ids = tuple(m.id for m in rigid_motors_to_jog)
         self.io.set_joint_jog_load(dict(list(zip(ids, values))))
         for m in self.working_motors:
-            m.__dict__['_exec_time'] = -1 #indicate that there is no outstanding jog command
+            m.__dict__['_exec_time'] = -1 #indicates that there is no outstanding jog command

@@ -152,7 +152,6 @@ _add_control('compliance_slope',
              address=12,
              eeprom_ram = 'RAM')
              
-             
 _add_control('torque_limit_EEPROM',
              eeprom_ram = 'EEPROM', 
              address=22,
@@ -180,7 +179,7 @@ _add_control('angle_limit',
                                              hkx_to_degree(value[1], model)),
              si_to_hkx=lambda value, model: (degree_to_hkx(value[0], model),
                                              degree_to_hkx(value[1], model)),
-            setter_name='_set_angle_limit')
+             setter_name='_set_angle_limit')
 
 _add_control('status_error',
              eeprom_ram = 'RAM', 

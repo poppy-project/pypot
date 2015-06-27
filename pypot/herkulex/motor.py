@@ -37,7 +37,6 @@ class HkxOrientedRegister(HkxRegister):
         value = value if instance.direct else -value
         HkxRegister.__set__(self, instance, value)
 
-
 class HkxPositionRegister(HkxOrientedRegister):
     def __get__(self, instance, owner):
         value = HkxOrientedRegister.__get__(self, instance, owner)
@@ -47,6 +46,14 @@ class HkxPositionRegister(HkxOrientedRegister):
         value = value + instance.offset
         HkxOrientedRegister.__set__(self, instance, value)
 
+#tweaked to simulate a hardware register (in coordination with the controller)
+class HkxMovingSpeedRegister(HkxRegister):
+    def __set__(self, instance, value):
+        value = min(value, hkx_max_speed)
+       #setting speed to 0 means max speed (to mimick Dxl)
+        if value == 0:
+            value = hkx_max_speed
+        HkxRegister.__set__(self, instance, value)
 
 class RegisterOwner(type):
     def __new__(cls, name, bases, attrs):
@@ -90,8 +97,9 @@ class HkxMotor(Motor):
     model = HkxRegister()
 
     present_position = HkxPositionRegister() 
-    _goal_position_register = HkxPositionRegister()#read only, the write part is done with _goal_position
+    goal_position = HkxPositionRegister(rw=True)
     present_speed = HkxOrientedRegister()
+    moving_speed = HkxMovingSpeedRegister(rw=True)
     present_load = HkxOrientedRegister()
     torque_limit = HkxRegister(rw=True)
 
@@ -119,9 +127,10 @@ class HkxMotor(Motor):
         self.compliant_behavior = 'dummy'
 
         self._broken = broken
-        self._exec_time = -1.
-        self._goal_position = 0. #used to set goal position (RO register, only changed via jog)
-        self._moving_speed = -1. #simulate a target speed register
+        #tweaks to fully simulate a hardware register for moving speed (in coordination with the controller)
+        self._prev_requested_speed = -1
+        self._prev_requested_position = self.present_position
+        self._exec_time = -1
 
     def __repr__(self):
         return ('<HkxMotor name={self.name} '
@@ -130,47 +139,7 @@ class HkxMotor(Motor):
 
           
 ##################TODO: add speed control
- 
-    @property
-    def moving_speed(self):
-        return self._moving_speed
-
-    @moving_speed.setter
-    def moving_speed(self, ns):
-        self._moving_speed = min(ns, hkx_max_speed)
-        #setting speed to 0 means max speed (to mimick Dxl)
-        if ns == 0:
-            self._moving_speed = hkx_max_speed
-        #if we are not at goal position, try to reach it
-        if not self._goal_position == self.present_position:
-            self._enforce_speed_logic()
-        else:
-            self._exec_time = -1
-            
-    @property
-    def goal_position(self):
-        return self._goal_position
-
-    @goal_position.setter
-    def goal_position(self, gpos):
-        self._goal_position = gpos
-        #if we have nonzero moving speed, go to the new goal position
-        if self.moving_speed > 0:
-            self._enforce_speed_logic()
-        else:
-            self._exec_time = -1
-
-    #make sure we don't exceed the max playtime when moves triggered by goal position / goal speed changes
-    #this is done by adjusting the moving speed
-    #TODO: improve by splitting the move accross several update cycles instead?
-    def _enforce_speed_logic(self):
-        theoexec = abs(self._goal_position - self.present_position) / self.moving_speed
-        if theoexec <= hkx_max_playtime:
-            self._exec_time = theoexec
-        else:
-            self._exec_time = hkx_max_playtime
-            self._moving_speed = (self._goal_position - self.present_position) / hkx_max_playtime
-      
+       
     @property
     def compliant_behavior(self):
         return self._compliant_behavior
@@ -246,18 +215,37 @@ class HkxMotor(Motor):
         duration = min(duration, hkx_max_playtime)
         #also keep track of the implied moving speed
         #if the implied speed is 0, we do NOT transform it to the maximum speed
-        self._moving_speed = abs(position - self.present_position) / (duration)
+        self.moving_speed = abs(position - self.present_position) / (duration)
         if control is None:
             control = self.goto_behavior
         #TODO: investigate minjerk through the min PWM register?
         if control == 'minjerk':
             pass
         elif control == 'dummy':
-            self._exec_time = duration
+            dp = abs(self.present_position - position)
+            speed = (dp / float(duration)) if duration > 0 else numpy.inf
+
+            self.moving_speed = speed
             self.goal_position = position
 
             if wait:
                 time.sleep(duration)
+                
+    #called by the controller to produce meaningful values that will be used in the jog command
+    #this includes making sure we don't exceed the max playtime (currently done by adjusting the moving speed but TODO: improve by splitting the move accross several update cycles instead?)
+    def _enforce_jog_logic(self):
+        self._exec_time = -1
+        if self.present_position != self.goal_position: #this condition is mostly uselsss as present_position is taken from the hardware, while the goal position is not ?
+            if (self.moving_speed != self._prev_requested_speed or self.goal_position != self._prev_requested_position)  and self.moving_speed > 0:
+                theoexec = abs(self.goal_position - self.present_position) / self.moving_speed
+                if theoexec <= hkx_max_playtime:
+                    self._exec_time = theoexec
+                else:
+                    self._exec_time = hkx_max_playtime
+                    self.moving_speed = abs(self.goal_position - self.present_position) / hkx_max_playtime
+                print('motor %s: goal position: %s | moving.speed: %s | exec time:%s'%(self.name, self.goal_position, self.moving_speed, self._exec_time))
+        self._prev_requested_speed = self.moving_speed
+        self._prev_requested_position = self.goal_position
 
 class SafeCompliance(StoppableLoopThread):
     """ This class creates a controller to active compliance only if the current motor position is included in the angle limit, else the compliance is turned off. """
