@@ -243,7 +243,6 @@ class HkxMotor(Motor):
                 else:
                     self._exec_time = hkx_max_playtime
                     self.moving_speed = abs(self.goal_position - self.present_position) / hkx_max_playtime
-                print('motor %s: goal position: %s | moving.speed: %s | exec time:%s'%(self.name, self.goal_position, self.moving_speed, self._exec_time))
         self._prev_requested_speed = self.moving_speed
         self._prev_requested_position = self.goal_position
 

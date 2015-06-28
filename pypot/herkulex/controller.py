@@ -120,7 +120,6 @@ class AngleLimitRegisterController(_HkxRegisterController):
 
         ids = [m.id for m in motors]
         values = self.io.get_angle_limit(ids)
-        print('controller getting angle limit')
 
         for m, val in zip(motors, values):
             m.__dict__['lower_limit'], m.__dict__['upper_limit'] = val
@@ -144,6 +143,7 @@ class _PosSpeedLoadHkxController(_HkxController):
         self.get_present_position_speed_load()
 
     def update(self):
+        t0=time.time()
         self.get_present_position_speed_load()
         self.set_joint_jog_load()
 

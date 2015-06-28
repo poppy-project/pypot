@@ -13,6 +13,7 @@ import numpy
 import time
 import json
 import platform
+import glob
 
 #manufacturer-specific stuff
 import pypot.herkulex.io
@@ -359,7 +360,7 @@ def find_port(ids, ioCls, strict=True, poss_ports=None):
     
                     if not strict and founds >= len(ids) / 2:
                         return port
-            except HkxError:
+            except Exception:
                 continue
 
     raise IndexError('No suitable port found for ids {}!'.format(ids))
