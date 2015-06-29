@@ -40,6 +40,10 @@ class AbstractDxlIO(AbstractIO):
     __controls = []
     _protocol = None
 
+    @classmethod
+    def get_used_ports(cls):
+        return list(cls.__used_ports)
+
     # MARK: - Open, Close and Flush the communication
 
     def __init__(self,

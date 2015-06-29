@@ -9,7 +9,7 @@ from .motor import DxlMXMotor, DxlAXRXMotor, DxlXL320Motor
 from ..robot import Robot
 
 
-def get_available_ports():
+def _get_available_ports():
     """ Tries to find the available usb2serial port on your system. """
     if platform.system() == 'Darwin':
         return glob.glob('/dev/tty.usb*')
@@ -32,6 +32,15 @@ def get_available_ports():
                 return ports
 
     return []
+
+
+def get_available_ports(only_free=False):
+    ports = _get_available_ports()
+
+    if only_free:
+        ports = list(set(ports) - set(DxlIO.get_used_ports()))
+
+    return ports
 
 
 def find_port(ids, strict=True):
