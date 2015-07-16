@@ -9,7 +9,7 @@
   <head>
     <meta charset="utf-8" />
     
-    <title>vrep Package &mdash; pypot 2.5.0 documentation</title>
+    <title>vrep Package &mdash; pypot 2.7.4 documentation</title>
     <meta name="description" content="">
     <meta name="author" content="">
 
@@ -35,7 +35,7 @@
 <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
             URL_ROOT:    './',
-            VERSION:     '2.5.0',
+            VERSION:     '2.7.4',
             COLLAPSE_INDEX: false,
             FILE_SUFFIX: '.html',
             HAS_SOURCE:  true
@@ -50,7 +50,7 @@
 <script type="text/javascript">
 </script>
     <link rel="author" title="About these documents" href="about.html" />
-    <link rel="top" title="pypot 2.5.0 documentation" href="index.html" />
+    <link rel="top" title="pypot 2.7.4 documentation" href="index.html" />
     <link rel="up" title="Pypot’s API" href="api.html" />
     <link rel="next" title="utils Package" href="pypot.utils.html" />
     <link rel="prev" title="server Package" href="pypot.server.html" /> 
@@ -65,7 +65,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="index.html">pypot 2.5.0 documentation</a>
+          <a class="navbar-brand" href="index.html">pypot 2.7.4 documentation</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
@@ -164,7 +164,7 @@
 </div> 
         
 
-        <div class="col-md-9">
+        <div class="col-md-9" id="content-wrapper">
           <div class="document" role="main">
             <div class="documentwrapper">
               <div class="bodywrapper">
@@ -368,6 +368,12 @@ For instance:</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="pypot.vrep.io.VrepIO.set_object_position">
+<code class="descname">set_object_position</code><span class="sig-paren">(</span><em>object_name, position=[0, 0, 0]</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/vrep/io.html#VrepIO.set_object_position"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.vrep.io.VrepIO.set_object_position" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the object position.</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="pypot.vrep.io.VrepIO.get_object_orientation">
 <code class="descname">get_object_orientation</code><span class="sig-paren">(</span><em>object_name</em>, <em>relative_to_object=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/vrep/io.html#VrepIO.get_object_orientation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.vrep.io.VrepIO.get_object_orientation" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gets the object orientation.</p>
@@ -395,6 +401,36 @@ For instance:</p>
 <dt id="pypot.vrep.io.VrepIO.get_simulation_current_time">
 <code class="descname">get_simulation_current_time</code><span class="sig-paren">(</span><em>timer='CurrentTime'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/vrep/io.html#VrepIO.get_simulation_current_time"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.vrep.io.VrepIO.get_simulation_current_time" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gets the simulation current time.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.vrep.io.VrepIO.add_cube">
+<code class="descname">add_cube</code><span class="sig-paren">(</span><em>name</em>, <em>position</em>, <em>sizes</em>, <em>mass</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/vrep/io.html#VrepIO.add_cube"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.vrep.io.VrepIO.add_cube" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add Cube</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.vrep.io.VrepIO.add_sphere">
+<code class="descname">add_sphere</code><span class="sig-paren">(</span><em>name, position, sizes, mass, precision=[10, 10]</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/vrep/io.html#VrepIO.add_sphere"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.vrep.io.VrepIO.add_sphere" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add Sphere</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.vrep.io.VrepIO.add_cylinder">
+<code class="descname">add_cylinder</code><span class="sig-paren">(</span><em>name, position, sizes, mass, precision=[10, 10]</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/vrep/io.html#VrepIO.add_cylinder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.vrep.io.VrepIO.add_cylinder" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add Cylinder</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.vrep.io.VrepIO.add_cone">
+<code class="descname">add_cone</code><span class="sig-paren">(</span><em>name, position, sizes, mass, precision=[10, 10]</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/vrep/io.html#VrepIO.add_cone"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.vrep.io.VrepIO.add_cone" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add Cone</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.vrep.io.VrepIO.change_object_name">
+<code class="descname">change_object_name</code><span class="sig-paren">(</span><em>old_name</em>, <em>new_name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/vrep/io.html#VrepIO.change_object_name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.vrep.io.VrepIO.change_object_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Change object name</p>
 </dd></dl>
 
 <dl class="method">
@@ -589,7 +625,7 @@ For instance:</p>
 <div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
   <div class="navbar-inner">
     <ul class="nav navbar-nav ">
-        <li><a href="index.html">pypot 2.5.0 documentation</a></li>
+        <li><a href="index.html">pypot 2.7.4 documentation</a></li>
     </ul>
 <ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
       

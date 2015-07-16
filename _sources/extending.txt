@@ -29,7 +29,7 @@ Pypot's architecture is built upon the following basic concepts:
 
 Those main aspects of pypot's architecture are summarized in the figure below.
 
-.. image:: pypot-archi.pdf
+.. image:: pypot-archi.jpg
     :width: 60%
     :align: center
 

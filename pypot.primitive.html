@@ -9,7 +9,7 @@
   <head>
     <meta charset="utf-8" />
     
-    <title>primitive Package &mdash; pypot 2.5.0 documentation</title>
+    <title>primitive Package &mdash; pypot 2.7.4 documentation</title>
     <meta name="description" content="">
     <meta name="author" content="">
 
@@ -35,7 +35,7 @@
 <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
             URL_ROOT:    './',
-            VERSION:     '2.5.0',
+            VERSION:     '2.7.4',
             COLLAPSE_INDEX: false,
             FILE_SUFFIX: '.html',
             HAS_SOURCE:  true
@@ -50,7 +50,7 @@
 <script type="text/javascript">
 </script>
     <link rel="author" title="About these documents" href="about.html" />
-    <link rel="top" title="pypot 2.5.0 documentation" href="index.html" />
+    <link rel="top" title="pypot 2.7.4 documentation" href="index.html" />
     <link rel="up" title="Pypot’s API" href="api.html" />
     <link rel="next" title="robot Package" href="pypot.robot.html" />
     <link rel="prev" title="dynamixel Package" href="pypot.dynamixel.html" /> 
@@ -65,7 +65,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="index.html">pypot 2.5.0 documentation</a>
+          <a class="navbar-brand" href="index.html">pypot 2.7.4 documentation</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
@@ -168,7 +168,7 @@
 </div> 
         
 
-        <div class="col-md-9">
+        <div class="col-md-9" id="content-wrapper">
           <div class="document" role="main">
             <div class="documentwrapper">
               <div class="bodywrapper">
@@ -433,9 +433,9 @@ The 0th element of the list corresponds to the most recent frequency.</p>
 
 <dl class="method">
 <dt id="pypot.primitive.move.Move.add_position">
-<code class="descname">add_position</code><span class="sig-paren">(</span><em>pos</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/primitive/move.html#Move.add_position"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.primitive.move.Move.add_position" title="Permalink to this definition">¶</a></dt>
+<code class="descname">add_position</code><span class="sig-paren">(</span><em>pos</em>, <em>time</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/primitive/move.html#Move.add_position"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.primitive.move.Move.add_position" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add a new position to the movement sequence.</p>
-<p>Each position is typically stored as a dict of (motor_name, motor_position).</p>
+<p>Each position is typically stored as a dict of (time, (motor_name,motor_position)).</p>
 </dd></dl>
 
 <dl class="method">
@@ -494,17 +494,24 @@ The 0th element of the list corresponds to the most recent frequency.</p>
 <dd><p>Returns the currently recorded <a class="reference internal" href="#pypot.primitive.move.Move" title="pypot.primitive.move.Move"><code class="xref py py-class docutils literal"><span class="pre">Move</span></code></a>.</p>
 </dd></dl>
 
+<dl class="method">
+<dt id="pypot.primitive.move.MoveRecorder.add_tracked_motors">
+<code class="descname">add_tracked_motors</code><span class="sig-paren">(</span><em>tracked_motors</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/primitive/move.html#MoveRecorder.add_tracked_motors"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.primitive.move.MoveRecorder.add_tracked_motors" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add new motors to the recording</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
 <dt id="pypot.primitive.move.MovePlayer">
-<em class="property">class </em><code class="descclassname">pypot.primitive.move.</code><code class="descname">MovePlayer</code><span class="sig-paren">(</span><em>robot</em>, <em>move</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/primitive/move.html#MovePlayer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.primitive.move.MovePlayer" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">pypot.primitive.move.</code><code class="descname">MovePlayer</code><span class="sig-paren">(</span><em>robot</em>, <em>move=None</em>, <em>play_speed=1.0</em>, <em>move_filename=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/primitive/move.html#MovePlayer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.primitive.move.MovePlayer" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#pypot.primitive.primitive.LoopPrimitive" title="pypot.primitive.primitive.LoopPrimitive"><code class="xref py py-class docutils literal"><span class="pre">pypot.primitive.primitive.LoopPrimitive</span></code></a></p>
 <p>Primitive used to play a <a class="reference internal" href="#pypot.primitive.move.Move" title="pypot.primitive.move.Move"><code class="xref py py-class docutils literal"><span class="pre">Move</span></code></a>.</p>
 <p>The playing can be <a class="reference internal" href="#pypot.primitive.primitive.Primitive.start" title="pypot.primitive.primitive.Primitive.start"><code class="xref py py-meth docutils literal"><span class="pre">start()</span></code></a> and <a class="reference internal" href="#pypot.primitive.primitive.Primitive.stop" title="pypot.primitive.primitive.Primitive.stop"><code class="xref py py-meth docutils literal"><span class="pre">stop()</span></code></a> by using the <a class="reference internal" href="#pypot.primitive.primitive.LoopPrimitive" title="pypot.primitive.primitive.LoopPrimitive"><code class="xref py py-class docutils literal"><span class="pre">LoopPrimitive</span></code></a> methods.</p>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
-<p class="last">You should be careful that you primitive actually runs at the same speed that the move has been recorded. If the player can not run as fast as the framerate of the <a class="reference internal" href="#pypot.primitive.move.Move" title="pypot.primitive.move.Move"><code class="xref py py-class docutils literal"><span class="pre">Move</span></code></a>, it will be played slowly resulting in a slower version of your move.</p>
+<p class="last">the primitive is run automatically the same framerate than the move record. 
+The play_speed attribute change only time lockup/interpolation</p>
 </div>
 <dl class="method">
 <dt id="pypot.primitive.move.MovePlayer.setup">
@@ -514,6 +521,11 @@ The 0th element of the list corresponds to the most recent frequency.</p>
 <dl class="method">
 <dt id="pypot.primitive.move.MovePlayer.update">
 <code class="descname">update</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/primitive/move.html#MovePlayer.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.primitive.move.MovePlayer.update" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pypot.primitive.move.MovePlayer.duration">
+<code class="descname">duration</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/primitive/move.html#MovePlayer.duration"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.primitive.move.MovePlayer.duration" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -583,6 +595,32 @@ The 0th element of the list corresponds to the most recent frequency.</p>
 
 </dd></dl>
 
+<dl class="class">
+<dt id="pypot.primitive.utils.PositionWatcher">
+<em class="property">class </em><code class="descclassname">pypot.primitive.utils.</code><code class="descname">PositionWatcher</code><span class="sig-paren">(</span><em>robot</em>, <em>refresh_freq</em>, <em>watched_motors</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/primitive/utils.html#PositionWatcher"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.primitive.utils.PositionWatcher" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pypot.primitive.primitive.LoopPrimitive" title="pypot.primitive.primitive.LoopPrimitive"><code class="xref py py-class docutils literal"><span class="pre">pypot.primitive.primitive.LoopPrimitive</span></code></a></p>
+<dl class="attribute">
+<dt id="pypot.primitive.utils.PositionWatcher.record_positions">
+<code class="descname">record_positions</code><a class="headerlink" href="#pypot.primitive.utils.PositionWatcher.record_positions" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pypot.primitive.utils.PositionWatcher.setup">
+<code class="descname">setup</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/primitive/utils.html#PositionWatcher.setup"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.primitive.utils.PositionWatcher.setup" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pypot.primitive.utils.PositionWatcher.update">
+<code class="descname">update</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/primitive/utils.html#PositionWatcher.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.primitive.utils.PositionWatcher.update" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pypot.primitive.utils.PositionWatcher.plot">
+<code class="descname">plot</code><span class="sig-paren">(</span><em>ax</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/primitive/utils.html#PositionWatcher.plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.primitive.utils.PositionWatcher.plot" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 </div>
 </div>
 
@@ -601,7 +639,7 @@ The 0th element of the list corresponds to the most recent frequency.</p>
 <div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
   <div class="navbar-inner">
     <ul class="nav navbar-nav ">
-        <li><a href="index.html">pypot 2.5.0 documentation</a></li>
+        <li><a href="index.html">pypot 2.7.4 documentation</a></li>
     </ul>
 <ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
       

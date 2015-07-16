@@ -9,7 +9,7 @@
   <head>
     <meta charset="utf-8" />
     
-    <title>server Package &mdash; pypot 2.5.0 documentation</title>
+    <title>server Package &mdash; pypot 2.7.4 documentation</title>
     <meta name="description" content="">
     <meta name="author" content="">
 
@@ -35,7 +35,7 @@
 <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
             URL_ROOT:    './',
-            VERSION:     '2.5.0',
+            VERSION:     '2.7.4',
             COLLAPSE_INDEX: false,
             FILE_SUFFIX: '.html',
             HAS_SOURCE:  true
@@ -50,7 +50,7 @@
 <script type="text/javascript">
 </script>
     <link rel="author" title="About these documents" href="about.html" />
-    <link rel="top" title="pypot 2.5.0 documentation" href="index.html" />
+    <link rel="top" title="pypot 2.7.4 documentation" href="index.html" />
     <link rel="up" title="Pypot’s API" href="api.html" />
     <link rel="next" title="vrep Package" href="pypot.vrep.html" />
     <link rel="prev" title="sensor Package" href="pypot.sensor.html" /> 
@@ -65,7 +65,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="index.html">pypot 2.5.0 documentation</a>
+          <a class="navbar-brand" href="index.html">pypot 2.7.4 documentation</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
@@ -168,7 +168,7 @@
 </div> 
         
 
-        <div class="col-md-9">
+        <div class="col-md-9" id="content-wrapper">
           <div class="document" role="main">
             <div class="documentwrapper">
               <div class="bodywrapper">
@@ -319,7 +319,17 @@
 
 <dl class="method">
 <dt id="pypot.server.rest.RESTRobot.start_move_recorder">
-<code class="descname">start_move_recorder</code><span class="sig-paren">(</span><em>move_name</em>, <em>motors_name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/server/rest.html#RESTRobot.start_move_recorder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.server.rest.RESTRobot.start_move_recorder" title="Permalink to this definition">¶</a></dt>
+<code class="descname">start_move_recorder</code><span class="sig-paren">(</span><em>move_name</em>, <em>motors_name=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/server/rest.html#RESTRobot.start_move_recorder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.server.rest.RESTRobot.start_move_recorder" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pypot.server.rest.RESTRobot.attach_move_recorder">
+<code class="descname">attach_move_recorder</code><span class="sig-paren">(</span><em>move_name</em>, <em>motors_name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/server/rest.html#RESTRobot.attach_move_recorder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.server.rest.RESTRobot.attach_move_recorder" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pypot.server.rest.RESTRobot.get_move_recorder_motors">
+<code class="descname">get_move_recorder_motors</code><span class="sig-paren">(</span><em>move_name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/server/rest.html#RESTRobot.get_move_recorder_motors"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.server.rest.RESTRobot.get_move_recorder_motors" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
@@ -330,9 +340,9 @@
 
 <dl class="method">
 <dt id="pypot.server.rest.RESTRobot.start_move_player">
-<code class="descname">start_move_player</code><span class="sig-paren">(</span><em>move_name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/server/rest.html#RESTRobot.start_move_player"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.server.rest.RESTRobot.start_move_player" title="Permalink to this definition">¶</a></dt>
-<dd><p>Move player need to have a move file &lt;move_name.json&gt;
-in th PATH to play it</p>
+<code class="descname">start_move_player</code><span class="sig-paren">(</span><em>move_name</em>, <em>speed=1.0</em>, <em>backwards=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/server/rest.html#RESTRobot.start_move_player"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.server.rest.RESTRobot.start_move_player" title="Permalink to this definition">¶</a></dt>
+<dd><p>Move player need to have a move file
+&lt;move_name.record&gt; in the working directory to play it</p>
 </dd></dl>
 
 <dl class="method">
@@ -402,14 +412,36 @@ The default is UTF-8.</p>
 </dd></dl>
 
 <dl class="class">
+<dt id="pypot.server.httpserver.EnableCors">
+<em class="property">class </em><code class="descclassname">pypot.server.httpserver.</code><code class="descname">EnableCors</code><span class="sig-paren">(</span><em>origin='*'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/server/httpserver.html#EnableCors"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.server.httpserver.EnableCors" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="http://docs.python.org/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<p>Enable CORS (Cross-Origin Resource Sharing) headers</p>
+<dl class="attribute">
+<dt id="pypot.server.httpserver.EnableCors.name">
+<code class="descname">name</code><em class="property"> = 'enable_cors'</em><a class="headerlink" href="#pypot.server.httpserver.EnableCors.name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pypot.server.httpserver.EnableCors.api">
+<code class="descname">api</code><em class="property"> = 2</em><a class="headerlink" href="#pypot.server.httpserver.EnableCors.api" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pypot.server.httpserver.EnableCors.apply">
+<code class="descname">apply</code><span class="sig-paren">(</span><em>fn</em>, <em>context</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/server/httpserver.html#EnableCors.apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.server.httpserver.EnableCors.apply" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
 <dt id="pypot.server.httpserver.HTTPRobotServer">
-<em class="property">class </em><code class="descclassname">pypot.server.httpserver.</code><code class="descname">HTTPRobotServer</code><span class="sig-paren">(</span><em>robot</em>, <em>host</em>, <em>port</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/server/httpserver.html#HTTPRobotServer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.server.httpserver.HTTPRobotServer" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">pypot.server.httpserver.</code><code class="descname">HTTPRobotServer</code><span class="sig-paren">(</span><em>robot</em>, <em>host</em>, <em>port</em>, <em>cross_domain_origin='*'</em>, <em>quiet=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/server/httpserver.html#HTTPRobotServer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.server.httpserver.HTTPRobotServer" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">pypot.server.server.AbstractServer</span></code></p>
 <p>Bottle based HTTPServer used to remote access a robot.</p>
 <p>Please refer to the REST API for an exhaustive list of the possible routes.</p>
 <dl class="method">
 <dt id="pypot.server.httpserver.HTTPRobotServer.run">
-<code class="descname">run</code><span class="sig-paren">(</span><em>quiet=False</em>, <em>server='tornado'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/server/httpserver.html#HTTPRobotServer.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.server.httpserver.HTTPRobotServer.run" title="Permalink to this definition">¶</a></dt>
+<code class="descname">run</code><span class="sig-paren">(</span><em>quiet=None</em>, <em>server='tornado'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/server/httpserver.html#HTTPRobotServer.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.server.httpserver.HTTPRobotServer.run" title="Permalink to this definition">¶</a></dt>
 <dd><p>Start the bottle server, run forever.</p>
 </dd></dl>
 
@@ -441,13 +473,19 @@ The default is UTF-8.</p>
 <div class="section" id="module-pypot.server.snap">
 <span id="snap-module"></span><h2><code class="xref py py-mod docutils literal"><span class="pre">snap</span></code> Module<a class="headerlink" href="#module-pypot.server.snap" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
-<dt id="pypot.server.snap.make_snap_compatible_response">
-<code class="descclassname">pypot.server.snap.</code><code class="descname">make_snap_compatible_response</code><span class="sig-paren">(</span><em>f</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/server/snap.html#make_snap_compatible_response"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.server.snap.make_snap_compatible_response" title="Permalink to this definition">¶</a></dt>
+<dt id="pypot.server.snap.find_local_ip">
+<code class="descclassname">pypot.server.snap.</code><code class="descname">find_local_ip</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/server/snap.html#find_local_ip"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.server.snap.find_local_ip" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
+
+<dl class="function">
+<dt id="pypot.server.snap.set_snap_server_variables">
+<code class="descclassname">pypot.server.snap.</code><code class="descname">set_snap_server_variables</code><span class="sig-paren">(</span><em>host</em>, <em>port</em>, <em>snap_extension='.xml'</em>, <em>path=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/server/snap.html#set_snap_server_variables"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.server.snap.set_snap_server_variables" title="Permalink to this definition">¶</a></dt>
+<dd><p>Allow to change dynamically port and host variable in xml Snap! project file</p>
+</dd></dl>
 
 <dl class="class">
 <dt id="pypot.server.snap.SnapRobotServer">
-<em class="property">class </em><code class="descclassname">pypot.server.snap.</code><code class="descname">SnapRobotServer</code><span class="sig-paren">(</span><em>robot</em>, <em>host</em>, <em>port</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/server/snap.html#SnapRobotServer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.server.snap.SnapRobotServer" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">pypot.server.snap.</code><code class="descname">SnapRobotServer</code><span class="sig-paren">(</span><em>robot</em>, <em>host</em>, <em>port</em>, <em>quiet=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/server/snap.html#SnapRobotServer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.server.snap.SnapRobotServer" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">pypot.server.server.AbstractServer</span></code></p>
 <dl class="method">
 <dt id="pypot.server.snap.SnapRobotServer.run">
@@ -474,7 +512,7 @@ The default is UTF-8.</p>
 <div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
   <div class="navbar-inner">
     <ul class="nav navbar-nav ">
-        <li><a href="index.html">pypot 2.5.0 documentation</a></li>
+        <li><a href="index.html">pypot 2.7.4 documentation</a></li>
     </ul>
 <ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
       

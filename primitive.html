@@ -9,7 +9,7 @@
   <head>
     <meta charset="utf-8" />
     
-    <title>Primitives everywhere &mdash; pypot 2.5.0 documentation</title>
+    <title>Primitives everywhere &mdash; pypot 2.7.4 documentation</title>
     <meta name="description" content="">
     <meta name="author" content="">
 
@@ -35,7 +35,7 @@
 <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
             URL_ROOT:    './',
-            VERSION:     '2.5.0',
+            VERSION:     '2.7.4',
             COLLAPSE_INDEX: false,
             FILE_SUFFIX: '.html',
             HAS_SOURCE:  true
@@ -50,7 +50,7 @@
 <script type="text/javascript">
 </script>
     <link rel="author" title="About these documents" href="about.html" />
-    <link rel="top" title="pypot 2.5.0 documentation" href="index.html" />
+    <link rel="top" title="pypot 2.7.4 documentation" href="index.html" />
     <link rel="next" title="Using a simulated robot with V-REP" href="vrep.html" />
     <link rel="prev" title="Robot Controller" href="controller.html" /> 
   </head>
@@ -64,7 +64,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="index.html">pypot 2.5.0 documentation</a>
+          <a class="navbar-brand" href="index.html">pypot 2.7.4 documentation</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
@@ -166,7 +166,7 @@
 </div> 
         
 
-        <div class="col-md-9">
+        <div class="col-md-9" id="content-wrapper">
           <div class="document" role="main">
             <div class="documentwrapper">
               <div class="bodywrapper">
@@ -200,13 +200,21 @@
 <p class="first admonition-title">Note</p>
 <p class="last">You should always call the super constructor if you override the <code class="xref py py-meth docutils literal"><span class="pre">__init__()</span></code> method.</p>
 </div>
-<p>As an example, let&#8217;s write a simple primitive that recreate the dance behavior written in the <a class="reference internal" href="quickstart.html#dance"><span>Controlling your Ergo-Robot</span></a> section:</p>
+<p>As an example, let&#8217;s write a simple primitive that recreate the dance behavior written in the <a class="reference internal" href="quickstart.html#dance"><span>Controlling your Ergo-Robot</span></a> section. Notice that to pass arguments to your primitive, you have to override the <code class="xref py py-meth docutils literal"><span class="pre">__init__()</span></code> method:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">time</span>
 
 <span class="kn">import</span> <span class="nn">pypot.primitive</span>
-
 <span class="k">class</span> <span class="nc">DancePrimitive</span><span class="p">(</span><span class="n">pypot</span><span class="o">.</span><span class="n">primitive</span><span class="o">.</span><span class="n">Primitive</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">amp</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="mf">0.5</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">robot</span><span class="p">,</span> <span class="n">amp</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="mf">0.5</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">robot</span> <span class="o">=</span> <span class="n">robot</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">amp</span> <span class="o">=</span> <span class="n">amp</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">freq</span> <span class="o">=</span> <span class="n">freq</span>
+        <span class="n">pypot</span><span class="o">.</span><span class="n">primitive</span><span class="o">.</span><span class="n">Primitive</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">robot</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">amp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">amp</span>
+        <span class="n">freq</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">freq</span>
         <span class="c"># self.elapsed_time gives you the time (in s) since the primitive has been running</span>
         <span class="k">while</span> <span class="bp">self</span><span class="o">.</span><span class="n">elapsed_time</span> <span class="o">&lt;</span> <span class="mi">30</span><span class="p">:</span>
             <span class="n">x</span> <span class="o">=</span> <span class="n">amp</span> <span class="o">*</span> <span class="n">numpy</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">numpy</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">freq</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">elapsed_time</span><span class="p">)</span>
@@ -220,14 +228,22 @@
 <p>To run this primitive on your robot, you simply have to do:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">ergo_robot</span> <span class="o">=</span> <span class="n">pypot</span><span class="o">.</span><span class="n">robot</span><span class="o">.</span><span class="n">from_config</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
 
-<span class="n">dance</span> <span class="o">=</span> <span class="n">DancePrimitive</span><span class="p">(</span><span class="n">ergo_robot</span><span class="p">)</span>
+<span class="n">dance</span> <span class="o">=</span> <span class="n">DancePrimitive</span><span class="p">(</span><span class="n">ergo_robot</span><span class="p">,</span><span class="n">amp</span><span class="o">=</span><span class="mi">60</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="mf">0.6</span><span class="p">)</span>
 <span class="n">dance</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
 </pre></div>
 </div>
 <p>If you want to make the dance primitive infinite you can use the <a class="reference internal" href="pypot.primitive.html#pypot.primitive.primitive.LoopPrimitive" title="pypot.primitive.primitive.LoopPrimitive"><code class="xref py py-class docutils literal"><span class="pre">LoopPrimitive</span></code></a> class:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="k">class</span> <span class="nc">LoopDancePrimitive</span><span class="p">(</span><span class="n">pypot</span><span class="o">.</span><span class="n">primitive</span><span class="o">.</span><span class="n">LoopPrimitive</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">robot</span><span class="p">,</span> <span class="n">refresh_freq</span><span class="p">,</span> <span class="n">amp</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="mf">0.5</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">robot</span> <span class="o">=</span> <span class="n">robot</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">amp</span> <span class="o">=</span> <span class="n">amp</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">freq</span> <span class="o">=</span> <span class="n">freq</span>
+        <span class="n">LoopPrimitive</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">robot</span><span class="p">,</span> <span class="n">refresh_freq</span><span class="p">)</span>
+
     <span class="c"># The update function is automatically called at the frequency given on the constructor</span>
-    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">amp</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="mf">0.5</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">amp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">amp</span>
+        <span class="n">freq</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">freq</span>
         <span class="n">x</span> <span class="o">=</span> <span class="n">amp</span> <span class="o">*</span> <span class="n">numpy</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">numpy</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">freq</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">elapsed_time</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">robot</span><span class="o">.</span><span class="n">base_pan</span><span class="o">.</span><span class="n">goal_position</span> <span class="o">=</span> <span class="n">x</span>
@@ -237,7 +253,7 @@
 <p>And then runs it with:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">ergo_robot</span> <span class="o">=</span> <span class="n">pypot</span><span class="o">.</span><span class="n">robot</span><span class="o">.</span><span class="n">from_config</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
 
-<span class="n">dance</span> <span class="o">=</span> <span class="n">LoopDancePrimitive</span><span class="p">(</span><span class="n">ergo_robot</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span>
+<span class="n">dance</span> <span class="o">=</span> <span class="n">LoopDancePrimitive</span><span class="p">(</span><span class="n">ergo_robot</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="n">amp</span> <span class="o">=</span> <span class="mi">40</span><span class="p">,</span> <span class="n">freq</span> <span class="o">=</span> <span class="mf">0.3</span><span class="p">)</span>
 <span class="c"># The robot will dance until you call dance.stop()</span>
 <span class="n">dance</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
 </pre></div>
@@ -316,7 +332,7 @@ For instance:</p>
 <div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
   <div class="navbar-inner">
     <ul class="nav navbar-nav ">
-        <li><a href="index.html">pypot 2.5.0 documentation</a></li>
+        <li><a href="index.html">pypot 2.7.4 documentation</a></li>
     </ul>
 <ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
       
