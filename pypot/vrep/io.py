@@ -27,7 +27,6 @@ vrep_mode = {
 
 
 class VrepIO(AbstractIO):
-
     """ This class is used to get/set values from/to a V-REP scene.
 
         It is based on V-REP remote API (http://www.coppeliarobotics.com/helpFiles/en/remoteApiOverview.htm).
@@ -227,28 +226,28 @@ class VrepIO(AbstractIO):
             return 0.0
 
     def add_cube(self, name, position, sizes, mass):
-	""" Add Cube """
-	self._create_pure_shape(0, 239, sizes, mass, [0, 0])
-	self.set_object_position("Cuboid", position)
-	self.change_object_name("Cuboid", name)
+    	""" Add Cube """
+    	self._create_pure_shape(0, 239, sizes, mass, [0, 0])
+    	self.set_object_position("Cuboid", position)
+    	self.change_object_name("Cuboid", name)
 
     def add_sphere(self, name, position, sizes, mass, precision=[10,10]):
-	""" Add Sphere """
-	self._create_pure_shape(1, 239, sizes, mass, precision)
-	self.set_object_position("Sphere", position)
-	self.change_object_name("Sphere", name)
+    	""" Add Sphere """
+    	self._create_pure_shape(1, 239, sizes, mass, precision)
+    	self.set_object_position("Sphere", position)
+    	self.change_object_name("Sphere", name)
 
     def add_cylinder(self, name, position, sizes, mass, precision=[10,10]):
-	""" Add Cylinder """
-	self._create_pure_shape(2, 239, sizes, mass, precision)
-	self.set_object_position("Cylinder", position)
-	self.change_object_name("Cylinder", name)
+    	""" Add Cylinder """
+    	self._create_pure_shape(2, 239, sizes, mass, precision)
+    	self.set_object_position("Cylinder", position)
+    	self.change_object_name("Cylinder", name)
 
     def add_cone(self, name, position, sizes, mass, precision=[10,10]):
-	""" Add Cone """
-	self._create_pure_shape(3, 239, sizes, mass, precision)
-	self.set_object_position("Cylinder", position)
-	self.change_object_name("Cylinder", name)
+    	""" Add Cone """
+    	self._create_pure_shape(3, 239, sizes, mass, precision)
+    	self.set_object_position("Cylinder", position)
+    	self.change_object_name("Cylinder", name)
 
     def change_object_name(self, old_name, new_name):
         """ Change object name """
@@ -374,9 +373,7 @@ def close_all_connections():
 
 # V-REP Errors
 class VrepIOError(Exception):
-
     """ Base class for V-REP IO Errors. """
-
     def __init__(self, error_code, message):
         message = 'V-REP error code {} ({}): "{}"'.format(
             error_code, vrep_error[error_code], message)
@@ -384,12 +381,8 @@ class VrepIOError(Exception):
 
 
 class VrepIOErrors(Exception):
-
-    def __init__(self, message):
-        Exception.__init__(self, message)
-
+    pass
 
 class VrepConnectionError(Exception):
-
     """ Base class for V-REP connection Errors. """
     pass
