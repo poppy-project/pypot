@@ -7,6 +7,6 @@ def time():
 
 def sleep(t):
     if t > 10:
-        print 'WARNING: big sleep', t
+        print('WARNING: big sleep', t)
         t = 0.1
     system_time.sleep(t)
