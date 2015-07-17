@@ -46,7 +46,7 @@ class MinimumJerkTrajectory(object):
             x = numpy.array([x])
 
         domain = []
-        for d in xrange(len(self.durations) - 1):
+        for d in range(len(self.durations) - 1):
             d1 = []
             for xi in x:
                 d1.append(
@@ -56,13 +56,13 @@ class MinimumJerkTrajectory(object):
         return numpy.array(domain)
 
     def test_domain(self, x):
-        return [((numpy.array(x) >= self.durations[i])) for i in xrange(len(self.durations) - 1)]
+        return [((numpy.array(x) >= self.durations[i])) for i in range(len(self.durations) - 1)]
 
     def fix_input(self, x):
         return x if isinstance(x, collections.Iterable) else numpy.array([0, x])
 
     def get_generator(self):
-        return lambda x: numpy.piecewise(x, self.domain(x), [self._generators[j] for j in xrange(len(self._generators))] + [self.finals[-1]])
+        return lambda x: numpy.piecewise(x, self.domain(x), [self._generators[j] for j in range(len(self._generators))] + [self.finals[-1]])
 
 
 class GotoMinJerk(StoppableLoopThread):
