@@ -38,13 +38,13 @@ env:
     # PYPI_PASSWD encrypted below > travis encrypt PYPI_PASSWD=XXXXXX --add
     - secure: VbsjSUCHyBpzQd2gJ+BcZ9jq2/Cd+onBri04UdWmDtXIyuDBeEJmna0oXuK52hDSd/dq85LVmddpB68/kkK9BmDptBtJr0zdTxQQ+j4B8GaSrksijbGtfkmanQ1s9pGKdvg5w43zcS6C077+pB+nRNS8tjf1FKA2obOmZoZSZpYJ1J0bmsaYuV1fC/1sJN54Yvm0OnfBSYcZ7A2jLlZKhDDE4QWT3oOZKTNig0seOjtS86vgbZYpf1ZEZC4S5IJhG8pP1cZ3vz7tWisgSD0TSnHD7QGpz8TjLFBbTUUfsQNoD1XRW3Gk1jx54KDsoCsL9AS7rAJ7rtZgeWkoX/7DMN2Jvm8vn2Ep1pjabQpESqqK7Pl97uRR/HTqTkiZOkTSt8ewAaUCjZvjLWpIoCofRDMAwosDnjqOnx2tmehiS/BwqUB0nUmlqzTRTFRLiCU0iZ9W3kLuwMV6JaBc0/13YL0JzdUBdIeA44wIzKjQ+q1D8j+1SgEN3/jckM2NMhNTXj2rpYyqr5/1LiK7nV7G7BbpcWBIadkJfPk/UGpkn3598FTRXvazNSiTpBYWzo5x+BSuljQT6j0OhWIzzrHR6+9CF7DKhanjFP1mSfnGoYniabPuf1dW9VIrHoCVlcsEJOzEkNLW0pUpu2SPbNFuKuqcg7BxRcti/hJHJHYNXC8=
     # Used to built the repo URL https://github.com/$GH_USERNAME/$GH_USERNAME.git
-    - GH_USERNAME=show0k
+    - GH_USERNAME=poppy-project
     - GH_REPO=pypot
     # Git and Github credentials for pushing documentation 
     - GIT_EMAIL=theo.segonds@inria.fr
     - GIT_NAME=show0k-travis-bot
     # GH_TOKEN encrypted below > travis encrypt GH_TOKEN=XXXXXX --add
-    - secure: g96DpuHrlUBuIHCiVJZXF7iX80K48Ke3S37NVwCNm/iZ0Sb9YkvNYTR0yOBnGu7EqKOftSK8CvzG+FSyLvarUf8eEsqRsSASH5IsovMHYf3ycfzPvFtLzPN00wW+pm1HU0n2qO+iY2oJLEqFEJ7CwbTGLabwyzj5hj+pVMJo7hB5lCoq48zKnFYFpXr/++ktymXD/gbS6MpaoqOV/z/pT+56YWUx9ovPMn3CC2gNVroM+NebtcwT5yrIujME1/CvgwBzPIJ+2fEdzqF7TeUjisOMYR+K6k8s0fZ0IP9ywCJi/ZkptsrEkvrBzJe1dZm6yoRPXbpwU9bHGWMl7USBwsUY7c22xc3gxq3i2iCXBePThXecnMzsaM32jmIpqeHytXj8N71AzUkhFI5eKTnN6Pm11k1gW4P87gVrrmNhEyDCZUKDpmsMh+XRMrGHa2v53ciukXI0OWQfIQchyXch8r37+hBjOklzoIdManYaFFm4xVz8vyXaXT2qGKD+53dQdxpelT9JdSQdfXjWhsQDEGxun9qu/e38EyK8v/HgmFapP6K7cAPhLtrQdKXVBBNV8G0HlTVAQReCSib6ExTnMAxnO4LV5x3xSSFI9WPZ61IIuQzv35bItkM4Ku3ytUFucS/WyiC7CqZV7Vjasl5d7CCs452v0yDDSE58MaS7qkQ=
+    - secure: "D1NhRT0olL4VJce/tPfPkDkKKFn5tTiw9RjbM0Qm+eB772xh+UFXrlUVOmWhezyZ2oCgjOpXMZJFNTNHOLqQ2aWTZrX45ielzZjqtU3e12DgF+jF0dXz255bo02W4n8li9R4hW0GTnm63INZSWp6mdW8TF6Wu4n0wf3PJz7Vpi8="
 
     # V-REP conf
     - VREP_VERSION=3_1_2
