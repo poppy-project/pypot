@@ -18,7 +18,7 @@ import pypot.dynamixel
 import pypot.dynamixel.io
 import pypot.dynamixel.error
 import pypot.dynamixel.motor
-import pypot.dynamixel.controller
+import pypot.dynamixel.syncloop
 
 from .robot import Robot
 
@@ -58,10 +58,10 @@ def from_config(config, strict=True, sync=True):
 
         check_motor_limits(config, dxl_io, motor_names)
 
-        c = pypot.dynamixel.controller.BaseDxlController(dxl_io, attached_motors)
         logger.info('Instantiating controller on %s with motors %s',
                     dxl_io.port, motor_names,
                     extra={'config': config})
+        c = pypot.dynamixel.syncloop.BaseDxlController(dxl_io, attached_motors)
 
         controllers.append(c)
 
