@@ -49,8 +49,6 @@ class KDTreeDict(dict):
 
     def nearest_keys(self, key):
         """Find the nearest_keys (l2 distance) thanks to a cKDTree query"""
-        # print 'debug', key
-        # print 'self', self
         if not isinstance(key, tuple):
             _key = (key,)
         if self.__stale:
