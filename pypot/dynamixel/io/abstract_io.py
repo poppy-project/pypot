@@ -220,7 +220,7 @@ class AbstractDxlIO(AbstractIO):
         except DxlTimeoutError:
             return False
 
-    def scan(self, ids=xrange(254)):
+    def scan(self, ids=range(254)):
         """ Pings all ids within the specified list, by default it finds all the motors connected to the bus. """
         return [id for id in ids if self.ping(id)]
 
