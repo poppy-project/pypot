@@ -1,6 +1,6 @@
 import threading
 
-import pypot_time as time
+from . import pypot_time as time
 
 
 class StoppableThread(object):
