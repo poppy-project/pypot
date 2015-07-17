@@ -99,7 +99,7 @@ try:
 
             for m in self.motor_list:
                 m.goal_position = pos
-            print pos
+            print(pos)
 
         @property
         def duty(self):

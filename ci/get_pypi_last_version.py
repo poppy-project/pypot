@@ -15,9 +15,9 @@ if __name__ == '__main__':
     client = xmlrpclib.ServerProxy('http://pypi.python.org/pypi')
     available = client.package_releases(args.package)
     if not available:
-        print ('0')
+        print('0')
     else:
-        print (available[0])
+        print(available[0])
 
 # TODO return packages filename with client.release_urls('package',version)
 # for element in client.release_urls('package',version):
