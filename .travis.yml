@@ -1,0 +1,69 @@
+language: cpp
+
+os:
+  - linux
+  - osx
+
+matrix:
+  allow-failures:
+    env: PYTHON_VERSION=3.4
+
+  include:
+    # hack to use osx vm
+    - os: osx
+      language: objective-c
+      env: PYTHON_VERSION=2.7 TRAVIS_OS_NAME=osx
+    - os: osx
+      language: objective-c
+      env: PYTHON_VERSION=3.4 TRAVIS_OS_NAME=osx
+
+    # Linux VM
+    - os: linux
+      env: PYTHON_VERSION=2.7 TRAVIS_OS_NAME=linux
+
+    - os: linux
+      env: PYTHON_VERSION=2.7 TRAVIS_OS_NAME=linux BUILD=test-vrep
+      sudo: required       
+
+    - os: linux
+      env: PYTHON_VERSION=3.4 TRAVIS_OS_NAME=linux
+   
+
+env:
+  global:
+    # Directory of setup.py
+    - SETUP_DIR=.
+    # PyPi credentials foru ploads to Pypi on release.
+    - PYPI_USERNAME=pierre-rouanet
+    # PYPI_PASSWD encrypted below > travis encrypt PYPI_PASSWD=XXXXXX --add
+    - secure: VbsjSUCHyBpzQd2gJ+BcZ9jq2/Cd+onBri04UdWmDtXIyuDBeEJmna0oXuK52hDSd/dq85LVmddpB68/kkK9BmDptBtJr0zdTxQQ+j4B8GaSrksijbGtfkmanQ1s9pGKdvg5w43zcS6C077+pB+nRNS8tjf1FKA2obOmZoZSZpYJ1J0bmsaYuV1fC/1sJN54Yvm0OnfBSYcZ7A2jLlZKhDDE4QWT3oOZKTNig0seOjtS86vgbZYpf1ZEZC4S5IJhG8pP1cZ3vz7tWisgSD0TSnHD7QGpz8TjLFBbTUUfsQNoD1XRW3Gk1jx54KDsoCsL9AS7rAJ7rtZgeWkoX/7DMN2Jvm8vn2Ep1pjabQpESqqK7Pl97uRR/HTqTkiZOkTSt8ewAaUCjZvjLWpIoCofRDMAwosDnjqOnx2tmehiS/BwqUB0nUmlqzTRTFRLiCU0iZ9W3kLuwMV6JaBc0/13YL0JzdUBdIeA44wIzKjQ+q1D8j+1SgEN3/jckM2NMhNTXj2rpYyqr5/1LiK7nV7G7BbpcWBIadkJfPk/UGpkn3598FTRXvazNSiTpBYWzo5x+BSuljQT6j0OhWIzzrHR6+9CF7DKhanjFP1mSfnGoYniabPuf1dW9VIrHoCVlcsEJOzEkNLW0pUpu2SPbNFuKuqcg7BxRcti/hJHJHYNXC8=
+    # Used to built the repo URL https://github.com/$GH_USERNAME/$GH_USERNAME.git
+    - GH_USERNAME=poppy-project
+    - GH_REPO=pypot
+    # Git and Github credentials for pushing documentation 
+    - GIT_EMAIL=theo.segonds@inria.fr
+    - GIT_NAME=show0k-travis-bot
+    # GH_TOKEN encrypted below > travis encrypt GH_TOKEN=XXXXXX --add
+    - secure: "D1NhRT0olL4VJce/tPfPkDkKKFn5tTiw9RjbM0Qm+eB772xh+UFXrlUVOmWhezyZ2oCgjOpXMZJFNTNHOLqQ2aWTZrX45ielzZjqtU3e12DgF+jF0dXz255bo02W4n8li9R4hW0GTnm63INZSWp6mdW8TF6Wu4n0wf3PJz7Vpi8="
+
+    # V-REP conf
+    - VREP_VERSION=3_1_2
+    - VREP_ROOT_DIR=$TRAVIS_BUILD_DIR/vrep
+
+
+before_install:
+  - . ./ci/before_install.sh
+install:
+  - . ./ci/install.sh
+
+script:
+  - . ./ci/run_tests.sh
+
+# TODO push release only if it is a new release
+after_success:
+  - . ./ci/update_documentation.sh
+  - . ./ci/after_success_release.sh
+
+
+notifications:
+  email: false
