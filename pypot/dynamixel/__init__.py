@@ -3,7 +3,7 @@ import glob
 
 from .io import DxlIO, Dxl320IO, DxlError
 from .error import BaseErrorHandler
-from .controller import BaseDxlController
+from .syncloop import BaseDxlController
 from .motor import DxlMXMotor, DxlAXRXMotor, DxlXL320Motor
 
 from ..robot import Robot
