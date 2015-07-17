@@ -10,6 +10,7 @@ from.httpserver import EnableCors
 
 logger = logging.getLogger(__name__)
 
+
 def find_local_ip():
     # see here: http://stackoverflow.com/questions/166506/
     return [(s.connect(('8.8.8.8', 80)), s.getsockname()[0], s.close())
@@ -35,6 +36,7 @@ def set_snap_server_variables(host, port, snap_extension='.xml', path=None):
                          '''<variable name="port"><l>{}</l></variable>'''.format(port), xml)
             xf.write(xml)
     os.chdir(localdir)
+
 
 class SnapRobotServer(AbstractServer):
 

@@ -25,7 +25,7 @@ class Dxl320IO(AbstractDxlIO):
         values = zip(*value_for_ids.values())
 
         self._set_goal_pos_speed(dict(zip(value_for_ids.keys(),
-                                      zip(*(values[0], values[1])))))
+                                          zip(*(values[0], values[1])))))
 
         self.set_torque_limit(dict(zip(value_for_ids.keys(), values[2])))
 
@@ -56,8 +56,8 @@ controls = {
         'dxl_to_si': conv.dxl_to_model
     },
     'firmware': {
-        'address':0x02,
-        'length':1,
+        'address': 0x02,
+        'length': 1,
         'access': _DxlAccess.readonly
     },
     'id': {
@@ -175,8 +175,8 @@ controls = {
         'nb_elem': 2,
         'dxl_to_si': lambda value, model: (conv.dxl_to_degree(value[0], model),
                                            conv.dxl_to_speed(value[1], model)),
-        'si_to_dxl': lambda value, model:  (conv.degree_to_dxl(value[0], model),
-                                            conv.speed_to_dxl(value[1], model)),
+        'si_to_dxl': lambda value, model: (conv.degree_to_dxl(value[0], model),
+                                           conv.speed_to_dxl(value[1], model)),
         'getter_name': '_get_goal_pos_speed',
         'setter_name': '_set_goal_pos_speed'
     },
@@ -199,9 +199,9 @@ controls = {
         'address': 0x25,
         'nb_elem': 3,
         'access': _DxlAccess.readonly,
-        'dxl_to_si': lambda value, model:  (conv.dxl_to_degree(value[0], model),
-                                            conv.dxl_to_speed(value[1], model),
-                                            conv.dxl_to_load(value[2], model))
+        'dxl_to_si': lambda value, model: (conv.dxl_to_degree(value[0], model),
+                                           conv.dxl_to_speed(value[1], model),
+                                           conv.dxl_to_load(value[2], model))
     },
     'present voltage': {
         'address': 0x2D,

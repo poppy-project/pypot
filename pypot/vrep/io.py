@@ -226,28 +226,28 @@ class VrepIO(AbstractIO):
             return 0.0
 
     def add_cube(self, name, position, sizes, mass):
-    	""" Add Cube """
-    	self._create_pure_shape(0, 239, sizes, mass, [0, 0])
-    	self.set_object_position("Cuboid", position)
-    	self.change_object_name("Cuboid", name)
+        """ Add Cube """
+        self._create_pure_shape(0, 239, sizes, mass, [0, 0])
+        self.set_object_position("Cuboid", position)
+        self.change_object_name("Cuboid", name)
 
-    def add_sphere(self, name, position, sizes, mass, precision=[10,10]):
-    	""" Add Sphere """
-    	self._create_pure_shape(1, 239, sizes, mass, precision)
-    	self.set_object_position("Sphere", position)
-    	self.change_object_name("Sphere", name)
+    def add_sphere(self, name, position, sizes, mass, precision=[10, 10]):
+        """ Add Sphere """
+        self._create_pure_shape(1, 239, sizes, mass, precision)
+        self.set_object_position("Sphere", position)
+        self.change_object_name("Sphere", name)
 
-    def add_cylinder(self, name, position, sizes, mass, precision=[10,10]):
-    	""" Add Cylinder """
-    	self._create_pure_shape(2, 239, sizes, mass, precision)
-    	self.set_object_position("Cylinder", position)
-    	self.change_object_name("Cylinder", name)
+    def add_cylinder(self, name, position, sizes, mass, precision=[10, 10]):
+        """ Add Cylinder """
+        self._create_pure_shape(2, 239, sizes, mass, precision)
+        self.set_object_position("Cylinder", position)
+        self.change_object_name("Cylinder", name)
 
-    def add_cone(self, name, position, sizes, mass, precision=[10,10]):
-    	""" Add Cone """
-    	self._create_pure_shape(3, 239, sizes, mass, precision)
-    	self.set_object_position("Cylinder", position)
-    	self.change_object_name("Cylinder", name)
+    def add_cone(self, name, position, sizes, mass, precision=[10, 10]):
+        """ Add Cone """
+        self._create_pure_shape(3, 239, sizes, mass, precision)
+        self.set_object_position("Cylinder", position)
+        self.change_object_name("Cylinder", name)
 
     def change_object_name(self, old_name, new_name):
         """ Change object name """
@@ -261,7 +261,6 @@ class VrepIO(AbstractIO):
         """ Create Pure Shape """
         lua_code = "simCreatePureShape({}, {}, {{{}, {}, {}}}, {}, {{{}, {}}})".format(primitive_type, options, sizes[0], sizes[1], sizes[2], mass, precision[0], precision[1])
         self._inject_lua_code(lua_code)
-
 
     def _inject_lua_code(self, lua_code):
         """ Sends raw lua code and evaluate it wihtout any checking! """
@@ -382,6 +381,7 @@ class VrepIOError(Exception):
 
 class VrepIOErrors(Exception):
     pass
+
 
 class VrepConnectionError(Exception):
     """ Base class for V-REP connection Errors. """

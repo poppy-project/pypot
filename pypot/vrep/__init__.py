@@ -153,7 +153,7 @@ def from_vrep(config, vrep_host='127.0.0.1', vrep_port=19997, scene=None,
     def get_object_position(robot, object, relative_to_object=None):
         return vrep_io.get_object_position(object, relative_to_object)
     Robot.get_object_position = partial(get_object_position, robot)
-    
+
     def get_object_orientation(robot, object, relative_to_object=None):
         return vrep_io.get_object_orientation(object, relative_to_object)
     Robot.get_object_orientation = partial(get_object_orientation, robot)
