@@ -74,8 +74,8 @@ class LightDxlController(MetaDxlController):
             PosSpeedLoadDxlController(io, motors, 25.),
 
             AngleLimitRegisterController(io, motors,  10., True),
-            DxlController(io, motors, 10., True, 'get', 'present_voltage'),
-            DxlController(io, motors, 10., True, 'get', 'present_temperature')
+            DxlController(io, motors, 1., True, 'get', 'present_voltage'),
+            DxlController(io, motors, 1., True, 'get', 'present_temperature')
         ]
 
         pid_motors = [m for m in motors
