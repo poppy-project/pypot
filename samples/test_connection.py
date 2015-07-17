@@ -63,4 +63,3 @@ if __name__ == '__main__':
             full_test(dxl, ids)
 
         print('Closing port')
-

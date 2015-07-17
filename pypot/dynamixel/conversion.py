@@ -249,10 +249,12 @@ def alarm_to_dxl(value, model):
 
 
 XL320LEDColors = Enum('Colors', 'off red green yellow '
-                       'blue pink cyan white')
+                      'blue pink cyan white')
+
 
 def dxl_to_led_color(value, model):
     return XL320LEDColors(value + 1).name
+
 
 def led_color_to_dxl(value, model):
     value = getattr(XL320LEDColors, value).value - 1
@@ -266,9 +268,10 @@ control_modes = {
 
 dxl_to_control_mode = lambda value, _: control_modes[value]
 control_mode_to_dxl = lambda mode, _: (next((v for v, m in control_modes.items()
-                                       if m == mode), None))
+                                             if m == mode), None))
 
 # MARK: - Various utility functions
+
 
 def dxl_to_bool(value, model):
     return bool(value)

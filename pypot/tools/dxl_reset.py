@@ -37,6 +37,7 @@ def leave(msg):
     print('{} Exiting now...'.format(msg))
     sys.exit(1)
 
+
 def almost_equal(a, b):
     return abs(a - b) < 5.
 

@@ -270,7 +270,7 @@ class AbstractDxlIO(AbstractIO):
         for id in ids:
             try:
                 srl.extend(self._get_status_return_level((id, ),
-                           error_handler=None, convert=convert))
+                                                         error_handler=None, convert=convert))
             except DxlTimeoutError as e:
                 if self.ping(id):
                     srl.append('never' if convert else 0)
@@ -288,7 +288,7 @@ class AbstractDxlIO(AbstractIO):
         convert = kwargs['convert'] if 'convert' in kwargs else self._convert
         if convert:
             srl_for_id = dict(zip(srl_for_id.keys(),
-                              [('never', 'read', 'always').index(s) for s in srl_for_id.values()]))
+                                  [('never', 'read', 'always').index(s) for s in srl_for_id.values()]))
         self._set_status_return_level(srl_for_id, convert=False)
 
     def switch_led_on(self, ids):

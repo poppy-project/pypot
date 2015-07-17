@@ -52,7 +52,7 @@ class HTTPRobotServer(AbstractServer):
 
      """
 
-    def __init__(self, robot, host, port, cross_domain_origin='*',quiet=True):
+    def __init__(self, robot, host, port, cross_domain_origin='*', quiet=True):
         AbstractServer.__init__(self, robot, host, port)
         self.quiet = quiet
         self.app = bottle.Bottle()

@@ -153,9 +153,9 @@ def transform_difference(t1, t2):
     t2 = numpy.array(t2)
 
     return numpy.concatenate(((t2[0:3, 3] - t1[0:3, 3]).reshape(3),
-                             0.5 * (numpy.cross(t1[0:3, 0], t2[0:3, 0]) +
-                                    numpy.cross(t1[0:3, 1], t2[0:3, 1]) +
-                                    numpy.cross(t1[0:3, 2], t2[0:3, 2])).reshape(3)))
+                              0.5 * (numpy.cross(t1[0:3, 0], t2[0:3, 0]) +
+                                     numpy.cross(t1[0:3, 1], t2[0:3, 1]) +
+                                     numpy.cross(t1[0:3, 2], t2[0:3, 2])).reshape(3)))
 
 
 def rotation_from_transf(tm):
