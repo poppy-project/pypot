@@ -1,8 +1,11 @@
 #!/bin/bash
 set +x
+set +e
 
 # Pep8 tests
-set +e
+if [[ "$PEP8_CAUSE_FAILLURE" == "true" ]]; then
+  set -e
+fi
 flake8 --config=ci/flake8.config --statistics --count .
 set -e
 
@@ -23,16 +26,16 @@ EOF
 
 # Vrep start test
 pip install -qq poppy-humanoid
-echo " Display  poppy.get_object_position('pelvis_visual')"
-if [[ "$USE_SSH_FORWARDING" == "true" ]]; then
-    if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
-        sudo apt-get install -qq --yes proxychains
-        proxychains python ci/test_vrep.py
-    else
-        brew install proxychains-ng
-        proxychains4 python ci/test_vrep.py
-    fi
-# else
+echo "Starting a notebook Controlling a Poppy humanoid in V-REP using pypot.ipynb"
+if [[ -n "$SSH_VREP_SERVER"  ]]; then
+    # Download a PoppyHumanoid ipython notebook
+    pip -qq install runipy
+    curl -o nb.ipynb https://raw.githubusercontent.com/poppy-project/poppy-humanoid/master/software/samples/notebooks/Controlling%20a%20Poppy%20humanoid%20in%20V-REP%20using%20pypot.ipynb
+    runipy -o nb.ipynb
+    python ci/test_vrep.py
+fi
+
+# Old test of running VREP localy (network trouble)
 #     pushd $VREP_ROOT_DIR/
 #         if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
 #             xvfb-run --auto-servernum --server-num=1 ./vrep.sh -h  &
@@ -43,7 +46,6 @@ if [[ "$USE_SSH_FORWARDING" == "true" ]]; then
 #     popd
 #     python ci/test_vrep.py
     
-fi
 
 
 set +x

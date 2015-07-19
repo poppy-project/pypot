@@ -18,7 +18,7 @@ if [[ "$TRAVIS" == "true" ]]; then
 
             # remove error on python 3.4
             # ValueError: invalid prefix: filename '/home/travis/miniconda3/lib/python3.4/site-packages/pypot/__init__.py' doesn't start with 'build/bdist.linux-x86_64/dumb'
-            if [[ "$PYTHON_VERSION" == "3.4" ]];then
+            if [[ "$TRAVIS_PYTHON_VERSION" == "3.4" ]];then
                 set +e
             fi
             # This release build creates the source distribution. All other release builds

@@ -2,8 +2,9 @@
 set -x
 set -e
 echo "Running before_install.sh on $TRAVIS_OS_NAME"
+echo "Checking OS : PWD = $PWD, HOME=$HOME"
 
-if [[ "$USE_SSH_FORWARDING" == "true" ]]; then
+if [[ -n "$SSH_VREP_SERVER" ]]; then
     set +x
     set -e
     rm -r ~/.ssh
@@ -16,7 +17,7 @@ if [[ "$USE_SSH_FORWARDING" == "true" ]]; then
     chmod 700 ci/id_rsa.out
     echo -e "Host *.ci \n ProxyCommand ssh tseg001@ci-ssh.inria.fr \"/usr/bin/nc \`basename %h .ci\` %p\" \n UserKnownHostsFile=/dev/null\n StrictHostKeyChecking=no" > ~/.ssh/config
     echo "Starting SSH proxy daemon"
-    ssh -i ci/id_rsa.out -v -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -N -D 9050 ci@"$SSH_VREP_SERVER" &
+    ssh -i ci/id_rsa.out -t -t -v -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -N -L 19997:localhost:19997 ci@"$SSH_VREP_SERVER" &
     sleep 5
     set -x
 fi
@@ -26,12 +27,12 @@ if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
     lsb_release -a
 
     # Download V-REP
-    wget http://coppeliarobotics.com/V-REP_PRO_EDU_V${VREP_VERSION}_64_Linux.tar.gz
-    tar -xzf V-REP_PRO_EDU_V${VREP_VERSION}_64_Linux.tar.gz
-    mv ./V-REP_PRO_EDU_V${VREP_VERSION}_64_Linux $VREP_ROOT_DIR
+    # wget http://coppeliarobotics.com/V-REP_PRO_EDU_V${VREP_VERSION}_64_Linux.tar.gz
+    # tar -xzf V-REP_PRO_EDU_V${VREP_VERSION}_64_Linux.tar.gz
+    # mv ./V-REP_PRO_EDU_V${VREP_VERSION}_64_Linux $VREP_ROOT_DIR
 
     # Use miniconda python (provide binaries for scipy and numpy on Linux)
-    if [[ "$PYTHON_VERSION" == "2.7" ]]; then
+    if [[ "$TRAVIS_PYTHON_VERSION" == "2.7" ]]; then
         curl -o miniconda.sh http://repo.continuum.io/miniconda/Miniconda-latest-Linux-x86_64.sh 
     else
         curl -o miniconda.sh http://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh 
@@ -39,14 +40,14 @@ if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
 elif [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
 
     # Download V-REP
-    wget http://coppeliarobotics.com/V-REP_PRO_EDU_V${VREP_VERSION}_Mac.zip
-    unzip -qq V-REP_PRO_EDU_V${VREP_VERSION}_Mac.zip
-    mv ./V-REP_PRO_EDU_V${VREP_VERSION}_Mac $VREP_ROOT_DIR
+    # wget http://coppeliarobotics.com/V-REP_PRO_EDU_V${VREP_VERSION}_Mac.zip
+    # unzip -qq V-REP_PRO_EDU_V${VREP_VERSION}_Mac.zip
+    # mv ./V-REP_PRO_EDU_V${VREP_VERSION}_Mac $VREP_ROOT_DIR
 
-    brew update
+    # brew update
 
     # Use miniconda python (provide binaries for scipy and numpy on Linux)
-    if [[ "$PYTHON_VERSION" == "2.7" ]]; then
+    if [[ "$TRAVIS_PYTHON_VERSION" == "2.7" ]]; then
         curl -o miniconda.sh http://repo.continuum.io/miniconda/Miniconda-latest-MacOSX-x86_64.sh
     else
         curl -o miniconda.sh http://repo.continuum.io/miniconda/Miniconda3-latest-MacOSX-x86_64.sh
@@ -64,11 +65,14 @@ conda update -q conda
 
 # conda create
 # source activate condaenv
-conda install --yes pip python=$PYTHON_VERSION numpy scipy matplotlib pyzmq flake8
+conda install --yes pip python=$TRAVIS_PYTHON_VERSION numpy scipy matplotlib pyzmq flake8 ipython-notebook
 
 
 # Upgrade pip
 pip install pip --upgrade
+
+# For running notebooks
+pip install runipy
 
 # Show config
 which python

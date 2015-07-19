@@ -14,7 +14,7 @@ git_url=https://$GH_TOKEN@github.com/$GH_USERNAME/$GH_REPO.git
 # git remote set-url origin $git_url
 
 # gevent is not python3 compatible, and apparently needed in osx zmq
-# if [[ "$TRAVIS_OS_NAME" == "osx" ]] && [[ "$PYTHON_VERSION" == "3.4" ]]; then
+# if [[ "$TRAVIS_OS_NAME" == "osx" ]] && [[ "$TRAVIS_PYTHON_VERSION" == "3.4" ]]; then
 #     echo "Gevent bug, not possible to build zmq with"
 
 # Install Sphinx
