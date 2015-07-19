@@ -23,7 +23,7 @@ if [[ "$TRAVIS" == "true" ]]; then
             fi
             # This release build creates the source distribution. All other release builds
             # should not.
-            python setup.py -q sdist bdist
+            python setup.py -q sdist bdist_egg
 
             echo "Created the following distribution files:"
             ls -l dist
@@ -32,9 +32,13 @@ if [[ "$TRAVIS" == "true" ]]; then
             # ....linux-x86_64.tar.gz
             # ...-py2.7-linux-x86_64.egg
             # ....tar.gz
-
+            
             set +x
             set +e
+            # Test dist files
+            for f in dist/*; do 
+                pip install $f 
+            done
             echo "Uploading Linux egg to PyPi..."
             twine upload dist/*.egg -u "${PYPI_USERNAME}" -p "${PYPI_PASSWD}"
             echo "Uploading source package to PyPi..."
@@ -48,9 +52,12 @@ if [[ "$TRAVIS" == "true" ]]; then
             python setup.py bdist bdist_wheel || exit
             echo "Created the following distribution files:"
             ls -l dist
-
             set +x
             set +e
+            # Test dist files
+            for f in dist/*; do 
+                pip install $f 
+            done
             echo "Uploading OS X egg to PyPi..."
             twine upload dist/*.egg -u "${PYPI_USERNAME}" -p "${PYPI_PASSWD}"
             echo "Uploading OS X Wheel package to PyPi..."

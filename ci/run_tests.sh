@@ -1,27 +1,11 @@
 #!/bin/bash
-set -x
+set +x
 
 # Pep8 tests
 set +e
-echo -e "\e[33m"
 flake8 --config=ci/flake8.config --statistics --count .
-echo -e "\e[0m"
 set -e
 
-# Vrep start test
-if [[ "$BUILD" == "test-vrep" ]]; then
-    set +e
-    pushd $VREP_ROOT_DIR/
-        sudo apt-get install --yes xvfb
-        xvfb-run --auto-servernum --server-num=1 ./vrep.sh -h  &
-        sleep 10
-    popd
-
-    pip install poppy-humanoid
-    echo " Display  poppy.get_object_position('pelvis_visual')"
-    python -c "import sys;from poppy.creatures import PoppyHumanoid;from pypot.vrep import from_vrep;poppy = PoppyHumanoid(simulator='vrep');sys.stdout.write(poppy.get_object_position('pelvis_visual'))"    
-    set -e
-fi
 
 # TODO :)
 which python
@@ -35,6 +19,32 @@ import pypot
 import pypot.robot
 import pypot.dynamixel
 EOF
+
+
+# Vrep start test
+pip install -qq poppy-humanoid
+echo " Display  poppy.get_object_position('pelvis_visual')"
+if [[ "$USE_SSH_FORWARDING" == "true" ]]; then
+    if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
+        sudo apt-get install -qq --yes proxychains
+        proxychains python ci/test_vrep.py
+    else
+        brew install proxychains-ng
+        proxychains4 python ci/test_vrep.py
+    fi
+# else
+#     pushd $VREP_ROOT_DIR/
+#         if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
+#             xvfb-run --auto-servernum --server-num=1 ./vrep.sh -h  &
+#         else
+#             ./vrep.app/Contents/MacOS/vrep -h  &
+#         fi
+#         sleep 10
+#     popd
+#     python ci/test_vrep.py
+    
+fi
+
 
 set +x
 set +e
