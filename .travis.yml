@@ -1,54 +1,11 @@
-language: generic
+# Language is set to c because python isn't supported on the OSX Virtual Machines
+# on Travis. Anyway, python is install from conda.
+language: python
 
-# os:
-#   - linux
-#   - osx
-python:
-  - 2.7
-  - 3.4
-
-matrix:
-  include:
-    # hack to use osx vm
-    - os: osx
-      language: objective-c
-      env: PYTHON_VERSION=2.7 TRAVIS_OS_NAME=osx
-    - os: osx
-      language: objective-c
-      env: PYTHON_VERSION=3.4 TRAVIS_OS_NAME=osx
-
-    # Linux VM
-    - os: linux
-      env: PYTHON_VERSION=2.7 TRAVIS_OS_NAME=linux
-
-    - os: linux
-      env: PYTHON_VERSION=2.7 TRAVIS_OS_NAME=linux BUILD=test-vrep SSH_VREP_SERVER=test42-vrep1.ci USE_SSH_FORWARDING=true
-      sudo: required
-    # - os: linux
-    #   env: PYTHON_VERSION=2.7 TRAVIS_OS_NAME=linux BUILD=test-vrep SSH_VREP_SERVER=test42-vrep2.ci USE_SSH_FORWARDING=true
-    #   sudo: required     
-    # - os: linux
-    #   env: PYTHON_VERSION=2.7 TRAVIS_OS_NAME=linux BUILD=test-vrep SSH_VREP_SERVER=test42-vrep4.ci USE_SSH_FORWARDING=true
-    #   sudo: required  
-
-    - allow_failures:
-      os: linux
-      env: PYTHON_VERSION=3.4 TRAVIS_OS_NAME=linux
-
-addons:
-  apt:
-    packages:
-      # Spoof x11 for starting vrep
-      - xvfb
-      # Using Vrep in another server
-      - proxychains
-      # For testing
-      - python-numpy
-      - python-scipy
-   
 
 env:
   global:
+    # - USE_SSH_FORWARDING=true
     # Directory of setup.py
     - SETUP_DIR=.
     # PyPi credentials foru ploads to Pypi on release.
@@ -73,6 +30,46 @@ env:
     - secure: "pER9uKGlgCec2enMOW3E09yUeHdzI+PUj5iE5TRzj20OG5+vnoLHRpQ1jMvfIijpX2mu7nxKVViMoGv0N+yR4ryGzHBHa7/LI627l34dmhj/iF4oXwqDk7Fzwst/z7THHPN6dBXxPY+QfYkwlGsPVC8mLNNoIxP3DUvxugqHU0E="
 
 
+matrix:
+  # Don't wait for allowed failures
+  fast_finish: true
+  
+  include:
+    # hack to use osx vm
+    - os: osx
+      python: 2.7 # For travis UI only
+      language: objective-c
+      env: TRAVIS_OS_NAME=osx SSH_VREP_SERVER=test42-vrep1.ci TRAVIS_PYTHON_VERSION=2.7
+    - os: osx
+      python: 3.4 # For travis UI only
+      language: objective-c
+      env: TRAVIS_OS_NAME=osx SSH_VREP_SERVER=test42-vrep2.ci TRAVIS_PYTHON_VERSION=3.4
+
+    # Linux VM
+    - python: 2.7
+      language: python
+      env: SSH_VREP_SERVER=test42-vrep4.ci
+
+    - python: 3.4
+      language: python
+      env: SSH_VREP_SERVER=test42-vrep6.ci
+
+    - python: 2.7
+      language: python
+      env: PEP8_CAUSE_FAILLURE=true
+      # sudo: required
+
+
+  allow_failures:
+    - python: 3.4 
+    - env: PEP8_CAUSE_FAILLURE=true
+
+addons:
+  apt:
+    packages:
+      # Spoof x11 for starting vrep in travis (issues with network)
+      - xvfb
+  
 before_install:
   - . ./ci/before_install.sh
 install:
