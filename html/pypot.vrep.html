@@ -1,0 +1,655 @@
+
+
+<!DOCTYPE html>
+
+
+
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    
+    <title>vrep Package &mdash; pypot 2.7.5 documentation</title>
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    
+
+<link rel="stylesheet" href="_static/css/basicstrap-base.css" type="text/css" />
+<link rel="stylesheet" id="current-theme" href="_static/css/bootstrap3/bootstrap.min.css" type="text/css" />
+<link rel="stylesheet" id="current-adjust-theme" type="text/css" />
+
+<link rel="stylesheet" href="_static/css/font-awesome.min.css">
+
+<style type="text/css">
+  body {
+    padding-top: 60px;
+    padding-bottom: 40px;
+  }
+</style>
+
+<link rel="stylesheet" href="_static/css/basicstrap.css" type="text/css" />
+<link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+<link rel="stylesheet" href="_static/my-css.css" type="text/css" />
+    
+<script type="text/javascript">
+  var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:    './',
+            VERSION:     '2.7.5',
+            COLLAPSE_INDEX: false,
+            FILE_SUFFIX: '.html',
+            HAS_SOURCE:  true
+  };
+</script>
+    <script type="text/javascript" src="_static/js/jquery.min.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/js/bootstrap3.min.js"></script>
+<script type="text/javascript" src="_static/js/jquery.cookie.min.js"></script>
+<script type="text/javascript" src="_static/js/basicstrap.js"></script>
+<script type="text/javascript">
+</script>
+    <link rel="author" title="About these documents" href="about.html" />
+    <link rel="top" title="pypot 2.7.5 documentation" href="index.html" />
+    <link rel="up" title="Pypot’s API" href="api.html" />
+    <link rel="next" title="utils Package" href="pypot.utils.html" />
+    <link rel="prev" title="server Package" href="pypot.server.html" /> 
+  </head>
+  <body role="document">
+    <div id="navbar-top" class="navbar navbar-fixed-top navbar-default" role="navigation" aria-label="top navigation">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="index.html">pypot 2.7.5 documentation</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
+              <li class="dropdown visible-xs">
+                <a role="button" id="localToc" data-toggle="dropdown" data-target="#" href="#">Table Of Contents <b class="caret"></b></a>
+                <ul class="dropdown-menu localtoc sp-localtoc" role="menu" aria-labelledby="localToc">
+                <ul>
+<li><a class="reference internal" href="#"><code class="docutils literal"><span class="pre">vrep</span></code> Package</a><ul>
+<li><a class="reference internal" href="#module-pypot.vrep.io"><code class="docutils literal"><span class="pre">io</span></code> Module</a></li>
+<li><a class="reference internal" href="#module-pypot.vrep.controller"><code class="docutils literal"><span class="pre">controller</span></code> Module</a></li>
+</ul>
+</li>
+</ul>
+
+                </ul>
+              </li>
+
+            
+              <li><a href="pypot.server.html" title="server Package" accesskey="P">previous </a></li>
+              <li><a href="pypot.utils.html" title="utils Package" accesskey="N">next </a></li>
+              <li><a href="py-modindex.html" title="Python Module Index" >modules </a></li>
+              <li><a href="genindex.html" title="General Index" accesskey="I">index </a></li>
+              <li><a href="api.html" accesskey="U">Pypot&#8217;s API</a></li>
+            
+            <li class="visible-xs"><a href="_sources/pypot.vrep.txt" rel="nofollow">Show Source</a></li>
+
+            <li class="visible-xs">
+                <form class="search form-search form-inline navbar-form navbar-right sp-searchbox" action="search.html" method="get">
+                  <div class="input-append input-group">
+                    <input type="text" class="search-query form-control" name="q" placeholder="Search...">
+                    <span class="input-group-btn">
+                    <input type="submit" class="btn" value="Go" />
+                    </span>
+                  </div>
+                  <input type="hidden" name="check_keywords" value="yes" />
+                  <input type="hidden" name="area" value="default" />
+                </form>
+            </li>
+
+            
+
+          </ul>
+
+        </div>
+      </div>
+    </div>
+    
+
+    <!-- container -->
+    <div class="container-fluid">
+
+      <!-- row -->
+      <div class="row">
+         
+<div class="col-md-3 hidden-xs" id="sidebar-wrapper">
+  <div class="sidebar hidden-xs" role="navigation" aria-label="main navigation">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#"><code class="docutils literal"><span class="pre">vrep</span></code> Package</a><ul>
+<li><a class="reference internal" href="#module-pypot.vrep.io"><code class="docutils literal"><span class="pre">io</span></code> Module</a></li>
+<li><a class="reference internal" href="#module-pypot.vrep.controller"><code class="docutils literal"><span class="pre">controller</span></code> Module</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="pypot.server.html"
+                        title="previous chapter"><code class="docutils literal"><span class="pre">server</span></code> Package</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="pypot.utils.html"
+                        title="next chapter"><code class="docutils literal"><span class="pre">utils</span></code> Package</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/pypot.vrep.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" role="search">
+  <h3>Quick search</h3>
+  <form class="search form-inline" action="search.html" method="get">
+      <div class="input-append input-group">
+        <input type="text" class="search-query form-control" name="q" placeholder="Search...">
+        <span class="input-group-btn">
+        <input type="submit" class="btn" value="Go" />
+        </span>
+      </div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+  </div>
+</div> 
+        
+
+        <div class="col-md-9" id="content-wrapper">
+          <div class="document" role="main">
+            <div class="documentwrapper">
+              <div class="bodywrapper">
+                <div class="body">
+                  
+  <div class="section" id="module-pypot.vrep">
+<span id="vrep-package"></span><h1><code class="xref py py-mod docutils literal"><span class="pre">vrep</span></code> Package<a class="headerlink" href="#module-pypot.vrep" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="pypot.vrep.vrep_time">
+<em class="property">class </em><code class="descclassname">pypot.vrep.</code><code class="descname">vrep_time</code><span class="sig-paren">(</span><em>vrep_io</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/vrep.html#vrep_time"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.vrep.vrep_time" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="pypot.vrep.vrep_time.get_time">
+<code class="descname">get_time</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/vrep.html#vrep_time.get_time"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.vrep.vrep_time.get_time" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pypot.vrep.vrep_time.sleep">
+<code class="descname">sleep</code><span class="sig-paren">(</span><em>t</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/vrep.html#vrep_time.sleep"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.vrep.vrep_time.sleep" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="pypot.vrep.from_vrep">
+<code class="descclassname">pypot.vrep.</code><code class="descname">from_vrep</code><span class="sig-paren">(</span><em>config</em>, <em>vrep_host='127.0.0.1'</em>, <em>vrep_port=19997</em>, <em>scene=None</em>, <em>tracked_objects=[]</em>, <em>tracked_collisions=[]</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/vrep.html#from_vrep"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.vrep.from_vrep" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a robot from a V-REP instance.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>config</strong> (<em>str or dict</em>) &#8211; robot configuration (either the path to the json or directly the dictionary)</li>
+<li><strong>vrep_host</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; host of the V-REP server</li>
+<li><strong>vrep_port</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; port of the V-REP server</li>
+<li><strong>scene</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; path to the V-REP scene to load and start</li>
+<li><strong>tracked_objects</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a>) &#8211; list of V-REP dummy object to track</li>
+<li><strong>tracked_collisions</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a>) &#8211; list of V-REP collision to track</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p>This function tries to connect to a V-REP instance and expects to find motors with names corresponding as the ones found in the config.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The <a class="reference internal" href="pypot.robot.html#pypot.robot.robot.Robot" title="pypot.robot.robot.Robot"><code class="xref py py-class docutils literal"><span class="pre">Robot</span></code></a> returned will also provide a convenience reset_simulation method which resets the simulation and the robot position to its intial stance.</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>Using the same configuration, you should be able to switch from a real to a simulated robot just by switching from <a class="reference internal" href="pypot.robot.html#pypot.robot.config.from_config" title="pypot.robot.config.from_config"><code class="xref py py-func docutils literal"><span class="pre">from_config()</span></code></a> to <a class="reference internal" href="#pypot.vrep.from_vrep" title="pypot.vrep.from_vrep"><code class="xref py py-func docutils literal"><span class="pre">from_vrep()</span></code></a>.
+For instance:</p>
+<div class="last highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">json</span>
+
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s">&#39;my_config.json&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">config</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+
+<span class="kn">from</span> <span class="nn">pypot.robot</span> <span class="kn">import</span> <span class="n">from_config</span>
+<span class="kn">from</span> <span class="nn">pypot.vrep</span> <span class="kn">import</span> <span class="n">from_vrep</span>
+
+<span class="n">real_robot</span> <span class="o">=</span> <span class="n">from_config</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+<span class="n">simulated_robot</span> <span class="o">=</span> <span class="n">from_vrep</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="s">&#39;127.0.0.1&#39;</span><span class="p">,</span> <span class="mi">19997</span><span class="p">,</span> <span class="s">&#39;poppy.ttt&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</dd></dl>
+
+<div class="section" id="module-pypot.vrep.io">
+<span id="io-module"></span><h2><a class="reference external" href="http://docs.python.org/library/io.html#module-io" title="(in Python v2.7)"><code class="xref py py-mod docutils literal"><span class="pre">io</span></code></a> Module<a class="headerlink" href="#module-pypot.vrep.io" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pypot.vrep.io.VrepIO">
+<em class="property">class </em><code class="descclassname">pypot.vrep.io.</code><code class="descname">VrepIO</code><span class="sig-paren">(</span><em>vrep_host='127.0.0.1'</em>, <em>vrep_port=19997</em>, <em>scene=None</em>, <em>start=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/vrep/io.html#VrepIO"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.vrep.io.VrepIO" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="pypot.robot.html#pypot.robot.io.AbstractIO" title="pypot.robot.io.AbstractIO"><code class="xref py py-class docutils literal"><span class="pre">pypot.robot.io.AbstractIO</span></code></a></p>
+<p>This class is used to get/set values from/to a V-REP scene.</p>
+<p>It is based on V-REP remote API (<a class="reference external" href="http://www.coppeliarobotics.com/helpFiles/en/remoteApiOverview.htm">http://www.coppeliarobotics.com/helpFiles/en/remoteApiOverview.htm</a>).</p>
+<p>Starts the connection with the V-REP remote API server.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>vrep_host</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; V-REP remote API server host</li>
+<li><strong>vrep_port</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; V-REP remote API server port</li>
+<li><strong>scene</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; path to a V-REP scene file</li>
+<li><strong>start</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; whether to start the scene after loading it</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">Only one connection can be established with the V-REP remote server API. So before trying to connect make sure that all previously started connections have been closed (see <a class="reference internal" href="#pypot.vrep.io.close_all_connections" title="pypot.vrep.io.close_all_connections"><code class="xref py py-func docutils literal"><span class="pre">close_all_connections()</span></code></a>)</p>
+</div>
+<dl class="attribute">
+<dt id="pypot.vrep.io.VrepIO.MAX_ITER">
+<code class="descname">MAX_ITER</code><em class="property"> = 5</em><a class="headerlink" href="#pypot.vrep.io.VrepIO.MAX_ITER" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pypot.vrep.io.VrepIO.TIMEOUT">
+<code class="descname">TIMEOUT</code><em class="property"> = 0.2</em><a class="headerlink" href="#pypot.vrep.io.VrepIO.TIMEOUT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pypot.vrep.io.VrepIO.open_io">
+<code class="descname">open_io</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/vrep/io.html#VrepIO.open_io"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.vrep.io.VrepIO.open_io" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pypot.vrep.io.VrepIO.close">
+<code class="descname">close</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/vrep/io.html#VrepIO.close"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.vrep.io.VrepIO.close" title="Permalink to this definition">¶</a></dt>
+<dd><p>Closes the current connection.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.vrep.io.VrepIO.load_scene">
+<code class="descname">load_scene</code><span class="sig-paren">(</span><em>scene_path</em>, <em>start=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/vrep/io.html#VrepIO.load_scene"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.vrep.io.VrepIO.load_scene" title="Permalink to this definition">¶</a></dt>
+<dd><p>Loads a scene on the V-REP server.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>scene_path</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; path to a V-REP scene file</li>
+<li><strong>start</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; whether to directly start the simulation after loading the scene</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">It is assumed that the scene file is always available on the server side.</p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.vrep.io.VrepIO.start_simulation">
+<code class="descname">start_simulation</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/vrep/io.html#VrepIO.start_simulation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.vrep.io.VrepIO.start_simulation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Starts the simulation.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Do nothing if the simulation is already started.</p>
+</div>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">if you start the simulation just after stopping it, the simulation will likely not be started. Use <a class="reference internal" href="#pypot.vrep.io.VrepIO.restart_simulation" title="pypot.vrep.io.VrepIO.restart_simulation"><code class="xref py py-meth docutils literal"><span class="pre">restart_simulation()</span></code></a> instead.</p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.vrep.io.VrepIO.restart_simulation">
+<code class="descname">restart_simulation</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/vrep/io.html#VrepIO.restart_simulation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.vrep.io.VrepIO.restart_simulation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Re-starts the simulation.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.vrep.io.VrepIO.stop_simulation">
+<code class="descname">stop_simulation</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/vrep/io.html#VrepIO.stop_simulation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.vrep.io.VrepIO.stop_simulation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Stops the simulation.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.vrep.io.VrepIO.pause_simulation">
+<code class="descname">pause_simulation</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/vrep/io.html#VrepIO.pause_simulation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.vrep.io.VrepIO.pause_simulation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Pauses the simulation.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.vrep.io.VrepIO.resume_simulation">
+<code class="descname">resume_simulation</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/vrep/io.html#VrepIO.resume_simulation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.vrep.io.VrepIO.resume_simulation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Resumes the simulation.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.vrep.io.VrepIO.get_motor_position">
+<code class="descname">get_motor_position</code><span class="sig-paren">(</span><em>motor_name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/vrep/io.html#VrepIO.get_motor_position"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.vrep.io.VrepIO.get_motor_position" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the motor current position.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.vrep.io.VrepIO.set_motor_position">
+<code class="descname">set_motor_position</code><span class="sig-paren">(</span><em>motor_name</em>, <em>position</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/vrep/io.html#VrepIO.set_motor_position"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.vrep.io.VrepIO.set_motor_position" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the motor target position.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.vrep.io.VrepIO.get_motor_force">
+<code class="descname">get_motor_force</code><span class="sig-paren">(</span><em>motor_name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/vrep/io.html#VrepIO.get_motor_force"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.vrep.io.VrepIO.get_motor_force" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pypot.vrep.io.VrepIO.set_motor_force">
+<code class="descname">set_motor_force</code><span class="sig-paren">(</span><em>motor_name</em>, <em>force</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/vrep/io.html#VrepIO.set_motor_force"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.vrep.io.VrepIO.set_motor_force" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pypot.vrep.io.VrepIO.get_object_position">
+<code class="descname">get_object_position</code><span class="sig-paren">(</span><em>object_name</em>, <em>relative_to_object=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/vrep/io.html#VrepIO.get_object_position"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.vrep.io.VrepIO.get_object_position" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the object position.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.vrep.io.VrepIO.set_object_position">
+<code class="descname">set_object_position</code><span class="sig-paren">(</span><em>object_name, position=[0, 0, 0]</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/vrep/io.html#VrepIO.set_object_position"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.vrep.io.VrepIO.set_object_position" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the object position.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.vrep.io.VrepIO.get_object_orientation">
+<code class="descname">get_object_orientation</code><span class="sig-paren">(</span><em>object_name</em>, <em>relative_to_object=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/vrep/io.html#VrepIO.get_object_orientation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.vrep.io.VrepIO.get_object_orientation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the object orientation.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.vrep.io.VrepIO.get_object_handle">
+<code class="descname">get_object_handle</code><span class="sig-paren">(</span><em>obj</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/vrep/io.html#VrepIO.get_object_handle"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.vrep.io.VrepIO.get_object_handle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the vrep object handle.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.vrep.io.VrepIO.get_collision_state">
+<code class="descname">get_collision_state</code><span class="sig-paren">(</span><em>collision_name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/vrep/io.html#VrepIO.get_collision_state"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.vrep.io.VrepIO.get_collision_state" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the collision state.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.vrep.io.VrepIO.get_collision_handle">
+<code class="descname">get_collision_handle</code><span class="sig-paren">(</span><em>collision</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/vrep/io.html#VrepIO.get_collision_handle"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.vrep.io.VrepIO.get_collision_handle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets a vrep collisions handle.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.vrep.io.VrepIO.get_simulation_current_time">
+<code class="descname">get_simulation_current_time</code><span class="sig-paren">(</span><em>timer='CurrentTime'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/vrep/io.html#VrepIO.get_simulation_current_time"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.vrep.io.VrepIO.get_simulation_current_time" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the simulation current time.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.vrep.io.VrepIO.add_cube">
+<code class="descname">add_cube</code><span class="sig-paren">(</span><em>name</em>, <em>position</em>, <em>sizes</em>, <em>mass</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/vrep/io.html#VrepIO.add_cube"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.vrep.io.VrepIO.add_cube" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add Cube</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.vrep.io.VrepIO.add_sphere">
+<code class="descname">add_sphere</code><span class="sig-paren">(</span><em>name, position, sizes, mass, precision=[10, 10]</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/vrep/io.html#VrepIO.add_sphere"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.vrep.io.VrepIO.add_sphere" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add Sphere</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.vrep.io.VrepIO.add_cylinder">
+<code class="descname">add_cylinder</code><span class="sig-paren">(</span><em>name, position, sizes, mass, precision=[10, 10]</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/vrep/io.html#VrepIO.add_cylinder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.vrep.io.VrepIO.add_cylinder" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add Cylinder</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.vrep.io.VrepIO.add_cone">
+<code class="descname">add_cone</code><span class="sig-paren">(</span><em>name, position, sizes, mass, precision=[10, 10]</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/vrep/io.html#VrepIO.add_cone"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.vrep.io.VrepIO.add_cone" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add Cone</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.vrep.io.VrepIO.change_object_name">
+<code class="descname">change_object_name</code><span class="sig-paren">(</span><em>old_name</em>, <em>new_name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/vrep/io.html#VrepIO.change_object_name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.vrep.io.VrepIO.change_object_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Change object name</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.vrep.io.VrepIO.call_remote_api">
+<code class="descname">call_remote_api</code><span class="sig-paren">(</span><em>func_name</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/vrep/io.html#VrepIO.call_remote_api"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.vrep.io.VrepIO.call_remote_api" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calls any remote API func in a thread_safe way.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>func_name</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; name of the remote API func to call</li>
+<li><strong>args</strong> &#8211; args to pass to the remote API call</li>
+<li><strong>kwargs</strong> &#8211; args to pass to the remote API call</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">You can add an extra keyword to specify if you want to use the streaming or sending mode. The oneshot_wait mode is used by default (see <a class="reference external" href="http://www.coppeliarobotics.com/helpFiles/en/remoteApiConstants.htm#operationModes">here</a> for details about possible modes).</p>
+</div>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">You should not pass the clientId and the operationMode as arguments. They will be automatically added.</p>
+</div>
+<p>As an example you can retrieve all joints name using the following call:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">vrep_io</span><span class="o">.</span><span class="n">remote_api_call</span><span class="p">(</span><span class="s">&#39;simxGetObjectGroupData&#39;</span><span class="p">,</span>
+                        <span class="n">vrep_io</span><span class="o">.</span><span class="n">remote_api</span><span class="o">.</span><span class="n">sim_object_joint_type</span><span class="p">,</span>
+                        <span class="mi">0</span><span class="p">,</span>
+                        <span class="n">streaming</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="pypot.vrep.io.close_all_connections">
+<code class="descclassname">pypot.vrep.io.</code><code class="descname">close_all_connections</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/vrep/io.html#close_all_connections"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.vrep.io.close_all_connections" title="Permalink to this definition">¶</a></dt>
+<dd><p>Closes all opened connection to V-REP remote API server.</p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="pypot.vrep.io.VrepIOError">
+<em class="property">exception </em><code class="descclassname">pypot.vrep.io.</code><code class="descname">VrepIOError</code><span class="sig-paren">(</span><em>error_code</em>, <em>message</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/vrep/io.html#VrepIOError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.vrep.io.VrepIOError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="http://docs.python.org/library/exceptions.html#exceptions.Exception" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">exceptions.Exception</span></code></a></p>
+<p>Base class for V-REP IO Errors.</p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="pypot.vrep.io.VrepIOErrors">
+<em class="property">exception </em><code class="descclassname">pypot.vrep.io.</code><code class="descname">VrepIOErrors</code><a class="reference internal" href="_modules/pypot/vrep/io.html#VrepIOErrors"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.vrep.io.VrepIOErrors" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="http://docs.python.org/library/exceptions.html#exceptions.Exception" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">exceptions.Exception</span></code></a></p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="pypot.vrep.io.VrepConnectionError">
+<em class="property">exception </em><code class="descclassname">pypot.vrep.io.</code><code class="descname">VrepConnectionError</code><a class="reference internal" href="_modules/pypot/vrep/io.html#VrepConnectionError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.vrep.io.VrepConnectionError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="http://docs.python.org/library/exceptions.html#exceptions.Exception" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">exceptions.Exception</span></code></a></p>
+<p>Base class for V-REP connection Errors.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-pypot.vrep.controller">
+<span id="controller-module"></span><h2><code class="xref py py-mod docutils literal"><span class="pre">controller</span></code> Module<a class="headerlink" href="#module-pypot.vrep.controller" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pypot.vrep.controller.VrepController">
+<em class="property">class </em><code class="descclassname">pypot.vrep.controller.</code><code class="descname">VrepController</code><span class="sig-paren">(</span><em>vrep_io</em>, <em>scene</em>, <em>motors</em>, <em>sync_freq=50.0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/vrep/controller.html#VrepController"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.vrep.controller.VrepController" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="pypot.robot.html#pypot.robot.controller.MotorsController" title="pypot.robot.controller.MotorsController"><code class="xref py py-class docutils literal"><span class="pre">pypot.robot.controller.MotorsController</span></code></a></p>
+<p>V-REP motors controller.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>vrep_io</strong> (<a class="reference internal" href="#pypot.vrep.io.VrepIO" title="pypot.vrep.io.VrepIO"><code class="xref py py-class docutils literal"><span class="pre">VrepIO</span></code></a>) &#8211; vrep io instance</li>
+<li><strong>scene</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; path to the V-REP scene file to start</li>
+<li><strong>motors</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a>) &#8211; list of motors attached to the controller</li>
+<li><strong>sync_freq</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) &#8211; synchronization frequency</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="pypot.vrep.controller.VrepController.setup">
+<code class="descname">setup</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/vrep/controller.html#VrepController.setup"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.vrep.controller.VrepController.setup" title="Permalink to this definition">¶</a></dt>
+<dd><p>Setups the controller by reading/setting position for all motors.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.vrep.controller.VrepController.update">
+<code class="descname">update</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/vrep/controller.html#VrepController.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.vrep.controller.VrepController.update" title="Permalink to this definition">¶</a></dt>
+<dd><p>Synchronization update loop.</p>
+<p>At each update all motor position are read from vrep and set to the motors. The motors target position are also send to v-rep.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pypot.vrep.controller.VrepObjectTracker">
+<em class="property">class </em><code class="descclassname">pypot.vrep.controller.</code><code class="descname">VrepObjectTracker</code><span class="sig-paren">(</span><em>io</em>, <em>sensors</em>, <em>sync_freq=50.0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/vrep/controller.html#VrepObjectTracker"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.vrep.controller.VrepObjectTracker" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="pypot.robot.html#pypot.robot.controller.SensorsController" title="pypot.robot.controller.SensorsController"><code class="xref py py-class docutils literal"><span class="pre">pypot.robot.controller.SensorsController</span></code></a></p>
+<p>Tracks the 3D position and orientation of a V-REP object.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>io</strong> (<a class="reference internal" href="pypot.robot.html#pypot.robot.io.AbstractIO" title="pypot.robot.io.AbstractIO"><code class="xref py py-class docutils literal"><span class="pre">AbstractIO</span></code></a>) &#8211; IO used to communicate with the hardware motors</li>
+<li><strong>sensors</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a>) &#8211; list of sensors attached to the controller</li>
+<li><strong>sync_freq</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) &#8211; synchronization frequency</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="pypot.vrep.controller.VrepObjectTracker.setup">
+<code class="descname">setup</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/vrep/controller.html#VrepObjectTracker.setup"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.vrep.controller.VrepObjectTracker.setup" title="Permalink to this definition">¶</a></dt>
+<dd><p>Forces a first update to trigger V-REP streaming.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.vrep.controller.VrepObjectTracker.update">
+<code class="descname">update</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/vrep/controller.html#VrepObjectTracker.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.vrep.controller.VrepObjectTracker.update" title="Permalink to this definition">¶</a></dt>
+<dd><p>Updates the position and orientation of the tracked objects.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pypot.vrep.controller.VrepCollisionDetector">
+<em class="property">class </em><code class="descclassname">pypot.vrep.controller.</code><code class="descname">VrepCollisionDetector</code><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/vrep/controller.html#VrepCollisionDetector"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.vrep.controller.VrepCollisionDetector" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="pypot.robot.html#pypot.robot.sensor.Sensor" title="pypot.robot.sensor.Sensor"><code class="xref py py-class docutils literal"><span class="pre">pypot.robot.sensor.Sensor</span></code></a></p>
+<dl class="attribute">
+<dt id="pypot.vrep.controller.VrepCollisionDetector.colliding">
+<code class="descname">colliding</code><a class="headerlink" href="#pypot.vrep.controller.VrepCollisionDetector.colliding" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pypot.vrep.controller.VrepCollisionTracker">
+<em class="property">class </em><code class="descclassname">pypot.vrep.controller.</code><code class="descname">VrepCollisionTracker</code><span class="sig-paren">(</span><em>io</em>, <em>sensors</em>, <em>sync_freq=50.0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/vrep/controller.html#VrepCollisionTracker"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.vrep.controller.VrepCollisionTracker" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="pypot.robot.html#pypot.robot.controller.SensorsController" title="pypot.robot.controller.SensorsController"><code class="xref py py-class docutils literal"><span class="pre">pypot.robot.controller.SensorsController</span></code></a></p>
+<p>Tracks collision state.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>io</strong> (<a class="reference internal" href="pypot.robot.html#pypot.robot.io.AbstractIO" title="pypot.robot.io.AbstractIO"><code class="xref py py-class docutils literal"><span class="pre">AbstractIO</span></code></a>) &#8211; IO used to communicate with the hardware motors</li>
+<li><strong>sensors</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a>) &#8211; list of sensors attached to the controller</li>
+<li><strong>sync_freq</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) &#8211; synchronization frequency</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="pypot.vrep.controller.VrepCollisionTracker.setup">
+<code class="descname">setup</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/vrep/controller.html#VrepCollisionTracker.setup"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.vrep.controller.VrepCollisionTracker.setup" title="Permalink to this definition">¶</a></dt>
+<dd><p>Forces a first update to trigger V-REP streaming.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.vrep.controller.VrepCollisionTracker.update">
+<code class="descname">update</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/vrep/controller.html#VrepCollisionTracker.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.vrep.controller.VrepCollisionTracker.update" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update the state of the collision detectors.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        
+      </div><!-- /row -->
+
+      <!-- row -->
+      <div class="row footer-relbar">
+<div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
+  <div class="navbar-inner">
+    <ul class="nav navbar-nav ">
+        <li><a href="index.html">pypot 2.7.5 documentation</a></li>
+    </ul>
+<ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
+      
+        <li><a href="pypot.server.html" title="server Package" >previous</a></li>
+        <li><a href="pypot.utils.html" title="utils Package" >next</a></li>
+        <li><a href="py-modindex.html" title="Python Module Index" >modules</a></li>
+        <li><a href="genindex.html" title="General Index" >index</a></li>
+        <li><a href="api.html" >Pypot&#8217;s API</a></li>
+        <li><a href="#">top</a></li> 
+      
+    </ul>
+  </div>
+</div>
+      </div><!-- /row -->
+
+      <!-- footer -->
+      <footer role="contentinfo">
+          &copy; Copyright 2012, Poppy-Project.
+        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.3.1.
+      </footer>
+      <!-- /footer -->
+
+    </div>
+    <!-- /container -->
+
+  </body>
+</html>

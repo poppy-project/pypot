@@ -1,0 +1,511 @@
+
+
+<!DOCTYPE html>
+
+
+
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    
+    <title>utils Package &mdash; pypot 2.7.5 documentation</title>
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    
+
+<link rel="stylesheet" href="_static/css/basicstrap-base.css" type="text/css" />
+<link rel="stylesheet" id="current-theme" href="_static/css/bootstrap3/bootstrap.min.css" type="text/css" />
+<link rel="stylesheet" id="current-adjust-theme" type="text/css" />
+
+<link rel="stylesheet" href="_static/css/font-awesome.min.css">
+
+<style type="text/css">
+  body {
+    padding-top: 60px;
+    padding-bottom: 40px;
+  }
+</style>
+
+<link rel="stylesheet" href="_static/css/basicstrap.css" type="text/css" />
+<link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+<link rel="stylesheet" href="_static/my-css.css" type="text/css" />
+    
+<script type="text/javascript">
+  var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:    './',
+            VERSION:     '2.7.5',
+            COLLAPSE_INDEX: false,
+            FILE_SUFFIX: '.html',
+            HAS_SOURCE:  true
+  };
+</script>
+    <script type="text/javascript" src="_static/js/jquery.min.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/js/bootstrap3.min.js"></script>
+<script type="text/javascript" src="_static/js/jquery.cookie.min.js"></script>
+<script type="text/javascript" src="_static/js/basicstrap.js"></script>
+<script type="text/javascript">
+</script>
+    <link rel="author" title="About these documents" href="about.html" />
+    <link rel="top" title="pypot 2.7.5 documentation" href="index.html" />
+    <link rel="up" title="Pypot’s API" href="api.html" />
+    <link rel="next" title="FAQ" href="FAQ.html" />
+    <link rel="prev" title="vrep Package" href="pypot.vrep.html" /> 
+  </head>
+  <body role="document">
+    <div id="navbar-top" class="navbar navbar-fixed-top navbar-default" role="navigation" aria-label="top navigation">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="index.html">pypot 2.7.5 documentation</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
+              <li class="dropdown visible-xs">
+                <a role="button" id="localToc" data-toggle="dropdown" data-target="#" href="#">Table Of Contents <b class="caret"></b></a>
+                <ul class="dropdown-menu localtoc sp-localtoc" role="menu" aria-labelledby="localToc">
+                <ul>
+<li><a class="reference internal" href="#"><code class="docutils literal"><span class="pre">utils</span></code> Package</a><ul>
+<li><a class="reference internal" href="#module-pypot.utils.stoppablethread"><code class="docutils literal"><span class="pre">stoppablethread</span></code> Module</a></li>
+</ul>
+</li>
+</ul>
+
+                </ul>
+              </li>
+
+            
+              <li><a href="pypot.vrep.html" title="vrep Package" accesskey="P">previous </a></li>
+              <li><a href="FAQ.html" title="FAQ" accesskey="N">next </a></li>
+              <li><a href="py-modindex.html" title="Python Module Index" >modules </a></li>
+              <li><a href="genindex.html" title="General Index" accesskey="I">index </a></li>
+              <li><a href="api.html" accesskey="U">Pypot&#8217;s API</a></li>
+            
+            <li class="visible-xs"><a href="_sources/pypot.utils.txt" rel="nofollow">Show Source</a></li>
+
+            <li class="visible-xs">
+                <form class="search form-search form-inline navbar-form navbar-right sp-searchbox" action="search.html" method="get">
+                  <div class="input-append input-group">
+                    <input type="text" class="search-query form-control" name="q" placeholder="Search...">
+                    <span class="input-group-btn">
+                    <input type="submit" class="btn" value="Go" />
+                    </span>
+                  </div>
+                  <input type="hidden" name="check_keywords" value="yes" />
+                  <input type="hidden" name="area" value="default" />
+                </form>
+            </li>
+
+            
+
+          </ul>
+
+        </div>
+      </div>
+    </div>
+    
+
+    <!-- container -->
+    <div class="container-fluid">
+
+      <!-- row -->
+      <div class="row">
+         
+<div class="col-md-3 hidden-xs" id="sidebar-wrapper">
+  <div class="sidebar hidden-xs" role="navigation" aria-label="main navigation">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#"><code class="docutils literal"><span class="pre">utils</span></code> Package</a><ul>
+<li><a class="reference internal" href="#module-pypot.utils.stoppablethread"><code class="docutils literal"><span class="pre">stoppablethread</span></code> Module</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="pypot.vrep.html"
+                        title="previous chapter"><code class="docutils literal"><span class="pre">vrep</span></code> Package</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="FAQ.html"
+                        title="next chapter">FAQ</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/pypot.utils.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" role="search">
+  <h3>Quick search</h3>
+  <form class="search form-inline" action="search.html" method="get">
+      <div class="input-append input-group">
+        <input type="text" class="search-query form-control" name="q" placeholder="Search...">
+        <span class="input-group-btn">
+        <input type="submit" class="btn" value="Go" />
+        </span>
+      </div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+  </div>
+</div> 
+        
+
+        <div class="col-md-9" id="content-wrapper">
+          <div class="document" role="main">
+            <div class="documentwrapper">
+              <div class="bodywrapper">
+                <div class="body">
+                  
+  <div class="section" id="module-pypot.utils">
+<span id="utils-package"></span><h1><code class="xref py py-mod docutils literal"><span class="pre">utils</span></code> Package<a class="headerlink" href="#module-pypot.utils" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="pypot.utils.Point2D">
+<em class="property">class </em><code class="descclassname">pypot.utils.</code><code class="descname">Point2D</code><span class="sig-paren">(</span><em>x</em>, <em>y</em><span class="sig-paren">)</span><a class="headerlink" href="#pypot.utils.Point2D" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">tuple</span></code></p>
+<dl class="attribute">
+<dt id="pypot.utils.Point2D.x">
+<code class="descname">x</code><a class="headerlink" href="#pypot.utils.Point2D.x" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 0</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pypot.utils.Point2D.y">
+<code class="descname">y</code><a class="headerlink" href="#pypot.utils.Point2D.y" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 1</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pypot.utils.Point3D">
+<em class="property">class </em><code class="descclassname">pypot.utils.</code><code class="descname">Point3D</code><span class="sig-paren">(</span><em>x</em>, <em>y</em>, <em>z</em><span class="sig-paren">)</span><a class="headerlink" href="#pypot.utils.Point3D" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">tuple</span></code></p>
+<dl class="attribute">
+<dt id="pypot.utils.Point3D.x">
+<code class="descname">x</code><a class="headerlink" href="#pypot.utils.Point3D.x" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 0</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pypot.utils.Point3D.y">
+<code class="descname">y</code><a class="headerlink" href="#pypot.utils.Point3D.y" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 1</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pypot.utils.Point3D.z">
+<code class="descname">z</code><a class="headerlink" href="#pypot.utils.Point3D.z" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 2</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pypot.utils.Point">
+<code class="descclassname">pypot.utils.</code><code class="descname">Point</code><a class="headerlink" href="#pypot.utils.Point" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#pypot.utils.Point3D" title="pypot.utils.Point3D"><code class="xref py py-class docutils literal"><span class="pre">Point3D</span></code></a></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="pypot.utils.Vector3D">
+<em class="property">class </em><code class="descclassname">pypot.utils.</code><code class="descname">Vector3D</code><span class="sig-paren">(</span><em>x</em>, <em>y</em>, <em>z</em><span class="sig-paren">)</span><a class="headerlink" href="#pypot.utils.Vector3D" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">tuple</span></code></p>
+<dl class="attribute">
+<dt id="pypot.utils.Vector3D.x">
+<code class="descname">x</code><a class="headerlink" href="#pypot.utils.Vector3D.x" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 0</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pypot.utils.Vector3D.y">
+<code class="descname">y</code><a class="headerlink" href="#pypot.utils.Vector3D.y" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 1</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pypot.utils.Vector3D.z">
+<code class="descname">z</code><a class="headerlink" href="#pypot.utils.Vector3D.z" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 2</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pypot.utils.Vector">
+<code class="descclassname">pypot.utils.</code><code class="descname">Vector</code><a class="headerlink" href="#pypot.utils.Vector" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#pypot.utils.Vector3D" title="pypot.utils.Vector3D"><code class="xref py py-class docutils literal"><span class="pre">Vector3D</span></code></a></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="pypot.utils.Quaternion">
+<em class="property">class </em><code class="descclassname">pypot.utils.</code><code class="descname">Quaternion</code><span class="sig-paren">(</span><em>x</em>, <em>y</em>, <em>z</em>, <em>w</em><span class="sig-paren">)</span><a class="headerlink" href="#pypot.utils.Quaternion" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">tuple</span></code></p>
+<dl class="attribute">
+<dt id="pypot.utils.Quaternion.w">
+<code class="descname">w</code><a class="headerlink" href="#pypot.utils.Quaternion.w" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 3</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pypot.utils.Quaternion.x">
+<code class="descname">x</code><a class="headerlink" href="#pypot.utils.Quaternion.x" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 0</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pypot.utils.Quaternion.y">
+<code class="descname">y</code><a class="headerlink" href="#pypot.utils.Quaternion.y" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 1</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pypot.utils.Quaternion.z">
+<code class="descname">z</code><a class="headerlink" href="#pypot.utils.Quaternion.z" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 2</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="pypot.utils.attrsetter">
+<code class="descclassname">pypot.utils.</code><code class="descname">attrsetter</code><span class="sig-paren">(</span><em>item</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/utils.html#attrsetter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.utils.attrsetter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<div class="section" id="module-pypot.utils.stoppablethread">
+<span id="stoppablethread-module"></span><h2><code class="xref py py-mod docutils literal"><span class="pre">stoppablethread</span></code> Module<a class="headerlink" href="#module-pypot.utils.stoppablethread" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="pypot.utils.stoppablethread.StoppableThread">
+<em class="property">class </em><code class="descclassname">pypot.utils.stoppablethread.</code><code class="descname">StoppableThread</code><span class="sig-paren">(</span><em>setup=None</em>, <em>target=None</em>, <em>teardown=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/utils/stoppablethread.html#StoppableThread"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.utils.stoppablethread.StoppableThread" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="http://docs.python.org/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<p>Stoppable version of python Thread.</p>
+<dl class="docutils">
+<dt>This class provides the following mechanism on top of &#8220;classical&#8221; python Thread:</dt>
+<dd><ul class="first last simple">
+<li>you can stop the thread (if you defined your run method accordingly).</li>
+<li>you can restart a thread (stop it and re-run it)</li>
+<li>you can pause/resume a thread</li>
+</ul>
+</dd>
+</dl>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">It is up to the subclass to correctly respond to the stop, pause/resume signals (see <a class="reference internal" href="#pypot.utils.stoppablethread.StoppableThread.run" title="pypot.utils.stoppablethread.StoppableThread.run"><code class="xref py py-meth docutils literal"><span class="pre">run()</span></code></a> for details).</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>setup</strong> (<em>func</em>) &#8211; specific setup function to use (otherwise self.setup)</li>
+<li><strong>target</strong> (<em>func</em>) &#8211; specific target function to use (otherwise self.run)</li>
+<li><strong>teardown</strong> (<em>func</em>) &#8211; specific teardown function to use (otherwise self.teardown)</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="pypot.utils.stoppablethread.StoppableThread.start">
+<code class="descname">start</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/utils/stoppablethread.html#StoppableThread.start"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.utils.stoppablethread.StoppableThread.start" title="Permalink to this definition">¶</a></dt>
+<dd><p>Start the run method as a new thread.</p>
+<p>It will first stop the thread if it is already running.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.utils.stoppablethread.StoppableThread.stop">
+<code class="descname">stop</code><span class="sig-paren">(</span><em>wait=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/utils/stoppablethread.html#StoppableThread.stop"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.utils.stoppablethread.StoppableThread.stop" title="Permalink to this definition">¶</a></dt>
+<dd><p>Stop the thread.</p>
+<p>More precisely, sends the stopping signal to the thread. It is then up top the run method to correctly responds.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.utils.stoppablethread.StoppableThread.join">
+<code class="descname">join</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/utils/stoppablethread.html#StoppableThread.join"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.utils.stoppablethread.StoppableThread.join" title="Permalink to this definition">¶</a></dt>
+<dd><p>Wait for the thread termination.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pypot.utils.stoppablethread.StoppableThread.running">
+<code class="descname">running</code><a class="headerlink" href="#pypot.utils.stoppablethread.StoppableThread.running" title="Permalink to this definition">¶</a></dt>
+<dd><p>Whether the thread is running.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pypot.utils.stoppablethread.StoppableThread.started">
+<code class="descname">started</code><a class="headerlink" href="#pypot.utils.stoppablethread.StoppableThread.started" title="Permalink to this definition">¶</a></dt>
+<dd><p>Whether the thread has been started.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.utils.stoppablethread.StoppableThread.wait_to_start">
+<code class="descname">wait_to_start</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/utils/stoppablethread.html#StoppableThread.wait_to_start"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.utils.stoppablethread.StoppableThread.wait_to_start" title="Permalink to this definition">¶</a></dt>
+<dd><p>Wait for the thread to actually starts.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.utils.stoppablethread.StoppableThread.should_stop">
+<code class="descname">should_stop</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/utils/stoppablethread.html#StoppableThread.should_stop"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.utils.stoppablethread.StoppableThread.should_stop" title="Permalink to this definition">¶</a></dt>
+<dd><p>Signals if the thread should be stopped or not.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.utils.stoppablethread.StoppableThread.wait_to_stop">
+<code class="descname">wait_to_stop</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/utils/stoppablethread.html#StoppableThread.wait_to_stop"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.utils.stoppablethread.StoppableThread.wait_to_stop" title="Permalink to this definition">¶</a></dt>
+<dd><p>Wait for the thread to terminate.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.utils.stoppablethread.StoppableThread.setup">
+<code class="descname">setup</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/utils/stoppablethread.html#StoppableThread.setup"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.utils.stoppablethread.StoppableThread.setup" title="Permalink to this definition">¶</a></dt>
+<dd><p>Setup method call just before the run.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.utils.stoppablethread.StoppableThread.run">
+<code class="descname">run</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/utils/stoppablethread.html#StoppableThread.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.utils.stoppablethread.StoppableThread.run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run method of the thread.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>In order to be stoppable (resp. pausable), this method has to check the running property - as often as possible to improve responsivness - and terminate when <a class="reference internal" href="#pypot.utils.stoppablethread.StoppableThread.should_stop" title="pypot.utils.stoppablethread.StoppableThread.should_stop"><code class="xref py py-meth docutils literal"><span class="pre">should_stop()</span></code></a> (resp. <a class="reference internal" href="#pypot.utils.stoppablethread.StoppableThread.should_pause" title="pypot.utils.stoppablethread.StoppableThread.should_pause"><code class="xref py py-meth docutils literal"><span class="pre">should_pause()</span></code></a>) becomes True.
+For instance:</p>
+<div class="last highlight-python"><div class="highlight"><pre><span class="k">while</span> <span class="bp">self</span><span class="o">.</span><span class="n">should_stop</span><span class="p">():</span>
+    <span class="n">do_atom_work</span><span class="p">()</span>
+    <span class="o">...</span>
+</pre></div>
+</div>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.utils.stoppablethread.StoppableThread.teardown">
+<code class="descname">teardown</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/utils/stoppablethread.html#StoppableThread.teardown"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.utils.stoppablethread.StoppableThread.teardown" title="Permalink to this definition">¶</a></dt>
+<dd><p>Teardown method call just after the run.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.utils.stoppablethread.StoppableThread.should_pause">
+<code class="descname">should_pause</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/utils/stoppablethread.html#StoppableThread.should_pause"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.utils.stoppablethread.StoppableThread.should_pause" title="Permalink to this definition">¶</a></dt>
+<dd><p>Signals if the thread should be paused or not.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pypot.utils.stoppablethread.StoppableThread.paused">
+<code class="descname">paused</code><a class="headerlink" href="#pypot.utils.stoppablethread.StoppableThread.paused" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pypot.utils.stoppablethread.StoppableThread.pause">
+<code class="descname">pause</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/utils/stoppablethread.html#StoppableThread.pause"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.utils.stoppablethread.StoppableThread.pause" title="Permalink to this definition">¶</a></dt>
+<dd><p>Requests the thread to pause.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.utils.stoppablethread.StoppableThread.resume">
+<code class="descname">resume</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/utils/stoppablethread.html#StoppableThread.resume"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.utils.stoppablethread.StoppableThread.resume" title="Permalink to this definition">¶</a></dt>
+<dd><p>Requests the thread to resume.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.utils.stoppablethread.StoppableThread.wait_to_resume">
+<code class="descname">wait_to_resume</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/utils/stoppablethread.html#StoppableThread.wait_to_resume"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.utils.stoppablethread.StoppableThread.wait_to_resume" title="Permalink to this definition">¶</a></dt>
+<dd><p>Waits until the thread is resumed.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="pypot.utils.stoppablethread.make_update_loop">
+<code class="descclassname">pypot.utils.stoppablethread.</code><code class="descname">make_update_loop</code><span class="sig-paren">(</span><em>thread</em>, <em>update_func</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/utils/stoppablethread.html#make_update_loop"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.utils.stoppablethread.make_update_loop" title="Permalink to this definition">¶</a></dt>
+<dd><p>Makes a run loop which calls an update function at a predefined frequency.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="pypot.utils.stoppablethread.StoppableLoopThread">
+<em class="property">class </em><code class="descclassname">pypot.utils.stoppablethread.</code><code class="descname">StoppableLoopThread</code><span class="sig-paren">(</span><em>frequency</em>, <em>update=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/utils/stoppablethread.html#StoppableLoopThread"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.utils.stoppablethread.StoppableLoopThread" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pypot.utils.stoppablethread.StoppableThread" title="pypot.utils.stoppablethread.StoppableThread"><code class="xref py py-class docutils literal"><span class="pre">pypot.utils.stoppablethread.StoppableThread</span></code></a></p>
+<p>LoopThread calling an update method at a pre-defined frequency.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This class does not mean to be accurate. The given frequency will be approximately followed - depending for instance on CPU load - and only reached if the update method takes less time than the chosen loop period.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name" colspan="2">Params float frequency:</th></tr>
+<tr class="field-odd field"><td>&nbsp;</td><td class="field-body">called frequency of the <code class="xref py py-meth docutils literal"><span class="pre">update()</span></code> method</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="pypot.utils.stoppablethread.StoppableLoopThread.run">
+<code class="descname">run</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/utils/stoppablethread.html#StoppableLoopThread.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.utils.stoppablethread.StoppableLoopThread.run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Called the update method at the pre-defined frequency.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.utils.stoppablethread.StoppableLoopThread.update">
+<code class="descname">update</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/utils/stoppablethread.html#StoppableLoopThread.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.utils.stoppablethread.StoppableLoopThread.update" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update method called at the pre-defined frequency.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        
+      </div><!-- /row -->
+
+      <!-- row -->
+      <div class="row footer-relbar">
+<div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
+  <div class="navbar-inner">
+    <ul class="nav navbar-nav ">
+        <li><a href="index.html">pypot 2.7.5 documentation</a></li>
+    </ul>
+<ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
+      
+        <li><a href="pypot.vrep.html" title="vrep Package" >previous</a></li>
+        <li><a href="FAQ.html" title="FAQ" >next</a></li>
+        <li><a href="py-modindex.html" title="Python Module Index" >modules</a></li>
+        <li><a href="genindex.html" title="General Index" >index</a></li>
+        <li><a href="api.html" >Pypot&#8217;s API</a></li>
+        <li><a href="#">top</a></li> 
+      
+    </ul>
+  </div>
+</div>
+      </div><!-- /row -->
+
+      <!-- footer -->
+      <footer role="contentinfo">
+          &copy; Copyright 2012, Poppy-Project.
+        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.3.1.
+      </footer>
+      <!-- /footer -->
+
+    </div>
+    <!-- /container -->
+
+  </body>
+</html>

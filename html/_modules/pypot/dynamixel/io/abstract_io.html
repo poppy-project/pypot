@@ -1,0 +1,750 @@
+
+
+<!DOCTYPE html>
+
+
+
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    
+    <title>pypot.dynamixel.io.abstract_io &mdash; pypot 2.7.5 documentation</title>
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    
+
+<link rel="stylesheet" href="../../../../_static/css/basicstrap-base.css" type="text/css" />
+<link rel="stylesheet" id="current-theme" href="../../../../_static/css/bootstrap3/bootstrap.min.css" type="text/css" />
+<link rel="stylesheet" id="current-adjust-theme" type="text/css" />
+
+<link rel="stylesheet" href="../../../../_static/css/font-awesome.min.css">
+
+<style type="text/css">
+  body {
+    padding-top: 60px;
+    padding-bottom: 40px;
+  }
+</style>
+
+<link rel="stylesheet" href="../../../../_static/css/basicstrap.css" type="text/css" />
+<link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+<link rel="stylesheet" href="../../../../_static/my-css.css" type="text/css" />
+    
+<script type="text/javascript">
+  var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:    '../../../../',
+            VERSION:     '2.7.5',
+            COLLAPSE_INDEX: false,
+            FILE_SUFFIX: '.html',
+            HAS_SOURCE:  true
+  };
+</script>
+    <script type="text/javascript" src="../../../../_static/js/jquery.min.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../../_static/js/bootstrap3.min.js"></script>
+<script type="text/javascript" src="../../../../_static/js/jquery.cookie.min.js"></script>
+<script type="text/javascript" src="../../../../_static/js/basicstrap.js"></script>
+<script type="text/javascript">
+</script>
+    <link rel="author" title="About these documents" href="../../../../about.html" />
+    <link rel="top" title="pypot 2.7.5 documentation" href="../../../../index.html" />
+    <link rel="up" title="pypot.dynamixel" href="../../dynamixel.html" /> 
+  </head>
+  <body role="document">
+    <div id="navbar-top" class="navbar navbar-fixed-top navbar-default" role="navigation" aria-label="top navigation">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="../../../../index.html">pypot 2.7.5 documentation</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
+
+            
+              <li><a href="../../../../py-modindex.html" title="Python Module Index" >modules </a></li>
+              <li><a href="../../../../genindex.html" title="General Index" accesskey="I">index </a></li>
+              <li><a href="../../../index.html" >Module code</a></li>
+              <li><a href="../../dynamixel.html" accesskey="U">pypot.dynamixel</a></li>
+            
+
+            <li class="visible-xs">
+                <form class="search form-search form-inline navbar-form navbar-right sp-searchbox" action="../../../../search.html" method="get">
+                  <div class="input-append input-group">
+                    <input type="text" class="search-query form-control" name="q" placeholder="Search...">
+                    <span class="input-group-btn">
+                    <input type="submit" class="btn" value="Go" />
+                    </span>
+                  </div>
+                  <input type="hidden" name="check_keywords" value="yes" />
+                  <input type="hidden" name="area" value="default" />
+                </form>
+            </li>
+
+            
+
+          </ul>
+
+        </div>
+      </div>
+    </div>
+    
+
+    <!-- container -->
+    <div class="container-fluid">
+
+      <!-- row -->
+      <div class="row">
+         
+<div class="col-md-3 hidden-xs" id="sidebar-wrapper">
+  <div class="sidebar hidden-xs" role="navigation" aria-label="main navigation">
+<div id="searchbox" role="search">
+  <h3>Quick search</h3>
+  <form class="search form-inline" action="../../../../search.html" method="get">
+      <div class="input-append input-group">
+        <input type="text" class="search-query form-control" name="q" placeholder="Search...">
+        <span class="input-group-btn">
+        <input type="submit" class="btn" value="Go" />
+        </span>
+      </div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+  </div>
+</div> 
+        
+
+        <div class="col-md-9" id="content-wrapper">
+          <div class="document" role="main">
+            <div class="documentwrapper">
+              <div class="bodywrapper">
+                <div class="body">
+                  
+  <h1>Source code for pypot.dynamixel.io.abstract_io</h1><div class="highlight"><pre>
+<span class="c"># -*- coding: utf-8 -*-</span>
+
+<span class="kn">import</span> <span class="nn">serial</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">operator</span>
+<span class="kn">import</span> <span class="nn">itertools</span>
+<span class="kn">import</span> <span class="nn">threading</span>
+
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">namedtuple</span><span class="p">,</span> <span class="n">OrderedDict</span>
+<span class="kn">from</span> <span class="nn">contextlib</span> <span class="kn">import</span> <span class="n">contextmanager</span>
+
+<span class="kn">from</span> <span class="nn">...robot.io</span> <span class="kn">import</span> <span class="n">AbstractIO</span>
+<span class="kn">from</span> <span class="nn">..conversion</span> <span class="kn">import</span> <span class="p">(</span><span class="n">dxl_code_all</span><span class="p">,</span> <span class="n">dxl_decode_all</span><span class="p">,</span> <span class="n">decode_error</span><span class="p">,</span>
+                          <span class="n">dxl_to_model</span><span class="p">,</span> <span class="n">position_range</span><span class="p">)</span>
+
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="n">__name__</span><span class="p">)</span>
+<span class="c"># With this logger you should always provide as extra:</span>
+<span class="c"># - the port</span>
+<span class="c"># - the baudrate</span>
+<span class="c"># - the timeout</span>
+
+
+<span class="n">_DxlControl</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span><span class="s">&#39;_DxlControl&#39;</span><span class="p">,</span> <span class="p">(</span><span class="s">&#39;name&#39;</span><span class="p">,</span>
+                                         <span class="s">&#39;address&#39;</span><span class="p">,</span> <span class="s">&#39;length&#39;</span><span class="p">,</span> <span class="s">&#39;nb_elem&#39;</span><span class="p">,</span>
+                                         <span class="s">&#39;access&#39;</span><span class="p">,</span>
+                                         <span class="s">&#39;models&#39;</span><span class="p">,</span>
+                                         <span class="s">&#39;dxl_to_si&#39;</span><span class="p">,</span> <span class="s">&#39;si_to_dxl&#39;</span><span class="p">,</span>
+                                         <span class="s">&#39;getter_name&#39;</span><span class="p">,</span> <span class="s">&#39;setter_name&#39;</span><span class="p">))</span>
+
+
+<span class="k">class</span> <span class="nc">_DxlAccess</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="n">readonly</span><span class="p">,</span> <span class="n">writeonly</span><span class="p">,</span> <span class="n">readwrite</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">AbstractDxlIO</span><span class="p">(</span><span class="n">AbstractIO</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Low-level class to handle the serial communication with the robotis motors. &quot;&quot;&quot;</span>
+
+    <span class="n">__used_ports</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+    <span class="n">__controls</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">_protocol</span> <span class="o">=</span> <span class="bp">None</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">get_used_ports</span><span class="p">(</span><span class="n">cls</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">cls</span><span class="o">.</span><span class="n">__used_ports</span><span class="p">)</span>
+
+    <span class="c"># MARK: - Open, Close and Flush the communication</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="n">port</span><span class="p">,</span> <span class="n">baudrate</span><span class="o">=</span><span class="mi">1000000</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span>
+                 <span class="n">use_sync_read</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                 <span class="n">error_handler_cls</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                 <span class="n">convert</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; At instanciation, it opens the serial port and sets the communication parameters.</span>
+
+<span class="sd">            :param string port: the serial port to use (e.g. Unix (/dev/tty...), Windows (COM...)).</span>
+<span class="sd">            :param int baudrate: default for new motors: 57600, for PyPot motors: 1000000</span>
+<span class="sd">            :param float timeout: read timeout in seconds</span>
+<span class="sd">            :param bool use_sync_read: whether or not to use the SYNC_READ instruction</span>
+<span class="sd">            :param error_handler: set a handler that will receive the different errors</span>
+<span class="sd">            :type error_handler: :py:class:`~pypot.dynamixel.error.DxlErrorHandler`</span>
+<span class="sd">            :param bool convert: whether or not convert values to units expressed in the standard system</span>
+
+<span class="sd">            :raises: :py:exc:`~pypot.dynamixel.io.DxlError` if the port is already used.</span>
+
+<span class="sd">            &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_known_models</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_known_mode</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_sync_read</span> <span class="o">=</span> <span class="n">use_sync_read</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_error_handler</span> <span class="o">=</span> <span class="n">error_handler_cls</span><span class="p">()</span> <span class="k">if</span> <span class="n">error_handler_cls</span> <span class="k">else</span> <span class="bp">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_convert</span> <span class="o">=</span> <span class="n">convert</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_serial_lock</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Lock</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">port</span><span class="p">,</span> <span class="n">baudrate</span><span class="p">,</span> <span class="n">timeout</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span>
+
+    <span class="k">def</span> <span class="nf">__del__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_value</span><span class="p">,</span> <span class="n">traceback</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">(</span><span class="s">&#39;&lt;DXL IO: closed={self.closed}, &#39;</span>
+                <span class="s">&#39;port=&quot;{self.port}&quot;, &#39;</span>
+                <span class="s">&#39;baudrate={self.baudrate}, &#39;</span>
+                <span class="s">&#39;timeout={self.timeout}&gt;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">open</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">port</span><span class="p">,</span> <span class="n">baudrate</span><span class="o">=</span><span class="mi">1000000</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mf">0.05</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Opens a new serial communication (closes the previous communication if needed).</span>
+
+<span class="sd">            :raises: :py:exc:`~pypot.dynamixel.io.DxlError` if the port is already used.</span>
+
+<span class="sd">            &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_open</span><span class="p">(</span><span class="n">port</span><span class="p">,</span> <span class="n">baudrate</span><span class="p">,</span> <span class="n">timeout</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&quot;Opening port &#39;</span><span class="si">%s</span><span class="s">&#39;&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">port</span><span class="p">,</span>
+                    <span class="n">extra</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;port&#39;</span><span class="p">:</span> <span class="n">port</span><span class="p">,</span>
+                           <span class="s">&#39;baudrate&#39;</span><span class="p">:</span> <span class="n">baudrate</span><span class="p">,</span>
+                           <span class="s">&#39;timeout&#39;</span><span class="p">:</span> <span class="n">timeout</span><span class="p">})</span>
+
+    <span class="k">def</span> <span class="nf">_open</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">port</span><span class="p">,</span> <span class="n">baudrate</span><span class="p">,</span> <span class="n">timeout</span><span class="p">,</span> <span class="n">max_recursion</span><span class="o">=</span><span class="mi">500</span><span class="p">):</span>
+        <span class="c"># Tries to connect to port until it succeeds to ping any motor on the bus.</span>
+        <span class="c"># This is  used to circumvent a bug with the driver for the USB2AX on Mac.</span>
+        <span class="c"># Warning: If no motor is connected on the bus, this will run forever!!!</span>
+        <span class="kn">import</span> <span class="nn">platform</span>
+        <span class="c"># import time</span>
+        <span class="kn">import</span> <span class="nn">pypot.utils.pypot_time</span> <span class="kn">as</span> <span class="nn">time</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">max_recursion</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_known_models</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_known_mode</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+
+            <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_serial_lock</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">(</span><span class="n">_force_lock</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+                <span class="k">if</span> <span class="n">port</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__used_ports</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="n">DxlError</span><span class="p">(</span><span class="s">&#39;port already used {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">port</span><span class="p">))</span>
+
+                <span class="c"># Dirty walkaround to fix a strange bug.</span>
+                <span class="c"># Observed with the USB2AX on Linux with pyserial 2.7</span>
+                <span class="c"># We have to first open/close the port in order to make it work</span>
+                <span class="c"># at 1Mbauds</span>
+                <span class="k">if</span> <span class="n">platform</span><span class="o">.</span><span class="n">system</span><span class="p">()</span> <span class="o">==</span> <span class="s">&#39;Linux&#39;</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sync_read</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_serial</span> <span class="o">=</span> <span class="n">serial</span><span class="o">.</span><span class="n">Serial</span><span class="p">(</span><span class="n">port</span><span class="p">,</span> <span class="mi">9600</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_serial</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+                <span class="bp">self</span><span class="o">.</span><span class="n">_serial</span> <span class="o">=</span> <span class="n">serial</span><span class="o">.</span><span class="n">Serial</span><span class="p">(</span><span class="n">port</span><span class="p">,</span> <span class="n">baudrate</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">__used_ports</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">port</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">platform</span><span class="o">.</span><span class="n">system</span><span class="p">()</span> <span class="o">==</span> <span class="s">&#39;Darwin&#39;</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sync_read</span><span class="p">:</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">ping</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_protocol</span><span class="o">.</span><span class="n">DxlBroadcast</span><span class="p">):</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+                    <span class="k">continue</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">timeout</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
+            <span class="k">break</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">DxlError</span><span class="p">(</span><span class="s">&#39;could not connect to the port {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">port</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_force_lock</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Closes the serial communication if opened. &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">closed</span><span class="p">:</span>
+            <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">__force_lock</span><span class="p">(</span><span class="n">_force_lock</span><span class="p">)</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">_serial_lock</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_serial</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">__used_ports</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">port</span><span class="p">)</span>
+
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&quot;Closing port &#39;</span><span class="si">%s</span><span class="s">&#39;&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">port</span><span class="p">,</span>
+                        <span class="n">extra</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;port&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">port</span><span class="p">,</span>
+                               <span class="s">&#39;baudrate&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">baudrate</span><span class="p">,</span>
+                               <span class="s">&#39;timeout&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">timeout</span><span class="p">})</span>
+
+    <span class="k">def</span> <span class="nf">flush</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_force_lock</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Flushes the serial communication (both input and output). &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">closed</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">DxlError</span><span class="p">(</span><span class="s">&#39;attempt to flush a closed serial communication&#39;</span><span class="p">)</span>
+
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">__force_lock</span><span class="p">(</span><span class="n">_force_lock</span><span class="p">)</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">_serial_lock</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_serial</span><span class="o">.</span><span class="n">flushInput</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_serial</span><span class="o">.</span><span class="n">flushOutput</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">__force_lock</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">condition</span><span class="p">):</span>
+        <span class="nd">@contextmanager</span>
+        <span class="k">def</span> <span class="nf">with_True</span><span class="p">():</span>
+            <span class="k">yield</span> <span class="bp">True</span>
+
+        <span class="k">return</span> <span class="n">with_True</span><span class="p">()</span> <span class="k">if</span> <span class="n">condition</span> <span class="k">else</span> <span class="bp">False</span>
+
+    <span class="c"># MARK: Properties of the serial communication</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">port</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Port used by the :class:`~pypot.dynamixel.io.DxlIO`. If set, will re-open a new connection. &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_serial</span><span class="o">.</span><span class="n">port</span>
+
+    <span class="nd">@port.setter</span>
+    <span class="k">def</span> <span class="nf">port</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">baudrate</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">timeout</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">baudrate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Baudrate used by the :class:`~pypot.dynamixel.io.DxlIO`. If set, will re-open a new connection. &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_serial</span><span class="o">.</span><span class="n">baudrate</span>
+
+    <span class="nd">@baudrate.setter</span>
+    <span class="k">def</span> <span class="nf">baudrate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">port</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">timeout</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">timeout</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Timeout used by the :class:`~pypot.dynamixel.io.DxlIO`. If set, will re-open a new connection. &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_serial</span><span class="o">.</span><span class="n">timeout</span>
+
+    <span class="nd">@timeout.setter</span>
+    <span class="k">def</span> <span class="nf">timeout</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">port</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">baudrate</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">closed</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Checks if the connection is closed. &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="ow">not</span> <span class="p">(</span><span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s">&#39;_serial&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_serial</span><span class="o">.</span><span class="n">isOpen</span><span class="p">())</span>
+
+    <span class="c"># MARK: - Motor discovery</span>
+
+    <span class="k">def</span> <span class="nf">ping</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Pings the motor with the specified id.</span>
+
+<span class="sd">            .. note:: The motor id should always be included in [0, 253]. 254 is used for broadcast.</span>
+
+<span class="sd">            &quot;&quot;&quot;</span>
+        <span class="n">pp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_protocol</span><span class="o">.</span><span class="n">DxlPingPacket</span><span class="p">(</span><span class="nb">id</span><span class="p">)</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_send_packet</span><span class="p">(</span><span class="n">pp</span><span class="p">,</span> <span class="n">error_handler</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">True</span>
+        <span class="k">except</span> <span class="n">DxlTimeoutError</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">False</span>
+
+    <span class="k">def</span> <span class="nf">scan</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ids</span><span class="o">=</span><span class="nb">range</span><span class="p">(</span><span class="mi">254</span><span class="p">)):</span>
+        <span class="sd">&quot;&quot;&quot; Pings all ids within the specified list, by default it finds all the motors connected to the bus. &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">[</span><span class="nb">id</span> <span class="k">for</span> <span class="nb">id</span> <span class="ow">in</span> <span class="n">ids</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ping</span><span class="p">(</span><span class="nb">id</span><span class="p">)]</span>
+
+    <span class="c"># MARK: - Specific Getter / Setter</span>
+
+    <span class="k">def</span> <span class="nf">get_model</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ids</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Gets the model for the specified motors. &quot;&quot;&quot;</span>
+        <span class="n">to_get_ids</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">ids</span> <span class="k">if</span> <span class="n">i</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_known_models</span><span class="p">]</span>
+        <span class="n">models</span> <span class="o">=</span> <span class="p">[</span><span class="n">dxl_to_model</span><span class="p">(</span><span class="n">m</span><span class="p">)</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_model</span><span class="p">(</span><span class="n">to_get_ids</span><span class="p">,</span> <span class="n">convert</span><span class="o">=</span><span class="bp">False</span><span class="p">)]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_known_models</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">to_get_ids</span><span class="p">,</span> <span class="n">models</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_known_models</span><span class="p">[</span><span class="nb">id</span><span class="p">]</span> <span class="k">for</span> <span class="nb">id</span> <span class="ow">in</span> <span class="n">ids</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">change_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_id_for_id</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Changes the id of the specified motors (each id must be unique on the bus). &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">new_id_for_id</span><span class="o">.</span><span class="n">values</span><span class="p">()))</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">new_id_for_id</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;each id must be unique.&#39;</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">new_id</span> <span class="ow">in</span> <span class="n">new_id_for_id</span><span class="o">.</span><span class="n">itervalues</span><span class="p">():</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ping</span><span class="p">(</span><span class="n">new_id</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;id {} is already used.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">new_id</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_change_id</span><span class="p">(</span><span class="n">new_id_for_id</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">motor_id</span><span class="p">,</span> <span class="n">new_id</span> <span class="ow">in</span> <span class="n">new_id_for_id</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">motor_id</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_known_models</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_known_models</span><span class="p">[</span><span class="n">new_id</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_known_models</span><span class="p">[</span><span class="n">motor_id</span><span class="p">]</span>
+                <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">_known_models</span><span class="p">[</span><span class="n">motor_id</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">motor_id</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_known_mode</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_known_mode</span><span class="p">[</span><span class="n">new_id</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_known_mode</span><span class="p">[</span><span class="n">motor_id</span><span class="p">]</span>
+                <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">_known_mode</span><span class="p">[</span><span class="n">motor_id</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">change_baudrate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">baudrate_for_ids</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Changes the baudrate of the specified motors. &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_change_baudrate</span><span class="p">(</span><span class="n">baudrate_for_ids</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">motor_id</span> <span class="ow">in</span> <span class="n">baudrate_for_ids</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">motor_id</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_known_models</span><span class="p">:</span>
+                <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">_known_models</span><span class="p">[</span><span class="n">motor_id</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">motor_id</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_known_mode</span><span class="p">:</span>
+                <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">_known_mode</span><span class="p">[</span><span class="n">motor_id</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">get_status_return_level</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ids</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Gets the status level for the specified motors. &quot;&quot;&quot;</span>
+        <span class="n">convert</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s">&#39;convert&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="s">&#39;convert&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">_convert</span>
+        <span class="n">srl</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="nb">id</span> <span class="ow">in</span> <span class="n">ids</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">srl</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_status_return_level</span><span class="p">((</span><span class="nb">id</span><span class="p">,</span> <span class="p">),</span>
+                                                         <span class="n">error_handler</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">convert</span><span class="o">=</span><span class="n">convert</span><span class="p">))</span>
+            <span class="k">except</span> <span class="n">DxlTimeoutError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ping</span><span class="p">(</span><span class="nb">id</span><span class="p">):</span>
+                    <span class="n">srl</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s">&#39;never&#39;</span> <span class="k">if</span> <span class="n">convert</span> <span class="k">else</span> <span class="mi">0</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_error_handler</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">_error_handler</span><span class="o">.</span><span class="n">handle_timeout</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+                        <span class="k">return</span> <span class="p">()</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="k">raise</span> <span class="n">e</span>
+
+        <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">srl</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">set_status_return_level</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">srl_for_id</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Sets status return level to the specified motors. &quot;&quot;&quot;</span>
+        <span class="n">convert</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s">&#39;convert&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="s">&#39;convert&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">_convert</span>
+        <span class="k">if</span> <span class="n">convert</span><span class="p">:</span>
+            <span class="n">srl_for_id</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">srl_for_id</span><span class="o">.</span><span class="n">keys</span><span class="p">(),</span>
+                                  <span class="p">[(</span><span class="s">&#39;never&#39;</span><span class="p">,</span> <span class="s">&#39;read&#39;</span><span class="p">,</span> <span class="s">&#39;always&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">srl_for_id</span><span class="o">.</span><span class="n">values</span><span class="p">()]))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_set_status_return_level</span><span class="p">(</span><span class="n">srl_for_id</span><span class="p">,</span> <span class="n">convert</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">switch_led_on</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ids</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Switches on the LED of the motors with the specified ids. &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_set_LED</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">ids</span><span class="p">,</span> <span class="n">itertools</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="bp">True</span><span class="p">))))</span>
+
+    <span class="k">def</span> <span class="nf">switch_led_off</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ids</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Switches off the LED of the motors with the specified ids. &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_set_LED</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">ids</span><span class="p">,</span> <span class="n">itertools</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="bp">False</span><span class="p">))))</span>
+
+    <span class="k">def</span> <span class="nf">enable_torque</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ids</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Enables torque of the motors with the specified ids. &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_set_torque_enable</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">ids</span><span class="p">,</span> <span class="n">itertools</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="bp">True</span><span class="p">))))</span>
+
+    <span class="k">def</span> <span class="nf">disable_torque</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ids</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Disables torque of the motors with the specified ids. &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_set_torque_enable</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">ids</span><span class="p">,</span> <span class="n">itertools</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="bp">False</span><span class="p">))))</span>
+
+    <span class="k">def</span> <span class="nf">get_pid_gain</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ids</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Gets the pid gain for the specified motors. &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">tuple</span><span class="p">([</span><span class="nb">tuple</span><span class="p">(</span><span class="nb">reversed</span><span class="p">(</span><span class="n">t</span><span class="p">))</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_pid_gain</span><span class="p">(</span><span class="n">ids</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)])</span>
+
+    <span class="k">def</span> <span class="nf">set_pid_gain</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pid_for_id</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Sets the pid gain to the specified motors. &quot;&quot;&quot;</span>
+        <span class="n">pid_for_id</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">itertools</span><span class="o">.</span><span class="n">izip</span><span class="p">(</span><span class="n">pid_for_id</span><span class="o">.</span><span class="n">iterkeys</span><span class="p">(),</span>
+                                         <span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="nb">reversed</span><span class="p">(</span><span class="n">t</span><span class="p">))</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">pid_for_id</span><span class="o">.</span><span class="n">values</span><span class="p">()]))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_set_pid_gain</span><span class="p">(</span><span class="n">pid_for_id</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="c"># MARK: - Generic Getter / Setter</span>
+
+    <span class="k">def</span> <span class="nf">get_control_table</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ids</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Gets the full control table for the specified motors.</span>
+
+<span class="sd">            ..note:: This function requires the model for each motor to be known. Querring this additional information might add some extra delay.</span>
+
+<span class="sd">            &quot;&quot;&quot;</span>
+        <span class="n">error_handler</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s">&#39;error_handler&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="p">(</span><span class="s">&#39;error_handler&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">)</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">_error_handler</span>
+        <span class="n">convert</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s">&#39;convert&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="p">(</span><span class="s">&#39;convert&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">)</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">_convert</span>
+
+        <span class="n">bl</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;goal position speed load&#39;</span><span class="p">,</span> <span class="s">&#39;present position speed load&#39;</span><span class="p">)</span>
+        <span class="n">controls</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_DxlIO__controls</span> <span class="k">if</span> <span class="n">c</span><span class="o">.</span><span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">bl</span><span class="p">]</span>
+
+        <span class="n">res</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">for</span> <span class="nb">id</span><span class="p">,</span> <span class="n">model</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">ids</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_model</span><span class="p">(</span><span class="n">ids</span><span class="p">)):</span>
+            <span class="n">controls</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">controls</span> <span class="k">if</span> <span class="n">model</span> <span class="ow">in</span> <span class="n">c</span><span class="o">.</span><span class="n">models</span><span class="p">]</span>
+
+            <span class="n">controls</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">controls</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">c</span><span class="p">:</span> <span class="n">c</span><span class="o">.</span><span class="n">address</span><span class="p">)</span>
+
+            <span class="n">address</span> <span class="o">=</span> <span class="n">controls</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">address</span>
+            <span class="n">length</span> <span class="o">=</span> <span class="n">controls</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">address</span> <span class="o">+</span> <span class="n">controls</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">nb_elem</span> <span class="o">*</span> <span class="n">controls</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">length</span>
+
+            <span class="n">rp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_protocol</span><span class="o">.</span><span class="n">DxlReadDataPacket</span><span class="p">(</span><span class="nb">id</span><span class="p">,</span> <span class="n">address</span><span class="p">,</span> <span class="n">length</span><span class="p">)</span>
+            <span class="n">sp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_send_packet</span><span class="p">(</span><span class="n">rp</span><span class="p">,</span> <span class="n">error_handler</span><span class="o">=</span><span class="n">error_handler</span><span class="p">)</span>
+
+            <span class="n">d</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">controls</span><span class="p">:</span>
+                <span class="n">v</span> <span class="o">=</span> <span class="n">dxl_decode_all</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="n">c</span><span class="o">.</span><span class="n">address</span><span class="p">:</span><span class="n">c</span><span class="o">.</span><span class="n">address</span> <span class="o">+</span> <span class="n">c</span><span class="o">.</span><span class="n">nb_elem</span> <span class="o">*</span> <span class="n">c</span><span class="o">.</span><span class="n">length</span><span class="p">],</span> <span class="n">c</span><span class="o">.</span><span class="n">nb_elem</span><span class="p">)</span>
+                <span class="n">d</span><span class="p">[</span><span class="n">c</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">dxl_to_si</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">model</span><span class="p">)</span> <span class="k">if</span> <span class="n">convert</span> <span class="k">else</span> <span class="n">v</span>
+
+            <span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">_generate_accessors</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">control</span><span class="p">):</span>
+        <span class="n">cls</span><span class="o">.</span><span class="n">__controls</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">control</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">control</span><span class="o">.</span><span class="n">access</span> <span class="ow">in</span> <span class="p">(</span><span class="n">_DxlAccess</span><span class="o">.</span><span class="n">readonly</span><span class="p">,</span> <span class="n">_DxlAccess</span><span class="o">.</span><span class="n">readwrite</span><span class="p">):</span>
+            <span class="k">def</span> <span class="nf">my_getter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ids</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_control_value</span><span class="p">(</span><span class="n">control</span><span class="p">,</span> <span class="n">ids</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+            <span class="n">func_name</span> <span class="o">=</span> <span class="n">control</span><span class="o">.</span><span class="n">getter_name</span> <span class="k">if</span> <span class="n">control</span><span class="o">.</span><span class="n">getter_name</span> <span class="k">else</span> <span class="s">&#39;get_{}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">control</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&#39; &#39;</span><span class="p">,</span> <span class="s">&#39;_&#39;</span><span class="p">))</span>
+            <span class="n">func_name</span> <span class="o">=</span> <span class="s">&#39;_{}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">func_name</span><span class="p">)</span> <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">func_name</span><span class="p">)</span> <span class="k">else</span> <span class="n">func_name</span>
+            <span class="n">my_getter</span><span class="o">.</span><span class="n">__doc__</span> <span class="o">=</span> <span class="s">&#39;Gets {} from the specified motors.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">control</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+            <span class="n">my_getter</span><span class="o">.</span><span class="n">__name__</span> <span class="o">=</span> <span class="n">func_name</span>
+            <span class="nb">setattr</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">func_name</span><span class="p">,</span> <span class="n">my_getter</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">control</span><span class="o">.</span><span class="n">access</span> <span class="ow">in</span> <span class="p">(</span><span class="n">_DxlAccess</span><span class="o">.</span><span class="n">writeonly</span><span class="p">,</span> <span class="n">_DxlAccess</span><span class="o">.</span><span class="n">readwrite</span><span class="p">):</span>
+            <span class="k">def</span> <span class="nf">my_setter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value_for_id</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_set_control_value</span><span class="p">(</span><span class="n">control</span><span class="p">,</span> <span class="n">value_for_id</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+            <span class="n">func_name</span> <span class="o">=</span> <span class="n">control</span><span class="o">.</span><span class="n">setter_name</span> <span class="k">if</span> <span class="n">control</span><span class="o">.</span><span class="n">setter_name</span> <span class="k">else</span> <span class="s">&#39;set_{}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">control</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&#39; &#39;</span><span class="p">,</span> <span class="s">&#39;_&#39;</span><span class="p">))</span>
+            <span class="n">func_name</span> <span class="o">=</span> <span class="s">&#39;_{}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">func_name</span><span class="p">)</span> <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">func_name</span><span class="p">)</span> <span class="k">else</span> <span class="n">func_name</span>
+            <span class="n">my_setter</span><span class="o">.</span><span class="n">__doc__</span> <span class="o">=</span> <span class="s">&#39;Sets {} to the specified motors.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">control</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+            <span class="n">my_setter</span><span class="o">.</span><span class="n">__name__</span> <span class="o">=</span> <span class="n">func_name</span>
+            <span class="nb">setattr</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">func_name</span><span class="p">,</span> <span class="n">my_setter</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_get_control_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">control</span><span class="p">,</span> <span class="n">ids</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">ids</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">()</span>
+
+        <span class="n">error_handler</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s">&#39;error_handler&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="p">(</span><span class="s">&#39;error_handler&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">)</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">_error_handler</span>
+        <span class="n">convert</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s">&#39;convert&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="p">(</span><span class="s">&#39;convert&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">)</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">_convert</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sync_read</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">ids</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">rp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_protocol</span><span class="o">.</span><span class="n">DxlSyncReadPacket</span><span class="p">(</span><span class="n">ids</span><span class="p">,</span> <span class="n">control</span><span class="o">.</span><span class="n">address</span><span class="p">,</span>
+                                                  <span class="n">control</span><span class="o">.</span><span class="n">length</span> <span class="o">*</span> <span class="n">control</span><span class="o">.</span><span class="n">nb_elem</span><span class="p">)</span>
+
+            <span class="n">sp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_send_packet</span><span class="p">(</span><span class="n">rp</span><span class="p">,</span> <span class="n">error_handler</span><span class="o">=</span><span class="n">error_handler</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">sp</span><span class="p">:</span>
+                <span class="k">return</span> <span class="p">()</span>
+
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_protocol</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s">&#39;v1&#39;</span><span class="p">:</span>
+                <span class="n">values</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">parameters</span>
+
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_protocol</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s">&#39;v2&#39;</span><span class="p">:</span>
+                <span class="n">values</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">parameters</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">ids</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+                    <span class="k">try</span><span class="p">:</span>
+                        <span class="n">sp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__real_read</span><span class="p">(</span><span class="n">rp</span><span class="p">,</span> <span class="n">_force_lock</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+                    <span class="k">except</span> <span class="p">(</span><span class="n">DxlTimeoutError</span><span class="p">,</span> <span class="n">DxlCommunicationError</span><span class="p">):</span>
+                        <span class="k">return</span> <span class="p">()</span>
+                    <span class="n">values</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">parameters</span><span class="p">)</span>
+
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">values</span><span class="p">)</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">ids</span><span class="p">):</span>
+                    <span class="k">return</span> <span class="p">()</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">values</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">motor_id</span> <span class="ow">in</span> <span class="n">ids</span><span class="p">:</span>
+                <span class="n">rp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_protocol</span><span class="o">.</span><span class="n">DxlReadDataPacket</span><span class="p">(</span><span class="n">motor_id</span><span class="p">,</span> <span class="n">control</span><span class="o">.</span><span class="n">address</span><span class="p">,</span> <span class="n">control</span><span class="o">.</span><span class="n">length</span> <span class="o">*</span> <span class="n">control</span><span class="o">.</span><span class="n">nb_elem</span><span class="p">)</span>
+                <span class="n">sp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_send_packet</span><span class="p">(</span><span class="n">rp</span><span class="p">,</span> <span class="n">error_handler</span><span class="o">=</span><span class="n">error_handler</span><span class="p">)</span>
+
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">sp</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="p">()</span>
+
+                <span class="n">values</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">parameters</span><span class="p">)</span>
+
+        <span class="n">values</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">itertools</span><span class="o">.</span><span class="n">izip</span><span class="p">(</span><span class="o">*</span><span class="p">([</span><span class="nb">iter</span><span class="p">(</span><span class="n">values</span><span class="p">)]</span> <span class="o">*</span> <span class="n">control</span><span class="o">.</span><span class="n">length</span> <span class="o">*</span> <span class="n">control</span><span class="o">.</span><span class="n">nb_elem</span><span class="p">)))</span>
+        <span class="n">values</span> <span class="o">=</span> <span class="p">[</span><span class="n">dxl_decode_all</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">control</span><span class="o">.</span><span class="n">nb_elem</span><span class="p">)</span> <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">values</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">values</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">()</span>
+
+        <span class="c"># when using SYNC_READ instead of getting a timeout</span>
+        <span class="c"># a non existing motor will &quot;return&quot; the maximum value</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sync_read</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_protocol</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s">&#39;v1&#39;</span><span class="p">:</span>
+            <span class="n">max_val</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">**</span> <span class="p">(</span><span class="mi">8</span> <span class="o">*</span> <span class="n">control</span><span class="o">.</span><span class="n">length</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
+            <span class="k">if</span> <span class="n">max_val</span> <span class="ow">in</span> <span class="p">(</span><span class="n">itertools</span><span class="o">.</span><span class="n">chain</span><span class="p">(</span><span class="o">*</span><span class="n">values</span><span class="p">)</span> <span class="k">if</span> <span class="n">control</span><span class="o">.</span><span class="n">nb_elem</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="k">else</span> <span class="n">values</span><span class="p">):</span>
+                <span class="n">lost_ids</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">itertools</span><span class="o">.</span><span class="n">chain</span><span class="p">(</span><span class="o">*</span><span class="n">values</span><span class="p">)</span> <span class="k">if</span> <span class="n">control</span><span class="o">.</span><span class="n">nb_elem</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="k">else</span> <span class="n">values</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="n">v</span> <span class="o">==</span> <span class="n">max_val</span><span class="p">:</span>
+                        <span class="n">lost_ids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ids</span><span class="p">[</span><span class="n">i</span> <span class="o">//</span> <span class="n">control</span><span class="o">.</span><span class="n">nb_elem</span><span class="p">])</span>
+                <span class="n">e</span> <span class="o">=</span> <span class="n">DxlTimeoutError</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rp</span><span class="p">,</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">lost_ids</span><span class="p">)))</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_error_handler</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_error_handler</span><span class="o">.</span><span class="n">handle_timeout</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+                    <span class="k">return</span> <span class="p">()</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="n">e</span>
+
+        <span class="k">if</span> <span class="n">convert</span><span class="p">:</span>
+            <span class="n">models</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_model</span><span class="p">(</span><span class="n">ids</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">models</span><span class="p">:</span>
+                <span class="k">return</span> <span class="p">()</span>
+            <span class="n">values</span> <span class="o">=</span> <span class="p">[</span><span class="n">control</span><span class="o">.</span><span class="n">dxl_to_si</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">m</span><span class="p">)</span> <span class="k">for</span> <span class="n">v</span><span class="p">,</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">values</span><span class="p">,</span> <span class="n">models</span><span class="p">)]</span>
+
+        <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_set_control_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">control</span><span class="p">,</span> <span class="n">value_for_id</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">value_for_id</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="n">convert</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s">&#39;convert&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="p">(</span><span class="s">&#39;convert&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">)</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">_convert</span>
+
+        <span class="k">if</span> <span class="n">convert</span><span class="p">:</span>
+            <span class="n">models</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_model</span><span class="p">(</span><span class="n">value_for_id</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">models</span><span class="p">:</span>
+                <span class="k">return</span>
+
+            <span class="n">value_for_id</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">value_for_id</span><span class="o">.</span><span class="n">keys</span><span class="p">(),</span>
+                                    <span class="nb">map</span><span class="p">(</span><span class="n">control</span><span class="o">.</span><span class="n">si_to_dxl</span><span class="p">,</span> <span class="n">value_for_id</span><span class="o">.</span><span class="n">values</span><span class="p">(),</span> <span class="n">models</span><span class="p">)))</span>
+
+        <span class="n">data</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">motor_id</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">value_for_id</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+            <span class="n">data</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">itertools</span><span class="o">.</span><span class="n">chain</span><span class="p">((</span><span class="n">motor_id</span><span class="p">,</span> <span class="p">),</span>
+                                        <span class="n">dxl_code_all</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">control</span><span class="o">.</span><span class="n">length</span><span class="p">,</span> <span class="n">control</span><span class="o">.</span><span class="n">nb_elem</span><span class="p">)))</span>
+
+        <span class="n">wp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_protocol</span><span class="o">.</span><span class="n">DxlSyncWritePacket</span><span class="p">(</span><span class="n">control</span><span class="o">.</span><span class="n">address</span><span class="p">,</span> <span class="n">control</span><span class="o">.</span><span class="n">length</span> <span class="o">*</span> <span class="n">control</span><span class="o">.</span><span class="n">nb_elem</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_send_packet</span><span class="p">(</span><span class="n">wp</span><span class="p">,</span> <span class="n">wait_for_status_packet</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+
+    <span class="c"># MARK: - Send/Receive packet</span>
+    <span class="k">def</span> <span class="nf">__real_send</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instruction_packet</span><span class="p">,</span> <span class="n">wait_for_status_packet</span><span class="p">,</span> <span class="n">_force_lock</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">closed</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">DxlError</span><span class="p">(</span><span class="s">&#39;try to send a packet on a closed serial communication&#39;</span><span class="p">)</span>
+
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&#39;Sending </span><span class="si">%s</span><span class="s">&#39;</span><span class="p">,</span> <span class="n">instruction_packet</span><span class="p">,</span>
+                     <span class="n">extra</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;port&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">port</span><span class="p">,</span>
+                            <span class="s">&#39;baudrate&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">baudrate</span><span class="p">,</span>
+                            <span class="s">&#39;timeout&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">timeout</span><span class="p">})</span>
+
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">__force_lock</span><span class="p">(</span><span class="n">_force_lock</span><span class="p">)</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">_serial_lock</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">flush</span><span class="p">(</span><span class="n">_force_lock</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+            <span class="n">data</span> <span class="o">=</span> <span class="n">instruction_packet</span><span class="o">.</span><span class="n">to_string</span><span class="p">()</span>
+            <span class="n">nbytes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_serial</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">!=</span> <span class="n">nbytes</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">DxlCommunicationError</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                                            <span class="s">&#39;instruction packet not entirely sent&#39;</span><span class="p">,</span>
+                                            <span class="n">instruction_packet</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">wait_for_status_packet</span><span class="p">:</span>
+                <span class="k">return</span>
+
+            <span class="n">status_packet</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__real_read</span><span class="p">(</span><span class="n">instruction_packet</span><span class="p">,</span> <span class="n">_force_lock</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&#39;Receiving </span><span class="si">%s</span><span class="s">&#39;</span><span class="p">,</span> <span class="n">status_packet</span><span class="p">,</span>
+                         <span class="n">extra</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;port&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">port</span><span class="p">,</span>
+                                <span class="s">&#39;baudrate&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">baudrate</span><span class="p">,</span>
+                                <span class="s">&#39;timeout&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">timeout</span><span class="p">})</span>
+
+            <span class="k">return</span> <span class="n">status_packet</span>
+
+    <span class="k">def</span> <span class="nf">__real_read</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instruction_packet</span><span class="p">,</span> <span class="n">_force_lock</span><span class="p">):</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">__force_lock</span><span class="p">(</span><span class="n">_force_lock</span><span class="p">)</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">_serial_lock</span><span class="p">:</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_serial</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_protocol</span><span class="o">.</span><span class="n">DxlPacketHeader</span><span class="o">.</span><span class="n">length</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">data</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">DxlTimeoutError</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instruction_packet</span><span class="p">,</span> <span class="n">instruction_packet</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">header</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_protocol</span><span class="o">.</span><span class="n">DxlPacketHeader</span><span class="o">.</span><span class="n">from_string</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+                <span class="n">data</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_serial</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">header</span><span class="o">.</span><span class="n">packet_length</span><span class="p">)</span>
+                <span class="n">status_packet</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_protocol</span><span class="o">.</span><span class="n">DxlStatusPacket</span><span class="o">.</span><span class="n">from_string</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+            <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="s">&#39;could not parse received data {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">bytearray</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+                <span class="k">raise</span> <span class="n">DxlCommunicationError</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msg</span><span class="p">,</span> <span class="n">instruction_packet</span><span class="p">)</span>
+
+            <span class="k">return</span> <span class="n">status_packet</span>
+
+    <span class="k">def</span> <span class="nf">_send_packet</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                     <span class="n">instruction_packet</span><span class="p">,</span> <span class="n">wait_for_status_packet</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+                     <span class="n">error_handler</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                     <span class="n">_force_lock</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">error_handler</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__real_send</span><span class="p">(</span><span class="n">instruction_packet</span><span class="p">,</span> <span class="n">wait_for_status_packet</span><span class="p">,</span> <span class="n">_force_lock</span><span class="p">)</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">sp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__real_send</span><span class="p">(</span><span class="n">instruction_packet</span><span class="p">,</span> <span class="n">wait_for_status_packet</span><span class="p">,</span> <span class="n">_force_lock</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">sp</span> <span class="ow">and</span> <span class="n">sp</span><span class="o">.</span><span class="n">error</span><span class="p">:</span>
+                <span class="n">errors</span> <span class="o">=</span> <span class="n">decode_error</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">error</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">errors</span><span class="p">:</span>
+                    <span class="n">handler_name</span> <span class="o">=</span> <span class="s">&#39;handle_{}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&#39; &#39;</span><span class="p">,</span> <span class="s">&#39;_&#39;</span><span class="p">))</span>
+                    <span class="n">f</span> <span class="o">=</span> <span class="n">operator</span><span class="o">.</span><span class="n">methodcaller</span><span class="p">(</span><span class="n">handler_name</span><span class="p">,</span> <span class="n">instruction_packet</span><span class="p">)</span>
+                    <span class="n">f</span><span class="p">(</span><span class="n">error_handler</span><span class="p">)</span>
+
+            <span class="k">return</span> <span class="n">sp</span>
+
+        <span class="k">except</span> <span class="n">DxlTimeoutError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">error_handler</span><span class="o">.</span><span class="n">handle_timeout</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+
+        <span class="k">except</span> <span class="n">DxlCommunicationError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">error_handler</span><span class="o">.</span><span class="n">handle_communication_error</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+
+
+<span class="c"># MARK: - Dxl Errors</span>
+<span class="k">class</span> <span class="nc">DxlError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Base class for all errors encountered using :class:`~pypot.dynamixel.io.DxlIO`. &quot;&quot;&quot;</span>
+    <span class="k">pass</span>
+
+
+<span class="k">class</span> <span class="nc">DxlCommunicationError</span><span class="p">(</span><span class="n">DxlError</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Base error for communication error encountered when using :class:`~pypot.dynamixel.io.DxlIO`. &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dxl_io</span><span class="p">,</span> <span class="n">message</span><span class="p">,</span> <span class="n">instruction_packet</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dxl_io</span> <span class="o">=</span> <span class="n">dxl_io</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">message</span> <span class="o">=</span> <span class="n">message</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">instruction_packet</span> <span class="o">=</span> <span class="n">instruction_packet</span>
+
+    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s">&#39;{self.message} after sending {self.instruction_packet}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">DxlTimeoutError</span><span class="p">(</span><span class="n">DxlCommunicationError</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Timeout error encountered when using :class:`~pypot.dynamixel.io.DxlIO`. &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dxl_io</span><span class="p">,</span> <span class="n">instruction_packet</span><span class="p">,</span> <span class="n">ids</span><span class="p">):</span>
+        <span class="n">DxlCommunicationError</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dxl_io</span><span class="p">,</span> <span class="s">&#39;timeout occured&#39;</span><span class="p">,</span> <span class="n">instruction_packet</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ids</span> <span class="o">=</span> <span class="n">ids</span>
+
+    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s">&#39;motors {} did not respond after sending {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ids</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">instruction_packet</span><span class="p">)</span>
+</pre></div>
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        
+      </div><!-- /row -->
+
+      <!-- row -->
+      <div class="row footer-relbar">
+<div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
+  <div class="navbar-inner">
+    <ul class="nav navbar-nav ">
+        <li><a href="../../../../index.html">pypot 2.7.5 documentation</a></li>
+    </ul>
+<ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
+      
+        <li><a href="../../../../py-modindex.html" title="Python Module Index" >modules</a></li>
+        <li><a href="../../../../genindex.html" title="General Index" >index</a></li>
+        <li><a href="../../../index.html" >Module code</a></li>
+        <li><a href="../../dynamixel.html" >pypot.dynamixel</a></li>
+        <li><a href="#">top</a></li> 
+      
+    </ul>
+  </div>
+</div>
+      </div><!-- /row -->
+
+      <!-- footer -->
+      <footer role="contentinfo">
+          &copy; Copyright 2012, Poppy-Project.
+        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.3.1.
+      </footer>
+      <!-- /footer -->
+
+    </div>
+    <!-- /container -->
+
+  </body>
+</html>

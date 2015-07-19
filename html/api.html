@@ -1,0 +1,249 @@
+
+
+<!DOCTYPE html>
+
+
+
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    
+    <title>Pypot’s API &mdash; pypot 2.7.5 documentation</title>
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    
+
+<link rel="stylesheet" href="_static/css/basicstrap-base.css" type="text/css" />
+<link rel="stylesheet" id="current-theme" href="_static/css/bootstrap3/bootstrap.min.css" type="text/css" />
+<link rel="stylesheet" id="current-adjust-theme" type="text/css" />
+
+<link rel="stylesheet" href="_static/css/font-awesome.min.css">
+
+<style type="text/css">
+  body {
+    padding-top: 60px;
+    padding-bottom: 40px;
+  }
+</style>
+
+<link rel="stylesheet" href="_static/css/basicstrap.css" type="text/css" />
+<link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+<link rel="stylesheet" href="_static/my-css.css" type="text/css" />
+    
+<script type="text/javascript">
+  var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:    './',
+            VERSION:     '2.7.5',
+            COLLAPSE_INDEX: false,
+            FILE_SUFFIX: '.html',
+            HAS_SOURCE:  true
+  };
+</script>
+    <script type="text/javascript" src="_static/js/jquery.min.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/js/bootstrap3.min.js"></script>
+<script type="text/javascript" src="_static/js/jquery.cookie.min.js"></script>
+<script type="text/javascript" src="_static/js/basicstrap.js"></script>
+<script type="text/javascript">
+</script>
+    <link rel="author" title="About these documents" href="about.html" />
+    <link rel="top" title="pypot 2.7.5 documentation" href="index.html" />
+    <link rel="next" title="dynamixel Package" href="pypot.dynamixel.html" />
+    <link rel="prev" title="Move recording and playing" href="move.html" /> 
+  </head>
+  <body role="document">
+    <div id="navbar-top" class="navbar navbar-fixed-top navbar-default" role="navigation" aria-label="top navigation">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="index.html">pypot 2.7.5 documentation</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
+
+            
+              <li><a href="move.html" title="Move recording and playing" accesskey="P">previous </a></li>
+              <li><a href="pypot.dynamixel.html" title="dynamixel Package" accesskey="N">next </a></li>
+              <li><a href="py-modindex.html" title="Python Module Index" >modules </a></li>
+              <li><a href="genindex.html" title="General Index" accesskey="I">index </a></li>
+            
+            <li class="visible-xs"><a href="_sources/api.txt" rel="nofollow">Show Source</a></li>
+
+            <li class="visible-xs">
+                <form class="search form-search form-inline navbar-form navbar-right sp-searchbox" action="search.html" method="get">
+                  <div class="input-append input-group">
+                    <input type="text" class="search-query form-control" name="q" placeholder="Search...">
+                    <span class="input-group-btn">
+                    <input type="submit" class="btn" value="Go" />
+                    </span>
+                  </div>
+                  <input type="hidden" name="check_keywords" value="yes" />
+                  <input type="hidden" name="area" value="default" />
+                </form>
+            </li>
+
+            
+
+          </ul>
+
+        </div>
+      </div>
+    </div>
+    
+
+    <!-- container -->
+    <div class="container-fluid">
+
+      <!-- row -->
+      <div class="row">
+         
+<div class="col-md-3 hidden-xs" id="sidebar-wrapper">
+  <div class="sidebar hidden-xs" role="navigation" aria-label="main navigation">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="move.html"
+                        title="previous chapter">Move recording and playing</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="pypot.dynamixel.html"
+                        title="next chapter"><code class="docutils literal"><span class="pre">dynamixel</span></code> Package</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/api.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" role="search">
+  <h3>Quick search</h3>
+  <form class="search form-inline" action="search.html" method="get">
+      <div class="input-append input-group">
+        <input type="text" class="search-query form-control" name="q" placeholder="Search...">
+        <span class="input-group-btn">
+        <input type="submit" class="btn" value="Go" />
+        </span>
+      </div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+  </div>
+</div> 
+        
+
+        <div class="col-md-9" id="content-wrapper">
+          <div class="document" role="main">
+            <div class="documentwrapper">
+              <div class="bodywrapper">
+                <div class="body">
+                  
+  <div class="section" id="pypot-s-api">
+<h1>Pypot&#8217;s API<a class="headerlink" href="#pypot-s-api" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="pypot.dynamixel.html"><code class="docutils literal"><span class="pre">dynamixel</span></code> Package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pypot.dynamixel.html#module-pypot.dynamixel.io"><code class="docutils literal"><span class="pre">io</span></code> Package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pypot.dynamixel.html#module-pypot.dynamixel.motor"><code class="docutils literal"><span class="pre">motor</span></code> Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pypot.dynamixel.html#module-pypot.dynamixel.controller"><code class="docutils literal"><span class="pre">controller</span></code> Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pypot.dynamixel.html#module-pypot.dynamixel.error"><code class="docutils literal"><span class="pre">error</span></code> Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pypot.dynamixel.html#module-pypot.dynamixel.conversion"><code class="docutils literal"><span class="pre">conversion</span></code> Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pypot.dynamixel.html#protocol-package"><code class="docutils literal"><span class="pre">protocol</span></code> Package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pypot.dynamixel.html#module-pypot.dynamixel.protocol.v1"><code class="docutils literal"><span class="pre">v1</span></code> Module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pypot.dynamixel.html#module-pypot.dynamixel.protocol.v2"><code class="docutils literal"><span class="pre">v2</span></code> Module</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pypot.primitive.html"><code class="docutils literal"><span class="pre">primitive</span></code> Package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pypot.primitive.html#module-pypot.primitive.primitive"><code class="docutils literal"><span class="pre">primitive</span></code> Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pypot.primitive.html#module-pypot.primitive.manager"><code class="docutils literal"><span class="pre">manager</span></code> Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pypot.primitive.html#module-pypot.primitive.move"><code class="docutils literal"><span class="pre">move</span></code> Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pypot.primitive.html#module-pypot.primitive.utils"><code class="docutils literal"><span class="pre">utils</span></code> Module</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pypot.robot.html"><code class="docutils literal"><span class="pre">robot</span></code> Package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pypot.robot.html#module-pypot.robot.robot"><code class="docutils literal"><span class="pre">robot</span></code> Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pypot.robot.html#module-pypot.robot.motor"><code class="docutils literal"><span class="pre">motor</span></code> Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pypot.robot.html#module-pypot.robot.sensor"><code class="docutils literal"><span class="pre">sensor</span></code> Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pypot.robot.html#module-pypot.robot.controller"><code class="docutils literal"><span class="pre">controller</span></code> Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pypot.robot.html#module-pypot.robot.io"><code class="docutils literal"><span class="pre">io</span></code> Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pypot.robot.html#module-pypot.robot.config"><code class="docutils literal"><span class="pre">config</span></code> Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pypot.robot.html#remote-module"><code class="docutils literal"><span class="pre">remote</span></code> Module</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pypot.sensor.html"><code class="docutils literal"><span class="pre">sensor</span></code> Package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pypot.sensor.html#module-pypot.sensor.kinect.sensor"><code class="docutils literal"><span class="pre">kinect</span></code> Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pypot.sensor.html#module-pypot.sensor.optitrack"><code class="docutils literal"><span class="pre">optitrack</span></code> Module</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pypot.server.html"><code class="docutils literal"><span class="pre">server</span></code> Package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pypot.server.html#module-pypot.server.rest"><code class="docutils literal"><span class="pre">rest</span></code> Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pypot.server.html#module-pypot.server.httpserver"><code class="docutils literal"><span class="pre">httpserver</span></code> Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pypot.server.html#module-pypot.server.zmqserver"><code class="docutils literal"><span class="pre">zmqserver</span></code> Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pypot.server.html#module-pypot.server.snap"><code class="docutils literal"><span class="pre">snap</span></code> Module</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pypot.vrep.html"><code class="docutils literal"><span class="pre">vrep</span></code> Package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pypot.vrep.html#module-pypot.vrep.io"><code class="docutils literal"><span class="pre">io</span></code> Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pypot.vrep.html#module-pypot.vrep.controller"><code class="docutils literal"><span class="pre">controller</span></code> Module</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pypot.utils.html"><code class="docutils literal"><span class="pre">utils</span></code> Package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pypot.utils.html#module-pypot.utils.stoppablethread"><code class="docutils literal"><span class="pre">stoppablethread</span></code> Module</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        
+      </div><!-- /row -->
+
+      <!-- row -->
+      <div class="row footer-relbar">
+<div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
+  <div class="navbar-inner">
+    <ul class="nav navbar-nav ">
+        <li><a href="index.html">pypot 2.7.5 documentation</a></li>
+    </ul>
+<ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
+      
+        <li><a href="move.html" title="Move recording and playing" >previous</a></li>
+        <li><a href="pypot.dynamixel.html" title="dynamixel Package" >next</a></li>
+        <li><a href="py-modindex.html" title="Python Module Index" >modules</a></li>
+        <li><a href="genindex.html" title="General Index" >index</a></li>
+        <li><a href="#">top</a></li> 
+      
+    </ul>
+  </div>
+</div>
+      </div><!-- /row -->
+
+      <!-- footer -->
+      <footer role="contentinfo">
+          &copy; Copyright 2012, Poppy-Project.
+        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.3.1.
+      </footer>
+      <!-- /footer -->
+
+    </div>
+    <!-- /container -->
+
+  </body>
+</html>

@@ -1,0 +1,258 @@
+
+
+<!DOCTYPE html>
+
+
+
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    
+    <title>Using a simulated robot with V-REP &mdash; pypot 2.7.5 documentation</title>
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    
+
+<link rel="stylesheet" href="_static/css/basicstrap-base.css" type="text/css" />
+<link rel="stylesheet" id="current-theme" href="_static/css/bootstrap3/bootstrap.min.css" type="text/css" />
+<link rel="stylesheet" id="current-adjust-theme" type="text/css" />
+
+<link rel="stylesheet" href="_static/css/font-awesome.min.css">
+
+<style type="text/css">
+  body {
+    padding-top: 60px;
+    padding-bottom: 40px;
+  }
+</style>
+
+<link rel="stylesheet" href="_static/css/basicstrap.css" type="text/css" />
+<link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+<link rel="stylesheet" href="_static/my-css.css" type="text/css" />
+    
+<script type="text/javascript">
+  var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:    './',
+            VERSION:     '2.7.5',
+            COLLAPSE_INDEX: false,
+            FILE_SUFFIX: '.html',
+            HAS_SOURCE:  true
+  };
+</script>
+    <script type="text/javascript" src="_static/js/jquery.min.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/js/bootstrap3.min.js"></script>
+<script type="text/javascript" src="_static/js/jquery.cookie.min.js"></script>
+<script type="text/javascript" src="_static/js/basicstrap.js"></script>
+<script type="text/javascript">
+</script>
+    <link rel="author" title="About these documents" href="about.html" />
+    <link rel="top" title="pypot 2.7.5 documentation" href="index.html" />
+    <link rel="next" title="Extending pypot" href="extending.html" />
+    <link rel="prev" title="Primitives everywhere" href="primitive.html" /> 
+  </head>
+  <body role="document">
+    <div id="navbar-top" class="navbar navbar-fixed-top navbar-default" role="navigation" aria-label="top navigation">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="index.html">pypot 2.7.5 documentation</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
+              <li class="dropdown visible-xs">
+                <a role="button" id="localToc" data-toggle="dropdown" data-target="#" href="#">Table Of Contents <b class="caret"></b></a>
+                <ul class="dropdown-menu localtoc sp-localtoc" role="menu" aria-labelledby="localToc">
+                <ul>
+<li><a class="reference internal" href="#">Using a simulated robot with V-REP</a><ul>
+<li><a class="reference internal" href="#connecting-to-v-rep">Connecting to V-REP</a></li>
+<li><a class="reference internal" href="#switch-between-the-simulation-and-the-real-robot-in-a-single-line-of-code">Switch between the simulation and the real robot in a single line of code</a></li>
+</ul>
+</li>
+</ul>
+
+                </ul>
+              </li>
+
+            
+              <li><a href="primitive.html" title="Primitives everywhere" accesskey="P">previous </a></li>
+              <li><a href="extending.html" title="Extending pypot" accesskey="N">next </a></li>
+              <li><a href="py-modindex.html" title="Python Module Index" >modules </a></li>
+              <li><a href="genindex.html" title="General Index" accesskey="I">index </a></li>
+            
+            <li class="visible-xs"><a href="_sources/vrep.txt" rel="nofollow">Show Source</a></li>
+
+            <li class="visible-xs">
+                <form class="search form-search form-inline navbar-form navbar-right sp-searchbox" action="search.html" method="get">
+                  <div class="input-append input-group">
+                    <input type="text" class="search-query form-control" name="q" placeholder="Search...">
+                    <span class="input-group-btn">
+                    <input type="submit" class="btn" value="Go" />
+                    </span>
+                  </div>
+                  <input type="hidden" name="check_keywords" value="yes" />
+                  <input type="hidden" name="area" value="default" />
+                </form>
+            </li>
+
+            
+
+          </ul>
+
+        </div>
+      </div>
+    </div>
+    
+
+    <!-- container -->
+    <div class="container-fluid">
+
+      <!-- row -->
+      <div class="row">
+         
+<div class="col-md-3 hidden-xs" id="sidebar-wrapper">
+  <div class="sidebar hidden-xs" role="navigation" aria-label="main navigation">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Using a simulated robot with V-REP</a><ul>
+<li><a class="reference internal" href="#connecting-to-v-rep">Connecting to V-REP</a></li>
+<li><a class="reference internal" href="#switch-between-the-simulation-and-the-real-robot-in-a-single-line-of-code">Switch between the simulation and the real robot in a single line of code</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="primitive.html"
+                        title="previous chapter">Primitives everywhere</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="extending.html"
+                        title="next chapter">Extending pypot</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/vrep.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" role="search">
+  <h3>Quick search</h3>
+  <form class="search form-inline" action="search.html" method="get">
+      <div class="input-append input-group">
+        <input type="text" class="search-query form-control" name="q" placeholder="Search...">
+        <span class="input-group-btn">
+        <input type="submit" class="btn" value="Go" />
+        </span>
+      </div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+  </div>
+</div> 
+        
+
+        <div class="col-md-9" id="content-wrapper">
+          <div class="document" role="main">
+            <div class="documentwrapper">
+              <div class="bodywrapper">
+                <div class="body">
+                  
+  <div class="section" id="using-a-simulated-robot-with-v-rep">
+<h1>Using a simulated robot with V-REP<a class="headerlink" href="#using-a-simulated-robot-with-v-rep" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="connecting-to-v-rep">
+<h2>Connecting to V-REP<a class="headerlink" href="#connecting-to-v-rep" title="Permalink to this headline">¶</a></h2>
+<p>As it is often easier to work in simulation rather than with the real robot, pypot has been linked with the <a class="reference external" href="http://www.coppeliarobotics.com">V-REP simulator</a>. It is described as the &#8220;Swiss army knife among robot simulators&#8221; and is a very powerful tool to quickly (re)create robotics setup. As presenting V-REP is way beyond the scope of this tutorial, we will here assume that you are already familiar with this tool. Otherwise, you should directly refer to <a class="reference external" href="http://www.coppeliarobotics.com/helpFiles/index.html">V-REP documentation</a>.</p>
+<p>Details about how to connect pypot and V-REP can be found in <a class="reference external" href="https://forum.poppy-project.org/t/howto-connect-pypot-to-your-simulated-version-of-poppy-humanoid-in-v-rep/332">this post</a>.</p>
+<p>The connection between pypot and V-REP was designed to let you seamlessly switch from your real robot to the simulated one. It is based on <a class="reference external" href="http://www.coppeliarobotics.com/helpFiles/en/remoteApiFunctionsPython.htm">V-REP&#8217;s remote API</a>.</p>
+<p>In order to connect to V-REP through pypot, you will only need to install the <a class="reference external" href="http://www.coppeliarobotics.com/downloads.html">V-REP</a> simulator. Pypot comes with a specific <a class="reference internal" href="pypot.vrep.html#pypot.vrep.io.VrepIO" title="pypot.vrep.io.VrepIO"><code class="xref py py-class docutils literal"><span class="pre">VrepIO</span></code></a> designed to communicate with V-REP through its <a class="reference external" href="http://www.coppeliarobotics.com/helpFiles/en/remoteApiFunctionsPython.htm">remote API</a>.</p>
+<p>This IO can be used to:</p>
+<ul class="simple">
+<li>connect to the V-REP server : <a class="reference internal" href="pypot.vrep.html#pypot.vrep.io.VrepIO" title="pypot.vrep.io.VrepIO"><code class="xref py py-class docutils literal"><span class="pre">VrepIO</span></code></a></li>
+<li>load a scene : <a class="reference internal" href="pypot.vrep.html#pypot.vrep.io.VrepIO.load_scene" title="pypot.vrep.io.VrepIO.load_scene"><code class="xref py py-meth docutils literal"><span class="pre">load_scene()</span></code></a></li>
+<li>start/stop/restart a simulation : <a class="reference internal" href="pypot.vrep.html#pypot.vrep.io.VrepIO.start_simulation" title="pypot.vrep.io.VrepIO.start_simulation"><code class="xref py py-meth docutils literal"><span class="pre">start_simulation()</span></code></a>, <a class="reference internal" href="pypot.vrep.html#pypot.vrep.io.VrepIO.stop_simulation" title="pypot.vrep.io.VrepIO.stop_simulation"><code class="xref py py-meth docutils literal"><span class="pre">stop_simulation()</span></code></a>, <a class="reference internal" href="pypot.vrep.html#pypot.vrep.io.VrepIO.restart_simulation" title="pypot.vrep.io.VrepIO.restart_simulation"><code class="xref py py-meth docutils literal"><span class="pre">restart_simulation()</span></code></a></li>
+<li>pause/resume the simulation : <a class="reference internal" href="pypot.vrep.html#pypot.vrep.io.VrepIO.pause_simulation" title="pypot.vrep.io.VrepIO.pause_simulation"><code class="xref py py-meth docutils literal"><span class="pre">pause_simulation()</span></code></a>, <a class="reference internal" href="pypot.vrep.html#pypot.vrep.io.VrepIO.resume_simulation" title="pypot.vrep.io.VrepIO.resume_simulation"><code class="xref py py-meth docutils literal"><span class="pre">resume_simulation()</span></code></a></li>
+<li>get/set a motor position : <a class="reference internal" href="pypot.vrep.html#pypot.vrep.io.VrepIO.get_motor_position" title="pypot.vrep.io.VrepIO.get_motor_position"><code class="xref py py-meth docutils literal"><span class="pre">get_motor_position()</span></code></a>, <a class="reference internal" href="pypot.vrep.html#pypot.vrep.io.VrepIO.set_motor_position" title="pypot.vrep.io.VrepIO.set_motor_position"><code class="xref py py-meth docutils literal"><span class="pre">set_motor_position()</span></code></a></li>
+<li>get an object position/orienation : <a class="reference internal" href="pypot.vrep.html#pypot.vrep.io.VrepIO.get_object_position" title="pypot.vrep.io.VrepIO.get_object_position"><code class="xref py py-meth docutils literal"><span class="pre">get_object_position()</span></code></a>, <a class="reference internal" href="pypot.vrep.html#pypot.vrep.io.VrepIO.get_object_orientation" title="pypot.vrep.io.VrepIO.get_object_orientation"><code class="xref py py-meth docutils literal"><span class="pre">get_object_orientation()</span></code></a></li>
+</ul>
+</div>
+<div class="section" id="switch-between-the-simulation-and-the-real-robot-in-a-single-line-of-code">
+<h2>Switch between the simulation and the real robot in a single line of code<a class="headerlink" href="#switch-between-the-simulation-and-the-real-robot-in-a-single-line-of-code" title="Permalink to this headline">¶</a></h2>
+<p>As stated above, the bridge between V-REP and pypot has been designed to let you easily switch from the robot to the simulated version. In most case, you should only have to change the way you instantiate your robot:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c"># Working with the real robot</span>
+<span class="kn">import</span> <span class="nn">pypot.robot</span>
+
+<span class="n">poppy</span> <span class="o">=</span> <span class="n">pypot</span><span class="o">.</span><span class="n">robot</span><span class="o">.</span><span class="n">from_config</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+
+<span class="n">poppy</span><span class="o">.</span><span class="n">walk</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>will become:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c"># Working with the simulated version</span>
+<span class="kn">import</span> <span class="nn">pypot.vrep</span>
+
+<span class="n">poppy</span> <span class="o">=</span> <span class="n">pypot</span><span class="o">.</span><span class="n">vrep</span><span class="o">.</span><span class="n">from_vrep</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">vrep_host</span><span class="p">,</span> <span class="n">vrep_port</span><span class="p">,</span> <span class="n">vrep_scene</span><span class="p">)</span>
+
+<span class="n">poppy</span><span class="o">.</span><span class="n">walk</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>In particular, the walking primitive should work exactly the same way in both cases without needing to change anything.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Not all dynamixel registers have their V-REP equivalent. For the moment, only the control of the position is used. More advanced features can be easily added thanks to the controller abstraction (see section <a class="reference internal" href="extending.html#extending"><span>Extending pypot</span></a>).</p>
+</div>
+</div>
+</div>
+
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        
+      </div><!-- /row -->
+
+      <!-- row -->
+      <div class="row footer-relbar">
+<div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
+  <div class="navbar-inner">
+    <ul class="nav navbar-nav ">
+        <li><a href="index.html">pypot 2.7.5 documentation</a></li>
+    </ul>
+<ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
+      
+        <li><a href="primitive.html" title="Primitives everywhere" >previous</a></li>
+        <li><a href="extending.html" title="Extending pypot" >next</a></li>
+        <li><a href="py-modindex.html" title="Python Module Index" >modules</a></li>
+        <li><a href="genindex.html" title="General Index" >index</a></li>
+        <li><a href="#">top</a></li> 
+      
+    </ul>
+  </div>
+</div>
+      </div><!-- /row -->
+
+      <!-- footer -->
+      <footer role="contentinfo">
+          &copy; Copyright 2012, Poppy-Project.
+        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.3.1.
+      </footer>
+      <!-- /footer -->
+
+    </div>
+    <!-- /container -->
+
+  </body>
+</html>

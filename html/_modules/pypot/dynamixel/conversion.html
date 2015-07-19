@@ -1,0 +1,495 @@
+
+
+<!DOCTYPE html>
+
+
+
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    
+    <title>pypot.dynamixel.conversion &mdash; pypot 2.7.5 documentation</title>
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    
+
+<link rel="stylesheet" href="../../../_static/css/basicstrap-base.css" type="text/css" />
+<link rel="stylesheet" id="current-theme" href="../../../_static/css/bootstrap3/bootstrap.min.css" type="text/css" />
+<link rel="stylesheet" id="current-adjust-theme" type="text/css" />
+
+<link rel="stylesheet" href="../../../_static/css/font-awesome.min.css">
+
+<style type="text/css">
+  body {
+    padding-top: 60px;
+    padding-bottom: 40px;
+  }
+</style>
+
+<link rel="stylesheet" href="../../../_static/css/basicstrap.css" type="text/css" />
+<link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+<link rel="stylesheet" href="../../../_static/my-css.css" type="text/css" />
+    
+<script type="text/javascript">
+  var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:    '../../../',
+            VERSION:     '2.7.5',
+            COLLAPSE_INDEX: false,
+            FILE_SUFFIX: '.html',
+            HAS_SOURCE:  true
+  };
+</script>
+    <script type="text/javascript" src="../../../_static/js/jquery.min.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/js/bootstrap3.min.js"></script>
+<script type="text/javascript" src="../../../_static/js/jquery.cookie.min.js"></script>
+<script type="text/javascript" src="../../../_static/js/basicstrap.js"></script>
+<script type="text/javascript">
+</script>
+    <link rel="author" title="About these documents" href="../../../about.html" />
+    <link rel="top" title="pypot 2.7.5 documentation" href="../../../index.html" />
+    <link rel="up" title="pypot.dynamixel" href="../dynamixel.html" /> 
+  </head>
+  <body role="document">
+    <div id="navbar-top" class="navbar navbar-fixed-top navbar-default" role="navigation" aria-label="top navigation">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="../../../index.html">pypot 2.7.5 documentation</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
+
+            
+              <li><a href="../../../py-modindex.html" title="Python Module Index" >modules </a></li>
+              <li><a href="../../../genindex.html" title="General Index" accesskey="I">index </a></li>
+              <li><a href="../../index.html" >Module code</a></li>
+              <li><a href="../dynamixel.html" accesskey="U">pypot.dynamixel</a></li>
+            
+
+            <li class="visible-xs">
+                <form class="search form-search form-inline navbar-form navbar-right sp-searchbox" action="../../../search.html" method="get">
+                  <div class="input-append input-group">
+                    <input type="text" class="search-query form-control" name="q" placeholder="Search...">
+                    <span class="input-group-btn">
+                    <input type="submit" class="btn" value="Go" />
+                    </span>
+                  </div>
+                  <input type="hidden" name="check_keywords" value="yes" />
+                  <input type="hidden" name="area" value="default" />
+                </form>
+            </li>
+
+            
+
+          </ul>
+
+        </div>
+      </div>
+    </div>
+    
+
+    <!-- container -->
+    <div class="container-fluid">
+
+      <!-- row -->
+      <div class="row">
+         
+<div class="col-md-3 hidden-xs" id="sidebar-wrapper">
+  <div class="sidebar hidden-xs" role="navigation" aria-label="main navigation">
+<div id="searchbox" role="search">
+  <h3>Quick search</h3>
+  <form class="search form-inline" action="../../../search.html" method="get">
+      <div class="input-append input-group">
+        <input type="text" class="search-query form-control" name="q" placeholder="Search...">
+        <span class="input-group-btn">
+        <input type="submit" class="btn" value="Go" />
+        </span>
+      </div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+  </div>
+</div> 
+        
+
+        <div class="col-md-9" id="content-wrapper">
+          <div class="document" role="main">
+            <div class="documentwrapper">
+              <div class="bodywrapper">
+                <div class="body">
+                  
+  <h1>Source code for pypot.dynamixel.conversion</h1><div class="highlight"><pre>
+<span class="c"># -*- coding: utf-8 -*-</span>
+
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This module describes all the conversion method used to transform value from the representation used by the dynamixel motor to a more standard form (e.g. degrees, volt...).</span>
+
+<span class="sd">    For compatibility issue all comparison method should be written in the following form (even if the model is not actually used):</span>
+<span class="sd">        * def my_conversion_from_dxl_to_si(value, model): ...</span>
+<span class="sd">        * def my_conversion_from_si_to_dxl(value, model): ...</span>
+
+<span class="sd">    .. note:: If the control is readonly you only need to write the dxl_to_si conversion.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span>
+<span class="kn">import</span> <span class="nn">itertools</span>
+
+<span class="kn">from</span> <span class="nn">enum</span> <span class="kn">import</span> <span class="n">Enum</span>
+
+<span class="c"># MARK: - Position</span>
+
+<span class="n">position_range</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s">&#39;MX&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">4096</span><span class="p">,</span> <span class="mf">360.0</span><span class="p">),</span>
+    <span class="s">&#39;*&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">1024</span><span class="p">,</span> <span class="mf">300.0</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="n">torque_max</span> <span class="o">=</span> <span class="p">{</span>  <span class="c"># in N.m</span>
+    <span class="s">&#39;MX-106&#39;</span><span class="p">:</span> <span class="mf">8.4</span><span class="p">,</span>
+    <span class="s">&#39;MX-64&#39;</span><span class="p">:</span> <span class="mf">6.</span><span class="p">,</span>
+    <span class="s">&#39;MX-28&#39;</span><span class="p">:</span> <span class="mf">2.5</span><span class="p">,</span>
+    <span class="s">&#39;MX-12&#39;</span><span class="p">:</span> <span class="mf">1.2</span><span class="p">,</span>
+    <span class="s">&#39;AX-12&#39;</span><span class="p">:</span> <span class="mf">1.2</span><span class="p">,</span>
+    <span class="s">&#39;AX-18&#39;</span><span class="p">:</span> <span class="mf">1.8</span><span class="p">,</span>
+    <span class="s">&#39;RX-28&#39;</span><span class="p">:</span> <span class="mf">2.5</span><span class="p">,</span>
+    <span class="s">&#39;RX-64&#39;</span><span class="p">:</span> <span class="mf">4.</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="n">velocity</span> <span class="o">=</span> <span class="p">{</span>  <span class="c"># in degree/s</span>
+    <span class="s">&#39;MX-106&#39;</span><span class="p">:</span> <span class="mf">270.</span><span class="p">,</span>
+    <span class="s">&#39;MX-64&#39;</span><span class="p">:</span> <span class="mf">378.</span><span class="p">,</span>
+    <span class="s">&#39;MX-28&#39;</span><span class="p">:</span> <span class="mf">330.</span><span class="p">,</span>
+    <span class="s">&#39;MX-12&#39;</span><span class="p">:</span> <span class="mf">2820.</span><span class="p">,</span>
+    <span class="s">&#39;AX-12&#39;</span><span class="p">:</span> <span class="mf">354.</span><span class="p">,</span>
+    <span class="s">&#39;AX-18&#39;</span><span class="p">:</span> <span class="mf">582.</span><span class="p">,</span>
+    <span class="s">&#39;RX-28&#39;</span><span class="p">:</span> <span class="mf">402.</span><span class="p">,</span>
+    <span class="s">&#39;RX-64&#39;</span><span class="p">:</span> <span class="mf">294.</span><span class="p">,</span>
+<span class="p">}</span>
+
+
+<div class="viewcode-block" id="dxl_to_degree"><a class="viewcode-back" href="../../../pypot.dynamixel.html#pypot.dynamixel.conversion.dxl_to_degree">[docs]</a><span class="k">def</span> <span class="nf">dxl_to_degree</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">model</span><span class="p">):</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="s">&#39;MX&#39;</span> <span class="k">if</span> <span class="n">model</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&#39;MX&#39;</span><span class="p">)</span> <span class="k">else</span> <span class="s">&#39;*&#39;</span>
+    <span class="n">max_pos</span><span class="p">,</span> <span class="n">max_deg</span> <span class="o">=</span> <span class="n">position_range</span><span class="p">[</span><span class="n">model</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="nb">round</span><span class="p">(((</span><span class="n">max_deg</span> <span class="o">*</span> <span class="nb">float</span><span class="p">(</span><span class="n">value</span><span class="p">))</span> <span class="o">/</span> <span class="p">(</span><span class="n">max_pos</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span> <span class="o">-</span> <span class="p">(</span><span class="n">max_deg</span> <span class="o">/</span> <span class="mi">2</span><span class="p">),</span> <span class="mi">2</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="degree_to_dxl"><a class="viewcode-back" href="../../../pypot.dynamixel.html#pypot.dynamixel.conversion.degree_to_dxl">[docs]</a><span class="k">def</span> <span class="nf">degree_to_dxl</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">model</span><span class="p">):</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="s">&#39;MX&#39;</span> <span class="k">if</span> <span class="n">model</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&#39;MX&#39;</span><span class="p">)</span> <span class="k">else</span> <span class="s">&#39;*&#39;</span>
+    <span class="n">max_pos</span><span class="p">,</span> <span class="n">max_deg</span> <span class="o">=</span> <span class="n">position_range</span><span class="p">[</span><span class="n">model</span><span class="p">]</span>
+
+    <span class="n">pos</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">((</span><span class="n">max_pos</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="p">((</span><span class="n">max_deg</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="nb">float</span><span class="p">(</span><span class="n">value</span><span class="p">))</span> <span class="o">/</span> <span class="n">max_deg</span><span class="p">),</span> <span class="mi">0</span><span class="p">))</span>
+    <span class="n">pos</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="n">pos</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">max_pos</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">pos</span>
+
+<span class="c"># MARK: - Speed</span>
+
+</div>
+<div class="viewcode-block" id="dxl_to_speed"><a class="viewcode-back" href="../../../pypot.dynamixel.html#pypot.dynamixel.conversion.dxl_to_speed">[docs]</a><span class="k">def</span> <span class="nf">dxl_to_speed</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">model</span><span class="p">):</span>
+    <span class="n">cw</span><span class="p">,</span> <span class="n">speed</span> <span class="o">=</span> <span class="nb">divmod</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="mi">1024</span><span class="p">)</span>
+    <span class="n">direction</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="mi">2</span> <span class="o">*</span> <span class="n">cw</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+
+    <span class="n">speed_factor</span> <span class="o">=</span> <span class="mf">0.114</span> <span class="k">if</span> <span class="n">model</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&#39;MX&#39;</span><span class="p">)</span> <span class="k">else</span> <span class="mf">0.111</span>
+
+    <span class="k">return</span> <span class="n">direction</span> <span class="o">*</span> <span class="p">(</span><span class="n">speed</span> <span class="o">*</span> <span class="n">speed_factor</span><span class="p">)</span> <span class="o">*</span> <span class="mi">6</span>
+
+</div>
+<div class="viewcode-block" id="speed_to_dxl"><a class="viewcode-back" href="../../../pypot.dynamixel.html#pypot.dynamixel.conversion.speed_to_dxl">[docs]</a><span class="k">def</span> <span class="nf">speed_to_dxl</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">model</span><span class="p">):</span>
+    <span class="n">direction</span> <span class="o">=</span> <span class="mi">1024</span> <span class="k">if</span> <span class="n">value</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="mi">0</span>
+    <span class="n">speed_factor</span> <span class="o">=</span> <span class="mf">0.114</span> <span class="k">if</span> <span class="n">model</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&#39;MX&#39;</span><span class="p">)</span> <span class="k">else</span> <span class="mf">0.111</span>
+
+    <span class="n">max_value</span> <span class="o">=</span> <span class="mi">1023</span> <span class="o">*</span> <span class="n">speed_factor</span> <span class="o">*</span> <span class="mi">6</span>
+    <span class="n">value</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="o">-</span><span class="n">max_value</span><span class="p">),</span> <span class="n">max_value</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">direction</span> <span class="o">+</span> <span class="nb">abs</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">6</span> <span class="o">*</span> <span class="n">speed_factor</span><span class="p">),</span> <span class="mi">0</span><span class="p">))</span>
+
+<span class="c"># MARK: - Torque</span>
+
+</div>
+<div class="viewcode-block" id="dxl_to_torque"><a class="viewcode-back" href="../../../pypot.dynamixel.html#pypot.dynamixel.conversion.dxl_to_torque">[docs]</a><span class="k">def</span> <span class="nf">dxl_to_torque</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">model</span><span class="p">):</span>
+    <span class="k">return</span> <span class="nb">round</span><span class="p">(</span><span class="n">value</span> <span class="o">/</span> <span class="mf">10.23</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="torque_to_dxl"><a class="viewcode-back" href="../../../pypot.dynamixel.html#pypot.dynamixel.conversion.torque_to_dxl">[docs]</a><span class="k">def</span> <span class="nf">torque_to_dxl</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">model</span><span class="p">):</span>
+    <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">value</span> <span class="o">*</span> <span class="mf">10.23</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+
+</div>
+<div class="viewcode-block" id="dxl_to_load"><a class="viewcode-back" href="../../../pypot.dynamixel.html#pypot.dynamixel.conversion.dxl_to_load">[docs]</a><span class="k">def</span> <span class="nf">dxl_to_load</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">model</span><span class="p">):</span>
+    <span class="n">cw</span><span class="p">,</span> <span class="n">load</span> <span class="o">=</span> <span class="nb">divmod</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="mi">1024</span><span class="p">)</span>
+    <span class="n">direction</span> <span class="o">=</span> <span class="o">-</span><span class="mi">2</span> <span class="o">*</span> <span class="n">cw</span> <span class="o">+</span> <span class="mi">1</span>
+
+    <span class="k">return</span> <span class="n">dxl_to_torque</span><span class="p">(</span><span class="n">load</span><span class="p">,</span> <span class="n">model</span><span class="p">)</span> <span class="o">*</span> <span class="n">direction</span>
+
+<span class="c"># PID Gains</span>
+
+</div>
+<div class="viewcode-block" id="dxl_to_pid"><a class="viewcode-back" href="../../../pypot.dynamixel.html#pypot.dynamixel.conversion.dxl_to_pid">[docs]</a><span class="k">def</span> <span class="nf">dxl_to_pid</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">model</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">value</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="mf">0.004</span><span class="p">,</span>
+            <span class="n">value</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="mf">0.48828125</span><span class="p">,</span>
+            <span class="n">value</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="mf">0.125</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="pid_to_dxl"><a class="viewcode-back" href="../../../pypot.dynamixel.html#pypot.dynamixel.conversion.pid_to_dxl">[docs]</a><span class="k">def</span> <span class="nf">pid_to_dxl</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">model</span><span class="p">):</span>
+    <span class="n">truncate</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">min</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">254</span><span class="p">)))</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">truncate</span><span class="p">(</span><span class="n">x</span> <span class="o">*</span> <span class="n">y</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="p">(</span><span class="mi">250</span><span class="p">,</span> <span class="mf">2.048</span><span class="p">,</span> <span class="mf">8.0</span><span class="p">))]</span>
+
+<span class="c"># MARK: - Model</span>
+</div>
+<span class="n">dynamixelModels</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="mi">12</span><span class="p">:</span> <span class="s">&#39;AX-12&#39;</span><span class="p">,</span>    <span class="c"># 12 + (0&lt;&lt;8)</span>
+    <span class="mi">18</span><span class="p">:</span> <span class="s">&#39;AX-18&#39;</span><span class="p">,</span>    <span class="c"># 18 + (0&lt;&lt;8)</span>
+    <span class="mi">28</span><span class="p">:</span> <span class="s">&#39;RX-28&#39;</span><span class="p">,</span>    <span class="c"># 28 + (0&lt;&lt;8)</span>
+    <span class="mi">29</span><span class="p">:</span> <span class="s">&#39;MX-28&#39;</span><span class="p">,</span>    <span class="c"># 29 + (0&lt;&lt;8)</span>
+    <span class="mi">64</span><span class="p">:</span> <span class="s">&#39;RX-64&#39;</span><span class="p">,</span>    <span class="c"># 64 + (0&lt;&lt;8)</span>
+    <span class="mi">360</span><span class="p">:</span> <span class="s">&#39;MX-12&#39;</span><span class="p">,</span>   <span class="c"># 104 + (1&lt;&lt;8)</span>
+    <span class="mi">310</span><span class="p">:</span> <span class="s">&#39;MX-64&#39;</span><span class="p">,</span>   <span class="c"># 54 + (1&lt;&lt;8)</span>
+    <span class="mi">320</span><span class="p">:</span> <span class="s">&#39;MX-106&#39;</span><span class="p">,</span>  <span class="c"># 64 + (1&lt;&lt;8)</span>
+    <span class="mi">350</span><span class="p">:</span> <span class="s">&#39;XL-320&#39;</span><span class="p">,</span>  <span class="c"># 94 + (1&lt;&lt;8)</span>
+<span class="p">}</span>
+
+
+<div class="viewcode-block" id="dxl_to_model"><a class="viewcode-back" href="../../../pypot.dynamixel.html#pypot.dynamixel.conversion.dxl_to_model">[docs]</a><span class="k">def</span> <span class="nf">dxl_to_model</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">dummy</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">dynamixelModels</span><span class="p">[</span><span class="n">value</span><span class="p">]</span>
+<span class="c"># MARK: - Drive Mode</span>
+
+</div>
+<div class="viewcode-block" id="check_bit"><a class="viewcode-back" href="../../../pypot.dynamixel.html#pypot.dynamixel.conversion.check_bit">[docs]</a><span class="k">def</span> <span class="nf">check_bit</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">offset</span><span class="p">):</span>
+    <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span><span class="n">value</span> <span class="o">&amp;</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="n">offset</span><span class="p">))</span>
+
+</div>
+<div class="viewcode-block" id="dxl_to_drive_mode"><a class="viewcode-back" href="../../../pypot.dynamixel.html#pypot.dynamixel.conversion.dxl_to_drive_mode">[docs]</a><span class="k">def</span> <span class="nf">dxl_to_drive_mode</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">model</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">(</span><span class="s">&#39;reverse&#39;</span> <span class="k">if</span> <span class="n">check_bit</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="k">else</span> <span class="s">&#39;normal&#39;</span><span class="p">,</span>
+            <span class="s">&#39;slave&#39;</span> <span class="k">if</span> <span class="n">check_bit</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="k">else</span> <span class="s">&#39;master&#39;</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="drive_mode_to_dxl"><a class="viewcode-back" href="../../../pypot.dynamixel.html#pypot.dynamixel.conversion.drive_mode_to_dxl">[docs]</a><span class="k">def</span> <span class="nf">drive_mode_to_dxl</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">model</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="s">&#39;slave&#39;</span> <span class="ow">in</span> <span class="n">value</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="mi">1</span> <span class="o">|</span> <span class="nb">int</span><span class="p">(</span><span class="s">&#39;reverse&#39;</span> <span class="ow">in</span> <span class="n">value</span><span class="p">))</span>
+
+<span class="c"># MARK: - Baudrate</span>
+</div>
+<span class="n">dynamixelBaudrates</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="mi">1</span><span class="p">:</span> <span class="mf">1000000.0</span><span class="p">,</span>
+    <span class="mi">3</span><span class="p">:</span> <span class="mf">500000.0</span><span class="p">,</span>
+    <span class="mi">4</span><span class="p">:</span> <span class="mf">400000.0</span><span class="p">,</span>
+    <span class="mi">7</span><span class="p">:</span> <span class="mf">250000.0</span><span class="p">,</span>
+    <span class="mi">9</span><span class="p">:</span> <span class="mf">200000.0</span><span class="p">,</span>
+    <span class="mi">16</span><span class="p">:</span> <span class="mf">117647.1</span><span class="p">,</span>
+    <span class="mi">34</span><span class="p">:</span> <span class="mf">57600.0</span><span class="p">,</span>
+    <span class="mi">103</span><span class="p">:</span> <span class="mf">19230.8</span><span class="p">,</span>
+    <span class="mi">207</span><span class="p">:</span> <span class="mf">9615.4</span><span class="p">,</span>
+    <span class="mi">250</span><span class="p">:</span> <span class="mf">2250000.0</span><span class="p">,</span>
+    <span class="mi">251</span><span class="p">:</span> <span class="mf">2500000.0</span><span class="p">,</span>
+    <span class="mi">252</span><span class="p">:</span> <span class="mf">3000000.0</span><span class="p">,</span>
+<span class="p">}</span>
+
+
+<div class="viewcode-block" id="dxl_to_baudrate"><a class="viewcode-back" href="../../../pypot.dynamixel.html#pypot.dynamixel.conversion.dxl_to_baudrate">[docs]</a><span class="k">def</span> <span class="nf">dxl_to_baudrate</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">model</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">dynamixelBaudrates</span><span class="p">[</span><span class="n">value</span><span class="p">]</span>
+
+</div>
+<div class="viewcode-block" id="baudrate_to_dxl"><a class="viewcode-back" href="../../../pypot.dynamixel.html#pypot.dynamixel.conversion.baudrate_to_dxl">[docs]</a><span class="k">def</span> <span class="nf">baudrate_to_dxl</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">model</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">dynamixelBaudrates</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">v</span> <span class="o">-</span> <span class="n">value</span><span class="p">)</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">value</span><span class="p">))</span> <span class="o">&lt;</span> <span class="mf">0.05</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">k</span>
+    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;incorrect baudrate {} (possible values {})&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">dynamixelBaudrates</span><span class="o">.</span><span class="n">values</span><span class="p">()))</span>
+
+<span class="c"># MARK: - Return Delay Time</span>
+
+</div>
+<div class="viewcode-block" id="dxl_to_rdt"><a class="viewcode-back" href="../../../pypot.dynamixel.html#pypot.dynamixel.conversion.dxl_to_rdt">[docs]</a><span class="k">def</span> <span class="nf">dxl_to_rdt</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">model</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">value</span> <span class="o">*</span> <span class="mi">2</span>
+
+</div>
+<div class="viewcode-block" id="rdt_to_dxl"><a class="viewcode-back" href="../../../pypot.dynamixel.html#pypot.dynamixel.conversion.rdt_to_dxl">[docs]</a><span class="k">def</span> <span class="nf">rdt_to_dxl</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">model</span><span class="p">):</span>
+    <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">value</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+
+<span class="c"># MARK: - Temperature</span>
+
+</div>
+<div class="viewcode-block" id="dxl_to_temperature"><a class="viewcode-back" href="../../../pypot.dynamixel.html#pypot.dynamixel.conversion.dxl_to_temperature">[docs]</a><span class="k">def</span> <span class="nf">dxl_to_temperature</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">model</span><span class="p">):</span>
+    <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="temperature_to_dxl"><a class="viewcode-back" href="../../../pypot.dynamixel.html#pypot.dynamixel.conversion.temperature_to_dxl">[docs]</a><span class="k">def</span> <span class="nf">temperature_to_dxl</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">model</span><span class="p">):</span>
+    <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+
+<span class="c"># MARK: - Voltage</span>
+
+</div>
+<div class="viewcode-block" id="dxl_to_voltage"><a class="viewcode-back" href="../../../pypot.dynamixel.html#pypot.dynamixel.conversion.dxl_to_voltage">[docs]</a><span class="k">def</span> <span class="nf">dxl_to_voltage</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">model</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">value</span> <span class="o">*</span> <span class="mf">0.1</span>
+
+</div>
+<div class="viewcode-block" id="voltage_to_dxl"><a class="viewcode-back" href="../../../pypot.dynamixel.html#pypot.dynamixel.conversion.voltage_to_dxl">[docs]</a><span class="k">def</span> <span class="nf">voltage_to_dxl</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">model</span><span class="p">):</span>
+    <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">value</span> <span class="o">*</span> <span class="mi">10</span><span class="p">)</span>
+
+<span class="c"># MARK: - Status Return Level</span>
+</div>
+<span class="n">status_level</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;never&#39;</span><span class="p">,</span> <span class="s">&#39;read&#39;</span><span class="p">,</span> <span class="s">&#39;always&#39;</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="dxl_to_status"><a class="viewcode-back" href="../../../pypot.dynamixel.html#pypot.dynamixel.conversion.dxl_to_status">[docs]</a><span class="k">def</span> <span class="nf">dxl_to_status</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">model</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">status_level</span><span class="p">[</span><span class="n">value</span><span class="p">]</span>
+
+</div>
+<div class="viewcode-block" id="status_to_dxl"><a class="viewcode-back" href="../../../pypot.dynamixel.html#pypot.dynamixel.conversion.status_to_dxl">[docs]</a><span class="k">def</span> <span class="nf">status_to_dxl</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">model</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">value</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">status_level</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;status &quot;{}&quot; should be chosen among {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">status_level</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">status_level</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+
+<span class="c"># MARK: - Error</span>
+
+<span class="c"># TODO: depend on protocol v1 vs v2</span></div>
+<span class="n">dynamixelErrors</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;None Error&#39;</span><span class="p">,</span>
+                   <span class="s">&#39;Instruction Error&#39;</span><span class="p">,</span>
+                   <span class="s">&#39;Overload Error&#39;</span><span class="p">,</span>
+                   <span class="s">&#39;Checksum Error&#39;</span><span class="p">,</span>
+                   <span class="s">&#39;Range Error&#39;</span><span class="p">,</span>
+                   <span class="s">&#39;Overheating Error&#39;</span><span class="p">,</span>
+                   <span class="s">&#39;Angle Limit Error&#39;</span><span class="p">,</span>
+                   <span class="s">&#39;Input Voltage Error&#39;</span><span class="p">]</span>
+
+
+<div class="viewcode-block" id="dxl_to_alarm"><a class="viewcode-back" href="../../../pypot.dynamixel.html#pypot.dynamixel.conversion.dxl_to_alarm">[docs]</a><span class="k">def</span> <span class="nf">dxl_to_alarm</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">model</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">decode_error</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="decode_error"><a class="viewcode-back" href="../../../pypot.dynamixel.html#pypot.dynamixel.conversion.decode_error">[docs]</a><span class="k">def</span> <span class="nf">decode_error</span><span class="p">(</span><span class="n">error_code</span><span class="p">):</span>
+    <span class="n">bits</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">unpackbits</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">error_code</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">uint8</span><span class="p">))</span>
+    <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">dynamixelErrors</span><span class="p">)[</span><span class="n">bits</span> <span class="o">==</span> <span class="mi">1</span><span class="p">])</span>
+
+</div>
+<div class="viewcode-block" id="alarm_to_dxl"><a class="viewcode-back" href="../../../pypot.dynamixel.html#pypot.dynamixel.conversion.alarm_to_dxl">[docs]</a><span class="k">def</span> <span class="nf">alarm_to_dxl</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">model</span><span class="p">):</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">set</span><span class="p">(</span><span class="n">value</span><span class="p">)</span><span class="o">.</span><span class="n">issubset</span><span class="p">(</span><span class="n">dynamixelErrors</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;should only contains error among {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">dynamixelErrors</span><span class="p">))</span>
+
+    <span class="n">indices</span> <span class="o">=</span> <span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">dynamixelErrors</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">dynamixelErrors</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">e</span><span class="p">)</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">value</span><span class="p">]</span>
+    <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="mi">2</span> <span class="o">**</span> <span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">indices</span><span class="p">)</span>
+
+</div>
+<span class="n">XL320LEDColors</span> <span class="o">=</span> <span class="n">Enum</span><span class="p">(</span><span class="s">&#39;Colors&#39;</span><span class="p">,</span> <span class="s">&#39;off red green yellow &#39;</span>
+                      <span class="s">&#39;blue pink cyan white&#39;</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="dxl_to_led_color"><a class="viewcode-back" href="../../../pypot.dynamixel.html#pypot.dynamixel.conversion.dxl_to_led_color">[docs]</a><span class="k">def</span> <span class="nf">dxl_to_led_color</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">model</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">XL320LEDColors</span><span class="p">(</span><span class="n">value</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">name</span>
+
+</div>
+<div class="viewcode-block" id="led_color_to_dxl"><a class="viewcode-back" href="../../../pypot.dynamixel.html#pypot.dynamixel.conversion.led_color_to_dxl">[docs]</a><span class="k">def</span> <span class="nf">led_color_to_dxl</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">model</span><span class="p">):</span>
+    <span class="n">value</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">XL320LEDColors</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span><span class="o">.</span><span class="n">value</span> <span class="o">-</span> <span class="mi">1</span>
+    <span class="n">value</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mb">0b111</span>
+    <span class="k">return</span> <span class="n">value</span>
+</div>
+<span class="n">control_modes</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="mi">1</span><span class="p">:</span> <span class="s">&#39;wheel&#39;</span><span class="p">,</span>
+    <span class="mi">2</span><span class="p">:</span> <span class="s">&#39;joint&#39;</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="n">dxl_to_control_mode</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">value</span><span class="p">,</span> <span class="n">_</span><span class="p">:</span> <span class="n">control_modes</span><span class="p">[</span><span class="n">value</span><span class="p">]</span>
+<span class="n">control_mode_to_dxl</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">mode</span><span class="p">,</span> <span class="n">_</span><span class="p">:</span> <span class="p">(</span><span class="nb">next</span><span class="p">((</span><span class="n">v</span> <span class="k">for</span> <span class="n">v</span><span class="p">,</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">control_modes</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+                                             <span class="k">if</span> <span class="n">m</span> <span class="o">==</span> <span class="n">mode</span><span class="p">),</span> <span class="bp">None</span><span class="p">))</span>
+
+<span class="c"># MARK: - Various utility functions</span>
+
+
+<div class="viewcode-block" id="dxl_to_bool"><a class="viewcode-back" href="../../../pypot.dynamixel.html#pypot.dynamixel.conversion.dxl_to_bool">[docs]</a><span class="k">def</span> <span class="nf">dxl_to_bool</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">model</span><span class="p">):</span>
+    <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="bool_to_dxl"><a class="viewcode-back" href="../../../pypot.dynamixel.html#pypot.dynamixel.conversion.bool_to_dxl">[docs]</a><span class="k">def</span> <span class="nf">bool_to_dxl</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">model</span><span class="p">):</span>
+    <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="dxl_decode"><a class="viewcode-back" href="../../../pypot.dynamixel.html#pypot.dynamixel.conversion.dxl_decode">[docs]</a><span class="k">def</span> <span class="nf">dxl_decode</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;try to decode incorrect data {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&lt;&lt;</span> <span class="mi">8</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="dxl_decode_all"><a class="viewcode-back" href="../../../pypot.dynamixel.html#pypot.dynamixel.conversion.dxl_decode_all">[docs]</a><span class="k">def</span> <span class="nf">dxl_decode_all</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">nb_elem</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">nb_elem</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">itertools</span><span class="o">.</span><span class="n">izip</span><span class="p">(</span><span class="o">*</span><span class="p">([</span><span class="nb">iter</span><span class="p">(</span><span class="n">data</span><span class="p">)]</span> <span class="o">*</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">//</span> <span class="n">nb_elem</span><span class="p">))))</span>
+        <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">dxl_decode</span><span class="p">,</span> <span class="n">data</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">dxl_decode</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="dxl_code"><a class="viewcode-back" href="../../../pypot.dynamixel.html#pypot.dynamixel.conversion.dxl_code">[docs]</a><span class="k">def</span> <span class="nf">dxl_code</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">length</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">length</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s">&#39;try to code value with an incorrect length {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">length</span><span class="p">))</span>
+
+    <span class="k">if</span> <span class="n">length</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">length</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">value</span> <span class="o">%</span> <span class="mi">256</span><span class="p">,</span> <span class="n">value</span> <span class="o">&gt;&gt;</span> <span class="mi">8</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="dxl_code_all"><a class="viewcode-back" href="../../../pypot.dynamixel.html#pypot.dynamixel.conversion.dxl_code_all">[docs]</a><span class="k">def</span> <span class="nf">dxl_code_all</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">length</span><span class="p">,</span> <span class="n">nb_elem</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">nb_elem</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">itertools</span><span class="o">.</span><span class="n">chain</span><span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="n">dxl_code</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">length</span><span class="p">)</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">value</span><span class="p">)))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">dxl_code</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">length</span><span class="p">)</span></div>
+</pre></div>
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        
+      </div><!-- /row -->
+
+      <!-- row -->
+      <div class="row footer-relbar">
+<div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
+  <div class="navbar-inner">
+    <ul class="nav navbar-nav ">
+        <li><a href="../../../index.html">pypot 2.7.5 documentation</a></li>
+    </ul>
+<ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
+      
+        <li><a href="../../../py-modindex.html" title="Python Module Index" >modules</a></li>
+        <li><a href="../../../genindex.html" title="General Index" >index</a></li>
+        <li><a href="../../index.html" >Module code</a></li>
+        <li><a href="../dynamixel.html" >pypot.dynamixel</a></li>
+        <li><a href="#">top</a></li> 
+      
+    </ul>
+  </div>
+</div>
+      </div><!-- /row -->
+
+      <!-- footer -->
+      <footer role="contentinfo">
+          &copy; Copyright 2012, Poppy-Project.
+        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.3.1.
+      </footer>
+      <!-- /footer -->
+
+    </div>
+    <!-- /container -->
+
+  </body>
+</html>
