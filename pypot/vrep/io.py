@@ -4,7 +4,7 @@ import ctypes
 
 from threading import Lock
 
-from remoteApiBindings import vrep as remote_api
+from .remoteApiBindings import vrep as remote_api
 from ..robot.io import AbstractIO
 
 
