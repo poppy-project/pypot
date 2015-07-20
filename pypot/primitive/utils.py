@@ -1,5 +1,8 @@
 import numpy
 
+from copy import deepcopy
+from collections import defaultdict
+
 from .primitive import LoopPrimitive
 
 
@@ -111,3 +114,27 @@ try:
 
 except ImportError:
     pass
+
+
+class PositionWatcher(LoopPrimitive):
+    def __init__(self, robot, refresh_freq, watched_motors):
+        LoopPrimitive.__init__(self, robot, refresh_freq)
+
+        self._pos = defaultdict(list)
+        self.watched_motors = watched_motors
+
+    @property
+    def record_positions(self):
+        return deepcopy(self._pos)
+
+    def setup(self):
+        self._pos.clear()
+
+    def update(self):
+        for m in self.watched_motors:
+            self._pos[m.name].append(m.present_position)
+
+    def plot(self, ax):
+        for m, pos in self._pos.items():
+            ax.plot(pos)
+        ax.legend(self._pos.keys())
