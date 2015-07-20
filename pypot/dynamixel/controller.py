@@ -86,6 +86,7 @@ class DxlController(MotorsController):
         for m in motors:
             m._write_synced[self.varname].done()
 
+
 class AngleLimitRegisterController(DxlController):
     def __init__(self, io, motors, sync_freq, synchronous):
         DxlController.__init__(self, io, motors, sync_freq,
@@ -125,6 +126,7 @@ class AngleLimitRegisterController(DxlController):
         for m in motors:
             for var in ['lower_limit', 'upper_limit']:
                 m._read_synced[var].done()
+
 
 class PosSpeedLoadDxlController(DxlController):
     def __init__(self, io, motors, sync_freq):
