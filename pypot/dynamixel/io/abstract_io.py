@@ -164,10 +164,6 @@ class AbstractDxlIO(AbstractIO):
             self._serial.flushOutput()
 
     def __force_lock(self, condition):
-        @contextmanager
-        def with_True():
-            yield True
-
         return with_True() if condition else False
 
     # MARK: Properties of the serial communication
@@ -574,3 +570,8 @@ class DxlTimeoutError(DxlCommunicationError):
 
     def __str__(self):
         return 'motors {} did not respond after sending {}'.format(self.ids, self.instruction_packet)
+
+
+@contextmanager
+def with_True():
+    yield True
