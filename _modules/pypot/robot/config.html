@@ -9,7 +9,7 @@
   <head>
     <meta charset="utf-8" />
     
-    <title>pypot.robot.config &mdash; pypot 2.7.4 documentation</title>
+    <title>pypot.robot.config &mdash; pypot 2.8.0 documentation</title>
     <meta name="description" content="">
     <meta name="author" content="">
 
@@ -35,7 +35,7 @@
 <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
             URL_ROOT:    '../../../',
-            VERSION:     '2.7.4',
+            VERSION:     '2.8.0',
             COLLAPSE_INDEX: false,
             FILE_SUFFIX: '.html',
             HAS_SOURCE:  true
@@ -50,7 +50,7 @@
 <script type="text/javascript">
 </script>
     <link rel="author" title="About these documents" href="../../../about.html" />
-    <link rel="top" title="pypot 2.7.4 documentation" href="../../../index.html" />
+    <link rel="top" title="pypot 2.8.0 documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body role="document">
@@ -63,7 +63,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="../../../index.html">pypot 2.7.4 documentation</a>
+          <a class="navbar-brand" href="../../../index.html">pypot 2.8.0 documentation</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
@@ -150,7 +150,7 @@
 <span class="kn">import</span> <span class="nn">pypot.dynamixel.io</span>
 <span class="kn">import</span> <span class="nn">pypot.dynamixel.error</span>
 <span class="kn">import</span> <span class="nn">pypot.dynamixel.motor</span>
-<span class="kn">import</span> <span class="nn">pypot.dynamixel.controller</span>
+<span class="kn">import</span> <span class="nn">pypot.dynamixel.syncloop</span>
 
 <span class="kn">from</span> <span class="nn">.robot</span> <span class="kn">import</span> <span class="n">Robot</span>
 
@@ -190,11 +190,15 @@
 
         <span class="n">check_motor_limits</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">dxl_io</span><span class="p">,</span> <span class="n">motor_names</span><span class="p">)</span>
 
-        <span class="n">c</span> <span class="o">=</span> <span class="n">pypot</span><span class="o">.</span><span class="n">dynamixel</span><span class="o">.</span><span class="n">controller</span><span class="o">.</span><span class="n">BaseDxlController</span><span class="p">(</span><span class="n">dxl_io</span><span class="p">,</span> <span class="n">attached_motors</span><span class="p">)</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;Instantiating controller on </span><span class="si">%s</span><span class="s"> with motors </span><span class="si">%s</span><span class="s">&#39;</span><span class="p">,</span>
                     <span class="n">dxl_io</span><span class="o">.</span><span class="n">port</span><span class="p">,</span> <span class="n">motor_names</span><span class="p">,</span>
                     <span class="n">extra</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;config&#39;</span><span class="p">:</span> <span class="n">config</span><span class="p">})</span>
 
+        <span class="n">syncloop</span> <span class="o">=</span> <span class="p">(</span><span class="n">c_params</span><span class="p">[</span><span class="s">&#39;syncloop&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="s">&#39;syncloop&#39;</span> <span class="ow">in</span> <span class="n">c_params</span>
+                    <span class="k">else</span> <span class="s">&#39;BaseDxlController&#39;</span><span class="p">)</span>
+        <span class="n">SyncLoopCls</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">pypot</span><span class="o">.</span><span class="n">dynamixel</span><span class="o">.</span><span class="n">syncloop</span><span class="p">,</span> <span class="n">syncloop</span><span class="p">)</span>
+
+        <span class="n">c</span> <span class="o">=</span> <span class="n">SyncLoopCls</span><span class="p">(</span><span class="n">dxl_io</span><span class="p">,</span> <span class="n">attached_motors</span><span class="p">)</span>
         <span class="n">controllers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
 
     <span class="n">robot</span> <span class="o">=</span> <span class="n">Robot</span><span class="p">(</span><span class="n">motor_controllers</span><span class="o">=</span><span class="n">controllers</span><span class="p">,</span> <span class="n">sync</span><span class="o">=</span><span class="n">sync</span><span class="p">)</span>
@@ -416,7 +420,7 @@
 <div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
   <div class="navbar-inner">
     <ul class="nav navbar-nav ">
-        <li><a href="../../../index.html">pypot 2.7.4 documentation</a></li>
+        <li><a href="../../../index.html">pypot 2.8.0 documentation</a></li>
     </ul>
 <ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
       

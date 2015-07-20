@@ -9,7 +9,7 @@
   <head>
     <meta charset="utf-8" />
     
-    <title>pypot.vrep.io &mdash; pypot 2.7.4 documentation</title>
+    <title>pypot.vrep.io &mdash; pypot 2.8.0 documentation</title>
     <meta name="description" content="">
     <meta name="author" content="">
 
@@ -35,7 +35,7 @@
 <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
             URL_ROOT:    '../../../',
-            VERSION:     '2.7.4',
+            VERSION:     '2.8.0',
             COLLAPSE_INDEX: false,
             FILE_SUFFIX: '.html',
             HAS_SOURCE:  true
@@ -50,7 +50,7 @@
 <script type="text/javascript">
 </script>
     <link rel="author" title="About these documents" href="../../../about.html" />
-    <link rel="top" title="pypot 2.7.4 documentation" href="../../../index.html" />
+    <link rel="top" title="pypot 2.8.0 documentation" href="../../../index.html" />
     <link rel="up" title="pypot.vrep" href="../vrep.html" /> 
   </head>
   <body role="document">
@@ -63,7 +63,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="../../../index.html">pypot 2.7.4 documentation</a>
+          <a class="navbar-brand" href="../../../index.html">pypot 2.8.0 documentation</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
@@ -138,7 +138,7 @@
 
 <span class="kn">from</span> <span class="nn">threading</span> <span class="kn">import</span> <span class="n">Lock</span>
 
-<span class="kn">from</span> <span class="nn">remoteApiBindings</span> <span class="kn">import</span> <span class="n">vrep</span> <span class="k">as</span> <span class="n">remote_api</span>
+<span class="kn">from</span> <span class="nn">.remoteApiBindings</span> <span class="kn">import</span> <span class="n">vrep</span> <span class="k">as</span> <span class="n">remote_api</span>
 <span class="kn">from</span> <span class="nn">..robot.io</span> <span class="kn">import</span> <span class="n">AbstractIO</span>
 
 
@@ -161,7 +161,6 @@
 
 
 <div class="viewcode-block" id="VrepIO"><a class="viewcode-back" href="../../../pypot.vrep.html#pypot.vrep.io.VrepIO">[docs]</a><span class="k">class</span> <span class="nc">VrepIO</span><span class="p">(</span><span class="n">AbstractIO</span><span class="p">):</span>
-
     <span class="sd">&quot;&quot;&quot; This class is used to get/set values from/to a V-REP scene.</span>
 
 <span class="sd">        It is based on V-REP remote API (http://www.coppeliarobotics.com/helpFiles/en/remoteApiOverview.htm).</span>
@@ -361,28 +360,28 @@
             <span class="k">return</span> <span class="mf">0.0</span>
 </div>
 <div class="viewcode-block" id="VrepIO.add_cube"><a class="viewcode-back" href="../../../pypot.vrep.html#pypot.vrep.io.VrepIO.add_cube">[docs]</a>    <span class="k">def</span> <span class="nf">add_cube</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">position</span><span class="p">,</span> <span class="n">sizes</span><span class="p">,</span> <span class="n">mass</span><span class="p">):</span>
-	<span class="sd">&quot;&quot;&quot; Add Cube &quot;&quot;&quot;</span>
-	<span class="bp">self</span><span class="o">.</span><span class="n">_create_pure_shape</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">239</span><span class="p">,</span> <span class="n">sizes</span><span class="p">,</span> <span class="n">mass</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
-	<span class="bp">self</span><span class="o">.</span><span class="n">set_object_position</span><span class="p">(</span><span class="s">&quot;Cuboid&quot;</span><span class="p">,</span> <span class="n">position</span><span class="p">)</span>
-	<span class="bp">self</span><span class="o">.</span><span class="n">change_object_name</span><span class="p">(</span><span class="s">&quot;Cuboid&quot;</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+        <span class="sd">&quot;&quot;&quot; Add Cube &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_create_pure_shape</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">239</span><span class="p">,</span> <span class="n">sizes</span><span class="p">,</span> <span class="n">mass</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_object_position</span><span class="p">(</span><span class="s">&quot;Cuboid&quot;</span><span class="p">,</span> <span class="n">position</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">change_object_name</span><span class="p">(</span><span class="s">&quot;Cuboid&quot;</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
 </div>
-<div class="viewcode-block" id="VrepIO.add_sphere"><a class="viewcode-back" href="../../../pypot.vrep.html#pypot.vrep.io.VrepIO.add_sphere">[docs]</a>    <span class="k">def</span> <span class="nf">add_sphere</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">position</span><span class="p">,</span> <span class="n">sizes</span><span class="p">,</span> <span class="n">mass</span><span class="p">,</span> <span class="n">precision</span><span class="o">=</span><span class="p">[</span><span class="mi">10</span><span class="p">,</span><span class="mi">10</span><span class="p">]):</span>
-	<span class="sd">&quot;&quot;&quot; Add Sphere &quot;&quot;&quot;</span>
-	<span class="bp">self</span><span class="o">.</span><span class="n">_create_pure_shape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">239</span><span class="p">,</span> <span class="n">sizes</span><span class="p">,</span> <span class="n">mass</span><span class="p">,</span> <span class="n">precision</span><span class="p">)</span>
-	<span class="bp">self</span><span class="o">.</span><span class="n">set_object_position</span><span class="p">(</span><span class="s">&quot;Sphere&quot;</span><span class="p">,</span> <span class="n">position</span><span class="p">)</span>
-	<span class="bp">self</span><span class="o">.</span><span class="n">change_object_name</span><span class="p">(</span><span class="s">&quot;Sphere&quot;</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+<div class="viewcode-block" id="VrepIO.add_sphere"><a class="viewcode-back" href="../../../pypot.vrep.html#pypot.vrep.io.VrepIO.add_sphere">[docs]</a>    <span class="k">def</span> <span class="nf">add_sphere</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">position</span><span class="p">,</span> <span class="n">sizes</span><span class="p">,</span> <span class="n">mass</span><span class="p">,</span> <span class="n">precision</span><span class="o">=</span><span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">]):</span>
+        <span class="sd">&quot;&quot;&quot; Add Sphere &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_create_pure_shape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">239</span><span class="p">,</span> <span class="n">sizes</span><span class="p">,</span> <span class="n">mass</span><span class="p">,</span> <span class="n">precision</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_object_position</span><span class="p">(</span><span class="s">&quot;Sphere&quot;</span><span class="p">,</span> <span class="n">position</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">change_object_name</span><span class="p">(</span><span class="s">&quot;Sphere&quot;</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
 </div>
-<div class="viewcode-block" id="VrepIO.add_cylinder"><a class="viewcode-back" href="../../../pypot.vrep.html#pypot.vrep.io.VrepIO.add_cylinder">[docs]</a>    <span class="k">def</span> <span class="nf">add_cylinder</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">position</span><span class="p">,</span> <span class="n">sizes</span><span class="p">,</span> <span class="n">mass</span><span class="p">,</span> <span class="n">precision</span><span class="o">=</span><span class="p">[</span><span class="mi">10</span><span class="p">,</span><span class="mi">10</span><span class="p">]):</span>
-	<span class="sd">&quot;&quot;&quot; Add Cylinder &quot;&quot;&quot;</span>
-	<span class="bp">self</span><span class="o">.</span><span class="n">_create_pure_shape</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">239</span><span class="p">,</span> <span class="n">sizes</span><span class="p">,</span> <span class="n">mass</span><span class="p">,</span> <span class="n">precision</span><span class="p">)</span>
-	<span class="bp">self</span><span class="o">.</span><span class="n">set_object_position</span><span class="p">(</span><span class="s">&quot;Cylinder&quot;</span><span class="p">,</span> <span class="n">position</span><span class="p">)</span>
-	<span class="bp">self</span><span class="o">.</span><span class="n">change_object_name</span><span class="p">(</span><span class="s">&quot;Cylinder&quot;</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+<div class="viewcode-block" id="VrepIO.add_cylinder"><a class="viewcode-back" href="../../../pypot.vrep.html#pypot.vrep.io.VrepIO.add_cylinder">[docs]</a>    <span class="k">def</span> <span class="nf">add_cylinder</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">position</span><span class="p">,</span> <span class="n">sizes</span><span class="p">,</span> <span class="n">mass</span><span class="p">,</span> <span class="n">precision</span><span class="o">=</span><span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">]):</span>
+        <span class="sd">&quot;&quot;&quot; Add Cylinder &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_create_pure_shape</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">239</span><span class="p">,</span> <span class="n">sizes</span><span class="p">,</span> <span class="n">mass</span><span class="p">,</span> <span class="n">precision</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_object_position</span><span class="p">(</span><span class="s">&quot;Cylinder&quot;</span><span class="p">,</span> <span class="n">position</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">change_object_name</span><span class="p">(</span><span class="s">&quot;Cylinder&quot;</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
 </div>
-<div class="viewcode-block" id="VrepIO.add_cone"><a class="viewcode-back" href="../../../pypot.vrep.html#pypot.vrep.io.VrepIO.add_cone">[docs]</a>    <span class="k">def</span> <span class="nf">add_cone</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">position</span><span class="p">,</span> <span class="n">sizes</span><span class="p">,</span> <span class="n">mass</span><span class="p">,</span> <span class="n">precision</span><span class="o">=</span><span class="p">[</span><span class="mi">10</span><span class="p">,</span><span class="mi">10</span><span class="p">]):</span>
-	<span class="sd">&quot;&quot;&quot; Add Cone &quot;&quot;&quot;</span>
-	<span class="bp">self</span><span class="o">.</span><span class="n">_create_pure_shape</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">239</span><span class="p">,</span> <span class="n">sizes</span><span class="p">,</span> <span class="n">mass</span><span class="p">,</span> <span class="n">precision</span><span class="p">)</span>
-	<span class="bp">self</span><span class="o">.</span><span class="n">set_object_position</span><span class="p">(</span><span class="s">&quot;Cylinder&quot;</span><span class="p">,</span> <span class="n">position</span><span class="p">)</span>
-	<span class="bp">self</span><span class="o">.</span><span class="n">change_object_name</span><span class="p">(</span><span class="s">&quot;Cylinder&quot;</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+<div class="viewcode-block" id="VrepIO.add_cone"><a class="viewcode-back" href="../../../pypot.vrep.html#pypot.vrep.io.VrepIO.add_cone">[docs]</a>    <span class="k">def</span> <span class="nf">add_cone</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">position</span><span class="p">,</span> <span class="n">sizes</span><span class="p">,</span> <span class="n">mass</span><span class="p">,</span> <span class="n">precision</span><span class="o">=</span><span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">]):</span>
+        <span class="sd">&quot;&quot;&quot; Add Cone &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_create_pure_shape</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">239</span><span class="p">,</span> <span class="n">sizes</span><span class="p">,</span> <span class="n">mass</span><span class="p">,</span> <span class="n">precision</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_object_position</span><span class="p">(</span><span class="s">&quot;Cylinder&quot;</span><span class="p">,</span> <span class="n">position</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">change_object_name</span><span class="p">(</span><span class="s">&quot;Cylinder&quot;</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
 </div>
 <div class="viewcode-block" id="VrepIO.change_object_name"><a class="viewcode-back" href="../../../pypot.vrep.html#pypot.vrep.io.VrepIO.change_object_name">[docs]</a>    <span class="k">def</span> <span class="nf">change_object_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">old_name</span><span class="p">,</span> <span class="n">new_name</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Change object name &quot;&quot;&quot;</span>
@@ -396,7 +395,6 @@
         <span class="sd">&quot;&quot;&quot; Create Pure Shape &quot;&quot;&quot;</span>
         <span class="n">lua_code</span> <span class="o">=</span> <span class="s">&quot;simCreatePureShape({}, {}, {{{}, {}, {}}}, {}, {{{}, {}}})&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">primitive_type</span><span class="p">,</span> <span class="n">options</span><span class="p">,</span> <span class="n">sizes</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">sizes</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">sizes</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">mass</span><span class="p">,</span> <span class="n">precision</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">precision</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_inject_lua_code</span><span class="p">(</span><span class="n">lua_code</span><span class="p">)</span>
-
 
     <span class="k">def</span> <span class="nf">_inject_lua_code</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lua_code</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Sends raw lua code and evaluate it wihtout any checking! &quot;&quot;&quot;</span>
@@ -508,9 +506,7 @@
 
 <span class="c"># V-REP Errors</span></div>
 <div class="viewcode-block" id="VrepIOError"><a class="viewcode-back" href="../../../pypot.vrep.html#pypot.vrep.io.VrepIOError">[docs]</a><span class="k">class</span> <span class="nc">VrepIOError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
-
     <span class="sd">&quot;&quot;&quot; Base class for V-REP IO Errors. &quot;&quot;&quot;</span>
-
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">error_code</span><span class="p">,</span> <span class="n">message</span><span class="p">):</span>
         <span class="n">message</span> <span class="o">=</span> <span class="s">&#39;V-REP error code {} ({}): &quot;{}&quot;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
             <span class="n">error_code</span><span class="p">,</span> <span class="n">vrep_error</span><span class="p">[</span><span class="n">error_code</span><span class="p">],</span> <span class="n">message</span><span class="p">)</span>
@@ -518,13 +514,10 @@
 
 </div>
 <div class="viewcode-block" id="VrepIOErrors"><a class="viewcode-back" href="../../../pypot.vrep.html#pypot.vrep.io.VrepIOErrors">[docs]</a><span class="k">class</span> <span class="nc">VrepIOErrors</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
-
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">):</span>
-        <span class="ne">Exception</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">)</span>
+    <span class="k">pass</span>
 
 </div>
 <div class="viewcode-block" id="VrepConnectionError"><a class="viewcode-back" href="../../../pypot.vrep.html#pypot.vrep.io.VrepConnectionError">[docs]</a><span class="k">class</span> <span class="nc">VrepConnectionError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
-
     <span class="sd">&quot;&quot;&quot; Base class for V-REP connection Errors. &quot;&quot;&quot;</span>
     <span class="k">pass</span></div>
 </pre></div>
@@ -543,7 +536,7 @@
 <div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
   <div class="navbar-inner">
     <ul class="nav navbar-nav ">
-        <li><a href="../../../index.html">pypot 2.7.4 documentation</a></li>
+        <li><a href="../../../index.html">pypot 2.8.0 documentation</a></li>
     </ul>
 <ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
       

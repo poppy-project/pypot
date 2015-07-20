@@ -9,7 +9,7 @@
   <head>
     <meta charset="utf-8" />
     
-    <title>pypot.sensor.kinect.sensor &mdash; pypot 2.7.4 documentation</title>
+    <title>pypot.sensor.kinect.sensor &mdash; pypot 2.8.0 documentation</title>
     <meta name="description" content="">
     <meta name="author" content="">
 
@@ -35,7 +35,7 @@
 <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
             URL_ROOT:    '../../../../',
-            VERSION:     '2.7.4',
+            VERSION:     '2.8.0',
             COLLAPSE_INDEX: false,
             FILE_SUFFIX: '.html',
             HAS_SOURCE:  true
@@ -50,7 +50,7 @@
 <script type="text/javascript">
 </script>
     <link rel="author" title="About these documents" href="../../../../about.html" />
-    <link rel="top" title="pypot 2.7.4 documentation" href="../../../../index.html" />
+    <link rel="top" title="pypot 2.8.0 documentation" href="../../../../index.html" />
     <link rel="up" title="Module code" href="../../../index.html" /> 
   </head>
   <body role="document">
@@ -63,7 +63,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="../../../../index.html">pypot 2.7.4 documentation</a>
+          <a class="navbar-brand" href="../../../../index.html">pypot 2.8.0 documentation</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
@@ -166,6 +166,7 @@
 </div>
 <span class="n">Joint</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span><span class="s">&#39;Joint&#39;</span><span class="p">,</span> <span class="p">(</span><span class="s">&#39;position&#39;</span><span class="p">,</span> <span class="s">&#39;orientation&#39;</span><span class="p">,</span> <span class="s">&#39;pixel_coordinate&#39;</span><span class="p">))</span>
 
+
 <div class="viewcode-block" id="KinectSensor"><a class="viewcode-back" href="../../../../pypot.sensor.html#pypot.sensor.kinect.sensor.KinectSensor">[docs]</a><span class="k">class</span> <span class="nc">KinectSensor</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">addr</span><span class="p">,</span> <span class="n">port</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_lock</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Lock</span><span class="p">()</span>
@@ -180,7 +181,7 @@
         <span class="n">t</span><span class="o">.</span><span class="n">daemon</span> <span class="o">=</span> <span class="bp">True</span>
         <span class="n">t</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
 
-<div class="viewcode-block" id="KinectSensor.remove_user"><a class="viewcode-back" href="../../../../pypot.sensor.html#pypot.sensor.kinect.sensor.KinectSensor.remove_user">[docs]</a>    <span class="k">def</span> <span class="nf">remove_user</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">user_index</span><span class="p">):</span>
+<div class="viewcode-block" id="KinectSensor.remove_user"><a class="viewcode-back" href="../../../../pypot.sensor.html#pypot.sensor.kinect.sensor.KinectSensor.remove_user">[docs]</a>    <span class="k">def</span> <span class="nf">remove_user</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user_index</span><span class="p">):</span>
         <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lock</span><span class="p">:</span>
             <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">_skeleton</span><span class="p">[</span><span class="n">user_index</span><span class="p">]</span>
 </div>
@@ -212,7 +213,7 @@
                 <span class="n">position</span> <span class="o">=</span> <span class="n">Point3D</span><span class="p">(</span><span class="n">x</span> <span class="o">/</span> <span class="n">w</span><span class="p">,</span> <span class="n">y</span> <span class="o">/</span> <span class="n">w</span><span class="p">,</span> <span class="n">z</span> <span class="o">/</span> <span class="n">w</span><span class="p">)</span>
                 <span class="n">pixel_coord</span> <span class="o">=</span> <span class="n">Point2D</span><span class="p">(</span><span class="o">*</span><span class="n">skel_array</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">4</span><span class="p">:</span><span class="mi">6</span><span class="p">])</span>
                 <span class="n">orientation</span> <span class="o">=</span> <span class="n">Quaternion</span><span class="p">(</span><span class="o">*</span><span class="n">skel_array</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">6</span><span class="p">:</span><span class="mi">10</span><span class="p">])</span>
-                <span class="n">joints</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Joint</span><span class="p">(</span><span class="n">position</span><span class="p">,</span><span class="n">orientation</span><span class="p">,</span><span class="n">pixel_coord</span><span class="p">))</span>
+                <span class="n">joints</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Joint</span><span class="p">(</span><span class="n">position</span><span class="p">,</span> <span class="n">orientation</span><span class="p">,</span> <span class="n">pixel_coord</span><span class="p">))</span>
 
             <span class="bp">self</span><span class="o">.</span><span class="n">tracked_skeleton</span> <span class="o">=</span> <span class="n">Skeleton</span><span class="p">(</span><span class="n">md</span><span class="p">[</span><span class="s">&#39;timestamp&#39;</span><span class="p">],</span> <span class="n">md</span><span class="p">[</span><span class="s">&#39;user_index&#39;</span><span class="p">],</span> <span class="o">*</span><span class="n">joints</span><span class="p">)</span>
 </div>
@@ -222,10 +223,10 @@
             <span class="n">img</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">480</span><span class="p">,</span> <span class="mi">640</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
             <span class="n">skeleton</span> <span class="o">=</span> <span class="n">kinect</span><span class="o">.</span><span class="n">tracked_skeleton</span>
             <span class="k">if</span> <span class="n">skeleton</span><span class="p">:</span>
-                <span class="k">for</span> <span class="n">user</span><span class="p">,</span><span class="n">skel</span> <span class="ow">in</span> <span class="n">skeleton</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+                <span class="k">for</span> <span class="n">user</span><span class="p">,</span> <span class="n">skel</span> <span class="ow">in</span> <span class="n">skeleton</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
                     <span class="k">for</span> <span class="n">joint_name</span> <span class="ow">in</span> <span class="n">skel</span><span class="o">.</span><span class="n">joints</span><span class="p">:</span>
                         <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">skel</span><span class="p">,</span> <span class="n">joint_name</span><span class="p">)</span><span class="o">.</span><span class="n">pixel_coordinate</span>
-                        <span class="n">pt</span> <span class="o">=</span> <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">),</span><span class="nb">int</span><span class="p">(</span><span class="n">y</span><span class="p">))</span>
+                        <span class="n">pt</span> <span class="o">=</span> <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">y</span><span class="p">))</span>
                         <span class="n">cv2</span><span class="o">.</span><span class="n">circle</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">pt</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">),</span> <span class="n">thickness</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
                 <span class="n">kinect</span><span class="o">.</span><span class="n">remove_all_users</span><span class="p">()</span>
             <span class="n">cv2</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="s">&#39;Skeleton&#39;</span><span class="p">,</span> <span class="n">img</span><span class="p">)</span>
@@ -255,7 +256,7 @@
 <div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
   <div class="navbar-inner">
     <ul class="nav navbar-nav ">
-        <li><a href="../../../../index.html">pypot 2.7.4 documentation</a></li>
+        <li><a href="../../../../index.html">pypot 2.8.0 documentation</a></li>
     </ul>
 <ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
       
