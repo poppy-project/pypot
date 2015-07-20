@@ -82,7 +82,7 @@ class LightDxlController(MetaDxlController):
                       if (m.model.startswith('MX') or
                           m.model.startswith('XL-320'))]
         if pid_motors:
-            controllers.insert(0, DxlController(io, pid_motors, 10., False,
+            controllers.insert(0, DxlController(io, pid_motors, 10., True,
                                                 'set', 'pid_gain', 'pid'))
 
         margin_slope_motors = [m for m in motors
