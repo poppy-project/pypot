@@ -44,7 +44,7 @@ class BaseDxlController(MetaDxlController):
         controllers = [
             PosSpeedLoadDxlController(io, motors, 50.),
 
-            AngleLimitRegisterController(io, motors,  10., False),
+            AngleLimitRegisterController(io, motors, 10., False),
             DxlController(io, motors, 1., False, 'get', 'present_voltage'),
             DxlController(io, motors, 1., False, 'get', 'present_temperature')
         ]
