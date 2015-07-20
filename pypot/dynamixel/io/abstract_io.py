@@ -388,24 +388,27 @@ class AbstractDxlIO(AbstractIO):
             rp = self._protocol.DxlSyncReadPacket(ids, control.address,
                                                   control.length * control.nb_elem)
 
-            sp = self._send_packet(rp, error_handler=error_handler)
-            if not sp:
-                return ()
-
-            if self._protocol.name == 'v1':
-                values = sp.parameters
-
-            elif self._protocol.name == 'v2':
-                values = list(sp.parameters)
-                for i in range(len(ids) - 1):
-                    try:
-                        sp = self.__real_read(rp, _force_lock=False)
-                    except (DxlTimeoutError, DxlCommunicationError):
-                        return ()
-                    values.extend(sp.parameters)
-
-                if len(values) < len(ids):
+            with self._serial_lock:
+                sp = self._send_packet(rp,
+                                       error_handler=error_handler,
+                                       _force_lock=True)
+                if not sp:
                     return ()
+
+                if self._protocol.name == 'v1':
+                    values = sp.parameters
+
+                elif self._protocol.name == 'v2':
+                    values = list(sp.parameters)
+                    for i in range(len(ids) - 1):
+                        try:
+                            sp = self.__real_read(rp, _force_lock=True)
+                        except (DxlTimeoutError, DxlCommunicationError):
+                            return ()
+                        values.extend(sp.parameters)
+
+                    if len(values) < len(ids):
+                        return ()
 
         else:
             values = []
