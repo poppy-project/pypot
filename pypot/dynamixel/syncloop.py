@@ -95,5 +95,3 @@ class LightDxlController(MetaDxlController):
                                              'set', 'compliance_slope'))
 
         MetaDxlController.__init__(self, io, motors, controllers)
-
-BaseDxlController = LightDxlController
