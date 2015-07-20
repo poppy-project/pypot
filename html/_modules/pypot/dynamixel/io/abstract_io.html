@@ -9,7 +9,7 @@
   <head>
     <meta charset="utf-8" />
     
-    <title>pypot.dynamixel.io.abstract_io &mdash; pypot 2.7.6 documentation</title>
+    <title>pypot.dynamixel.io.abstract_io &mdash; pypot 2.8.0 documentation</title>
     <meta name="description" content="">
     <meta name="author" content="">
 
@@ -35,7 +35,7 @@
 <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
             URL_ROOT:    '../../../../',
-            VERSION:     '2.7.6',
+            VERSION:     '2.8.0',
             COLLAPSE_INDEX: false,
             FILE_SUFFIX: '.html',
             HAS_SOURCE:  true
@@ -50,7 +50,7 @@
 <script type="text/javascript">
 </script>
     <link rel="author" title="About these documents" href="../../../../about.html" />
-    <link rel="top" title="pypot 2.7.6 documentation" href="../../../../index.html" />
+    <link rel="top" title="pypot 2.8.0 documentation" href="../../../../index.html" />
     <link rel="up" title="pypot.dynamixel" href="../../dynamixel.html" /> 
   </head>
   <body role="document">
@@ -63,7 +63,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="../../../../index.html">pypot 2.7.6 documentation</a>
+          <a class="navbar-brand" href="../../../../index.html">pypot 2.8.0 documentation</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
@@ -298,10 +298,6 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_serial</span><span class="o">.</span><span class="n">flushOutput</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="nf">__force_lock</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">condition</span><span class="p">):</span>
-        <span class="nd">@contextmanager</span>
-        <span class="k">def</span> <span class="nf">with_True</span><span class="p">():</span>
-            <span class="k">yield</span> <span class="bp">True</span>
-
         <span class="k">return</span> <span class="n">with_True</span><span class="p">()</span> <span class="k">if</span> <span class="n">condition</span> <span class="k">else</span> <span class="bp">False</span>
 
     <span class="c"># MARK: Properties of the serial communication</span>
@@ -708,6 +704,11 @@
 
     <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="s">&#39;motors {} did not respond after sending {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ids</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">instruction_packet</span><span class="p">)</span>
+
+
+<span class="nd">@contextmanager</span>
+<span class="k">def</span> <span class="nf">with_True</span><span class="p">():</span>
+    <span class="k">yield</span> <span class="bp">True</span>
 </pre></div>
 
                 </div>
@@ -724,7 +725,7 @@
 <div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
   <div class="navbar-inner">
     <ul class="nav navbar-nav ">
-        <li><a href="../../../../index.html">pypot 2.7.6 documentation</a></li>
+        <li><a href="../../../../index.html">pypot 2.8.0 documentation</a></li>
     </ul>
 <ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
       
