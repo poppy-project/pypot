@@ -44,7 +44,7 @@ class BaseDxlController(MetaDxlController):
         controllers = [
             PosSpeedLoadDxlController(io, motors, 50.),
 
-            AngleLimitRegisterController(io, motors,  10., False),
+            AngleLimitRegisterController(io, motors, 10., False),
             DxlController(io, motors, 1., False, 'get', 'present_voltage'),
             DxlController(io, motors, 1., False, 'get', 'present_temperature')
         ]
@@ -73,7 +73,7 @@ class LightDxlController(MetaDxlController):
         controllers = [
             PosSpeedLoadDxlController(io, motors, 25.),
 
-            AngleLimitRegisterController(io, motors,  10., True),
+            AngleLimitRegisterController(io, motors, 10., True),
             DxlController(io, motors, 10., True, 'get', 'present_voltage'),
             DxlController(io, motors, 10., True, 'get', 'present_temperature')
         ]

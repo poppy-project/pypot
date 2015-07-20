@@ -42,6 +42,7 @@ class DxlRegister(object):
             sync = instance._write_synced[self.label]
             sync.request()
 
+
 class DxlOrientedRegister(DxlRegister):
     def __get__(self, instance, owner):
         value = DxlRegister.__get__(self, instance, owner)
