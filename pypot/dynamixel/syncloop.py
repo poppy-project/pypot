@@ -44,38 +44,9 @@ class BaseDxlController(MetaDxlController):
         controllers = [
             PosSpeedLoadDxlController(io, motors, 50.),
 
-            AngleLimitRegisterController(io, motors,  10., True),
-            DxlController(io, motors, 1., True, 'get', 'present_voltage'),
-            DxlController(io, motors, 1., True, 'get', 'present_temperature')
-        ]
-
-        pid_motors = [m for m in motors
-                      if (m.model.startswith('MX') or
-                          m.model.startswith('XL-320'))]
-        if pid_motors:
-            controllers.insert(0, DxlController(io, pid_motors, 10., True,
-                                                'set', 'pid_gain', 'pid'))
-
-        margin_slope_motors = [m for m in motors
-                               if (m.model.startswith('AX') or
-                                   m.model.startswith('RX'))]
-        if margin_slope_motors:
-            controllers.append(DxlController(io, margin_slope_motors, 10, True,
-                                             'set', 'compliance_margin'))
-            controllers.append(DxlController(io, margin_slope_motors, 10, True,
-                                             'set', 'compliance_slope'))
-
-        MetaDxlController.__init__(self, io, motors, controllers)
-
-
-class LightDxlController(MetaDxlController):
-    def __init__(self, io, motors):
-        controllers = [
-            PosSpeedLoadDxlController(io, motors, 50.),
-
             AngleLimitRegisterController(io, motors,  10., False),
-            DxlController(io, motors, 10., False, 'get', 'present_voltage'),
-            DxlController(io, motors, 10., False, 'get', 'present_temperature')
+            DxlController(io, motors, 1., False, 'get', 'present_voltage'),
+            DxlController(io, motors, 1., False, 'get', 'present_temperature')
         ]
 
         pid_motors = [m for m in motors
@@ -92,6 +63,35 @@ class LightDxlController(MetaDxlController):
             controllers.append(DxlController(io, margin_slope_motors, 10, False,
                                              'set', 'compliance_margin'))
             controllers.append(DxlController(io, margin_slope_motors, 10, False,
+                                             'set', 'compliance_slope'))
+
+        MetaDxlController.__init__(self, io, motors, controllers)
+
+
+class LightDxlController(MetaDxlController):
+    def __init__(self, io, motors):
+        controllers = [
+            PosSpeedLoadDxlController(io, motors, 25.),
+
+            AngleLimitRegisterController(io, motors,  10., True),
+            DxlController(io, motors, 10., True, 'get', 'present_voltage'),
+            DxlController(io, motors, 10., True, 'get', 'present_temperature')
+        ]
+
+        pid_motors = [m for m in motors
+                      if (m.model.startswith('MX') or
+                          m.model.startswith('XL-320'))]
+        if pid_motors:
+            controllers.insert(0, DxlController(io, pid_motors, 10., True,
+                                                'set', 'pid_gain', 'pid'))
+
+        margin_slope_motors = [m for m in motors
+                               if (m.model.startswith('AX') or
+                                   m.model.startswith('RX'))]
+        if margin_slope_motors:
+            controllers.append(DxlController(io, margin_slope_motors, 10., True,
+                                             'set', 'compliance_margin'))
+            controllers.append(DxlController(io, margin_slope_motors, 10., True,
                                              'set', 'compliance_slope'))
 
         MetaDxlController.__init__(self, io, motors, controllers)
