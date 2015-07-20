@@ -61,7 +61,6 @@ def from_config(config, strict=True, sync=True):
         logger.info('Instantiating controller on %s with motors %s',
                     dxl_io.port, motor_names,
                     extra={'config': config})
-        c = pypot.dynamixel.syncloop.BaseDxlController(dxl_io, attached_motors)
 
         syncloop = (c_params['syncloop'] if 'syncloop' in c_params
                     else 'BaseDxlController')
