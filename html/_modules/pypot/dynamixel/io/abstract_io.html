@@ -9,7 +9,7 @@
   <head>
     <meta charset="utf-8" />
     
-    <title>pypot.dynamixel.io.abstract_io &mdash; pypot 2.7.5 documentation</title>
+    <title>pypot.dynamixel.io.abstract_io &mdash; pypot 2.7.6 documentation</title>
     <meta name="description" content="">
     <meta name="author" content="">
 
@@ -35,7 +35,7 @@
 <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
             URL_ROOT:    '../../../../',
-            VERSION:     '2.7.5',
+            VERSION:     '2.7.6',
             COLLAPSE_INDEX: false,
             FILE_SUFFIX: '.html',
             HAS_SOURCE:  true
@@ -50,7 +50,7 @@
 <script type="text/javascript">
 </script>
     <link rel="author" title="About these documents" href="../../../../about.html" />
-    <link rel="top" title="pypot 2.7.5 documentation" href="../../../../index.html" />
+    <link rel="top" title="pypot 2.7.6 documentation" href="../../../../index.html" />
     <link rel="up" title="pypot.dynamixel" href="../../dynamixel.html" /> 
   </head>
   <body role="document">
@@ -63,7 +63,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="../../../../index.html">pypot 2.7.5 documentation</a>
+          <a class="navbar-brand" href="../../../../index.html">pypot 2.7.6 documentation</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
@@ -522,24 +522,27 @@
             <span class="n">rp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_protocol</span><span class="o">.</span><span class="n">DxlSyncReadPacket</span><span class="p">(</span><span class="n">ids</span><span class="p">,</span> <span class="n">control</span><span class="o">.</span><span class="n">address</span><span class="p">,</span>
                                                   <span class="n">control</span><span class="o">.</span><span class="n">length</span> <span class="o">*</span> <span class="n">control</span><span class="o">.</span><span class="n">nb_elem</span><span class="p">)</span>
 
-            <span class="n">sp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_send_packet</span><span class="p">(</span><span class="n">rp</span><span class="p">,</span> <span class="n">error_handler</span><span class="o">=</span><span class="n">error_handler</span><span class="p">)</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">sp</span><span class="p">:</span>
-                <span class="k">return</span> <span class="p">()</span>
-
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_protocol</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s">&#39;v1&#39;</span><span class="p">:</span>
-                <span class="n">values</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">parameters</span>
-
-            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_protocol</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s">&#39;v2&#39;</span><span class="p">:</span>
-                <span class="n">values</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">parameters</span><span class="p">)</span>
-                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">ids</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
-                    <span class="k">try</span><span class="p">:</span>
-                        <span class="n">sp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__real_read</span><span class="p">(</span><span class="n">rp</span><span class="p">,</span> <span class="n">_force_lock</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
-                    <span class="k">except</span> <span class="p">(</span><span class="n">DxlTimeoutError</span><span class="p">,</span> <span class="n">DxlCommunicationError</span><span class="p">):</span>
-                        <span class="k">return</span> <span class="p">()</span>
-                    <span class="n">values</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">parameters</span><span class="p">)</span>
-
-                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">values</span><span class="p">)</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">ids</span><span class="p">):</span>
+            <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_serial_lock</span><span class="p">:</span>
+                <span class="n">sp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_send_packet</span><span class="p">(</span><span class="n">rp</span><span class="p">,</span>
+                                       <span class="n">error_handler</span><span class="o">=</span><span class="n">error_handler</span><span class="p">,</span>
+                                       <span class="n">_force_lock</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">sp</span><span class="p">:</span>
                     <span class="k">return</span> <span class="p">()</span>
+
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_protocol</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s">&#39;v1&#39;</span><span class="p">:</span>
+                    <span class="n">values</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">parameters</span>
+
+                <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_protocol</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s">&#39;v2&#39;</span><span class="p">:</span>
+                    <span class="n">values</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">parameters</span><span class="p">)</span>
+                    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">ids</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+                        <span class="k">try</span><span class="p">:</span>
+                            <span class="n">sp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__real_read</span><span class="p">(</span><span class="n">rp</span><span class="p">,</span> <span class="n">_force_lock</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+                        <span class="k">except</span> <span class="p">(</span><span class="n">DxlTimeoutError</span><span class="p">,</span> <span class="n">DxlCommunicationError</span><span class="p">):</span>
+                            <span class="k">return</span> <span class="p">()</span>
+                        <span class="n">values</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">sp</span><span class="o">.</span><span class="n">parameters</span><span class="p">)</span>
+
+                    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">values</span><span class="p">)</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">ids</span><span class="p">):</span>
+                        <span class="k">return</span> <span class="p">()</span>
 
         <span class="k">else</span><span class="p">:</span>
             <span class="n">values</span> <span class="o">=</span> <span class="p">[]</span>
@@ -721,7 +724,7 @@
 <div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
   <div class="navbar-inner">
     <ul class="nav navbar-nav ">
-        <li><a href="../../../../index.html">pypot 2.7.5 documentation</a></li>
+        <li><a href="../../../../index.html">pypot 2.7.6 documentation</a></li>
     </ul>
 <ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
       
