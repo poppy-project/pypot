@@ -199,14 +199,14 @@
 
 <span class="k">class</span> <span class="nc">RegisterOwner</span><span class="p">(</span><span class="nb">type</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">__new__</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">bases</span><span class="p">,</span> <span class="n">attrs</span><span class="p">):</span>
-        <span class="k">for</span> <span class="n">n</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">attrs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">for</span> <span class="n">n</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">attrs</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">DxlRegister</span><span class="p">):</span>
                 <span class="n">v</span><span class="o">.</span><span class="n">label</span> <span class="o">=</span> <span class="n">n</span>
                 <span class="n">attrs</span><span class="p">[</span><span class="s">&#39;registers&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
         <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">RegisterOwner</span><span class="p">,</span> <span class="n">cls</span><span class="p">)</span><span class="o">.</span><span class="n">__new__</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">bases</span><span class="p">,</span> <span class="n">attrs</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="DxlMotor"><a class="viewcode-back" href="../../../pypot.dynamixel.html#pypot.dynamixel.motor.DxlMotor">[docs]</a><span class="k">class</span> <span class="nc">DxlMotor</span><span class="p">(</span><span class="n">Motor</span><span class="p">):</span>
+<div class="viewcode-block" id="DxlMotor"><a class="viewcode-back" href="../../../pypot.dynamixel.html#pypot.dynamixel.motor.DxlMotor">[docs]</a><span class="k">class</span> <span class="nc">DxlMotor</span><span class="p">(</span><span class="n">Motor</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">RegisterOwner</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; High-level class used to represent and control a generic dynamixel motor.</span>
 
 <span class="sd">        This class provides all level access to (see :attr:`~pypot.dynamixel.motor.DxlMotor.registers` for an exhaustive list):</span>
@@ -226,7 +226,6 @@
 <span class="sd">        Those properties are synchronized with the real motors values thanks to a :class:`~pypot.dynamixel.controller.DxlController`.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-    <span class="n">__metaclass__</span> <span class="o">=</span> <span class="n">RegisterOwner</span>
 
     <span class="n">registers</span> <span class="o">=</span> <span class="n">Motor</span><span class="o">.</span><span class="n">registers</span> <span class="o">+</span> <span class="p">[</span><span class="s">&#39;registers&#39;</span><span class="p">,</span>
                                    <span class="s">&#39;goal_speed&#39;</span><span class="p">,</span>
