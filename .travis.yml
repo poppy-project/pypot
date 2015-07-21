@@ -1,6 +1,6 @@
-# Language is set to ruby because python isn't supported on the OSX Virtual Machines
+# Language is set to c because python isn't supported on the OSX Virtual Machines
 # on Travis. Anyway, python is install from conda.
-language: ruby
+language: c
 
 env:
   global:
@@ -26,7 +26,7 @@ env:
     # travis encrypt id_rsa_encrypted_key=...
     # openssl aes-256-cbc -k $id_rsa_encrypted_key -in ../id_rsa -out id_rsa.enc
     # Key of encrypted id_rsa, ssh private key
-    - secure: "pER9uKGlgCec2enMOW3E09yUeHdzI+PUj5iE5TRzj20OG5+vnoLHRpQ1jMvfIijpX2mu7nxKVViMoGv0N+yR4ryGzHBHa7/LI627l34dmhj/iF4oXwqDk7Fzwst/z7THHPN6dBXxPY+QfYkwlGsPVC8mLNNoIxP3DUvxugqHU0E="
+    - id_rsa_encrypted_key=fze16fz1ra6!
 
 
 matrix:
