@@ -9,7 +9,7 @@
   <head>
     <meta charset="utf-8" />
     
-    <title>Robot Controller &mdash; pypot 2.8.0 documentation</title>
+    <title>Robot Controller &mdash; pypot 2.7.7 documentation</title>
     <meta name="description" content="">
     <meta name="author" content="">
 
@@ -35,7 +35,7 @@
 <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
             URL_ROOT:    './',
-            VERSION:     '2.8.0',
+            VERSION:     '2.7.7',
             COLLAPSE_INDEX: false,
             FILE_SUFFIX: '.html',
             HAS_SOURCE:  true
@@ -50,7 +50,7 @@
 <script type="text/javascript">
 </script>
     <link rel="author" title="About these documents" href="about.html" />
-    <link rel="top" title="pypot 2.8.0 documentation" href="index.html" />
+    <link rel="top" title="pypot 2.7.7 documentation" href="index.html" />
     <link rel="up" title="Controlling robot" href="controlling_robot.html" />
     <link rel="next" title="Primitives everywhere" href="primitive.html" />
     <link rel="prev" title="Dynamixel Low-level IO" href="dynamixel.html" /> 
@@ -65,7 +65,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="index.html">pypot 2.8.0 documentation</a>
+          <a class="navbar-brand" href="index.html">pypot 2.7.7 documentation</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
@@ -375,7 +375,7 @@
 <p class="first admonition-title">Warning</p>
 <p class="last">The synchronization loops will try to run at the defined frequency, however don&#8217;t forget that you are limited by the bus bandwidth! For instance, depending on your robot you will not be able to read/write the position of all motors at 100Hz. Moreover, the loops are implemented as python thread and we can thus not guarantee the exact frequency of the loop.</p>
 </div>
-<p>If you looked closely at the example above, you could have noticed that even without defining any controller nor synchronization loop, you can already read the present position of the motors. Indeed, by default the class <a class="reference internal" href="pypot.robot.html#pypot.robot.robot.Robot" title="pypot.robot.robot.Robot"><code class="xref py py-class docutils literal"><span class="pre">Robot</span></code></a> uses a particular controller <code class="xref py py-class docutils literal"><span class="pre">BaseDxlController</span></code> which already defines synchronization loops. More precisely, this controller:</p>
+<p>If you looked closely at the example above, you could have noticed that even without defining any controller nor synchronization loop, you can already read the present position of the motors. Indeed, by default the class <a class="reference internal" href="pypot.robot.html#pypot.robot.robot.Robot" title="pypot.robot.robot.Robot"><code class="xref py py-class docutils literal"><span class="pre">Robot</span></code></a> uses a particular controller <a class="reference internal" href="pypot.dynamixel.html#pypot.dynamixel.controller.BaseDxlController" title="pypot.dynamixel.controller.BaseDxlController"><code class="xref py py-class docutils literal"><span class="pre">BaseDxlController</span></code></a> which already defines synchronization loops. More precisely, this controller:</p>
 <ul class="simple">
 <li>reads the present position, speed, load at 50Hz,</li>
 <li>writes the goal position, moving speed and torque limit at 50Hz,</li>
@@ -385,7 +385,7 @@
 <p>So, in most case you should not have to worry about synchronization loop and it should directly work. Off course, if you want to synchronize other values than the ones listed above you will have to modify this default behavior.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">With the current version of pypot, you can not indicate in the configuration which subclasses of <a class="reference internal" href="pypot.dynamixel.html#pypot.dynamixel.controller.DxlController" title="pypot.dynamixel.controller.DxlController"><code class="xref py py-class docutils literal"><span class="pre">DxlController</span></code></a> you want to use. This feature should be added in a future version. If you want to use your own controller, you should either modify the config parser, modify the <code class="xref py py-class docutils literal"><span class="pre">BaseDxlController</span></code> class or directly instantiate the <a class="reference internal" href="pypot.robot.html#pypot.robot.robot.Robot" title="pypot.robot.robot.Robot"><code class="xref py py-class docutils literal"><span class="pre">Robot</span></code></a> class.</p>
+<p class="last">With the current version of pypot, you can not indicate in the configuration which subclasses of <a class="reference internal" href="pypot.dynamixel.html#pypot.dynamixel.controller.DxlController" title="pypot.dynamixel.controller.DxlController"><code class="xref py py-class docutils literal"><span class="pre">DxlController</span></code></a> you want to use. This feature should be added in a future version. If you want to use your own controller, you should either modify the config parser, modify the <a class="reference internal" href="pypot.dynamixel.html#pypot.dynamixel.controller.BaseDxlController" title="pypot.dynamixel.controller.BaseDxlController"><code class="xref py py-class docutils literal"><span class="pre">BaseDxlController</span></code></a> class or directly instantiate the <a class="reference internal" href="pypot.robot.html#pypot.robot.robot.Robot" title="pypot.robot.robot.Robot"><code class="xref py py-class docutils literal"><span class="pre">Robot</span></code></a> class.</p>
 </div>
 <p>The synchronization loops are automatically started when instantiating your robot, the method <a class="reference internal" href="pypot.robot.html#pypot.robot.robot.Robot.start_sync" title="pypot.robot.robot.Robot.start_sync"><code class="xref py py-meth docutils literal"><span class="pre">start_sync()</span></code></a> is directly called. You can also stop the synchronization if needed (see the <a class="reference internal" href="pypot.robot.html#pypot.robot.robot.Robot.stop_sync" title="pypot.robot.robot.Robot.stop_sync"><code class="xref py py-meth docutils literal"><span class="pre">stop_sync()</span></code></a> method). Note that prior to version 2, the synchronization is not started by default.</p>
 <div class="admonition warning">
@@ -533,7 +533,7 @@
 <div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
   <div class="navbar-inner">
     <ul class="nav navbar-nav ">
-        <li><a href="index.html">pypot 2.8.0 documentation</a></li>
+        <li><a href="index.html">pypot 2.7.7 documentation</a></li>
     </ul>
 <ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
       
