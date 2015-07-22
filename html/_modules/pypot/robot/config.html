@@ -175,7 +175,7 @@
 
     <span class="c"># Instatiate the different motor controllers</span>
     <span class="n">controllers</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">for</span> <span class="n">c_name</span><span class="p">,</span> <span class="n">c_params</span> <span class="ow">in</span> <span class="n">config</span><span class="p">[</span><span class="s">&#39;controllers&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="k">for</span> <span class="n">c_name</span><span class="p">,</span> <span class="n">c_params</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">config</span><span class="p">[</span><span class="s">&#39;controllers&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
         <span class="n">motor_names</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">([</span><span class="n">_motor_extractor</span><span class="p">(</span><span class="n">alias</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
                            <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">c_params</span><span class="p">[</span><span class="s">&#39;attached_motors&#39;</span><span class="p">]],</span> <span class="p">[])</span>
 
@@ -207,7 +207,7 @@
 
     <span class="c"># Create all sensors and attached them</span>
     <span class="k">if</span> <span class="s">&#39;sensors&#39;</span> <span class="ow">in</span> <span class="n">config</span><span class="p">:</span>
-        <span class="k">for</span> <span class="n">s_name</span> <span class="ow">in</span> <span class="n">config</span><span class="p">[</span><span class="s">&#39;sensors&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+        <span class="k">for</span> <span class="n">s_name</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">config</span><span class="p">[</span><span class="s">&#39;sensors&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
             <span class="n">sensor</span> <span class="o">=</span> <span class="n">sensor_from_confignode</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">s_name</span><span class="p">)</span>
             <span class="nb">setattr</span><span class="p">(</span><span class="n">robot</span><span class="p">,</span> <span class="n">s_name</span><span class="p">,</span> <span class="n">sensor</span><span class="p">)</span>
 
