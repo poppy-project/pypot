@@ -9,7 +9,7 @@
   <head>
     <meta charset="utf-8" />
     
-    <title>pypot.primitive.utils &mdash; pypot 2.7.7 documentation</title>
+    <title>pypot.primitive.utils &mdash; pypot 2.8.0 documentation</title>
     <meta name="description" content="">
     <meta name="author" content="">
 
@@ -35,7 +35,7 @@
 <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
             URL_ROOT:    '../../../',
-            VERSION:     '2.7.7',
+            VERSION:     '2.8.0',
             COLLAPSE_INDEX: false,
             FILE_SUFFIX: '.html',
             HAS_SOURCE:  true
@@ -50,7 +50,7 @@
 <script type="text/javascript">
 </script>
     <link rel="author" title="About these documents" href="../../../about.html" />
-    <link rel="top" title="pypot 2.7.7 documentation" href="../../../index.html" />
+    <link rel="top" title="pypot 2.8.0 documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body role="document">
@@ -63,7 +63,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="../../../index.html">pypot 2.7.7 documentation</a>
+          <a class="navbar-brand" href="../../../index.html">pypot 2.8.0 documentation</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
@@ -132,6 +132,9 @@
                   
   <h1>Source code for pypot.primitive.utils</h1><div class="highlight"><pre>
 <span class="kn">import</span> <span class="nn">numpy</span>
+
+<span class="kn">from</span> <span class="nn">copy</span> <span class="kn">import</span> <span class="n">deepcopy</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">defaultdict</span>
 
 <span class="kn">from</span> <span class="nn">.primitive</span> <span class="kn">import</span> <span class="n">LoopPrimitive</span>
 
@@ -244,6 +247,30 @@
 </div>
 <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
     <span class="k">pass</span>
+
+
+<div class="viewcode-block" id="PositionWatcher"><a class="viewcode-back" href="../../../pypot.primitive.html#pypot.primitive.utils.PositionWatcher">[docs]</a><span class="k">class</span> <span class="nc">PositionWatcher</span><span class="p">(</span><span class="n">LoopPrimitive</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">robot</span><span class="p">,</span> <span class="n">refresh_freq</span><span class="p">,</span> <span class="n">watched_motors</span><span class="p">):</span>
+        <span class="n">LoopPrimitive</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">robot</span><span class="p">,</span> <span class="n">refresh_freq</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_pos</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">watched_motors</span> <span class="o">=</span> <span class="n">watched_motors</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">record_positions</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_pos</span><span class="p">)</span>
+
+<div class="viewcode-block" id="PositionWatcher.setup"><a class="viewcode-back" href="../../../pypot.primitive.html#pypot.primitive.utils.PositionWatcher.setup">[docs]</a>    <span class="k">def</span> <span class="nf">setup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_pos</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="PositionWatcher.update"><a class="viewcode-back" href="../../../pypot.primitive.html#pypot.primitive.utils.PositionWatcher.update">[docs]</a>    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">watched_motors</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_pos</span><span class="p">[</span><span class="n">m</span><span class="o">.</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">present_position</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="PositionWatcher.plot"><a class="viewcode-back" href="../../../pypot.primitive.html#pypot.primitive.utils.PositionWatcher.plot">[docs]</a>    <span class="k">def</span> <span class="nf">plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ax</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">m</span><span class="p">,</span> <span class="n">pos</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pos</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">pos</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_pos</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span></div></div>
 </pre></div>
 
                 </div>
@@ -260,7 +287,7 @@
 <div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
   <div class="navbar-inner">
     <ul class="nav navbar-nav ">
-        <li><a href="../../../index.html">pypot 2.7.7 documentation</a></li>
+        <li><a href="../../../index.html">pypot 2.8.0 documentation</a></li>
     </ul>
 <ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
       

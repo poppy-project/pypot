@@ -9,7 +9,7 @@
   <head>
     <meta charset="utf-8" />
     
-    <title>pypot.server.snap &mdash; pypot 2.7.7 documentation</title>
+    <title>pypot.server.snap &mdash; pypot 2.8.0 documentation</title>
     <meta name="description" content="">
     <meta name="author" content="">
 
@@ -35,7 +35,7 @@
 <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
             URL_ROOT:    '../../../',
-            VERSION:     '2.7.7',
+            VERSION:     '2.8.0',
             COLLAPSE_INDEX: false,
             FILE_SUFFIX: '.html',
             HAS_SOURCE:  true
@@ -50,7 +50,7 @@
 <script type="text/javascript">
 </script>
     <link rel="author" title="About these documents" href="../../../about.html" />
-    <link rel="top" title="pypot 2.7.7 documentation" href="../../../index.html" />
+    <link rel="top" title="pypot 2.8.0 documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body role="document">
@@ -63,7 +63,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="../../../index.html">pypot 2.7.7 documentation</a>
+          <a class="navbar-brand" href="../../../index.html">pypot 2.8.0 documentation</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
@@ -136,6 +136,7 @@
 <span class="kn">import</span> <span class="nn">socket</span>
 <span class="kn">import</span> <span class="nn">re</span>
 <span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">from</span> <span class="nn">ast</span> <span class="kn">import</span> <span class="n">literal_eval</span> <span class="k">as</span> <span class="n">make_tuple</span>
 
 <span class="kn">from</span> <span class="nn">.server</span> <span class="kn">import</span> <span class="n">AbstractServer</span>
 <span class="n">from</span><span class="o">.</span><span class="n">httpserver</span> <span class="kn">import</span> <span class="nn">EnableCors</span>
@@ -222,13 +223,13 @@
 <span class="sd">                &quot;&quot;&quot;</span>
             <span class="k">for</span> <span class="n">m_settings</span> <span class="ow">in</span> <span class="n">motors_register_value</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;;&#39;</span><span class="p">):</span>
                 <span class="n">settings</span> <span class="o">=</span> <span class="n">m_settings</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;:&#39;</span><span class="p">)</span>
-                <span class="n">rr</span><span class="o">.</span><span class="n">set_motor_register_value</span><span class="p">(</span><span class="n">settings</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">settings</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="nb">float</span><span class="p">(</span><span class="n">settings</span><span class="p">[</span><span class="mi">2</span><span class="p">]))</span>
+                <span class="n">rr</span><span class="o">.</span><span class="n">set_motor_register_value</span><span class="p">(</span><span class="n">settings</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">settings</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">make_tuple</span><span class="p">(</span><span class="n">settings</span><span class="p">[</span><span class="mi">2</span><span class="p">]))</span>
             <span class="k">return</span> <span class="s">&#39;Done!&#39;</span>
 
         <span class="c"># TODO : delete ?</span>
         <span class="nd">@self.app.get</span><span class="p">(</span><span class="s">&#39;/motors/set/positions/&lt;positions&gt;&#39;</span><span class="p">)</span>
         <span class="k">def</span> <span class="nf">set_motors_positions</span><span class="p">(</span><span class="n">positions</span><span class="p">):</span>
-            <span class="n">positions</span> <span class="o">=</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">positions</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;;&#39;</span><span class="p">)]</span>
+            <span class="n">positions</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">s</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">s</span><span class="p">),</span> <span class="n">positions</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;;&#39;</span><span class="p">))</span>
             <span class="k">for</span> <span class="n">m</span><span class="p">,</span> <span class="n">p</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">rr</span><span class="o">.</span><span class="n">get_motors_list</span><span class="p">(),</span> <span class="n">positions</span><span class="p">):</span>
                 <span class="n">rr</span><span class="o">.</span><span class="n">set_motor_register_value</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="s">&#39;goal_position&#39;</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span>
             <span class="k">return</span> <span class="s">&#39;Done!&#39;</span>
@@ -384,7 +385,7 @@
 <div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
   <div class="navbar-inner">
     <ul class="nav navbar-nav ">
-        <li><a href="../../../index.html">pypot 2.7.7 documentation</a></li>
+        <li><a href="../../../index.html">pypot 2.8.0 documentation</a></li>
     </ul>
 <ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
       

@@ -9,7 +9,7 @@
   <head>
     <meta charset="utf-8" />
     
-    <title>pypot.dynamixel.motor &mdash; pypot 2.7.7 documentation</title>
+    <title>pypot.dynamixel.motor &mdash; pypot 2.8.0 documentation</title>
     <meta name="description" content="">
     <meta name="author" content="">
 
@@ -35,7 +35,7 @@
 <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
             URL_ROOT:    '../../../',
-            VERSION:     '2.7.7',
+            VERSION:     '2.8.0',
             COLLAPSE_INDEX: false,
             FILE_SUFFIX: '.html',
             HAS_SOURCE:  true
@@ -50,7 +50,7 @@
 <script type="text/javascript">
 </script>
     <link rel="author" title="About these documents" href="../../../about.html" />
-    <link rel="top" title="pypot 2.7.7 documentation" href="../../../index.html" />
+    <link rel="top" title="pypot 2.8.0 documentation" href="../../../index.html" />
     <link rel="up" title="pypot.dynamixel" href="../dynamixel.html" /> 
   </head>
   <body role="document">
@@ -63,7 +63,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="../../../index.html">pypot 2.7.7 documentation</a>
+          <a class="navbar-brand" href="../../../index.html">pypot 2.8.0 documentation</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
@@ -135,9 +135,13 @@
 <span class="kn">import</span> <span class="nn">numpy</span>
 <span class="kn">import</span> <span class="nn">logging</span>
 
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">defaultdict</span>
+
 <span class="kn">import</span> <span class="nn">pypot.utils.pypot_time</span> <span class="kn">as</span> <span class="nn">time</span>
 
 <span class="kn">from</span> <span class="nn">..robot.motor</span> <span class="kn">import</span> <span class="n">Motor</span>
+
+<span class="kn">from</span> <span class="nn">..utils</span> <span class="kn">import</span> <span class="n">SyncEvent</span>
 <span class="kn">from</span> <span class="nn">..utils.trajectory</span> <span class="kn">import</span> <span class="n">GotoMinJerk</span>
 <span class="kn">from</span> <span class="nn">..utils.stoppablethread</span> <span class="kn">import</span> <span class="n">StoppableLoopThread</span>
 
@@ -150,7 +154,15 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">rw</span> <span class="o">=</span> <span class="n">rw</span>
 
     <span class="k">def</span> <span class="nf">__get__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">owner</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">instance</span><span class="o">.</span><span class="n">__dict__</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">label</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">instance</span><span class="o">.</span><span class="n">_read_synchronous</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">label</span><span class="p">]:</span>
+            <span class="n">sync</span> <span class="o">=</span> <span class="n">instance</span><span class="o">.</span><span class="n">_read_synced</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">label</span><span class="p">]</span>
+
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">sync</span><span class="o">.</span><span class="n">is_recent</span><span class="p">:</span>
+                <span class="n">sync</span><span class="o">.</span><span class="n">request</span><span class="p">()</span>
+
+        <span class="n">value</span> <span class="o">=</span> <span class="n">instance</span><span class="o">.</span><span class="n">__dict__</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">label</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">value</span>
 
     <span class="k">def</span> <span class="nf">__set__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">rw</span><span class="p">:</span>
@@ -159,6 +171,10 @@
         <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;Setting &#39;</span><span class="si">%s</span><span class="s">.</span><span class="si">%s</span><span class="s">&#39; to </span><span class="si">%s</span><span class="s">&quot;</span><span class="p">,</span>
                      <span class="n">instance</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">label</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
         <span class="n">instance</span><span class="o">.</span><span class="n">__dict__</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">label</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+
+        <span class="k">if</span> <span class="n">instance</span><span class="o">.</span><span class="n">_write_synchronous</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">label</span><span class="p">]:</span>
+            <span class="n">sync</span> <span class="o">=</span> <span class="n">instance</span><span class="o">.</span><span class="n">_write_synced</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">label</span><span class="p">]</span>
+            <span class="n">sync</span><span class="o">.</span><span class="n">request</span><span class="p">()</span>
 
 
 <span class="k">class</span> <span class="nc">DxlOrientedRegister</span><span class="p">(</span><span class="n">DxlRegister</span><span class="p">):</span>
@@ -183,14 +199,14 @@
 
 <span class="k">class</span> <span class="nc">RegisterOwner</span><span class="p">(</span><span class="nb">type</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">__new__</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">bases</span><span class="p">,</span> <span class="n">attrs</span><span class="p">):</span>
-        <span class="k">for</span> <span class="n">n</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">attrs</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
+        <span class="k">for</span> <span class="n">n</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">attrs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">DxlRegister</span><span class="p">):</span>
                 <span class="n">v</span><span class="o">.</span><span class="n">label</span> <span class="o">=</span> <span class="n">n</span>
                 <span class="n">attrs</span><span class="p">[</span><span class="s">&#39;registers&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
         <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">RegisterOwner</span><span class="p">,</span> <span class="n">cls</span><span class="p">)</span><span class="o">.</span><span class="n">__new__</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">bases</span><span class="p">,</span> <span class="n">attrs</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="DxlMotor"><a class="viewcode-back" href="../../../pypot.dynamixel.html#pypot.dynamixel.motor.DxlMotor">[docs]</a><span class="k">class</span> <span class="nc">DxlMotor</span><span class="p">(</span><span class="n">Motor</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">RegisterOwner</span><span class="p">):</span>
+<div class="viewcode-block" id="DxlMotor"><a class="viewcode-back" href="../../../pypot.dynamixel.html#pypot.dynamixel.motor.DxlMotor">[docs]</a><span class="k">class</span> <span class="nc">DxlMotor</span><span class="p">(</span><span class="n">Motor</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; High-level class used to represent and control a generic dynamixel motor.</span>
 
 <span class="sd">        This class provides all level access to (see :attr:`~pypot.dynamixel.motor.DxlMotor.registers` for an exhaustive list):</span>
@@ -210,6 +226,7 @@
 <span class="sd">        Those properties are synchronized with the real motors values thanks to a :class:`~pypot.dynamixel.controller.DxlController`.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
+    <span class="n">__metaclass__</span> <span class="o">=</span> <span class="n">RegisterOwner</span>
 
     <span class="n">registers</span> <span class="o">=</span> <span class="n">Motor</span><span class="o">.</span><span class="n">registers</span> <span class="o">+</span> <span class="p">[</span><span class="s">&#39;registers&#39;</span><span class="p">,</span>
                                    <span class="s">&#39;goal_speed&#39;</span><span class="p">,</span>
@@ -251,6 +268,12 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">compliant_behavior</span> <span class="o">=</span> <span class="s">&#39;dummy&#39;</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_broken</span> <span class="o">=</span> <span class="n">broken</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_read_synchronous</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="bp">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_read_synced</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="n">SyncEvent</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_write_synchronous</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="bp">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_write_synced</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="n">SyncEvent</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="p">(</span><span class="s">&#39;&lt;DxlMotor name={self.name} &#39;</span>
@@ -449,7 +472,7 @@
 <div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
   <div class="navbar-inner">
     <ul class="nav navbar-nav ">
-        <li><a href="../../../index.html">pypot 2.7.7 documentation</a></li>
+        <li><a href="../../../index.html">pypot 2.8.0 documentation</a></li>
     </ul>
 <ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
       

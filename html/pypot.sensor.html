@@ -9,7 +9,7 @@
   <head>
     <meta charset="utf-8" />
     
-    <title>sensor Package &mdash; pypot 2.7.7 documentation</title>
+    <title>sensor Package &mdash; pypot 2.8.0 documentation</title>
     <meta name="description" content="">
     <meta name="author" content="">
 
@@ -35,7 +35,7 @@
 <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
             URL_ROOT:    './',
-            VERSION:     '2.7.7',
+            VERSION:     '2.8.0',
             COLLAPSE_INDEX: false,
             FILE_SUFFIX: '.html',
             HAS_SOURCE:  true
@@ -50,7 +50,7 @@
 <script type="text/javascript">
 </script>
     <link rel="author" title="About these documents" href="about.html" />
-    <link rel="top" title="pypot 2.7.7 documentation" href="index.html" />
+    <link rel="top" title="pypot 2.8.0 documentation" href="index.html" />
     <link rel="up" title="Pypot’s API" href="api.html" />
     <link rel="next" title="server Package" href="pypot.server.html" />
     <link rel="prev" title="robot Package" href="pypot.robot.html" /> 
@@ -65,7 +65,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="index.html">pypot 2.7.7 documentation</a>
+          <a class="navbar-brand" href="index.html">pypot 2.8.0 documentation</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
@@ -181,6 +181,17 @@ It is only the client side of a zmq client/server application.</p>
 It used the Microsoft Kinect SDK and thus only work on Windows.</p>
 <p>Of course, the client side can be used on any platform.</p>
 <dl class="class">
+<dt id="pypot.sensor.kinect.sensor.Skeleton">
+<em class="property">class </em><code class="descclassname">pypot.sensor.kinect.sensor.</code><code class="descname">Skeleton</code><a class="reference internal" href="_modules/pypot/sensor/kinect/sensor.html#Skeleton"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.sensor.kinect.sensor.Skeleton" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pypot.sensor.kinect.sensor.Skeleton" title="pypot.sensor.kinect.sensor.Skeleton"><code class="xref py py-class docutils literal"><span class="pre">pypot.sensor.kinect.sensor.Skeleton</span></code></a></p>
+<dl class="attribute">
+<dt id="pypot.sensor.kinect.sensor.Skeleton.joints">
+<code class="descname">joints</code><em class="property"> = ('hip_center', 'spine', 'shoulder_center', 'head', 'shoulder_left', 'elbow_left', 'wrist_left', 'hand_left', 'shoulder_right', 'elbow_right', 'wrist_right', 'hand_right', 'hip_left', 'knee_left', 'ankle_left', 'foot_left', 'hip_right', 'knee_right', 'ankle_right', 'foot_right')</em><a class="headerlink" href="#pypot.sensor.kinect.sensor.Skeleton.joints" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
 <dt id="pypot.sensor.kinect.sensor.Joint">
 <em class="property">class </em><code class="descclassname">pypot.sensor.kinect.sensor.</code><code class="descname">Joint</code><span class="sig-paren">(</span><em>position</em>, <em>orientation</em>, <em>pixel_coordinate</em><span class="sig-paren">)</span><a class="headerlink" href="#pypot.sensor.kinect.sensor.Joint" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">tuple</span></code></p>
@@ -209,8 +220,8 @@ It used the Microsoft Kinect SDK and thus only work on Windows.</p>
 <em class="property">class </em><code class="descclassname">pypot.sensor.kinect.sensor.</code><code class="descname">KinectSensor</code><span class="sig-paren">(</span><em>addr</em>, <em>port</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/sensor/kinect/sensor.html#KinectSensor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.sensor.kinect.sensor.KinectSensor" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference external" href="http://docs.python.org/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
 <dl class="method">
-<dt id="pypot.sensor.kinect.sensor.KinectSensor.get_skeleton">
-<code class="descname">get_skeleton</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/sensor/kinect/sensor.html#KinectSensor.get_skeleton"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.sensor.kinect.sensor.KinectSensor.get_skeleton" title="Permalink to this definition">¶</a></dt>
+<dt id="pypot.sensor.kinect.sensor.KinectSensor.remove_user">
+<code class="descname">remove_user</code><span class="sig-paren">(</span><em>user_index</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/sensor/kinect/sensor.html#KinectSensor.remove_user"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.sensor.kinect.sensor.KinectSensor.remove_user" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
@@ -218,30 +229,19 @@ It used the Microsoft Kinect SDK and thus only work on Windows.</p>
 <code class="descname">remove_all_users</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/sensor/kinect/sensor.html#KinectSensor.remove_all_users"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.sensor.kinect.sensor.KinectSensor.remove_all_users" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
-<dl class="method">
-<dt id="pypot.sensor.kinect.sensor.KinectSensor.remove_user">
-<code class="descname">remove_user</code><span class="sig-paren">(</span><em>user_index</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/sensor/kinect/sensor.html#KinectSensor.remove_user"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.sensor.kinect.sensor.KinectSensor.remove_user" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="pypot.sensor.kinect.sensor.KinectSensor.run">
-<code class="descname">run</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/sensor/kinect/sensor.html#KinectSensor.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.sensor.kinect.sensor.KinectSensor.run" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
 <dl class="attribute">
 <dt id="pypot.sensor.kinect.sensor.KinectSensor.tracked_skeleton">
 <code class="descname">tracked_skeleton</code><a class="headerlink" href="#pypot.sensor.kinect.sensor.KinectSensor.tracked_skeleton" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
-</dd></dl>
+<dl class="method">
+<dt id="pypot.sensor.kinect.sensor.KinectSensor.get_skeleton">
+<code class="descname">get_skeleton</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/sensor/kinect/sensor.html#KinectSensor.get_skeleton"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.sensor.kinect.sensor.KinectSensor.get_skeleton" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
-<dl class="class">
-<dt id="pypot.sensor.kinect.sensor.Skeleton">
-<em class="property">class </em><code class="descclassname">pypot.sensor.kinect.sensor.</code><code class="descname">Skeleton</code><a class="reference internal" href="_modules/pypot/sensor/kinect/sensor.html#Skeleton"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.sensor.kinect.sensor.Skeleton" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#pypot.sensor.kinect.sensor.Skeleton" title="pypot.sensor.kinect.sensor.Skeleton"><code class="xref py py-class docutils literal"><span class="pre">pypot.sensor.kinect.sensor.Skeleton</span></code></a></p>
-<dl class="attribute">
-<dt id="pypot.sensor.kinect.sensor.Skeleton.joints">
-<code class="descname">joints</code><em class="property"> = ('hip_center', 'spine', 'shoulder_center', 'head', 'shoulder_left', 'elbow_left', 'wrist_left', 'hand_left', 'shoulder_right', 'elbow_right', 'wrist_right', 'hand_right', 'hip_left', 'knee_left', 'ankle_left', 'foot_left', 'hip_right', 'knee_right', 'ankle_right', 'foot_right')</em><a class="headerlink" href="#pypot.sensor.kinect.sensor.Skeleton.joints" title="Permalink to this definition">¶</a></dt>
+<dl class="method">
+<dt id="pypot.sensor.kinect.sensor.KinectSensor.run">
+<code class="descname">run</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/sensor/kinect/sensor.html#KinectSensor.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.sensor.kinect.sensor.KinectSensor.run" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -302,7 +302,7 @@ It used the Microsoft Kinect SDK and thus only work on Windows.</p>
 <div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
   <div class="navbar-inner">
     <ul class="nav navbar-nav ">
-        <li><a href="index.html">pypot 2.7.7 documentation</a></li>
+        <li><a href="index.html">pypot 2.8.0 documentation</a></li>
     </ul>
 <ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
       
