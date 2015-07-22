@@ -13,6 +13,7 @@ import numpy
 import time
 import json
 
+import pypot.sensor
 import pypot.dynamixel
 import pypot.dynamixel.io
 import pypot.dynamixel.error
@@ -67,6 +68,12 @@ def from_config(config, strict=True, sync=True):
     robot = Robot(motor_controllers=controllers, sync=sync)
     make_alias(config, robot)
 
+    # Create all sensors and attached them
+    if 'sensors' in config:
+        for s_name in config['sensors'].keys():
+            sensor = sensor_from_confignode(config, s_name)
+            setattr(robot, s_name, sensor)
+
     logger.info('Loading complete!',
                 extra={'config': config})
 
@@ -96,6 +103,14 @@ def motor_from_confignode(config, motor_name):
                 extra={'config': config})
 
     return m
+
+
+def sensor_from_confignode(config, s_name):
+    args = config['sensors'][s_name]
+    cls_name = args.pop("type")
+
+    SensorCls = getattr(pypot.sensor, cls_name)
+    return SensorCls(name=s_name, **args)
 
 
 def dxl_io_from_confignode(config, c_params, ids, strict):
