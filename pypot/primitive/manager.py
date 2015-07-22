@@ -66,6 +66,5 @@ class PrimitiveManager(StoppableLoopThread):
         """ Stop the primitive manager. """
         for p in self.primitives[:]:
             p.stop()
-            p.wait_to_stop()
 
         StoppableLoopThread.stop(self)
