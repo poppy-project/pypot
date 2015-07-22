@@ -14,8 +14,8 @@ env:
     - GH_USERNAME=poppy-project
     - GH_REPO=pypot
     # Git and Github credentials for pushing documentation 
-    - GIT_EMAIL=theo.segonds@inria.fr
-    - GIT_NAME=show0k-travis-bot
+    - GIT_EMAIL=poppy-bot-ci@inria.fr
+    - GIT_NAME=poppy-bot
     # GH_TOKEN encrypted below > travis encrypt GH_TOKEN=XXXXXX --add
     - secure: "bOyOFELIUx4pB0JRqTVeyeUt1lW7ZbhoZV+RYNDUshuZfmeDI4stDDCzNPp/9OzP+G+QR38sCK9ZncltYxtMA5QBz5Ouo0bo0aGO8gLDbMFLiq4fwBFoQ6soCdMODTjVAKAiBVBKz9mp/FF+85odMs1MQyFBZ7x594gV5lzVG18="
 
