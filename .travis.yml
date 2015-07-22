@@ -17,7 +17,7 @@ env:
     - GIT_EMAIL=theo.segonds@inria.fr
     - GIT_NAME=show0k-travis-bot
     # GH_TOKEN encrypted below > travis encrypt GH_TOKEN=XXXXXX --add
-    - secure: "D1NhRT0olL4VJce/tPfPkDkKKFn5tTiw9RjbM0Qm+eB772xh+UFXrlUVOmWhezyZ2oCgjOpXMZJFNTNHOLqQ2aWTZrX45ielzZjqtU3e12DgF+jF0dXz255bo02W4n8li9R4hW0GTnm63INZSWp6mdW8TF6Wu4n0wf3PJz7Vpi8="
+    - secure: "bOyOFELIUx4pB0JRqTVeyeUt1lW7ZbhoZV+RYNDUshuZfmeDI4stDDCzNPp/9OzP+G+QR38sCK9ZncltYxtMA5QBz5Ouo0bo0aGO8gLDbMFLiq4fwBFoQ6soCdMODTjVAKAiBVBKz9mp/FF+85odMs1MQyFBZ7x594gV5lzVG18="
 
     # V-REP conf
     - VREP_VERSION=3_1_2
