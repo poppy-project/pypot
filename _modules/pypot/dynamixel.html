@@ -151,16 +151,16 @@
         <span class="k">return</span> <span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s">&#39;/dev/ttyACM*&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s">&#39;/dev/ttyUSB*&#39;</span><span class="p">)</span>
 
     <span class="k">elif</span> <span class="n">platform</span><span class="o">.</span><span class="n">system</span><span class="p">()</span> <span class="o">==</span> <span class="s">&#39;Windows&#39;</span><span class="p">:</span>
-        <span class="kn">import</span> <span class="nn">winreg</span>
+        <span class="kn">import</span> <span class="nn">_winreg</span>
         <span class="kn">import</span> <span class="nn">itertools</span>
 
         <span class="n">ports</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">path</span> <span class="o">=</span> <span class="s">&#39;HARDWARE</span><span class="se">\\</span><span class="s">DEVICEMAP</span><span class="se">\\</span><span class="s">SERIALCOMM&#39;</span>
-        <span class="n">key</span> <span class="o">=</span> <span class="n">winreg</span><span class="o">.</span><span class="n">OpenKey</span><span class="p">(</span><span class="n">winreg</span><span class="o">.</span><span class="n">HKEY_LOCAL_MACHINE</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span>
+        <span class="n">key</span> <span class="o">=</span> <span class="n">_winreg</span><span class="o">.</span><span class="n">OpenKey</span><span class="p">(</span><span class="n">_winreg</span><span class="o">.</span><span class="n">HKEY_LOCAL_MACHINE</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span>
 
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">itertools</span><span class="o">.</span><span class="n">count</span><span class="p">():</span>
             <span class="k">try</span><span class="p">:</span>
-                <span class="n">ports</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">winreg</span><span class="o">.</span><span class="n">EnumValue</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">i</span><span class="p">)[</span><span class="mi">1</span><span class="p">]))</span>
+                <span class="n">ports</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">_winreg</span><span class="o">.</span><span class="n">EnumValue</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">i</span><span class="p">)[</span><span class="mi">1</span><span class="p">]))</span>
             <span class="k">except</span> <span class="ne">WindowsError</span><span class="p">:</span>
                 <span class="k">return</span> <span class="n">ports</span>
 
