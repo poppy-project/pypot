@@ -87,6 +87,7 @@ def main():
             time.sleep(.5)
     print('Done!')
 
+    # FACTORY_BAUDRATE and TARGET_BAUDRATE are the same for AX12
     print('Setting the motor to a "poppy" configuration')
     for br in [FACTORY_BAUDRATE, TARGET_BAUDRATE]:
         with DxlIO(port, br) as dxl:
