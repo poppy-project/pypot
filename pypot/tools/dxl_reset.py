@@ -9,7 +9,7 @@ This utility should only be used with a single motor connected to the bus. For t
 To run it:
 $ poppy-reset-motor 42
 
-The motor will now have the id 42, use a 1000000 baud rates, a 0µs return delay time. The angle limit are also set (by default to (-150, 150)). Its position is also set to its base position (default: 0).
+The motor will now have the id 42, use a 1000000 baud rates, a 0µs return delay time. The angle limit are also set (by default to (-180, 180)). Its position is also set to its base position (default: 0).
 
 For more complex use cases, see:
 $ poppy-reset-motor --help
@@ -50,7 +50,7 @@ def main():
     parser.add_argument(dest='id', type=int,
                         help='Dynamixel target #id.')
 
-    parser.add_argument('-p', '--port', default=None,
+    parser.add_argument('-p', '--port', default='autoselect',
                         choices=get_available_ports(),
                         help='Serial port, default: autoselect')
 
@@ -60,7 +60,7 @@ def main():
     parser.add_argument('--position', type=float, default=0.0,
                         help='Position set to the motor (in degrees)')
 
-    parser.add_argument('--angle-limit', type=float, nargs=2, default=[-150, 150],
+    parser.add_argument('--angle-limit', type=float, nargs=2, default=[-180, 180],
                         help='Angle limits of the motor (in degrees)')
 
     args = parser.parse_args()
@@ -71,11 +71,14 @@ def main():
     log_level = args.log_level.upper()
     logger.setLevel(log_level)
 
-    # First, we make sure that there is at least one available ports
-    try:
-        port = get_available_ports()[0]
-    except IndexError:
-        leave('You need to connect at least one dynamixel port!')
+    if args.port == 'autoselect':
+        try:
+            # First, we make sure that there is at least one available ports
+            port = get_available_ports()[0]
+        except IndexError:
+            leave('You need to connect at least one dynamixel port!')
+    else:
+        port = args.port
 
     print('Resetting to factory settings...')
     for br in [FACTORY_BAUDRATE, TARGET_BAUDRATE]:
@@ -85,32 +88,33 @@ def main():
     print('Done!')
 
     print('Setting the motor to a "poppy" configuration')
-    with DxlIO(port, FACTORY_BAUDRATE) as dxl:
-        # We make sure that there was only one motor on the bus
-        try:
-            assert dxl.scan([1]) == [1]
-        except AssertionError:
-            leave('No motor found, check the connection!')
-        except DxlError:
-            leave('You should only connect one motor at'
-                  ' a time when doing factory reset!')
+    for br in [FACTORY_BAUDRATE, TARGET_BAUDRATE]:
+        with DxlIO(port, br) as dxl:
+            # We make sure that there was only one motor on the bus
+            try:
+                assert dxl.scan([1]) == [1]
+            except AssertionError:
+                leave('No motor found, check the connection!')
+            except DxlError:
+                leave('You should only connect one motor at'
+                      ' a time when doing factory reset!')
 
-        if args.id != 1:
-            print('Changing the id to {}...'.format(args.id))
-            dxl.change_id({1: args.id})
+            if args.id != 1:
+                print('Changing the id to {}...'.format(args.id))
+                dxl.change_id({1: args.id})
 
-        print('Changing the return delay time to {}...'.format(0))
-        dxl.set_return_delay_time({args.id: 0})
-        time.sleep(.5)
+            print('Changing the return delay time to {}...'.format(0))
+            dxl.set_return_delay_time({args.id: 0})
+            time.sleep(.5)
 
-        print('Changing the angle limit to {}...').format(args.angle_limit)
-        dxl.set_angle_limit({args.id: args.angle_limit})
-        time.sleep(.5)
+            print('Changing the angle limit to {}...').format(args.angle_limit)
+            dxl.set_angle_limit({args.id: args.angle_limit})
+            time.sleep(.5)
 
-        print('Changing the baudrate to {}...'.format(TARGET_BAUDRATE))
-        dxl.change_baudrate({args.id: TARGET_BAUDRATE})
-        time.sleep(.5)
-    print('Done!')
+            print('Changing the baudrate to {}...'.format(TARGET_BAUDRATE))
+            dxl.change_baudrate({args.id: TARGET_BAUDRATE})
+            time.sleep(.5)
+        print('Done!')
 
     print('Now, checking that everything went well...')
     with DxlIO(port) as dxl:
