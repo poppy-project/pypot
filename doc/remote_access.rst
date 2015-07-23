@@ -34,7 +34,7 @@ As an example of what you can do, here is the code of getting the load of a moto
     answer = s.recv_json()
     print(answer)
 
-Equivalent example using urllib in Python to send http requests:
+Equivalent example using urllib in Python to send http requests::
 
     import urllib, urllib2, json
 
