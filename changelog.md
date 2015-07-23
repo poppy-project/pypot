@@ -1,5 +1,8 @@
 # Changelog
 
+## V 2.8
+* can specify sensor inside the config file
+
 ## V 2.1
 * now uses the poppy_creature package
 * add support for present_load/torque_limit/compliant in V-REP

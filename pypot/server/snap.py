@@ -4,6 +4,7 @@ import bottle
 import socket
 import re
 import logging
+from ast import literal_eval as make_tuple
 
 from .server import AbstractServer
 from.httpserver import EnableCors
@@ -90,7 +91,7 @@ class SnapRobotServer(AbstractServer):
                 """
             for m_settings in motors_register_value.split(';'):
                 settings = m_settings.split(':')
-                rr.set_motor_register_value(settings[0], settings[1], float(settings[2]))
+                rr.set_motor_register_value(settings[0], settings[1], make_tuple(settings[2]))
             return 'Done!'
 
         # TODO : delete ?

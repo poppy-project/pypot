@@ -21,7 +21,7 @@ class Move(object):
                                                           len(self.positions()))
 
     def __getitem__(self, i):
-        return list(_timed_positions.items())[i]
+        return list(self._timed_positions.items())[i]
 
     @property
     def framerate(self):
@@ -104,7 +104,7 @@ class MovePlayer(LoopPrimitive):
 
     The playing can be :meth:`~pypot.primitive.primitive.Primitive.start` and :meth:`~pypot.primitive.primitive.Primitive.stop` by using the :class:`~pypot.primitive.primitive.LoopPrimitive` methods.
 
-    .. warning:: the primitive is run automatically the same framerate than the move record. 
+    .. warning:: the primitive is run automatically the same framerate than the move record.
         The play_speed attribute change only time lockup/interpolation
     """
 
