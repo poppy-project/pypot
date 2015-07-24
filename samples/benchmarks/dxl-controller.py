@@ -40,4 +40,4 @@ if __name__ == '__main__':
     with open(bp, 'w') as f:
         f.write(str(dt))
 
-    print('Done in {}ms'.format(mean(dt)*1000))
+    print('Done in {}ms'.format(mean(dt) * 1000))

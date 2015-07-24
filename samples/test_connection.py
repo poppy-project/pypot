@@ -9,7 +9,7 @@ N = 1000
 
 
 def read_register(dxl, register, ids):
-    print '\tReading {} times the {}...'.format(N, register)
+    print('\tReading {} times the {}...'.format(N, register))
 
     t = []
     getter = getattr(dxl, 'get_{}'.format(register))
@@ -20,13 +20,12 @@ def read_register(dxl, register, ids):
         end = time.time()
         t.append(1000 * (end - start))
 
-    print '\tTook {}ms (STD={}) per read'.format(numpy.mean(t), numpy.std(t))
-    print
+    print('\tTook {}ms (STD={}) per read'.format(numpy.mean(t), numpy.std(t)))
 
 
 def full_test(dxl, ids):
-    print 'Testing the communication speed with motor{} {}'.format('s' if len(ids) else '',
-                                                                   ids)
+    print('Testing the communication speed with motor{} {}'.format('s' if len(ids) else '',
+                                                                   ids))
     read_register(dxl, 'present_position', ids)
     read_register(dxl, 'control_table', ids)
 
@@ -49,19 +48,18 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     for port in args.ports:
-        print 'Now testing port {} with {}bds...'.format(port, args.baudrate)
+        print('Now testing port {} with {}bds...'.format(port, args.baudrate))
 
-        print 'Opening connection...',
+        print('Opening connection...')
         with pypot.dynamixel.DxlIO(port, baudrate=args.baudrate) as dxl:
-            print 'Ok!'
-            print 'Scanning the bus...',
+            print('Ok!')
+            print('Scanning the bus...',)
             sys.stdout.flush()
             ids = dxl.scan()
-            print 'Done!'
-            print 'Ids found: {}'.format(ids)
+            print('Done!')
+            print('Ids found: {}'.format(ids))
 
             full_test(dxl, ids[:1])
             full_test(dxl, ids)
 
-        print 'Closing port'
-        print
+        print('Closing port')

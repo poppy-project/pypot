@@ -33,6 +33,7 @@ class Skeleton(namedtuple('Skeleton', ('timestamp', 'user_id') + skeleton_joints
 
 Joint = namedtuple('Joint', ('position', 'orientation', 'pixel_coordinate'))
 
+
 class KinectSensor(object):
     def __init__(self, addr, port):
         self._lock = threading.Lock()
@@ -47,7 +48,7 @@ class KinectSensor(object):
         t.daemon = True
         t.start()
 
-    def remove_user(self,user_index):
+    def remove_user(self, user_index):
         with self._lock:
             del self._skeleton[user_index]
 
@@ -79,7 +80,7 @@ class KinectSensor(object):
                 position = Point3D(x / w, y / w, z / w)
                 pixel_coord = Point2D(*skel_array[i][4:6])
                 orientation = Quaternion(*skel_array[i][6:10])
-                joints.append(Joint(position,orientation,pixel_coord))
+                joints.append(Joint(position, orientation, pixel_coord))
 
             self.tracked_skeleton = Skeleton(md['timestamp'], md['user_index'], *joints)
 
@@ -89,10 +90,10 @@ class KinectSensor(object):
             img = numpy.zeros((480, 640, 3))
             skeleton = kinect.tracked_skeleton
             if skeleton:
-                for user,skel in skeleton.iteritems():
+                for user, skel in skeleton.iteritems():
                     for joint_name in skel.joints:
                         x, y = getattr(skel, joint_name).pixel_coordinate
-                        pt = (int(x),int(y))
+                        pt = (int(x), int(y))
                         cv2.circle(img, pt, 5, (255, 255, 255), thickness=-1)
                 kinect.remove_all_users()
             cv2.imshow('Skeleton', img)

@@ -52,9 +52,9 @@ class HTTPRobotServer(AbstractServer):
 
      """
 
-    def __init__(self, robot, host, port, cross_domain_origin='*'):
+    def __init__(self, robot, host, port, cross_domain_origin='*', quiet=True):
         AbstractServer.__init__(self, robot, host, port)
-
+        self.quiet = quiet
         self.app = bottle.Bottle()
 
         jd = lambda s: json.dumps(s, cls=MyJSONEncoder)
@@ -203,8 +203,10 @@ class HTTPRobotServer(AbstractServer):
                 '{}:{}'.format(prim, meth): res
             }
 
-    def run(self, quiet=False, server='tornado'):
+    def run(self, quiet=None, server='tornado'):
         """ Start the bottle server, run forever. """
+        if quiet is None:
+            quiet = self.quiet
         bottle.run(self.app,
                    host=self.host, port=self.port,
                    quiet=quiet,

@@ -35,4 +35,4 @@ if __name__ == '__main__':
     t0 = time.time()
     p.start()
     p.wait_to_stop()
-    print 'Running {}s of v-rep simulation took {}s'.format(DT, time.time() - t0)
+    print('Running {}s of v-rep simulation took {}s'.format(DT, time.time() - t0))

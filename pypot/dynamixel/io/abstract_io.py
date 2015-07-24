@@ -40,6 +40,10 @@ class AbstractDxlIO(AbstractIO):
     __controls = []
     _protocol = None
 
+    @classmethod
+    def get_used_ports(cls):
+        return list(cls.__used_ports)
+
     # MARK: - Open, Close and Flush the communication
 
     def __init__(self,
@@ -160,10 +164,6 @@ class AbstractDxlIO(AbstractIO):
             self._serial.flushOutput()
 
     def __force_lock(self, condition):
-        @contextmanager
-        def with_True():
-            yield True
-
         return with_True() if condition else False
 
     # MARK: Properties of the serial communication
@@ -216,7 +216,7 @@ class AbstractDxlIO(AbstractIO):
         except DxlTimeoutError:
             return False
 
-    def scan(self, ids=xrange(254)):
+    def scan(self, ids=range(254)):
         """ Pings all ids within the specified list, by default it finds all the motors connected to the bus. """
         return [id for id in ids if self.ping(id)]
 
@@ -266,7 +266,7 @@ class AbstractDxlIO(AbstractIO):
         for id in ids:
             try:
                 srl.extend(self._get_status_return_level((id, ),
-                           error_handler=None, convert=convert))
+                                                         error_handler=None, convert=convert))
             except DxlTimeoutError as e:
                 if self.ping(id):
                     srl.append('never' if convert else 0)
@@ -284,7 +284,7 @@ class AbstractDxlIO(AbstractIO):
         convert = kwargs['convert'] if 'convert' in kwargs else self._convert
         if convert:
             srl_for_id = dict(zip(srl_for_id.keys(),
-                              [('never', 'read', 'always').index(s) for s in srl_for_id.values()]))
+                                  [('never', 'read', 'always').index(s) for s in srl_for_id.values()]))
         self._set_status_return_level(srl_for_id, convert=False)
 
     def switch_led_on(self, ids):
@@ -384,24 +384,27 @@ class AbstractDxlIO(AbstractIO):
             rp = self._protocol.DxlSyncReadPacket(ids, control.address,
                                                   control.length * control.nb_elem)
 
-            sp = self._send_packet(rp, error_handler=error_handler)
-            if not sp:
-                return ()
-
-            if self._protocol.name == 'v1':
-                values = sp.parameters
-
-            elif self._protocol.name == 'v2':
-                values = list(sp.parameters)
-                for i in range(len(ids) - 1):
-                    try:
-                        sp = self.__real_read(rp, _force_lock=False)
-                    except (DxlTimeoutError, DxlCommunicationError):
-                        return ()
-                    values.extend(sp.parameters)
-
-                if len(values) < len(ids):
+            with self._serial_lock:
+                sp = self._send_packet(rp,
+                                       error_handler=error_handler,
+                                       _force_lock=True)
+                if not sp:
                     return ()
+
+                if self._protocol.name == 'v1':
+                    values = sp.parameters
+
+                elif self._protocol.name == 'v2':
+                    values = list(sp.parameters)
+                    for i in range(len(ids) - 1):
+                        try:
+                            sp = self.__real_read(rp, _force_lock=True)
+                        except (DxlTimeoutError, DxlCommunicationError):
+                            return ()
+                        values.extend(sp.parameters)
+
+                    if len(values) < len(ids):
+                        return ()
 
         else:
             values = []
@@ -567,3 +570,8 @@ class DxlTimeoutError(DxlCommunicationError):
 
     def __str__(self):
         return 'motors {} did not respond after sending {}'.format(self.ids, self.instruction_packet)
+
+
+@contextmanager
+def with_True():
+    yield True

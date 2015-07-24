@@ -6,7 +6,7 @@ import threading
 
 from collections import deque
 
-import pypot.utils.pypot_time as time
+from ..utils import pypot_time as time
 
 from ..utils.stoppablethread import StoppableThread, make_update_loop
 from ..utils.trajectory import GotoMinJerk

@@ -109,7 +109,7 @@ class DxlSyncReadPacket(DxlInstructionPacket):
         return DxlInstructionPacket.__new__(cls, DxlBroadcast,
                                             DxlInstruction.SYNC_READ,
                                             tuple(itertools.chain((address, length),
-                                                  ids)))
+                                                                  ids)))
 
     def __repr__(self):
         return ('DxlSyncReadDataPacket(ids={}, '
@@ -139,7 +139,7 @@ class DxlSyncWritePacket(DxlInstructionPacket):
         return DxlInstructionPacket.__new__(cls, DxlBroadcast,
                                             DxlInstruction.SYNC_WRITE,
                                             tuple(itertools.chain((address, length),
-                                                  id_value_couples)))
+                                                                  id_value_couples)))
 
     def __repr__(self):
         address = self.parameters[0]
