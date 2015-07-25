@@ -4,6 +4,7 @@ set -e
 # TODO parse online doc to see if it is the last version or not
 pypot_src_version=$(python -c "import pypot; print (pypot.__version__)")
 pypi_package_version=$(python ci/get_pypi_last_version.py pypot)
+last_commit_sha=$(git rev-parse --short HEAD)
 echo "Pypi version: "$pypi_package_version
 echo "Source version: "$pypot_src_version
 
@@ -48,7 +49,7 @@ pushd ..
             # Push the new documentation only if it is not a pull request and we are on master
             pushd $tmp_repo
                 git add -A
-                git commit -m "doc updates"
+                git commit -m "Doc auto update after commit $last_commit_sha"
                 git push origin gh-pages
             popd
         fi
