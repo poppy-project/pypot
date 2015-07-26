@@ -39,10 +39,10 @@ pushd ..
     if [[ "TRAVIS_OS_NAME" == "linux" ]]; then
         # Using pdflatex to build the .tex files to pdf
         make -C $doc_src latexpdf
-        cp $doc_src/_build/latex/ $tmp_repo
+        cp $doc_src/_build/latex/Pypot.pdf $tmp_repo
     fi
-
-
+    # Test http external links
+    make linkcheck
 
     # Exit if commit is untrusted
     if [[ "$TRAVIS" == "true" ]]; then

@@ -17,7 +17,7 @@ In this Quick Start, we will use this robot as a base and thus assume that you a
 Building your own Ergo-Robot
 ----------------------------
 
-Ergo-Robots have been developed for an art exhibition in Fondation Cartier: `Mathematics a beautiful elsewhere <http://fondation.cartier.com/#/en/art-contemporain/26/exhibitions/294/all-the-exhibitions/89/mathematics-a-beautiful-elsewhere/>`_. They are small creatures made from robotis motors and shaped as a stem with a head designed by David Lynch. They were developed to explore research topics such as artificial curiosity and language games. The robots were used during 5 months at the exhibition. More details on the whole project can be found `here <https://flowers.inria.fr/ergo-robots-fr.php>`__.
+Ergo-Robots have been developed for an art exhibition in Fondation Cartier: `Mathematics a beautiful elsewhere <http://fondation.cartier.com/en/art-contemporain/26/exhibitions/294/all-the-exhibitions/89/mathematics-a-beautiful-elsewhere/>`__. They are small creatures made from robotis motors and shaped as a stem with a head designed by David Lynch. They were developed to explore research topics such as artificial curiosity and language games. The robots were used during 5 months at the exhibition. More details on the whole project can be found `here <https://www.poppy-project.org/project/mathematics-a-beautiful-elsewhere>`__.
 
 .. image:: ErgoRobots.jpg
     :height: 400
