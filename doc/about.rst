@@ -1,7 +1,7 @@
 What is pypot?
 ==============
 
-.. image:: banderole-pypot.png
+.. image:: banderole-pypot.jpg
     :width: 100%
     :align: center
 
