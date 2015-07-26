@@ -22,7 +22,7 @@ setup(name='pypot',
 
       extras_require={
           'tools': [],  # Extras require: PyQt4 (not a PyPi packet)
-          'doc': ['sphinx', 'sphinx-bootstrap-theme'],
+          'doc': ['sphinx', 'sphinxjp.themes.basicstrap', 'sphinx-bootstrap-theme'],
           'http-server': ['bottle', 'tornado'],
           'zmq-server': ['pyzmq'],
           'remote-robot': ['zerorpc'],
