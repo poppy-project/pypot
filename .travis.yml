@@ -71,6 +71,10 @@ addons:
     packages:
       # Spoof x11 for starting vrep in travis (issues with network)
       - xvfb
+      # For building the pdf documentation
+      - texlive 
+      - texlive-latex-extra
+      - dvipng
   
 before_install:
   - . ./ci/before_install.sh

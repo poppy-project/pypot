@@ -28,14 +28,21 @@ pushd ..
 
     make -C $doc_src clean
     make -C $doc_src html
-
+    make -C $doc_src latex
     if [ -d $tmp_repo ]; then
        rm -rf $tmp_repo/
     fi
     mkdir $tmp_repo
-
     git clone -b gh-pages $git_url $tmp_repo 
     cp -r $doc_src/_build/html/ $tmp_repo
+
+    if [[ "TRAVIS_OS_NAME" == "linux" ]]; then
+        # Using pdflatex to build the .tex files to pdf
+        make -C $doc_src latexpdf
+        cp $doc_src/_build/latex/ $tmp_repo
+    fi
+
+
 
     # Exit if commit is untrusted
     if [[ "$TRAVIS" == "true" ]]; then
@@ -49,7 +56,7 @@ pushd ..
             # Push the new documentation only if it is not a pull request and we are on master
             pushd $tmp_repo
                 git add -A
-                git commit -m "Doc auto update after commit $last_commit_sha"
+                git commit -m "Doc generated after commit $last_commit_sha"
                 git push origin gh-pages
             popd
         fi
