@@ -42,6 +42,7 @@ pushd ..
         cp $doc_src/_build/latex/Pypot.pdf $tmp_repo
     fi
     # Test http external links
+    set +e
     make -C $doc_src linkcheck
 
     # Exit if commit is untrusted
