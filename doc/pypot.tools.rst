@@ -1,15 +1,13 @@
 pypot.tools package
 ===================
 
-Subpackages
------------
+Submodules
+----------
 
 .. toctree::
 
-    pypot.tools.herborist
+    herborist
 
-Submodules
-----------
 
 pypot.tools.dxl_reset module
 ----------------------------
@@ -19,11 +17,3 @@ pypot.tools.dxl_reset module
     :undoc-members:
     :show-inheritance:
 
-
-Module contents
----------------
-
-.. automodule:: pypot.tools
-    :members:
-    :undoc-members:
-    :show-inheritance:
