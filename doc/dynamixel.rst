@@ -60,7 +60,7 @@ To set up a connection with another baud rate you can write::
 
 The communication can be closed using the :meth:`~pypot.dynamixel.io.DxlIO.close` method.
 
-.. note:: The class :class:`~pypot.dynamixel.io.DxlIO` can also be used as a `Context Manager <http://docs.python.org/2/library/contextlib.html>`_ (the :meth:`~pypot.dynamixel.io.DxlIO.close` method will automatically be called at the end).
+.. note:: The class :class:`~pypot.dynamixel.io.DxlIO` can also be used as a `Context Manager <https://docs.python.org/2/library/contextlib.html>`_ (the :meth:`~pypot.dynamixel.io.DxlIO.close` method will automatically be called at the end).
     For instance::
 
         with pypot.dynamixel.DxlIO('/dev/ttyUSB0') as dxl_io:
@@ -145,7 +145,6 @@ As an example of what you can do with the low-level API, we are going to apply a
 
         speed = dict(zip(ids, itertools.repeat(200)))
         dxl_io.set_moving_speed(speed)
-
         pos = dict(zip(ids, itertools.repeat(0)))
         dxl_io.set_goal_position(pos)
 
