@@ -30,6 +30,7 @@ import re
 extensions = ['sphinx.ext.autodoc',
               'sphinx.ext.intersphinx',
               'sphinx.ext.viewcode',
+              'sphinx.ext.coverage',
               'sphinxjp.themes.basicstrap']
 
 # Add any paths that contain templates here, relative to this directory.
@@ -51,11 +52,6 @@ copyright = '2015, Poppy-Project'
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
 # built documents.
-#
-# The short X.Y version.
-#version = '1.4.0'
-# The full version, including alpha/beta/rc tags.
-#release = '1.4.0'
 
 
 def version():
@@ -125,7 +121,7 @@ html_theme = 'basicstrap'
 
 # The name of an image file (relative to this directory) to place at the top
 # of the sidebar.
-html_logo = 'pypot_logo.png'
+html_logo = 'pypot_logo-144x144.png'
 
 # The name of an image file (within the static path) to use as favicon of the
 # docs.  This file should be a Windows icon file (.ico) being 16x16 or 32x32

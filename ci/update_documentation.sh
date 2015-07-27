@@ -39,10 +39,11 @@ pushd ..
     if [[ "TRAVIS_OS_NAME" == "linux" ]]; then
         # Using pdflatex to build the .tex files to pdf
         make -C $doc_src latexpdf
-        cp $doc_src/_build/latex/ $tmp_repo
+        cp $doc_src/_build/latex/Pypot.pdf $tmp_repo
     fi
-
-
+    # Test http external links
+    set +e
+    make -C $doc_src linkcheck
 
     # Exit if commit is untrusted
     if [[ "$TRAVIS" == "true" ]]; then
@@ -56,7 +57,7 @@ pushd ..
             # Push the new documentation only if it is not a pull request and we are on master
             pushd $tmp_repo
                 git add -A
-                git commit -m "Doc generated after commit $last_commit_sha"
+                git commit -m "Doc generated after commit $last_commit_sha (travis build #$TRAVIS_BUILD_NUMBER)"
                 git push origin gh-pages
             popd
         fi
