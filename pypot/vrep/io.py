@@ -4,7 +4,7 @@ import ctypes
 
 from threading import Lock
 
-from remoteApiBindings import vrep as remote_api
+from .remoteApiBindings import vrep as remote_api
 from ..robot.io import AbstractIO
 
 
@@ -33,7 +33,7 @@ class VrepIO(AbstractIO):
 
     """
     MAX_ITER = 5
-    TIMEOUT = 0.2
+    TIMEOUT = 0.4
 
     def __init__(self, vrep_host='127.0.0.1', vrep_port=19997, scene=None, start=False):
         """ Starts the connection with the V-REP remote API server.

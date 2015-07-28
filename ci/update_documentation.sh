@@ -4,6 +4,7 @@ set -e
 # TODO parse online doc to see if it is the last version or not
 pypot_src_version=$(python -c "import pypot; print (pypot.__version__)")
 pypi_package_version=$(python ci/get_pypi_last_version.py pypot)
+last_commit_sha=$(git rev-parse --short HEAD)
 echo "Pypi version: "$pypi_package_version
 echo "Source version: "$pypot_src_version
 
@@ -18,7 +19,7 @@ git_url=https://$GH_TOKEN@github.com/$GH_USERNAME/$GH_REPO.git
 #     echo "Gevent bug, not possible to build zmq with"
 
 # Install Sphinx
-pip install -q Sphinx sphinxjp.themes.basicstrap bottle
+pip install -q Sphinx sphinxjp.themes.basicstrap bottle zerorpc
 
 # Build the doc
 pushd ..
@@ -27,18 +28,26 @@ pushd ..
 
     make -C $doc_src clean
     make -C $doc_src html
-
+    make -C $doc_src latex
     if [ -d $tmp_repo ]; then
        rm -rf $tmp_repo/
     fi
     mkdir $tmp_repo
-
     git clone -b gh-pages $git_url $tmp_repo 
     cp -r $doc_src/_build/html/ $tmp_repo
 
+    if [[ "TRAVIS_OS_NAME" == "linux" ]]; then
+        # Using pdflatex to build the .tex files to pdf
+        make -C $doc_src latexpdf
+        cp $doc_src/_build/latex/Pypot.pdf $tmp_repo
+    fi
+    # Test http external links
+    set +e
+    make -C $doc_src linkcheck
+
     # Exit if commit is untrusted
     if [[ "$TRAVIS" == "true" ]]; then
-        if [[ "$TRAVIS_PULL_REQUEST" != "false" ]] || [[ "$TRAVIS_BRANCH" != "master" ]]; then
+        if [ "$TRAVIS_PULL_REQUEST" != "false" -o "$TRAVIS_BRANCH" != "master" ]; then
             echo "This is an untrusted commit. No deployment will be done."
         elif [[ "$pypi_package_version" == "$pypot_src_version" ]]; then
             echo "Pypi version == source version, the doc won't be commited"
@@ -48,7 +57,7 @@ pushd ..
             # Push the new documentation only if it is not a pull request and we are on master
             pushd $tmp_repo
                 git add -A
-                git commit -m "doc updates"
+                git commit -m "Doc generated after commit $last_commit_sha (travis build #$TRAVIS_BUILD_NUMBER)"
                 git push origin gh-pages
             popd
         fi

@@ -1,13 +1,12 @@
 # Language is set to c because python isn't supported on the OSX Virtual Machines
 # on Travis. Anyway, python is install from conda.
-language: python
-
+language: c
 
 env:
   global:
     # - USE_SSH_FORWARDING=true
     # Directory of setup.py
-    - SETUP_DIR=.
+    - SETUP_DIR=$TRAVIS_BUILD_DIR/.
     # PyPi credentials foru ploads to Pypi on release.
     - PYPI_USERNAME=pierre-rouanet
     # PYPI_PASSWD encrypted below > travis encrypt PYPI_PASSWD=XXXXXX --add
@@ -15,10 +14,10 @@ env:
     - GH_USERNAME=poppy-project
     - GH_REPO=pypot
     # Git and Github credentials for pushing documentation 
-    - GIT_EMAIL=theo.segonds@inria.fr
-    - GIT_NAME=show0k-travis-bot
+    - GIT_EMAIL=poppy-bot-ci@inria.fr
+    - GIT_NAME=poppy-bot
     # GH_TOKEN encrypted below > travis encrypt GH_TOKEN=XXXXXX --add
-    - secure: "D1NhRT0olL4VJce/tPfPkDkKKFn5tTiw9RjbM0Qm+eB772xh+UFXrlUVOmWhezyZ2oCgjOpXMZJFNTNHOLqQ2aWTZrX45ielzZjqtU3e12DgF+jF0dXz255bo02W4n8li9R4hW0GTnm63INZSWp6mdW8TF6Wu4n0wf3PJz7Vpi8="
+    - secure: "bOyOFELIUx4pB0JRqTVeyeUt1lW7ZbhoZV+RYNDUshuZfmeDI4stDDCzNPp/9OzP+G+QR38sCK9ZncltYxtMA5QBz5Ouo0bo0aGO8gLDbMFLiq4fwBFoQ6soCdMODTjVAKAiBVBKz9mp/FF+85odMs1MQyFBZ7x594gV5lzVG18="
 
     # V-REP conf
     - VREP_VERSION=3_1_2
@@ -27,7 +26,7 @@ env:
     # travis encrypt id_rsa_encrypted_key=...
     # openssl aes-256-cbc -k $id_rsa_encrypted_key -in ../id_rsa -out id_rsa.enc
     # Key of encrypted id_rsa, ssh private key
-    - secure: "pER9uKGlgCec2enMOW3E09yUeHdzI+PUj5iE5TRzj20OG5+vnoLHRpQ1jMvfIijpX2mu7nxKVViMoGv0N+yR4ryGzHBHa7/LI627l34dmhj/iF4oXwqDk7Fzwst/z7THHPN6dBXxPY+QfYkwlGsPVC8mLNNoIxP3DUvxugqHU0E="
+    - id_rsa_encrypted_key=fze16fz1ra6!
 
 
 matrix:
@@ -35,7 +34,7 @@ matrix:
   fast_finish: true
   
   include:
-    # hack to use osx vm
+    # hack to use MAC-OSX VM
     - os: osx
       python: 2.7 # For travis UI only
       language: objective-c
@@ -47,28 +46,35 @@ matrix:
 
     # Linux VM
     - python: 2.7
+      os: linux
       language: python
       env: SSH_VREP_SERVER=test42-vrep4.ci
 
     - python: 3.4
       language: python
+      os: linux
       env: SSH_VREP_SERVER=test42-vrep6.ci
 
     - python: 2.7
       language: python
+      os: linux
       env: PEP8_CAUSE_FAILLURE=true
-      # sudo: required
-
 
   allow_failures:
-    - python: 3.4 
     - env: PEP8_CAUSE_FAILLURE=true
+    - env: TRAVIS_OS_NAME=osx SSH_VREP_SERVER=test42-vrep1.ci TRAVIS_PYTHON_VERSION=2.7
+    - env: TRAVIS_OS_NAME=osx SSH_VREP_SERVER=test42-vrep2.ci TRAVIS_PYTHON_VERSION=3.4
+
 
 addons:
   apt:
     packages:
       # Spoof x11 for starting vrep in travis (issues with network)
       - xvfb
+      # For building the pdf documentation
+      - texlive 
+      - texlive-latex-extra
+      - dvipng
   
 before_install:
   - . ./ci/before_install.sh
@@ -78,11 +84,14 @@ install:
 script:
   - . ./ci/run_tests.sh
 
-# TODO push release only if it is a new release
 after_success:
   - . ./ci/update_documentation.sh
   - . ./ci/after_success_release.sh
 
 
 notifications:
-  email: false
+  email: 
+    - poppy-bot-ci@inria.fr
+  on_failure: change
+  on_success: change
+
