@@ -7,6 +7,8 @@
 
 See <http://github.com/ActiveState/appdirs> for details and usage.
 """
+import sys
+import os
 # Dev Notes:
 # - MSDN on where to store app data files:
 # http://support.microsoft.com/default.aspx?scid=kb;en-us;310294#XSLTH3194121123120121120120
@@ -17,8 +19,6 @@ __version_info__ = (1, 4, 1)
 __version__ = '.'.join(map(str, __version_info__))
 
 
-import sys
-import os
 
 PY3 = sys.version_info[0] == 3
 
@@ -145,7 +145,11 @@ def site_data_dir(appname=None, appauthor=None, version=None, multipath=False):
         # only first, if multipath is False
         path = os.getenv('XDG_DATA_DIRS',
                          os.pathsep.join(['/usr/local/share', '/usr/share']))
-        pathlist = [os.path.expanduser(x.rstrip(os.sep)) for x in path.split(os.pathsep)]
+        pathlist = [
+            os.path.expanduser(
+                x.rstrip(
+                    os.sep)) for x in path.split(
+                os.pathsep)]
         if appname:
             if version:
                 appname = os.path.join(appname, version)
@@ -202,7 +206,8 @@ def user_config_dir(appname=None, appauthor=None, version=None, roaming=False):
     return path
 
 
-def site_config_dir(appname=None, appauthor=None, version=None, multipath=False):
+def site_config_dir(
+        appname=None, appauthor=None, version=None, multipath=False):
     """Return full path to the user-shared data dir for this application.
 
         "appname" is the name of application.
@@ -240,7 +245,11 @@ def site_config_dir(appname=None, appauthor=None, version=None, multipath=False)
         # XDG default for $XDG_CONFIG_DIRS
         # only first, if multipath is False
         path = os.getenv('XDG_CONFIG_DIRS', '/etc/xdg')
-        pathlist = [os.path.expanduser(x.rstrip(os.sep)) for x in path.split(os.pathsep)]
+        pathlist = [
+            os.path.expanduser(
+                x.rstrip(
+                    os.sep)) for x in path.split(
+                os.pathsep)]
         if appname:
             if version:
                 appname = os.path.join(appname, version)
@@ -492,7 +501,14 @@ def _get_win_folder_with_jna(csidl_name):
     buf_size = win32.WinDef.MAX_PATH * 2
     buf = array.zeros('c', buf_size)
     shell = win32.Shell32.INSTANCE
-    shell.SHGetFolderPath(None, getattr(win32.ShlObj, csidl_name), None, win32.ShlObj.SHGFP_TYPE_CURRENT, buf)
+    shell.SHGetFolderPath(
+        None,
+        getattr(
+            win32.ShlObj,
+            csidl_name),
+        None,
+        win32.ShlObj.SHGFP_TYPE_CURRENT,
+        buf)
     dir = jna.Native.toString(buf.tostring()).rstrip("\0")
 
     # Downgrade to short path name if have highbit chars. See
