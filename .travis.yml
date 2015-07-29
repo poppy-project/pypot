@@ -63,11 +63,11 @@ matrix:
   allow_failures:
     - env: TRAVIS_OS_NAME=osx SSH_VREP_SERVER=test42-vrep1.ci TRAVIS_PYTHON_VERSION=2.7
     - env: TRAVIS_OS_NAME=osx SSH_VREP_SERVER=test42-vrep2.ci TRAVIS_PYTHON_VERSION=3.4
-    #- env: PEP8_CAUSE_FAILLURE=true
+    # - env: PEP8_CAUSE_FAILLURE=true
 
 
 addons:
-  apt:pub/bhaswanth-blan/58/113/a08?trk=shareTw
+  apt:
     packages:
       # Spoof x11 for starting vrep in travis (issues with network)
       - xvfb
