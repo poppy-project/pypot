@@ -85,7 +85,7 @@ script:
   - . ./ci/run_tests.sh
 
 after_success:
-  - if [[ "$UPDATE_DOC" == true ]]; then . ./ci/update_documentation.sh fi
+  - if [[ "$UPDATE_DOC" == true ]]; then . ./ci/update_documentation.sh; fi
   - . ./ci/after_success_release.sh
 
 
