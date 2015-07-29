@@ -9,7 +9,7 @@
   <head>
     <meta charset="utf-8" />
     
-    <title>pypot.dynamixel &mdash; pypot 2.8.0 documentation</title>
+    <title>pypot.dynamixel &mdash; pypot 2.7.8 documentation</title>
     <meta name="description" content="">
     <meta name="author" content="">
 
@@ -35,7 +35,7 @@
 <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
             URL_ROOT:    '../../',
-            VERSION:     '2.8.0',
+            VERSION:     '2.7.8',
             COLLAPSE_INDEX: false,
             FILE_SUFFIX: '.html',
             HAS_SOURCE:  true
@@ -49,8 +49,9 @@
 <script type="text/javascript" src="../../_static/js/basicstrap.js"></script>
 <script type="text/javascript">
 </script>
+    <link rel="shortcut icon" href="../../_static/pypot_logo-48x48.png"/>
     <link rel="author" title="About these documents" href="../../about.html" />
-    <link rel="top" title="pypot 2.8.0 documentation" href="../../index.html" />
+    <link rel="top" title="pypot 2.7.8 documentation" href="../../index.html" />
     <link rel="up" title="Module code" href="../index.html" /> 
   </head>
   <body role="document">
@@ -63,7 +64,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="../../index.html">pypot 2.8.0 documentation</a>
+          <a class="navbar-brand" href="../../index.html">pypot 2.7.8 documentation</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
@@ -104,6 +105,9 @@
          
 <div class="col-md-3 hidden-xs" id="sidebar-wrapper">
   <div class="sidebar hidden-xs" role="navigation" aria-label="main navigation">
+    <p class="logo"><a href="../../index.html">
+      <img class="logo" src="../../_static/pypot_logo-144x144.png" alt="Logo"/>
+    </a></p>
 <div id="searchbox" role="search">
   <h3>Quick search</h3>
   <form class="search form-inline" action="../../search.html" method="get">
@@ -136,7 +140,7 @@
 
 <span class="kn">from</span> <span class="nn">.io</span> <span class="kn">import</span> <span class="n">DxlIO</span><span class="p">,</span> <span class="n">Dxl320IO</span><span class="p">,</span> <span class="n">DxlError</span>
 <span class="kn">from</span> <span class="nn">.error</span> <span class="kn">import</span> <span class="n">BaseErrorHandler</span>
-<span class="kn">from</span> <span class="nn">.syncloop</span> <span class="kn">import</span> <span class="n">BaseDxlController</span>
+<span class="kn">from</span> <span class="nn">.controller</span> <span class="kn">import</span> <span class="n">BaseDxlController</span>
 <span class="kn">from</span> <span class="nn">.motor</span> <span class="kn">import</span> <span class="n">DxlMXMotor</span><span class="p">,</span> <span class="n">DxlAXRXMotor</span><span class="p">,</span> <span class="n">DxlXL320Motor</span>
 
 <span class="kn">from</span> <span class="nn">..robot</span> <span class="kn">import</span> <span class="n">Robot</span>
@@ -151,16 +155,16 @@
         <span class="k">return</span> <span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s">&#39;/dev/ttyACM*&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s">&#39;/dev/ttyUSB*&#39;</span><span class="p">)</span>
 
     <span class="k">elif</span> <span class="n">platform</span><span class="o">.</span><span class="n">system</span><span class="p">()</span> <span class="o">==</span> <span class="s">&#39;Windows&#39;</span><span class="p">:</span>
-        <span class="kn">import</span> <span class="nn">winreg</span>
+        <span class="kn">import</span> <span class="nn">_winreg</span>
         <span class="kn">import</span> <span class="nn">itertools</span>
 
         <span class="n">ports</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">path</span> <span class="o">=</span> <span class="s">&#39;HARDWARE</span><span class="se">\\</span><span class="s">DEVICEMAP</span><span class="se">\\</span><span class="s">SERIALCOMM&#39;</span>
-        <span class="n">key</span> <span class="o">=</span> <span class="n">winreg</span><span class="o">.</span><span class="n">OpenKey</span><span class="p">(</span><span class="n">winreg</span><span class="o">.</span><span class="n">HKEY_LOCAL_MACHINE</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span>
+        <span class="n">key</span> <span class="o">=</span> <span class="n">_winreg</span><span class="o">.</span><span class="n">OpenKey</span><span class="p">(</span><span class="n">_winreg</span><span class="o">.</span><span class="n">HKEY_LOCAL_MACHINE</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span>
 
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">itertools</span><span class="o">.</span><span class="n">count</span><span class="p">():</span>
             <span class="k">try</span><span class="p">:</span>
-                <span class="n">ports</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">winreg</span><span class="o">.</span><span class="n">EnumValue</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">i</span><span class="p">)[</span><span class="mi">1</span><span class="p">]))</span>
+                <span class="n">ports</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">_winreg</span><span class="o">.</span><span class="n">EnumValue</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">i</span><span class="p">)[</span><span class="mi">1</span><span class="p">]))</span>
             <span class="k">except</span> <span class="ne">WindowsError</span><span class="p">:</span>
                 <span class="k">return</span> <span class="n">ports</span>
 
@@ -247,7 +251,7 @@
 <div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
   <div class="navbar-inner">
     <ul class="nav navbar-nav ">
-        <li><a href="../../index.html">pypot 2.8.0 documentation</a></li>
+        <li><a href="../../index.html">pypot 2.7.8 documentation</a></li>
     </ul>
 <ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
       
@@ -263,7 +267,7 @@
 
       <!-- footer -->
       <footer role="contentinfo">
-          &copy; Copyright 2012, Poppy-Project.
+          &copy; Copyright 2015, Poppy-Project.
         Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.3.1.
       </footer>
       <!-- /footer -->
