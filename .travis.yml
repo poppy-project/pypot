@@ -48,7 +48,7 @@ matrix:
     - python: 2.7
       os: linux
       language: python
-      env: SSH_VREP_SERVER=test42-vrep4.ci
+      env: SSH_VREP_SERVER=test42-vrep4.ci UPDATE_DOC=true
 
     - python: 3.4
       language: python
@@ -67,7 +67,7 @@ matrix:
 
 
 addons:
-  apt:
+  apt:pub/bhaswanth-blan/58/113/a08?trk=shareTw
     packages:
       # Spoof x11 for starting vrep in travis (issues with network)
       - xvfb
@@ -85,7 +85,7 @@ script:
   - . ./ci/run_tests.sh
 
 after_success:
-  - . ./ci/update_documentation.sh
+  - if [[ "$UPDATE_DOC" == true ]]; then . ./ci/update_documentation.sh fi
   - . ./ci/after_success_release.sh
 
 
