@@ -58,7 +58,7 @@ pushd ..
             pushd $tmp_repo
                 git add -A
                 git commit -m "Doc generated after commit $last_commit_sha (travis build #$TRAVIS_BUILD_NUMBER)"
-                git push origin gh-pages
+                git push origin gh-pages --quiet
             popd
         fi
     fi
