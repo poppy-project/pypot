@@ -2,7 +2,6 @@ import os
 
 from operator import attrgetter
 from pypot.primitive.move import MovePlayer, MoveRecorder, Move
-from pypot.primitive.utils import Cosinus, Sinus, LoopPrimitive, numpy
 
 
 class RESTRobot(object):

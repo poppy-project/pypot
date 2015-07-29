@@ -5,6 +5,7 @@ set +e
 # Pep8 tests
 if [[ "$PEP8_CAUSE_FAILLURE" == "true" ]]; then
   set -e
+  cat ci/flake8.config
 fi
 flake8 --config=ci/flake8.config --statistics --count .
 set -e

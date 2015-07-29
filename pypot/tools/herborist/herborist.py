@@ -39,7 +39,6 @@ class HerboristApp(PyQt4.QtGui.QApplication):
     def __init__(self, argv):
         PyQt4.QtGui.QApplication.__init__(self, argv)
         self.window = PyQt4.uic.loadUi(resource_filename('pypot', '/tools/herborist/herborist.ui'))
-        #~ self.window = PyQt4.uic.loadUi('herborist.ui')
 
         self.enable_motor_view(False)
 
