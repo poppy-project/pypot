@@ -5,7 +5,6 @@ import socket
 import re
 import logging
 from ast import literal_eval as make_tuple
-
 from ..utils.appdirs import user_data_dir
 from .server import AbstractServer
 from .httpserver import EnableCors

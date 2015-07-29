@@ -19,7 +19,6 @@ __version_info__ = (1, 4, 1)
 __version__ = '.'.join(map(str, __version_info__))
 
 
-
 PY3 = sys.version_info[0] == 3
 
 if PY3:
@@ -413,7 +412,7 @@ class AppDirs(object):
                             version=self.version)
 
 
-#---- internal support stuff
+# internal support stuff
 
 def _get_win_folder_from_registry(csidl_name):
     """This is a fallback technique at best. I'm not sure if using the
@@ -521,7 +520,7 @@ def _get_win_folder_with_jna(csidl_name):
     if has_high_char:
         buf = array.zeros('c', buf_size)
         kernel = win32.Kernel32.INSTANCE
-        if kernal.GetShortPathName(dir, buf, buf_size):
+        if kernel.GetShortPathName(dir, buf, buf_size):
             dir = jna.Native.toString(buf.tostring()).rstrip("\0")
 
     return dir
@@ -542,7 +541,7 @@ if system == "win32":
                 _get_win_folder = _get_win_folder_from_registry
 
 
-#---- self test code
+# self test code
 
 if __name__ == "__main__":
     appname = "MyApp"

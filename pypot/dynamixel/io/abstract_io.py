@@ -11,7 +11,7 @@ from contextlib import contextmanager
 
 from ...robot.io import AbstractIO
 from ..conversion import (dxl_code_all, dxl_decode_all, decode_error,
-                          dxl_to_model, position_range)
+                          dxl_to_model)
 
 
 logger = logging.getLogger(__name__)
