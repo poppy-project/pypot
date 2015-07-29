@@ -61,9 +61,9 @@ matrix:
       env: PEP8_CAUSE_FAILLURE=true
 
   allow_failures:
-    - env: PEP8_CAUSE_FAILLURE=true
     - env: TRAVIS_OS_NAME=osx SSH_VREP_SERVER=test42-vrep1.ci TRAVIS_PYTHON_VERSION=2.7
     - env: TRAVIS_OS_NAME=osx SSH_VREP_SERVER=test42-vrep2.ci TRAVIS_PYTHON_VERSION=3.4
+    #- env: PEP8_CAUSE_FAILLURE=true
 
 
 addons:
