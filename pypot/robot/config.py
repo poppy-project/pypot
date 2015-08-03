@@ -95,12 +95,14 @@ def motor_from_confignode(config, motor_name):
     elif type.startswith('AX') or type.startswith('RX'):
         MotorCls = pypot.dynamixel.motor.DxlAXRXMotor
 
+    broken = 'broken' in params and params['broken']
+
     m = MotorCls(id=params['id'],
                  name=motor_name,
                  model=type,
                  direct=True if params['orientation'] == 'direct' else False,
                  offset=params['offset'],
-                 broken='broken' in params)
+                 broken=broken)
 
     logger.info("Instantiating motor '%s' id=%d direct=%s offset=%s",
                 m.name, m.id, m.direct, m.offset,
