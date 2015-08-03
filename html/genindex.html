@@ -10,7 +10,7 @@
   <head>
     <meta charset="utf-8" />
     
-    <title>Index &mdash; pypot 2.7.8 documentation</title>
+    <title>Index &mdash; pypot 2.8.0 documentation</title>
     <meta name="description" content="">
     <meta name="author" content="">
 
@@ -36,7 +36,7 @@
 <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
             URL_ROOT:    './',
-            VERSION:     '2.7.8',
+            VERSION:     '2.8.0',
             COLLAPSE_INDEX: false,
             FILE_SUFFIX: '.html',
             HAS_SOURCE:  true
@@ -52,7 +52,7 @@
 </script>
     <link rel="shortcut icon" href="_static/pypot_logo-48x48.png"/>
     <link rel="author" title="About these documents" href="about.html" />
-    <link rel="top" title="pypot 2.7.8 documentation" href="index.html" /> 
+    <link rel="top" title="pypot 2.8.0 documentation" href="index.html" /> 
   </head>
   <body role="document">
     <div id="navbar-top" class="navbar navbar-fixed-top navbar-default" role="navigation" aria-label="top navigation">
@@ -64,7 +64,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="index.html">pypot 2.7.8 documentation</a>
+          <a class="navbar-brand" href="index.html">pypot 2.8.0 documentation</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
@@ -260,19 +260,15 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%" valign="top"><dl>
       
-  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.controller.BaseDxlController">BaseDxlController (class in pypot.dynamixel.controller)</a>
-  </dt>
-
-      
   <dt><a href="pypot.dynamixel.html#pypot.dynamixel.error.BaseErrorHandler">BaseErrorHandler (class in pypot.dynamixel.error)</a>
   </dt>
 
-  </dl></td>
-  <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="pypot.dynamixel.html#pypot.dynamixel.conversion.baudrate_to_dxl">baudrate_to_dxl() (in module pypot.dynamixel.conversion)</a>
   </dt>
 
+  </dl></td>
+  <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="pypot.dynamixel.html#pypot.dynamixel.conversion.bool_to_dxl">bool_to_dxl() (in module pypot.dynamixel.conversion)</a>
   </dt>
@@ -381,6 +377,10 @@
 
       
   <dt><a href="pypot.utils.html#pypot.utils.trajectory.MinimumJerkTrajectory.domain">domain() (pypot.utils.trajectory.MinimumJerkTrajectory method)</a>
+  </dt>
+
+      
+  <dt><a href="pypot.utils.html#pypot.utils.SyncEvent.done">done() (pypot.utils.SyncEvent method)</a>
   </dt>
 
       
@@ -910,10 +910,14 @@
 
       </dl></dd>
       
-  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.io.io.DxlIO.get_present_position_speed_load">get_present_position_speed_load() (pypot.dynamixel.io.io.DxlIO method)</a>
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.controller.PosSpeedLoadDxlController.get_present_position_speed_load">get_present_position_speed_load() (pypot.dynamixel.controller.PosSpeedLoadDxlController method)</a>
   </dt>
 
       <dd><dl>
+        
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.io.io.DxlIO.get_present_position_speed_load">(pypot.dynamixel.io.io.DxlIO method)</a>
+  </dt>
+
         
   <dt><a href="pypot.dynamixel.html#pypot.dynamixel.io.io_320.Dxl320IO.get_present_position_speed_load">(pypot.dynamixel.io.io_320.Dxl320IO method)</a>
   </dt>
@@ -969,6 +973,12 @@
   <dt><a href="pypot.dynamixel.html#pypot.dynamixel.controller.AngleLimitRegisterController.get_register">get_register() (pypot.dynamixel.controller.AngleLimitRegisterController method)</a>
   </dt>
 
+      <dd><dl>
+        
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.controller.DxlController.get_register">(pypot.dynamixel.controller.DxlController method)</a>
+  </dt>
+
+      </dl></dd>
       
   <dt><a href="pypot.server.html#pypot.server.rest.RESTRobot.get_register_value">get_register_value() (pypot.server.rest.RESTRobot method)</a>
   </dt>
@@ -1173,8 +1183,6 @@
   </dt>
 
       </dl></dd>
-  </dl></td>
-  <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="pypot.dynamixel.html#pypot.dynamixel.io.io.DxlIO.is_moving">is_moving() (pypot.dynamixel.io.io.DxlIO method)</a>
   </dt>
@@ -1185,6 +1193,12 @@
   </dt>
 
       </dl></dd>
+  </dl></td>
+  <td style="width: 33%" valign="top"><dl>
+      
+  <dt><a href="pypot.utils.html#pypot.utils.SyncEvent.is_recent">is_recent (pypot.utils.SyncEvent attribute)</a>
+  </dt>
+
       
   <dt><a href="pypot.dynamixel.html#pypot.dynamixel.io.io.DxlIO.is_torque_enabled">is_torque_enabled() (pypot.dynamixel.io.io.DxlIO method)</a>
   </dt>
@@ -1388,6 +1402,12 @@
 
       </dl></dd>
   </dl></td>
+  <td style="width: 33%" valign="top"><dl>
+      
+  <dt><a href="pypot.utils.html#pypot.utils.SyncEvent.needed">needed (pypot.utils.SyncEvent attribute)</a>
+  </dt>
+
+  </dl></td>
 </tr></table>
 
 <h2 id="O">O</h2>
@@ -1504,6 +1524,10 @@
   </dt>
 
       
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.controller.PosSpeedLoadDxlController">PosSpeedLoadDxlController (class in pypot.dynamixel.controller)</a>
+  </dt>
+
+      
   <dt><a href="pypot.primitive.html#pypot.primitive.primitive.MockupRobot.power_max">power_max() (pypot.primitive.primitive.MockupRobot method)</a>
   </dt>
 
@@ -1567,12 +1591,12 @@
   <dt><a href="pypot.dynamixel.html#module-pypot.dynamixel.motor">pypot.dynamixel.motor (module)</a>
   </dt>
 
+  </dl></td>
+  <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="pypot.dynamixel.html#module-pypot.dynamixel.protocol.v1">pypot.dynamixel.protocol.v1 (module)</a>
   </dt>
 
-  </dl></td>
-  <td style="width: 33%" valign="top"><dl>
       
   <dt><a href="pypot.dynamixel.html#module-pypot.dynamixel.protocol.v2">pypot.dynamixel.protocol.v2 (module)</a>
   </dt>
@@ -1774,6 +1798,10 @@
   </dl></td>
   <td style="width: 33%" valign="top"><dl>
       
+  <dt><a href="pypot.utils.html#pypot.utils.SyncEvent.request">request() (pypot.utils.SyncEvent method)</a>
+  </dt>
+
+      
   <dt><a href="pypot.dynamixel.html#pypot.dynamixel.protocol.v1.DxlInstruction.RESET">RESET (pypot.dynamixel.protocol.v1.DxlInstruction attribute)</a>
   </dt>
 
@@ -1932,10 +1960,14 @@
 
       </dl></dd>
       
-  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.io.io.DxlIO.set_goal_position_speed_load">set_goal_position_speed_load() (pypot.dynamixel.io.io.DxlIO method)</a>
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.controller.PosSpeedLoadDxlController.set_goal_position_speed_load">set_goal_position_speed_load() (pypot.dynamixel.controller.PosSpeedLoadDxlController method)</a>
   </dt>
 
       <dd><dl>
+        
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.io.io.DxlIO.set_goal_position_speed_load">(pypot.dynamixel.io.io.DxlIO method)</a>
+  </dt>
+
         
   <dt><a href="pypot.dynamixel.html#pypot.dynamixel.io.io_320.Dxl320IO.set_goal_position_speed_load">(pypot.dynamixel.io.io_320.Dxl320IO method)</a>
   </dt>
@@ -2010,6 +2042,10 @@
   </dt>
 
       
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.controller.DxlController.set_register">set_register() (pypot.dynamixel.controller.DxlController method)</a>
+  </dt>
+
+      
   <dt><a href="pypot.server.html#pypot.server.rest.RESTRobot.set_register_value">set_register_value() (pypot.server.rest.RESTRobot method)</a>
   </dt>
 
@@ -2068,6 +2104,10 @@
   </dt>
 
       <dd><dl>
+        
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.controller.PosSpeedLoadDxlController.setup">(pypot.dynamixel.controller.PosSpeedLoadDxlController method)</a>
+  </dt>
+
         
   <dt><a href="pypot.primitive.html#pypot.primitive.move.MovePlayer.setup">(pypot.primitive.move.MovePlayer method)</a>
   </dt>
@@ -2237,6 +2277,20 @@
   </dt>
 
       </dl></dd>
+      
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.controller.AngleLimitRegisterController.synced_motors">synced_motors (pypot.dynamixel.controller.AngleLimitRegisterController attribute)</a>
+  </dt>
+
+      <dd><dl>
+        
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.controller.DxlController.synced_motors">(pypot.dynamixel.controller.DxlController attribute)</a>
+  </dt>
+
+      </dl></dd>
+      
+  <dt><a href="pypot.utils.html#pypot.utils.SyncEvent">SyncEvent (class in pypot.utils)</a>
+  </dt>
+
   </dl></td>
 </tr></table>
 
@@ -2244,14 +2298,10 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%" valign="top"><dl>
       
-  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.controller.DxlController.teardown">teardown() (pypot.dynamixel.controller.DxlController method)</a>
+  <dt><a href="pypot.primitive.html#pypot.primitive.primitive.Primitive.teardown">teardown() (pypot.primitive.primitive.Primitive method)</a>
   </dt>
 
       <dd><dl>
-        
-  <dt><a href="pypot.primitive.html#pypot.primitive.primitive.Primitive.teardown">(pypot.primitive.primitive.Primitive method)</a>
-  </dt>
-
         
   <dt><a href="pypot.utils.html#pypot.utils.stoppablethread.StoppableThread.teardown">(pypot.utils.stoppablethread.StoppableThread method)</a>
   </dt>
@@ -2322,6 +2372,10 @@
   </dt>
 
       <dd><dl>
+        
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.controller.PosSpeedLoadDxlController.update">(pypot.dynamixel.controller.PosSpeedLoadDxlController method)</a>
+  </dt>
+
         
   <dt><a href="pypot.primitive.html#pypot.primitive.manager.PrimitiveManager.update">(pypot.primitive.manager.PrimitiveManager method)</a>
   </dt>
@@ -2452,6 +2506,10 @@
   </dt>
 
       
+  <dt><a href="pypot.dynamixel.html#pypot.dynamixel.controller.DxlController.working_motors">working_motors (pypot.dynamixel.controller.DxlController attribute)</a>
+  </dt>
+
+      
   <dt><a href="pypot.dynamixel.html#pypot.dynamixel.protocol.v1.DxlInstruction.WRITE_DATA">WRITE_DATA (pypot.dynamixel.protocol.v1.DxlInstruction attribute)</a>
   </dt>
 
@@ -2560,7 +2618,7 @@
 <div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
   <div class="navbar-inner">
     <ul class="nav navbar-nav ">
-        <li><a href="index.html">pypot 2.7.8 documentation</a></li>
+        <li><a href="index.html">pypot 2.8.0 documentation</a></li>
     </ul>
 <ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
       

@@ -9,7 +9,7 @@
   <head>
     <meta charset="utf-8" />
     
-    <title>dynamixel Package &mdash; pypot 2.7.8 documentation</title>
+    <title>dynamixel Package &mdash; pypot 2.8.0 documentation</title>
     <meta name="description" content="">
     <meta name="author" content="">
 
@@ -35,7 +35,7 @@
 <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
             URL_ROOT:    './',
-            VERSION:     '2.7.8',
+            VERSION:     '2.8.0',
             COLLAPSE_INDEX: false,
             FILE_SUFFIX: '.html',
             HAS_SOURCE:  true
@@ -51,7 +51,7 @@
 </script>
     <link rel="shortcut icon" href="_static/pypot_logo-48x48.png"/>
     <link rel="author" title="About these documents" href="about.html" />
-    <link rel="top" title="pypot 2.7.8 documentation" href="index.html" />
+    <link rel="top" title="pypot 2.8.0 documentation" href="index.html" />
     <link rel="up" title="Pypot’s API" href="api.html" />
     <link rel="next" title="primitive Package" href="pypot.primitive.html" />
     <link rel="prev" title="Pypot’s API" href="api.html" /> 
@@ -66,7 +66,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="index.html">pypot 2.7.8 documentation</a>
+          <a class="navbar-brand" href="index.html">pypot 2.8.0 documentation</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
@@ -859,19 +859,22 @@
 <span id="controller-module"></span><h2><code class="xref py py-mod docutils literal"><span class="pre">controller</span></code> Module<a class="headerlink" href="#module-pypot.dynamixel.controller" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="pypot.dynamixel.controller.DxlController">
-<em class="property">class </em><code class="descclassname">pypot.dynamixel.controller.</code><code class="descname">DxlController</code><span class="sig-paren">(</span><em>io</em>, <em>motors</em>, <em>controllers</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/dynamixel/controller.html#DxlController"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.controller.DxlController" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">pypot.dynamixel.controller.</code><code class="descname">DxlController</code><span class="sig-paren">(</span><em>io</em>, <em>motors</em>, <em>sync_freq</em>, <em>synchronous</em>, <em>mode</em>, <em>regname</em>, <em>varname=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/dynamixel/controller.html#DxlController"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.controller.DxlController" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="pypot.robot.html#pypot.robot.controller.MotorsController" title="pypot.robot.controller.MotorsController"><code class="xref py py-class docutils literal"><span class="pre">pypot.robot.controller.MotorsController</span></code></a></p>
-<p>Synchronizes the reading/writing of <a class="reference internal" href="#pypot.dynamixel.motor.DxlMotor" title="pypot.dynamixel.motor.DxlMotor"><code class="xref py py-class docutils literal"><span class="pre">DxlMotor</span></code></a> with the real motors.</p>
-<p>This class handles synchronization loops that automatically read/write values from the &#8220;software&#8221; <a class="reference internal" href="#pypot.dynamixel.motor.DxlMotor" title="pypot.dynamixel.motor.DxlMotor"><code class="xref py py-class docutils literal"><span class="pre">DxlMotor</span></code></a> with their &#8220;hardware&#8221; equivalent. Those loops shared a same <code class="xref py py-class docutils literal"><span class="pre">DxlIO</span></code> connection to avoid collision in the bus. Each loop run within its own thread as its own frequency.</p>
-<div class="admonition warning">
-<p class="first admonition-title">Warning</p>
-<p class="last">As all the loop attached to a controller shared the same bus, you should make sure that they can run without slowing down the other ones.</p>
-</div>
+<dl class="attribute">
+<dt id="pypot.dynamixel.controller.DxlController.working_motors">
+<code class="descname">working_motors</code><a class="headerlink" href="#pypot.dynamixel.controller.DxlController.working_motors" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pypot.dynamixel.controller.DxlController.synced_motors">
+<code class="descname">synced_motors</code><a class="headerlink" href="#pypot.dynamixel.controller.DxlController.synced_motors" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="method">
 <dt id="pypot.dynamixel.controller.DxlController.setup">
 <code class="descname">setup</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/dynamixel/controller.html#DxlController.setup"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.controller.DxlController.setup" title="Permalink to this definition">¶</a></dt>
-<dd><p>Starts all the synchronization loops.</p>
-</dd></dl>
+<dd></dd></dl>
 
 <dl class="method">
 <dt id="pypot.dynamixel.controller.DxlController.update">
@@ -879,37 +882,57 @@
 <dd></dd></dl>
 
 <dl class="method">
-<dt id="pypot.dynamixel.controller.DxlController.teardown">
-<code class="descname">teardown</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/dynamixel/controller.html#DxlController.teardown"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.controller.DxlController.teardown" title="Permalink to this definition">¶</a></dt>
-<dd><p>Stops the synchronization loops.</p>
+<dt id="pypot.dynamixel.controller.DxlController.get_register">
+<code class="descname">get_register</code><span class="sig-paren">(</span><em>motors</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/dynamixel/controller.html#DxlController.get_register"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.controller.DxlController.get_register" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the value from the specified register and sets it to the <a class="reference internal" href="#pypot.dynamixel.motor.DxlMotor" title="pypot.dynamixel.motor.DxlMotor"><code class="xref py py-class docutils literal"><span class="pre">DxlMotor</span></code></a>.</p>
 </dd></dl>
 
+<dl class="method">
+<dt id="pypot.dynamixel.controller.DxlController.set_register">
+<code class="descname">set_register</code><span class="sig-paren">(</span><em>motors</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/dynamixel/controller.html#DxlController.set_register"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.controller.DxlController.set_register" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the value from <a class="reference internal" href="#pypot.dynamixel.motor.DxlMotor" title="pypot.dynamixel.motor.DxlMotor"><code class="xref py py-class docutils literal"><span class="pre">DxlMotor</span></code></a> and sets it to the specified register.</p>
 </dd></dl>
 
-<dl class="class">
-<dt id="pypot.dynamixel.controller.BaseDxlController">
-<em class="property">class </em><code class="descclassname">pypot.dynamixel.controller.</code><code class="descname">BaseDxlController</code><span class="sig-paren">(</span><em>io</em>, <em>motors</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/dynamixel/controller.html#BaseDxlController"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.controller.BaseDxlController" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#pypot.dynamixel.controller.DxlController" title="pypot.dynamixel.controller.DxlController"><code class="xref py py-class docutils literal"><span class="pre">pypot.dynamixel.controller.DxlController</span></code></a></p>
-<p>Implements a basic controller that synchronized the most frequently used values.</p>
-<dl class="docutils">
-<dt>More precisely, this controller:</dt>
-<dd><ul class="first last simple">
-<li>reads the present position, speed, load at 50Hz</li>
-<li>writes the goal position, moving speed and torque limit at 50Hz</li>
-<li>writes the pid gains (or compliance margin and slope) at 10Hz</li>
-<li>reads the present voltage and temperature at 1Hz</li>
-</ul>
-</dd>
-</dl>
 </dd></dl>
 
 <dl class="class">
 <dt id="pypot.dynamixel.controller.AngleLimitRegisterController">
-<em class="property">class </em><code class="descclassname">pypot.dynamixel.controller.</code><code class="descname">AngleLimitRegisterController</code><span class="sig-paren">(</span><em>io</em>, <em>motors</em>, <em>sync_freq</em>, <em>mode</em>, <em>regname</em>, <em>varname=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/dynamixel/controller.html#AngleLimitRegisterController"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.controller.AngleLimitRegisterController" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">pypot.dynamixel.controller._DxlRegisterController</span></code></p>
+<em class="property">class </em><code class="descclassname">pypot.dynamixel.controller.</code><code class="descname">AngleLimitRegisterController</code><span class="sig-paren">(</span><em>io</em>, <em>motors</em>, <em>sync_freq</em>, <em>synchronous</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/dynamixel/controller.html#AngleLimitRegisterController"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.controller.AngleLimitRegisterController" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pypot.dynamixel.controller.DxlController" title="pypot.dynamixel.controller.DxlController"><code class="xref py py-class docutils literal"><span class="pre">pypot.dynamixel.controller.DxlController</span></code></a></p>
+<dl class="attribute">
+<dt id="pypot.dynamixel.controller.AngleLimitRegisterController.synced_motors">
+<code class="descname">synced_motors</code><a class="headerlink" href="#pypot.dynamixel.controller.AngleLimitRegisterController.synced_motors" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="method">
 <dt id="pypot.dynamixel.controller.AngleLimitRegisterController.get_register">
-<code class="descname">get_register</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/dynamixel/controller.html#AngleLimitRegisterController.get_register"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.controller.AngleLimitRegisterController.get_register" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get_register</code><span class="sig-paren">(</span><em>motors</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/dynamixel/controller.html#AngleLimitRegisterController.get_register"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.controller.AngleLimitRegisterController.get_register" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pypot.dynamixel.controller.PosSpeedLoadDxlController">
+<em class="property">class </em><code class="descclassname">pypot.dynamixel.controller.</code><code class="descname">PosSpeedLoadDxlController</code><span class="sig-paren">(</span><em>io</em>, <em>motors</em>, <em>sync_freq</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/dynamixel/controller.html#PosSpeedLoadDxlController"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.controller.PosSpeedLoadDxlController" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pypot.dynamixel.controller.DxlController" title="pypot.dynamixel.controller.DxlController"><code class="xref py py-class docutils literal"><span class="pre">pypot.dynamixel.controller.DxlController</span></code></a></p>
+<dl class="method">
+<dt id="pypot.dynamixel.controller.PosSpeedLoadDxlController.setup">
+<code class="descname">setup</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/dynamixel/controller.html#PosSpeedLoadDxlController.setup"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.controller.PosSpeedLoadDxlController.setup" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.controller.PosSpeedLoadDxlController.update">
+<code class="descname">update</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/dynamixel/controller.html#PosSpeedLoadDxlController.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.controller.PosSpeedLoadDxlController.update" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.controller.PosSpeedLoadDxlController.get_present_position_speed_load">
+<code class="descname">get_present_position_speed_load</code><span class="sig-paren">(</span><em>motors</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/dynamixel/controller.html#PosSpeedLoadDxlController.get_present_position_speed_load"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.controller.PosSpeedLoadDxlController.get_present_position_speed_load" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.controller.PosSpeedLoadDxlController.set_goal_position_speed_load">
+<code class="descname">set_goal_position_speed_load</code><span class="sig-paren">(</span><em>motors</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/dynamixel/controller.html#PosSpeedLoadDxlController.set_goal_position_speed_load"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.controller.PosSpeedLoadDxlController.set_goal_position_speed_load" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -1546,7 +1569,7 @@
 <div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
   <div class="navbar-inner">
     <ul class="nav navbar-nav ">
-        <li><a href="index.html">pypot 2.7.8 documentation</a></li>
+        <li><a href="index.html">pypot 2.8.0 documentation</a></li>
     </ul>
 <ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
       
