@@ -1,0 +1,328 @@
+
+
+<!DOCTYPE html>
+
+
+
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    
+    <title>pypot.tools.dxl_reset &mdash; pypot 2.8.1 documentation</title>
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    
+
+<link rel="stylesheet" href="../../../_static/css/basicstrap-base.css" type="text/css" />
+<link rel="stylesheet" id="current-theme" href="../../../_static/css/bootstrap3/bootstrap.min.css" type="text/css" />
+<link rel="stylesheet" id="current-adjust-theme" type="text/css" />
+
+<link rel="stylesheet" href="../../../_static/css/font-awesome.min.css">
+
+<style type="text/css">
+  body {
+    padding-top: 60px;
+    padding-bottom: 40px;
+  }
+</style>
+
+<link rel="stylesheet" href="../../../_static/css/basicstrap.css" type="text/css" />
+<link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+<link rel="stylesheet" href="../../../_static/my-css.css" type="text/css" />
+    
+<script type="text/javascript">
+  var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:    '../../../',
+            VERSION:     '2.8.1',
+            COLLAPSE_INDEX: false,
+            FILE_SUFFIX: '.html',
+            HAS_SOURCE:  true
+  };
+</script>
+    <script type="text/javascript" src="../../../_static/js/jquery.min.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/js/bootstrap3.min.js"></script>
+<script type="text/javascript" src="../../../_static/js/jquery.cookie.min.js"></script>
+<script type="text/javascript" src="../../../_static/js/basicstrap.js"></script>
+<script type="text/javascript">
+</script>
+    <link rel="shortcut icon" href="../../../_static/pypot_logo-48x48.png"/>
+    <link rel="author" title="About these documents" href="../../../about.html" />
+    <link rel="top" title="pypot 2.8.1 documentation" href="../../../index.html" />
+    <link rel="up" title="Module code" href="../../index.html" /> 
+  </head>
+  <body role="document">
+    <div id="navbar-top" class="navbar navbar-fixed-top navbar-default" role="navigation" aria-label="top navigation">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="../../../index.html">pypot 2.8.1 documentation</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
+
+            
+              <li><a href="../../../py-modindex.html" title="Python Module Index" >modules </a></li>
+              <li><a href="../../../genindex.html" title="General Index" accesskey="I">index </a></li>
+              <li><a href="../../index.html" accesskey="U">Module code</a></li>
+            
+
+            <li class="visible-xs">
+                <form class="search form-search form-inline navbar-form navbar-right sp-searchbox" action="../../../search.html" method="get">
+                  <div class="input-append input-group">
+                    <input type="text" class="search-query form-control" name="q" placeholder="Search...">
+                    <span class="input-group-btn">
+                    <input type="submit" class="btn" value="Go" />
+                    </span>
+                  </div>
+                  <input type="hidden" name="check_keywords" value="yes" />
+                  <input type="hidden" name="area" value="default" />
+                </form>
+            </li>
+
+            
+
+          </ul>
+
+        </div>
+      </div>
+    </div>
+    
+
+    <!-- container -->
+    <div class="container-fluid">
+
+      <!-- row -->
+      <div class="row">
+         
+<div class="col-md-3 hidden-xs" id="sidebar-wrapper">
+  <div class="sidebar hidden-xs" role="navigation" aria-label="main navigation">
+    <p class="logo"><a href="../../../index.html">
+      <img class="logo" src="../../../_static/pypot_logo-144x144.png" alt="Logo"/>
+    </a></p>
+<div id="searchbox" role="search">
+  <h3>Quick search</h3>
+  <form class="search form-inline" action="../../../search.html" method="get">
+      <div class="input-append input-group">
+        <input type="text" class="search-query form-control" name="q" placeholder="Search...">
+        <span class="input-group-btn">
+        <input type="submit" class="btn" value="Go" />
+        </span>
+      </div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+  </div>
+</div> 
+        
+
+        <div class="col-md-9" id="content-wrapper">
+          <div class="document" role="main">
+            <div class="documentwrapper">
+              <div class="bodywrapper">
+                <div class="body">
+                  
+  <h1>Source code for pypot.tools.dxl_reset</h1><div class="highlight"><pre>
+<span class="c">#!/usr/bin/env python</span>
+<span class="c"># coding: utf-8</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Reset a dynamixel motor to &quot;poppy&quot; configuration.</span>
+
+<span class="sd">This utility should only be used with a single motor connected to the bus. For the moment it&#39;s only working with robotis protocol v1 (AX, RX, MX motors).</span>
+
+<span class="sd">To run it:</span>
+<span class="sd">$ poppy-reset-motor 42</span>
+
+<span class="sd">The motor will now have the id 42, use a 1000000 baud rates, a 0µs return delay time. The angle limit are also set (by default to (-180, 180)). Its position is also set to its base position (default: 0).</span>
+
+<span class="sd">For more complex use cases, see:</span>
+<span class="sd">$ poppy-reset-motor --help</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="kn">from</span> <span class="nn">argparse</span> <span class="kn">import</span> <span class="n">ArgumentParser</span>
+
+<span class="kn">from</span> <span class="nn">pypot.dynamixel</span> <span class="kn">import</span> <span class="n">DxlIO</span><span class="p">,</span> <span class="n">get_available_ports</span>
+<span class="kn">from</span> <span class="nn">pypot.dynamixel.io</span> <span class="kn">import</span> <span class="n">DxlError</span>
+
+
+<span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">ERROR</span><span class="p">)</span>
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="n">__name__</span><span class="p">)</span>
+
+<span class="n">FACTORY_BAUDRATE</span> <span class="o">=</span> <span class="mi">57600</span>
+<span class="n">TARGET_BAUDRATE</span> <span class="o">=</span> <span class="mi">1000000</span>
+
+
+<div class="viewcode-block" id="leave"><a class="viewcode-back" href="../../../pypot.tools.html#pypot.tools.dxl_reset.leave">[docs]</a><span class="k">def</span> <span class="nf">leave</span><span class="p">(</span><span class="n">msg</span><span class="p">):</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">&#39;{} Exiting now...&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">msg</span><span class="p">))</span>
+    <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="almost_equal"><a class="viewcode-back" href="../../../pypot.tools.html#pypot.tools.dxl_reset.almost_equal">[docs]</a><span class="k">def</span> <span class="nf">almost_equal</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+    <span class="k">return</span> <span class="nb">abs</span><span class="p">(</span><span class="n">a</span> <span class="o">-</span> <span class="n">b</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mf">5.</span>
+
+</div>
+<div class="viewcode-block" id="main"><a class="viewcode-back" href="../../../pypot.tools.html#pypot.tools.dxl_reset.main">[docs]</a><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">ArgumentParser</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s">&#39;Set a dynamixel motor to&#39;</span>
+                                        <span class="s">&#39; a &quot;poppy-like&quot; configuration. &#39;</span>
+                                        <span class="s">&#39;Only one motor should be connected!&#39;</span><span class="p">)</span>
+
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="n">dest</span><span class="o">=</span><span class="s">&#39;id&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span>
+                        <span class="n">help</span><span class="o">=</span><span class="s">&#39;Dynamixel target #id.&#39;</span><span class="p">)</span>
+
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&#39;-p&#39;</span><span class="p">,</span> <span class="s">&#39;--port&#39;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s">&#39;autoselect&#39;</span><span class="p">,</span>
+                        <span class="n">choices</span><span class="o">=</span><span class="n">get_available_ports</span><span class="p">(),</span>
+                        <span class="n">help</span><span class="o">=</span><span class="s">&#39;Serial port, default: autoselect&#39;</span><span class="p">)</span>
+
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&#39;--log-level&#39;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s">&#39;ERROR&#39;</span><span class="p">,</span>
+                        <span class="n">help</span><span class="o">=</span><span class="s">&#39;Log level : CRITICAL, ERROR, WARNING, INFO, DEBUG&#39;</span><span class="p">)</span>
+
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&#39;--position&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
+                        <span class="n">help</span><span class="o">=</span><span class="s">&#39;Position set to the motor (in degrees)&#39;</span><span class="p">)</span>
+
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&#39;--angle-limit&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mi">180</span><span class="p">,</span> <span class="mi">180</span><span class="p">],</span>
+                        <span class="n">help</span><span class="o">=</span><span class="s">&#39;Angle limits of the motor (in degrees)&#39;</span><span class="p">)</span>
+
+    <span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;=</span> <span class="n">args</span><span class="o">.</span><span class="n">id</span> <span class="o">&lt;=</span> <span class="mi">253</span><span class="p">):</span>
+        <span class="n">leave</span><span class="p">(</span><span class="s">&#39;Motor id should be in range [1:253]!&#39;</span><span class="p">)</span>
+
+    <span class="n">log_level</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">log_level</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">log_level</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">port</span> <span class="o">==</span> <span class="s">&#39;autoselect&#39;</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="c"># First, we make sure that there is at least one available ports</span>
+            <span class="n">port</span> <span class="o">=</span> <span class="n">get_available_ports</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
+            <span class="n">leave</span><span class="p">(</span><span class="s">&#39;You need to connect at least one dynamixel port!&#39;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">port</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">port</span>
+
+    <span class="k">print</span><span class="p">(</span><span class="s">&#39;Resetting to factory settings...&#39;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">br</span> <span class="ow">in</span> <span class="p">[</span><span class="n">FACTORY_BAUDRATE</span><span class="p">,</span> <span class="n">TARGET_BAUDRATE</span><span class="p">]:</span>
+        <span class="k">with</span> <span class="n">DxlIO</span><span class="p">(</span><span class="n">port</span><span class="p">,</span> <span class="n">br</span><span class="p">)</span> <span class="k">as</span> <span class="n">dxl</span><span class="p">:</span>
+            <span class="n">dxl</span><span class="o">.</span><span class="n">factory_reset</span><span class="p">()</span>
+            <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="o">.</span><span class="mi">5</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">&#39;Done!&#39;</span><span class="p">)</span>
+
+    <span class="c"># FACTORY_BAUDRATE and TARGET_BAUDRATE are the same for AX12</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">&#39;Setting the motor to a &quot;poppy&quot; configuration&#39;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">br</span> <span class="ow">in</span> <span class="p">[</span><span class="n">FACTORY_BAUDRATE</span><span class="p">,</span> <span class="n">TARGET_BAUDRATE</span><span class="p">]:</span>
+        <span class="k">with</span> <span class="n">DxlIO</span><span class="p">(</span><span class="n">port</span><span class="p">,</span> <span class="n">br</span><span class="p">)</span> <span class="k">as</span> <span class="n">dxl</span><span class="p">:</span>
+            <span class="c"># We make sure that there was only one motor on the bus</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">assert</span> <span class="n">dxl</span><span class="o">.</span><span class="n">scan</span><span class="p">([</span><span class="mi">1</span><span class="p">])</span> <span class="o">==</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="k">except</span> <span class="ne">AssertionError</span><span class="p">:</span>
+                <span class="n">leave</span><span class="p">(</span><span class="s">&#39;No motor found, check the connection!&#39;</span><span class="p">)</span>
+            <span class="k">except</span> <span class="n">DxlError</span><span class="p">:</span>
+                <span class="n">leave</span><span class="p">(</span><span class="s">&#39;You should only connect one motor at&#39;</span>
+                      <span class="s">&#39; a time when doing factory reset!&#39;</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">id</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="k">print</span><span class="p">(</span><span class="s">&#39;Changing the id to {}...&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">id</span><span class="p">))</span>
+                <span class="n">dxl</span><span class="o">.</span><span class="n">change_id</span><span class="p">({</span><span class="mi">1</span><span class="p">:</span> <span class="n">args</span><span class="o">.</span><span class="n">id</span><span class="p">})</span>
+
+            <span class="k">print</span><span class="p">(</span><span class="s">&#39;Changing the return delay time to {}...&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+            <span class="n">dxl</span><span class="o">.</span><span class="n">set_return_delay_time</span><span class="p">({</span><span class="n">args</span><span class="o">.</span><span class="n">id</span><span class="p">:</span> <span class="mi">0</span><span class="p">})</span>
+            <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="o">.</span><span class="mi">5</span><span class="p">)</span>
+
+            <span class="k">print</span><span class="p">(</span><span class="s">&#39;Changing the angle limit to {}...&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">angle_limit</span><span class="p">)</span>
+            <span class="n">dxl</span><span class="o">.</span><span class="n">set_angle_limit</span><span class="p">({</span><span class="n">args</span><span class="o">.</span><span class="n">id</span><span class="p">:</span> <span class="n">args</span><span class="o">.</span><span class="n">angle_limit</span><span class="p">})</span>
+            <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="o">.</span><span class="mi">5</span><span class="p">)</span>
+
+            <span class="k">print</span><span class="p">(</span><span class="s">&#39;Changing the baudrate to {}...&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">TARGET_BAUDRATE</span><span class="p">))</span>
+            <span class="n">dxl</span><span class="o">.</span><span class="n">change_baudrate</span><span class="p">({</span><span class="n">args</span><span class="o">.</span><span class="n">id</span><span class="p">:</span> <span class="n">TARGET_BAUDRATE</span><span class="p">})</span>
+            <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="o">.</span><span class="mi">5</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">&#39;Done!&#39;</span><span class="p">)</span>
+
+    <span class="k">print</span><span class="p">(</span><span class="s">&#39;Now, checking that everything went well...&#39;</span><span class="p">)</span>
+    <span class="k">with</span> <span class="n">DxlIO</span><span class="p">(</span><span class="n">port</span><span class="p">)</span> <span class="k">as</span> <span class="n">dxl</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="n">dxl</span><span class="o">.</span><span class="n">ping</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+            <span class="k">assert</span> <span class="n">dxl</span><span class="o">.</span><span class="n">get_return_delay_time</span><span class="p">([</span><span class="n">args</span><span class="o">.</span><span class="n">id</span><span class="p">])</span> <span class="o">==</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="p">)</span>
+
+        <span class="k">except</span> <span class="ne">AssertionError</span><span class="p">:</span>
+            <span class="n">leave</span><span class="p">(</span><span class="s">&#39;Something went wrong with the settings of &quot;Poppy-like&quot;&#39;</span>
+                  <span class="s">&#39; motors configuration.</span><span class="se">\n</span><span class="s">This is probably due to&#39;</span>
+                  <span class="s">&#39; a communication error. Please try again.&#39;</span><span class="p">)</span>
+
+        <span class="n">lim</span> <span class="o">=</span> <span class="n">dxl</span><span class="o">.</span><span class="n">get_angle_limit</span><span class="p">([</span><span class="n">args</span><span class="o">.</span><span class="n">id</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">almost_equal</span><span class="p">,</span> <span class="n">lim</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">angle_limit</span><span class="p">)):</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">&#39;Angle limit incorrect set {} instead of {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                  <span class="n">lim</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">angle_limit</span><span class="p">))</span>
+
+        <span class="n">dxl</span><span class="o">.</span><span class="n">set_goal_position</span><span class="p">({</span><span class="n">args</span><span class="o">.</span><span class="n">id</span><span class="p">:</span> <span class="n">args</span><span class="o">.</span><span class="n">position</span><span class="p">})</span>
+        <span class="k">while</span> <span class="nb">any</span><span class="p">(</span><span class="n">dxl</span><span class="o">.</span><span class="n">is_moving</span><span class="p">((</span><span class="n">args</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="p">))):</span>
+            <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="o">.</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="n">pos</span> <span class="o">=</span> <span class="n">dxl</span><span class="o">.</span><span class="n">get_present_position</span><span class="p">((</span><span class="n">args</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="p">))[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">almost_equal</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">position</span><span class="p">,</span> <span class="n">pos</span><span class="p">):</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">&#39;Target position not reached: {} instead of {}.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                  <span class="n">pos</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">position</span><span class="p">))</span>
+
+    <span class="k">print</span><span class="p">(</span><span class="s">&#39;Done!&#39;</span><span class="p">)</span>
+
+</div>
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span>
+</pre></div>
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        
+      </div><!-- /row -->
+
+      <!-- row -->
+      <div class="row footer-relbar">
+<div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
+  <div class="navbar-inner">
+    <ul class="nav navbar-nav ">
+        <li><a href="../../../index.html">pypot 2.8.1 documentation</a></li>
+    </ul>
+<ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
+      
+        <li><a href="../../../py-modindex.html" title="Python Module Index" >modules</a></li>
+        <li><a href="../../../genindex.html" title="General Index" >index</a></li>
+        <li><a href="../../index.html" >Module code</a></li>
+        <li><a href="#">top</a></li> 
+      
+    </ul>
+  </div>
+</div>
+      </div><!-- /row -->
+
+      <!-- footer -->
+      <footer role="contentinfo">
+          &copy; Copyright 2015, Poppy-Project.
+        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.3.1.
+      </footer>
+      <!-- /footer -->
+
+    </div>
+    <!-- /container -->
+
+  </body>
+</html>

@@ -1,0 +1,241 @@
+
+
+<!DOCTYPE html>
+
+
+
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    
+    <title>pypot.tools package &mdash; pypot 2.8.1 documentation</title>
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    
+
+<link rel="stylesheet" href="_static/css/basicstrap-base.css" type="text/css" />
+<link rel="stylesheet" id="current-theme" href="_static/css/bootstrap3/bootstrap.min.css" type="text/css" />
+<link rel="stylesheet" id="current-adjust-theme" type="text/css" />
+
+<link rel="stylesheet" href="_static/css/font-awesome.min.css">
+
+<style type="text/css">
+  body {
+    padding-top: 60px;
+    padding-bottom: 40px;
+  }
+</style>
+
+<link rel="stylesheet" href="_static/css/basicstrap.css" type="text/css" />
+<link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+<link rel="stylesheet" href="_static/my-css.css" type="text/css" />
+    
+<script type="text/javascript">
+  var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:    './',
+            VERSION:     '2.8.1',
+            COLLAPSE_INDEX: false,
+            FILE_SUFFIX: '.html',
+            HAS_SOURCE:  true
+  };
+</script>
+    <script type="text/javascript" src="_static/js/jquery.min.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/js/bootstrap3.min.js"></script>
+<script type="text/javascript" src="_static/js/jquery.cookie.min.js"></script>
+<script type="text/javascript" src="_static/js/basicstrap.js"></script>
+<script type="text/javascript">
+</script>
+    <link rel="shortcut icon" href="_static/pypot_logo-48x48.png"/>
+    <link rel="author" title="About these documents" href="about.html" />
+    <link rel="top" title="pypot 2.8.1 documentation" href="index.html" /> 
+  </head>
+  <body role="document">
+    <div id="navbar-top" class="navbar navbar-fixed-top navbar-default" role="navigation" aria-label="top navigation">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="index.html">pypot 2.8.1 documentation</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
+              <li class="dropdown visible-xs">
+                <a role="button" id="localToc" data-toggle="dropdown" data-target="#" href="#">Table Of Contents <b class="caret"></b></a>
+                <ul class="dropdown-menu localtoc sp-localtoc" role="menu" aria-labelledby="localToc">
+                <ul>
+<li><a class="reference internal" href="#">pypot.tools package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-pypot.tools.dxl_reset">pypot.tools.dxl_reset module</a></li>
+</ul>
+</li>
+</ul>
+
+                </ul>
+              </li>
+
+            
+              <li><a href="py-modindex.html" title="Python Module Index" >modules </a></li>
+              <li><a href="genindex.html" title="General Index" accesskey="I">index </a></li>
+            
+            <li class="visible-xs"><a href="_sources/pypot.tools.txt" rel="nofollow">Show Source</a></li>
+
+            <li class="visible-xs">
+                <form class="search form-search form-inline navbar-form navbar-right sp-searchbox" action="search.html" method="get">
+                  <div class="input-append input-group">
+                    <input type="text" class="search-query form-control" name="q" placeholder="Search...">
+                    <span class="input-group-btn">
+                    <input type="submit" class="btn" value="Go" />
+                    </span>
+                  </div>
+                  <input type="hidden" name="check_keywords" value="yes" />
+                  <input type="hidden" name="area" value="default" />
+                </form>
+            </li>
+
+            
+
+          </ul>
+
+        </div>
+      </div>
+    </div>
+    
+
+    <!-- container -->
+    <div class="container-fluid">
+
+      <!-- row -->
+      <div class="row">
+         
+<div class="col-md-3 hidden-xs" id="sidebar-wrapper">
+  <div class="sidebar hidden-xs" role="navigation" aria-label="main navigation">
+    <p class="logo"><a href="index.html">
+      <img class="logo" src="_static/pypot_logo-144x144.png" alt="Logo"/>
+    </a></p>
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">pypot.tools package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-pypot.tools.dxl_reset">pypot.tools.dxl_reset module</a></li>
+</ul>
+</li>
+</ul>
+
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/pypot.tools.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" role="search">
+  <h3>Quick search</h3>
+  <form class="search form-inline" action="search.html" method="get">
+      <div class="input-append input-group">
+        <input type="text" class="search-query form-control" name="q" placeholder="Search...">
+        <span class="input-group-btn">
+        <input type="submit" class="btn" value="Go" />
+        </span>
+      </div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+  </div>
+</div> 
+        
+
+        <div class="col-md-9" id="content-wrapper">
+          <div class="document" role="main">
+            <div class="documentwrapper">
+              <div class="bodywrapper">
+                <div class="body">
+                  
+  <div class="section" id="pypot-tools-package">
+<h1>pypot.tools package<a class="headerlink" href="#pypot-tools-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="herborist.html">Herborist: the configuration tool</a></li>
+</ul>
+</div>
+</div>
+<div class="section" id="module-pypot.tools.dxl_reset">
+<span id="pypot-tools-dxl-reset-module"></span><h2>pypot.tools.dxl_reset module<a class="headerlink" href="#module-pypot.tools.dxl_reset" title="Permalink to this headline">¶</a></h2>
+<p>Reset a dynamixel motor to &#8220;poppy&#8221; configuration.</p>
+<p>This utility should only be used with a single motor connected to the bus. For the moment it&#8217;s only working with robotis protocol v1 (AX, RX, MX motors).</p>
+<p>To run it:
+$ poppy-reset-motor 42</p>
+<p>The motor will now have the id 42, use a 1000000 baud rates, a 0µs return delay time. The angle limit are also set (by default to (-180, 180)). Its position is also set to its base position (default: 0).</p>
+<p>For more complex use cases, see:
+$ poppy-reset-motor &#8211;help</p>
+<dl class="function">
+<dt id="pypot.tools.dxl_reset.leave">
+<code class="descclassname">pypot.tools.dxl_reset.</code><code class="descname">leave</code><span class="sig-paren">(</span><em>msg</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/tools/dxl_reset.html#leave"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.tools.dxl_reset.leave" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pypot.tools.dxl_reset.almost_equal">
+<code class="descclassname">pypot.tools.dxl_reset.</code><code class="descname">almost_equal</code><span class="sig-paren">(</span><em>a</em>, <em>b</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/tools/dxl_reset.html#almost_equal"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.tools.dxl_reset.almost_equal" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pypot.tools.dxl_reset.main">
+<code class="descclassname">pypot.tools.dxl_reset.</code><code class="descname">main</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/tools/dxl_reset.html#main"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.tools.dxl_reset.main" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+</div>
+
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        
+      </div><!-- /row -->
+
+      <!-- row -->
+      <div class="row footer-relbar">
+<div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
+  <div class="navbar-inner">
+    <ul class="nav navbar-nav ">
+        <li><a href="index.html">pypot 2.8.1 documentation</a></li>
+    </ul>
+<ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
+      
+        <li><a href="py-modindex.html" title="Python Module Index" >modules</a></li>
+        <li><a href="genindex.html" title="General Index" >index</a></li>
+        <li><a href="#">top</a></li> 
+      
+    </ul>
+  </div>
+</div>
+      </div><!-- /row -->
+
+      <!-- footer -->
+      <footer role="contentinfo">
+          &copy; Copyright 2015, Poppy-Project.
+        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.3.1.
+      </footer>
+      <!-- /footer -->
+
+    </div>
+    <!-- /container -->
+
+  </body>
+</html>
