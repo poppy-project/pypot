@@ -9,7 +9,7 @@
   <head>
     <meta charset="utf-8" />
     
-    <title>pypot.robot.config &mdash; pypot 2.8.0 documentation</title>
+    <title>pypot.robot.config &mdash; pypot 2.8.1 documentation</title>
     <meta name="description" content="">
     <meta name="author" content="">
 
@@ -35,7 +35,7 @@
 <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
             URL_ROOT:    '../../../',
-            VERSION:     '2.8.0',
+            VERSION:     '2.8.1',
             COLLAPSE_INDEX: false,
             FILE_SUFFIX: '.html',
             HAS_SOURCE:  true
@@ -49,8 +49,9 @@
 <script type="text/javascript" src="../../../_static/js/basicstrap.js"></script>
 <script type="text/javascript">
 </script>
+    <link rel="shortcut icon" href="../../../_static/pypot_logo-48x48.png"/>
     <link rel="author" title="About these documents" href="../../../about.html" />
-    <link rel="top" title="pypot 2.8.0 documentation" href="../../../index.html" />
+    <link rel="top" title="pypot 2.8.1 documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body role="document">
@@ -63,7 +64,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="../../../index.html">pypot 2.8.0 documentation</a>
+          <a class="navbar-brand" href="../../../index.html">pypot 2.8.1 documentation</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
@@ -104,6 +105,9 @@
          
 <div class="col-md-3 hidden-xs" id="sidebar-wrapper">
   <div class="sidebar hidden-xs" role="navigation" aria-label="main navigation">
+    <p class="logo"><a href="../../../index.html">
+      <img class="logo" src="../../../_static/pypot_logo-144x144.png" alt="Logo"/>
+    </a></p>
 <div id="searchbox" role="search">
   <h3>Quick search</h3>
   <form class="search form-inline" action="../../../search.html" method="get">
@@ -228,12 +232,14 @@
     <span class="k">elif</span> <span class="nb">type</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&#39;AX&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">type</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&#39;RX&#39;</span><span class="p">):</span>
         <span class="n">MotorCls</span> <span class="o">=</span> <span class="n">pypot</span><span class="o">.</span><span class="n">dynamixel</span><span class="o">.</span><span class="n">motor</span><span class="o">.</span><span class="n">DxlAXRXMotor</span>
 
+    <span class="n">broken</span> <span class="o">=</span> <span class="s">&#39;broken&#39;</span> <span class="ow">in</span> <span class="n">params</span> <span class="ow">and</span> <span class="n">params</span><span class="p">[</span><span class="s">&#39;broken&#39;</span><span class="p">]</span>
+
     <span class="n">m</span> <span class="o">=</span> <span class="n">MotorCls</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">params</span><span class="p">[</span><span class="s">&#39;id&#39;</span><span class="p">],</span>
                  <span class="n">name</span><span class="o">=</span><span class="n">motor_name</span><span class="p">,</span>
                  <span class="n">model</span><span class="o">=</span><span class="nb">type</span><span class="p">,</span>
                  <span class="n">direct</span><span class="o">=</span><span class="bp">True</span> <span class="k">if</span> <span class="n">params</span><span class="p">[</span><span class="s">&#39;orientation&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;direct&#39;</span> <span class="k">else</span> <span class="bp">False</span><span class="p">,</span>
                  <span class="n">offset</span><span class="o">=</span><span class="n">params</span><span class="p">[</span><span class="s">&#39;offset&#39;</span><span class="p">],</span>
-                 <span class="n">broken</span><span class="o">=</span><span class="s">&#39;broken&#39;</span> <span class="ow">in</span> <span class="n">params</span><span class="p">)</span>
+                 <span class="n">broken</span><span class="o">=</span><span class="n">broken</span><span class="p">)</span>
 
     <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&quot;Instantiating motor &#39;</span><span class="si">%s</span><span class="s">&#39; id=</span><span class="si">%d</span><span class="s"> direct=</span><span class="si">%s</span><span class="s"> offset=</span><span class="si">%s</span><span class="s">&quot;</span><span class="p">,</span>
                 <span class="n">m</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">m</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">m</span><span class="o">.</span><span class="n">direct</span><span class="p">,</span> <span class="n">m</span><span class="o">.</span><span class="n">offset</span><span class="p">,</span>
@@ -435,7 +441,7 @@
 <div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
   <div class="navbar-inner">
     <ul class="nav navbar-nav ">
-        <li><a href="../../../index.html">pypot 2.8.0 documentation</a></li>
+        <li><a href="../../../index.html">pypot 2.8.1 documentation</a></li>
     </ul>
 <ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
       
@@ -451,7 +457,7 @@
 
       <!-- footer -->
       <footer role="contentinfo">
-          &copy; Copyright 2012, Poppy-Project.
+          &copy; Copyright 2015, Poppy-Project.
         Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.3.1.
       </footer>
       <!-- /footer -->

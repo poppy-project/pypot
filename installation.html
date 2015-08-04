@@ -9,7 +9,7 @@
   <head>
     <meta charset="utf-8" />
     
-    <title>Installation &mdash; pypot 2.8.0 documentation</title>
+    <title>Installation &mdash; pypot 2.8.1 documentation</title>
     <meta name="description" content="">
     <meta name="author" content="">
 
@@ -35,7 +35,7 @@
 <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
             URL_ROOT:    './',
-            VERSION:     '2.8.0',
+            VERSION:     '2.8.1',
             COLLAPSE_INDEX: false,
             FILE_SUFFIX: '.html',
             HAS_SOURCE:  true
@@ -49,8 +49,9 @@
 <script type="text/javascript" src="_static/js/basicstrap.js"></script>
 <script type="text/javascript">
 </script>
+    <link rel="shortcut icon" href="_static/pypot_logo-48x48.png"/>
     <link rel="author" title="About these documents" href="about.html" />
-    <link rel="top" title="pypot 2.8.0 documentation" href="index.html" />
+    <link rel="top" title="pypot 2.8.1 documentation" href="index.html" />
     <link rel="next" title="QuickStart: playing with an Ergo-Robot" href="quickstart.html" />
     <link rel="prev" title="What is pypot?" href="about.html" /> 
   </head>
@@ -64,7 +65,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="index.html">pypot 2.8.0 documentation</a>
+          <a class="navbar-brand" href="index.html">pypot 2.8.1 documentation</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
@@ -73,6 +74,12 @@
                 <ul class="dropdown-menu localtoc sp-localtoc" role="menu" aria-labelledby="localToc">
                 <ul>
 <li><a class="reference internal" href="#">Installation</a><ul>
+<li><a class="reference internal" href="#requirements">Requirements</a><ul>
+<li><a class="reference internal" href="#windows">Windows</a></li>
+<li><a class="reference internal" href="#gnu-linux">GNU/Linux</a></li>
+<li><a class="reference internal" href="#mac-osx">Mac OSX</a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#via-python-packages">Via Python Packages</a></li>
 <li><a class="reference internal" href="#from-the-source-code">From the source code</a></li>
 <li><a class="reference internal" href="#testing-your-install">Testing your install</a></li>
@@ -121,9 +128,18 @@
          
 <div class="col-md-3 hidden-xs" id="sidebar-wrapper">
   <div class="sidebar hidden-xs" role="navigation" aria-label="main navigation">
+    <p class="logo"><a href="index.html">
+      <img class="logo" src="_static/pypot_logo-144x144.png" alt="Logo"/>
+    </a></p>
   <h3><a href="index.html">Table Of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">Installation</a><ul>
+<li><a class="reference internal" href="#requirements">Requirements</a><ul>
+<li><a class="reference internal" href="#windows">Windows</a></li>
+<li><a class="reference internal" href="#gnu-linux">GNU/Linux</a></li>
+<li><a class="reference internal" href="#mac-osx">Mac OSX</a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#via-python-packages">Via Python Packages</a></li>
 <li><a class="reference internal" href="#from-the-source-code">From the source code</a></li>
 <li><a class="reference internal" href="#testing-your-install">Testing your install</a></li>
@@ -172,26 +188,67 @@
                   
   <div class="section" id="installation">
 <span id="id1"></span><h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="requirements">
+<h2>Requirements<a class="headerlink" href="#requirements" title="Permalink to this headline">¶</a></h2>
+<p>PyPot is written in <a class="reference external" href="https://www.python.org/">python</a> and need a python interpreter to be run. Moreover PyPot has <a class="reference external" href="www.scipy.org/">scipy</a> and <a class="reference external" href="http://www.numpy.org">numpy</a> for dependencies, as they are not fully written in python they need system side packages to be build, it easier to use pre-build binaries for your operating system.</p>
+<div class="section" id="windows">
+<h3>Windows<a class="headerlink" href="#windows" title="Permalink to this headline">¶</a></h3>
+<p>The easier way is to install <a class="reference external" href="http://continuum.io/downloads">Anaconda</a> a pre-packaged <a class="reference external" href="https://www.python.org/">python</a> distribution with lot of scientific librairies pre-compiled and a graphical installer.</p>
+<p>After that, you can install PyPot with <a class="reference external" href="#via-python-packages">pip</a>.</p>
+</div>
+<div class="section" id="gnu-linux">
+<h3>GNU/Linux<a class="headerlink" href="#gnu-linux" title="Permalink to this headline">¶</a></h3>
+<p>You can also install <a class="reference external" href="http://continuum.io/downloads">Anaconda</a>, but it&#8217;s faster to use the binaries provided by your default package manager.</p>
+<p>On Ubuntu &amp; Debian:</p>
+<div class="highlight-python"><div class="highlight"><pre>sudo apt-get install python-pip python-numpy python-scipy python-matplotlib
+</pre></div>
+</div>
+<p>On Fedora:</p>
+<div class="highlight-python"><div class="highlight"><pre>sudo yum install python-pip numpy scipy python-matplotlib
+</pre></div>
+</div>
+<p>On Arch Linux:</p>
+<div class="highlight-python"><div class="highlight"><pre>sudo pacman -S python2-pip python2-scipy python2-numpy
+</pre></div>
+</div>
+<p>After that, you can install PyPot with <a class="reference external" href="#via-python-packages">pip</a>.</p>
+</div>
+<div class="section" id="mac-osx">
+<h3>Mac OSX<a class="headerlink" href="#mac-osx" title="Permalink to this headline">¶</a></h3>
+<p>Mac OSX (unlike GNU/Linux distributions) don’t come with a package manager, but there are a couple of popular package managers you can install, like <a class="reference external" href="http://brew.sh/">Homebrew</a>.</p>
+<p>The easier way is to install <a class="reference external" href="http://brew.sh/">Homebrew</a>:</p>
+<div class="highlight-python"><div class="highlight"><pre>ruby -e &quot;$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)&quot;
+</pre></div>
+</div>
+<p>An use Homebrew to install python:</p>
+<div class="highlight-python"><div class="highlight"><pre>brew install python
+</pre></div>
+</div>
+<p>After that, you can install PyPot with <a class="reference external" href="#via-python-packages">pip</a>.</p>
+</div>
+</div>
 <div class="section" id="via-python-packages">
 <h2>Via Python Packages<a class="headerlink" href="#via-python-packages" title="Permalink to this headline">¶</a></h2>
 <p>The pypot package is entirely written in Python. So, the install process should be rather straightforward. You can directly install it via easy_install or pip:</p>
 <div class="highlight-python"><div class="highlight"><pre>pip install pypot
 </pre></div>
 </div>
-<p>or:</p>
+<p><strong>or</strong>:</p>
 <div class="highlight-python"><div class="highlight"><pre>easy_install pypot
 </pre></div>
 </div>
 <p>The up to date archive can also be directly downloaded <a class="reference external" href="https://pypi.python.org/pypi/pypot/">here</a>.</p>
+<p>If you are on a GNU/Linux operating system, you will need to execute the above commands with <strong>sudo</strong>.</p>
 </div>
 <div class="section" id="from-the-source-code">
 <h2>From the source code<a class="headerlink" href="#from-the-source-code" title="Permalink to this headline">¶</a></h2>
 <p>You can also install it from the source. You can clone/fork our repo directly on <a class="reference external" href="https://github.com/poppy-project/pypot">github</a>.</p>
-<p>Before you start building pypot, you need to make sure that the following packages are already installed on your computer:</p>
+<p>Before you start building PyPot, you need to make sure that the following packages are already installed on your computer:</p>
 <ul class="simple">
 <li><a class="reference external" href="http://www.python.org">python</a> developed on 2.7 (also works on 3)</li>
 <li><a class="reference external" href="http://pyserial.sourceforge.net/">pyserial</a> 2.6 (or later)</li>
 <li><a class="reference external" href="http://www.numpy.org">numpy</a></li>
+<li><a class="reference external" href="www.scipy.org/">scipy</a></li>
 <li><a class="reference external" href="https://pypi.python.org/pypi/enum34">enum34</a></li>
 </ul>
 <p>Other optional packages may be installed depending on your needs:</p>
@@ -202,8 +259,7 @@
 </ul>
 <p>Once it is done, you can build and install pypot with the classical:</p>
 <div class="highlight-python"><div class="highlight"><pre>cd pypot
-python setup.py build
-python setup.py install
+sudo python setup.py install
 </pre></div>
 </div>
 </div>
@@ -213,7 +269,7 @@ python setup.py install
 <div class="highlight-python"><div class="highlight"><pre>python -c &quot;import pypot&quot;
 </pre></div>
 </div>
-<p>You will also have to install the driver for the USB2serial port. There are two devices that have been tested with pypot that could be used:</p>
+<p>You will also have to install the driver for the USB2serial port. There are two devices that have been tested with PyPot that could be used:</p>
 <ul class="simple">
 <li>USB2AX - this device is designed to manage TTL communication only</li>
 <li>USB2Dynamixel - this device can manage both TTL and RS485 communication.</li>
@@ -223,11 +279,12 @@ python setup.py install
 <p class="first admonition-title">Note</p>
 <p class="last">On the side of the USB2Dynamixel there is a switch. This is used to select the bus you wish to communicate on. This means that you cannot control two different bus protocols at the same time.</p>
 </div>
-<p>On most Linux distributions you will not have the necessary permission to access the serial port. You can either run the command in sudo or better you can add yourself to the <em>dialout</em> group:</p>
-<div class="highlight-python"><div class="highlight"><pre>sudo addgroup &quot;username&quot; dialout
+<p>On most Linux distributions you will not have the necessary permission to access the serial port. You can either run the command in sudo or better you can add yourself to the <em>dialout</em> or the <em>uucp</em> group (depending on your distribution):</p>
+<div class="highlight-python"><div class="highlight"><pre>sudo addgroup $USER dialout
+sudo addgroup $USER uucp
 </pre></div>
 </div>
-<p>At this point you should have a pypot ready to be used! In the extremely unlikely case where anything went wrong during the installation, please refer to the <a class="reference external" href="https://github.com/poppy-project/pypot/issues">issue tracker</a>.</p>
+<p>At this point you should have a pypot ready to be used! In the extremely unlikely case where anything went wrong during the installation, please refer to the <a class="reference external" href="https://github.com/poppy-project/PyPot/issues">issue tracker</a>.</p>
 </div>
 </div>
 
@@ -246,7 +303,7 @@ python setup.py install
 <div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
   <div class="navbar-inner">
     <ul class="nav navbar-nav ">
-        <li><a href="index.html">pypot 2.8.0 documentation</a></li>
+        <li><a href="index.html">pypot 2.8.1 documentation</a></li>
     </ul>
 <ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
       
@@ -263,7 +320,7 @@ python setup.py install
 
       <!-- footer -->
       <footer role="contentinfo">
-          &copy; Copyright 2012, Poppy-Project.
+          &copy; Copyright 2015, Poppy-Project.
         Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.3.1.
       </footer>
       <!-- /footer -->
