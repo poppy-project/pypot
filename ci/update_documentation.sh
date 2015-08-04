@@ -34,7 +34,7 @@ pushd ..
     fi
     mkdir $tmp_repo
     git clone -b gh-pages $git_url $tmp_repo 
-    cp -r $doc_src/_build/html/ $tmp_repo
+    cp -r $doc_src/_build/html/* $tmp_repo
 
     if [[ "TRAVIS_OS_NAME" == "linux" ]]; then
         # Using pdflatex to build the .tex files to pdf
