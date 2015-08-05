@@ -9,7 +9,6 @@ if [[ "$PEP8_CAUSE_FAILLURE" == "true" ]]; then
 fi
 flake8 --statistics --count .
 
-
 set -e
 
 # Changing dir to avoid loading local files

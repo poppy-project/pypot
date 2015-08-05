@@ -32,7 +32,6 @@ class MarkerDetector(SensorsController):
         self._robot = robot
         self._names = cameras
 
-
     def update(self):
         if not hasattr(self, 'cameras'):
             self.cameras = [getattr(self._robot, c) for c in self._names]
