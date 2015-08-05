@@ -9,7 +9,7 @@
   <head>
     <meta charset="utf-8" />
     
-    <title>pypot.robot.config &mdash; pypot 2.8.1 documentation</title>
+    <title>pypot.robot.config &mdash; pypot 2.8.2 documentation</title>
     <meta name="description" content="">
     <meta name="author" content="">
 
@@ -35,7 +35,7 @@
 <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
             URL_ROOT:    '../../../',
-            VERSION:     '2.8.1',
+            VERSION:     '2.8.2',
             COLLAPSE_INDEX: false,
             FILE_SUFFIX: '.html',
             HAS_SOURCE:  true
@@ -51,7 +51,7 @@
 </script>
     <link rel="shortcut icon" href="../../../_static/pypot_logo-48x48.png"/>
     <link rel="author" title="About these documents" href="../../../about.html" />
-    <link rel="top" title="pypot 2.8.1 documentation" href="../../../index.html" />
+    <link rel="top" title="pypot 2.8.2 documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body role="document">
@@ -64,7 +64,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="../../../index.html">pypot 2.8.1 documentation</a>
+          <a class="navbar-brand" href="../../../index.html">pypot 2.8.2 documentation</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
@@ -211,9 +211,14 @@
 
     <span class="c"># Create all sensors and attached them</span>
     <span class="k">if</span> <span class="s">&#39;sensors&#39;</span> <span class="ow">in</span> <span class="n">config</span><span class="p">:</span>
+        <span class="n">sensors</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">s_name</span> <span class="ow">in</span> <span class="n">config</span><span class="p">[</span><span class="s">&#39;sensors&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
-            <span class="n">sensor</span> <span class="o">=</span> <span class="n">sensor_from_confignode</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">s_name</span><span class="p">)</span>
+            <span class="n">sensor</span> <span class="o">=</span> <span class="n">sensor_from_confignode</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">s_name</span><span class="p">,</span> <span class="n">robot</span><span class="p">)</span>
             <span class="nb">setattr</span><span class="p">(</span><span class="n">robot</span><span class="p">,</span> <span class="n">s_name</span><span class="p">,</span> <span class="n">sensor</span><span class="p">)</span>
+            <span class="n">sensors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sensor</span><span class="p">)</span>
+
+        <span class="n">robot</span><span class="o">.</span><span class="n">sensors</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">sensors</span><span class="p">)</span>
+        <span class="p">[</span><span class="n">s</span><span class="o">.</span><span class="n">start</span><span class="p">()</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">sensors</span> <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="s">&#39;start&#39;</span><span class="p">)]</span>
 
     <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;Loading complete!&#39;</span><span class="p">,</span>
                 <span class="n">extra</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;config&#39;</span><span class="p">:</span> <span class="n">config</span><span class="p">})</span>
@@ -248,9 +253,12 @@
     <span class="k">return</span> <span class="n">m</span>
 
 </div>
-<div class="viewcode-block" id="sensor_from_confignode"><a class="viewcode-back" href="../../../pypot.robot.html#pypot.robot.config.sensor_from_confignode">[docs]</a><span class="k">def</span> <span class="nf">sensor_from_confignode</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">s_name</span><span class="p">):</span>
+<div class="viewcode-block" id="sensor_from_confignode"><a class="viewcode-back" href="../../../pypot.robot.html#pypot.robot.config.sensor_from_confignode">[docs]</a><span class="k">def</span> <span class="nf">sensor_from_confignode</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">s_name</span><span class="p">,</span> <span class="n">robot</span><span class="p">):</span>
     <span class="n">args</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s">&#39;sensors&#39;</span><span class="p">][</span><span class="n">s_name</span><span class="p">]</span>
     <span class="n">cls_name</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s">&quot;type&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="s">&#39;need_robot&#39;</span> <span class="ow">in</span> <span class="n">args</span> <span class="ow">and</span> <span class="n">args</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s">&#39;need_robot&#39;</span><span class="p">):</span>
+        <span class="n">args</span><span class="p">[</span><span class="s">&#39;robot&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">robot</span>
 
     <span class="n">SensorCls</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">pypot</span><span class="o">.</span><span class="n">sensor</span><span class="p">,</span> <span class="n">cls_name</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">SensorCls</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">s_name</span><span class="p">,</span> <span class="o">**</span><span class="n">args</span><span class="p">)</span>
@@ -441,7 +449,7 @@
 <div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
   <div class="navbar-inner">
     <ul class="nav navbar-nav ">
-        <li><a href="../../../index.html">pypot 2.8.1 documentation</a></li>
+        <li><a href="../../../index.html">pypot 2.8.2 documentation</a></li>
     </ul>
 <ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
       
