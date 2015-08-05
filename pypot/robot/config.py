@@ -74,9 +74,14 @@ def from_config(config, strict=True, sync=True):
 
     # Create all sensors and attached them
     if 'sensors' in config:
+        sensors = []
         for s_name in config['sensors'].keys():
-            sensor = sensor_from_confignode(config, s_name)
+            sensor = sensor_from_confignode(config, s_name, robot)
             setattr(robot, s_name, sensor)
+            sensors.append(sensor)
+
+        robot.sensors.extend(sensors)
+        [s.start() for s in sensors if hasattr(s, 'start')]
 
     logger.info('Loading complete!',
                 extra={'config': config})
@@ -111,9 +116,12 @@ def motor_from_confignode(config, motor_name):
     return m
 
 
-def sensor_from_confignode(config, s_name):
+def sensor_from_confignode(config, s_name, robot):
     args = config['sensors'][s_name]
     cls_name = args.pop("type")
+
+    if 'need_robot' in args and args.pop('need_robot'):
+        args['robot'] = robot
 
     SensorCls = getattr(pypot.sensor, cls_name)
     return SensorCls(name=s_name, **args)
