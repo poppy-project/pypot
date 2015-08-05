@@ -190,11 +190,11 @@
 <span id="id1"></span><h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="requirements">
 <h2>Requirements<a class="headerlink" href="#requirements" title="Permalink to this headline">¶</a></h2>
-<p>PyPot is written in <a class="reference external" href="https://www.python.org/">python</a> and need a python interpreter to be run. Moreover PyPot has <a class="reference external" href="www.scipy.org/">scipy</a> and <a class="reference external" href="http://www.numpy.org">numpy</a> for dependencies, as they are not fully written in python they need system side packages to be build, it easier to use pre-build binaries for your operating system.</p>
+<p>Pypot is written in <a class="reference external" href="https://www.python.org/">python</a> and need a python interpreter to be run. Moreover pypot has <a class="reference external" href="www.scipy.org/">scipy</a> and <a class="reference external" href="http://www.numpy.org">numpy</a> for dependencies, as they are not fully written in python they need system side packages to be build, it easier to use pre-build binaries for your operating system.</p>
 <div class="section" id="windows">
 <h3>Windows<a class="headerlink" href="#windows" title="Permalink to this headline">¶</a></h3>
 <p>The easier way is to install <a class="reference external" href="http://continuum.io/downloads">Anaconda</a> a pre-packaged <a class="reference external" href="https://www.python.org/">python</a> distribution with lot of scientific librairies pre-compiled and a graphical installer.</p>
-<p>After that, you can install PyPot with <a class="reference external" href="#via-python-packages">pip</a>.</p>
+<p>After that, you can install pypot with <a class="reference external" href="#via-python-packages">pip</a> in the command prompt.</p>
 </div>
 <div class="section" id="gnu-linux">
 <h3>GNU/Linux<a class="headerlink" href="#gnu-linux" title="Permalink to this headline">¶</a></h3>
@@ -208,15 +208,15 @@
 </pre></div>
 </div>
 <p>On Arch Linux:</p>
-<div class="highlight-python"><div class="highlight"><pre>sudo pacman -S python2-pip python2-scipy python2-numpy
+<div class="highlight-python"><div class="highlight"><pre>sudo pacman -S python2-pip python2-scipy python2-numpy python2-matplotlib
 </pre></div>
 </div>
-<p>After that, you can install PyPot with <a class="reference external" href="#via-python-packages">pip</a>.</p>
+<p>After that, you can install pypot with <a class="reference external" href="#via-python-packages">pip</a>.</p>
 </div>
 <div class="section" id="mac-osx">
 <h3>Mac OSX<a class="headerlink" href="#mac-osx" title="Permalink to this headline">¶</a></h3>
 <p>Mac OSX (unlike GNU/Linux distributions) don’t come with a package manager, but there are a couple of popular package managers you can install, like <a class="reference external" href="http://brew.sh/">Homebrew</a>.</p>
-<p>The easier way is to install <a class="reference external" href="http://brew.sh/">Homebrew</a>:</p>
+<p>The easier way is to install <a class="reference external" href="http://brew.sh/">Homebrew</a>. You have to type these commands in a terminal:</p>
 <div class="highlight-python"><div class="highlight"><pre>ruby -e &quot;$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)&quot;
 </pre></div>
 </div>
@@ -224,7 +224,7 @@
 <div class="highlight-python"><div class="highlight"><pre>brew install python
 </pre></div>
 </div>
-<p>After that, you can install PyPot with <a class="reference external" href="#via-python-packages">pip</a>.</p>
+<p>After that, you can install pypot with <a class="reference external" href="#via-python-packages">pip</a>.</p>
 </div>
 </div>
 <div class="section" id="via-python-packages">
@@ -243,7 +243,7 @@
 <div class="section" id="from-the-source-code">
 <h2>From the source code<a class="headerlink" href="#from-the-source-code" title="Permalink to this headline">¶</a></h2>
 <p>You can also install it from the source. You can clone/fork our repo directly on <a class="reference external" href="https://github.com/poppy-project/pypot">github</a>.</p>
-<p>Before you start building PyPot, you need to make sure that the following packages are already installed on your computer:</p>
+<p>Before you start building pypot, you need to make sure that the following packages are already installed on your computer:</p>
 <ul class="simple">
 <li><a class="reference external" href="http://www.python.org">python</a> developed on 2.7 (also works on 3)</li>
 <li><a class="reference external" href="http://pyserial.sourceforge.net/">pyserial</a> 2.6 (or later)</li>
@@ -269,7 +269,7 @@ sudo python setup.py install
 <div class="highlight-python"><div class="highlight"><pre>python -c &quot;import pypot&quot;
 </pre></div>
 </div>
-<p>You will also have to install the driver for the USB2serial port. There are two devices that have been tested with PyPot that could be used:</p>
+<p>You will also have to install the driver for the USB2serial port. There are two devices that have been tested with pypot that could be used:</p>
 <ul class="simple">
 <li>USB2AX - this device is designed to manage TTL communication only</li>
 <li>USB2Dynamixel - this device can manage both TTL and RS485 communication.</li>
@@ -284,7 +284,7 @@ sudo python setup.py install
 sudo addgroup $USER uucp
 </pre></div>
 </div>
-<p>At this point you should have a pypot ready to be used! In the extremely unlikely case where anything went wrong during the installation, please refer to the <a class="reference external" href="https://github.com/poppy-project/PyPot/issues">issue tracker</a>.</p>
+<p>At this point you should have a pypot ready to be used! In the extremely unlikely case where anything went wrong during the installation, please refer to the <a class="reference external" href="https://github.com/poppy-project/pypot/issues">issue tracker</a>.</p>
 </div>
 </div>
 
