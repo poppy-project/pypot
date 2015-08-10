@@ -66,7 +66,6 @@ class BlobDetector(SensorsController):
         circles = cv2.HoughCircles(acc_mask, cv2.HOUGH_GRADIENT, 3, img.shape[0] / 5.)
         return circles.reshape(-1, 3) if circles is not None else []
 
-
     def update(self):
         if not hasattr(self, 'cameras'):
             self.cameras = [getattr(self._robot, c) for c in self._names]
