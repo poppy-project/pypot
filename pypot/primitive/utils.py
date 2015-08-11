@@ -140,3 +140,19 @@ class PositionWatcher(LoopPrimitive):
         ax.set_ylabel('position (in deg)')
         ax.set_xlabel('time (in s)')
         ax.legend(self._pos.keys(), loc='best')
+
+
+class SimplePosture(Primitive):
+    def __init__(self, robot, duration):
+        Primitive.__init__(self, robot)
+
+        self.duration = duration
+
+    def run(self):
+        if not hasattr(self, 'target_position'):
+            raise NotImplementedError('You have to define "target_position" first!')
+
+        for m in self.robot.motors:
+            m.compliant = False
+
+        self.robot.goto_position(self.target_position, self.duration, wait=True)
