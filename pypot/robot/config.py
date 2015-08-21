@@ -217,7 +217,7 @@ def make_alias(config, robot):
                     extra={'config': config})
 
 
-def from_json(json_file, sync=True):
+def from_json(json_file, sync=True, strict=True):
     """ Returns a :class:`~pypot.robot.robot.Robot` instance created from a JSON configuration file.
 
     For details on how to write such a configuration file, you should refer to the section :ref:`config_file`.
@@ -226,7 +226,7 @@ def from_json(json_file, sync=True):
     with open(json_file) as f:
         config = json.load(f)
 
-    return from_config(config, sync=sync)
+    return from_config(config, sync=sync, strict=strict)
 
 
 def _motor_extractor(alias, name):
