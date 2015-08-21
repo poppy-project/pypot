@@ -1,5 +1,7 @@
 import platform
 import glob
+import logging
+
 
 from .io import DxlIO, Dxl320IO, DxlError
 from .error import BaseErrorHandler
@@ -7,6 +9,8 @@ from .syncloop import BaseDxlController
 from .motor import DxlMXMotor, DxlAXRXMotor, DxlXL320Motor
 
 from ..robot import Robot
+
+logger = logging.getLogger(__name__)
 
 
 def _get_available_ports():
@@ -52,21 +56,30 @@ def find_port(ids, strict=True):
         .. warning:: If two (or more) ports are attached to the same list of motor ids the first match will be returned.
 
     """
+    ids_founds = []
     for port in get_available_ports():
         for DxlIOCls in (DxlIO, Dxl320IO):
             try:
                 with DxlIOCls(port) as dxl:
-                    founds = len(dxl.scan(ids))
+                    _ids_founds = dxl.scan(ids)
+                    ids_founds += _ids_founds
 
-                    if strict and founds == len(ids):
+                    if strict and len(_ids_founds) == len(ids):
                         return port
 
-                    if not strict and founds >= len(ids) / 2:
+                    if not strict and len(_ids_founds) >= len(ids) / 2:
+                        logger.warning('Missing ids: {}'.format(ids, list(set(ids) - set(_ids_founds))))
                         return port
+
+                    if len(ids_founds) > 0:
+                        logger.warning('Port:{} ids found:{}'.format(port, _ids_founds))
+
             except DxlError:
+                logger.warning('DxlError on port {}'.format(port))
                 continue
 
-    raise IndexError('No suitable port found for ids {}!'.format(ids))
+    raise IndexError('No suitable port found for ids {}. These ids are missing {} !'.format(
+        ids, list(set(ids) - set(ids_founds))))
 
 
 def autodetect_robot():
