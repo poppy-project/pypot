@@ -137,6 +137,8 @@
   <h1>Source code for pypot.dynamixel</h1><div class="highlight"><pre>
 <span class="kn">import</span> <span class="nn">platform</span>
 <span class="kn">import</span> <span class="nn">glob</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+
 
 <span class="kn">from</span> <span class="nn">.io</span> <span class="kn">import</span> <span class="n">DxlIO</span><span class="p">,</span> <span class="n">Dxl320IO</span><span class="p">,</span> <span class="n">DxlError</span>
 <span class="kn">from</span> <span class="nn">.error</span> <span class="kn">import</span> <span class="n">BaseErrorHandler</span>
@@ -144,6 +146,8 @@
 <span class="kn">from</span> <span class="nn">.motor</span> <span class="kn">import</span> <span class="n">DxlMXMotor</span><span class="p">,</span> <span class="n">DxlAXRXMotor</span><span class="p">,</span> <span class="n">DxlXL320Motor</span>
 
 <span class="kn">from</span> <span class="nn">..robot</span> <span class="kn">import</span> <span class="n">Robot</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="n">__name__</span><span class="p">)</span>
 
 
 <span class="k">def</span> <span class="nf">_get_available_ports</span><span class="p">():</span>
@@ -189,21 +193,30 @@
 <span class="sd">        .. warning:: If two (or more) ports are attached to the same list of motor ids the first match will be returned.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">ids_founds</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">port</span> <span class="ow">in</span> <span class="n">get_available_ports</span><span class="p">():</span>
         <span class="k">for</span> <span class="n">DxlIOCls</span> <span class="ow">in</span> <span class="p">(</span><span class="n">DxlIO</span><span class="p">,</span> <span class="n">Dxl320IO</span><span class="p">):</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="k">with</span> <span class="n">DxlIOCls</span><span class="p">(</span><span class="n">port</span><span class="p">)</span> <span class="k">as</span> <span class="n">dxl</span><span class="p">:</span>
-                    <span class="n">founds</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">dxl</span><span class="o">.</span><span class="n">scan</span><span class="p">(</span><span class="n">ids</span><span class="p">))</span>
+                    <span class="n">_ids_founds</span> <span class="o">=</span> <span class="n">dxl</span><span class="o">.</span><span class="n">scan</span><span class="p">(</span><span class="n">ids</span><span class="p">)</span>
+                    <span class="n">ids_founds</span> <span class="o">+=</span> <span class="n">_ids_founds</span>
 
-                    <span class="k">if</span> <span class="n">strict</span> <span class="ow">and</span> <span class="n">founds</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">ids</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="n">strict</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">_ids_founds</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">ids</span><span class="p">):</span>
                         <span class="k">return</span> <span class="n">port</span>
 
-                    <span class="k">if</span> <span class="ow">not</span> <span class="n">strict</span> <span class="ow">and</span> <span class="n">founds</span> <span class="o">&gt;=</span> <span class="nb">len</span><span class="p">(</span><span class="n">ids</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="n">strict</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">_ids_founds</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="nb">len</span><span class="p">(</span><span class="n">ids</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">:</span>
+                        <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s">&#39;Missing ids: {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">ids</span><span class="p">,</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">ids</span><span class="p">)</span> <span class="o">-</span> <span class="nb">set</span><span class="p">(</span><span class="n">_ids_founds</span><span class="p">))))</span>
                         <span class="k">return</span> <span class="n">port</span>
+
+                    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">ids_founds</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                        <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s">&#39;Port:{} ids found:{}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">port</span><span class="p">,</span> <span class="n">_ids_founds</span><span class="p">))</span>
+
             <span class="k">except</span> <span class="n">DxlError</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s">&#39;DxlError on port {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">port</span><span class="p">))</span>
                 <span class="k">continue</span>
 
-    <span class="k">raise</span> <span class="ne">IndexError</span><span class="p">(</span><span class="s">&#39;No suitable port found for ids {}!&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">ids</span><span class="p">))</span>
+    <span class="k">raise</span> <span class="ne">IndexError</span><span class="p">(</span><span class="s">&#39;No suitable port found for ids {}. These ids are missing {} !&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+        <span class="n">ids</span><span class="p">,</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">ids</span><span class="p">)</span> <span class="o">-</span> <span class="nb">set</span><span class="p">(</span><span class="n">ids_founds</span><span class="p">))))</span>
 
 </div>
 <div class="viewcode-block" id="autodetect_robot"><a class="viewcode-back" href="../../pypot.dynamixel.html#pypot.dynamixel.autodetect_robot">[docs]</a><span class="k">def</span> <span class="nf">autodetect_robot</span><span class="p">():</span>
