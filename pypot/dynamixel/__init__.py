@@ -3,6 +3,8 @@ import platform
 import glob
 import logging
 
+import serial.tools.list_ports
+
 
 from .io import DxlIO, Dxl320IO, DxlError
 from .error import BaseErrorHandler
@@ -50,6 +52,22 @@ def get_available_ports(only_free=False):
         ports = list(set(ports) - set(DxlIO.get_used_ports()))
 
     return ports
+
+
+def get_port_vendor_info(port):
+    """ Return vendor informations of the serial port specified.
+        It may depends on the Operating System.
+
+        Result with a USB2Dynamixel on Linux:
+        In [1]: import pypot.dynamixel
+        In [2]: pypot.dynamixel.get_port_vendor_info('/dev/ttyUSB0')
+        Out[2]:
+        ('Future Technology Devices International, Ltd FT232 USB-Serial (UART) IC ',
+         'USB VID:PID=0403:6001 SNR=A7005LKE') """
+
+    port_info_list = serial.tools.list_ports.comports()
+    port_info_dict = dict((x[0], (x[1], x[2])) for x in port_info_list[:])
+    return port_info_dict[port]
 
 
 def find_port(ids, strict=True):
