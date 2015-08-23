@@ -54,7 +54,7 @@ def get_available_ports(only_free=False):
     return ports
 
 
-def get_port_vendor_info(port):
+def get_port_vendor_info(port=None):
     """ Return vendor informations of the serial port specified.
         It may depends on the Operating System.
 
@@ -67,7 +67,10 @@ def get_port_vendor_info(port):
 
     port_info_list = serial.tools.list_ports.comports()
     port_info_dict = dict((x[0], (x[1], x[2])) for x in port_info_list[:])
-    return port_info_dict[port]
+    if port is not None:
+        return port_info_dict[port]
+    else:
+        return port_info_dict
 
 
 def find_port(ids, strict=True):
