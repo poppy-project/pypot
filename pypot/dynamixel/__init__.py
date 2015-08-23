@@ -1,3 +1,4 @@
+import sys
 import platform
 import glob
 import logging
@@ -18,8 +19,11 @@ def _get_available_ports():
     if platform.system() == 'Darwin':
         return glob.glob('/dev/tty.usb*')
 
-    elif platform.system() == 'Linux' or platform.startswith('cygwin'):
+    elif platform.system() == 'Linux':
         return glob.glob('/dev/ttyACM*') + glob.glob('/dev/ttyUSB*')
+
+    elif sys.platform.lower() == 'cygwin':
+        return glob.glob('/dev/com*')
 
     elif platform.system() == 'Windows':
         import _winreg
