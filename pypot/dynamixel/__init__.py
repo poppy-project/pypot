@@ -18,7 +18,7 @@ def _get_available_ports():
     if platform.system() == 'Darwin':
         return glob.glob('/dev/tty.usb*')
 
-    elif platform.system() == 'Linux':
+    elif platform.system() == 'Linux' or platform.startswith('cygwin'):
         return glob.glob('/dev/ttyACM*') + glob.glob('/dev/ttyUSB*')
 
     elif platform.system() == 'Windows':
@@ -34,7 +34,8 @@ def _get_available_ports():
                 ports.append(str(_winreg.EnumValue(key, i)[1]))
             except WindowsError:
                 return ports
-
+    else:
+        raise EnvironmentError('{} is an unsupported platform, cannot find serial ports !'.format(platform.system()))
     return []
 
 
