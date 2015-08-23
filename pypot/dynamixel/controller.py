@@ -44,7 +44,7 @@ class DxlController(MotorsController):
                     break
                 time.sleep(0.1)
             else:
-                raise IOError('Cannot initialize syncloop for "{}"'.format(
+                raise IOError('Cannot initialize syncloop for "{}". You need to desactivate sync_loop if you use a usb2dynamixel device. '.format(
                               self.regname))
 
     def update(self):
