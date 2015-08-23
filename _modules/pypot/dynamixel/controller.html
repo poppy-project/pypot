@@ -182,7 +182,7 @@
                     <span class="k">break</span>
                 <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s">&#39;Cannot initialize syncloop for &quot;{}&quot;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s">&#39;Cannot initialize syncloop for &quot;{}&quot;. You need to desactivate sync_loop if you use a usb2dynamixel device. &#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
                               <span class="bp">self</span><span class="o">.</span><span class="n">regname</span><span class="p">))</span>
 </div>
 <div class="viewcode-block" id="DxlController.update"><a class="viewcode-back" href="../../../pypot.dynamixel.html#pypot.dynamixel.controller.DxlController.update">[docs]</a>    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
