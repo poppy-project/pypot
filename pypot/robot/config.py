@@ -142,6 +142,7 @@ def dxl_io_from_confignode(config, c_params, ids, strict):
         vendor_pid = pypot.dynamixel.get_port_vendor_info(port)
         sync_read = ('PID=0403:6001' in vendor_pid and c_params['protocol'] == 2 or
                      'PID=16d0:06a7' in vendor_pid)
+        logger.info('sync_read is {}. Vendor pid = {}'.format(sync_read, vendor_pid))
     handler = pypot.dynamixel.error.BaseErrorHandler
 
     DxlIOCls = (pypot.dynamixel.io.Dxl320IO
