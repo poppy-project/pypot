@@ -276,7 +276,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">play_speed</span> <span class="o">=</span> <span class="mf">1.0</span>
 
         <span class="c"># Quick fix for limiting too fast movements at the play start</span>
-        <span class="n">time_to_wait</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">max_goto_time</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">backwards</span><span class="p">:</span>
             <span class="n">position</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">positions</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">__duration</span><span class="p">]</span>
         <span class="k">else</span><span class="p">:</span>
@@ -284,11 +284,13 @@
         <span class="k">for</span> <span class="n">motor</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">position</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
             <span class="n">motor</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">robot</span><span class="p">,</span> <span class="n">motor</span><span class="p">)</span>
             <span class="n">motor</span><span class="o">.</span><span class="n">compliant</span> <span class="o">=</span> <span class="bp">False</span>
-            <span class="n">time_to_go</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">motor</span><span class="o">.</span><span class="n">present_position</span> <span class="o">-</span> <span class="n">value</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">start_max_speed</span>
-            <span class="n">motor</span><span class="o">.</span><span class="n">goto_position</span><span class="p">(</span><span class="n">value</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">time_to_go</span><span class="p">)</span>
-            <span class="n">time_to_wait</span> <span class="o">=</span> <span class="n">time_to_go</span> <span class="k">if</span> <span class="n">time_to_go</span> <span class="o">&gt;</span> <span class="n">time_to_wait</span> <span class="k">else</span> <span class="n">time_to_wait</span>
+            <span class="n">delta_angle</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">motor</span><span class="o">.</span><span class="n">present_position</span> <span class="o">-</span> <span class="n">value</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="k">if</span> <span class="n">delta_angle</span> <span class="o">&gt;</span> <span class="mi">5</span><span class="p">:</span>
+                <span class="n">goto_time</span> <span class="o">=</span> <span class="n">delta_angle</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">start_max_speed</span>
+                <span class="n">motor</span><span class="o">.</span><span class="n">goto_position</span><span class="p">(</span><span class="n">value</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">goto_time</span><span class="p">)</span>
+                <span class="n">max_goto_time</span> <span class="o">=</span> <span class="n">goto_time</span> <span class="k">if</span> <span class="n">goto_time</span> <span class="o">&gt;</span> <span class="n">max_goto_time</span> <span class="k">else</span> <span class="n">max_goto_time</span>
 
-        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">time_to_wait</span><span class="p">)</span>
+        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">max_goto_time</span><span class="p">)</span>
 </div>
 <div class="viewcode-block" id="MovePlayer.update"><a class="viewcode-back" href="../../../pypot.primitive.html#pypot.primitive.move.MovePlayer.update">[docs]</a>    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">elapsed_time</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">__duration</span><span class="p">:</span>
