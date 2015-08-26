@@ -271,6 +271,16 @@
         <span class="n">port</span> <span class="o">=</span> <span class="n">pypot</span><span class="o">.</span><span class="n">dynamixel</span><span class="o">.</span><span class="n">find_port</span><span class="p">(</span><span class="n">ids</span><span class="p">,</span> <span class="n">strict</span><span class="p">)</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;Found port {} for ids {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">port</span><span class="p">,</span> <span class="n">ids</span><span class="p">))</span>
 
+    <span class="n">sync_read</span> <span class="o">=</span> <span class="n">c_params</span><span class="p">[</span><span class="s">&#39;sync_read&#39;</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="n">sync_read</span> <span class="o">==</span> <span class="s">&#39;auto&#39;</span><span class="p">:</span>
+        <span class="c"># USB Vendor Product ID &quot;VID:PID=0403:6001&quot; for USB2Dynamixel</span>
+        <span class="c"># USB Vendor Product ID &quot;VID:PID=16d0:06a7&quot; for USBAX</span>
+        <span class="n">vendor_pid</span> <span class="o">=</span> <span class="n">pypot</span><span class="o">.</span><span class="n">dynamixel</span><span class="o">.</span><span class="n">get_port_vendor_info</span><span class="p">(</span><span class="n">port</span><span class="p">)</span>
+        <span class="n">sync_read</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;PID=0403:6001&#39;</span> <span class="ow">in</span> <span class="n">vendor_pid</span> <span class="ow">and</span> <span class="n">c_params</span><span class="p">[</span><span class="s">&#39;protocol&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">2</span> <span class="ow">or</span>
+                     <span class="s">&#39;PID=16d0:06a7&#39;</span> <span class="ow">in</span> <span class="n">vendor_pid</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;sync_read is {}. Vendor pid = {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">sync_read</span><span class="p">,</span> <span class="n">vendor_pid</span><span class="p">))</span>
+
     <span class="n">handler</span> <span class="o">=</span> <span class="n">pypot</span><span class="o">.</span><span class="n">dynamixel</span><span class="o">.</span><span class="n">error</span><span class="o">.</span><span class="n">BaseErrorHandler</span>
 
     <span class="n">DxlIOCls</span> <span class="o">=</span> <span class="p">(</span><span class="n">pypot</span><span class="o">.</span><span class="n">dynamixel</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">Dxl320IO</span>
@@ -278,7 +288,7 @@
                 <span class="k">else</span> <span class="n">pypot</span><span class="o">.</span><span class="n">dynamixel</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">DxlIO</span><span class="p">)</span>
 
     <span class="n">dxl_io</span> <span class="o">=</span> <span class="n">DxlIOCls</span><span class="p">(</span><span class="n">port</span><span class="o">=</span><span class="n">port</span><span class="p">,</span>
-                      <span class="n">use_sync_read</span><span class="o">=</span><span class="n">c_params</span><span class="p">[</span><span class="s">&#39;sync_read&#39;</span><span class="p">],</span>
+                      <span class="n">use_sync_read</span><span class="o">=</span><span class="n">sync_read</span><span class="p">,</span>
                       <span class="n">error_handler_cls</span><span class="o">=</span><span class="n">handler</span><span class="p">)</span>
 
     <span class="n">found_ids</span> <span class="o">=</span> <span class="n">dxl_io</span><span class="o">.</span><span class="n">scan</span><span class="p">(</span><span class="n">ids</span><span class="p">)</span>

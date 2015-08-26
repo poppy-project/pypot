@@ -140,6 +140,8 @@
 <span class="kn">import</span> <span class="nn">glob</span>
 <span class="kn">import</span> <span class="nn">logging</span>
 
+<span class="kn">import</span> <span class="nn">serial.tools.list_ports</span>
+
 
 <span class="kn">from</span> <span class="nn">.io</span> <span class="kn">import</span> <span class="n">DxlIO</span><span class="p">,</span> <span class="n">Dxl320IO</span><span class="p">,</span> <span class="n">DxlError</span>
 <span class="kn">from</span> <span class="nn">.error</span> <span class="kn">import</span> <span class="n">BaseErrorHandler</span>
@@ -189,6 +191,22 @@
     <span class="k">return</span> <span class="n">ports</span>
 
 </div>
+<span class="k">def</span> <span class="nf">get_port_vendor_info</span><span class="p">(</span><span class="n">port</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Return vendor informations of a usb2serial device.</span>
+<span class="sd">        It may depends on the Operating System.</span>
+<span class="sd">        :param string port: port of the usb2serial device</span>
+
+<span class="sd">        :Example:</span>
+
+<span class="sd">        Result with a USB2Dynamixel on Linux:</span>
+<span class="sd">        In [1]: import pypot.dynamixel</span>
+<span class="sd">        In [2]: pypot.dynamixel.get_port_vendor_info(&#39;/dev/ttyUSB0&#39;)</span>
+<span class="sd">        Out[2]: &#39;USB VID:PID=0403:6001 SNR=A7005LKE&#39; &quot;&quot;&quot;</span>
+
+    <span class="n">port_info_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">((</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">serial</span><span class="o">.</span><span class="n">tools</span><span class="o">.</span><span class="n">list_ports</span><span class="o">.</span><span class="n">comports</span><span class="p">())</span>
+    <span class="k">return</span> <span class="n">port_info_dict</span><span class="p">[</span><span class="n">port</span><span class="p">]</span> <span class="k">if</span> <span class="n">port</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="k">else</span> <span class="n">port_info_dict</span>
+
+
 <div class="viewcode-block" id="find_port"><a class="viewcode-back" href="../../pypot.dynamixel.html#pypot.dynamixel.find_port">[docs]</a><span class="k">def</span> <span class="nf">find_port</span><span class="p">(</span><span class="n">ids</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; Find the port with the specified attached motor ids.</span>
 
