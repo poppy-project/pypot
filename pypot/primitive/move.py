@@ -139,7 +139,7 @@ class MovePlayer(LoopPrimitive):
             self.play_speed = 1.0
 
         # Quick fix for limiting too fast movements at the play start
-        time_to_wait = 0
+        max_goto_time = 0
         if self.backwards:
             position = self.positions[self.__duration]
         else:
@@ -147,11 +147,13 @@ class MovePlayer(LoopPrimitive):
         for motor, value in position.iteritems():
             motor = getattr(self.robot, motor)
             motor.compliant = False
-            time_to_go = abs(motor.present_position - value[0]) / self.start_max_speed
-            motor.goto_position(value[0], time_to_go)
-            time_to_wait = time_to_go if time_to_go > time_to_wait else time_to_wait
+            delta_angle = abs(motor.present_position - value[0])
+            if delta_angle > 5:
+                goto_time = delta_angle / self.start_max_speed
+                motor.goto_position(value[0], goto_time)
+                max_goto_time = goto_time if goto_time > max_goto_time else max_goto_time
 
-        time.sleep(time_to_wait)
+        time.sleep(max_goto_time)
 
     def update(self):
         if self.elapsed_time < self.__duration:
