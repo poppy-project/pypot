@@ -3,6 +3,8 @@ import platform
 import glob
 import logging
 
+import serial.tools.list_ports
+
 
 from .io import DxlIO, Dxl320IO, DxlError
 from .error import BaseErrorHandler
@@ -50,6 +52,22 @@ def get_available_ports(only_free=False):
         ports = list(set(ports) - set(DxlIO.get_used_ports()))
 
     return ports
+
+
+def get_port_vendor_info(port=None):
+    """ Return vendor informations of a usb2serial device.
+        It may depends on the Operating System.
+        :param string port: port of the usb2serial device
+
+        :Example:
+
+        Result with a USB2Dynamixel on Linux:
+        In [1]: import pypot.dynamixel
+        In [2]: pypot.dynamixel.get_port_vendor_info('/dev/ttyUSB0')
+        Out[2]: 'USB VID:PID=0403:6001 SNR=A7005LKE' """
+
+    port_info_dict = dict((x[0], x[2]) for x in serial.tools.list_ports.comports())
+    return port_info_dict[port] if port is not None else port_info_dict
 
 
 def find_port(ids, strict=True):

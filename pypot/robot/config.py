@@ -134,6 +134,16 @@ def dxl_io_from_confignode(config, c_params, ids, strict):
         port = pypot.dynamixel.find_port(ids, strict)
         logger.info('Found port {} for ids {}'.format(port, ids))
 
+    sync_read = c_params['sync_read']
+
+    if sync_read == 'auto':
+        # USB Vendor Product ID "VID:PID=0403:6001" for USB2Dynamixel
+        # USB Vendor Product ID "VID:PID=16d0:06a7" for USBAX
+        vendor_pid = pypot.dynamixel.get_port_vendor_info(port)
+        sync_read = ('PID=0403:6001' in vendor_pid and c_params['protocol'] == 2 or
+                     'PID=16d0:06a7' in vendor_pid)
+        logger.info('sync_read is {}. Vendor pid = {}'.format(sync_read, vendor_pid))
+
     handler = pypot.dynamixel.error.BaseErrorHandler
 
     DxlIOCls = (pypot.dynamixel.io.Dxl320IO
@@ -141,7 +151,7 @@ def dxl_io_from_confignode(config, c_params, ids, strict):
                 else pypot.dynamixel.io.DxlIO)
 
     dxl_io = DxlIOCls(port=port,
-                      use_sync_read=c_params['sync_read'],
+                      use_sync_read=sync_read,
                       error_handler_cls=handler)
 
     found_ids = dxl_io.scan(ids)
