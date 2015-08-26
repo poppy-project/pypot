@@ -64,11 +64,7 @@ def get_port_vendor_info(port=None):
         Out[2]: 'USB VID:PID=0403:6001 SNR=A7005LKE' """
 
     port_info_dict = dict((x[0], x[2]) for x in serial.tools.list_ports.comports())
-    try:
-        return port_info_dict[port] if port is not None else port_info_dict
-    except KeyError:
-        logger.error('port {} is not found by serial.tools.list_ports.comports()'.format(port))
-        return ''
+    return port_info_dict[port] if port is not None else port_info_dict
 
 
 def find_port(ids, strict=True):
