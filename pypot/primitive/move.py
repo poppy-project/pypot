@@ -1,7 +1,12 @@
+from __future__ import division
 import json
+import time
+import logging
+import numpy as np
 
 from .primitive import LoopPrimitive
 from pypot.utils.interpolation import KDTreeDict
+logger = logging.getLogger(__name__)
 
 
 class Move(object):
@@ -108,7 +113,7 @@ class MovePlayer(LoopPrimitive):
         The play_speed attribute change only time lockup/interpolation
     """
 
-    def __init__(self, robot, move=None, play_speed=1.0, move_filename=None, **kwargs):
+    def __init__(self, robot, move=None, play_speed=1.0, move_filename=None, start_max_speed=50, **kwargs):
         self.move = move
         self.backwards = False
         if move_filename is not None:
@@ -116,6 +121,7 @@ class MovePlayer(LoopPrimitive):
                 self.move = Move.load(f)
         self.play_speed = play_speed if play_speed != 0 and isinstance(play_speed, float) else 1.0
         framerate = self.move.framerate if self.move is not None else 50.0
+        self.start_max_speed = start_max_speed if start_max_speed != 0 else np.inf
         for key, value in kwargs.items():
             setattr(self, key, value)
         LoopPrimitive.__init__(self, robot, framerate)
@@ -127,27 +133,42 @@ class MovePlayer(LoopPrimitive):
         self.positions = self.move.positions()
         self.__duration = self.duration()
         if self.play_speed < 0:
-            self.play_speed = -self.play_speed
+            self.play_speed = - self.play_speed
             self.backwards = not self.backwards
         if self.play_speed == 0:
             self.play_speed = 1.0
 
-    def update(self):
+        # Quick fix for limiting too fast movements at the play start
+        time_to_wait = 0
+        if self.backwards:
+            position = self.positions[self.__duration]
+        else:
+            position = self.positions[0]
+        for motor, value in position.iteritems():
+            motor = getattr(self.robot, motor)
+            motor.compliant = False
+            time_to_go = abs(motor.present_position - value[0]) / self.start_max_speed
+            motor.goto_position(value[0], time_to_go)
+            time_to_wait = time_to_go if time_to_go > time_to_wait else time_to_wait
 
+        time.sleep(time_to_wait)
+
+    def update(self):
         if self.elapsed_time < self.__duration:
             if self.backwards:
                 position = self.positions[(self.__duration - self.elapsed_time) * self.play_speed]
             else:
                 position = self.positions[self.elapsed_time * self.play_speed]
 
-            for m, v in position.iteritems():
+            for motor, value in position.iteritems():
                 # TODO: Ask pierre if its not a fgi to turn off the compliance
-                getattr(self.robot, m).compliant = False
-                getattr(self.robot, m).goal_position = v[0]
+                getattr(self.robot, motor).compliant = False
+                getattr(self.robot, motor).goal_position = value[0]
         else:
             self.stop()
 
     def duration(self):
+
         if self.move is not None:
             return (len(self.move.positions()) / self.move.framerate) / self.play_speed
         else:
