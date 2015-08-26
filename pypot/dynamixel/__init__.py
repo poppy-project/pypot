@@ -55,8 +55,11 @@ def get_available_ports(only_free=False):
 
 
 def get_port_vendor_info(port=None):
-    """ Return vendor informations of the serial port specified.
+    """ Return vendor informations of a usb2serial device.
         It may depends on the Operating System.
+        :param string port: port of the usb2serial device
+
+        :Example:
 
         Result with a USB2Dynamixel on Linux:
         In [1]: import pypot.dynamixel
