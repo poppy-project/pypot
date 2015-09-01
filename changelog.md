@@ -1,5 +1,14 @@
 # Changelog
 
+## V 2.9
+### Image feature Sensors
+* face
+* blob
+* qrcode
+
+### LED register for XL-320 motors
+### various bug fixes
+
 ## V 2.8
 ### Sync Loop
 * possibility to define synchronous loop

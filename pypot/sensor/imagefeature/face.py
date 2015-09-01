@@ -36,7 +36,6 @@ class FaceDetector(SensorsController):
 
         self.cascade = cv2.CascadeClassifier(cascade)
 
-
     def detect_face(self, img):
         rects = self.cascade.detectMultiScale(img, scaleFactor=1.3,
                                               minNeighbors=4,
