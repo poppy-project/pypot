@@ -7,3 +7,8 @@ try:
     from blob import BlobDetector
 except ImportError:
     pass
+
+try:
+    from face import FaceDetector
+except ImportError:
+    pass
