@@ -285,6 +285,9 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">duration</span> <span class="o">=</span> <span class="n">duration</span>
 
+<div class="viewcode-block" id="SimplePosture.setup"><a class="viewcode-back" href="../../../pypot.primitive.html#pypot.primitive.utils.SimplePosture.setup">[docs]</a>    <span class="k">def</span> <span class="nf">setup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_speeds</span> <span class="o">=</span> <span class="p">{</span><span class="n">m</span><span class="o">.</span><span class="n">name</span><span class="p">:</span> <span class="n">m</span><span class="o">.</span><span class="n">moving_speed</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">robot</span><span class="o">.</span><span class="n">motors</span><span class="p">}</span>
+</div>
 <div class="viewcode-block" id="SimplePosture.run"><a class="viewcode-back" href="../../../pypot.primitive.html#pypot.primitive.utils.SimplePosture.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s">&#39;target_position&#39;</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s">&#39;You have to define &quot;target_position&quot; first!&#39;</span><span class="p">)</span>
@@ -292,7 +295,11 @@
         <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">robot</span><span class="o">.</span><span class="n">motors</span><span class="p">:</span>
             <span class="n">m</span><span class="o">.</span><span class="n">compliant</span> <span class="o">=</span> <span class="bp">False</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">robot</span><span class="o">.</span><span class="n">goto_position</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">target_position</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">duration</span><span class="p">,</span> <span class="n">wait</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span></div></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">robot</span><span class="o">.</span><span class="n">goto_position</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">target_position</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">duration</span><span class="p">,</span> <span class="n">wait</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="SimplePosture.teardown"><a class="viewcode-back" href="../../../pypot.primitive.html#pypot.primitive.utils.SimplePosture.teardown">[docs]</a>    <span class="k">def</span> <span class="nf">teardown</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">m</span><span class="p">,</span> <span class="n">s</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_speeds</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">m</span><span class="o">.</span><span class="n">moving_speed</span> <span class="o">=</span> <span class="n">s</span></div></div>
 </pre></div>
 
                 </div>
