@@ -21,12 +21,14 @@ import pypot.dynamixel.motor
 import pypot.dynamixel.syncloop
 
 from .robot import Robot
+from .controller import DummyController
+
 
 # This logger should always provides the config as extra
 logger = logging.getLogger(__name__)
 
 
-def from_config(config, strict=True, sync=True):
+def from_config(config, strict=True, sync=True, use_dummy_io=False):
     """ Returns a :class:`~pypot.robot.robot.Robot` instance created from a configuration dictionnary.
 
         :param dict config: robot configuration dictionary
@@ -54,26 +56,29 @@ def from_config(config, strict=True, sync=True):
             strict = False
 
         attached_ids = [m.id for m in attached_motors]
-        dxl_io = dxl_io_from_confignode(config, c_params, attached_ids, strict)
+        if not use_dummy_io:
+            dxl_io = dxl_io_from_confignode(config, c_params, attached_ids, strict)
 
-        check_motor_limits(config, dxl_io, motor_names)
+            check_motor_limits(config, dxl_io, motor_names)
 
-        logger.info('Instantiating controller on %s with motors %s',
-                    dxl_io.port, motor_names,
-                    extra={'config': config})
+            logger.info('Instantiating controller on %s with motors %s',
+                        dxl_io.port, motor_names,
+                        extra={'config': config})
 
-        syncloop = (c_params['syncloop'] if 'syncloop' in c_params
-                    else 'BaseDxlController')
-        SyncLoopCls = getattr(pypot.dynamixel.syncloop, syncloop)
+            syncloop = (c_params['syncloop'] if 'syncloop' in c_params
+                        else 'BaseDxlController')
+            SyncLoopCls = getattr(pypot.dynamixel.syncloop, syncloop)
 
-        c = SyncLoopCls(dxl_io, attached_motors)
-        controllers.append(c)
+            c = SyncLoopCls(dxl_io, attached_motors)
+            controllers.append(c)
+        else:
+            controllers.append(DummyController(attached_motors))
 
     robot = Robot(motor_controllers=controllers, sync=sync)
     make_alias(config, robot)
 
     # Create all sensors and attached them
-    if 'sensors' in config:
+    if 'sensors' in config and not use_dummy_io:
         sensors = []
         for s_name in config['sensors'].keys():
             sensor = sensor_from_confignode(config, s_name, robot)
@@ -227,7 +232,7 @@ def make_alias(config, robot):
                     extra={'config': config})
 
 
-def from_json(json_file, sync=True, strict=True):
+def from_json(json_file, sync=True, strict=True, use_dummy_io=False):
     """ Returns a :class:`~pypot.robot.robot.Robot` instance created from a JSON configuration file.
 
     For details on how to write such a configuration file, you should refer to the section :ref:`config_file`.
@@ -236,7 +241,11 @@ def from_json(json_file, sync=True, strict=True):
     with open(json_file) as f:
         config = json.load(f)
 
-    return from_config(config, sync=sync, strict=strict)
+    return from_config(config, sync=sync, strict=strict, use_dummy_io=use_dummy_io)
+
+
+def use_dummy_robot(json_file):
+    return from_json(json_file, use_dummy_io=True)
 
 
 def _motor_extractor(alias, name):
