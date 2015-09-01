@@ -9,7 +9,7 @@
   <head>
     <meta charset="utf-8" />
     
-    <title>robot Package &mdash; pypot 2.8.5 documentation</title>
+    <title>robot Package &mdash; pypot 2.9.0 documentation</title>
     <meta name="description" content="">
     <meta name="author" content="">
 
@@ -35,7 +35,7 @@
 <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
             URL_ROOT:    './',
-            VERSION:     '2.8.5',
+            VERSION:     '2.9.0',
             COLLAPSE_INDEX: false,
             FILE_SUFFIX: '.html',
             HAS_SOURCE:  true
@@ -51,7 +51,7 @@
 </script>
     <link rel="shortcut icon" href="_static/pypot_logo-48x48.png"/>
     <link rel="author" title="About these documents" href="about.html" />
-    <link rel="top" title="pypot 2.8.5 documentation" href="index.html" />
+    <link rel="top" title="pypot 2.9.0 documentation" href="index.html" />
     <link rel="up" title="Pypot’s API" href="api.html" />
     <link rel="next" title="sensor Package" href="pypot.sensor.html" />
     <link rel="prev" title="primitive Package" href="pypot.primitive.html" /> 
@@ -66,7 +66,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="index.html">pypot 2.8.5 documentation</a>
+          <a class="navbar-brand" href="index.html">pypot 2.9.0 documentation</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
@@ -418,6 +418,17 @@
 </dd></dl>
 
 <dl class="class">
+<dt id="pypot.robot.controller.DummyController">
+<em class="property">class </em><code class="descclassname">pypot.robot.controller.</code><code class="descname">DummyController</code><span class="sig-paren">(</span><em>motors</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/robot/controller.html#DummyController"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.robot.controller.DummyController" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pypot.robot.controller.MotorsController" title="pypot.robot.controller.MotorsController"><code class="xref py py-class docutils literal"><span class="pre">pypot.robot.controller.MotorsController</span></code></a></p>
+<dl class="method">
+<dt id="pypot.robot.controller.DummyController.update">
+<code class="descname">update</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/robot/controller.html#DummyController.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.robot.controller.DummyController.update" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
 <dt id="pypot.robot.controller.SensorsController">
 <em class="property">class </em><code class="descclassname">pypot.robot.controller.</code><code class="descname">SensorsController</code><span class="sig-paren">(</span><em>io</em>, <em>sensors</em>, <em>sync_freq=50.0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/robot/controller.html#SensorsController"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.robot.controller.SensorsController" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#pypot.robot.controller.AbstractController" title="pypot.robot.controller.AbstractController"><code class="xref py py-class docutils literal"><span class="pre">pypot.robot.controller.AbstractController</span></code></a></p>
@@ -466,7 +477,7 @@
 </ul>
 <dl class="function">
 <dt id="pypot.robot.config.from_config">
-<code class="descclassname">pypot.robot.config.</code><code class="descname">from_config</code><span class="sig-paren">(</span><em>config</em>, <em>strict=True</em>, <em>sync=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/robot/config.html#from_config"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.robot.config.from_config" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">pypot.robot.config.</code><code class="descname">from_config</code><span class="sig-paren">(</span><em>config</em>, <em>strict=True</em>, <em>sync=True</em>, <em>use_dummy_io=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/robot/config.html#from_config"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.robot.config.from_config" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a <a class="reference internal" href="#pypot.robot.robot.Robot" title="pypot.robot.robot.Robot"><code class="xref py py-class docutils literal"><span class="pre">Robot</span></code></a> instance created from a configuration dictionnary.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -516,10 +527,15 @@
 
 <dl class="function">
 <dt id="pypot.robot.config.from_json">
-<code class="descclassname">pypot.robot.config.</code><code class="descname">from_json</code><span class="sig-paren">(</span><em>json_file</em>, <em>sync=True</em>, <em>strict=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/robot/config.html#from_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.robot.config.from_json" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">pypot.robot.config.</code><code class="descname">from_json</code><span class="sig-paren">(</span><em>json_file</em>, <em>sync=True</em>, <em>strict=True</em>, <em>use_dummy_io=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/robot/config.html#from_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.robot.config.from_json" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a <a class="reference internal" href="#pypot.robot.robot.Robot" title="pypot.robot.robot.Robot"><code class="xref py py-class docutils literal"><span class="pre">Robot</span></code></a> instance created from a JSON configuration file.</p>
 <p>For details on how to write such a configuration file, you should refer to the section <a class="reference internal" href="controller.html#config-file"><span>Writing the configuration</span></a>.</p>
 </dd></dl>
+
+<dl class="function">
+<dt id="pypot.robot.config.use_dummy_robot">
+<code class="descclassname">pypot.robot.config.</code><code class="descname">use_dummy_robot</code><span class="sig-paren">(</span><em>json_file</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/robot/config.html#use_dummy_robot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.robot.config.use_dummy_robot" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 </div>
 <div class="section" id="module-pypot.robot.remote">
@@ -559,7 +575,7 @@ More specifically you can start/stop them.</p>
 <div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
   <div class="navbar-inner">
     <ul class="nav navbar-nav ">
-        <li><a href="index.html">pypot 2.8.5 documentation</a></li>
+        <li><a href="index.html">pypot 2.9.0 documentation</a></li>
     </ul>
 <ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
       
