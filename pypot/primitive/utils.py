@@ -149,7 +149,7 @@ class SimplePosture(Primitive):
         self.duration = duration
 
     def setup(self):
-        self._speeds = {m.name: m.moving_speed for m in self.robot.motors}
+        self._speeds = {m: m.moving_speed for m in self.robot.motors}
 
     def run(self):
         if not hasattr(self, 'target_position'):
