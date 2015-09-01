@@ -302,6 +302,10 @@ class DxlMXMotor(DxlMotor):
 
 
 class DxlXL320Motor(DxlMXMotor):
+    registers = list(DxlMXMotor.registers)
+
+    led = DxlRegister(rw=True)
+
     """ This class represents the XL-320 robotis motor. """
     def __init__(self, id, name=None, model='XL-320',
                  direct=True, offset=0.0, broken=False):

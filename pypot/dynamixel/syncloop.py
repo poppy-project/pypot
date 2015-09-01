@@ -94,4 +94,9 @@ class LightDxlController(MetaDxlController):
             controllers.append(DxlController(io, margin_slope_motors, 10., True,
                                              'set', 'compliance_slope'))
 
+        led_motors = [m for m in motors if m.model.startswith('XL-320')]
+        if led_motors:
+            controllers.append(DxlController(io, led_motors, 1., False,
+                                             'set', 'LED_color', 'led'))
+
         MetaDxlController.__init__(self, io, motors, controllers)
