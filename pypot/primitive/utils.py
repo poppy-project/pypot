@@ -148,6 +148,9 @@ class SimplePosture(Primitive):
 
         self.duration = duration
 
+    def setup(self):
+        self._speeds = {m.name: m.moving_speed for m in self.robot.motors}
+
     def run(self):
         if not hasattr(self, 'target_position'):
             raise NotImplementedError('You have to define "target_position" first!')
@@ -156,3 +159,7 @@ class SimplePosture(Primitive):
             m.compliant = False
 
         self.robot.goto_position(self.target_position, self.duration, wait=True)
+
+    def teardown(self):
+        for m, s in self._speeds.items():
+            m.moving_speed = s
