@@ -53,7 +53,7 @@ class MotorsController(AbstractController):
 
 class DummyController(MotorsController):
     def __init__(self, motors):
-        MotorsController.__init__(self, None, motors, 1.)
+        MotorsController.__init__(self, None, motors)
 
     def update(self):
         for m in self.motors:
