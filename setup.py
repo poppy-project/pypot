@@ -26,7 +26,7 @@ setup(name='pypot',
           'http-server': ['bottle', 'tornado'],
           'zmq-server': ['pyzmq'],
           'remote-robot': ['zerorpc'],
-          'camera': []  # Extras require: opencv (not a PyPi packet)
+          'camera': ['hampy']  # Extras require: opencv (not a PyPi packet)
       },
 
       entry_points={

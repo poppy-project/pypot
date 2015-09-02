@@ -1,9 +1,13 @@
 import numpy
 import logging
 
+from collections import defaultdict
+
 import pypot.utils.pypot_time as time
 
 from ..robot.motor import Motor
+
+from ..utils import SyncEvent
 from ..utils.trajectory import GotoMinJerk
 from ..utils.stoppablethread import StoppableLoopThread
 
@@ -16,7 +20,15 @@ class DxlRegister(object):
         self.rw = rw
 
     def __get__(self, instance, owner):
-        return instance.__dict__.get(self.label, 0)
+        if instance._read_synchronous[self.label]:
+            sync = instance._read_synced[self.label]
+
+            if not sync.is_recent:
+                sync.request()
+
+        value = instance.__dict__.get(self.label, 0)
+
+        return value
 
     def __set__(self, instance, value):
         if not self.rw:
@@ -25,6 +37,10 @@ class DxlRegister(object):
         logger.debug("Setting '%s.%s' to %s",
                      instance.name, self.label, value)
         instance.__dict__[self.label] = value
+
+        if instance._write_synchronous[self.label]:
+            sync = instance._write_synced[self.label]
+            sync.request()
 
 
 class DxlOrientedRegister(DxlRegister):
@@ -118,6 +134,12 @@ class DxlMotor(Motor):
         self.compliant_behavior = 'dummy'
 
         self._broken = broken
+
+        self._read_synchronous = defaultdict(lambda: False)
+        self._read_synced = defaultdict(SyncEvent)
+
+        self._write_synchronous = defaultdict(lambda: False)
+        self._write_synced = defaultdict(SyncEvent)
 
     def __repr__(self):
         return ('<DxlMotor name={self.name} '
@@ -280,6 +302,10 @@ class DxlMXMotor(DxlMotor):
 
 
 class DxlXL320Motor(DxlMXMotor):
+    registers = list(DxlMXMotor.registers)
+
+    led = DxlRegister(rw=True)
+
     """ This class represents the XL-320 robotis motor. """
     def __init__(self, id, name=None, model='XL-320',
                  direct=True, offset=0.0, broken=False):

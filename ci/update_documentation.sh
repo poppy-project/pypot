@@ -34,7 +34,7 @@ pushd ..
     fi
     mkdir $tmp_repo
     git clone -b gh-pages $git_url $tmp_repo 
-    cp -r $doc_src/_build/html/ $tmp_repo
+    cp -r $doc_src/_build/html/* $tmp_repo
 
     if [[ "TRAVIS_OS_NAME" == "linux" ]]; then
         # Using pdflatex to build the .tex files to pdf
@@ -49,8 +49,8 @@ pushd ..
     if [[ "$TRAVIS" == "true" ]]; then
         if [ "$TRAVIS_PULL_REQUEST" != "false" -o "$TRAVIS_BRANCH" != "master" ]; then
             echo "This is an untrusted commit. No deployment will be done."
-        elif [[ "$pypi_package_version" == "$pypot_src_version" ]]; then
-            echo "Pypi version == source version, the doc won't be commited"
+        # elif [[ "$pypi_package_version" == "$pypot_src_version" ]]; then
+        #     echo "Pypi version == source version, the doc won't be commited"
         else
             # If there is nothing to commit, it won't be considered as an error
             set +e
@@ -58,7 +58,7 @@ pushd ..
             pushd $tmp_repo
                 git add -A
                 git commit -m "Doc generated after commit $last_commit_sha (travis build #$TRAVIS_BUILD_NUMBER)"
-                git push origin gh-pages
+                git push origin gh-pages --quiet
             popd
         fi
     fi

@@ -15,6 +15,9 @@ class MyJSONEncoder(json.JSONEncoder):
     """ JSONEncoder which tries to call a json property before using the enconding default function. """
 
     def default(self, obj):
+        if hasattr(obj, 'json'):
+            return obj.json
+
         if isinstance(obj, numpy.ndarray):
             return list(obj)
 
