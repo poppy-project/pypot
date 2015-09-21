@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/poppy-project/pypot.svg?branch=master)](https://travis-ci.org/poppy-project/pypot)
+[![Build Status](https://travis-ci.org/poppy-project/pypot.svg?branch=master)](https://travis-ci.org/poppy-project/pypot) [![Cite this librairy](https://zenodo.org/badge/3914/poppy-project/pypot.png)](http://zenodo.org/record/13941)
 
 # Pypot: A Python lib for Dynamixel motors control #
 
@@ -84,4 +84,4 @@ For more details on the installation procedure, please refer to the [installatio
 
 The roadmap of the project can be found [here](https://github.com/poppy-project/pypot/blob/master/roadmap.md).
 
-![Alt text](https://zenodo.org/badge/3914/poppy-project/pypot.png)
+
