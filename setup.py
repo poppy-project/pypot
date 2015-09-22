@@ -18,7 +18,7 @@ setup(name='pypot',
       version=version(),
       packages=find_packages(),
 
-      install_requires=['numpy', 'pyserial', 'enum34', 'scipy'],
+      install_requires=['numpy', 'pyserial>2.6', 'enum34', 'scipy'],
 
       extras_require={
           'tools': [],  # Extras require: PyQt4 (not a PyPi packet)
