@@ -136,6 +136,12 @@ class SnapRobotServer(AbstractServer):
             with open(os.path.join(get_snap_user_projects_directory(), 'pypot-snap-blocks.xml')) as f:
                 return f.read()
 
+        @self.app.get('/snap/<project>')
+        def get_snap_projects(project):
+            with open(os.path.join(get_snap_user_projects_directory(),
+                                   '{}.xml'.format(project))) as f:
+                return f.read()
+
         @self.app.get('/ip')
         def get_ip():
             return socket.gethostbyname(socket.gethostname())
