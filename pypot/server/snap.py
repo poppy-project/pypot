@@ -253,5 +253,15 @@ class SnapRobotServer(AbstractServer):
             rr.stop_primitive('_{}_player'.format(move_name))
             return 'Done!'
 
+        @self.app.get('/detect/<marker>')
+        def detect_marker(marker):
+            markers = {
+                'tetris': [112259237],
+                'caribou': [221052793],
+                'lapin': [44616414],
+            }
+            detected = rr.robot.marker_detector.markers
+            return str(any([m.id in markers[marker] for m in detected]))
+
     def run(self):
         bottle.run(self.app, host=self.host, port=self.port, quiet=self.quiet)
