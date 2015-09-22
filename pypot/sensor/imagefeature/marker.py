@@ -1,3 +1,5 @@
+from multiprocessing import Process, Queue
+
 from hampy import detect_markers
 
 from ...robot.controller import SensorsController
@@ -24,7 +26,7 @@ class Marker(Sensor):
 
 
 class MarkerDetector(SensorsController):
-    def __init__(self, robot, name, cameras, freq):
+    def __init__(self, robot, name, cameras, freq, multiprocess=True):
         SensorsController.__init__(self, None, [], freq)
 
         self.name = name
@@ -32,11 +34,14 @@ class MarkerDetector(SensorsController):
         self._robot = robot
         self._names = cameras
 
+        self.detect = (lambda img: self._bg_detection(img)
+                       if multiprocess else detect_markers(img))
+
     def update(self):
         if not hasattr(self, 'cameras'):
             self.cameras = [getattr(self._robot, c) for c in self._names]
 
-        self._markers = sum([detect_markers(c.frame) for c in self.cameras], [])
+        self._markers = sum([self.detect(c.frame) for c in self.cameras], [])
         self.sensors = [Marker(m) for m in self._markers]
 
     @property
@@ -46,3 +51,14 @@ class MarkerDetector(SensorsController):
     @property
     def registers(self):
         return ['markers']
+
+    def _detect(self, q, img):
+        q.put(detect_markers(img))
+
+    def _bg_detection(self, img):
+        if not hasattr(self, 'q'):
+            self.q = Queue()
+
+        p = Process(target=self._detect, args=(self.q, img))
+        p.start()
+        return self.q.get()
