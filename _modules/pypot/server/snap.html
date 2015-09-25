@@ -9,7 +9,7 @@
   <head>
     <meta charset="utf-8" />
     
-    <title>pypot.server.snap &mdash; pypot 2.9.1 documentation</title>
+    <title>pypot.server.snap &mdash; pypot 2.10.0 documentation</title>
     <meta name="description" content="">
     <meta name="author" content="">
 
@@ -35,7 +35,7 @@
 <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
             URL_ROOT:    '../../../',
-            VERSION:     '2.9.1',
+            VERSION:     '2.10.0',
             COLLAPSE_INDEX: false,
             FILE_SUFFIX: '.html',
             HAS_SOURCE:  true
@@ -51,7 +51,7 @@
 </script>
     <link rel="shortcut icon" href="../../../_static/pypot_logo-48x48.png"/>
     <link rel="author" title="About these documents" href="../../../about.html" />
-    <link rel="top" title="pypot 2.9.1 documentation" href="../../../index.html" />
+    <link rel="top" title="pypot 2.10.0 documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body role="document">
@@ -64,7 +64,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="../../../index.html">pypot 2.9.1 documentation</a>
+          <a class="navbar-brand" href="../../../index.html">pypot 2.10.0 documentation</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
@@ -273,6 +273,12 @@
             <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">get_snap_user_projects_directory</span><span class="p">(),</span> <span class="s">&#39;pypot-snap-blocks.xml&#39;</span><span class="p">))</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
                 <span class="k">return</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
 
+        <span class="nd">@self.app.get</span><span class="p">(</span><span class="s">&#39;/snap/&lt;project&gt;&#39;</span><span class="p">)</span>
+        <span class="k">def</span> <span class="nf">get_snap_projects</span><span class="p">(</span><span class="n">project</span><span class="p">):</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">get_snap_user_projects_directory</span><span class="p">(),</span>
+                                   <span class="s">&#39;{}.xml&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">project</span><span class="p">)))</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+
         <span class="nd">@self.app.get</span><span class="p">(</span><span class="s">&#39;/ip&#39;</span><span class="p">)</span>
         <span class="k">def</span> <span class="nf">get_ip</span><span class="p">():</span>
             <span class="k">return</span> <span class="n">socket</span><span class="o">.</span><span class="n">gethostbyname</span><span class="p">(</span><span class="n">socket</span><span class="o">.</span><span class="n">gethostname</span><span class="p">())</span>
@@ -390,6 +396,16 @@
             <span class="n">rr</span><span class="o">.</span><span class="n">stop_primitive</span><span class="p">(</span><span class="s">&#39;_{}_player&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">move_name</span><span class="p">))</span>
             <span class="k">return</span> <span class="s">&#39;Done!&#39;</span>
 
+        <span class="nd">@self.app.get</span><span class="p">(</span><span class="s">&#39;/detect/&lt;marker&gt;&#39;</span><span class="p">)</span>
+        <span class="k">def</span> <span class="nf">detect_marker</span><span class="p">(</span><span class="n">marker</span><span class="p">):</span>
+            <span class="n">markers</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s">&#39;tetris&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">112259237</span><span class="p">],</span>
+                <span class="s">&#39;caribou&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">221052793</span><span class="p">],</span>
+                <span class="s">&#39;lapin&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">44616414</span><span class="p">],</span>
+            <span class="p">}</span>
+            <span class="n">detected</span> <span class="o">=</span> <span class="n">rr</span><span class="o">.</span><span class="n">robot</span><span class="o">.</span><span class="n">marker_detector</span><span class="o">.</span><span class="n">markers</span>
+            <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="nb">any</span><span class="p">([</span><span class="n">m</span><span class="o">.</span><span class="n">id</span> <span class="ow">in</span> <span class="n">markers</span><span class="p">[</span><span class="n">marker</span><span class="p">]</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">detected</span><span class="p">]))</span>
+
 <div class="viewcode-block" id="SnapRobotServer.run"><a class="viewcode-back" href="../../../pypot.server.html#pypot.server.snap.SnapRobotServer.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">bottle</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="p">,</span> <span class="n">host</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">port</span><span class="p">,</span> <span class="n">quiet</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">quiet</span><span class="p">)</span></div></div>
 </pre></div>
@@ -408,7 +424,7 @@
 <div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
   <div class="navbar-inner">
     <ul class="nav navbar-nav ">
-        <li><a href="../../../index.html">pypot 2.9.1 documentation</a></li>
+        <li><a href="../../../index.html">pypot 2.10.0 documentation</a></li>
     </ul>
 <ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
       
