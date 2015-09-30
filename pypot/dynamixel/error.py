@@ -69,7 +69,6 @@ class BaseErrorHandler(DxlErrorHandler):
                        extra={'port': com_error.dxl_io.port,
                               'baudrate': com_error.dxl_io.baudrate,
                               'timeout': com_error.dxl_io.timeout})
-    """"					  
+
     def handle_none_error(self, instruction_packet):
         logger.info('None Error!')
-    """
