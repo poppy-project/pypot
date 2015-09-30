@@ -21,17 +21,11 @@ parts/
 sdist/
 var/
 *.egg
-*.eggs
 *.egg-info
 
 # Sphinx
 doc/_build
 
-<<<<<<< HEAD
-build/
-
-.DS_Store
-=======
 # OS generated files 
 .DS_Store
 .DS_Store?
@@ -49,4 +43,3 @@ Thumbs.db
 # Pypot record files
 *.record
 
->>>>>>> upstream/master
