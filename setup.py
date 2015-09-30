@@ -18,15 +18,15 @@ setup(name='pypot',
       version=version(),
       packages=find_packages(),
 
-      install_requires=['numpy', 'pyserial', 'enum34', 'scipy'],
+      install_requires=['numpy', 'pyserial>2.6', 'enum34', 'scipy'],
 
       extras_require={
           'tools': [],  # Extras require: PyQt4 (not a PyPi packet)
-          'doc': ['sphinx', 'sphinx-bootstrap-theme'],
+          'doc': ['sphinx', 'sphinxjp.themes.basicstrap', 'sphinx-bootstrap-theme'],
           'http-server': ['bottle', 'tornado'],
           'zmq-server': ['pyzmq'],
           'remote-robot': ['zerorpc'],
-          'camera': []  # Extras require: opencv (not a PyPi packet)
+          'camera': ['hampy']  # Extras require: opencv (not a PyPi packet)
       },
 
       entry_points={
@@ -45,7 +45,7 @@ setup(name='pypot',
 
       zip_safe=False,
 
-      author='Pierre Rouanet, Steve N\'Guyen, Matthieu Lapeyre',
+      author='See https://github.com/poppy-project/pypot/graphs/contributors',
       author_email='pierre.rouanet@gmail.com',
       description='Python Library for Robot Control',
       url='https://github.com/poppy-project/pypot',

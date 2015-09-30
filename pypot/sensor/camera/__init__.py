@@ -10,8 +10,3 @@ try:
     from .opencvcam import OpenCVCamera
 except ImportError:
     pass
-
-try:
-    from .rpicam import RPiCamera
-except ImportError:
-    pass

@@ -17,7 +17,7 @@ env:
     - GIT_EMAIL=poppy-bot-ci@inria.fr
     - GIT_NAME=poppy-bot
     # GH_TOKEN encrypted below > travis encrypt GH_TOKEN=XXXXXX --add
-    - secure: "bOyOFELIUx4pB0JRqTVeyeUt1lW7ZbhoZV+RYNDUshuZfmeDI4stDDCzNPp/9OzP+G+QR38sCK9ZncltYxtMA5QBz5Ouo0bo0aGO8gLDbMFLiq4fwBFoQ6soCdMODTjVAKAiBVBKz9mp/FF+85odMs1MQyFBZ7x594gV5lzVG18="
+    - secure: "TgJGS9wFmr9zrUSMFDSH/p4sj77+6FwGUpQin4Sfl97cEXoHjeKrDsJvkEV8HZG2mAHnMyMeEqnzJbmCdhCB+9GAu31hdpXies6fA0tFDgtMUbf2lD16M7pL8jJ3zTxR4FCXLLd6ST3x+HLSrPfITkbNvOt1jmgVXdVTHKsSLRM="
 
     # V-REP conf
     - VREP_VERSION=3_1_2
@@ -48,7 +48,7 @@ matrix:
     - python: 2.7
       os: linux
       language: python
-      env: SSH_VREP_SERVER=test42-vrep4.ci
+      env: SSH_VREP_SERVER=test42-vrep4.ci UPDATE_DOC=true
 
     - python: 3.4
       language: python
@@ -61,9 +61,9 @@ matrix:
       env: PEP8_CAUSE_FAILLURE=true
 
   allow_failures:
-    - env: PEP8_CAUSE_FAILLURE=true
     - env: TRAVIS_OS_NAME=osx SSH_VREP_SERVER=test42-vrep1.ci TRAVIS_PYTHON_VERSION=2.7
     - env: TRAVIS_OS_NAME=osx SSH_VREP_SERVER=test42-vrep2.ci TRAVIS_PYTHON_VERSION=3.4
+    # - env: PEP8_CAUSE_FAILLURE=true
 
 
 addons:
@@ -71,6 +71,10 @@ addons:
     packages:
       # Spoof x11 for starting vrep in travis (issues with network)
       - xvfb
+      # For building the pdf documentation
+      - texlive 
+      - texlive-latex-extra
+      - dvipng
   
 before_install:
   - . ./ci/before_install.sh
@@ -81,7 +85,7 @@ script:
   - . ./ci/run_tests.sh
 
 after_success:
-  - . ./ci/update_documentation.sh
+  - if [[ "$UPDATE_DOC" == true ]]; then . ./ci/update_documentation.sh; fi
   - . ./ci/after_success_release.sh
 
 

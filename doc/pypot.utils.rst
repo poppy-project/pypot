@@ -14,3 +14,11 @@
     :members:
     :undoc-members:
     :show-inheritance:
+    
+:mod:`trajectory` Module
+-----------------------------
+
+.. automodule:: pypot.utils.trajectory
+    :members:
+    :undoc-members:
+    :show-inheritance:

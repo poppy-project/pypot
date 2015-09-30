@@ -19,6 +19,6 @@ if __name__ == '__main__':
     rest_robot = RESTRobot(robot)
 
     server = zerorpc.Server(rest_robot)
-    print args.host, args.port
+    print(args.host, args.port)
     server.bind('tcp://{}:{}'.format(args.host, args.port))
     server.run()

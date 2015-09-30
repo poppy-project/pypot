@@ -5,8 +5,10 @@ set +e
 # Pep8 tests
 if [[ "$PEP8_CAUSE_FAILLURE" == "true" ]]; then
   set -e
+  cat setup.cfg
 fi
-flake8 --config=ci/flake8.config --statistics --count .
+flake8 --statistics --count .
+
 set -e
 
 # Changing dir to avoid loading local files

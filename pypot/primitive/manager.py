@@ -55,7 +55,14 @@ class PrimitiveManager(StoppableLoopThread):
                     to_set[key].append(val)
 
             for key, val in to_set.iteritems():
-                filtred_val = self._filter(val)
+                if key == 'led':
+                    colors = set(val)
+                    if len(colors) > 1:
+                        colors -= {'off'}
+                    filtred_val = colors.pop()
+                else:
+                    filtred_val = self._filter(val)
+
                 logger.debug('Combined %s.%s from %s to %s',
                              m.name, key, val, filtred_val)
                 setattr(m, key, filtred_val)
