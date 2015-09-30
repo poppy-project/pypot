@@ -33,6 +33,7 @@ torque_max = {  # in N.m
     'AX-18': 1.8,
     'RX-28': 2.5,
     'RX-64': 4.,
+    'XL-320': 0.39,
 }
 
 velocity = {  # in degree/s
