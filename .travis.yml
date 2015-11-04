@@ -53,6 +53,11 @@ matrix:
     - python: 3.4
       language: python
       os: linux
+      env: SSH_VREP_SERVER=test42-vrep5.ci
+
+    - python: 3.5
+      language: python
+      os: linux
       env: SSH_VREP_SERVER=test42-vrep6.ci
 
     - python: 2.7
@@ -75,7 +80,7 @@ addons:
       - texlive 
       - texlive-latex-extra
       - dvipng
-  
+
 before_install:
   - . ./ci/before_install.sh
 install:
