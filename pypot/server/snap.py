@@ -90,6 +90,18 @@ class SnapRobotServer(AbstractServer):
         def get_robot_aliases():
             return '/'.join('{}'.format(alias) for alias in rr.get_motors_alias())
 
+        # TODO
+        # @self.app.get('/motors/get/registers/<motors>')
+        # def get_motors_registers(motors):
+        #     """ Allow getting of motors register with a single http request
+        #         Be carefull: with lot of motors, it could overlap the GET max
+        #             lentgh of your web browser
+        #         """
+        #     for m in motors:
+        #         settings = m_settings.split(':')
+        #         rr.set_motor_register_value(settings[0], settings[1], make_tupl
+        #     return 'Done!'
+
         @self.app.get('/motors/set/goto/<motors_position_duration>')
         def set_motors_goto(motors_position_duration):
             """ Allow lot of motors position settings with a single http request
@@ -222,10 +234,9 @@ class SnapRobotServer(AbstractServer):
             motors = rr.get_move_recorder_motors(move_name)
             return '/'.join(motors) if motors is not None else 'None'
 
-        # Obsolete ?
         @self.app.get('/primitive/MoveRecorder/<move_name>/start/<motors>')
         def start_move_recorder_with_motors(move_name, motors):
-            raise DeprecationWarning
+            # raise DeprecationWarning
             rr.start_move_recorder(move_name, motors.split(';'))
             return 'Done!'
 
