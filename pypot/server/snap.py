@@ -100,17 +100,14 @@ class SnapRobotServer(AbstractServer):
         def get_robot_aliases():
             return '/'.join('{}'.format(alias) for alias in rr.get_motors_alias())
 
-        # TODO
-        # @self.app.get('/motors/get/registers/<motors>')
-        # def get_motors_registers(motors):
-        #     """ Allow getting of motors register with a single http request
-        #         Be carefull: with lot of motors, it could overlap the GET max
-        #             lentgh of your web browser
-        #         """
-        #     for m in motors:
-        #         settings = m_settings.split(':')
-        #         rr.set_motor_register_value(settings[0], settings[1], make_tupl
-        #     return 'Done!'
+        @self.app.get('/motors/<motors>/get/<register>/')
+        def get_motors_registers(motors,register):
+            """ Allow getting of motors register with a single http request
+                Be carefull: with lot of motors, it could overlap the GET max
+                    lentgh of your web browser
+                """
+            motors = motors.split(';')
+            return ';'.join(str(rr.get_register_value(m, register)) for m in motors)
 
         @self.app.get('/motors/set/goto/<motors_position_duration>')
         def set_motors_goto(motors_position_duration):
