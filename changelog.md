@@ -1,5 +1,17 @@
 # Changelog
 
+# V 2.10
+## Features
+* add support for led inside primitive (XL320)
+* remove RPICam and use v4l driver in opencv
+* support hampy marker in Snap!
+
+## Fix
+* network issue for finding local ip when there is no interface
+* Python 3.5 compatibility
+
+
+
 ## V 2.9
 ### Image feature Sensors
 * face
