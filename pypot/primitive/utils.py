@@ -75,42 +75,6 @@ class Cosinus(Sinus):
                        motor_list,
                        amp, freq, offset, phase=(numpy.pi / 2 + phase))
 
-try:
-    from scipy import signal
-
-    class Square(Sinus):
-        """ Apply a square signal. Param (amp, freq, offset, phase, duty cycle). """
-
-        def __init__(self, robot, refresh_freq,
-                     motor_list,
-                     amp=1, freq=1.0, offset=0, phase=0, duty=0.5):
-
-            Sinus.__init__(self, robot, refresh_freq,
-                           motor_list,
-                           amp, freq, offset, phase)
-
-            self._duty = duty
-
-        def update(self):
-
-            pos = self._amp * signal.square(self._freq * 2.0 * numpy.pi *
-                                            self.elapsed_time + self._phase * numpy.pi / 180.0, self._duty) + self._offset
-
-            for m in self.motor_list:
-                m.goal_position = pos
-            print(pos)
-
-        @property
-        def duty(self):
-            return self._duty
-
-        @duty.setter
-        def duty(self, new_duty):
-            self._duty = new_duty
-
-except ImportError:
-    pass
-
 
 class PositionWatcher(LoopPrimitive):
     def __init__(self, robot, refresh_freq, watched_motors):
