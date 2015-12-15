@@ -17,12 +17,12 @@ logger = logging.getLogger(__name__)
 
 
 def _get_available_ports():
-    """ Tries to find the available usb2serial port on your system. """
+    """ Tries to find the available serial ports on your system. """
     if platform.system() == 'Darwin':
         return glob.glob('/dev/tty.usb*')
 
     elif platform.system() == 'Linux':
-        return glob.glob('/dev/ttyACM*') + glob.glob('/dev/ttyUSB*')
+        return glob.glob('/dev/ttyACM*') + glob.glob('/dev/ttyUSB*') + glob.glob('/dev/ttyAMA*')
 
     elif sys.platform.lower() == 'cygwin':
         return glob.glob('/dev/com*')
