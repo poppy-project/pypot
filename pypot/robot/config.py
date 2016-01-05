@@ -59,7 +59,7 @@ def from_config(config, strict=True, sync=True, use_dummy_io=False):
         if not use_dummy_io:
             dxl_io = dxl_io_from_confignode(config, c_params, attached_ids, strict)
 
-            check_motor_limits(config, dxl_io, motor_names)
+            check_motor_ram_configuration(config, dxl_io, motor_names)
 
             logger.info('Instantiating controller on %s with motors %s',
                         dxl_io.port, motor_names,
@@ -172,8 +172,12 @@ def dxl_io_from_confignode(config, c_params, ids, strict):
     return dxl_io
 
 
-def check_motor_limits(config, dxl_io, motor_names):
+def check_motor_ram_configuration(config, dxl_io, motor_names):
+    """ Change the angles limits depanding on the robot configuration ;
+        Check if the return delay time is set to 0.
+    """
     changed_angle_limits = {}
+    changed_return_delay_time = {}
 
     for name in motor_names:
         m = config['motors'][name]
@@ -181,20 +185,30 @@ def check_motor_limits(config, dxl_io, motor_names):
 
         try:
             old_limits = dxl_io.get_angle_limit((id, ))[0]
+            old_return_delay_time = dxl_io.get_return_delay_time((id, ))[0]
         except IndexError:  # probably a broken motor so we just skip
             continue
-        new_limits = m['angle_limit']
 
+        if old_return_delay_time != 0:
+            logger.warning("Return delay time of %s changed from %s to 0",
+                           name, old_return_delay_time)
+            changed_return_delay_time[id] = 0
+
+        new_limits = m['angle_limit']
         d = numpy.linalg.norm(numpy.asarray(new_limits) - numpy.asarray(old_limits))
         if d > 1:
-            logger.warning("Limits of '%s' changed to %s",
-                           name, new_limits,
+            logger.warning("Limits of '%s' changed from %s to %s",
+                           name, old_limits, new_limits,
                            extra={'config': config})
             changed_angle_limits[id] = new_limits
 
     if changed_angle_limits:
         dxl_io.set_angle_limit(changed_angle_limits)
-        time.sleep(1)
+        time.sleep(0.5)
+
+    if changed_return_delay_time:
+        dxl_io.set_return_delay_time(changed_return_delay_time)
+        time.sleep(0.5)
 
 
 def instatiate_motors(config):
