@@ -59,7 +59,7 @@ def from_config(config, strict=True, sync=True, use_dummy_io=False):
         if not use_dummy_io:
             dxl_io = dxl_io_from_confignode(config, c_params, attached_ids, strict)
 
-            check_motor_ram_configuration(config, dxl_io, motor_names)
+            check_motor_eprom_configuration(config, dxl_io, motor_names)
 
             logger.info('Instantiating controller on %s with motors %s',
                         dxl_io.port, motor_names,
@@ -172,7 +172,7 @@ def dxl_io_from_confignode(config, c_params, ids, strict):
     return dxl_io
 
 
-def check_motor_ram_configuration(config, dxl_io, motor_names):
+def check_motor_eprom_configuration(config, dxl_io, motor_names):
     """ Change the angles limits depanding on the robot configuration ;
         Check if the return delay time is set to 0.
     """
