@@ -27,6 +27,7 @@ vrep_mode = {
 
 
 class VrepIO(AbstractIO):
+
     """ This class is used to get/set values from/to a V-REP scene.
 
         It is based on V-REP remote API (http://www.coppeliarobotics.com/helpFiles/en/remoteApiOverview.htm).
@@ -153,11 +154,13 @@ class VrepIO(AbstractIO):
                              sending=True)
 
     def get_motor_force(self, motor_name):
+        """ Retrieves the force or torque applied to a joint along/about its active axis. """
         return self.call_remote_api('simxGetJointForce',
                                     self.get_object_handle(motor_name),
                                     streaming=True)
 
     def set_motor_force(self, motor_name, force):
+        """  Sets the maximum force or torque that a joint can exert. """
         self.call_remote_api('simxSetJointForce',
                              self.get_object_handle(motor_name),
                              force,
@@ -259,7 +262,8 @@ class VrepIO(AbstractIO):
 
     def _create_pure_shape(self, primitive_type, options, sizes, mass, precision):
         """ Create Pure Shape """
-        lua_code = "simCreatePureShape({}, {}, {{{}, {}, {}}}, {}, {{{}, {}}})".format(primitive_type, options, sizes[0], sizes[1], sizes[2], mass, precision[0], precision[1])
+        lua_code = "simCreatePureShape({}, {}, {{{}, {}, {}}}, {}, {{{}, {}}})".format(
+            primitive_type, options, sizes[0], sizes[1], sizes[2], mass, precision[0], precision[1])
         self._inject_lua_code(lua_code)
 
     def _inject_lua_code(self, lua_code):
@@ -320,7 +324,7 @@ class VrepIO(AbstractIO):
 
         # if any(err) and hard_retry:
         #     print "HARD RETRY"
-        #     # self.stop_simulation() #nope
+        # self.stop_simulation() #nope
         #
         #     notconnected = True
         #     while notconnected:
@@ -372,7 +376,9 @@ def close_all_connections():
 
 # V-REP Errors
 class VrepIOError(Exception):
+
     """ Base class for V-REP IO Errors. """
+
     def __init__(self, error_code, message):
         message = 'V-REP error code {} ({}): "{}"'.format(
             error_code, vrep_error[error_code], message)
@@ -384,5 +390,6 @@ class VrepIOErrors(Exception):
 
 
 class VrepConnectionError(Exception):
+
     """ Base class for V-REP connection Errors. """
     pass
