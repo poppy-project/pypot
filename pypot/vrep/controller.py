@@ -1,4 +1,5 @@
 from numpy import rad2deg, deg2rad
+from collections import deque
 
 from ..robot.controller import MotorsController, SensorsController
 from ..dynamixel.conversion import torque_max
@@ -27,6 +28,11 @@ class VrepController(MotorsController):
     def setup(self):
         """ Setups the controller by reading/setting position for all motors. """
         self._init_vrep_streaming()
+
+        # Init lifo for temperature spoofing
+        for m in self.motors:
+            m.__dict__['_load_fifo'] = deque(200 * [1], maxlen=200)
+
         self.update()
 
     def update(self):
@@ -52,6 +58,10 @@ class VrepController(MotorsController):
 
             l = 100. * self.io.get_motor_force(motor_name=m.name) / tmax
             m.__dict__['present_load'] = l
+
+            m.__dict__['_load_fifo'].append(abs(l))
+            m.__dict__['present_temperature'] = 25 + \
+                round(2.5 * sum(m.__dict__['_load_fifo']) / len(m.__dict__['_load_fifo']), 1)
 
             ll, lr = limits4handle[self.io._object_handles[m.name]]
             m.__dict__['lower_limit'] = rad2deg(ll)
