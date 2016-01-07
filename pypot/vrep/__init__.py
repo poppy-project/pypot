@@ -2,6 +2,7 @@ import json
 import logging
 
 from functools import partial
+from collections import OrderedDict
 
 from .io import (VrepIO, close_all_connections,
                  VrepIOError, VrepConnectionError)
@@ -80,7 +81,7 @@ def from_vrep(config, vrep_host='127.0.0.1', vrep_port=19997, scene=None,
 
     if isinstance(config, basestring):
         with open(config) as f:
-            config = json.load(f)
+            config = json.load(f, object_pairs_hook=OrderedDict)
 
     motors = [motor_from_confignode(config, name)
               for name in config['motors'].keys()]

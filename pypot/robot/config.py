@@ -13,6 +13,8 @@ import numpy
 import time
 import json
 
+from collections import OrderedDict
+
 import pypot.sensor
 import pypot.dynamixel
 import pypot.dynamixel.io
@@ -239,7 +241,7 @@ def from_json(json_file, sync=True, strict=True, use_dummy_io=False):
 
     """
     with open(json_file) as f:
-        config = json.load(f)
+        config = json.load(f, object_pairs_hook=OrderedDict)
 
     return from_config(config, sync=sync, strict=strict, use_dummy_io=use_dummy_io)
 
