@@ -59,6 +59,10 @@ class Primitive(StoppableThread):
 
     def _prim_setup(self):
         logger.info("Primitive %s setup.", self)
+
+        for m in self.robot.motors:
+            m._to_set.clear()
+
         self.robot._primitive_manager.add(self)
         self.setup()
 
