@@ -27,6 +27,7 @@ class VrepController(MotorsController):
     def setup(self):
         """ Setups the controller by reading/setting position for all motors. """
         self._init_vrep_streaming()
+        self.update()
 
     def update(self):
         """ Synchronization update loop.
