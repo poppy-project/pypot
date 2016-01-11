@@ -100,7 +100,7 @@ class SnapRobotServer(AbstractServer):
         def get_robot_aliases():
             return '/'.join('{}'.format(alias) for alias in rr.get_motors_alias())
 
-        @self.app.get('/motors/<motors>/get/<register>/')
+        @self.app.get('/motors/<motors>/get/<register>')
         def get_motors_registers(motors,register):
             """ Allow getting of motors register with a single http request
                 Be carefull: with lot of motors, it could overlap the GET max
