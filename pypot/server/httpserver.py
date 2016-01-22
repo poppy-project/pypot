@@ -206,6 +206,19 @@ class HTTPRobotServer(AbstractServer):
                 '{}:{}'.format(prim, meth): res
             }
 
+        @self.app.get('/motors/register/<register_name>')
+        def get_motors_register_value(register_name):
+            motors_list = rr.get_motors_list('motors')
+            registers_motors = {}
+
+            for motor_name in motors_list:
+                registers_motors[motor_name] = {
+                    register_name: rr.get_motor_register_value(motor_name, register_name)
+                }
+
+            return registers_motors
+
+
     def run(self, quiet=None, server='tornado'):
         """ Start the bottle server, run forever. """
         if quiet is None:
