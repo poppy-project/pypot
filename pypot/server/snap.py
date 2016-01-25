@@ -73,7 +73,7 @@ class SnapRobotServer(AbstractServer):
                      for f in os.listdir(snap_system_projects_directory) if f.endswith('.xml')]
         for xml_file in xml_files:
             dst = os.path.join(get_snap_user_projects_directory(), os.path.basename(xml_file))
-            logger.warning('Src: {}, Dest {}'.format(xml_file, dst))
+            logger.info('Copy snap project from {}, to {}'.format(xml_file, dst))
             shutil.copyfile(xml_file, dst)
 
         set_snap_server_variables(find_local_ip(), port, path=get_snap_user_projects_directory())
