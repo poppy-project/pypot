@@ -145,7 +145,7 @@ class RESTRobot(object):
             return None
 
     def stop_move_recorder(self, move_name):
-        """Allow more easily than stop_primitive() to save in a filename the recorcded move"""
+        """Allow more easily than stop_primitive() to save in a filename the recorded move"""
         recorder = getattr(self.robot, '_{}_recorder'.format(move_name))
         recorder.stop()
         with open('{}.record'.format(move_name), 'w') as f:
