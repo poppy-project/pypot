@@ -1,4 +1,5 @@
 import json
+import SocketServer
 import numpy
 import bottle
 from bottle import response
@@ -38,7 +39,8 @@ class EnableCors(object):
             # set CORS headers
             response.headers['Access-Control-Allow-Origin'] = self.origin
             response.headers['Access-Control-Allow-Methods'] = 'GET, POST, PUT, OPTIONS'
-            response.headers['Access-Control-Allow-Headers'] = 'Origin, Accept, Content-Type, X-Requested-With, X-CSRF-Token'
+            response.headers[
+                'Access-Control-Allow-Headers'] = 'Origin, Accept, Content-Type, X-Requested-With, X-CSRF-Token'
 
             if bottle.request.method != 'OPTIONS':
                 # actual request; reply with the actual response
@@ -55,7 +57,7 @@ class HTTPRobotServer(AbstractServer):
 
      """
 
-    def __init__(self, robot, host, port, cross_domain_origin='*', quiet=True):
+    def __init__(self, robot, host='0.0.0.0', port='8080', cross_domain_origin='*', quiet=True):
         AbstractServer.__init__(self, robot, host, port)
         self.quiet = quiet
         self.app = bottle.Bottle()
@@ -218,12 +220,23 @@ class HTTPRobotServer(AbstractServer):
 
             return registers_motors
 
-
     def run(self, quiet=None, server='tornado'):
         """ Start the bottle server, run forever. """
         if quiet is None:
             quiet = self.quiet
-        bottle.run(self.app,
-                   host=self.host, port=self.port,
-                   quiet=quiet,
-                   server=server)
+        try:
+            bottle.run(self.app,
+                       host=self.host, port=self.port,
+                       quiet=quiet,
+                       server=server)    
+        except RuntimeError as e:
+            # If you are calling tornado inside tornado (Jupyter notebook)
+            # you got a RuntimeError but everythong works fine
+            if "IOLoop" in e.message:
+                logger.info("Tornado RuntimeError {}".format(e.message))
+                pass
+        except SocketServer.socket.error as e:
+            if e.args[0] != 48:
+                logger.warning(
+                    """The webserver port {} is already used.\n
+                    The HTTPServer is maybe already run or another software use this port.""".format(self.port))
