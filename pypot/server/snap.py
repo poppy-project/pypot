@@ -1,6 +1,7 @@
 import os
 import shutil
 import SocketServer
+import cgi
 import bottle
 import socket
 import re
@@ -78,6 +79,10 @@ class SnapRobotServer(AbstractServer):
             shutil.copyfile(xml_file, dst)
 
         set_snap_server_variables(find_local_ip(), port, path=get_snap_user_projects_directory())
+        @self.app.get('/')
+        def get_sitemap():
+            return '</br>'.join([cgi.escape(r.rule.format()) for r in self.app.routes])
+
         @self.app.get('/motors/<alias>')
         def get_motors(alias):
             return '/'.join(rr.get_motors_list(alias))
