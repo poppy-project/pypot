@@ -1,9 +1,9 @@
 import os
 import shutil
-import SocketServer
 import cgi
 import bottle
 import socket
+import errno
 import re
 import logging
 from ast import literal_eval as make_tuple
@@ -307,8 +307,10 @@ class SnapRobotServer(AbstractServer):
             if "IOLoop" in e.message:
                 logger.info("Tornado RuntimeError {}".format(e.message))
                 pass
-        except SocketServer.socket.error as e:
-            if e.args[0] != 48:
-                logger.warning(
-                    """The webserver port {} is already used.\n
-                    The SnapRobotServer is maybe already run or another software use this port.""".format(self.port))
+        except socket.error as serr:
+            # Re raise the socket error if not "[Errno 98] Address already in use"
+            if serr.errno != errno.EADDRINUSE:
+                raise serr
+            else:
+                logger.warning("""The webserver port {} is already used.
+The SnapRobotServer is maybe already run or another software use this port.""".format(self.port))

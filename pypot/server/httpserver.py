@@ -1,5 +1,6 @@
 import json
-import SocketServer
+import socket
+import errno
 import numpy
 import bottle
 from bottle import response
@@ -234,8 +235,10 @@ class HTTPRobotServer(AbstractServer):
             if "IOLoop" in e.message:
                 logger.info("Tornado RuntimeError {}".format(e.message))
                 pass
-        except SocketServer.socket.error as e:
-            if e.args[0] != 48:
-                logger.warning(
-                    """The webserver port {} is already used.\n
-                    The HTTPServer is maybe already run or another software use this port.""".format(self.port))
+        except socket.error as serr:
+            # Re raise the socket error if not "[Errno 98] Address already in use"
+            if serr.errno != errno.EADDRINUSE:
+                raise serr
+            else:
+                logger.warning("""The webserver port {} is already used.
+The HttpRobotServer is maybe already run or another software use this port.""".format(self.port))
