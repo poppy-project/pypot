@@ -1,7 +1,9 @@
 import os
 import shutil
+import cgi
 import bottle
 import socket
+import errno
 import re
 import logging
 from ast import literal_eval as make_tuple
@@ -58,7 +60,7 @@ def set_snap_server_variables(host, port, snap_extension='.xml', path=None):
 
 class SnapRobotServer(AbstractServer):
 
-    def __init__(self, robot, host, port, quiet=True):
+    def __init__(self, robot, host='0.0.0.0', port='6969', quiet=True):
         AbstractServer.__init__(self, robot, host, port)
         self.quiet = quiet
         self.app = bottle.Bottle()
@@ -77,6 +79,9 @@ class SnapRobotServer(AbstractServer):
             shutil.copyfile(xml_file, dst)
 
         set_snap_server_variables(find_local_ip(), port, path=get_snap_user_projects_directory())
+        @self.app.get('/')
+        def get_sitemap():
+            return '</br>'.join([cgi.escape(r.rule.format()) for r in self.app.routes])
 
         @self.app.get('/motors/<alias>')
         def get_motors(alias):
@@ -287,5 +292,25 @@ class SnapRobotServer(AbstractServer):
             detected = rr.robot.marker_detector.markers
             return str(any([m.id in markers[marker] for m in detected]))
 
-    def run(self):
-        bottle.run(self.app, host=self.host, port=self.port, quiet=self.quiet)
+    def run(self, quiet=None, server='tornado'):
+        """ Start the bottle server, run forever. """
+        if quiet is None:
+            quiet = self.quiet
+        try:
+            bottle.run(self.app,
+                       host=self.host, port=self.port,
+                       quiet=quiet,
+                       server=server)    
+        except RuntimeError as e:
+            # If you are calling tornado inside tornado (Jupyter notebook)
+            # you got a RuntimeError but everythong works fine
+            if "IOLoop" in e.message:
+                logger.info("Tornado RuntimeError {}".format(e.message))
+                pass
+        except socket.error as serr:
+            # Re raise the socket error if not "[Errno 98] Address already in use"
+            if serr.errno != errno.EADDRINUSE:
+                raise serr
+            else:
+                logger.warning("""The webserver port {} is already used.
+The SnapRobotServer is maybe already run or another software use this port.""".format(self.port))

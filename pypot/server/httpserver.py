@@ -1,4 +1,6 @@
 import json
+import socket
+import errno
 import numpy
 import bottle
 from bottle import response
@@ -55,7 +57,7 @@ class HTTPRobotServer(AbstractServer):
 
      """
 
-    def __init__(self, robot, host, port, cross_domain_origin='*', quiet=True):
+    def __init__(self, robot, host='0.0.0.0', port='8080', cross_domain_origin='*', quiet=True):
         AbstractServer.__init__(self, robot, host, port)
         self.quiet = quiet
         self.app = bottle.Bottle()
@@ -218,12 +220,25 @@ class HTTPRobotServer(AbstractServer):
 
             return registers_motors
 
-
     def run(self, quiet=None, server='tornado'):
         """ Start the bottle server, run forever. """
         if quiet is None:
             quiet = self.quiet
-        bottle.run(self.app,
-                   host=self.host, port=self.port,
-                   quiet=quiet,
-                   server=server)
+        try:
+            bottle.run(self.app,
+                       host=self.host, port=self.port,
+                       quiet=quiet,
+                       server=server)    
+        except RuntimeError as e:
+            # If you are calling tornado inside tornado (Jupyter notebook)
+            # you got a RuntimeError but everythong works fine
+            if "IOLoop" in e.message:
+                logger.info("Tornado RuntimeError {}".format(e.message))
+                pass
+        except socket.error as serr:
+            # Re raise the socket error if not "[Errno 98] Address already in use"
+            if serr.errno != errno.EADDRINUSE:
+                raise serr
+            else:
+                logger.warning("""The webserver port {} is already used.
+The HttpRobotServer is maybe already run or another software use this port.""".format(self.port))
