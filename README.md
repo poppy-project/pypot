@@ -1,3 +1,4 @@
+[[![PyPI version](https://badge.fury.io/py/pypot.svg)](https://badge.fury.io/py/pypot)](https://pypi.python.org/pypi/pypot/)
 [![Build Status](https://travis-ci.org/poppy-project/pypot.svg?branch=master)](https://travis-ci.org/poppy-project/pypot) [![Cite this librairy](https://zenodo.org/badge/3914/poppy-project/pypot.png)](http://zenodo.org/record/13941)
 
 # Pypot: A Python lib for Dynamixel motors control #
