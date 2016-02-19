@@ -292,6 +292,17 @@ class SnapRobotServer(AbstractServer):
             detected = rr.robot.marker_detector.markers
             return str(any([m.id in markers[marker] for m in detected]))
 
+        @self.app.get('/ik/<chain>/endeffector')
+        def ik_endeffector(chain):
+            c = getattr(rr.robot, chain)
+            return str(list(c.end_effector))
+
+        @self.app.get('/ik/<chain>/goto/<x>/<y>/<z>/<duration>')
+        def ik_goto(chain, x, y, z, duration):
+            c = getattr(rr.robot, chain)
+            c.goto([x, y, z], duration, wait=False)
+            return "Done !"
+
     def run(self, quiet=None, server='tornado'):
         """ Start the bottle server, run forever. """
         if quiet is None:
@@ -300,7 +311,7 @@ class SnapRobotServer(AbstractServer):
             bottle.run(self.app,
                        host=self.host, port=self.port,
                        quiet=quiet,
-                       server=server)    
+                       server=server)
         except RuntimeError as e:
             # If you are calling tornado inside tornado (Jupyter notebook)
             # you got a RuntimeError but everythong works fine
