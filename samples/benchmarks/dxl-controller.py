@@ -32,7 +32,7 @@ if __name__ == '__main__':
     dt = []
     for _ in range(args.N):
         start = time.time()
-        c.get_present_position_speed_load()
+        c.get_present_position_speed_load(c.motors)
         end = time.time()
         dt.append(end - start)
 
