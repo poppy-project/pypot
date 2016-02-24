@@ -1,6 +1,6 @@
 # Notebooks everywhere
 
-In the [Poppy Project](https://www.poppy-project.org), we are huge fans of [IPython Notebooks](http://ipython.org/notebook.html) both for development and for documentation. Most of our tests, benchs, experiments, and even debugs are now done using notebooks. Thus, we have decided that pypot's documentation and more generally all the software documentation related to the [Poppy Project](https://www.poppy-project.org) will smoothly move towards notebooks.
+In the [Poppy Project](https://www.poppy-project.org), we are huge fans of [Jupyter Notebooks](http://jupyter.org) both for development and for documentation. Most of our tests, benchs, experiments, and even debugs are now done using notebooks. Thus, we have decided that pypot's documentation and more generally all the software documentation related to the [Poppy Project](https://www.poppy-project.org) will smoothly move towards notebooks.
 
 We strongly believe that they have an amazing potential:
 * for writing pedalogical contents - by **mixing code, explanation, results in an integrated form**
@@ -29,15 +29,15 @@ All the resources content from the Poppy Project is open source. This naturally 
 
 One of the great features of the Notebook is that they can be read directly online without needing to install anything on your laptop. The **only thing you need is a web browser!**
 
-Thanks to the [nbviewer](http://nbviewer.ipython.org) website, you can read any Notebook online. The Notebooks from the Poppy Project can be directly found [here](http://nbviewer.ipython.org/github/poppy-project/pypot/tree/master/samples/notebooks/). A list of the "best" Notebook is also maintained at the top of this readme. Using [nbviewer](http://nbviewer.ipython.org) is also a very convenient way of sharing your Notebooks with other.
+Thanks to the [nbviewer](http://nbviewer.ipython.org) website, you can read any Notebook online. You can also directly view them on [Github](https://github.com). The Notebooks from the Poppy Project can be directly found [here](http://nbviewer.ipython.org/github/poppy-project/pypot/tree/master/samples/notebooks/). A list of the "best" Notebook is also maintained [here](https://poppy-project.gitbooks.io/poppy-docs/content/en/programming/notebooks.html).
 
-Yet this technique is limited to reading a Notebook. If you want to run it yourself and play with the code you will have to use one of the other techniques described below.
+If you want to run notebooks yourself and play with the code you will have to use one of the other techniques described below.
 
 # Connecting to a Remote Notebook
 
-The Poppy Creature we developed are usually provided with an embedded board (e.g. a [raspberry pi](http://www.raspberrypi.org)) with all the software tools needed to run [pypot](https://github.com/poppy-project/pypot) already installed - this means a python interpreter, the pypot and poppy pacakges and an [IPython Notebook](http://ipython.org/notebook.html) server. Thus, you do not need to install anything specific on your personal computer to connect to a remote Notebook.
+The Poppy Creature we developed are usually provided with an embedded board (e.g. a [raspberry pi](http://www.raspberrypi.org)) with all the software tools needed to run [pypot](https://github.com/poppy-project/pypot) already installed - this means a python interpreter, the pypot and poppy pacakges and [Jupyter Notebook](http://jupyter.org) server. Thus, you do not need to install anything specific on your personal computer to connect to a remote Notebook.
 
-When plugged, the embedded board of the Poppy Creature should automatically start an IPython Notebook server providing access to all the notebooks tutorials.
+When plugged, the embedded board of the Poppy Creature should automatically start a Jupyter Notebook server providing access to all the notebooks tutorials.
 
 Assuming that you creature is connected to the same network as your computer (see [here](https://github.com/pierre-rouanet/rasp-poppy) for details), they can be accessed just by connecting to an url such as: http://poppy-ergo-jr.local:8080/notebooks where *poppy-ergo-jr* is the hostname of your creature. This could be replaced by *poppy-humanoid*, *poppy-torso*... depending on the creature you are working with.
 
@@ -45,21 +45,21 @@ Assuming that you creature is connected to the same network as your computer (se
 
 # Running Notebooks Locally
 
-If you want to run Notebooks on your local machine, because you are working with the simulator for instance, you will have to start the ipython notebook server yourself.
+If you want to run Notebooks on your local machine, because you are working with the simulator for instance, you will have to start the jupyter notebook server yourself.
 
 To do this, you will need to find your way in the sometimes [confusing](http://captiongenerator.com/30052/Hitler-reacts-to-the-Python-ecosystem) [python packaging system](https://python-packaging-user-guide.readthedocs.org/en/latest/current.html). In details, you will need (this is not the only way to install all the tools but this is probably the most straightforward):
 * a [python](https://www.python.org) interpreter (we tested with *2.7*, *3.4* or *pypy-2.5*) see how to install it on your os on [python website](https://www.python.org/downloads/). You can use pre-packaged Python distribution such as [Anaconda](https://store.continuum.io/cshop/anaconda/) or [Spyder](https://github.com/spyder-ide/spyder).
 * the [pip tool](https://pip.pypa.io) for installing Python packages - [this documentation describe how to install pip on your system](https://pip.pypa.io/en/latest/installing.html#install-pip).
 
-Now that you have a working Python environment, you can install the [IPython Notebook package]() using pip. You only have to run the following line on a command line terminal:
+Now that you have a working Python environment, you can install the [Jupyter Notebook package](http://jupyter.readthedocs.org/en/latest/install.html) using pip (or conda). You only have to run the following line on a command line terminal:
 
 ```bash
-pip install ipython[all]
+pip install jupyter
 ```
 
 Linux users may have to run (depending on their python installation):
 ```bash
-sudo pip install ipython[all]
+sudo pip install jupyter
 ```
 
 Then, you need to install pypot and the software for your creature. For instance, to use a PoppyErgoJr:
@@ -69,11 +69,11 @@ pip install pypot poppy-ergo-jr
 
 Finally, you can now run the notebook server from a terminal:
 ```bash
-ipython notebook
+jupyter notebook
 ```
 You can also specify the folder where your notebooks are, for instance on my machine
 ```bash
-ipython notebook ~/dev/pypot/samples/notebooks/
+jupyter notebook ~/dev/pypot/samples/notebooks/
 ```
 
 # Support
