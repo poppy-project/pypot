@@ -1,7 +1,10 @@
 import time
+import logging
 
 from ..robot.controller import MotorsController
 from .io import DxlError
+
+logger = logging.getLogger(__name__)
 
 
 class DxlController(MotorsController):
@@ -159,6 +162,7 @@ class PosSpeedLoadDxlController(DxlController):
         values = self.io.get_present_position_speed_load(ids)
 
         if not values:
+            logger.warning('Timeout when getting pos/speed/load from {}', ids)
             return
 
         positions, speeds, loads = zip(*values)
