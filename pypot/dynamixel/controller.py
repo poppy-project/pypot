@@ -142,7 +142,7 @@ class PosSpeedLoadDxlController(DxlController):
 
         values = self.io.get_goal_position_speed_load(self.ids)
         if not values:
-            raise DxlError('You could initialize pos/speed/load sync loop')
+            raise DxlError("Couldn't initialize pos/speed/load sync loop!")
 
         positions, speeds, loads = zip(*values)
         for m, p, s, l in zip(self.working_motors, positions, speeds, loads):
