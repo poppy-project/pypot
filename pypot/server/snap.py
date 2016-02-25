@@ -1,16 +1,19 @@
 import os
-import shutil
+import re
 import cgi
+import errno
+import shutil
 import bottle
 import socket
-import errno
-import re
 import logging
+
 from contextlib import closing
 from ast import literal_eval as make_tuple
-from ..utils.appdirs import user_data_dir
+
 from .server import AbstractServer
 from .httpserver import EnableCors
+from ..utils.appdirs import user_data_dir
+
 
 logger = logging.getLogger(__name__)
 
@@ -45,7 +48,6 @@ def find_host_ip(host=None):
             return '127.0.0.1'
         else:
             raise IOError(e)
-
 
 
 def set_snap_server_variables(host, port, snap_extension='.xml', path=None):
@@ -311,7 +313,7 @@ class SnapRobotServer(AbstractServer):
             bottle.run(self.app,
                        host=self.host, port=self.port,
                        quiet=quiet,
-                       server=server)    
+                       server=server)
         except RuntimeError as e:
             # If you are calling tornado inside tornado (Jupyter notebook)
             # you got a RuntimeError but everythong works fine
