@@ -168,7 +168,7 @@ class SnapRobotServer(AbstractServer):
 
         @self.app.get('/ip')
         def get_ip():
-            return socket.gethostbyname(socket.gethostname())
+            return find_local_ip()
 
         @self.app.get('/reset-simulation')
         def reset_simulation():
