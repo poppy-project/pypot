@@ -21,11 +21,14 @@ def get_snap_user_projects_directory():
     return snap_user_projects_directory
 
 
-def find_local_ip():
+def find_host_ip(host=None):
+    if host is None:
+        host = socket.gethostname()
+
     # see here: http://stackoverflow.com/questions/166506/
     try:
         return [l for l in ([ip for ip in
-               socket.gethostbyname_ex(socket.gethostname())[2]
+               socket.gethostbyname_ex(host)[2]
                if not ip.startswith('127.')][:1], [[(s.connect(('8.8.8.8',
                53)), s.getsockname()[0], s.close()) for s in
                [socket.socket(socket.AF_INET, socket.SOCK_DGRAM)]][0][1]])
@@ -81,7 +84,7 @@ class SnapRobotServer(AbstractServer):
             logger.info('Copy snap project from {}, to {}'.format(xml_file, dst))
             shutil.copyfile(xml_file, dst)
 
-        set_snap_server_variables(find_local_ip(), port, path=get_snap_user_projects_directory())
+        set_snap_server_variables(find_host_ip(), port, path=get_snap_user_projects_directory())
         @self.app.get('/')
         def get_sitemap():
             return '</br>'.join([cgi.escape(r.rule.format()) for r in self.app.routes])
@@ -169,9 +172,9 @@ class SnapRobotServer(AbstractServer):
                                    '{}.xml'.format(project))) as f:
                 return f.read()
 
-        @self.app.get('/ip')
-        def get_ip():
-            return socket.gethostbyname(socket.gethostname())
+        @self.app.get('/ip/<host>')
+        def get_ip(host=None):
+            return find_host_ip(host)
 
         @self.app.get('/reset-simulation')
         def reset_simulation():
