@@ -6,6 +6,7 @@ import socket
 import errno
 import re
 import logging
+from contextlib import closing
 from ast import literal_eval as make_tuple
 from ..utils.appdirs import user_data_dir
 from .server import AbstractServer
@@ -22,19 +23,23 @@ def get_snap_user_projects_directory():
 
 
 def find_host_ip(host=None):
-    if host is None:
-        host = socket.gethostname()
-
     # see here: http://stackoverflow.com/questions/166506/
     try:
-        return [l for l in ([ip for ip in
-               socket.gethostbyname_ex(host)[2]
-               if not ip.startswith('127.')][:1], [[(s.connect(('8.8.8.8',
-               53)), s.getsockname()[0], s.close()) for s in
-               [socket.socket(socket.AF_INET, socket.SOCK_DGRAM)]][0][1]])
-               if l][0][0]
+        if host is None:
+            host = socket.gethostname()
 
-    except IOError, e:
+        ips = [ip for ip in socket.gethostbyname_ex(host)[2]
+               if not ip.startswith('127.')]
+        if len(ips):
+            return ips[0]
+
+        # If the above method fails (depending on the system)
+        # Tries to ping google DNS instead
+        with closing(socket.socket()) as s:
+            s.connect(('8.8.8.8', 53))
+            return s.getsockname()[0]
+
+    except IOError as e:
         # network unreachable
         if e.errno == errno.ENETUNREACH:
             return '127.0.0.1'
