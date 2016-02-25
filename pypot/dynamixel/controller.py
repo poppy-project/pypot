@@ -1,6 +1,7 @@
 import time
 
 from ..robot.controller import MotorsController
+from .io import DxlError
 
 
 class DxlController(MotorsController):
@@ -140,6 +141,9 @@ class PosSpeedLoadDxlController(DxlController):
         self._old_torques = torques
 
         values = self.io.get_goal_position_speed_load(self.ids)
+        if not values:
+            raise DxlError('You could initialize pos/speed/load sync loop')
+
         positions, speeds, loads = zip(*values)
         for m, p, s, l in zip(self.working_motors, positions, speeds, loads):
             m.__dict__['goal_position'] = p
