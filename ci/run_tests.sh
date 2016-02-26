@@ -23,10 +23,10 @@ pushd ci-tests
     # Vrep start test
     echo "Starting a notebook Controlling a Poppy humanoid in V-REP using pypot.ipynb"
     if [[ -n "$SSH_VREP_SERVER"  ]]; then
-        pip -qq install poppy-humanoid
+        pip install poppy-humanoid
         # Download a PoppyHumanoid ipython notebook
-        curl -o nb.ipynb https://raw.githubusercontent.com/poppy-project/poppy-humanoid/master/software/samples/notebooks/Controlling%20a%20Poppy%20humanoid%20in%20V-REP%20using%20pypot.ipynb
-        runipy -o nb.ipynb
+        curl -l -o nb.py https://gist.githubusercontent.com/pierre-rouanet/e6b89340a7ec781c5355/raw/64bb25ba01e077160e7b04e485d78164ac53fdf6/nb.py
+        python nb.py
     fi
 
     # Old test of running VREP localy (network trouble)
@@ -44,6 +44,3 @@ popd
 
 set +x
 set +e
-
-
-

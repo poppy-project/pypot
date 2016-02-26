@@ -65,7 +65,7 @@ conda update -q conda
 
 # conda create
 # source activate condaenv
-conda install --yes pip python=$TRAVIS_PYTHON_VERSION numpy scipy matplotlib pyzmq flake8 ipython-notebook runipy
+conda install --yes pip python=$TRAVIS_PYTHON_VERSION numpy scipy matplotlib pyzmq flake8 jupyter
 
 # Show config
 which python
