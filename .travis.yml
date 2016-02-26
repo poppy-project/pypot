@@ -15,7 +15,7 @@ env:
     - secure: "ovWnNtOxp9SzfayLkI/NbeQld76FatyUm7Bdj6d9XWxokQpj130pf5uBwrUs32TCDmWJxfIC/8Jn7IA4kMWLzH/hN+M6AIc290EiSmLNaNU4HOh6hdx6qERHLSoPFVHgI1xPTEUouNWXkP3LR8nFja/iK1ai4ecGUBoIrtG0TW4="    # Used to built the repo URL https://github.com/$GH_USERNAME/$GH_USERNAME.git
     - GH_USERNAME=poppy-project
     - GH_REPO=pypot
-    # Git and Github credentials for pushing documentation 
+    # Git and Github credentials for pushing documentation
     - GIT_EMAIL=poppy-bot-ci@inria.fr
     - GIT_NAME=poppy-bot
     # GH_TOKEN encrypted below > travis encrypt GH_TOKEN=XXXXXX --add
@@ -34,7 +34,7 @@ env:
 matrix:
   # Don't wait for allowed failures
   fast_finish: true
-  
+
   include:
     # hack to use MAC-OSX VM
     - os: osx
@@ -69,6 +69,7 @@ matrix:
 
   allow_failures:
     - env: TRAVIS_OS_NAME=osx SSH_VREP_SERVER=test42-vrep1.ci TRAVIS_PYTHON_VERSION=2.7
+    - env: TRAVIS_OS_NAME=linux SSH_VREP_SERVER=test42-vrep5.ci TRAVIS_PYTHON_VERSION=3.4
     - env: TRAVIS_OS_NAME=osx SSH_VREP_SERVER=test42-vrep2.ci TRAVIS_PYTHON_VERSION=3.4
     # - env: PEP8_CAUSE_FAILLURE=true
 
@@ -79,7 +80,7 @@ addons:
       # Spoof x11 for starting vrep in travis (issues with network)
       - xvfb
       # For building the pdf documentation
-      - texlive 
+      - texlive
       - texlive-latex-extra
       - dvipng
 
@@ -97,8 +98,7 @@ after_success:
 
 
 notifications:
-  email: 
+  email:
     - poppy-bot-ci@inria.fr
   on_failure: change
   on_success: change
-
