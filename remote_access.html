@@ -9,7 +9,7 @@
   <head>
     <meta charset="utf-8" />
     
-    <title>REST API &mdash; pypot 2.10.0 documentation</title>
+    <title>REST API &mdash; pypot 2.11.0-rc.3 documentation</title>
     <meta name="description" content="">
     <meta name="author" content="">
 
@@ -35,7 +35,7 @@
 <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
             URL_ROOT:    './',
-            VERSION:     '2.10.0',
+            VERSION:     '2.11.0-rc.3',
             COLLAPSE_INDEX: false,
             FILE_SUFFIX: '.html',
             HAS_SOURCE:  true
@@ -51,7 +51,7 @@
 </script>
     <link rel="shortcut icon" href="_static/pypot_logo-48x48.png"/>
     <link rel="author" title="About these documents" href="about.html" />
-    <link rel="top" title="pypot 2.10.0 documentation" href="index.html" />
+    <link rel="top" title="pypot 2.11.0-rc.3 documentation" href="index.html" />
     <link rel="next" title="Mastering the logging system" href="logging.html" />
     <link rel="prev" title="Extending pypot" href="extending.html" /> 
   </head>
@@ -65,7 +65,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="index.html">pypot 2.10.0 documentation</a>
+          <a class="navbar-brand" href="index.html">pypot 2.11.0-rc.3 documentation</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
@@ -180,24 +180,24 @@
 </ul>
 <p>The <a class="reference internal" href="pypot.server.html#pypot.server.rest.RESTRobot" title="pypot.server.rest.RESTRobot"><code class="xref py py-class docutils literal"><span class="pre">RESTRobot</span></code></a> has been abstracted from the server, so you can easily add new transport methods if needed.</p>
 <p>As an example of what you can do, here is the code of getting the load of a motor and changing its position:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">zmq</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">zmq</span>
 <span class="kn">import</span> <span class="nn">threading</span>
 
 <span class="n">robot</span> <span class="o">=</span> <span class="n">pypot</span><span class="o">.</span><span class="n">robot</span><span class="o">.</span><span class="n">from_config</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
 
 <span class="n">server</span> <span class="o">=</span> <span class="n">pypot</span><span class="o">.</span><span class="n">server</span><span class="o">.</span><span class="n">ZMQServer</span><span class="p">(</span><span class="n">robot</span><span class="p">,</span> <span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">)</span>
-<span class="c"># We launch the server inside a thread</span>
+<span class="c1"># We launch the server inside a thread</span>
 <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="n">server</span><span class="o">.</span><span class="n">run</span><span class="p">())</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
 
 <span class="n">c</span> <span class="o">=</span> <span class="n">zmq</span><span class="o">.</span><span class="n">Context</span><span class="p">()</span>
 <span class="n">s</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">socket</span><span class="p">(</span><span class="n">zmq</span><span class="o">.</span><span class="n">REQ</span><span class="p">)</span>
 
-<span class="n">req</span> <span class="o">=</span> <span class="p">{</span><span class="s">&quot;robot&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s">&quot;get_register_value&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s">&quot;motor&quot;</span><span class="p">:</span> <span class="s">&quot;m2&quot;</span><span class="p">,</span> <span class="s">&quot;register&quot;</span><span class="p">:</span> <span class="s">&quot;present_load&quot;</span><span class="p">}}}</span>
+<span class="n">req</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;robot&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;get_register_value&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;motor&quot;</span><span class="p">:</span> <span class="s2">&quot;m2&quot;</span><span class="p">,</span> <span class="s2">&quot;register&quot;</span><span class="p">:</span> <span class="s2">&quot;present_load&quot;</span><span class="p">}}}</span>
 <span class="n">s</span><span class="o">.</span><span class="n">send_json</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
 <span class="n">answer</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">recv_json</span><span class="p">()</span>
 <span class="k">print</span><span class="p">(</span><span class="n">answer</span><span class="p">)</span>
 
-<span class="n">req</span> <span class="o">=</span> <span class="p">{</span><span class="s">&quot;robot&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s">&quot;set_register_value&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s">&quot;motor&quot;</span><span class="p">:</span> <span class="s">&quot;m2&quot;</span><span class="p">,</span> <span class="s">&quot;register&quot;</span><span class="p">:</span> <span class="s">&quot;goal_position&quot;</span><span class="p">,</span> <span class="s">&quot;value&quot;</span><span class="p">:</span> <span class="mi">20</span><span class="p">}}}</span>
+<span class="n">req</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;robot&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;set_register_value&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;motor&quot;</span><span class="p">:</span> <span class="s2">&quot;m2&quot;</span><span class="p">,</span> <span class="s2">&quot;register&quot;</span><span class="p">:</span> <span class="s2">&quot;goal_position&quot;</span><span class="p">,</span> <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="mi">20</span><span class="p">}}}</span>
 <span class="n">s</span><span class="o">.</span><span class="n">send_json</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
 <span class="n">answer</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">recv_json</span><span class="p">()</span>
 <span class="k">print</span><span class="p">(</span><span class="n">answer</span><span class="p">)</span>
@@ -224,7 +224,7 @@
 <div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
   <div class="navbar-inner">
     <ul class="nav navbar-nav ">
-        <li><a href="index.html">pypot 2.10.0 documentation</a></li>
+        <li><a href="index.html">pypot 2.11.0-rc.3 documentation</a></li>
     </ul>
 <ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
       
@@ -242,7 +242,7 @@
       <!-- footer -->
       <footer role="contentinfo">
           &copy; Copyright 2015, Poppy-Project.
-        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.3.1.
+        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.3.5.
       </footer>
       <!-- /footer -->
 

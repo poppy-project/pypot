@@ -9,7 +9,7 @@
   <head>
     <meta charset="utf-8" />
     
-    <title>pypot.sensor.kinect.sensor &mdash; pypot 2.10.0 documentation</title>
+    <title>pypot.sensor.kinect.sensor &mdash; pypot 2.11.0-rc.3 documentation</title>
     <meta name="description" content="">
     <meta name="author" content="">
 
@@ -35,7 +35,7 @@
 <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
             URL_ROOT:    '../../../../',
-            VERSION:     '2.10.0',
+            VERSION:     '2.11.0-rc.3',
             COLLAPSE_INDEX: false,
             FILE_SUFFIX: '.html',
             HAS_SOURCE:  true
@@ -51,7 +51,7 @@
 </script>
     <link rel="shortcut icon" href="../../../../_static/pypot_logo-48x48.png"/>
     <link rel="author" title="About these documents" href="../../../../about.html" />
-    <link rel="top" title="pypot 2.10.0 documentation" href="../../../../index.html" />
+    <link rel="top" title="pypot 2.11.0-rc.3 documentation" href="../../../../index.html" />
     <link rel="up" title="Module code" href="../../../index.html" /> 
   </head>
   <body role="document">
@@ -64,7 +64,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="../../../../index.html">pypot 2.10.0 documentation</a>
+          <a class="navbar-brand" href="../../../../index.html">pypot 2.11.0-rc.3 documentation</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
@@ -135,7 +135,7 @@
                 <div class="body">
                   
   <h1>Source code for pypot.sensor.kinect.sensor</h1><div class="highlight"><pre>
-<span class="sd">&quot;&quot;&quot;</span>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">This code has been developed by Baptiste Busch: https://github.com/buschbapti</span>
 
 <span class="sd">This module allows you to retrieve Skeleton information from a Kinect device.</span>
@@ -156,19 +156,19 @@
 
 <span class="kn">from</span> <span class="nn">...utils</span> <span class="kn">import</span> <span class="n">Point3D</span><span class="p">,</span> <span class="n">Point2D</span><span class="p">,</span> <span class="n">Quaternion</span>
 
-<span class="n">torso_joints</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;hip_center&#39;</span><span class="p">,</span> <span class="s">&#39;spine&#39;</span><span class="p">,</span> <span class="s">&#39;shoulder_center&#39;</span><span class="p">,</span> <span class="s">&#39;head&#39;</span><span class="p">)</span>
-<span class="n">left_arm_joints</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;shoulder_left&#39;</span><span class="p">,</span> <span class="s">&#39;elbow_left&#39;</span><span class="p">,</span> <span class="s">&#39;wrist_left&#39;</span><span class="p">,</span> <span class="s">&#39;hand_left&#39;</span><span class="p">)</span>
-<span class="n">right_arm_joints</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;shoulder_right&#39;</span><span class="p">,</span> <span class="s">&#39;elbow_right&#39;</span><span class="p">,</span> <span class="s">&#39;wrist_right&#39;</span><span class="p">,</span> <span class="s">&#39;hand_right&#39;</span><span class="p">)</span>
-<span class="n">left_leg_joints</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;hip_left&#39;</span><span class="p">,</span> <span class="s">&#39;knee_left&#39;</span><span class="p">,</span> <span class="s">&#39;ankle_left&#39;</span><span class="p">,</span> <span class="s">&#39;foot_left&#39;</span><span class="p">)</span>
-<span class="n">right_leg_joints</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;hip_right&#39;</span><span class="p">,</span> <span class="s">&#39;knee_right&#39;</span><span class="p">,</span> <span class="s">&#39;ankle_right&#39;</span><span class="p">,</span> <span class="s">&#39;foot_right&#39;</span><span class="p">)</span>
+<span class="n">torso_joints</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;hip_center&#39;</span><span class="p">,</span> <span class="s1">&#39;spine&#39;</span><span class="p">,</span> <span class="s1">&#39;shoulder_center&#39;</span><span class="p">,</span> <span class="s1">&#39;head&#39;</span><span class="p">)</span>
+<span class="n">left_arm_joints</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;shoulder_left&#39;</span><span class="p">,</span> <span class="s1">&#39;elbow_left&#39;</span><span class="p">,</span> <span class="s1">&#39;wrist_left&#39;</span><span class="p">,</span> <span class="s1">&#39;hand_left&#39;</span><span class="p">)</span>
+<span class="n">right_arm_joints</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;shoulder_right&#39;</span><span class="p">,</span> <span class="s1">&#39;elbow_right&#39;</span><span class="p">,</span> <span class="s1">&#39;wrist_right&#39;</span><span class="p">,</span> <span class="s1">&#39;hand_right&#39;</span><span class="p">)</span>
+<span class="n">left_leg_joints</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;hip_left&#39;</span><span class="p">,</span> <span class="s1">&#39;knee_left&#39;</span><span class="p">,</span> <span class="s1">&#39;ankle_left&#39;</span><span class="p">,</span> <span class="s1">&#39;foot_left&#39;</span><span class="p">)</span>
+<span class="n">right_leg_joints</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;hip_right&#39;</span><span class="p">,</span> <span class="s1">&#39;knee_right&#39;</span><span class="p">,</span> <span class="s1">&#39;ankle_right&#39;</span><span class="p">,</span> <span class="s1">&#39;foot_right&#39;</span><span class="p">)</span>
 <span class="n">skeleton_joints</span> <span class="o">=</span> <span class="n">torso_joints</span> <span class="o">+</span> <span class="n">left_arm_joints</span> <span class="o">+</span> <span class="n">right_arm_joints</span> <span class="o">+</span> <span class="n">left_leg_joints</span> <span class="o">+</span> <span class="n">right_leg_joints</span>
 
 
-<div class="viewcode-block" id="Skeleton"><a class="viewcode-back" href="../../../../pypot.sensor.html#pypot.sensor.kinect.sensor.Skeleton">[docs]</a><span class="k">class</span> <span class="nc">Skeleton</span><span class="p">(</span><span class="n">namedtuple</span><span class="p">(</span><span class="s">&#39;Skeleton&#39;</span><span class="p">,</span> <span class="p">(</span><span class="s">&#39;timestamp&#39;</span><span class="p">,</span> <span class="s">&#39;user_id&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="n">skeleton_joints</span><span class="p">)):</span>
-    <span class="n">joints</span> <span class="o">=</span> <span class="n">skeleton_joints</span>
+<div class="viewcode-block" id="Skeleton"><a class="viewcode-back" href="../../../../pypot.sensor.html#pypot.sensor.kinect.sensor.Skeleton">[docs]</a><span class="k">class</span> <span class="nc">Skeleton</span><span class="p">(</span><span class="n">namedtuple</span><span class="p">(</span><span class="s1">&#39;Skeleton&#39;</span><span class="p">,</span> <span class="p">(</span><span class="s1">&#39;timestamp&#39;</span><span class="p">,</span> <span class="s1">&#39;user_id&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="n">skeleton_joints</span><span class="p">)):</span>
+    <span class="n">joints</span> <span class="o">=</span> <span class="n">skeleton_joints</span></div>
 
-</div>
-<span class="n">Joint</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span><span class="s">&#39;Joint&#39;</span><span class="p">,</span> <span class="p">(</span><span class="s">&#39;position&#39;</span><span class="p">,</span> <span class="s">&#39;orientation&#39;</span><span class="p">,</span> <span class="s">&#39;pixel_coordinate&#39;</span><span class="p">))</span>
+
+<span class="n">Joint</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span><span class="s1">&#39;Joint&#39;</span><span class="p">,</span> <span class="p">(</span><span class="s1">&#39;position&#39;</span><span class="p">,</span> <span class="s1">&#39;orientation&#39;</span><span class="p">,</span> <span class="s1">&#39;pixel_coordinate&#39;</span><span class="p">))</span>
 
 
 <div class="viewcode-block" id="KinectSensor"><a class="viewcode-back" href="../../../../pypot.sensor.html#pypot.sensor.kinect.sensor.KinectSensor">[docs]</a><span class="k">class</span> <span class="nc">KinectSensor</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -178,8 +178,8 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">context</span> <span class="o">=</span> <span class="n">zmq</span><span class="o">.</span><span class="n">Context</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">sub_skel</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">socket</span><span class="p">(</span><span class="n">zmq</span><span class="o">.</span><span class="n">SUB</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">sub_skel</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s">&#39;tcp://{}:{}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">addr</span><span class="p">,</span> <span class="n">port</span><span class="p">))</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">sub_skel</span><span class="o">.</span><span class="n">setsockopt</span><span class="p">(</span><span class="n">zmq</span><span class="o">.</span><span class="n">SUBSCRIBE</span><span class="p">,</span> <span class="s">&#39;&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sub_skel</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s1">&#39;tcp://{}:{}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">addr</span><span class="p">,</span> <span class="n">port</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sub_skel</span><span class="o">.</span><span class="n">setsockopt</span><span class="p">(</span><span class="n">zmq</span><span class="o">.</span><span class="n">SUBSCRIBE</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
 
         <span class="n">t</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">get_skeleton</span><span class="p">)</span>
         <span class="n">t</span><span class="o">.</span><span class="n">daemon</span> <span class="o">=</span> <span class="bp">True</span>
@@ -187,12 +187,12 @@
 
 <div class="viewcode-block" id="KinectSensor.remove_user"><a class="viewcode-back" href="../../../../pypot.sensor.html#pypot.sensor.kinect.sensor.KinectSensor.remove_user">[docs]</a>    <span class="k">def</span> <span class="nf">remove_user</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user_index</span><span class="p">):</span>
         <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lock</span><span class="p">:</span>
-            <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">_skeleton</span><span class="p">[</span><span class="n">user_index</span><span class="p">]</span>
-</div>
+            <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">_skeleton</span><span class="p">[</span><span class="n">user_index</span><span class="p">]</span></div>
+
 <div class="viewcode-block" id="KinectSensor.remove_all_users"><a class="viewcode-back" href="../../../../pypot.sensor.html#pypot.sensor.kinect.sensor.KinectSensor.remove_all_users">[docs]</a>    <span class="k">def</span> <span class="nf">remove_all_users</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lock</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_skeleton</span> <span class="o">=</span> <span class="p">{}</span>
-</div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_skeleton</span> <span class="o">=</span> <span class="p">{}</span></div>
+
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">tracked_skeleton</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lock</span><span class="p">:</span>
@@ -207,10 +207,10 @@
         <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
             <span class="n">md</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sub_skel</span><span class="o">.</span><span class="n">recv_json</span><span class="p">()</span>
             <span class="n">msg</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sub_skel</span><span class="o">.</span><span class="n">recv</span><span class="p">()</span>
-            <span class="n">skel_array</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">fromstring</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s">&quot;,&quot;</span><span class="p">)</span>
-            <span class="n">skel_array</span> <span class="o">=</span> <span class="n">skel_array</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">md</span><span class="p">[</span><span class="s">&#39;shape&#39;</span><span class="p">])</span>
+            <span class="n">skel_array</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">fromstring</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;,&quot;</span><span class="p">)</span>
+            <span class="n">skel_array</span> <span class="o">=</span> <span class="n">skel_array</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">md</span><span class="p">[</span><span class="s1">&#39;shape&#39;</span><span class="p">])</span>
 
-            <span class="n">nb_joints</span> <span class="o">=</span> <span class="n">md</span><span class="p">[</span><span class="s">&#39;shape&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">nb_joints</span> <span class="o">=</span> <span class="n">md</span><span class="p">[</span><span class="s1">&#39;shape&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
             <span class="n">joints</span> <span class="o">=</span> <span class="p">[]</span>
             <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nb_joints</span><span class="p">):</span>
                 <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">w</span> <span class="o">=</span> <span class="n">skel_array</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">:</span><span class="mi">4</span><span class="p">]</span>
@@ -219,8 +219,8 @@
                 <span class="n">orientation</span> <span class="o">=</span> <span class="n">Quaternion</span><span class="p">(</span><span class="o">*</span><span class="n">skel_array</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">6</span><span class="p">:</span><span class="mi">10</span><span class="p">])</span>
                 <span class="n">joints</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Joint</span><span class="p">(</span><span class="n">position</span><span class="p">,</span> <span class="n">orientation</span><span class="p">,</span> <span class="n">pixel_coord</span><span class="p">))</span>
 
-            <span class="bp">self</span><span class="o">.</span><span class="n">tracked_skeleton</span> <span class="o">=</span> <span class="n">Skeleton</span><span class="p">(</span><span class="n">md</span><span class="p">[</span><span class="s">&#39;timestamp&#39;</span><span class="p">],</span> <span class="n">md</span><span class="p">[</span><span class="s">&#39;user_index&#39;</span><span class="p">],</span> <span class="o">*</span><span class="n">joints</span><span class="p">)</span>
-</div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">tracked_skeleton</span> <span class="o">=</span> <span class="n">Skeleton</span><span class="p">(</span><span class="n">md</span><span class="p">[</span><span class="s1">&#39;timestamp&#39;</span><span class="p">],</span> <span class="n">md</span><span class="p">[</span><span class="s1">&#39;user_index&#39;</span><span class="p">],</span> <span class="o">*</span><span class="n">joints</span><span class="p">)</span></div>
+
 <div class="viewcode-block" id="KinectSensor.run"><a class="viewcode-back" href="../../../../pypot.sensor.html#pypot.sensor.kinect.sensor.KinectSensor.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">cv2</span><span class="o">.</span><span class="n">startWindowThread</span><span class="p">()</span>
         <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
@@ -233,16 +233,16 @@
                         <span class="n">pt</span> <span class="o">=</span> <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">y</span><span class="p">))</span>
                         <span class="n">cv2</span><span class="o">.</span><span class="n">circle</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">pt</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">),</span> <span class="n">thickness</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
                 <span class="n">kinect</span><span class="o">.</span><span class="n">remove_all_users</span><span class="p">()</span>
-            <span class="n">cv2</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="s">&#39;Skeleton&#39;</span><span class="p">,</span> <span class="n">img</span><span class="p">)</span>
+            <span class="n">cv2</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="s1">&#39;Skeleton&#39;</span><span class="p">,</span> <span class="n">img</span><span class="p">)</span>
             <span class="n">cv2</span><span class="o">.</span><span class="n">waitKey</span><span class="p">(</span><span class="mi">50</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">sub_skel</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">term</span><span class="p">()</span>
-</div></div>
-<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">term</span><span class="p">()</span></div></div>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
     <span class="kn">import</span> <span class="nn">cv2</span>
 
-    <span class="n">kinect</span> <span class="o">=</span> <span class="n">KinectSensor</span><span class="p">(</span><span class="s">&#39;193.50.110.177&#39;</span><span class="p">,</span> <span class="mi">9999</span><span class="p">)</span>
+    <span class="n">kinect</span> <span class="o">=</span> <span class="n">KinectSensor</span><span class="p">(</span><span class="s1">&#39;193.50.110.177&#39;</span><span class="p">,</span> <span class="mi">9999</span><span class="p">)</span>
     <span class="n">kinect</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
 </pre></div>
 
@@ -260,7 +260,7 @@
 <div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
   <div class="navbar-inner">
     <ul class="nav navbar-nav ">
-        <li><a href="../../../../index.html">pypot 2.10.0 documentation</a></li>
+        <li><a href="../../../../index.html">pypot 2.11.0-rc.3 documentation</a></li>
     </ul>
 <ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
       
@@ -277,7 +277,7 @@
       <!-- footer -->
       <footer role="contentinfo">
           &copy; Copyright 2015, Poppy-Project.
-        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.3.1.
+        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.3.5.
       </footer>
       <!-- /footer -->
 

@@ -9,7 +9,7 @@
   <head>
     <meta charset="utf-8" />
     
-    <title>pypot.robot.config &mdash; pypot 2.10.0 documentation</title>
+    <title>pypot.robot.config &mdash; pypot 2.11.0-rc.3 documentation</title>
     <meta name="description" content="">
     <meta name="author" content="">
 
@@ -35,7 +35,7 @@
 <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
             URL_ROOT:    '../../../',
-            VERSION:     '2.10.0',
+            VERSION:     '2.11.0-rc.3',
             COLLAPSE_INDEX: false,
             FILE_SUFFIX: '.html',
             HAS_SOURCE:  true
@@ -51,7 +51,7 @@
 </script>
     <link rel="shortcut icon" href="../../../_static/pypot_logo-48x48.png"/>
     <link rel="author" title="About these documents" href="../../../about.html" />
-    <link rel="top" title="pypot 2.10.0 documentation" href="../../../index.html" />
+    <link rel="top" title="pypot 2.11.0-rc.3 documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body role="document">
@@ -64,7 +64,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="../../../index.html">pypot 2.10.0 documentation</a>
+          <a class="navbar-brand" href="../../../index.html">pypot 2.11.0-rc.3 documentation</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
@@ -135,7 +135,7 @@
                 <div class="body">
                   
   <h1>Source code for pypot.robot.config</h1><div class="highlight"><pre>
-<span class="sd">&quot;&quot;&quot;</span>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">The config module allows the definition of the structure of your robot.</span>
 
 <span class="sd">Configuration are written as Python dictionary so you can define/modify them programmatically. You can also import them form file such as JSON formatted file. In the configuration you have to define:</span>
@@ -150,6 +150,8 @@
 <span class="kn">import</span> <span class="nn">time</span>
 <span class="kn">import</span> <span class="nn">json</span>
 
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">OrderedDict</span>
+
 <span class="kn">import</span> <span class="nn">pypot.sensor</span>
 <span class="kn">import</span> <span class="nn">pypot.dynamixel</span>
 <span class="kn">import</span> <span class="nn">pypot.dynamixel.io</span>
@@ -161,7 +163,7 @@
 <span class="kn">from</span> <span class="nn">.controller</span> <span class="kn">import</span> <span class="n">DummyController</span>
 
 
-<span class="c"># This logger should always provides the config as extra</span>
+<span class="c1"># This logger should always provides the config as extra</span>
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="n">__name__</span><span class="p">)</span>
 
 
@@ -175,20 +177,20 @@
 <span class="sd">        For details on how to write such a configuration dictionnary, you should refer to the section :ref:`config_file`.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;Loading config... &#39;</span><span class="p">,</span> <span class="n">extra</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;config&#39;</span><span class="p">:</span> <span class="n">config</span><span class="p">})</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Loading config... &#39;</span><span class="p">,</span> <span class="n">extra</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;config&#39;</span><span class="p">:</span> <span class="n">config</span><span class="p">})</span>
 
-    <span class="n">alias</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s">&#39;motorgroups&#39;</span><span class="p">]</span>
+    <span class="n">alias</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s1">&#39;motorgroups&#39;</span><span class="p">]</span>
 
-    <span class="c"># Instatiate the different motor controllers</span>
+    <span class="c1"># Instatiate the different motor controllers</span>
     <span class="n">controllers</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">for</span> <span class="n">c_name</span><span class="p">,</span> <span class="n">c_params</span> <span class="ow">in</span> <span class="n">config</span><span class="p">[</span><span class="s">&#39;controllers&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="k">for</span> <span class="n">c_name</span><span class="p">,</span> <span class="n">c_params</span> <span class="ow">in</span> <span class="n">config</span><span class="p">[</span><span class="s1">&#39;controllers&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
         <span class="n">motor_names</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">([</span><span class="n">_motor_extractor</span><span class="p">(</span><span class="n">alias</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
-                           <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">c_params</span><span class="p">[</span><span class="s">&#39;attached_motors&#39;</span><span class="p">]],</span> <span class="p">[])</span>
+                           <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">c_params</span><span class="p">[</span><span class="s1">&#39;attached_motors&#39;</span><span class="p">]],</span> <span class="p">[])</span>
 
         <span class="n">attached_motors</span> <span class="o">=</span> <span class="p">[</span><span class="n">motor_from_confignode</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
                            <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">motor_names</span><span class="p">]</span>
 
-        <span class="c"># at least one of the motor is set as broken</span>
+        <span class="c1"># at least one of the motor is set as broken</span>
         <span class="k">if</span> <span class="p">[</span><span class="n">m</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">attached_motors</span> <span class="k">if</span> <span class="n">m</span><span class="o">.</span><span class="n">_broken</span><span class="p">]:</span>
             <span class="n">strict</span> <span class="o">=</span> <span class="bp">False</span>
 
@@ -196,14 +198,14 @@
         <span class="k">if</span> <span class="ow">not</span> <span class="n">use_dummy_io</span><span class="p">:</span>
             <span class="n">dxl_io</span> <span class="o">=</span> <span class="n">dxl_io_from_confignode</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">c_params</span><span class="p">,</span> <span class="n">attached_ids</span><span class="p">,</span> <span class="n">strict</span><span class="p">)</span>
 
-            <span class="n">check_motor_limits</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">dxl_io</span><span class="p">,</span> <span class="n">motor_names</span><span class="p">)</span>
+            <span class="n">check_motor_eprom_configuration</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">dxl_io</span><span class="p">,</span> <span class="n">motor_names</span><span class="p">)</span>
 
-            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;Instantiating controller on </span><span class="si">%s</span><span class="s"> with motors </span><span class="si">%s</span><span class="s">&#39;</span><span class="p">,</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Instantiating controller on </span><span class="si">%s</span><span class="s1"> with motors </span><span class="si">%s</span><span class="s1">&#39;</span><span class="p">,</span>
                         <span class="n">dxl_io</span><span class="o">.</span><span class="n">port</span><span class="p">,</span> <span class="n">motor_names</span><span class="p">,</span>
-                        <span class="n">extra</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;config&#39;</span><span class="p">:</span> <span class="n">config</span><span class="p">})</span>
+                        <span class="n">extra</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;config&#39;</span><span class="p">:</span> <span class="n">config</span><span class="p">})</span>
 
-            <span class="n">syncloop</span> <span class="o">=</span> <span class="p">(</span><span class="n">c_params</span><span class="p">[</span><span class="s">&#39;syncloop&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="s">&#39;syncloop&#39;</span> <span class="ow">in</span> <span class="n">c_params</span>
-                        <span class="k">else</span> <span class="s">&#39;BaseDxlController&#39;</span><span class="p">)</span>
+            <span class="n">syncloop</span> <span class="o">=</span> <span class="p">(</span><span class="n">c_params</span><span class="p">[</span><span class="s1">&#39;syncloop&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="s1">&#39;syncloop&#39;</span> <span class="ow">in</span> <span class="n">c_params</span>
+                        <span class="k">else</span> <span class="s1">&#39;BaseDxlController&#39;</span><span class="p">)</span>
             <span class="n">SyncLoopCls</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">pypot</span><span class="o">.</span><span class="n">dynamixel</span><span class="o">.</span><span class="n">syncloop</span><span class="p">,</span> <span class="n">syncloop</span><span class="p">)</span>
 
             <span class="n">c</span> <span class="o">=</span> <span class="n">SyncLoopCls</span><span class="p">(</span><span class="n">dxl_io</span><span class="p">,</span> <span class="n">attached_motors</span><span class="p">)</span>
@@ -214,82 +216,82 @@
     <span class="n">robot</span> <span class="o">=</span> <span class="n">Robot</span><span class="p">(</span><span class="n">motor_controllers</span><span class="o">=</span><span class="n">controllers</span><span class="p">,</span> <span class="n">sync</span><span class="o">=</span><span class="n">sync</span><span class="p">)</span>
     <span class="n">make_alias</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">robot</span><span class="p">)</span>
 
-    <span class="c"># Create all sensors and attached them</span>
-    <span class="k">if</span> <span class="s">&#39;sensors&#39;</span> <span class="ow">in</span> <span class="n">config</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">use_dummy_io</span><span class="p">:</span>
+    <span class="c1"># Create all sensors and attached them</span>
+    <span class="k">if</span> <span class="s1">&#39;sensors&#39;</span> <span class="ow">in</span> <span class="n">config</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">use_dummy_io</span><span class="p">:</span>
         <span class="n">sensors</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">s_name</span> <span class="ow">in</span> <span class="n">config</span><span class="p">[</span><span class="s">&#39;sensors&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+        <span class="k">for</span> <span class="n">s_name</span> <span class="ow">in</span> <span class="n">config</span><span class="p">[</span><span class="s1">&#39;sensors&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
             <span class="n">sensor</span> <span class="o">=</span> <span class="n">sensor_from_confignode</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">s_name</span><span class="p">,</span> <span class="n">robot</span><span class="p">)</span>
             <span class="nb">setattr</span><span class="p">(</span><span class="n">robot</span><span class="p">,</span> <span class="n">s_name</span><span class="p">,</span> <span class="n">sensor</span><span class="p">)</span>
             <span class="n">sensors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sensor</span><span class="p">)</span>
 
         <span class="n">robot</span><span class="o">.</span><span class="n">sensors</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">sensors</span><span class="p">)</span>
-        <span class="p">[</span><span class="n">s</span><span class="o">.</span><span class="n">start</span><span class="p">()</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">sensors</span> <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="s">&#39;start&#39;</span><span class="p">)]</span>
+        <span class="p">[</span><span class="n">s</span><span class="o">.</span><span class="n">start</span><span class="p">()</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">sensors</span> <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="s1">&#39;start&#39;</span><span class="p">)]</span>
 
-    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;Loading complete!&#39;</span><span class="p">,</span>
-                <span class="n">extra</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;config&#39;</span><span class="p">:</span> <span class="n">config</span><span class="p">})</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Loading complete!&#39;</span><span class="p">,</span>
+                <span class="n">extra</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;config&#39;</span><span class="p">:</span> <span class="n">config</span><span class="p">})</span>
 
-    <span class="k">return</span> <span class="n">robot</span>
+    <span class="k">return</span> <span class="n">robot</span></div>
 
-</div>
+
 <div class="viewcode-block" id="motor_from_confignode"><a class="viewcode-back" href="../../../pypot.robot.html#pypot.robot.config.motor_from_confignode">[docs]</a><span class="k">def</span> <span class="nf">motor_from_confignode</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">motor_name</span><span class="p">):</span>
-    <span class="n">params</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s">&#39;motors&#39;</span><span class="p">][</span><span class="n">motor_name</span><span class="p">]</span>
+    <span class="n">params</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s1">&#39;motors&#39;</span><span class="p">][</span><span class="n">motor_name</span><span class="p">]</span>
 
-    <span class="nb">type</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="s">&#39;type&#39;</span><span class="p">]</span>
-    <span class="k">if</span> <span class="nb">type</span> <span class="o">==</span> <span class="s">&#39;XL-320&#39;</span><span class="p">:</span>
+    <span class="nb">type</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">]</span>
+    <span class="k">if</span> <span class="nb">type</span> <span class="o">==</span> <span class="s1">&#39;XL-320&#39;</span><span class="p">:</span>
         <span class="n">MotorCls</span> <span class="o">=</span> <span class="n">pypot</span><span class="o">.</span><span class="n">dynamixel</span><span class="o">.</span><span class="n">motor</span><span class="o">.</span><span class="n">DxlXL320Motor</span>
-    <span class="k">elif</span> <span class="nb">type</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&#39;MX&#39;</span><span class="p">):</span>
+    <span class="k">elif</span> <span class="nb">type</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;MX&#39;</span><span class="p">):</span>
         <span class="n">MotorCls</span> <span class="o">=</span> <span class="n">pypot</span><span class="o">.</span><span class="n">dynamixel</span><span class="o">.</span><span class="n">motor</span><span class="o">.</span><span class="n">DxlMXMotor</span>
-    <span class="k">elif</span> <span class="nb">type</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&#39;AX&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">type</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&#39;RX&#39;</span><span class="p">):</span>
+    <span class="k">elif</span> <span class="nb">type</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;AX&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">type</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;RX&#39;</span><span class="p">):</span>
         <span class="n">MotorCls</span> <span class="o">=</span> <span class="n">pypot</span><span class="o">.</span><span class="n">dynamixel</span><span class="o">.</span><span class="n">motor</span><span class="o">.</span><span class="n">DxlAXRXMotor</span>
 
-    <span class="n">broken</span> <span class="o">=</span> <span class="s">&#39;broken&#39;</span> <span class="ow">in</span> <span class="n">params</span> <span class="ow">and</span> <span class="n">params</span><span class="p">[</span><span class="s">&#39;broken&#39;</span><span class="p">]</span>
+    <span class="n">broken</span> <span class="o">=</span> <span class="s1">&#39;broken&#39;</span> <span class="ow">in</span> <span class="n">params</span> <span class="ow">and</span> <span class="n">params</span><span class="p">[</span><span class="s1">&#39;broken&#39;</span><span class="p">]</span>
 
-    <span class="n">m</span> <span class="o">=</span> <span class="n">MotorCls</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">params</span><span class="p">[</span><span class="s">&#39;id&#39;</span><span class="p">],</span>
+    <span class="n">m</span> <span class="o">=</span> <span class="n">MotorCls</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">params</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">],</span>
                  <span class="n">name</span><span class="o">=</span><span class="n">motor_name</span><span class="p">,</span>
                  <span class="n">model</span><span class="o">=</span><span class="nb">type</span><span class="p">,</span>
-                 <span class="n">direct</span><span class="o">=</span><span class="bp">True</span> <span class="k">if</span> <span class="n">params</span><span class="p">[</span><span class="s">&#39;orientation&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;direct&#39;</span> <span class="k">else</span> <span class="bp">False</span><span class="p">,</span>
-                 <span class="n">offset</span><span class="o">=</span><span class="n">params</span><span class="p">[</span><span class="s">&#39;offset&#39;</span><span class="p">],</span>
+                 <span class="n">direct</span><span class="o">=</span><span class="bp">True</span> <span class="k">if</span> <span class="n">params</span><span class="p">[</span><span class="s1">&#39;orientation&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;direct&#39;</span> <span class="k">else</span> <span class="bp">False</span><span class="p">,</span>
+                 <span class="n">offset</span><span class="o">=</span><span class="n">params</span><span class="p">[</span><span class="s1">&#39;offset&#39;</span><span class="p">],</span>
                  <span class="n">broken</span><span class="o">=</span><span class="n">broken</span><span class="p">)</span>
 
-    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&quot;Instantiating motor &#39;</span><span class="si">%s</span><span class="s">&#39; id=</span><span class="si">%d</span><span class="s"> direct=</span><span class="si">%s</span><span class="s"> offset=</span><span class="si">%s</span><span class="s">&quot;</span><span class="p">,</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Instantiating motor &#39;</span><span class="si">%s</span><span class="s2">&#39; id=</span><span class="si">%d</span><span class="s2"> direct=</span><span class="si">%s</span><span class="s2"> offset=</span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span>
                 <span class="n">m</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">m</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">m</span><span class="o">.</span><span class="n">direct</span><span class="p">,</span> <span class="n">m</span><span class="o">.</span><span class="n">offset</span><span class="p">,</span>
-                <span class="n">extra</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;config&#39;</span><span class="p">:</span> <span class="n">config</span><span class="p">})</span>
+                <span class="n">extra</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;config&#39;</span><span class="p">:</span> <span class="n">config</span><span class="p">})</span>
 
-    <span class="k">return</span> <span class="n">m</span>
+    <span class="k">return</span> <span class="n">m</span></div>
 
-</div>
+
 <div class="viewcode-block" id="sensor_from_confignode"><a class="viewcode-back" href="../../../pypot.robot.html#pypot.robot.config.sensor_from_confignode">[docs]</a><span class="k">def</span> <span class="nf">sensor_from_confignode</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">s_name</span><span class="p">,</span> <span class="n">robot</span><span class="p">):</span>
-    <span class="n">args</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s">&#39;sensors&#39;</span><span class="p">][</span><span class="n">s_name</span><span class="p">]</span>
-    <span class="n">cls_name</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s">&quot;type&quot;</span><span class="p">)</span>
+    <span class="n">args</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s1">&#39;sensors&#39;</span><span class="p">][</span><span class="n">s_name</span><span class="p">]</span>
+    <span class="n">cls_name</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;type&quot;</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="s">&#39;need_robot&#39;</span> <span class="ow">in</span> <span class="n">args</span> <span class="ow">and</span> <span class="n">args</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s">&#39;need_robot&#39;</span><span class="p">):</span>
-        <span class="n">args</span><span class="p">[</span><span class="s">&#39;robot&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">robot</span>
+    <span class="k">if</span> <span class="s1">&#39;need_robot&#39;</span> <span class="ow">in</span> <span class="n">args</span> <span class="ow">and</span> <span class="n">args</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;need_robot&#39;</span><span class="p">):</span>
+        <span class="n">args</span><span class="p">[</span><span class="s1">&#39;robot&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">robot</span>
 
     <span class="n">SensorCls</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">pypot</span><span class="o">.</span><span class="n">sensor</span><span class="p">,</span> <span class="n">cls_name</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">SensorCls</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">s_name</span><span class="p">,</span> <span class="o">**</span><span class="n">args</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">SensorCls</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">s_name</span><span class="p">,</span> <span class="o">**</span><span class="n">args</span><span class="p">)</span></div>
 
-</div>
+
 <div class="viewcode-block" id="dxl_io_from_confignode"><a class="viewcode-back" href="../../../pypot.robot.html#pypot.robot.config.dxl_io_from_confignode">[docs]</a><span class="k">def</span> <span class="nf">dxl_io_from_confignode</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">c_params</span><span class="p">,</span> <span class="n">ids</span><span class="p">,</span> <span class="n">strict</span><span class="p">):</span>
-    <span class="n">port</span> <span class="o">=</span> <span class="n">c_params</span><span class="p">[</span><span class="s">&#39;port&#39;</span><span class="p">]</span>
+    <span class="n">port</span> <span class="o">=</span> <span class="n">c_params</span><span class="p">[</span><span class="s1">&#39;port&#39;</span><span class="p">]</span>
 
-    <span class="k">if</span> <span class="n">port</span> <span class="o">==</span> <span class="s">&#39;auto&#39;</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">port</span> <span class="o">==</span> <span class="s1">&#39;auto&#39;</span><span class="p">:</span>
         <span class="n">port</span> <span class="o">=</span> <span class="n">pypot</span><span class="o">.</span><span class="n">dynamixel</span><span class="o">.</span><span class="n">find_port</span><span class="p">(</span><span class="n">ids</span><span class="p">,</span> <span class="n">strict</span><span class="p">)</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;Found port {} for ids {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">port</span><span class="p">,</span> <span class="n">ids</span><span class="p">))</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Found port {} for ids {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">port</span><span class="p">,</span> <span class="n">ids</span><span class="p">))</span>
 
-    <span class="n">sync_read</span> <span class="o">=</span> <span class="n">c_params</span><span class="p">[</span><span class="s">&#39;sync_read&#39;</span><span class="p">]</span>
+    <span class="n">sync_read</span> <span class="o">=</span> <span class="n">c_params</span><span class="p">[</span><span class="s1">&#39;sync_read&#39;</span><span class="p">]</span>
 
-    <span class="k">if</span> <span class="n">sync_read</span> <span class="o">==</span> <span class="s">&#39;auto&#39;</span><span class="p">:</span>
-        <span class="c"># USB Vendor Product ID &quot;VID:PID=0403:6001&quot; for USB2Dynamixel</span>
-        <span class="c"># USB Vendor Product ID &quot;VID:PID=16d0:06a7&quot; for USBAX</span>
+    <span class="k">if</span> <span class="n">sync_read</span> <span class="o">==</span> <span class="s1">&#39;auto&#39;</span><span class="p">:</span>
+        <span class="c1"># USB Vendor Product ID &quot;VID:PID=0403:6001&quot; for USB2Dynamixel</span>
+        <span class="c1"># USB Vendor Product ID &quot;VID:PID=16d0:06a7&quot; for USBAX</span>
         <span class="n">vendor_pid</span> <span class="o">=</span> <span class="n">pypot</span><span class="o">.</span><span class="n">dynamixel</span><span class="o">.</span><span class="n">get_port_vendor_info</span><span class="p">(</span><span class="n">port</span><span class="p">)</span>
-        <span class="n">sync_read</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;PID=0403:6001&#39;</span> <span class="ow">in</span> <span class="n">vendor_pid</span> <span class="ow">and</span> <span class="n">c_params</span><span class="p">[</span><span class="s">&#39;protocol&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">2</span> <span class="ow">or</span>
-                     <span class="s">&#39;PID=16d0:06a7&#39;</span> <span class="ow">in</span> <span class="n">vendor_pid</span><span class="p">)</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&#39;sync_read is {}. Vendor pid = {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">sync_read</span><span class="p">,</span> <span class="n">vendor_pid</span><span class="p">))</span>
+        <span class="n">sync_read</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;PID=0403:6001&#39;</span> <span class="ow">in</span> <span class="n">vendor_pid</span> <span class="ow">and</span> <span class="n">c_params</span><span class="p">[</span><span class="s1">&#39;protocol&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">2</span> <span class="ow">or</span>
+                     <span class="s1">&#39;PID=16d0:06a7&#39;</span> <span class="ow">in</span> <span class="n">vendor_pid</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;sync_read is {}. Vendor pid = {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">sync_read</span><span class="p">,</span> <span class="n">vendor_pid</span><span class="p">))</span>
 
     <span class="n">handler</span> <span class="o">=</span> <span class="n">pypot</span><span class="o">.</span><span class="n">dynamixel</span><span class="o">.</span><span class="n">error</span><span class="o">.</span><span class="n">BaseErrorHandler</span>
 
     <span class="n">DxlIOCls</span> <span class="o">=</span> <span class="p">(</span><span class="n">pypot</span><span class="o">.</span><span class="n">dynamixel</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">Dxl320IO</span>
-                <span class="k">if</span> <span class="s">&#39;protocol&#39;</span> <span class="ow">in</span> <span class="n">c_params</span> <span class="ow">and</span> <span class="n">c_params</span><span class="p">[</span><span class="s">&#39;protocol&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">2</span>
+                <span class="k">if</span> <span class="s1">&#39;protocol&#39;</span> <span class="ow">in</span> <span class="n">c_params</span> <span class="ow">and</span> <span class="n">c_params</span><span class="p">[</span><span class="s1">&#39;protocol&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">2</span>
                 <span class="k">else</span> <span class="n">pypot</span><span class="o">.</span><span class="n">dynamixel</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">DxlIO</span><span class="p">)</span>
 
     <span class="n">dxl_io</span> <span class="o">=</span> <span class="n">DxlIOCls</span><span class="p">(</span><span class="n">port</span><span class="o">=</span><span class="n">port</span><span class="p">,</span>
@@ -299,76 +301,90 @@
     <span class="n">found_ids</span> <span class="o">=</span> <span class="n">dxl_io</span><span class="o">.</span><span class="n">scan</span><span class="p">(</span><span class="n">ids</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">ids</span> <span class="o">!=</span> <span class="n">found_ids</span><span class="p">:</span>
         <span class="n">missing_ids</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">ids</span><span class="p">)</span> <span class="o">-</span> <span class="nb">set</span><span class="p">(</span><span class="n">found_ids</span><span class="p">))</span>
-        <span class="n">msg</span> <span class="o">=</span> <span class="s">&#39;Could not find the motors {} on bus {}.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">missing_ids</span><span class="p">,</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="s1">&#39;Could not find the motors {} on bus {}.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">missing_ids</span><span class="p">,</span>
                                                                <span class="n">dxl_io</span><span class="o">.</span><span class="n">port</span><span class="p">)</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">strict</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">pypot</span><span class="o">.</span><span class="n">dynamixel</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">DxlError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 
-    <span class="k">return</span> <span class="n">dxl_io</span>
+    <span class="k">return</span> <span class="n">dxl_io</span></div>
 
-</div>
-<div class="viewcode-block" id="check_motor_limits"><a class="viewcode-back" href="../../../pypot.robot.html#pypot.robot.config.check_motor_limits">[docs]</a><span class="k">def</span> <span class="nf">check_motor_limits</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">dxl_io</span><span class="p">,</span> <span class="n">motor_names</span><span class="p">):</span>
+
+<div class="viewcode-block" id="check_motor_eprom_configuration"><a class="viewcode-back" href="../../../pypot.robot.html#pypot.robot.config.check_motor_eprom_configuration">[docs]</a><span class="k">def</span> <span class="nf">check_motor_eprom_configuration</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">dxl_io</span><span class="p">,</span> <span class="n">motor_names</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Change the angles limits depanding on the robot configuration ;</span>
+<span class="sd">        Check if the return delay time is set to 0.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">changed_angle_limits</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">changed_return_delay_time</span> <span class="o">=</span> <span class="p">{}</span>
 
     <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">motor_names</span><span class="p">:</span>
-        <span class="n">m</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s">&#39;motors&#39;</span><span class="p">][</span><span class="n">name</span><span class="p">]</span>
-        <span class="nb">id</span> <span class="o">=</span> <span class="n">m</span><span class="p">[</span><span class="s">&#39;id&#39;</span><span class="p">]</span>
+        <span class="n">m</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s1">&#39;motors&#39;</span><span class="p">][</span><span class="n">name</span><span class="p">]</span>
+        <span class="nb">id</span> <span class="o">=</span> <span class="n">m</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span>
 
         <span class="k">try</span><span class="p">:</span>
             <span class="n">old_limits</span> <span class="o">=</span> <span class="n">dxl_io</span><span class="o">.</span><span class="n">get_angle_limit</span><span class="p">((</span><span class="nb">id</span><span class="p">,</span> <span class="p">))[</span><span class="mi">0</span><span class="p">]</span>
-        <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>  <span class="c"># probably a broken motor so we just skip</span>
+            <span class="n">old_return_delay_time</span> <span class="o">=</span> <span class="n">dxl_io</span><span class="o">.</span><span class="n">get_return_delay_time</span><span class="p">((</span><span class="nb">id</span><span class="p">,</span> <span class="p">))[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>  <span class="c1"># probably a broken motor so we just skip</span>
             <span class="k">continue</span>
-        <span class="n">new_limits</span> <span class="o">=</span> <span class="n">m</span><span class="p">[</span><span class="s">&#39;angle_limit&#39;</span><span class="p">]</span>
 
+        <span class="k">if</span> <span class="n">old_return_delay_time</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Return delay time of </span><span class="si">%s</span><span class="s2"> changed from </span><span class="si">%s</span><span class="s2"> to 0&quot;</span><span class="p">,</span>
+                           <span class="n">name</span><span class="p">,</span> <span class="n">old_return_delay_time</span><span class="p">)</span>
+            <span class="n">changed_return_delay_time</span><span class="p">[</span><span class="nb">id</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="n">new_limits</span> <span class="o">=</span> <span class="n">m</span><span class="p">[</span><span class="s1">&#39;angle_limit&#39;</span><span class="p">]</span>
         <span class="n">d</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">new_limits</span><span class="p">)</span> <span class="o">-</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">old_limits</span><span class="p">))</span>
         <span class="k">if</span> <span class="n">d</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s">&quot;Limits of &#39;</span><span class="si">%s</span><span class="s">&#39; changed to </span><span class="si">%s</span><span class="s">&quot;</span><span class="p">,</span>
-                           <span class="n">name</span><span class="p">,</span> <span class="n">new_limits</span><span class="p">,</span>
-                           <span class="n">extra</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;config&#39;</span><span class="p">:</span> <span class="n">config</span><span class="p">})</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Limits of &#39;</span><span class="si">%s</span><span class="s2">&#39; changed from </span><span class="si">%s</span><span class="s2"> to </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span>
+                           <span class="n">name</span><span class="p">,</span> <span class="n">old_limits</span><span class="p">,</span> <span class="n">new_limits</span><span class="p">,</span>
+                           <span class="n">extra</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;config&#39;</span><span class="p">:</span> <span class="n">config</span><span class="p">})</span>
             <span class="n">changed_angle_limits</span><span class="p">[</span><span class="nb">id</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_limits</span>
 
     <span class="k">if</span> <span class="n">changed_angle_limits</span><span class="p">:</span>
         <span class="n">dxl_io</span><span class="o">.</span><span class="n">set_angle_limit</span><span class="p">(</span><span class="n">changed_angle_limits</span><span class="p">)</span>
-        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span>
 
-</div>
+    <span class="k">if</span> <span class="n">changed_return_delay_time</span><span class="p">:</span>
+        <span class="n">dxl_io</span><span class="o">.</span><span class="n">set_return_delay_time</span><span class="p">(</span><span class="n">changed_return_delay_time</span><span class="p">)</span>
+        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span></div>
+
+
 <div class="viewcode-block" id="instatiate_motors"><a class="viewcode-back" href="../../../pypot.robot.html#pypot.robot.config.instatiate_motors">[docs]</a><span class="k">def</span> <span class="nf">instatiate_motors</span><span class="p">(</span><span class="n">config</span><span class="p">):</span>
     <span class="n">motors</span> <span class="o">=</span> <span class="p">[]</span>
 
-    <span class="k">for</span> <span class="n">m_name</span><span class="p">,</span> <span class="n">m_params</span> <span class="ow">in</span> <span class="n">config</span><span class="p">[</span><span class="s">&#39;motors&#39;</span><span class="p">]:</span>
-        <span class="n">MotorCls</span> <span class="o">=</span> <span class="p">(</span><span class="n">pypot</span><span class="o">.</span><span class="n">dynamixel</span><span class="o">.</span><span class="n">motor</span><span class="o">.</span><span class="n">DxlMXMotor</span> <span class="k">if</span> <span class="n">m_params</span><span class="p">[</span><span class="s">&#39;type&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&#39;MX&#39;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">m_name</span><span class="p">,</span> <span class="n">m_params</span> <span class="ow">in</span> <span class="n">config</span><span class="p">[</span><span class="s1">&#39;motors&#39;</span><span class="p">]:</span>
+        <span class="n">MotorCls</span> <span class="o">=</span> <span class="p">(</span><span class="n">pypot</span><span class="o">.</span><span class="n">dynamixel</span><span class="o">.</span><span class="n">motor</span><span class="o">.</span><span class="n">DxlMXMotor</span> <span class="k">if</span> <span class="n">m_params</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;MX&#39;</span><span class="p">)</span>
                     <span class="k">else</span> <span class="n">pypot</span><span class="o">.</span><span class="n">dynamixel</span><span class="o">.</span><span class="n">motor</span><span class="o">.</span><span class="n">DxlAXRXMotor</span><span class="p">)</span>
 
-        <span class="n">m</span> <span class="o">=</span> <span class="n">MotorCls</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">m_params</span><span class="p">[</span><span class="s">&#39;id&#39;</span><span class="p">],</span>
+        <span class="n">m</span> <span class="o">=</span> <span class="n">MotorCls</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="n">m_params</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">],</span>
                      <span class="n">name</span><span class="o">=</span><span class="n">m_name</span><span class="p">,</span>
-                     <span class="n">direct</span><span class="o">=</span><span class="bp">True</span> <span class="k">if</span> <span class="n">m_params</span><span class="p">[</span><span class="s">&#39;orientation&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;direct&#39;</span> <span class="k">else</span> <span class="bp">False</span><span class="p">,</span>
-                     <span class="n">offset</span><span class="o">=</span><span class="n">m_params</span><span class="p">[</span><span class="s">&#39;offset&#39;</span><span class="p">])</span>
+                     <span class="n">direct</span><span class="o">=</span><span class="bp">True</span> <span class="k">if</span> <span class="n">m_params</span><span class="p">[</span><span class="s1">&#39;orientation&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;direct&#39;</span> <span class="k">else</span> <span class="bp">False</span><span class="p">,</span>
+                     <span class="n">offset</span><span class="o">=</span><span class="n">m_params</span><span class="p">[</span><span class="s1">&#39;offset&#39;</span><span class="p">])</span>
 
         <span class="n">motors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
 
-        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&quot;Instantiating motor &#39;</span><span class="si">%s</span><span class="s">&#39; id=</span><span class="si">%d</span><span class="s"> direct=</span><span class="si">%s</span><span class="s"> offset=</span><span class="si">%s</span><span class="s">&quot;</span><span class="p">,</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Instantiating motor &#39;</span><span class="si">%s</span><span class="s2">&#39; id=</span><span class="si">%d</span><span class="s2"> direct=</span><span class="si">%s</span><span class="s2"> offset=</span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span>
                     <span class="n">m</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">m</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">m</span><span class="o">.</span><span class="n">direct</span><span class="p">,</span> <span class="n">m</span><span class="o">.</span><span class="n">offset</span><span class="p">,</span>
-                    <span class="n">extra</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;config&#39;</span><span class="p">:</span> <span class="n">config</span><span class="p">})</span>
+                    <span class="n">extra</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;config&#39;</span><span class="p">:</span> <span class="n">config</span><span class="p">})</span>
 
-    <span class="k">return</span> <span class="n">motors</span>
+    <span class="k">return</span> <span class="n">motors</span></div>
 
-</div>
+
 <div class="viewcode-block" id="make_alias"><a class="viewcode-back" href="../../../pypot.robot.html#pypot.robot.config.make_alias">[docs]</a><span class="k">def</span> <span class="nf">make_alias</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">robot</span><span class="p">):</span>
-    <span class="n">alias</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s">&#39;motorgroups&#39;</span><span class="p">]</span>
+    <span class="n">alias</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s1">&#39;motorgroups&#39;</span><span class="p">]</span>
 
-    <span class="c"># Create the alias for the motorgroups</span>
+    <span class="c1"># Create the alias for the motorgroups</span>
     <span class="k">for</span> <span class="n">alias_name</span> <span class="ow">in</span> <span class="n">alias</span><span class="p">:</span>
         <span class="n">motors</span> <span class="o">=</span> <span class="p">[</span><span class="nb">getattr</span><span class="p">(</span><span class="n">robot</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">_motor_extractor</span><span class="p">(</span><span class="n">alias</span><span class="p">,</span> <span class="n">alias_name</span><span class="p">)]</span>
         <span class="nb">setattr</span><span class="p">(</span><span class="n">robot</span><span class="p">,</span> <span class="n">alias_name</span><span class="p">,</span> <span class="n">motors</span><span class="p">)</span>
         <span class="n">robot</span><span class="o">.</span><span class="n">alias</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">alias_name</span><span class="p">)</span>
 
-        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&quot;Creating alias &#39;</span><span class="si">%s</span><span class="s">&#39; for motors </span><span class="si">%s</span><span class="s">&quot;</span><span class="p">,</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Creating alias &#39;</span><span class="si">%s</span><span class="s2">&#39; for motors </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span>
                     <span class="n">alias_name</span><span class="p">,</span> <span class="p">[</span><span class="n">motor</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">motor</span> <span class="ow">in</span> <span class="n">motors</span><span class="p">],</span>
-                    <span class="n">extra</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;config&#39;</span><span class="p">:</span> <span class="n">config</span><span class="p">})</span>
+                    <span class="n">extra</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;config&#39;</span><span class="p">:</span> <span class="n">config</span><span class="p">})</span></div>
 
-</div>
+
 <div class="viewcode-block" id="from_json"><a class="viewcode-back" href="../../../pypot.robot.html#pypot.robot.config.from_json">[docs]</a><span class="k">def</span> <span class="nf">from_json</span><span class="p">(</span><span class="n">json_file</span><span class="p">,</span> <span class="n">sync</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">use_dummy_io</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; Returns a :class:`~pypot.robot.robot.Robot` instance created from a JSON configuration file.</span>
 
@@ -376,15 +392,15 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">json_file</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-        <span class="n">config</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+        <span class="n">config</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">object_pairs_hook</span><span class="o">=</span><span class="n">OrderedDict</span><span class="p">)</span>
 
-    <span class="k">return</span> <span class="n">from_config</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">sync</span><span class="o">=</span><span class="n">sync</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="n">strict</span><span class="p">,</span> <span class="n">use_dummy_io</span><span class="o">=</span><span class="n">use_dummy_io</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">from_config</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">sync</span><span class="o">=</span><span class="n">sync</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="n">strict</span><span class="p">,</span> <span class="n">use_dummy_io</span><span class="o">=</span><span class="n">use_dummy_io</span><span class="p">)</span></div>
 
-</div>
+
 <div class="viewcode-block" id="use_dummy_robot"><a class="viewcode-back" href="../../../pypot.robot.html#pypot.robot.config.use_dummy_robot">[docs]</a><span class="k">def</span> <span class="nf">use_dummy_robot</span><span class="p">(</span><span class="n">json_file</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">from_json</span><span class="p">(</span><span class="n">json_file</span><span class="p">,</span> <span class="n">use_dummy_io</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">from_json</span><span class="p">(</span><span class="n">json_file</span><span class="p">,</span> <span class="n">use_dummy_io</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span></div>
 
-</div>
+
 <span class="k">def</span> <span class="nf">_motor_extractor</span><span class="p">(</span><span class="n">alias</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
     <span class="n">l</span> <span class="o">=</span> <span class="p">[]</span>
 
@@ -397,58 +413,58 @@
 
 
 <span class="n">ergo_robot_config</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s">&#39;controllers&#39;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s">&#39;my_dxl_controller&#39;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="s">&#39;sync_read&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>
-            <span class="s">&#39;attached_motors&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s">&#39;base&#39;</span><span class="p">,</span> <span class="s">&#39;tip&#39;</span><span class="p">],</span>
-            <span class="s">&#39;port&#39;</span><span class="p">:</span> <span class="s">&#39;auto&#39;</span>
+    <span class="s1">&#39;controllers&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;my_dxl_controller&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s1">&#39;sync_read&#39;</span><span class="p">:</span> <span class="bp">False</span><span class="p">,</span>
+            <span class="s1">&#39;attached_motors&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;base&#39;</span><span class="p">,</span> <span class="s1">&#39;tip&#39;</span><span class="p">],</span>
+            <span class="s1">&#39;port&#39;</span><span class="p">:</span> <span class="s1">&#39;auto&#39;</span>
         <span class="p">}</span>
     <span class="p">},</span>
-    <span class="s">&#39;motorgroups&#39;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s">&#39;base&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s">&#39;m1&#39;</span><span class="p">,</span> <span class="s">&#39;m2&#39;</span><span class="p">,</span> <span class="s">&#39;m3&#39;</span><span class="p">],</span>
-        <span class="s">&#39;tip&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s">&#39;m4&#39;</span><span class="p">,</span> <span class="s">&#39;m5&#39;</span><span class="p">,</span> <span class="s">&#39;m6&#39;</span><span class="p">]</span>
+    <span class="s1">&#39;motorgroups&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;base&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;m1&#39;</span><span class="p">,</span> <span class="s1">&#39;m2&#39;</span><span class="p">,</span> <span class="s1">&#39;m3&#39;</span><span class="p">],</span>
+        <span class="s1">&#39;tip&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;m4&#39;</span><span class="p">,</span> <span class="s1">&#39;m5&#39;</span><span class="p">,</span> <span class="s1">&#39;m6&#39;</span><span class="p">]</span>
     <span class="p">},</span>
-    <span class="s">&#39;motors&#39;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s">&#39;m5&#39;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="s">&#39;orientation&#39;</span><span class="p">:</span> <span class="s">&#39;indirect&#39;</span><span class="p">,</span>
-            <span class="s">&#39;type&#39;</span><span class="p">:</span> <span class="s">&#39;MX-28&#39;</span><span class="p">,</span>
-            <span class="s">&#39;id&#39;</span><span class="p">:</span> <span class="mi">15</span><span class="p">,</span>
-            <span class="s">&#39;angle_limit&#39;</span><span class="p">:</span> <span class="p">[</span><span class="o">-</span><span class="mf">90.0</span><span class="p">,</span> <span class="mf">90.0</span><span class="p">],</span>
-            <span class="s">&#39;offset&#39;</span><span class="p">:</span> <span class="mf">0.0</span>
+    <span class="s1">&#39;motors&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s1">&#39;m5&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s1">&#39;orientation&#39;</span><span class="p">:</span> <span class="s1">&#39;indirect&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;MX-28&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="mi">15</span><span class="p">,</span>
+            <span class="s1">&#39;angle_limit&#39;</span><span class="p">:</span> <span class="p">[</span><span class="o">-</span><span class="mf">90.0</span><span class="p">,</span> <span class="mf">90.0</span><span class="p">],</span>
+            <span class="s1">&#39;offset&#39;</span><span class="p">:</span> <span class="mf">0.0</span>
         <span class="p">},</span>
-        <span class="s">&#39;m4&#39;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="s">&#39;orientation&#39;</span><span class="p">:</span> <span class="s">&#39;direct&#39;</span><span class="p">,</span>
-            <span class="s">&#39;type&#39;</span><span class="p">:</span> <span class="s">&#39;MX-28&#39;</span><span class="p">,</span>
-            <span class="s">&#39;id&#39;</span><span class="p">:</span> <span class="mi">14</span><span class="p">,</span>
-            <span class="s">&#39;angle_limit&#39;</span><span class="p">:</span> <span class="p">[</span><span class="o">-</span><span class="mf">90.0</span><span class="p">,</span> <span class="mf">90.0</span><span class="p">],</span>
-            <span class="s">&#39;offset&#39;</span><span class="p">:</span> <span class="mf">0.0</span>
+        <span class="s1">&#39;m4&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s1">&#39;orientation&#39;</span><span class="p">:</span> <span class="s1">&#39;direct&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;MX-28&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="mi">14</span><span class="p">,</span>
+            <span class="s1">&#39;angle_limit&#39;</span><span class="p">:</span> <span class="p">[</span><span class="o">-</span><span class="mf">90.0</span><span class="p">,</span> <span class="mf">90.0</span><span class="p">],</span>
+            <span class="s1">&#39;offset&#39;</span><span class="p">:</span> <span class="mf">0.0</span>
         <span class="p">},</span>
-        <span class="s">&#39;m6&#39;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="s">&#39;orientation&#39;</span><span class="p">:</span> <span class="s">&#39;indirect&#39;</span><span class="p">,</span>
-            <span class="s">&#39;type&#39;</span><span class="p">:</span> <span class="s">&#39;MX-28&#39;</span><span class="p">,</span>
-            <span class="s">&#39;id&#39;</span><span class="p">:</span> <span class="mi">16</span><span class="p">,</span>
-            <span class="s">&#39;angle_limit&#39;</span><span class="p">:</span> <span class="p">[</span><span class="o">-</span><span class="mf">90.0</span><span class="p">,</span> <span class="mf">90.0</span><span class="p">],</span>
-            <span class="s">&#39;offset&#39;</span><span class="p">:</span> <span class="mf">0.0</span>
+        <span class="s1">&#39;m6&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s1">&#39;orientation&#39;</span><span class="p">:</span> <span class="s1">&#39;indirect&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;MX-28&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="mi">16</span><span class="p">,</span>
+            <span class="s1">&#39;angle_limit&#39;</span><span class="p">:</span> <span class="p">[</span><span class="o">-</span><span class="mf">90.0</span><span class="p">,</span> <span class="mf">90.0</span><span class="p">],</span>
+            <span class="s1">&#39;offset&#39;</span><span class="p">:</span> <span class="mf">0.0</span>
         <span class="p">},</span>
-        <span class="s">&#39;m1&#39;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="s">&#39;orientation&#39;</span><span class="p">:</span> <span class="s">&#39;direct&#39;</span><span class="p">,</span>
-            <span class="s">&#39;type&#39;</span><span class="p">:</span> <span class="s">&#39;MX-28&#39;</span><span class="p">,</span> <span class="s">&#39;id&#39;</span><span class="p">:</span> <span class="mi">11</span><span class="p">,</span>
-            <span class="s">&#39;angle_limit&#39;</span><span class="p">:</span> <span class="p">[</span><span class="o">-</span><span class="mf">90.0</span><span class="p">,</span> <span class="mf">90.0</span><span class="p">],</span>
-            <span class="s">&#39;offset&#39;</span><span class="p">:</span> <span class="mf">0.0</span>
+        <span class="s1">&#39;m1&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s1">&#39;orientation&#39;</span><span class="p">:</span> <span class="s1">&#39;direct&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;MX-28&#39;</span><span class="p">,</span> <span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="mi">11</span><span class="p">,</span>
+            <span class="s1">&#39;angle_limit&#39;</span><span class="p">:</span> <span class="p">[</span><span class="o">-</span><span class="mf">90.0</span><span class="p">,</span> <span class="mf">90.0</span><span class="p">],</span>
+            <span class="s1">&#39;offset&#39;</span><span class="p">:</span> <span class="mf">0.0</span>
         <span class="p">},</span>
-        <span class="s">&#39;m3&#39;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="s">&#39;orientation&#39;</span><span class="p">:</span> <span class="s">&#39;indirect&#39;</span><span class="p">,</span>
-            <span class="s">&#39;type&#39;</span><span class="p">:</span> <span class="s">&#39;MX-28&#39;</span><span class="p">,</span>
-            <span class="s">&#39;id&#39;</span><span class="p">:</span> <span class="mi">13</span><span class="p">,</span>
-            <span class="s">&#39;angle_limit&#39;</span><span class="p">:</span> <span class="p">[</span><span class="o">-</span><span class="mf">90.0</span><span class="p">,</span> <span class="mf">90.0</span><span class="p">],</span>
-            <span class="s">&#39;offset&#39;</span><span class="p">:</span> <span class="mf">0.0</span>
+        <span class="s1">&#39;m3&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s1">&#39;orientation&#39;</span><span class="p">:</span> <span class="s1">&#39;indirect&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;MX-28&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="mi">13</span><span class="p">,</span>
+            <span class="s1">&#39;angle_limit&#39;</span><span class="p">:</span> <span class="p">[</span><span class="o">-</span><span class="mf">90.0</span><span class="p">,</span> <span class="mf">90.0</span><span class="p">],</span>
+            <span class="s1">&#39;offset&#39;</span><span class="p">:</span> <span class="mf">0.0</span>
         <span class="p">},</span>
-        <span class="s">&#39;m2&#39;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="s">&#39;orientation&#39;</span><span class="p">:</span> <span class="s">&#39;indirect&#39;</span><span class="p">,</span>
-            <span class="s">&#39;type&#39;</span><span class="p">:</span> <span class="s">&#39;MX-28&#39;</span><span class="p">,</span>
-            <span class="s">&#39;id&#39;</span><span class="p">:</span> <span class="mi">12</span><span class="p">,</span>
-            <span class="s">&#39;angle_limit&#39;</span><span class="p">:</span> <span class="p">[</span><span class="o">-</span><span class="mf">90.0</span><span class="p">,</span> <span class="mf">90.0</span><span class="p">],</span>
-            <span class="s">&#39;offset&#39;</span><span class="p">:</span> <span class="mf">0.0</span>
+        <span class="s1">&#39;m2&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s1">&#39;orientation&#39;</span><span class="p">:</span> <span class="s1">&#39;indirect&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="s1">&#39;MX-28&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="mi">12</span><span class="p">,</span>
+            <span class="s1">&#39;angle_limit&#39;</span><span class="p">:</span> <span class="p">[</span><span class="o">-</span><span class="mf">90.0</span><span class="p">,</span> <span class="mf">90.0</span><span class="p">],</span>
+            <span class="s1">&#39;offset&#39;</span><span class="p">:</span> <span class="mf">0.0</span>
         <span class="p">}</span>
     <span class="p">}</span>
 <span class="p">}</span>
@@ -468,7 +484,7 @@
 <div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
   <div class="navbar-inner">
     <ul class="nav navbar-nav ">
-        <li><a href="../../../index.html">pypot 2.10.0 documentation</a></li>
+        <li><a href="../../../index.html">pypot 2.11.0-rc.3 documentation</a></li>
     </ul>
 <ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
       
@@ -485,7 +501,7 @@
       <!-- footer -->
       <footer role="contentinfo">
           &copy; Copyright 2015, Poppy-Project.
-        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.3.1.
+        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.3.5.
       </footer>
       <!-- /footer -->
 

@@ -9,7 +9,7 @@
   <head>
     <meta charset="utf-8" />
     
-    <title>vrep Package &mdash; pypot 2.10.0 documentation</title>
+    <title>vrep Package &mdash; pypot 2.11.0-rc.3 documentation</title>
     <meta name="description" content="">
     <meta name="author" content="">
 
@@ -35,7 +35,7 @@
 <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
             URL_ROOT:    './',
-            VERSION:     '2.10.0',
+            VERSION:     '2.11.0-rc.3',
             COLLAPSE_INDEX: false,
             FILE_SUFFIX: '.html',
             HAS_SOURCE:  true
@@ -51,7 +51,7 @@
 </script>
     <link rel="shortcut icon" href="_static/pypot_logo-48x48.png"/>
     <link rel="author" title="About these documents" href="about.html" />
-    <link rel="top" title="pypot 2.10.0 documentation" href="index.html" />
+    <link rel="top" title="pypot 2.11.0-rc.3 documentation" href="index.html" />
     <link rel="up" title="Pypot’s API" href="api.html" />
     <link rel="next" title="utils Package" href="pypot.utils.html" />
     <link rel="prev" title="server Package" href="pypot.server.html" /> 
@@ -66,7 +66,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="index.html">pypot 2.10.0 documentation</a>
+          <a class="navbar-brand" href="index.html">pypot 2.11.0-rc.3 documentation</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
@@ -220,16 +220,16 @@
 <p class="first admonition-title">Note</p>
 <p>Using the same configuration, you should be able to switch from a real to a simulated robot just by switching from <a class="reference internal" href="pypot.robot.html#pypot.robot.config.from_config" title="pypot.robot.config.from_config"><code class="xref py py-func docutils literal"><span class="pre">from_config()</span></code></a> to <a class="reference internal" href="#pypot.vrep.from_vrep" title="pypot.vrep.from_vrep"><code class="xref py py-func docutils literal"><span class="pre">from_vrep()</span></code></a>.
 For instance:</p>
-<div class="last highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">json</span>
+<div class="last highlight-python"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">json</span>
 
-<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s">&#39;my_config.json&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;my_config.json&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
     <span class="n">config</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
 
 <span class="kn">from</span> <span class="nn">pypot.robot</span> <span class="kn">import</span> <span class="n">from_config</span>
 <span class="kn">from</span> <span class="nn">pypot.vrep</span> <span class="kn">import</span> <span class="n">from_vrep</span>
 
 <span class="n">real_robot</span> <span class="o">=</span> <span class="n">from_config</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
-<span class="n">simulated_robot</span> <span class="o">=</span> <span class="n">from_vrep</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="s">&#39;127.0.0.1&#39;</span><span class="p">,</span> <span class="mi">19997</span><span class="p">,</span> <span class="s">&#39;poppy.ttt&#39;</span><span class="p">)</span>
+<span class="n">simulated_robot</span> <span class="o">=</span> <span class="n">from_vrep</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="s1">&#39;127.0.0.1&#39;</span><span class="p">,</span> <span class="mi">19997</span><span class="p">,</span> <span class="s1">&#39;poppy.ttt&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -358,12 +358,14 @@ For instance:</p>
 <dl class="method">
 <dt id="pypot.vrep.io.VrepIO.get_motor_force">
 <code class="descname">get_motor_force</code><span class="sig-paren">(</span><em>motor_name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/vrep/io.html#VrepIO.get_motor_force"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.vrep.io.VrepIO.get_motor_force" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Retrieves the force or torque applied to a joint along/about its active axis.</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="pypot.vrep.io.VrepIO.set_motor_force">
 <code class="descname">set_motor_force</code><span class="sig-paren">(</span><em>motor_name</em>, <em>force</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/vrep/io.html#VrepIO.set_motor_force"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.vrep.io.VrepIO.set_motor_force" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Sets the maximum force or torque that a joint can exert.</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="pypot.vrep.io.VrepIO.get_object_position">
@@ -463,7 +465,7 @@ For instance:</p>
 <p class="last">You should not pass the clientId and the operationMode as arguments. They will be automatically added.</p>
 </div>
 <p>As an example you can retrieve all joints name using the following call:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">vrep_io</span><span class="o">.</span><span class="n">remote_api_call</span><span class="p">(</span><span class="s">&#39;simxGetObjectGroupData&#39;</span><span class="p">,</span>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">vrep_io</span><span class="o">.</span><span class="n">remote_api_call</span><span class="p">(</span><span class="s1">&#39;simxGetObjectGroupData&#39;</span><span class="p">,</span>
                         <span class="n">vrep_io</span><span class="o">.</span><span class="n">remote_api</span><span class="o">.</span><span class="n">sim_object_joint_type</span><span class="p">,</span>
                         <span class="mi">0</span><span class="p">,</span>
                         <span class="n">streaming</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
@@ -629,7 +631,7 @@ For instance:</p>
 <div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
   <div class="navbar-inner">
     <ul class="nav navbar-nav ">
-        <li><a href="index.html">pypot 2.10.0 documentation</a></li>
+        <li><a href="index.html">pypot 2.11.0-rc.3 documentation</a></li>
     </ul>
 <ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
       
@@ -648,7 +650,7 @@ For instance:</p>
       <!-- footer -->
       <footer role="contentinfo">
           &copy; Copyright 2015, Poppy-Project.
-        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.3.1.
+        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.3.5.
       </footer>
       <!-- /footer -->
 
