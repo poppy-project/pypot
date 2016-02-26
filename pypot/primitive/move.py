@@ -68,6 +68,14 @@ class Move(object):
         move._timed_positions.update(d['positions'])
         return move
 
+    @classmethod
+    def loads(cls, str):
+        """ Loads a :class:`~pypot.primitive.move.Move` from a json string. """
+        d = json.loads(str)
+        move = cls(d['framerate'])
+        move._timed_positions.update(d['positions'])
+        return move
+
 
 class MoveRecorder(LoopPrimitive):
 
