@@ -45,7 +45,7 @@ class StoppableThread(object):
     def stop(self, wait=True):
         """ Stop the thread.
 
-        More precisely, sends the stopping signal to the thread. It is then up top the run method to correctly responds.
+        More precisely, sends the stopping signal to the thread. It is then up to the run method to correctly responds.
 
         """
         if self.started:
