@@ -543,6 +543,7 @@ class AbstractDxlIO(object):
         except DxlCommunicationError as e:
             error_handler.handle_communication_error(e)
 
+
 # MARK: - Dxl Errors
 class DxlError(Exception):
     """ Base class for all errors encountered using :class:`~pypot.dynamixel.io.DxlIO`. """
@@ -568,6 +569,7 @@ class DxlTimeoutError(DxlCommunicationError):
 
     def __str__(self):
         return 'motors {} did not respond after sending {}'.format(self.ids, self.instruction_packet)
+
 
 @contextmanager
 def with_True():
