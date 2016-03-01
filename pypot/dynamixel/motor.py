@@ -117,7 +117,8 @@ class DxlMotor(Motor):
 
     def __init__(self, id, name=None, model='',
                  direct=True, offset=0.0,
-                 broken=False):
+                 broken=False,
+                 angle_limit=None):
         self.__dict__['id'] = id
 
         name = name if name is not None else 'motor_{}'.format(id)
@@ -140,6 +141,9 @@ class DxlMotor(Motor):
 
         self._write_synchronous = defaultdict(lambda: False)
         self._write_synced = defaultdict(SyncEvent)
+
+        if angle_limit is not None:
+            self.__dict__['lower_limit'], self.__dict__['upper_limit'] = angle_limit
 
     def __repr__(self):
         return ('<DxlMotor name={self.name} '
@@ -273,8 +277,11 @@ class DxlAXRXMotor(DxlMotor):
     compliance_slope = DxlRegister(rw=True)
 
     def __init__(self, id, name=None, model='',
-                 direct=True, offset=0.0, broken=False):
-        DxlMotor.__init__(self, id, name, model, direct, offset, broken)
+                 direct=True, offset=0.0, broken=False,
+                 angle_limit=None):
+        DxlMotor.__init__(self, id, name, model,
+                          direct, offset, broken,
+                          angle_limit)
         self.max_pos = 150
 
 
@@ -290,14 +297,17 @@ class DxlMXMotor(DxlMotor):
     pid = DxlRegister(rw=True)
 
     def __init__(self, id, name=None, model='',
-                 direct=True, offset=0.0, broken=False):
+                 direct=True, offset=0.0, broken=False,
+                 angle_limit=None):
         """ This class represents the RX and MX robotis motor.
 
             This class adds access to:
                 * PID gains (see the robotis website for details)
 
             """
-        DxlMotor.__init__(self, id, name, model, direct, offset, broken)
+        DxlMotor.__init__(self, id, name, model,
+                          direct, offset, broken,
+                          angle_limit)
         self.max_pos = 180
 
 
@@ -308,8 +318,11 @@ class DxlXL320Motor(DxlMXMotor):
 
     """ This class represents the XL-320 robotis motor. """
     def __init__(self, id, name=None, model='XL-320',
-                 direct=True, offset=0.0, broken=False):
-        DxlMXMotor.__init__(self, id, name, model, direct, offset, broken)
+                 direct=True, offset=0.0, broken=False,
+                 angle_limit=None):
+        DxlMXMotor.__init__(self, id, name, model,
+                            direct, offset, broken,
+                            angle_limit)
         self.max_pos = 150
 
 
