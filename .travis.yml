@@ -93,10 +93,6 @@ install:
 
 script:
   - . ./ci/run_tests.sh
-  - pip install poppy-creature poppy-ergo-jr
-  - python --version
-  - python -c "from poppy.creatures import PoppyErgoJr"
-  - nosetests --with-coverage --cover-erase --cover-package=pypot --nologcapture -v -w tests/
 
 after_success:
   - if [[ "$UPDATE_DOC" == true ]]; then . ./ci/update_documentation.sh; fi

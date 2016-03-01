@@ -31,6 +31,11 @@ pushd ci-tests
         python nb.py
     fi
 
+    pip install poppy-creature poppy-ergo-jr coverage
+
+    export PATH=$HOME/miniconda/bin:$PATH
+    nosetests --with-coverage --cover-erase --cover-package=pypot --nologcapture -v -w tests/
+
     # Old test of running VREP localy (network trouble)
     #     pushd $VREP_ROOT_DIR/
     #         if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
