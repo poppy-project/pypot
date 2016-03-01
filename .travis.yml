@@ -86,7 +86,7 @@ addons:
       - dvipng
 
 before_install:
-  - . ./ci/before_install
+  - . ./ci/before_install.sh
 
 install:
   - . ./ci/install.sh
