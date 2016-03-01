@@ -93,6 +93,7 @@ install:
 
 script:
   - . ./ci/run_tests.sh
+  - pip install poppy-creature poppy-ergo-jr 
   - nosetests --with-coverage --cover-erase --cover-package=pypot --nologcapture -v -w tests/
 
 after_success:
