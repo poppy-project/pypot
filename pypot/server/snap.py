@@ -146,7 +146,10 @@ class SnapRobotServer(AbstractServer):
 
         @self.app.get('/motor/<motor>/set/<register>/<value>')
         def set_reg(motor, register, value):
-            rr.set_motor_register_value(motor, register, float(value))
+            if register not in ('led'):
+                value = float(value)
+
+            rr.set_motor_register_value(motor, register, value)
             return 'Done!'
 
         @self.app.get('/motor/<motor>/goto/<position>/<duration>')
