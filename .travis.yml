@@ -92,6 +92,7 @@ install:
 
 script:
   - . ./ci/run_tests.sh
+  - nosetests --with-coverage --cover-erase --cover-package=pypot --nologcapture -v -w tests/
 
 after_success:
   - if [[ "$UPDATE_DOC" == true ]]; then . ./ci/update_documentation.sh; fi
