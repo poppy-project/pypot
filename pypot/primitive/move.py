@@ -71,13 +71,13 @@ class Move(object):
     def load(cls, file):
         """ Loads a :class:`~pypot.primitive.move.Move` from a json file. """
         d = json.load(file)
-        return self.create(d)
+        return cls.create(d)
 
     @classmethod
     def loads(cls, str):
         """ Loads a :class:`~pypot.primitive.move.Move` from a json string. """
         d = json.loads(str)
-        return self.create(d)
+        return cls.create(d)
 
 
 class MoveRecorder(LoopPrimitive):
