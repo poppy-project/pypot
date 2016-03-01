@@ -65,7 +65,7 @@ conda update -q conda
 
 # conda create
 # source activate condaenv
-conda install --yes pip python=$TRAVIS_PYTHON_VERSION numpy scipy matplotlib pyzmq flake8 jupyter
+conda install --yes pip python=$TRAVIS_PYTHON_VERSION numpy scipy matplotlib coverage pyzmq flake8 jupyter
 pip install python-coveralls
 
 # Show config
