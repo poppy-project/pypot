@@ -1,6 +1,10 @@
 import time
+import logging
 
 from ..robot.controller import MotorsController
+from .io import DxlError
+
+logger = logging.getLogger(__name__)
 
 
 class DxlController(MotorsController):
@@ -139,8 +143,12 @@ class PosSpeedLoadDxlController(DxlController):
             m.compliant = not c
         self._old_torques = torques
 
-        values = self.io.get_goal_position_speed_load(self.ids)
-        positions, speeds, loads = zip(*values)
+        try:
+            values = self.io.get_goal_position_speed_load(self.ids)
+            positions, speeds, loads = zip(*values)
+        except ValueError:
+            raise DxlError("Couldn't initialize pos/speed/load sync loop!")
+
         for m, p, s, l in zip(self.working_motors, positions, speeds, loads):
             m.__dict__['goal_position'] = p
             m.__dict__['moving_speed'] = s
@@ -155,6 +163,7 @@ class PosSpeedLoadDxlController(DxlController):
         values = self.io.get_present_position_speed_load(ids)
 
         if not values:
+            logger.warning('Timeout when getting pos/speed/load from {}', ids)
             return
 
         positions, speeds, loads = zip(*values)

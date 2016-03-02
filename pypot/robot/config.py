@@ -114,7 +114,8 @@ def motor_from_confignode(config, motor_name):
                  model=type,
                  direct=True if params['orientation'] == 'direct' else False,
                  offset=params['offset'],
-                 broken=broken)
+                 broken=broken,
+                 angle_limit=params['angle_limit'])
 
     logger.info("Instantiating motor '%s' id=%d direct=%s offset=%s",
                 m.name, m.id, m.direct, m.offset,

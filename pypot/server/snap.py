@@ -36,7 +36,6 @@ def find_local_ip():
             raise IOError(e)
 
 
-
 def set_snap_server_variables(host, port, snap_extension='.xml', path=None):
     """ Change dynamically port and host variable in xml Snap! project file"""
 
@@ -79,6 +78,7 @@ class SnapRobotServer(AbstractServer):
             shutil.copyfile(xml_file, dst)
 
         set_snap_server_variables(find_local_ip(), port, path=get_snap_user_projects_directory())
+
         @self.app.get('/')
         def get_sitemap():
             return '</br>'.join([cgi.escape(r.rule.format()) for r in self.app.routes])
@@ -106,7 +106,7 @@ class SnapRobotServer(AbstractServer):
             return '/'.join('{}'.format(alias) for alias in rr.get_motors_alias())
 
         @self.app.get('/motors/<motors>/get/<register>')
-        def get_motors_registers(motors,register):
+        def get_motors_registers(motors, register):
             """ Allow getting of motors register with a single http request
                 Be carefull: with lot of motors, it could overlap the GET max
                     lentgh of your web browser

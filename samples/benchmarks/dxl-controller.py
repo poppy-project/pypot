@@ -27,12 +27,12 @@ if __name__ == '__main__':
     c = robot._controllers[argmax(motors)]
 
     print('Using controller with motors {}'.format([m.id for m in c.motors]))
-    c = c.controllers[0]
+    c = c.controllers[1]
 
     dt = []
     for _ in range(args.N):
         start = time.time()
-        c.get_present_position_speed_load()
+        c.get_present_position_speed_load(c.motors)
         end = time.time()
         dt.append(end - start)
 
