@@ -87,6 +87,7 @@ addons:
 
 before_install:
   - . ./ci/before_install.sh
+
 install:
   - . ./ci/install.sh
 

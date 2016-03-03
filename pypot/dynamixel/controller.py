@@ -1,8 +1,8 @@
 import time
 import logging
 
+from .io.abstract_io import DxlError
 from ..robot.controller import MotorsController
-from .io import DxlError
 
 logger = logging.getLogger(__name__)
 

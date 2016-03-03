@@ -132,8 +132,10 @@ class SnapRobotServer(AbstractServer):
                     lentgh of your web browser
                 """
             for m_settings in motors_register_value.split(';'):
-                settings = m_settings.split(':')
-                rr.set_motor_register_value(settings[0], settings[1], make_tuple(settings[2]))
+                motor, register, value = m_settings.split(':')
+                if register not in ('led'):
+                    value = make_tuple(value)
+                rr.set_motor_register_value(motor, register, value)
             return 'Done!'
 
         # TODO : delete ?
@@ -146,7 +148,9 @@ class SnapRobotServer(AbstractServer):
 
         @self.app.get('/motor/<motor>/set/<register>/<value>')
         def set_reg(motor, register, value):
-            rr.set_motor_register_value(motor, register, float(value))
+            if register not in ('led'):
+                value = make_tuple(value)
+            rr.set_motor_register_value(motor, register, value)
             return 'Done!'
 
         @self.app.get('/motor/<motor>/goto/<position>/<duration>')

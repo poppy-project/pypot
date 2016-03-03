@@ -17,8 +17,10 @@ pushd ci-tests
     python --version
     pip --version
     echo "Pypot path"
-    python -c 'import sys;import os;import pypot;sys.stdout.write(os.path.abspath(os.path.join(pypot.__file__, "../..")))'
-    python -c 'import pypot;import pypot.robot;import pypot.dynamixel'
+    python -c 'import sys;import os;import pypot;sys.stdout.write(os.path.abspath(os.path.join(pypot.__file__, "../.."))); import pypot'
+    python -c 'import sys;import os;import pypot;sys.stdout.write(os.path.abspath(os.path.join(pypot.__file__, "../.."))); import pypot.robot'
+    python -c 'import sys;import os;import pypot;sys.stdout.write(os.path.abspath(os.path.join(pypot.__file__, "../.."))); import pypot.dynamixel'
+    python -c 'import sys;import os;import pypot;sys.stdout.write(os.path.abspath(os.path.join(pypot.__file__, "../.."))); from pypot.dynamixel import Dxl320IO'
 
     # Vrep start test
     echo "Starting a notebook Controlling a Poppy humanoid in V-REP using pypot.ipynb"
@@ -41,6 +43,10 @@ pushd ci-tests
     #     python ci/test_vrep.py
 popd
 
+pushd tests
+    pip install poppy-creature poppy-ergo-jr coverage requests
+    python -m unittest discover
+popd
 
 set +x
 set +e

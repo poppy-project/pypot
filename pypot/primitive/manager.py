@@ -67,7 +67,7 @@ class PrimitiveManager(StoppableLoopThread):
                              m.name, key, val, filtred_val)
                 setattr(m, key, filtred_val)
 
-            [p._synced.set() for p in self._prim]
+        [p._synced.set() for p in self._prim]
 
     def stop(self):
         """ Stop the primitive manager. """

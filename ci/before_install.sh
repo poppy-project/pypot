@@ -33,9 +33,9 @@ if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
 
     # Use miniconda python (provide binaries for scipy and numpy on Linux)
     if [[ "$TRAVIS_PYTHON_VERSION" == "2.7" ]]; then
-        curl -o miniconda.sh http://repo.continuum.io/miniconda/Miniconda-latest-Linux-x86_64.sh 
+        curl -o miniconda.sh http://repo.continuum.io/miniconda/Miniconda-latest-Linux-x86_64.sh
     else
-        curl -o miniconda.sh http://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh 
+        curl -o miniconda.sh http://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh
     fi
 elif [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
 
@@ -65,7 +65,8 @@ conda update -q conda
 
 # conda create
 # source activate condaenv
-conda install --yes pip python=$TRAVIS_PYTHON_VERSION numpy scipy matplotlib pyzmq flake8 jupyter
+conda install --yes pip python=$TRAVIS_PYTHON_VERSION numpy scipy matplotlib coverage pyzmq flake8 jupyter
+pip install python-coveralls
 
 # Show config
 which python
