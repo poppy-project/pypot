@@ -6,6 +6,8 @@ import socket
 import errno
 import re
 import logging
+import numpy
+
 from ast import literal_eval as make_tuple
 from ..utils.appdirs import user_data_dir
 from .server import AbstractServer
@@ -295,7 +297,8 @@ class SnapRobotServer(AbstractServer):
         @self.app.get('/ik/<chain>/endeffector')
         def ik_endeffector(chain):
             c = getattr(rr.robot, chain)
-            return str(list(c.end_effector))
+            pos = list(numpy.round(c.end_effector, 4))
+            return ','.join(map(str, pos))
 
         @self.app.get('/ik/<chain>/goto/<x>/<y>/<z>/<duration>')
         def ik_goto(chain, x, y, z, duration):
