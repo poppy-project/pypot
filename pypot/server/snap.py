@@ -1,12 +1,15 @@
 import os
-import shutil
+import re
 import cgi
+import numpy
+import errno
+import shutil
 import bottle
 import socket
-import errno
-import re
 import logging
+
 from ast import literal_eval as make_tuple
+
 from ..utils.appdirs import user_data_dir
 from .server import AbstractServer
 from .httpserver import EnableCors
@@ -295,6 +298,18 @@ class SnapRobotServer(AbstractServer):
             }
             detected = rr.robot.marker_detector.markers
             return str(any([m.id in markers[marker] for m in detected]))
+
+        @self.app.get('/ik/<chain>/endeffector')
+        def ik_endeffector(chain):
+            c = getattr(rr.robot, chain)
+            pos = list(numpy.round(c.end_effector, 4))
+            return ','.join(map(str, pos))
+
+        @self.app.get('/ik/<chain>/goto/<x>/<y>/<z>/<duration>')
+        def ik_goto(chain, x, y, z, duration):
+            c = getattr(rr.robot, chain)
+            c.goto([x, y, z], duration, wait=False)
+            return "Done !"
 
     def run(self, quiet=None, server='tornado'):
         """ Start the bottle server, run forever. """
