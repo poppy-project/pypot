@@ -163,7 +163,7 @@ class PosSpeedLoadDxlController(DxlController):
         values = self.io.get_present_position_speed_load(ids)
 
         if not values:
-            logger.warning('Timeout when getting pos/speed/load from {}', ids)
+            logger.warning('Timeout when getting pos/speed/load from %s', ids)
             return
 
         positions, speeds, loads = zip(*values)
