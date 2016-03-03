@@ -1,14 +1,15 @@
 import os
-import shutil
+import re
 import cgi
+import numpy
+import errno
+import shutil
 import bottle
 import socket
-import errno
-import re
 import logging
-import numpy
 
 from ast import literal_eval as make_tuple
+
 from ..utils.appdirs import user_data_dir
 from .server import AbstractServer
 from .httpserver import EnableCors
