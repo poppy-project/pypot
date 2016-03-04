@@ -34,8 +34,7 @@ def check(pred, msg):
 
 if __name__ == '__main__':
     available_ports = get_available_ports()
-    check(available_ports,
-          'Could not find an available serial port!')
+    default_port = available_ports[0] if available_ports else None
 
     parser = ArgumentParser(description='Configuration tool for dynamixel motors '
                                         'WARNING: ONLY ONE MOTOR SHOULD BE '
@@ -48,7 +47,7 @@ if __name__ == '__main__':
                         choices=dynamixelModels.values(),
                         help='Type of the motor to configure.')
     parser.add_argument('--port', type=str,
-                        choices=available_ports, default=available_ports[0],
+                        choices=available_ports, default=default_port,
                         help='Serial port connected to the motor.')
     parser.add_argument('--return-delay-time', type=int,
                         help='Set new return delay time.')
@@ -61,6 +60,9 @@ if __name__ == '__main__':
 
     check(1 <= args.id <= 253,
           'Motor id must be in range [1:253]')
+
+    check(available_ports,
+          'Could not find an available serial port!')
 
     protocol = 2 if args.type in 'XL-320' else 1
     DxlIOPort = DxlIO if protocol == 1 else Dxl320IO
