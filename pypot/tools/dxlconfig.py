@@ -32,7 +32,7 @@ def check(pred, msg):
         sys.exit(1)
 
 
-if __name__ == '__main__':
+def main():
     available_ports = get_available_ports()
     default_port = available_ports[0] if available_ports else None
 
@@ -148,3 +148,7 @@ if __name__ == '__main__':
                   'Could not go to 0 position')
 
         print('Done!')
+
+
+if __name__ == '__main__':
+    main()
