@@ -30,7 +30,7 @@ from .controller import DummyController
 logger = logging.getLogger(__name__)
 
 
-def from_config(config, strict=True, sync=True, use_dummy_io=False):
+def from_config(config, strict=True, sync=True, use_dummy_io=False, **extra):
     """ Returns a :class:`~pypot.robot.robot.Robot` instance created from a configuration dictionnary.
 
         :param dict config: robot configuration dictionary
@@ -83,6 +83,9 @@ def from_config(config, strict=True, sync=True, use_dummy_io=False):
     if 'sensors' in config and not use_dummy_io:
         sensors = []
         for s_name in config['sensors'].keys():
+            if s_name in extra and extra[s_name] == 'dummy':
+                config['sensors'][s_name]['type'] = 'Dummy{}'.format(s_name.capitalize())
+
             sensor = sensor_from_confignode(config, s_name, robot)
             setattr(robot, s_name, sensor)
             sensors.append(sensor)
@@ -249,7 +252,7 @@ def make_alias(config, robot):
                     extra={'config': config})
 
 
-def from_json(json_file, sync=True, strict=True, use_dummy_io=False):
+def from_json(json_file, sync=True, strict=True, use_dummy_io=False, **extra):
     """ Returns a :class:`~pypot.robot.robot.Robot` instance created from a JSON configuration file.
 
     For details on how to write such a configuration file, you should refer to the section :ref:`config_file`.
@@ -258,7 +261,7 @@ def from_json(json_file, sync=True, strict=True, use_dummy_io=False):
     with open(json_file) as f:
         config = json.load(f, object_pairs_hook=OrderedDict)
 
-    return from_config(config, sync=sync, strict=strict, use_dummy_io=use_dummy_io)
+    return from_config(config, sync=sync, strict=strict, use_dummy_io=use_dummy_io, **extra)
 
 
 def use_dummy_robot(json_file):
