@@ -44,7 +44,9 @@ pushd ci-tests
 popd
 
 pushd tests
-    pip install poppy-creature poppy-ergo-jr coverage requests
+    pip install coverage requests
+    pip uninstall -y poppy-creature
+    pip install --pre poppy-creature poppy-ergo-jr
     python -m unittest discover
 popd
 
