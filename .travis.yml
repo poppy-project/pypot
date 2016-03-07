@@ -40,11 +40,11 @@ matrix:
     - os: osx
       python: 2.7 # For travis UI only
       language: objective-c
-      env: TRAVIS_OS_NAME=osx SSH_VREP_SERVER=test42-vrep1.ci TRAVIS_PYTHON_VERSION=2.7
+      env: TRAVIS_OS_NAME=osx TRAVIS_PYTHON_VERSION=2.7
     - os: osx
       python: 3.4 # For travis UI only
       language: objective-c
-      env: TRAVIS_OS_NAME=osx SSH_VREP_SERVER=test42-vrep2.ci TRAVIS_PYTHON_VERSION=3.4
+      env: TRAVIS_OS_NAME=osx TRAVIS_PYTHON_VERSION=3.4
 
     # Linux VM
     - python: 2.7
@@ -55,25 +55,15 @@ matrix:
     - python: 3.4
       language: python
       os: linux
-      env: SSH_VREP_SERVER=test42-vrep5.ci
 
     - python: 3.5
       language: python
       os: linux
-      env: SSH_VREP_SERVER=test42-vrep6.ci
 
     - python: 2.7
       language: python
       os: linux
       env: PEP8_CAUSE_FAILLURE=true
-
-  allow_failures:
-    - env: TRAVIS_OS_NAME=osx SSH_VREP_SERVER=test42-vrep1.ci TRAVIS_PYTHON_VERSION=2.7
-    - env: TRAVIS_OS_NAME=osx SSH_VREP_SERVER=test42-vrep2.ci TRAVIS_PYTHON_VERSION=3.4
-    - python: 3.4
-    - python: 3.5
-    # - env: PEP8_CAUSE_FAILLURE=true
-
 
 addons:
   apt:
