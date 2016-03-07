@@ -1,6 +1,7 @@
 import os
 import re
 import cgi
+import numpy
 import errno
 import shutil
 import bottle
@@ -92,6 +93,7 @@ class SnapRobotServer(AbstractServer):
             shutil.copyfile(xml_file, dst)
 
         set_snap_server_variables(find_host_ip(), port, path=get_snap_user_projects_directory())
+
         @self.app.get('/')
         def get_sitemap():
             return '</br>'.join([cgi.escape(r.rule.format()) for r in self.app.routes])
@@ -119,7 +121,7 @@ class SnapRobotServer(AbstractServer):
             return '/'.join('{}'.format(alias) for alias in rr.get_motors_alias())
 
         @self.app.get('/motors/<motors>/get/<register>')
-        def get_motors_registers(motors,register):
+        def get_motors_registers(motors, register):
             """ Allow getting of motors register with a single http request
                 Be carefull: with lot of motors, it could overlap the GET max
                     lentgh of your web browser
@@ -145,8 +147,10 @@ class SnapRobotServer(AbstractServer):
                     lentgh of your web browser
                 """
             for m_settings in motors_register_value.split(';'):
-                settings = m_settings.split(':')
-                rr.set_motor_register_value(settings[0], settings[1], make_tuple(settings[2]))
+                motor, register, value = m_settings.split(':')
+                if register not in ('led'):
+                    value = make_tuple(value)
+                rr.set_motor_register_value(motor, register, value)
             return 'Done!'
 
         # TODO : delete ?
@@ -159,7 +163,9 @@ class SnapRobotServer(AbstractServer):
 
         @self.app.get('/motor/<motor>/set/<register>/<value>')
         def set_reg(motor, register, value):
-            rr.set_motor_register_value(motor, register, float(value))
+            if register not in ('led'):
+                value = make_tuple(value)
+            rr.set_motor_register_value(motor, register, value)
             return 'Done!'
 
         @self.app.get('/motor/<motor>/goto/<position>/<duration>')
@@ -304,6 +310,18 @@ class SnapRobotServer(AbstractServer):
             }
             detected = rr.robot.marker_detector.markers
             return str(any([m.id in markers[marker] for m in detected]))
+
+        @self.app.get('/ik/<chain>/endeffector')
+        def ik_endeffector(chain):
+            c = getattr(rr.robot, chain)
+            pos = list(numpy.round(c.end_effector, 4))
+            return ','.join(map(str, pos))
+
+        @self.app.get('/ik/<chain>/goto/<x>/<y>/<z>/<duration>')
+        def ik_goto(chain, x, y, z, duration):
+            c = getattr(rr.robot, chain)
+            c.goto([x, y, z], duration, wait=False)
+            return "Done !"
 
     def run(self, quiet=None, server='tornado'):
         """ Start the bottle server, run forever. """

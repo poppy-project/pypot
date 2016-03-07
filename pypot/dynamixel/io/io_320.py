@@ -1,7 +1,7 @@
 from itertools import repeat
 
-from .abstract_io import (AbstractDxlIO, _DxlControl,
-                          _DxlAccess, DxlTimeoutError)
+from .abstract_io import (AbstractDxlIO, _DxlControl, _DxlAccess,
+                          DxlTimeoutError, DxlCommunicationError)
 from .. import conversion as conv
 from ..protocol import v2 as v2
 
@@ -39,7 +39,7 @@ class Dxl320IO(AbstractDxlIO):
             try:
                 self._send_packet(self._protocol.DxlResetPacket(id, mode))
 
-            except DxlTimeoutError:
+            except (DxlTimeoutError, DxlCommunicationError):
                 pass
 
 # TODO:

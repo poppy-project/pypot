@@ -1,8 +1,9 @@
 import itertools
+
 from .abstract_io import (AbstractDxlIO, _DxlControl,
                           _DxlAccess, DxlTimeoutError)
-from ..protocol import v1 as v1
 from .. import conversion as conv
+from ..protocol import v1 as v1
 
 
 class DxlIO(AbstractDxlIO):

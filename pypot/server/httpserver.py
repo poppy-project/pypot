@@ -228,7 +228,7 @@ class HTTPRobotServer(AbstractServer):
             bottle.run(self.app,
                        host=self.host, port=self.port,
                        quiet=quiet,
-                       server=server)    
+                       server=server)
         except RuntimeError as e:
             # If you are calling tornado inside tornado (Jupyter notebook)
             # you got a RuntimeError but everythong works fine

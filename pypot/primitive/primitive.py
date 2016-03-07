@@ -140,6 +140,23 @@ class Primitive(StoppableThread):
         """ Gets the equivalent :class:`~pypot.primitive.primitive.MockupMotor`. """
         return next((m for m in self.robot.motors if m.name == motor.name), None)
 
+    # Utility function to try to help to better control
+    # the synchronization and merging process of primitives
+    # This is clearly a patch before a better definition of primitives.
+
+    @property
+    def being_synced(self):
+        return self.robot._primitive_manager.syncing
+
+    def affect_once(self, motor, register, value):
+        with self.being_synced:
+            setattr(motor, register, value)
+
+        self._synced.clear()
+        self._synced.wait()
+
+        del motor._to_set[register]
+
 
 class LoopPrimitive(Primitive):
     """ Simple primitive that call an update method at a predefined frequency.

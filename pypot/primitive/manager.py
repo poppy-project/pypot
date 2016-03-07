@@ -3,6 +3,7 @@ import numpy
 
 from collections import defaultdict
 from functools import partial
+from threading import Lock
 
 from ..utils.stoppablethread import StoppableLoopThread
 
@@ -32,6 +33,8 @@ class PrimitiveManager(StoppableLoopThread):
         self._motors = motors
         self._filter = filter
 
+        self.syncing = Lock()
+
     def add(self, p):
         """ Add a primitive to the manager. The primitive automatically attached itself when started. """
         self._prim.append(p)
@@ -47,25 +50,26 @@ class PrimitiveManager(StoppableLoopThread):
 
     def update(self):
         """ Combined at a predefined frequency the request orders and affect them to the real motors. """
-        for m in self._motors:
-            to_set = defaultdict(list)
+        with self.syncing:
+            for m in self._motors:
+                to_set = defaultdict(list)
 
-            for p in self._prim:
-                for key, val in getattr(p.robot, m.name)._to_set.iteritems():
-                    to_set[key].append(val)
+                for p in self._prim:
+                    for key, val in getattr(p.robot, m.name)._to_set.iteritems():
+                        to_set[key].append(val)
 
-            for key, val in to_set.iteritems():
-                if key == 'led':
-                    colors = set(val)
-                    if len(colors) > 1:
-                        colors -= {'off'}
-                    filtred_val = colors.pop()
-                else:
-                    filtred_val = self._filter(val)
+                for key, val in to_set.iteritems():
+                    if key == 'led':
+                        colors = set(val)
+                        if len(colors) > 1:
+                            colors -= {'off'}
+                        filtred_val = colors.pop()
+                    else:
+                        filtred_val = self._filter(val)
 
-                logger.debug('Combined %s.%s from %s to %s',
-                             m.name, key, val, filtred_val)
-                setattr(m, key, filtred_val)
+                    logger.debug('Combined %s.%s from %s to %s',
+                                 m.name, key, val, filtred_val)
+                    setattr(m, key, filtred_val)
 
             [p._synced.set() for p in self._prim]
 

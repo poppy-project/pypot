@@ -9,7 +9,6 @@ import threading
 from collections import namedtuple, OrderedDict
 from contextlib import contextmanager
 
-from ...robot.io import AbstractIO
 from ..conversion import (dxl_code_all, dxl_decode_all, decode_error,
                           dxl_to_model)
 
@@ -33,7 +32,7 @@ class _DxlAccess(object):
     readonly, writeonly, readwrite = range(3)
 
 
-class AbstractDxlIO(AbstractIO):
+class AbstractDxlIO(object):
     """ Low-level class to handle the serial communication with the robotis motors. """
 
     __used_ports = set()
