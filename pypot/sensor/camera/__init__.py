@@ -1,5 +1,7 @@
 from ...robot.controller import SensorsController
 
+from .dummy import DummyCamera
+
 
 class CameraController(SensorsController):
     def __init__(self, camera):
