@@ -9,7 +9,7 @@
   <head>
     <meta charset="utf-8" />
     
-    <title>Dynamixel Low-level IO &mdash; pypot 2.11.0-rc.3 documentation</title>
+    <title>Dynamixel Low-level IO &mdash; pypot 2.11.0-rc4 documentation</title>
     <meta name="description" content="">
     <meta name="author" content="">
 
@@ -35,7 +35,7 @@
 <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
             URL_ROOT:    './',
-            VERSION:     '2.11.0-rc.3',
+            VERSION:     '2.11.0-rc4',
             COLLAPSE_INDEX: false,
             FILE_SUFFIX: '.html',
             HAS_SOURCE:  true
@@ -51,7 +51,7 @@
 </script>
     <link rel="shortcut icon" href="_static/pypot_logo-48x48.png"/>
     <link rel="author" title="About these documents" href="about.html" />
-    <link rel="top" title="pypot 2.11.0-rc.3 documentation" href="index.html" />
+    <link rel="top" title="pypot 2.11.0-rc4 documentation" href="index.html" />
     <link rel="up" title="Controlling robot" href="controlling_robot.html" />
     <link rel="next" title="Robot Controller" href="controller.html" />
     <link rel="prev" title="Controlling robot" href="controlling_robot.html" /> 
@@ -66,7 +66,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="index.html">pypot 2.11.0-rc.3 documentation</a>
+          <a class="navbar-brand" href="index.html">pypot 2.11.0-rc4 documentation</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
@@ -178,7 +178,7 @@
                   
   <div class="section" id="dynamixel-low-level-io">
 <span id="low-level"></span><h1>Dynamixel Low-level IO<a class="headerlink" href="#dynamixel-low-level-io" title="Permalink to this headline">¶</a></h1>
-<p>The low-level API almost directly encapsulates the communication protocol used by dynamixel motors. This protocol can be used to access any register of these motors. The <code class="xref py py-class docutils literal"><span class="pre">DxlIO</span></code> class is used to handle the communication with a particular port.</p>
+<p>The low-level API almost directly encapsulates the communication protocol used by dynamixel motors. This protocol can be used to access any register of these motors. The <a class="reference internal" href="pypot.dynamixel.html#pypot.dynamixel.io.io.DxlIO" title="pypot.dynamixel.io.io.DxlIO"><code class="xref py py-class docutils literal"><span class="pre">DxlIO</span></code></a> class is used to handle the communication with a particular port.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">The port can only be accessed by a single DxlIO instance.</p>
@@ -202,11 +202,11 @@
 </div>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">Since pypot version 2.2, support for the robotis protocol v2 and for XL-320 motors has been added. To avoid confusion there is a another class that should be used: <code class="xref py py-class docutils literal"><span class="pre">Dxl320IO</span></code> in this case.</p>
+<p class="last">Since pypot version 2.2, support for the robotis protocol v2 and for XL-320 motors has been added. To avoid confusion there is a another class that should be used: <a class="reference internal" href="pypot.dynamixel.html#pypot.dynamixel.io.io_320.Dxl320IO" title="pypot.dynamixel.io.io_320.Dxl320IO"><code class="xref py py-class docutils literal"><span class="pre">Dxl320IO</span></code></a> in this case.</p>
 </div>
 <div class="section" id="opening-closing-a-communication-port">
 <span id="open-connection"></span><h2>Opening/Closing a communication port<a class="headerlink" href="#opening-closing-a-communication-port" title="Permalink to this headline">¶</a></h2>
-<p>In order to open a connection with the device, you will need to know what port it is connected to. Pypot has a function named <code class="xref py py-func docutils literal"><span class="pre">get_available_ports()</span></code> which will try to auto-discover any compatible devices connected to the communication ports.</p>
+<p>In order to open a connection with the device, you will need to know what port it is connected to. Pypot has a function named <a class="reference internal" href="pypot.dynamixel.html#pypot.dynamixel.get_available_ports" title="pypot.dynamixel.get_available_ports"><code class="xref py py-func docutils literal"><span class="pre">get_available_ports()</span></code></a> which will try to auto-discover any compatible devices connected to the communication ports.</p>
 <p>To create a connection, open up a python terminal and type the following code:</p>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pypot.dynamixel</span>
 
@@ -355,7 +355,7 @@ dxl_io.scan([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
 <div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
   <div class="navbar-inner">
     <ul class="nav navbar-nav ">
-        <li><a href="index.html">pypot 2.11.0-rc.3 documentation</a></li>
+        <li><a href="index.html">pypot 2.11.0-rc4 documentation</a></li>
     </ul>
 <ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
       

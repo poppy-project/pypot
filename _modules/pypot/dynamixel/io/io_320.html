@@ -9,7 +9,7 @@
   <head>
     <meta charset="utf-8" />
     
-    <title>pypot.dynamixel.io.io_320 &mdash; pypot 2.11.0-rc.3 documentation</title>
+    <title>pypot.dynamixel.io.io_320 &mdash; pypot 2.11.0-rc4 documentation</title>
     <meta name="description" content="">
     <meta name="author" content="">
 
@@ -35,7 +35,7 @@
 <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
             URL_ROOT:    '../../../../',
-            VERSION:     '2.11.0-rc.3',
+            VERSION:     '2.11.0-rc4',
             COLLAPSE_INDEX: false,
             FILE_SUFFIX: '.html',
             HAS_SOURCE:  true
@@ -51,7 +51,7 @@
 </script>
     <link rel="shortcut icon" href="../../../../_static/pypot_logo-48x48.png"/>
     <link rel="author" title="About these documents" href="../../../../about.html" />
-    <link rel="top" title="pypot 2.11.0-rc.3 documentation" href="../../../../index.html" />
+    <link rel="top" title="pypot 2.11.0-rc4 documentation" href="../../../../index.html" />
     <link rel="up" title="pypot.dynamixel" href="../../dynamixel.html" /> 
   </head>
   <body role="document">
@@ -64,7 +64,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="../../../../index.html">pypot 2.11.0-rc.3 documentation</a>
+          <a class="navbar-brand" href="../../../../index.html">pypot 2.11.0-rc4 documentation</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
@@ -138,8 +138,8 @@
   <h1>Source code for pypot.dynamixel.io.io_320</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">repeat</span>
 
-<span class="kn">from</span> <span class="nn">.abstract_io</span> <span class="kn">import</span> <span class="p">(</span><span class="n">AbstractDxlIO</span><span class="p">,</span> <span class="n">_DxlControl</span><span class="p">,</span>
-                          <span class="n">_DxlAccess</span><span class="p">,</span> <span class="n">DxlTimeoutError</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">.abstract_io</span> <span class="kn">import</span> <span class="p">(</span><span class="n">AbstractDxlIO</span><span class="p">,</span> <span class="n">_DxlControl</span><span class="p">,</span> <span class="n">_DxlAccess</span><span class="p">,</span>
+                          <span class="n">DxlTimeoutError</span><span class="p">,</span> <span class="n">DxlCommunicationError</span><span class="p">)</span>
 <span class="kn">from</span> <span class="nn">..</span> <span class="kn">import</span> <span class="n">conversion</span> <span class="k">as</span> <span class="n">conv</span>
 <span class="kn">from</span> <span class="nn">..protocol</span> <span class="kn">import</span> <span class="n">v2</span> <span class="k">as</span> <span class="n">v2</span>
 
@@ -177,7 +177,7 @@
             <span class="k">try</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_send_packet</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_protocol</span><span class="o">.</span><span class="n">DxlResetPacket</span><span class="p">(</span><span class="nb">id</span><span class="p">,</span> <span class="n">mode</span><span class="p">))</span>
 
-            <span class="k">except</span> <span class="n">DxlTimeoutError</span><span class="p">:</span>
+            <span class="k">except</span> <span class="p">(</span><span class="n">DxlTimeoutError</span><span class="p">,</span> <span class="n">DxlCommunicationError</span><span class="p">):</span>
                 <span class="k">pass</span></div></div>
 
 <span class="c1"># TODO:</span>
@@ -399,7 +399,7 @@
 <div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
   <div class="navbar-inner">
     <ul class="nav navbar-nav ">
-        <li><a href="../../../../index.html">pypot 2.11.0-rc.3 documentation</a></li>
+        <li><a href="../../../../index.html">pypot 2.11.0-rc4 documentation</a></li>
     </ul>
 <ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
       
@@ -417,7 +417,7 @@
       <!-- footer -->
       <footer role="contentinfo">
           &copy; Copyright 2015, Poppy-Project.
-        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.3.5.
+        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.3.6.
       </footer>
       <!-- /footer -->
 

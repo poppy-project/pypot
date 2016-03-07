@@ -9,7 +9,7 @@
   <head>
     <meta charset="utf-8" />
     
-    <title>pypot.primitive.primitive &mdash; pypot 2.11.0-rc.3 documentation</title>
+    <title>pypot.primitive.primitive &mdash; pypot 2.11.0-rc4 documentation</title>
     <meta name="description" content="">
     <meta name="author" content="">
 
@@ -35,7 +35,7 @@
 <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
             URL_ROOT:    '../../../',
-            VERSION:     '2.11.0-rc.3',
+            VERSION:     '2.11.0-rc4',
             COLLAPSE_INDEX: false,
             FILE_SUFFIX: '.html',
             HAS_SOURCE:  true
@@ -51,7 +51,7 @@
 </script>
     <link rel="shortcut icon" href="../../../_static/pypot_logo-48x48.png"/>
     <link rel="author" title="About these documents" href="../../../about.html" />
-    <link rel="top" title="pypot 2.11.0-rc.3 documentation" href="../../../index.html" />
+    <link rel="top" title="pypot 2.11.0-rc4 documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body role="document">
@@ -64,7 +64,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="../../../index.html">pypot 2.11.0-rc.3 documentation</a>
+          <a class="navbar-brand" href="../../../index.html">pypot 2.11.0-rc4 documentation</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
@@ -275,7 +275,24 @@
 
 <div class="viewcode-block" id="Primitive.get_mockup_motor"><a class="viewcode-back" href="../../../pypot.primitive.html#pypot.primitive.primitive.Primitive.get_mockup_motor">[docs]</a>    <span class="k">def</span> <span class="nf">get_mockup_motor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">motor</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Gets the equivalent :class:`~pypot.primitive.primitive.MockupMotor`. &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="nb">next</span><span class="p">((</span><span class="n">m</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">robot</span><span class="o">.</span><span class="n">motors</span> <span class="k">if</span> <span class="n">m</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">motor</span><span class="o">.</span><span class="n">name</span><span class="p">),</span> <span class="bp">None</span><span class="p">)</span></div></div>
+        <span class="k">return</span> <span class="nb">next</span><span class="p">((</span><span class="n">m</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">robot</span><span class="o">.</span><span class="n">motors</span> <span class="k">if</span> <span class="n">m</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">motor</span><span class="o">.</span><span class="n">name</span><span class="p">),</span> <span class="bp">None</span><span class="p">)</span></div>
+
+    <span class="c1"># Utility function to try to help to better control</span>
+    <span class="c1"># the synchronization and merging process of primitives</span>
+    <span class="c1"># This is clearly a patch before a better definition of primitives.</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">being_synced</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">robot</span><span class="o">.</span><span class="n">_primitive_manager</span><span class="o">.</span><span class="n">syncing</span>
+
+<div class="viewcode-block" id="Primitive.affect_once"><a class="viewcode-back" href="../../../pypot.primitive.html#pypot.primitive.primitive.Primitive.affect_once">[docs]</a>    <span class="k">def</span> <span class="nf">affect_once</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">motor</span><span class="p">,</span> <span class="n">register</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">being_synced</span><span class="p">:</span>
+            <span class="nb">setattr</span><span class="p">(</span><span class="n">motor</span><span class="p">,</span> <span class="n">register</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_synced</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_synced</span><span class="o">.</span><span class="n">wait</span><span class="p">()</span>
+
+        <span class="k">del</span> <span class="n">motor</span><span class="o">.</span><span class="n">_to_set</span><span class="p">[</span><span class="n">register</span><span class="p">]</span></div></div>
 
 
 <div class="viewcode-block" id="LoopPrimitive"><a class="viewcode-back" href="../../../pypot.primitive.html#pypot.primitive.primitive.LoopPrimitive">[docs]</a><span class="k">class</span> <span class="nc">LoopPrimitive</span><span class="p">(</span><span class="n">Primitive</span><span class="p">):</span>
@@ -435,7 +452,7 @@
 <div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
   <div class="navbar-inner">
     <ul class="nav navbar-nav ">
-        <li><a href="../../../index.html">pypot 2.11.0-rc.3 documentation</a></li>
+        <li><a href="../../../index.html">pypot 2.11.0-rc4 documentation</a></li>
     </ul>
 <ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
       

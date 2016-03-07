@@ -9,7 +9,7 @@
   <head>
     <meta charset="utf-8" />
     
-    <title>pypot.dynamixel.motor &mdash; pypot 2.11.0-rc.3 documentation</title>
+    <title>pypot.dynamixel.motor &mdash; pypot 2.11.0-rc4 documentation</title>
     <meta name="description" content="">
     <meta name="author" content="">
 
@@ -35,7 +35,7 @@
 <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
             URL_ROOT:    '../../../',
-            VERSION:     '2.11.0-rc.3',
+            VERSION:     '2.11.0-rc4',
             COLLAPSE_INDEX: false,
             FILE_SUFFIX: '.html',
             HAS_SOURCE:  true
@@ -51,7 +51,7 @@
 </script>
     <link rel="shortcut icon" href="../../../_static/pypot_logo-48x48.png"/>
     <link rel="author" title="About these documents" href="../../../about.html" />
-    <link rel="top" title="pypot 2.11.0-rc.3 documentation" href="../../../index.html" />
+    <link rel="top" title="pypot 2.11.0-rc4 documentation" href="../../../index.html" />
     <link rel="up" title="pypot.dynamixel" href="../dynamixel.html" /> 
   </head>
   <body role="document">
@@ -64,7 +64,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="../../../index.html">pypot 2.11.0-rc.3 documentation</a>
+          <a class="navbar-brand" href="../../../index.html">pypot 2.11.0-rc4 documentation</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
@@ -255,7 +255,8 @@
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span>
                  <span class="n">direct</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
-                 <span class="n">broken</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+                 <span class="n">broken</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                 <span class="n">angle_limit</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">__dict__</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">id</span>
 
         <span class="n">name</span> <span class="o">=</span> <span class="n">name</span> <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="k">else</span> <span class="s1">&#39;motor_{}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">id</span><span class="p">)</span>
@@ -278,6 +279,9 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_write_synchronous</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="bp">False</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_write_synced</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="n">SyncEvent</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">angle_limit</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__dict__</span><span class="p">[</span><span class="s1">&#39;lower_limit&#39;</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">__dict__</span><span class="p">[</span><span class="s1">&#39;upper_limit&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">angle_limit</span>
 
     <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="p">(</span><span class="s1">&#39;&lt;DxlMotor name={self.name} &#39;</span>
@@ -411,8 +415,11 @@
     <span class="n">compliance_slope</span> <span class="o">=</span> <span class="n">DxlRegister</span><span class="p">(</span><span class="n">rw</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span>
-                 <span class="n">direct</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">broken</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
-        <span class="n">DxlMotor</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">direct</span><span class="p">,</span> <span class="n">offset</span><span class="p">,</span> <span class="n">broken</span><span class="p">)</span>
+                 <span class="n">direct</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">broken</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                 <span class="n">angle_limit</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="n">DxlMotor</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span>
+                          <span class="n">direct</span><span class="p">,</span> <span class="n">offset</span><span class="p">,</span> <span class="n">broken</span><span class="p">,</span>
+                          <span class="n">angle_limit</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">max_pos</span> <span class="o">=</span> <span class="mi">150</span></div>
 
 
@@ -428,14 +435,17 @@
     <span class="n">pid</span> <span class="o">=</span> <span class="n">DxlRegister</span><span class="p">(</span><span class="n">rw</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span>
-                 <span class="n">direct</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">broken</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+                 <span class="n">direct</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">broken</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                 <span class="n">angle_limit</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; This class represents the RX and MX robotis motor.</span>
 
 <span class="sd">            This class adds access to:</span>
 <span class="sd">                * PID gains (see the robotis website for details)</span>
 
 <span class="sd">            &quot;&quot;&quot;</span>
-        <span class="n">DxlMotor</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">direct</span><span class="p">,</span> <span class="n">offset</span><span class="p">,</span> <span class="n">broken</span><span class="p">)</span>
+        <span class="n">DxlMotor</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span>
+                          <span class="n">direct</span><span class="p">,</span> <span class="n">offset</span><span class="p">,</span> <span class="n">broken</span><span class="p">,</span>
+                          <span class="n">angle_limit</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">max_pos</span> <span class="o">=</span> <span class="mi">180</span></div>
 
 
@@ -446,8 +456,11 @@
 
     <span class="sd">&quot;&quot;&quot; This class represents the XL-320 robotis motor. &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="s1">&#39;XL-320&#39;</span><span class="p">,</span>
-                 <span class="n">direct</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">broken</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
-        <span class="n">DxlMXMotor</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">direct</span><span class="p">,</span> <span class="n">offset</span><span class="p">,</span> <span class="n">broken</span><span class="p">)</span>
+                 <span class="n">direct</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">broken</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                 <span class="n">angle_limit</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="n">DxlMXMotor</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span>
+                            <span class="n">direct</span><span class="p">,</span> <span class="n">offset</span><span class="p">,</span> <span class="n">broken</span><span class="p">,</span>
+                            <span class="n">angle_limit</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">max_pos</span> <span class="o">=</span> <span class="mi">150</span>
 
 
@@ -480,7 +493,7 @@
 <div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
   <div class="navbar-inner">
     <ul class="nav navbar-nav ">
-        <li><a href="../../../index.html">pypot 2.11.0-rc.3 documentation</a></li>
+        <li><a href="../../../index.html">pypot 2.11.0-rc4 documentation</a></li>
     </ul>
 <ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
       
@@ -498,7 +511,7 @@
       <!-- footer -->
       <footer role="contentinfo">
           &copy; Copyright 2015, Poppy-Project.
-        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.3.5.
+        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.3.6.
       </footer>
       <!-- /footer -->
 
