@@ -50,6 +50,8 @@ def find_host_ip(host=None):
         else:
             raise IOError(e)
 
+find_local_ip = lambda: find_host_ip('localhost')
+
 
 def set_snap_server_variables(host, port, snap_extension='.xml', path=None):
     """ Change dynamically port and host variable in xml Snap! project file"""
