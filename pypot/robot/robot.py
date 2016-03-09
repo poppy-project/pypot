@@ -77,7 +77,9 @@ class Robot(object):
 
         if self._primitive_manager.running:
             self._primitive_manager.stop()
+
         [c.stop() for c in self._controllers]
+        [s.close() for s in self.sensors if hasattr(s, 'close')]
 
         self._syncing = False
 
