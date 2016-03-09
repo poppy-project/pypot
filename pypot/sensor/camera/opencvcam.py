@@ -28,3 +28,7 @@ class OpenCVCamera(AbstractCamera):
             raise EnvironmentError('Can not grab image from the camera!')
 
         return frame
+
+    def close(self):
+        AbstractCamera.close(self)
+        self.capture.release()
