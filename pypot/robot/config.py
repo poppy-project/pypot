@@ -80,18 +80,26 @@ def from_config(config, strict=True, sync=True, use_dummy_io=False, **extra):
     make_alias(config, robot)
 
     # Create all sensors and attached them
-    if 'sensors' in config and not use_dummy_io:
-        sensors = []
-        for s_name in config['sensors'].keys():
-            if s_name in extra and extra[s_name] == 'dummy':
-                config['sensors'][s_name]['type'] = 'Dummy{}'.format(s_name.capitalize())
+    try:
+        if 'sensors' in config and not use_dummy_io:
+            sensors = []
+            for s_name in config['sensors'].keys():
+                if s_name in extra and extra[s_name] == 'dummy':
+                    config['sensors'][s_name]['type'] = 'Dummy{}'.format(s_name.capitalize())
 
-            sensor = sensor_from_confignode(config, s_name, robot)
-            setattr(robot, s_name, sensor)
-            sensors.append(sensor)
+                sensor = sensor_from_confignode(config, s_name, robot)
+                setattr(robot, s_name, sensor)
+                sensors.append(sensor)
+                robot.sensors.append(sensor)
 
-        robot.sensors.extend(sensors)
-        [s.start() for s in sensors if hasattr(s, 'start')]
+            [s.start() for s in sensors if hasattr(s, 'start')]
+
+    # If anything goes wrong when adding sensors
+    # We have to make sure we close the robot properly
+    # Otherwise trying to open it again will fail.
+    except:
+        robot.close()
+        raise
 
     logger.info('Loading complete!',
                 extra={'config': config})
