@@ -217,18 +217,26 @@
     <span class="n">make_alias</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">robot</span><span class="p">)</span>
 
     <span class="c1"># Create all sensors and attached them</span>
-    <span class="k">if</span> <span class="s1">&#39;sensors&#39;</span> <span class="ow">in</span> <span class="n">config</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">use_dummy_io</span><span class="p">:</span>
-        <span class="n">sensors</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">s_name</span> <span class="ow">in</span> <span class="n">config</span><span class="p">[</span><span class="s1">&#39;sensors&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
-            <span class="k">if</span> <span class="n">s_name</span> <span class="ow">in</span> <span class="n">extra</span> <span class="ow">and</span> <span class="n">extra</span><span class="p">[</span><span class="n">s_name</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;dummy&#39;</span><span class="p">:</span>
-                <span class="n">config</span><span class="p">[</span><span class="s1">&#39;sensors&#39;</span><span class="p">][</span><span class="n">s_name</span><span class="p">][</span><span class="s1">&#39;type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;Dummy{}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">s_name</span><span class="o">.</span><span class="n">capitalize</span><span class="p">())</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">if</span> <span class="s1">&#39;sensors&#39;</span> <span class="ow">in</span> <span class="n">config</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">use_dummy_io</span><span class="p">:</span>
+            <span class="n">sensors</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">s_name</span> <span class="ow">in</span> <span class="n">config</span><span class="p">[</span><span class="s1">&#39;sensors&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                <span class="k">if</span> <span class="n">s_name</span> <span class="ow">in</span> <span class="n">extra</span> <span class="ow">and</span> <span class="n">extra</span><span class="p">[</span><span class="n">s_name</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;dummy&#39;</span><span class="p">:</span>
+                    <span class="n">config</span><span class="p">[</span><span class="s1">&#39;sensors&#39;</span><span class="p">][</span><span class="n">s_name</span><span class="p">][</span><span class="s1">&#39;type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;Dummy{}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">s_name</span><span class="o">.</span><span class="n">capitalize</span><span class="p">())</span>
 
-            <span class="n">sensor</span> <span class="o">=</span> <span class="n">sensor_from_confignode</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">s_name</span><span class="p">,</span> <span class="n">robot</span><span class="p">)</span>
-            <span class="nb">setattr</span><span class="p">(</span><span class="n">robot</span><span class="p">,</span> <span class="n">s_name</span><span class="p">,</span> <span class="n">sensor</span><span class="p">)</span>
-            <span class="n">sensors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sensor</span><span class="p">)</span>
+                <span class="n">sensor</span> <span class="o">=</span> <span class="n">sensor_from_confignode</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">s_name</span><span class="p">,</span> <span class="n">robot</span><span class="p">)</span>
+                <span class="nb">setattr</span><span class="p">(</span><span class="n">robot</span><span class="p">,</span> <span class="n">s_name</span><span class="p">,</span> <span class="n">sensor</span><span class="p">)</span>
+                <span class="n">sensors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sensor</span><span class="p">)</span>
+                <span class="n">robot</span><span class="o">.</span><span class="n">sensors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sensor</span><span class="p">)</span>
 
-        <span class="n">robot</span><span class="o">.</span><span class="n">sensors</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">sensors</span><span class="p">)</span>
-        <span class="p">[</span><span class="n">s</span><span class="o">.</span><span class="n">start</span><span class="p">()</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">sensors</span> <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="s1">&#39;start&#39;</span><span class="p">)]</span>
+            <span class="p">[</span><span class="n">s</span><span class="o">.</span><span class="n">start</span><span class="p">()</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">sensors</span> <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="s1">&#39;start&#39;</span><span class="p">)]</span>
+
+    <span class="c1"># If anything goes wrong when adding sensors</span>
+    <span class="c1"># We have to make sure we close the robot properly</span>
+    <span class="c1"># Otherwise trying to open it again will fail.</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="n">robot</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="k">raise</span>
 
     <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Loading complete!&#39;</span><span class="p">,</span>
                 <span class="n">extra</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;config&#39;</span><span class="p">:</span> <span class="n">config</span><span class="p">})</span>
