@@ -28,6 +28,7 @@ class StoppableThread(object):
         self._setup = self.setup if setup is None else setup
         self._target = self.run if target is None else target
         self._teardown = self.teardown if teardown is None else teardown
+        self._crashed = False
 
     def start(self):
         """ Start the run method as a new thread.
@@ -74,9 +75,14 @@ class StoppableThread(object):
         """ Whether the thread has been started. """
         return self._started.is_set()
 
-    def wait_to_start(self):
+    def wait_to_start(self, allow_failure=False):
         """ Wait for the thread to actually starts. """
         self._started.wait()
+
+        if self._crashed and not allow_failure:
+            self._thread.join()
+            raise RuntimeError('Setup failed, see {} Traceback'
+                               'for details.'.format(self._thread.name))
 
     def should_stop(self):
         """ Signals if the thread should be stopped or not. """
@@ -110,16 +116,27 @@ class StoppableThread(object):
         pass
 
     def _wrapped_target(self):
-        self._setup()
+        try:
+            self._setup()
 
-        self._started.set()
-        self._resume.set()
+            self._started.set()
+            self._resume.set()
 
-        self._running.set()
-        self._target()
-        self._running.clear()
+            self._running.set()
+            self._target()
+            self._running.clear()
 
-        self._teardown()
+            self._teardown()
+        # In case something goes wrong within the thread
+        # we try/catch the exceptions
+        # clear all Condition locks (to avoid blocking main thread)
+        # and re-raise exception for backtrace
+        except:
+            self._crashed = True
+            self._started.set()
+            self._running.clear()
+            self._resume.clear()
+            raise
 
     def should_pause(self):
         """ Signals if the thread should be paused or not. """
