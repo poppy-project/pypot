@@ -1,2 +1,2 @@
-from camera import *
-from imagefeature import *
+from .camera import *
+from .imagefeature import *
