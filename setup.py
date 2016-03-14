@@ -17,6 +17,9 @@ if sys.version_info >= (3,):
 install_requires = ['numpy',
                     'pyserial>2.6',
                     'scipy']
+if sys.version_info < (2, 7):
+    print("python version < 2.7 is not supported")
+    sys.exit(1)
 
 if sys.version_info < (3, 4):
     install_requires.append('enum34')
@@ -45,7 +48,7 @@ setup(name='pypot',
           ],
       },
 
-      setup_requires=['setuptools_git >= 0.3', ],
+      # setup_requires=['setuptools_git >= 0.3', ],
 
       include_package_data=True,
       exclude_package_data={'': ['README', '.gitignore']},
