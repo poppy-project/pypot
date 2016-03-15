@@ -19,7 +19,7 @@ build:
 
 requirements:
   build:
-    - python  
+    - python
     - setuptools
     # - setuptools-git
     - numpy
@@ -58,7 +58,7 @@ test:
     - pypot
     - pypot.dynamixel
     - pypot.dynamixel.io
-    - pypot.dynamixel.protocol  
+    - pypot.dynamixel.protocol
     - pypot.primitive
     - pypot.robot
     - pypot.sensor
