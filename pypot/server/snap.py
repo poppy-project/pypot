@@ -29,7 +29,7 @@ def find_local_ip():
     try:
         return [(s.connect(('8.8.8.8', 80)), s.getsockname()[0], s.close())
                 for s in [socket.socket(socket.AF_INET, socket.SOCK_DGRAM)]][0][1]
-    except IOError, e:
+    except IOError as e:
         # an IOError exception occurred (socket.error is a subclass)
         if e.errno == 101:
             # now we had the error code 101, network unreachable
