@@ -21,7 +21,6 @@ requirements:
   build:
     - python
     - setuptools
-    # - setuptools-git
     - numpy
     - pyserial >2.6
     - scipy
@@ -31,7 +30,6 @@ requirements:
     - tornado
     # Needed for Raspberry Pi or Odroid based robots
     - opencv [armv7l]
-     # - bottle
 
   run:
     - python
@@ -43,8 +41,6 @@ requirements:
     - pyqt
     - tornado
     - opencv [armv7l]
-     # - bottle
-
 
 test:
   # TODO upload these requires to conda to make tests
