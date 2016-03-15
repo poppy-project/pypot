@@ -187,6 +187,7 @@ class SnapRobotServer(AbstractServer):
                                    '{}.xml'.format(project))) as f:
                 return f.read()
 
+        @self.app.get('/ip/')
         @self.app.get('/ip/<host>')
         def get_ip(host=None):
             return find_host_ip(host)
