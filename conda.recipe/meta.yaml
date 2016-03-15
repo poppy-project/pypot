@@ -11,7 +11,6 @@ build:
   binary_relocation: False
   entry_points:
     - dxl-config = pypot.tools.dxlconfig:main
-    - herborist = pypot.tools.herborist.herborist:main
 
   # If this is a new build for the same version, increment the build
   # number. If you do not include this key, it defaults to 0.
@@ -19,19 +18,14 @@ build:
 
 requirements:
   build:
-    - python  
+    - python
     - setuptools
-    # - setuptools-git
     - numpy
     - pyserial >2.6
     - scipy
     - enum34  [py27 or py33]
     - pyzmq
-    - pyqt
     - tornado
-    # Needed for Raspberry Pi or Odroid based robots
-    - opencv [armv7l]
-     # - bottle
 
   run:
     - python
@@ -40,11 +34,7 @@ requirements:
     - scipy
     - enum34  [py27 or py33]
     - pyzmq
-    - pyqt
     - tornado
-    - opencv [armv7l]
-     # - bottle
-
 
 test:
   # TODO upload these requires to conda to make tests
@@ -58,7 +48,7 @@ test:
     - pypot
     - pypot.dynamixel
     - pypot.dynamixel.io
-    - pypot.dynamixel.protocol  
+    - pypot.dynamixel.protocol
     - pypot.primitive
     - pypot.robot
     - pypot.sensor
@@ -68,8 +58,8 @@ test:
     - pypot.server
     - pypot.tools
     - pypot.utils
-    - pypot.vrep
-    - pypot.vrep.remoteApiBindings
+    - pypot.vrep [not armv7l]
+    - pypot.vrep.remoteApiBindings [not armv7l]
 
   commands:
     - dxl-config --help
