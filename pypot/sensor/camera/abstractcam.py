@@ -14,6 +14,7 @@ class AbstractCamera(Sensor):
         self._res, self._fps = resolution, fps
         self._last_frame = self._grab_and_process()
 
+        self.running = True
         self._processing = Thread(target=self._process_loop)
         self._processing.daemon = True
         self._processing.start()
@@ -34,7 +35,7 @@ class AbstractCamera(Sensor):
     def _process_loop(self):
         period = 1.0 / self.fps
 
-        while True:
+        while self.running:
             self._last_frame = self._grab_and_process()
             time.sleep(period)
 
@@ -45,3 +46,7 @@ class AbstractCamera(Sensor):
     @property
     def fps(self):
         return self._fps
+
+    def close(self):
+        self.running = False
+        self._processing.join()

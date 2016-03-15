@@ -48,7 +48,7 @@ def find_host_ip(host=None):
         if e.errno == errno.ENETUNREACH:
             return '127.0.0.1'
         else:
-            raise IOError(e)
+            raise
 
 find_local_ip = lambda: find_host_ip('localhost')
 

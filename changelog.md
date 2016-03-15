@@ -1,5 +1,18 @@
 # Changelog
 
+# V 2.11
+
+## Features
+* Add dummy motors (mostly for unittest)
+* add native support for the Pixl board
+
+## Bugfix
+* many primitives threading issues
+* python >= 3.4 compatibility issues
+* setup unittest via dummy robot
+
+Check [Github issue tracker](https://github.com/poppy-project/pypot/issues?utf8=✓&q=milestone%3A%22Release+2.11%22+) for details.
+
 # V 2.10
 ## Features
 * add support for led inside primitive (XL320)
