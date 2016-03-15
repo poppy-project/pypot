@@ -8,11 +8,13 @@ import bottle
 import socket
 import logging
 
+from contextlib import closing
 from ast import literal_eval as make_tuple
 
-from ..utils.appdirs import user_data_dir
 from .server import AbstractServer
 from .httpserver import EnableCors
+from ..utils.appdirs import user_data_dir
+
 
 logger = logging.getLogger(__name__)
 
@@ -24,19 +26,31 @@ def get_snap_user_projects_directory():
     return snap_user_projects_directory
 
 
-def find_local_ip():
+def find_host_ip(host=None):
     # see here: http://stackoverflow.com/questions/166506/
     try:
-        return [(s.connect(('8.8.8.8', 80)), s.getsockname()[0], s.close())
-                for s in [socket.socket(socket.AF_INET, socket.SOCK_DGRAM)]][0][1]
+        if host is None:
+            host = socket.gethostname()
+
+        ips = [ip for ip in socket.gethostbyname_ex(host)[2]
+               if not ip.startswith('127.')]
+        if len(ips):
+            return ips[0]
+
+        # If the above method fails (depending on the system)
+        # Tries to ping google DNS instead
+        with closing(socket.socket()) as s:
+            s.connect(('8.8.8.8', 53))
+            return s.getsockname()[0]
+
     except IOError as e:
-        # an IOError exception occurred (socket.error is a subclass)
-        if e.errno == 101:
-            # now we had the error code 101, network unreachable
+        # network unreachable
+        if e.errno == errno.ENETUNREACH:
             return '127.0.0.1'
         else:
-            # other exceptions we reraise again
-            raise IOError(e)
+            raise
+
+find_local_ip = lambda: find_host_ip('localhost')
 
 
 def set_snap_server_variables(host, port, snap_extension='.xml', path=None):
@@ -80,7 +94,7 @@ class SnapRobotServer(AbstractServer):
             logger.info('Copy snap project from {}, to {}'.format(xml_file, dst))
             shutil.copyfile(xml_file, dst)
 
-        set_snap_server_variables(find_local_ip(), port, path=get_snap_user_projects_directory())
+        set_snap_server_variables(find_host_ip(), port, path=get_snap_user_projects_directory())
 
         @self.app.get('/')
         def get_sitemap():
@@ -173,9 +187,10 @@ class SnapRobotServer(AbstractServer):
                                    '{}.xml'.format(project))) as f:
                 return f.read()
 
-        @self.app.get('/ip')
-        def get_ip():
-            return socket.gethostbyname(socket.gethostname())
+        @self.app.get('/ip/')
+        @self.app.get('/ip/<host>')
+        def get_ip(host=None):
+            return find_host_ip(host)
 
         @self.app.get('/reset-simulation')
         def reset_simulation():
