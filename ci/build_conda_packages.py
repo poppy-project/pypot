@@ -49,7 +49,7 @@ def build_conda_packages(input_args):
         env['CONDA_PY'] = CONDA_PY
         args = [
             'conda', 'build', input_args.recipe_path, '--no-anaconda-upload']
-        print(args, "python %s " %CONDA_PY)
+        print(args, "python %s " % CONDA_PY)
         proc = Popen(args,
                      cwd=path, stdout=PIPE,
                      stderr=STDOUT, env=env)
@@ -74,7 +74,8 @@ def build_conda_packages(input_args):
                     files.append(f)
         print('convert: ', files)
         for file in files:
-            cmd = ['conda', 'convert', '--platform', 'all', file, '--output-dir', path]
+            cmd = ['conda', 'convert', '--platform',
+                   'all', file, '--output-dir', path]
             if input_args.force_convert:
                 cmd.append('-f')
             print(cmd)
@@ -88,7 +89,8 @@ def build_conda_packages(input_args):
                 time.sleep(0.02)
             retvals.append(proc.poll())
             if retvals[-1] or out[-1].startswith('WARNING'):
-                print('Failed on conda convert. You shoud sue the --force-convert argument.')
+                print(
+                    'Failed on conda convert. You shoud sue the --force-convert argument.')
                 print(out)
                 sys.exit(1)
             else:
@@ -112,13 +114,13 @@ def cli():
     import argparse
     parser = argparse.ArgumentParser(
         description='Generate conda packages for every Python version and platform. You should have login before with `anacconda login`')
-    parser.add_argument('-dp', '--destination-path',
-                        help='Path to the local destination of built conda packages. Default is same as recipe path',
-                        action='store')
     parser.add_argument('user',
                         help='anaconda user')
     parser.add_argument('-rp', '--recipe-path',
                         help='Path to the recipe. Default is `.`',
+                        action='store')
+    parser.add_argument('-dp', '--destination-path',
+                        help='Path to the local destination of built conda packages. Default is same path as recipe-path argument',
                         action='store')
     parser.add_argument('-fc', '--force-convert',
                         help='Force conda convert, even if binaries are detected',
