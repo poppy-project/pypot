@@ -58,8 +58,8 @@ test:
     - pypot.server
     - pypot.tools
     - pypot.utils
-    - pypot.vrep
-    - pypot.vrep.remoteApiBindings
+    - pypot.vrep [not armv7l]
+    - pypot.vrep.remoteApiBindings [not armv7l]
 
   commands:
     - dxl-config --help
