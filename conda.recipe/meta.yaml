@@ -26,8 +26,6 @@ requirements:
     - enum34  [py27 or py33]
     - pyzmq
     - tornado
-    # Needed for Raspberry Pi or Odroid based robots
-    - opencv [armv7l]
 
   run:
     - python
@@ -37,7 +35,6 @@ requirements:
     - enum34  [py27 or py33]
     - pyzmq
     - tornado
-    - opencv [armv7l]
 
 test:
   # TODO upload these requires to conda to make tests
