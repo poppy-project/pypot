@@ -1,25 +1,36 @@
 # Changelog
 
-# V 2.11
+## V 2.11
 
 ## Features
 * Add dummy motors (mostly for unittest)
-* add native support for the Pixl board
+* add native support for the pixl board
+* allow to disable sensor at loading (convenient for camera sensor)
+* add a dummy camera
+
+### Snap
+* Add blocs: “ping url <hostname>” and “set $robot host to <hostname>” which aim to fix DNS issues in some filtered networks.
+* update “set <register> of motor(s) <motors> to value <value>” : speed register is now moving_speed instead of goal_speed. Able to use it through many motors at once now
+* fix “get  <register> of motor(s) <motors>”
+* fix some default values of inputs variable for consistency
+* add entry for ik in SnapRemoteServer
+* check return-delay-time at startup to prevent timeouts with misconfigured motors
 
 ## Bugfix
 * many primitives threading issues
 * python >= 3.4 compatibility issues
 * setup unittest via dummy robot
+* fix the unclear exception "Cannot unpack *values"
+* fix cli tool `poppy-motor-reset` and rename it to `dxl-config`
 
-Check [Github issue tracker](https://github.com/poppy-project/pypot/issues?utf8=✓&q=milestone%3A%22Release+2.11%22+) for details.
 
-# V 2.10
-## Features
+## V 2.10
+### Features
 * add support for led inside primitive (XL320)
 * remove RPICam and use v4l driver in opencv
 * support hampy marker in Snap!
 
-## Fix
+### Fix
 * network issue for finding local ip when there is no interface
 * Python 3.5 compatibility
 
