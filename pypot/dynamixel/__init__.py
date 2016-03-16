@@ -10,6 +10,7 @@ from .io import DxlIO, Dxl320IO
 from .error import BaseErrorHandler
 from .syncloop import BaseDxlController
 from .motor import DxlMXMotor, DxlAXRXMotor, DxlXL320Motor
+from .io.abstract_io import DxlError
 
 from ..robot import Robot
 
