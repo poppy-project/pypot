@@ -33,7 +33,7 @@ class ZMQRobotServer(AbstractServer):
                 self.socket.send(json.dumps(answer))
 
             except (AttributeError, TypeError) as e:
-                self.socket.send_json({'error': e.message})
+                self.socket.send_json({'error': str(e)})
 
     def handle_request(self, request):
         meth_name, kwargs = request['robot'].popitem()

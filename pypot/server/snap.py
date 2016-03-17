@@ -338,9 +338,8 @@ class SnapRobotServer(AbstractServer):
         except RuntimeError as e:
             # If you are calling tornado inside tornado (Jupyter notebook)
             # you got a RuntimeError but everythong works fine
-            if "IOLoop" in e.message:
-                logger.info("Tornado RuntimeError {}".format(e.message))
-                pass
+            if "IOLoop" in str(e):
+                logger.info("Tornado RuntimeError {}".format(e))
         except socket.error as serr:
             # Re raise the socket error if not "[Errno 98] Address already in use"
             if serr.errno != errno.EADDRINUSE:
