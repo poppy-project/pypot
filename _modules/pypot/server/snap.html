@@ -475,9 +475,8 @@
         <span class="k">except</span> <span class="ne">RuntimeError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="c1"># If you are calling tornado inside tornado (Jupyter notebook)</span>
             <span class="c1"># you got a RuntimeError but everythong works fine</span>
-            <span class="k">if</span> <span class="s2">&quot;IOLoop&quot;</span> <span class="ow">in</span> <span class="n">e</span><span class="o">.</span><span class="n">message</span><span class="p">:</span>
-                <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Tornado RuntimeError {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">message</span><span class="p">))</span>
-                <span class="k">pass</span>
+            <span class="k">if</span> <span class="s2">&quot;IOLoop&quot;</span> <span class="ow">in</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">):</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Tornado RuntimeError {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
         <span class="k">except</span> <span class="n">socket</span><span class="o">.</span><span class="n">error</span> <span class="k">as</span> <span class="n">serr</span><span class="p">:</span>
             <span class="c1"># Re raise the socket error if not &quot;[Errno 98] Address already in use&quot;</span>
             <span class="k">if</span> <span class="n">serr</span><span class="o">.</span><span class="n">errno</span> <span class="o">!=</span> <span class="n">errno</span><span class="o">.</span><span class="n">EADDRINUSE</span><span class="p">:</span>
