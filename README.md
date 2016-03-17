@@ -1,7 +1,7 @@
-[[![PyPI version](https://badge.fury.io/py/pypot.svg)](https://badge.fury.io/py/pypot)](https://pypi.python.org/pypi/pypot/)
+[![PyPI](https://img.shields.io/pypi/v/pypot.svg)](https://pypi.python.org/pypi/pypot/)
 [![Build Status](https://travis-ci.org/poppy-project/pypot.svg?branch=master)](https://travis-ci.org/poppy-project/pypot) [![Cite this librairy](https://zenodo.org/badge/3914/poppy-project/pypot.png)](http://zenodo.org/record/13941)
 
-# Pypot: A Python lib for Dynamixel motors control #
+# Pypot: A Python lib for Dynamixel motors control
 
 Pypot is a library developed in the [inria FLOWERS](https://flowers.inria.fr/) team to make it easy and fast to control custom robots based on dynamixel motors. This framework provides different levels of abstraction corresponding to different types of use. More precisely, you can use pypot to:
 
@@ -15,15 +15,16 @@ Pypot is also compatible with the [V-REP simulator](http://www.coppeliarobotics.
 
 Finally, it has been developed to permit an easy and fast extension to other types of motors and sensors.
 
-## The Poppy-project: open source ##
+## The Poppy-project: open source
 
 Pypot is part of the [Poppy project](http://www.poppy-project.org) aiming at developping robotic creations that are easy to build, customise, deploy, and share. It promotes open-source by sharing hardware, software, and web tools.
 
 At the moment we already proposed a few Poppy Creatures:
 
 * the [Poppy Humanoid](https://github.com/poppy-project/poppy-humanoid): a kid-size humanoid robot designed for biped locomotion and physical human-robot interaction,
+* a [Poppy Torso](https://github.com/poppy-project/poppy-torso): the humanoid torso, with a suction pad to install it on a desk
 * a [Poppy Ergo](https://www.poppy-project.org/project/mathematics-a-beautiful-elsewhere/): an art/science project where robotic creatures, endowed with algorithmic models of curiosity-driven learning and language formation, were hacked by moviemaker David Lynch,
-* and a [PoppyErgoJr](https://github.com/poppy-project/poppy-ergo-jr) with low-cost [XL-320 robotis motors](http://support.robotis.com/en/product/dynamixel/xl-series/xl-320.htm) and modular 3D printed parts created using [OpenSCAD](https://github.com/openscad/openscad/).
+* and a [Poppy Ergo Jr](https://github.com/poppy-project/poppy-ergo-jr) with low-cost [XL-320 robotis motors](http://support.robotis.com/en/product/dynamixel/xl-series/xl-320.htm) and modular 3D printed parts created using [OpenSCAD](https://github.com/openscad/openscad/).
 
 ![Poppy Humanoid](./doc/poppy-creatures.jpg)
 
@@ -38,7 +39,7 @@ Their development is tighly built upon the development of pypot.
 
 Do not hesitate to [contact us](https://forum.poppy-project.org) if you want to get involved!
 
-## Documentation ##
+## Documentation
 
 The full pypot documentation on a html format can be found [here](http://poppy-project.github.io/pypot/). It provides tutorials, examples and a complete API.
 
@@ -46,9 +47,9 @@ The full pypot documentation on a html format can be found [here](http://poppy-p
 
 **They can be found [here](https://github.com/poppy-project/pypot/tree/master/samples/notebooks#notebooks-everywhere) with a detailed explanation on how they can be used, installed, and modified.**
 
-## Installation ##
+## Installation
 
-Pypot is a library entirely written in [Python](https://www.python.org). It works with Python *2.7*, *3.4* and *pypy-2.5*. It is crossed platform and has been tested on Windows, Mac, Linux - yet specific usb to serial driver may be required depending on your system (see below).
+Pypot is a library entirely written in [Python](https://www.python.org). It works with Python *2.7*, *3.3+* and *pypy-2.5*. It is crossed platform and has been tested on Windows, Mac, Linux - yet specific usb to serial driver may be required depending on your system (see below).
 
 Pypot also requires the following python package:
 * [pyserial](http://pyserial.sourceforge.net) 2.6 (or later)
@@ -81,7 +82,7 @@ You will also have to install the driver for the USB2serial port. There are two 
 
 For more details on the installation procedure, please refer to the [installation section](http://poppy-project.github.io/pypot/intro.html#installation) of the documentation.
 
-## Roadmap ##
+## Roadmap
 
 The roadmap of the project can be found [here](https://github.com/poppy-project/pypot/blob/master/roadmap.md).
 
