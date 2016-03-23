@@ -5,7 +5,6 @@ import sys
 
 from setuptools import setup, find_packages
 
-
 def version():
     with open('pypot/_version.py') as f:
         return re.search(r"^__version__ = ['\"]([^'\"]*)['\"]", f.read()).group(1)
@@ -49,13 +48,14 @@ setup(name='pypot',
       },
 
       include_package_data=True,
-      exclude_package_data={'': ['README', '.gitignore']},
+      exclude_package_data={'': ['.gitignore']},
 
       zip_safe=False,
 
-      author='See https://github.com/poppy-project/pypot/graphs/contributors',
+      author=open('AUTHORS.md').read(),
       author_email='pierre.rouanet@gmail.com',
       description='Python Library for Robot Control',
+      long_description=open('README.md').read(),
       url='https://github.com/poppy-project/pypot',
       license='GNU GENERAL PUBLIC LICENSE Version 3',
 
