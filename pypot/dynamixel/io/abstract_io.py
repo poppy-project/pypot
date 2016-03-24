@@ -324,7 +324,7 @@ class AbstractDxlIO(object):
         convert = kwargs['convert'] if ('convert' in kwargs) else self._convert
 
         bl = ('goal position speed load', 'present position speed load')
-        controls = [c for c in self._DxlIO__controls if c.name not in bl]
+        controls = [c for c in self._AbstractDxlIO__controls if c.name not in bl]
 
         res = []
 
