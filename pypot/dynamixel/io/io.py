@@ -239,3 +239,7 @@ _add_control('moving',
              access=_DxlAccess.readonly,
              dxl_to_si=conv.dxl_to_bool,
              getter_name='is_moving')
+
+_add_control('punch',
+             address=0x30, length=2,
+             models=('AX-12', 'AX-18', 'RX-24', 'RX-28', 'RX-64'))
