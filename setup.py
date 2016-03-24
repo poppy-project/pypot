@@ -5,6 +5,7 @@ import sys
 
 from setuptools import setup, find_packages
 
+
 def version():
     with open('pypot/_version.py') as f:
         return re.search(r"^__version__ = ['\"]([^'\"]*)['\"]", f.read()).group(1)
@@ -16,6 +17,7 @@ if sys.version_info >= (3,):
 install_requires = ['numpy',
                     'pyserial>2.6',
                     'scipy']
+
 if sys.version_info < (2, 7):
     print("python version < 2.7 is not supported")
     sys.exit(1)
