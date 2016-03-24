@@ -16,7 +16,8 @@ if sys.version_info >= (3,):
 
 install_requires = ['numpy',
                     'pyserial>2.6',
-                    'scipy']
+                    'scipy',
+                    'git+https://github.com/nicolas-rabault/Adafruit_Python_DHT.git']
 
 if sys.version_info < (2, 7):
     print("python version < 2.7 is not supported")
