@@ -1,6 +1,3 @@
-
-import time
-
 import RPi.GPIO as GPIO
 
 from ...robot.sensor import Sensor

@@ -1,3 +1,4 @@
+import time
 import Adafruit_DHT
 
 from ...robot.sensor import Sensor
@@ -44,8 +45,7 @@ class HumiditySensor(Sensor):
 
         while self._humidity > 100.0:
             time.sleep(2)
-            self._humidity, self._temperature = Adafruit_DHT.read_retry(
-                                                self._sensor, self._pin)
+            self._humidity, self._temperature = Adafruit_DHT.read_retry(self._sensor, self._pin)
 
         self._humidity = self._humidity + self._humidity_offset
         self._temperature = self._temperature + self._temperature_offset
