@@ -1,1 +1,4 @@
-from .humidity import *
+try:
+    from .humidity import HumiditySensor
+except ImportError:
+    pass

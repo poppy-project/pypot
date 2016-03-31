@@ -6,7 +6,7 @@ import RPi.GPIO as GPIO
 from ...robot.sensor import Sensor
 
 
-class Power(Sensor):
+class PowerContactor(Sensor):
     """this class give access to power contactor"""
     registers = Sensor.registers + ['status_list']
 

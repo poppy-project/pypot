@@ -1,1 +1,4 @@
-from .power import *
+try:
+    from .power import PowerContactor
+except ImportError:
+    pass

@@ -3,7 +3,7 @@ import Adafruit_DHT
 from ...robot.sensor import Sensor
 
 
-class Humidity(Sensor):
+class HumiditySensor(Sensor):
     """this class give access to humidity sensor"""
     registers = Sensor.registers + ['sensor_type', 'humidity', 'temperature']
 
