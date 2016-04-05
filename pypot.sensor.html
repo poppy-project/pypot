@@ -188,6 +188,7 @@ It used the Microsoft Kinect SDK and thus only work on Windows.</p>
 <dt id="pypot.sensor.kinect.sensor.Skeleton">
 <em class="property">class </em><code class="descclassname">pypot.sensor.kinect.sensor.</code><code class="descname">Skeleton</code><a class="reference internal" href="_modules/pypot/sensor/kinect/sensor.html#Skeleton"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.sensor.kinect.sensor.Skeleton" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#pypot.sensor.kinect.sensor.Skeleton" title="pypot.sensor.kinect.sensor.Skeleton"><code class="xref py py-class docutils literal"><span class="pre">pypot.sensor.kinect.sensor.Skeleton</span></code></a></p>
+<p>Create new instance of Skeleton(timestamp, user_id, hip_center, spine, shoulder_center, head, shoulder_left, elbow_left, wrist_left, hand_left, shoulder_right, elbow_right, wrist_right, hand_right, hip_left, knee_left, ankle_left, foot_left, hip_right, knee_right, ankle_right, foot_right)</p>
 <dl class="attribute">
 <dt id="pypot.sensor.kinect.sensor.Skeleton.joints">
 <code class="descname">joints</code><em class="property"> = ('hip_center', 'spine', 'shoulder_center', 'head', 'shoulder_left', 'elbow_left', 'wrist_left', 'hand_left', 'shoulder_right', 'elbow_right', 'wrist_right', 'hand_right', 'hip_left', 'knee_left', 'ankle_left', 'foot_left', 'hip_right', 'knee_right', 'ankle_right', 'foot_right')</em><a class="headerlink" href="#pypot.sensor.kinect.sensor.Skeleton.joints" title="Permalink to this definition">¶</a></dt>
@@ -199,6 +200,7 @@ It used the Microsoft Kinect SDK and thus only work on Windows.</p>
 <dt id="pypot.sensor.kinect.sensor.Joint">
 <em class="property">class </em><code class="descclassname">pypot.sensor.kinect.sensor.</code><code class="descname">Joint</code><span class="sig-paren">(</span><em>position</em>, <em>orientation</em>, <em>pixel_coordinate</em><span class="sig-paren">)</span><a class="headerlink" href="#pypot.sensor.kinect.sensor.Joint" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">tuple</span></code></p>
+<p>Create new instance of Joint(position, orientation, pixel_coordinate)</p>
 <dl class="attribute">
 <dt id="pypot.sensor.kinect.sensor.Joint.orientation">
 <code class="descname">orientation</code><a class="headerlink" href="#pypot.sensor.kinect.sensor.Joint.orientation" title="Permalink to this definition">¶</a></dt>
@@ -257,6 +259,7 @@ It used the Microsoft Kinect SDK and thus only work on Windows.</p>
 <dt id="pypot.sensor.optitrack.TrackedObject">
 <em class="property">class </em><code class="descclassname">pypot.sensor.optitrack.</code><code class="descname">TrackedObject</code><span class="sig-paren">(</span><em>position</em>, <em>quaternion</em>, <em>orientation</em>, <em>timestamp</em><span class="sig-paren">)</span><a class="headerlink" href="#pypot.sensor.optitrack.TrackedObject" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">tuple</span></code></p>
+<p>Create new instance of TrackedObject(position, quaternion, orientation, timestamp)</p>
 <dl class="attribute">
 <dt id="pypot.sensor.optitrack.TrackedObject.orientation">
 <code class="descname">orientation</code><a class="headerlink" href="#pypot.sensor.optitrack.TrackedObject.orientation" title="Permalink to this definition">¶</a></dt>
@@ -325,7 +328,7 @@ It used the Microsoft Kinect SDK and thus only work on Windows.</p>
       <!-- footer -->
       <footer role="contentinfo">
           &copy; Copyright 2015, Poppy-Project.
-        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.3.6.
+        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.4.
       </footer>
       <!-- /footer -->
 

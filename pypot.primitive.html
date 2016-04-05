@@ -193,9 +193,9 @@
 <li>request modification of motor values (those calls will automatically be combined among all primitives by the <a class="reference internal" href="#pypot.primitive.manager.PrimitiveManager" title="pypot.primitive.manager.PrimitiveManager"><code class="xref py py-class docutils literal"><span class="pre">PrimitiveManager</span></code></a>).</li>
 </ul>
 <p>The syntax of those requests directly match the equivalent code that you could write from the <a class="reference internal" href="pypot.robot.html#pypot.robot.robot.Robot" title="pypot.robot.robot.Robot"><code class="xref py py-class docutils literal"><span class="pre">Robot</span></code></a>. For instance you can write:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">MyPrimitive</span><span class="p">(</span><span class="n">Primitive</span><span class="p">):</span>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">MyPrimitive</span><span class="p">(</span><span class="n">Primitive</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">robot</span><span class="o">.</span><span class="n">motors</span><span class="p">:</span>
                 <span class="n">m</span><span class="o">.</span><span class="n">goal_position</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">present_position</span> <span class="o">+</span> <span class="mi">10</span>
 
@@ -214,7 +214,7 @@
 <p>At instanciation, it automatically transforms the <a class="reference internal" href="pypot.robot.html#pypot.robot.robot.Robot" title="pypot.robot.robot.Robot"><code class="xref py py-class docutils literal"><span class="pre">Robot</span></code></a> into a <a class="reference internal" href="#pypot.primitive.primitive.MockupRobot" title="pypot.primitive.primitive.MockupRobot"><code class="xref py py-class docutils literal"><span class="pre">MockupRobot</span></code></a>.</p>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
-<p class="last">You should not directly pass motors as argument to the primitive. If you need to, use the method <a class="reference internal" href="#pypot.primitive.primitive.Primitive.get_mockup_motor" title="pypot.primitive.primitive.Primitive.get_mockup_motor"><code class="xref py py-meth docutils literal"><span class="pre">get_mockup_motor()</span></code></a> to transform them into &#8220;fake&#8221; motors. See the <a class="reference internal" href="primitive.html#write-own-prim"><span>Writing your own primitive</span></a> section for details.</p>
+<p class="last">You should not directly pass motors as argument to the primitive. If you need to, use the method <a class="reference internal" href="#pypot.primitive.primitive.Primitive.get_mockup_motor" title="pypot.primitive.primitive.Primitive.get_mockup_motor"><code class="xref py py-meth docutils literal"><span class="pre">get_mockup_motor()</span></code></a> to transform them into &#8220;fake&#8221; motors. See the <a class="reference internal" href="primitive.html#write-own-prim"><span class="std std-ref">Writing your own primitive</span></a> section for details.</p>
 </div>
 <dl class="attribute">
 <dt id="pypot.primitive.primitive.Primitive.methods">
@@ -688,7 +688,7 @@ The play_speed attribute change only time lockup/interpolation</p>
       <!-- footer -->
       <footer role="contentinfo">
           &copy; Copyright 2015, Poppy-Project.
-        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.3.6.
+        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.4.
       </footer>
       <!-- /footer -->
 

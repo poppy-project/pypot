@@ -1290,6 +1290,7 @@
 </ul>
 </dd>
 </dl>
+<p>Create new instance of DxlPacketHeader(id, packet_length)</p>
 <dl class="attribute">
 <dt id="pypot.dynamixel.protocol.v1.DxlPacketHeader.length">
 <code class="descname">length</code><em class="property"> = 4</em><a class="headerlink" href="#pypot.dynamixel.protocol.v1.DxlPacketHeader.length" title="Permalink to this definition">¶</a></dt>
@@ -1315,6 +1316,7 @@
 <p>An instruction packet is constructed as follows:
 [0xFF, 0xFF, ID, LENGTH, INSTRUCTION, PARAM 1, PARAM 2, ..., PARAM N, CHECKSUM]</p>
 <p>(for more details see <a class="reference external" href="http://support.robotis.com/en/product/dxl_main.htm">http://support.robotis.com/en/product/dxl_main.htm</a>)</p>
+<p>Create new instance of DxlInstructionPacket(id, instruction, parameters)</p>
 <dl class="method">
 <dt id="pypot.dynamixel.protocol.v1.DxlInstructionPacket.to_array">
 <code class="descname">to_array</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/dynamixel/protocol/v1.html#DxlInstructionPacket.to_array"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.protocol.v1.DxlInstructionPacket.to_array" title="Permalink to this definition">¶</a></dt>
@@ -1387,6 +1389,7 @@
 <p>A status packet is constructed as follows:
 [0xFF, 0xFF, ID, LENGTH, ERROR, PARAM 1, PARAM 2, ..., PARAM N, CHECKSUM]</p>
 <p>(for more details see <a class="reference external" href="http://support.robotis.com/en/product/dxl_main.htm">http://support.robotis.com/en/product/dxl_main.htm</a>)</p>
+<p>Create new instance of DxlStatusPacket(id, error, parameters)</p>
 <dl class="classmethod">
 <dt id="pypot.dynamixel.protocol.v1.DxlStatusPacket.from_string">
 <em class="property">classmethod </em><code class="descname">from_string</code><span class="sig-paren">(</span><em>data</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/dynamixel/protocol/v1.html#DxlStatusPacket.from_string"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.protocol.v1.DxlStatusPacket.from_string" title="Permalink to this definition">¶</a></dt>
@@ -1446,6 +1449,7 @@
 </ul>
 </dd>
 </dl>
+<p>Create new instance of DxlPacketHeader(id, packet_length)</p>
 <dl class="attribute">
 <dt id="pypot.dynamixel.protocol.v2.DxlPacketHeader.length">
 <code class="descname">length</code><em class="property"> = 7</em><a class="headerlink" href="#pypot.dynamixel.protocol.v2.DxlPacketHeader.length" title="Permalink to this definition">¶</a></dt>
@@ -1471,6 +1475,7 @@
 <p>An instruction packet is constructed as follows:
 [0xFF, 0xFF, 0xFD, 0x00, ID, LEN_L, LEN_H, INST, PARAM 1, PARAM 2, ..., PARAM N, CRC_L, CRC_H]</p>
 <p>(for more details see <a class="reference external" href="http://support.robotis.com/en/product/dxl_main.htm">http://support.robotis.com/en/product/dxl_main.htm</a>)</p>
+<p>Create new instance of DxlInstructionPacket(id, instruction, parameters)</p>
 <dl class="method">
 <dt id="pypot.dynamixel.protocol.v2.DxlInstructionPacket.to_array">
 <code class="descname">to_array</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/dynamixel/protocol/v2.html#DxlInstructionPacket.to_array"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.protocol.v2.DxlInstructionPacket.to_array" title="Permalink to this definition">¶</a></dt>
@@ -1543,6 +1548,7 @@
 <p>A status packet is constructed as follows:
 [0xFF, 0xFF, 0xFD, 0x00, ID, LEN_L, LEN_H, 0x55, ERROR, PARAM 1, PARAM 2, ..., PARAM N, CRC_L, CRC_H]</p>
 <p>(for more details see <a class="reference external" href="http://support.robotis.com/en/product/dxl_main.htm">http://support.robotis.com/en/product/dxl_main.htm</a>)</p>
+<p>Create new instance of DxlStatusPacket(id, error, parameters)</p>
 <dl class="classmethod">
 <dt id="pypot.dynamixel.protocol.v2.DxlStatusPacket.from_string">
 <em class="property">classmethod </em><code class="descname">from_string</code><span class="sig-paren">(</span><em>data</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/dynamixel/protocol/v2.html#DxlStatusPacket.from_string"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.protocol.v2.DxlStatusPacket.from_string" title="Permalink to this definition">¶</a></dt>
@@ -1593,7 +1599,7 @@
       <!-- footer -->
       <footer role="contentinfo">
           &copy; Copyright 2015, Poppy-Project.
-        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.3.6.
+        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.4.
       </footer>
       <!-- /footer -->
 
