@@ -3,7 +3,10 @@ from __future__ import print_function
 import time
 import Adafruit_DHT
 
+from threading import Lock
+
 from ...robot.sensor import Sensor
+from ...utils import StoppableLoopThread
 
 
 class HumiditySensor(Sensor):
@@ -12,7 +15,8 @@ class HumiditySensor(Sensor):
 
     def __init__(self, name,
                  sensor_type, gpio_number,
-                 humidity_offset, temperature_offset):
+                 humidity_offset, temperature_offset,
+                 refresh_freq=1.0):
         Sensor.__init__(self, name)
 
         sensor_args = {'DHT11': Adafruit_DHT.DHT11,
@@ -31,6 +35,11 @@ class HumiditySensor(Sensor):
         self._humidity = 0
         self._temperature = 0
 
+        self._lock = Lock()
+        self._update_thread = StoppableLoopThread(refresh_freq,
+                                                  update=self.update_data)
+        self._update_thread.start()
+
     @property
     def sensor_type(self):
         return self._sensor
@@ -44,19 +53,20 @@ class HumiditySensor(Sensor):
         return self._temperature
 
     def update_data(self):
-        # Try to grab a sensor reading.
-        # Use the read_retry method which will retry up to 15 times to get a
-        # sensor reading (waiting 2 seconds between each retry).
-        humidity, temperature = Adafruit_DHT.read_retry(self._sensor, self._pin)
-
-        while humidity > 100.0:
-            time.sleep(2)
+        with self._lock:
+            # Try to grab a sensor reading.
+            # Use the read_retry method which will retry up to 15 times to get a
+            # sensor reading (waiting 2 seconds between each retry).
             humidity, temperature = Adafruit_DHT.read_retry(self._sensor, self._pin)
 
-        self._humidity = humidity + self._humidity_offset
-        self._temperature = temperature + self._temperature_offset
+            while humidity > 100.0:
+                time.sleep(2)
+                humidity, temperature = Adafruit_DHT.read_retry(self._sensor, self._pin)
 
-        return self._humidity, self._temperature
+            self._humidity = humidity + self._humidity_offset
+            self._temperature = temperature + self._temperature_offset
+
+            return self._humidity, self._temperature
 
     def calibration(self, real_temperature, real_humidity, debug=False):
         # Here we catch real temperature given by user to evaluate delta
@@ -71,3 +81,6 @@ class HumiditySensor(Sensor):
                   self._temperature_offset, self._humidity_offset))
 
         return self._temperature_offset, self.self._humidity_offset
+
+    def close(self):
+        self._update_thread.stop()
