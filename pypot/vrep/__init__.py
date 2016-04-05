@@ -28,6 +28,9 @@ class vrep_time():
     def get_time(self):
         t = self.io.get_simulation_current_time()
 
+        if t == 0:
+            raise EnvironmentError('Could not get current simulation time. Make sure the V-REP simulation is running. And that you have added the "time" child script to your scene.')
+
         return t
 
     def sleep(self, t):
