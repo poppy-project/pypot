@@ -29,6 +29,7 @@ class vrep_time():
         t = self.io.get_simulation_current_time()
 
         if t == 0:
+            sys_time.sleep(.5)
             return self.get_time(trial + 1)
 
         if trial > 10:
