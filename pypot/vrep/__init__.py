@@ -29,7 +29,7 @@ class vrep_time():
         t = self.io.get_simulation_current_time()
 
         if t == 0:
-            return get_time(trial + 1)
+            return self.get_time(trial + 1)
 
         if trial > 10:
             raise EnvironmentError('Could not get current simulation time. Make sure the V-REP simulation is running. And that you have added the "time" child script to your scene.')
