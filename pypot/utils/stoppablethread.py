@@ -51,6 +51,7 @@ class StoppableThread(object):
         """
         if self.started:
             self._running.clear()
+            self._resume.set()
 
             # We cannot wait for ourself
             if wait and (threading.current_thread() != self._thread):
