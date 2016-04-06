@@ -166,7 +166,11 @@ def make_update_loop(thread, update_func):
             thread.wait_to_resume()
 
         start = time.time()
+        if hasattr(thread, '_updated'):
+            thread._updated.clear()
         update_func()
+        if hasattr(thread, '_updated'):
+            thread._updated.set()
         end = time.time()
 
         dt = thread.period - (end - start)
@@ -190,6 +194,7 @@ class StoppableLoopThread(StoppableThread):
 
         self.period = 1.0 / frequency
         self._update = self.update if update is None else update
+        self._updated = threading.Event()
 
     def run(self):
         """ Called the update method at the pre-defined frequency. """
