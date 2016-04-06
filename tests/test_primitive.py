@@ -55,6 +55,16 @@ class TestPrimLifeCycle(unittest.TestCase):
 
         p.stop()
 
+    def test_start_pause_stop(self):
+        self.jr.dance.start()
+        self.jr.dance.pause()
+        self.jr.dance.stop()
+
+    def test_start_stop_pause_resume_random_order(self):
+        cmd = ['start', 'stop', 'pause', 'resume']
+        for _ in range(10):
+            getattr(self.jr.dance, random.choice(cmd))()
+
 
 if __name__ == '__main__':
     unittest.main()
