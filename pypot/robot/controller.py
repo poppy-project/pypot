@@ -55,9 +55,13 @@ class DummyController(MotorsController):
     def __init__(self, motors):
         MotorsController.__init__(self, None, motors)
 
+    def setup(self):
+        for m in self.motors:
+            m.goal_position = 0.0
+
     def update(self):
         for m in self.motors:
-            m.__dict__['present_position'] = m.goal_position
+            m.__dict__['present_position'] = m.__dict__['goal_position']
 
 
 class SensorsController(AbstractController):
