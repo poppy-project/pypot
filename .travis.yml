@@ -18,7 +18,8 @@ env:
     - GIT_NAME=poppy-bot
     # GH_TOKEN encrypted below > travis encrypt GH_TOKEN=XXXXXX --add
     - secure: "TgJGS9wFmr9zrUSMFDSH/p4sj77+6FwGUpQin4Sfl97cEXoHjeKrDsJvkEV8HZG2mAHnMyMeEqnzJbmCdhCB+9GAu31hdpXies6fA0tFDgtMUbf2lD16M7pL8jJ3zTxR4FCXLLd6ST3x+HLSrPfITkbNvOt1jmgVXdVTHKsSLRM="
-
+    # BINSTAR_TOKEN encrypted below > travis encrypt BINSTAR_TOKEN=XXXXXX --add
+    secure: "XU5L8DJnLfXgLiBz1IEG+SHp6hq/EBnl69z0ayviIbcJXORaOjeoKchrXQkn+yfOjzTh9Qwheo5SyEJclXAbISjmTdEL59XM+fKaKYaGLJ66GvHk3g/B6jxyaKduramlJq/dWItgW5wJpSNifyvKvFBhYdZ3EsL99njJcD6+Y7o="
     # V-REP conf
     - VREP_VERSION=3_1_2
     - VREP_ROOT_DIR=$TRAVIS_BUILD_DIR/vrep

@@ -13,6 +13,10 @@ if [[ "$TRAVIS" == "true" ]]; then
         echo "Installing twine..."
         pip install -q twine --user || exit
 
+        echo "Installing conda-build-all..."
+        conda install conda-build-all --channel conda-forge
+
+
         echo "Creating distribution files..."
         if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
 
@@ -48,6 +52,9 @@ if [[ "$TRAVIS" == "true" ]]; then
             # files.
             # See: https://bitbucket.org/pypa/pypi-metadata-formats/issue/15/enhance-the-platform-tag-definition-for
 
+            echo "Uploading recipe to anaconda..."
+            conda-build-all conda.recipe --matrix-condition "python >=2.7.*" --upload-channels poppy-project
+
         elif [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
             python setup.py bdist bdist_wheel || exit
             echo "Created the following distribution files:"
@@ -65,7 +72,9 @@ if [[ "$TRAVIS" == "true" ]]; then
 
             echo "Attempting to upload all distribution files to PyPi..."
             twine upload dist/* -u "${PYPI_USERNAME}" -p "${PYPI_PASSWD}"
+
+            echo "Uploading recipe to anaconda..."
+            conda-build-all conda.recipe --matrix-condition "python >=2.7.*" --upload-channels poppy-project
         fi
     fi
 fi
-
