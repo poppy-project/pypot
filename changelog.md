@@ -7,6 +7,8 @@
 * add native support for the pixl board
 * allow to disable sensor at loading (convenient for camera sensor)
 * add a dummy camera
+* Add support for RX-24 dynamixel motors
+* Add an event used to check if a "loopable" thread has been updated
 
 ### Snap
 * Add blocs: “ping url <hostname>” and “set $robot host to <hostname>” which aim to fix DNS issues in some filtered networks.
@@ -22,6 +24,10 @@
 * setup unittest via dummy robot
 * fix the unclear exception "Cannot unpack *values"
 * fix cli tool `poppy-motor-reset` and rename it to `dxl-config`
+* Fix deprecation issue in get_control_table
+* Clear error when there is no "time script" in a v-rep scene
+* Fix a freeze when stopping a paused primitive
+* Fix offset/orientation issue in DummyController
 
 
 ## V 2.10
