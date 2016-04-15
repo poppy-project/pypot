@@ -10,7 +10,7 @@ We defined a protocol which permits the access of all the robot variables and me
 
 The :class:`~pypot.server.rest.RESTRobot` has been abstracted from the server, so you can easily add new transport methods if needed.
 
-As an example of what you can do, here is the code of getting the load of a motor and changing its position::
+As an example of what you can do, here is the code of getting the load of a motor and changing its position using ZMQ socket::
 
     import zmq
     import threading
@@ -34,9 +34,30 @@ As an example of what you can do, here is the code of getting the load of a moto
     answer = s.recv_json()
     print(answer)
 
+Equivalent example using urllib in Python to send http requests::
+
+    import urllib, urllib2, json
+
+    #make a GET request to read the names of all motors
+    allmotors= urllib2.urlopen("http://poppy.local:8080/motor/list.json").read()
+    print allmotors
+
+    #transform json into Python dictionnary
+    allmotors_dict = json.loads(allmotors)
+    for m in allmotors_dict["motors"]:
+        print m
+
+    #make POST request to move a motor
+    url = 'http://poppy.local:8080/motor/head_z/register/goal_position/value.json'
+    values = json.dumps(-20)
+    req = urllib2.Request(url, values)
+    req.add_header("Content-Type",'application/json')
+    response = urllib2.urlopen(req)
+
+
 .. _remote_protocol:
 
 Protocol
 --------
 
-The entire protocol is entirely described `here <https://github.com/pierre-rouanet/pypot/blob/master/REST-APIs.md>`_.
+The entire protocol is entirely described `here <https://github.com/poppy-project/pypot/blob/master/REST-APIs.md>`_.
