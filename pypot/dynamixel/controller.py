@@ -136,7 +136,7 @@ class PosSpeedLoadDxlController(DxlController):
     def __init__(self, io, motors, sync_freq):
         DxlController.__init__(self, io, motors, sync_freq,
                                False, 'get', 'present_position')
-        print "Loading modified PosSpeedLoadDxlController with cache"
+        logger.info("Loading PosSpeedLoadDxlController with cache")
         self.ncacherequests=0
         self.ncachehits=0
 
@@ -201,7 +201,7 @@ class PosSpeedLoadDxlController(DxlController):
     
     def is_cached(self,id,val):
         if (self.ncacherequests%100)==0:
-            print "Cache miss/total ",self.ncacherequests-self.ncachehits,"/",self.ncacherequests
+            logger.debug("Cache miss/total %d/%d"%(self.ncacherequests-self.ncachehits,self.ncacherequests))
         self.ncacherequests+=1
         if not id in self._cache.keys():
             self._cache[id] = val
