@@ -136,7 +136,9 @@ class PosSpeedLoadDxlController(DxlController):
     def __init__(self, io, motors, sync_freq):
         DxlController.__init__(self, io, motors, sync_freq,
                                False, 'get', 'present_position')
-        logger.info("Loading modified PosSpeedLoadDxlController with cache")
+        print "Loading modified PosSpeedLoadDxlController with cache"
+        self.ncacherequests=0
+        self.ncachehits=0
 
     def setup(self):
         torques = self.io.is_torque_enabled(self.ids)
@@ -194,19 +196,21 @@ class PosSpeedLoadDxlController(DxlController):
         values = ((m.__dict__['goal_position'],
                    m.__dict__['moving_speed'],
                    m.__dict__['torque_limit']) for m in rigid_motors)
-        commands = (id,val for id,val in zip(ids, values) if not self.is_cached(id,val) )
+        commands = ((id,val) for id,val in zip(ids, values) if not self.is_cached(id,val) )
         self.io.set_goal_position_speed_load(dict(commands))
     
     def is_cached(self,id,val):
+        if (self.ncacherequests%100)==0:
+            print "Cache miss/total ",self.ncacherequests-self.ncachehits,"/",self.ncacherequests
+        self.ncacherequests+=1
         if not id in self._cache.keys():
             self._cache[id] = val
             return False
         else:
             if val==self._cache[id]:
-                logger.info("Cache hit id %d"%d)
+                self.ncachehits+=1
                 return True
             else:
-                logger.info("Cache miss id %d"%d)
                 self._cache[id] = val
                 return False
                 
