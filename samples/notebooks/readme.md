@@ -35,9 +35,9 @@ The Poppy Creature we developed are usually provided with an embedded board (e.g
 
 When plugged, the embedded board of the Poppy Creature should automatically start a Jupyter Notebook server providing access to all the notebooks tutorials.
 
-Assuming that you creature is connected to the same network as your computer (see [here](https://github.com/pierre-rouanet/rasp-poppy) for details), they can be accessed just by connecting to an url such as: http://poppy-ergo-jr.local:8888/notebooks where *poppy-ergo-jr* is the hostname of your creature. This could be replaced by *poppy-humanoid*, *poppy-torso*... depending on the creature you are working with.
+Assuming that you creature is connected to the same network as your computer (see [here](https://github.com/pierre-rouanet/rasp-poppy) for details), they can be accessed just by connecting to an url such as: http://poppy.local.
 
-**It's important to note here that the notebook will actually run on the embedded board and not on your local machine!** You will thus not be able to easily access a file on your machine using this approach. Similarly, if you need to install an extra python package, you will have to install it directly on the board (e.g. using an [ssh connection](https://github.com/pierre-rouanet/rasp-poppy)).
+**It's important to note here that the notebook will actually run on the embedded board and not on your local machine!** You will thus not be able to easily access a file on your machine using this approach. Similarly, if you need to install an extra python package, you will have to install it directly on the board (e.g. using an [ssh connection](https://github.com/poppy-project/raspoppy)).
 
 # Running Notebooks Locally
 
