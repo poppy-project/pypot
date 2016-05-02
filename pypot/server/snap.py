@@ -46,6 +46,7 @@ def find_host_ip(host=None):
         # If the above method fails (depending on the system)
         # Tries to ping google DNS instead
         with closing(socket.socket()) as s:
+            s.settimeout(1)
             s.connect(('8.8.8.8', 53))
             return s.getsockname()[0]
 
