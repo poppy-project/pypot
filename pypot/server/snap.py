@@ -32,14 +32,21 @@ def find_host_ip(host=None):
         if host is None:
             host = socket.gethostname()
 
-        ips = [ip for ip in socket.gethostbyname_ex(host)[2]
-               if not ip.startswith('127.')]
-        if len(ips):
-            return ips[0]
+        if 'local' not in host:
+            host += '.local'
+
+        try:
+            ips = [ip for ip in socket.gethostbyname_ex(host)[2]
+                   if not ip.startswith('127.')]
+            if len(ips):
+                return ips[0]
+        except socket.gaierror:
+            pass
 
         # If the above method fails (depending on the system)
         # Tries to ping google DNS instead
         with closing(socket.socket()) as s:
+            s.settimeout(1)
             s.connect(('8.8.8.8', 53))
             return s.getsockname()[0]
 
