@@ -32,6 +32,8 @@ def find_host_ip(host=None):
         if host is None:
             host = socket.gethostname()
 
+        if 'local' not in host:
+            host += '.local'
         ips = [ip for ip in socket.gethostbyname_ex(host)[2]
                if not ip.startswith('127.')]
         if len(ips):
