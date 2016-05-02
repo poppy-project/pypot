@@ -28,6 +28,7 @@
 * Clear error when there is no "time script" in a v-rep scene
 * Fix a freeze when stopping a paused primitive
 * Fix offset/orientation issue in DummyController
+* Fix hostname resolution
 
 
 ## V 2.10
