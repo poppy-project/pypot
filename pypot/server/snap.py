@@ -26,7 +26,7 @@ def get_snap_user_projects_directory():
     return snap_user_projects_directory
 
 
-def find_host_ip(host=None):
+def find_local_ip(host=None):
     # see here: http://stackoverflow.com/questions/166506/
     try:
         if host is None:
@@ -41,23 +41,28 @@ def find_host_ip(host=None):
             if len(ips):
                 return ips[0]
         except socket.gaierror:
+            logger.debug('socket gaierror with hostname {}'.format(host))
             pass
 
         # If the above method fails (depending on the system)
-        # Tries to ping google DNS instead
-        with closing(socket.socket()) as s:
-            s.settimeout(1)
-            s.connect(('8.8.8.8', 53))
-            return s.getsockname()[0]
+        # Tries to ping google DNS instead (need a internet connexion)
+        try:
+            with closing(socket.socket()) as s:
+                s.settimeout(1)
+                s.connect(('8.8.8.8', 53))
+                return s.getsockname()[0]
+        except socket.timeout:
+            logger.debug('socket timeout')
+            pass
 
     except IOError as e:
         # network unreachable
         if e.errno == errno.ENETUNREACH:
-            return '127.0.0.1'
+            logger.debug('network unreachable')
+            pass
         else:
             raise
-
-find_local_ip = lambda: find_host_ip('localhost')
+    return '127.0.0.1'
 
 
 def set_snap_server_variables(host, port, snap_extension='.xml', path=None):
@@ -101,7 +106,7 @@ class SnapRobotServer(AbstractServer):
             logger.info('Copy snap project from {}, to {}'.format(xml_file, dst))
             shutil.copyfile(xml_file, dst)
 
-        set_snap_server_variables(find_host_ip(), port, path=get_snap_user_projects_directory())
+        set_snap_server_variables(find_local_ip(), port, path=get_snap_user_projects_directory())
 
         @self.app.get('/')
         def get_sitemap():
@@ -197,7 +202,7 @@ class SnapRobotServer(AbstractServer):
         @self.app.get('/ip/')
         @self.app.get('/ip/<host>')
         def get_ip(host=None):
-            return find_host_ip(host)
+            return find_local_ip(host)
 
         @self.app.get('/reset-simulation')
         def reset_simulation():
