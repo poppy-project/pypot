@@ -44,7 +44,7 @@ class DxlController(MotorsController):
         if self.mode == 'set':
             MAX_TRIALS = 25
             for _ in range(MAX_TRIALS):
-                if self.get_register(self.working_motors):
+                if self.get_register(self.working_motors, disable_sync_read=True):
                     break
                 time.sleep(0.1)
             else:
@@ -59,14 +59,18 @@ class DxlController(MotorsController):
                 if self.mode == 'get' else
                 self.set_register(self.synced_motors))
 
-    def get_register(self, motors):
+    def get_register(self, motors, disable_sync_read=False):
         """ Gets the value from the specified register and sets it to the :class:`~pypot.dynamixel.motor.DxlMotor`. """
         if not motors:
             return False
 
         ids = [m.id for m in motors]
+        getter = getattr(self.io, 'get_{}'.format(self.regname))
 
-        values = getattr(self.io, 'get_{}'.format(self.regname))(ids)
+        values = (sum([getter(id) for id in ids], [])
+                  if disable_sync_read else
+                  getter(ids))
+
         if not values:
             return False
 
