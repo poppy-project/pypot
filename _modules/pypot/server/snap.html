@@ -9,7 +9,7 @@
   <head>
     <meta charset="utf-8" />
     
-    <title>pypot.server.snap &mdash; pypot 2.11.3 documentation</title>
+    <title>pypot.server.snap &mdash; pypot 2.11.4 documentation</title>
     <meta name="description" content="">
     <meta name="author" content="">
 
@@ -35,7 +35,7 @@
 <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
             URL_ROOT:    '../../../',
-            VERSION:     '2.11.3',
+            VERSION:     '2.11.4',
             COLLAPSE_INDEX: false,
             FILE_SUFFIX: '.html',
             HAS_SOURCE:  true
@@ -51,7 +51,7 @@
 </script>
     <link rel="shortcut icon" href="../../../_static/pypot_logo-48x48.png"/>
     <link rel="author" title="About these documents" href="../../../about.html" />
-    <link rel="top" title="pypot 2.11.3 documentation" href="../../../index.html" />
+    <link rel="top" title="pypot 2.11.4 documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body role="document">
@@ -64,7 +64,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="../../../index.html">pypot 2.11.3 documentation</a>
+          <a class="navbar-brand" href="../../../index.html">pypot 2.11.4 documentation</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
@@ -163,7 +163,7 @@
     <span class="k">return</span> <span class="n">snap_user_projects_directory</span></div>
 
 
-<div class="viewcode-block" id="find_host_ip"><a class="viewcode-back" href="../../../pypot.server.html#pypot.server.snap.find_host_ip">[docs]</a><span class="k">def</span> <span class="nf">find_host_ip</span><span class="p">(</span><span class="n">host</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="find_local_ip"><a class="viewcode-back" href="../../../pypot.server.html#pypot.server.snap.find_local_ip">[docs]</a><span class="k">def</span> <span class="nf">find_local_ip</span><span class="p">(</span><span class="n">host</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
     <span class="c1"># see here: http://stackoverflow.com/questions/166506/</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">host</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
@@ -178,23 +178,28 @@
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">ips</span><span class="p">):</span>
                 <span class="k">return</span> <span class="n">ips</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
         <span class="k">except</span> <span class="n">socket</span><span class="o">.</span><span class="n">gaierror</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;socket gaierror with hostname {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">host</span><span class="p">))</span>
             <span class="k">pass</span>
 
         <span class="c1"># If the above method fails (depending on the system)</span>
-        <span class="c1"># Tries to ping google DNS instead</span>
-        <span class="k">with</span> <span class="n">closing</span><span class="p">(</span><span class="n">socket</span><span class="o">.</span><span class="n">socket</span><span class="p">())</span> <span class="k">as</span> <span class="n">s</span><span class="p">:</span>
-            <span class="n">s</span><span class="o">.</span><span class="n">settimeout</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-            <span class="n">s</span><span class="o">.</span><span class="n">connect</span><span class="p">((</span><span class="s1">&#39;8.8.8.8&#39;</span><span class="p">,</span> <span class="mi">53</span><span class="p">))</span>
-            <span class="k">return</span> <span class="n">s</span><span class="o">.</span><span class="n">getsockname</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="c1"># Tries to ping google DNS instead (need a internet connexion)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">with</span> <span class="n">closing</span><span class="p">(</span><span class="n">socket</span><span class="o">.</span><span class="n">socket</span><span class="p">())</span> <span class="k">as</span> <span class="n">s</span><span class="p">:</span>
+                <span class="n">s</span><span class="o">.</span><span class="n">settimeout</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+                <span class="n">s</span><span class="o">.</span><span class="n">connect</span><span class="p">((</span><span class="s1">&#39;8.8.8.8&#39;</span><span class="p">,</span> <span class="mi">53</span><span class="p">))</span>
+                <span class="k">return</span> <span class="n">s</span><span class="o">.</span><span class="n">getsockname</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">except</span> <span class="n">socket</span><span class="o">.</span><span class="n">timeout</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;socket timeout&#39;</span><span class="p">)</span>
+            <span class="k">pass</span>
 
     <span class="k">except</span> <span class="ne">IOError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
         <span class="c1"># network unreachable</span>
         <span class="k">if</span> <span class="n">e</span><span class="o">.</span><span class="n">errno</span> <span class="o">==</span> <span class="n">errno</span><span class="o">.</span><span class="n">ENETUNREACH</span><span class="p">:</span>
-            <span class="k">return</span> <span class="s1">&#39;127.0.0.1&#39;</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;network unreachable&#39;</span><span class="p">)</span>
+            <span class="k">pass</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span></div>
-
-<span class="n">find_local_ip</span> <span class="o">=</span> <span class="k">lambda</span><span class="p">:</span> <span class="n">find_host_ip</span><span class="p">(</span><span class="s1">&#39;localhost&#39;</span><span class="p">)</span>
+            <span class="k">raise</span>
+    <span class="k">return</span> <span class="s1">&#39;127.0.0.1&#39;</span></div>
 
 
 <div class="viewcode-block" id="set_snap_server_variables"><a class="viewcode-back" href="../../../pypot.server.html#pypot.server.snap.set_snap_server_variables">[docs]</a><span class="k">def</span> <span class="nf">set_snap_server_variables</span><span class="p">(</span><span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">,</span> <span class="n">snap_extension</span><span class="o">=</span><span class="s1">&#39;.xml&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
@@ -238,7 +243,7 @@
             <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Copy snap project from {}, to {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">xml_file</span><span class="p">,</span> <span class="n">dst</span><span class="p">))</span>
             <span class="n">shutil</span><span class="o">.</span><span class="n">copyfile</span><span class="p">(</span><span class="n">xml_file</span><span class="p">,</span> <span class="n">dst</span><span class="p">)</span>
 
-        <span class="n">set_snap_server_variables</span><span class="p">(</span><span class="n">find_host_ip</span><span class="p">(),</span> <span class="n">port</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">get_snap_user_projects_directory</span><span class="p">())</span>
+        <span class="n">set_snap_server_variables</span><span class="p">(</span><span class="n">find_local_ip</span><span class="p">(),</span> <span class="n">port</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">get_snap_user_projects_directory</span><span class="p">())</span>
 
         <span class="nd">@self.app.get</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)</span>
         <span class="k">def</span> <span class="nf">get_sitemap</span><span class="p">():</span>
@@ -334,7 +339,7 @@
         <span class="nd">@self.app.get</span><span class="p">(</span><span class="s1">&#39;/ip/&#39;</span><span class="p">)</span>
         <span class="nd">@self.app.get</span><span class="p">(</span><span class="s1">&#39;/ip/&lt;host&gt;&#39;</span><span class="p">)</span>
         <span class="k">def</span> <span class="nf">get_ip</span><span class="p">(</span><span class="n">host</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
-            <span class="k">return</span> <span class="n">find_host_ip</span><span class="p">(</span><span class="n">host</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">find_local_ip</span><span class="p">(</span><span class="n">host</span><span class="p">)</span>
 
         <span class="nd">@self.app.get</span><span class="p">(</span><span class="s1">&#39;/reset-simulation&#39;</span><span class="p">)</span>
         <span class="k">def</span> <span class="nf">reset_simulation</span><span class="p">():</span>
@@ -507,7 +512,7 @@
 <div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
   <div class="navbar-inner">
     <ul class="nav navbar-nav ">
-        <li><a href="../../../index.html">pypot 2.11.3 documentation</a></li>
+        <li><a href="../../../index.html">pypot 2.11.4 documentation</a></li>
     </ul>
 <ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
       
