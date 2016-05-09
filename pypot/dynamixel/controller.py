@@ -67,7 +67,7 @@ class DxlController(MotorsController):
         ids = [m.id for m in motors]
         getter = getattr(self.io, 'get_{}'.format(self.regname))
 
-        values = (sum([getter(id) for id in ids], [])
+        values = (sum([list(getter([id])) for id in ids], [])
                   if disable_sync_read else
                   getter(ids))
 
