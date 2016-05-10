@@ -1,4 +1,5 @@
 from __future__ import division
+
 import json
 import time
 import logging
@@ -48,6 +49,33 @@ class Move(object):
         """ Returns a copy of the stored positions. """
         return self._timed_positions
         # return list(self.iterpositions())
+
+    def plot(self, ax):
+        pos = self.positions()
+
+        if not pos:
+            return
+
+        motors = pos[0].keys()
+
+        n = len(pos)
+        t = np.linspace(0, n / self.framerate, n)
+        pos = self.positions()
+
+        p = {}
+        for name in motors:
+            p[name] = []
+
+        for tt in t:
+            for k, v in pos[float(tt)].items():
+                p[k].append(v[0])
+
+        for name in motors:
+            ax.plot(t, p[name])
+
+        ax.legend(motors)
+        ax.set_xlabel('Time (in s)')
+        ax.set_ylabel('Position (in degree)')
 
     def save(self, file):
         """ Saves the :class:`~pypot.primitive.move.Move` to a json file.
