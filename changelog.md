@@ -9,6 +9,7 @@
 * add a dummy camera
 * Add support for RX-24 dynamixel motors
 * Add an event used to check if a "loopable" thread has been updated
+* Move can now be plotted using matplotlib
 
 ### Snap
 * Add blocs: “ping url <hostname>” and “set $robot host to <hostname>” which aim to fix DNS issues in some filtered networks.
@@ -29,6 +30,7 @@
 * Fix a freeze when stopping a paused primitive
 * Fix offset/orientation issue in DummyController
 * Fix hostname resolution
+* Make initialization of synchronization loop more robust
 
 
 ## V 2.10
