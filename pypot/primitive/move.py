@@ -43,12 +43,10 @@ class Move(object):
     def iterpositions(self):
         """ Returns an iterator on the stored positions. """
         return self._timed_positions.items()
-        # return iter(self._timed_positions.items())
 
     def positions(self):
         """ Returns a copy of the stored positions. """
         return self._timed_positions
-        # return list(self.iterpositions())
 
     def plot(self, ax):
         pos = self.positions()
