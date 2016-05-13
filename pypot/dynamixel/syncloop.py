@@ -71,7 +71,7 @@ class BaseDxlController(MetaDxlController):
 class LightDxlController(MetaDxlController):
     def __init__(self, io, motors):
         controllers = [
-            PosSpeedLoadDxlController(io, motors, 25.),
+            PosSpeedLoadDxlController(io, motors, 50.),
 
             AngleLimitRegisterController(io, motors, 10., True),
             DxlController(io, motors, 10., True, 'get', 'present_voltage'),
