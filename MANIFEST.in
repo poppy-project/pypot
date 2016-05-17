@@ -1,3 +1,4 @@
 include pypot/vrep/remoteApiBindings/lib/*/*/remoteApi.*
-include pypot/server/snap_projects/pypot-snap-blocks.xml
 include pypot/tools/herborist/herborist.ui
+include pypot/server/snap_projects/*
+
