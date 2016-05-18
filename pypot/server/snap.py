@@ -328,7 +328,6 @@ class SnapRobotServer(AbstractServer):
                 return str(any([m.id in markers[marker] for m in detected]))
             except AttributeError:
                 return 'Error: marker detector is not activated'
-                
 
         @self.app.get('/ik/<chain>/endeffector')
         def ik_endeffector(chain):
