@@ -328,6 +328,7 @@ class SnapRobotServer(AbstractServer):
                 'tetris': [112259237],
                 'caribou': [221052793],
                 'lapin': [44616414],
+                'rabbit': [44616414],
             }
             try:
                 detected = rr.robot.marker_detector.markers
