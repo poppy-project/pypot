@@ -322,6 +322,7 @@ class SnapRobotServer(AbstractServer):
                 'tetris': [112259237],
                 'caribou': [221052793],
                 'lapin': [44616414],
+                'rabbit': [44616414],
             }
             detected = rr.robot.marker_detector.markers
             return str(any([m.id in markers[marker] for m in detected]))
