@@ -79,13 +79,13 @@ def set_snap_server_variables(host, port, snap_extension='.xml', path=None):
             xml = xf.read()
         # Change host variable
         xml = re.sub(r'''<variable name="host"><l>[\s\S]*?<\/l><\/variable>''',
-                    '''<variable name="host"><l>{}</l></variable>'''.format(host), xml)
+                     '''<variable name="host"><l>{}</l></variable>'''.format(host), xml)
         # Change host argument of "set $robot host"
         xml = re.sub(r'''<custom-block s="set \$robot host to \%s"><l>[\s\S]*?<\/l>''',
-                    '''<custom-block s="set $robot host to %s"><l>{}</l>'''.format(host), xml)
+                     '''<custom-block s="set $robot host to %s"><l>{}</l>'''.format(host), xml)
         # Change port variable
         xml = re.sub(r'''<variable name="port"><l>[\s\S]*?<\/l><\/variable>''',
-                    '''<variable name="port"><l>{}</l></variable>'''.format(port), xml)
+                     '''<variable name="port"><l>{}</l></variable>'''.format(port), xml)
 
         with open(filename, 'w') as xf:
             xf.write(xml)
