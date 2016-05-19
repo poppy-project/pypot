@@ -5,7 +5,7 @@ import argparse
 import itertools
 
 from pypot.dynamixel import DxlIO, get_available_ports
-from pypot.dynamixel.packet import DxlReadDataPacket, DxlSyncWritePacket
+from pypot.dynamixel.protocol.v1 import DxlReadDataPacket, DxlSyncWritePacket
 from pypot.dynamixel.conversion import dxl_code
 
 
@@ -63,10 +63,10 @@ if __name__ == '__main__':
     print('in {}ms'.format(dt * 1000))
 
     print('Using pref-forged packet...')
-    c_get = [c for c in DxlIO._DxlIO__controls
+    c_get = [c for c in DxlIO._AbstractDxlIO__controls
              if c.name == 'present position'][0]
 
-    c_set = [c for c in DxlIO._DxlIO__controls
+    c_set = [c for c in DxlIO._AbstractDxlIO__controls
              if c.name == 'goal position'][0]
 
     pos = dxl_code(0, c_set.length)
