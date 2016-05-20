@@ -117,7 +117,7 @@ class AbstractDxlIO(object):
                 self.close(_force_lock=True)
 
                 if port in self.__used_ports:
-                    raise DxlError('port already used {}'.format(port))
+                    raise DxlError('Another instance of pypot use the port {}. You should restart your Python kernel to pass through this issue.'.format(port))
 
                 # Dirty walkaround to fix a strange bug.
                 # Observed with the USB2AX on Linux with pyserial 2.7
