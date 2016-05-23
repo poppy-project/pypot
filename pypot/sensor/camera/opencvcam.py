@@ -10,7 +10,7 @@ class OpenCVCamera(AbstractCamera):
         self._index = index
         self.capture = cv2.VideoCapture(self.index)
         if not self.capture.isOpened():
-            raise ValueError('Can not open camera device {}!'.format(index))
+            raise ValueError('Can not open camera device {}. You should start your robot with argument camera=\'dummy\'. E.g. p = PoppyErgoJr(camera=\'dummy\')'.format(index))
 
         if resolution is not None:
             self.capture.set(cv2.CAP_PROP_FRAME_WIDTH, resolution[0])
