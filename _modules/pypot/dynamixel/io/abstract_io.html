@@ -255,7 +255,7 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">(</span><span class="n">_force_lock</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
 
                 <span class="k">if</span> <span class="n">port</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__used_ports</span><span class="p">:</span>
-                    <span class="k">raise</span> <span class="n">DxlError</span><span class="p">(</span><span class="s1">&#39;port already used {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">port</span><span class="p">))</span>
+                    <span class="k">raise</span> <span class="n">DxlError</span><span class="p">(</span><span class="s1">&#39;Another instance of pypot use the port {}. You should restart your Python kernel to pass through this issue.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">port</span><span class="p">))</span>
 
                 <span class="c1"># Dirty walkaround to fix a strange bug.</span>
                 <span class="c1"># Observed with the USB2AX on Linux with pyserial 2.7</span>
