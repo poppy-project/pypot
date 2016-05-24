@@ -7,13 +7,6 @@ from collections import deque
 
 from ...robot.sensor import Sensor
 
-try:
-    import smbus
-except ImportError:
-    print('''You need to install smbus first.
-          sudo apt-get install build-essential libi2c-dev i2c-tools python-dev libffi-dev
-          pip install smbus-cffi''')
-
 
 class SonarSensor(Sensor):
     """ Give acces to ultrasonic I2C modules SRF-02 in a *pypot way* """
