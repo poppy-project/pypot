@@ -89,6 +89,8 @@ class Sonar(object):
 
 
 if __name__ == '__main__':
+    import smbus
+
     from pylab import plot
 
     i2c = smbus.SMBus(1)
