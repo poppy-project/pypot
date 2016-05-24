@@ -6,6 +6,7 @@ import numpy
 from collections import deque
 
 from ...robot.sensor import Sensor
+from ...utils.i2c_controller import I2cController
 
 
 class SonarSensor(Sensor):
@@ -26,10 +27,10 @@ class Sonar(object):
         >
     """
 
-    def __init__(self, i2c, addresses=[0x70]):
+    def __init__(self, pin_number, addresses=[0x70]):
         """ 0x70 is the default address for the SRF-02 I2C module. """
 
-        self.i2c = i2c
+        self.i2c = I2cController(pin_number)
         self.addresses = addresses
 
         self.data = None

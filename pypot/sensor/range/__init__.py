@@ -1,6 +1,4 @@
 try:
-    import smbus
-
     from .sonar import Sonar
 
 except ImportError:
