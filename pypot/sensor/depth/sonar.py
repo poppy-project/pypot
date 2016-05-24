@@ -33,7 +33,7 @@ class SonarSensor(Sensor):
 
     def update(self):
         self._sonar.update()
-        self.d = self._sonar.data[0]
+        self.distance = self._sonar.data[0]
 
     @property
     def distance(self):
