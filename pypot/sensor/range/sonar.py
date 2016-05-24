@@ -1,6 +1,9 @@
 from __future__ import print_function
 
 import time
+import numpy
+
+from collections import deque
 
 from ...robot.sensor import Sensor
 
@@ -38,9 +41,7 @@ class Sonar(object):
 
         self.data = None
 
-        self._raw_data_queues = []
-        for _ in self.addresses:
-            self._raw_data_queues.append(5 * [0])
+        self._raw_data_queues = [deque([], 5) for _ in range(addresses)]
 
         self.results_type = {'inches': 0x50,
                              'centimeters': 0x51,
@@ -64,14 +65,13 @@ class Sonar(object):
     def _filter(self, data):
         """ Apply a filter to reduce noisy data.
 
-           Return the median value on a heap of 5 raw data.
+           Return the median value of a heap of data.
 
         """
         filtered_data = []
         for queue, data in zip(self._raw_data_queues, data):
-            queue.pop(0)
             queue.append(data)
-            filtered_data.append(sorted(queue)[2])
+            filtered_data.append(numpy.median(queue))
 
         return filtered_data
 
