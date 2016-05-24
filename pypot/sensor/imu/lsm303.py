@@ -3,7 +3,7 @@ from bitstring import BitArray
 import math
 import threading
 import time
-from KalmanFilter import *
+from kalman_filter import *
 
 
 class IMU(object):
