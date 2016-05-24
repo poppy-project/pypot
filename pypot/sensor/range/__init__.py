@@ -1,5 +1,5 @@
 try:
-    from .sonar import Sonar
+    from .sonar import SonarSensor
 
 except ImportError:
     print('''You need to install smbus first.

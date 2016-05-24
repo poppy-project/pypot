@@ -1,4 +1,4 @@
-from __future__ import print_function
+from __future__ import print_function, division
 
 import time
 import numpy
@@ -6,14 +6,42 @@ import numpy
 from collections import deque
 
 from ...robot.sensor import Sensor
+from ...utils import StoppableLoopThread
 from ...utils.i2c_controller import I2cController
 
 
 class SonarSensor(Sensor):
-    """ Give acces to ultrasonic I2C modules SRF-02 in a *pypot way* """
+    """ Give acces to ultrasonic I2C modules SRF-02 in a *pypot way*
 
-    def __init__(self):
-        pass
+        It provides one register: distance (in meters).
+
+    """
+    registers = Sensor.registers + ['distance']
+
+    def __init__(self, name, i2c_pin, address, sync_freq=50.0):
+        Sensor.__init__(self, name)
+
+        self._d = numpy.nan
+
+        self._sonar = Sonar(i2c_pin, address)
+
+        self._controller = StoppableLoopThread(sync_freq, target=self.update)
+        self._controller.start()
+
+    def close(self):
+        self._controller.stop()
+
+    def update(self):
+        self._sonar.update()
+        self.d = self._sonar.data[0]
+
+    @property
+    def distance(self):
+        return self._d
+
+    @distance.setter
+    def distance(self, d):
+        self._d = d / 100
 
 
 class Sonar(object):
