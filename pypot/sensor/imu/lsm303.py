@@ -3,7 +3,8 @@ from bitstring import BitArray
 import math
 import threading
 import time
-from kalman_filter import *
+
+from kalman_filter import KalmanFilter
 
 
 class IMU(object):
@@ -55,8 +56,8 @@ class IMU(object):
             # self.pitch = self.pitch * 0.95 + accelOrientation.pitch * 0.05
 
             # # low pass filter
-            #self.roll = self.roll*.5 + accelOrientation.roll*.5
-            #self.pitch = self.pitch*.5 + accelOrientation.pitch*.5
+            # self.roll = self.roll*.5 + accelOrientation.roll*.5
+            # self.pitch = self.pitch*.5 + accelOrientation.pitch*.5
             time.sleep(max(0, IMU.DELAY_TIME - (time.time() - startTime)))
             self.elapsedTime = time.time() - startTime
 
