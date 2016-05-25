@@ -54,7 +54,7 @@ class IMU(StoppableThread):
 
 
 class LSM303Accelerometer(object):
-    """ Accelerometer + magnetometer sensor"""
+    """ Accelerometer + magnetometer sensor. """
 
     LSM_ACC_ADDR = 0x19
 
@@ -168,7 +168,6 @@ class LSM303Accelerometer(object):
 
 
 class L3GD20Gyroscope(object):
-
     DPS250 = 0x00  # dps: 250 (Default)
     DPS500 = 0x10  # dps: 500
     DPS2000 = 0x20  # dps: 2000
