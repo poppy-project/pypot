@@ -1,4 +1,3 @@
-import threading
 import numpy
 import math
 import time
@@ -7,26 +6,25 @@ from collections import namedtuple
 
 from ...utils.i2c_controller import I2cController
 from .kalman_filter import KalmanFilter
+from ...utils import StoppableThread
 
 
 Orientation = namedtuple('Orientation', 'roll pitch yaw')
 
 
-class IMU(object):
+class IMU(StoppableThread):
     DELAY_TIME = 0.02
     GYRO_NOISE = 0.001
     BIAS_NOISE = 0.003
     ACCEL_NOISE = 0.01
 
     def __init__(self, i2c_bus=1):
+        StoppableThread.__init__(target=self.update_orientation)
+
         self.gyro = L3GD20Gyroscope(i2c_bus, L3GD20Gyroscope.DPS2000)
         self.accel = LSM303Accelerometer(i2c_bus, LSM303Accelerometer.SCALE_A_8G)
 
         self.roll, self.pitch, self.yaw = self.accel.get_orientation()
-
-        self.thread = threading.Thread(target=self.update_orientation)
-        self.thread.daemon = True
-        self.thread.start()
 
         self.kalman_filter = KalmanFilter(IMU.GYRO_NOISE,
                                           IMU.BIAS_NOISE,
@@ -39,16 +37,14 @@ class IMU(object):
     def update_orientation(self):
         self.elapsed_time = IMU.DELAY_TIME
 
-        while True:
+        while not self.should_stop():
             start_time = time.time()
-            gyro_x, gyro_y, gyro_z = self.gyro.get_raw_data()
-            accel_orientation = self.accel.get_orientation()
 
-            # kalman filter
-            self.roll = self.kalman_filter.filterX(
-                accel_orientation.roll, gyro_x, self.elapsed_time)
-            self.pitch = self.kalman_filter.filterY(
-                accel_orientation.pitch, gyro_y, self.elapsed_time)
+            gyro_x, gyro_y, gyro_z = self.gyro.get_raw_data()
+            roll, pitch, _ = self.accel.get_orientation()
+
+            self.roll = self.kalman_filter.filterX(roll, gyro_x, self.elapsed_time)
+            self.pitch = self.kalman_filter.filterY(pitch, gyro_y, self.elapsed_time)
 
             time.sleep(max(0, IMU.DELAY_TIME - (time.time() - start_time)))
             self.elapsed_time = time.time() - start_time
