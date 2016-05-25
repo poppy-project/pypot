@@ -7,9 +7,28 @@ from collections import namedtuple
 from ...utils.i2c_controller import I2cController
 from .kalman_filter import KalmanFilter
 from ...utils import StoppableThread
+from ...robot.sensor import Sensor
 
 
 Orientation = namedtuple('Orientation', 'roll pitch yaw')
+
+
+class IMUSensor(Sensor):
+    """ IMU sensor class, it provides an orientation (roll, pitch, yaw). """
+    registers = Sensor.registers + ['orientation']
+
+    def __init__(self, name, i2c_pin):
+        Sensor.__init__(self, name)
+
+        self._imu = IMU(i2c_pin)
+        self._imu.start()
+
+    def close(self):
+        self._imu.stop()
+
+    @property
+    def orientation(self):
+        return self._imu.get_orientation()
 
 
 class IMU(StoppableThread):
