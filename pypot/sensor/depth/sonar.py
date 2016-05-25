@@ -23,9 +23,9 @@ class SonarSensor(Sensor):
 
         self._d = numpy.nan
 
-        self._sonar = Sonar(i2c_pin, address)
+        self._sonar = Sonar(i2c_pin, [address])
 
-        self._controller = StoppableLoopThread(sync_freq, target=self.update)
+        self._controller = StoppableLoopThread(sync_freq, update=self.update)
         self._controller.start()
 
     def close(self):
@@ -63,7 +63,7 @@ class Sonar(object):
 
         self.data = None
 
-        self._raw_data_queues = [deque([], 5) for _ in range(addresses)]
+        self._raw_data_queues = [deque([], 5) for _ in addresses]
 
         self.results_type = {'inches': 0x50,
                              'centimeters': 0x51,

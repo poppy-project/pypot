@@ -1,4 +1,5 @@
 import smbus
+import threading
 
 
 class I2cController(object):
@@ -9,6 +10,7 @@ class I2cController(object):
             I2cController.used_bus[pin_number] = smbus.SMBus(pin_number)
 
         self.bus = I2cController.used_bus[pin_number]
+        self.lock = threading.Lock()
 
     def read_byte_data(self, addr, cmd):
         with self.lock:
