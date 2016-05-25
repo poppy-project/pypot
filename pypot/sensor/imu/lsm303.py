@@ -1,7 +1,7 @@
 from smbus import SMBus
-from bitstring import BitArray
 import math
 import threading
+import numpy
 import time
 
 from kalman_filter import KalmanFilter
@@ -165,20 +165,20 @@ class LSM303Accelerometer(object):
         x = 256 * self.bus.read_byte_data(LSM303Accelerometer.LSM_ACC_ADDR, LSM303Accelerometer.OUT_X_H_A) + \
             self.bus.read_byte_data(
                 LSM303Accelerometer.LSM_ACC_ADDR, LSM303Accelerometer.OUT_X_L_A)
-        if x >= 32768:
-            x = BitArray(bin(x)).int
+
+        x = numpy.int16(x)
 
         y = 256 * self.bus.read_byte_data(LSM303Accelerometer.LSM_ACC_ADDR, LSM303Accelerometer.OUT_Y_H_A) + \
             self.bus.read_byte_data(
                 LSM303Accelerometer.LSM_ACC_ADDR, LSM303Accelerometer.OUT_Y_L_A)
-        if y >= 32768:
-            y = BitArray(bin(y)).int
+
+        y = numpy.int16(y)
 
         z = 256 * self.bus.read_byte_data(LSM303Accelerometer.LSM_ACC_ADDR, LSM303Accelerometer.OUT_Z_H_A) + \
             self.bus.read_byte_data(
                 LSM303Accelerometer.LSM_ACC_ADDR, LSM303Accelerometer.OUT_Z_L_A)
-        if z >= 32768:
-            z = BitArray(bin(z)).int
+
+        z = numpy.int16(z)
         return self.scale * (x + self.ZERO_X), self.scale * (y + self.ZERO_Y), self.scale * (z - self.ZERO_Z)
 
     def get_orientation(self):
@@ -256,17 +256,17 @@ class L3GD20Gyroscope(object):
     def get_raw_data(self):
         x = 256 * self.bus.read_byte_data(L3GD20Gyroscope.L3GADDR, L3GD20Gyroscope.XOUTHIGH) + \
             self.bus.read_byte_data(L3GD20Gyroscope.L3GADDR, L3GD20Gyroscope.XOUTLOW)
-        if x >= 32768:
-            x = BitArray(bin(x)).int
+
+        x = numpy.int16(x)
 
         y = 256 * self.bus.read_byte_data(L3GD20Gyroscope.L3GADDR, L3GD20Gyroscope.YOUTHIGH) + \
             self.bus.read_byte_data(L3GD20Gyroscope.L3GADDR, L3GD20Gyroscope.YOUTLOW)
-        if y >= 32768:
-            y = BitArray(bin(y)).int
+
+        y = numpy.int16(y)
 
         z = 256 * self.bus.read_byte_data(L3GD20Gyroscope.L3GADDR, L3GD20Gyroscope.ZOUTHIGH) + \
             self.bus.read_byte_data(L3GD20Gyroscope.L3GADDR, L3GD20Gyroscope.ZOUTLOW)
-        if z >= 32768:
-            z = BitArray(bin(z)).int
+
+        z = numpy.int16(z)
 
         return self.scale * (x + L3GD20Gyroscope.ZERO_X), self.scale * (y + L3GD20Gyroscope.ZERO_Y), self.scale * (z + L3GD20Gyroscope.ZERO_Z)
