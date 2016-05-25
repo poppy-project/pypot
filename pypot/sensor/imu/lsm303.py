@@ -18,9 +18,9 @@ class IMU(object):
     BIAS_NOISE = 0.003
     ACCEL_NOISE = 0.01
 
-    def __init__(self, i2cBus=1):
-        self.gyro = L3GD20Gyroscope(i2cBus, L3GD20Gyroscope.DPS2000)
-        self.accel = LSM303Accelerometer(i2cBus, LSM303Accelerometer.SCALE_A_8G)
+    def __init__(self, i2c_bus=1):
+        self.gyro = L3GD20Gyroscope(i2c_bus, L3GD20Gyroscope.DPS2000)
+        self.accel = LSM303Accelerometer(i2c_bus, LSM303Accelerometer.SCALE_A_8G)
 
         self.roll, self.pitch, self.yaw = self.accel.get_orientation()
 
@@ -105,8 +105,8 @@ class LSM303Accelerometer(object):
     ZERO_Z = -63
     # 73.312 -36.512 4102.48
 
-    def __init__(self, i2cBus, gauss_scale):
-        self.bus = I2cController(i2cBus)
+    def __init__(self, i2c_bus, gauss_scale):
+        self.bus = I2cController(i2c_bus)
         self.bus.write_byte_data(
             LSM303Accelerometer.LSM_ACC_ADDR, LSM303Accelerometer.CTRL_REG1_A, LSM303Accelerometer.POWER_ON)
         self.bus.write_byte_data(
@@ -195,8 +195,8 @@ class L3GD20Gyroscope(object):
     ZERO_Z = -67
     # 35.17 -142.38 52.83
 
-    def __init__(self, i2cBus, dps):
-        self.bus = I2cController(i2cBus)
+    def __init__(self, i2c_bus, dps):
+        self.bus = I2cController(i2c_bus)
         self.bus.write_byte_data(
             L3GD20Gyroscope.L3GADDR, L3GD20Gyroscope.CTREG1, L3GD20Gyroscope.ON)
         self.bus.write_byte_data(L3GD20Gyroscope.L3GADDR, L3GD20Gyroscope.CTREG4, dps)
