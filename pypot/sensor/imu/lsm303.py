@@ -1,72 +1,61 @@
-import math
 import threading
 import numpy
+import math
 import time
 
-from kalman_filter import KalmanFilter
 from ...utils.i2c_controller import I2cController
+from .kalman_filter import KalmanFilter
 
 
 class IMU(object):
-
-    DELAY_TIME = .02
-    GYRO_NOISE = .001
-    BIAS_NOISE = .003
-    ACCEL_NOISE = .01
+    DELAY_TIME = 0.02
+    GYRO_NOISE = 0.001
+    BIAS_NOISE = 0.003
+    ACCEL_NOISE = 0.01
 
     def __init__(self, i2cBus=1):
         self.gyro = L3GD20Gyroscope(i2cBus, L3GD20Gyroscope.DPS2000)
         self.accel = LSM303Accelerometer(i2cBus, LSM303Accelerometer.SCALE_A_8G)
-        initOrientation = self.accel.get_orientation()
-        self.roll = initOrientation.roll
-        self.pitch = initOrientation.pitch
-        self.yaw = initOrientation.yaw
-        self.kalmanFilter = KalmanFilter(
-            IMU.GYRO_NOISE, IMU.BIAS_NOISE, IMU.ACCEL_NOISE)
-        self.thread = threading.Thread(target=self.updateOrientation)
+
+        init_orientation = self.accel.get_orientation()
+        self.roll = init_orientation.roll
+        self.pitch = init_orientation.pitch
+        self.yaw = init_orientation.yaw
+
+        self.thread = threading.Thread(target=self.update_orientation)
         self.thread.daemon = True
         self.thread.start()
+
+        self.kalman_filter = KalmanFilter(IMU.GYRO_NOISE,
+                                          IMU.BIAS_NOISE,
+                                          IMU.ACCEL_NOISE)
 
     def zero(self):
         self.gyro.zero()
         self.accel.zero()
 
-    def updateOrientation(self):
-        self.elapsedTime = IMU.DELAY_TIME
+    def update_orientation(self):
+        self.elapsed_time = IMU.DELAY_TIME
+
         while True:
-            startTime = time.time()
-            gyroX, gyroY, gyroZ = self.gyro.get_raw_data()
-            accelOrientation = self.accel.get_orientation()
+            start_time = time.time()
+            gyro_x, gyro_y, gyro_z = self.gyro.get_raw_data()
+            accel_orientation = self.accel.get_orientation()
 
             # kalman filter
-            self.roll = self.kalmanFilter.filterX(
-                accelOrientation.roll, gyroX, self.elapsedTime)
-            self.pitch = self.kalmanFilter.filterY(
-                accelOrientation.pitch, gyroY, self.elapsedTime)
+            self.roll = self.kalman_filter.filterX(
+                accel_orientation.roll, gyro_x, self.elapsed_time)
+            self.pitch = self.kalman_filter.filterY(
+                accel_orientation.pitch, gyro_y, self.elapsed_time)
 
-            # if abs(gyroX) > .5:
-            #     self.roll = self.roll + (gyroX * self.elapsedTime)
-            # if abs(gyroY) > .5:
-            #     self.pitch = self.pitch - (gyroY * self.elapsedTime)
-            # if abs(gyroZ) > .5:
-            #     self.yaw = self.yaw + (gyroZ * self.elapsedTime)
-
-            # # complementary filter
-            # self.roll = self.roll * 0.95 + accelOrientation.roll * 0.05
-            # self.pitch = self.pitch * 0.95 + accelOrientation.pitch * 0.05
-
-            # # low pass filter
-            # self.roll = self.roll*.5 + accelOrientation.roll*.5
-            # self.pitch = self.pitch*.5 + accelOrientation.pitch*.5
-            time.sleep(max(0, IMU.DELAY_TIME - (time.time() - startTime)))
-            self.elapsedTime = time.time() - startTime
+            time.sleep(max(0, IMU.DELAY_TIME - (time.time() - start_time)))
+            self.elapsed_time = time.time() - start_time
 
     def get_orientation(self):
         return Orientation(self.roll, self.pitch, self.yaw)
 
 
 class Orientation(object):
-
     def __init__(self, roll, pitch, yaw):
         self.roll = roll
         self.pitch = pitch
@@ -121,20 +110,20 @@ class LSM303Accelerometer(object):
     ZERO_Z = -63
     # 73.312 -36.512 4102.48
 
-    def __init__(self, i2cBus, gaussScale):
+    def __init__(self, i2cBus, gauss_scale):
         self.bus = I2cController(i2cBus)
         self.bus.write_byte_data(
             LSM303Accelerometer.LSM_ACC_ADDR, LSM303Accelerometer.CTRL_REG1_A, LSM303Accelerometer.POWER_ON)
         self.bus.write_byte_data(
-            LSM303Accelerometer.LSM_ACC_ADDR, LSM303Accelerometer.CTRL_REG4_A, gaussScale)
+            LSM303Accelerometer.LSM_ACC_ADDR, LSM303Accelerometer.CTRL_REG4_A, gauss_scale)
 
-        if gaussScale == LSM303Accelerometer.SCALE_A_2G:
+        if gauss_scale == LSM303Accelerometer.SCALE_A_2G:
             self.scale = (-2.0 / 32768.0)
-        if gaussScale == LSM303Accelerometer.SCALE_A_4G:
+        if gauss_scale == LSM303Accelerometer.SCALE_A_4G:
             self.scale = (-4.0 / 32768.0)
-        if gaussScale == LSM303Accelerometer.SCALE_A_8G:
+        if gauss_scale == LSM303Accelerometer.SCALE_A_8G:
             self.scale = (-8.0 / 32768.0)
-        if gaussScale == LSM303Accelerometer.SCALE_A_16G:
+        if gauss_scale == LSM303Accelerometer.SCALE_A_16G:
             self.scale = (-16.0 / 32768.0)
 
     def zero(self):
@@ -143,15 +132,10 @@ class LSM303Accelerometer(object):
         ytotal = 0
         ztotal = 0
 
-        print 'before: ', self.ZERO_X, self.ZERO_Y, self.ZERO_Z
-
         while count < 100:
             x, y, z = self.get_raw_data()
-            orientation = self.get_orientation()
-            count = 1 + count
-            print ('x = {0:.2f}, y = {1:.2f}, z = {2:.2f}').format(x, y, z)
-            print ('pitch = {0:.2f}, roll = {1:.2f}').format(
-                orientation.pitch, orientation.roll)
+            count += 1
+
             xtotal = x / self.scale - self.ZERO_X + xtotal
             ytotal = y / self.scale - self.ZERO_Y + ytotal
             ztotal = z / self.scale - self.ZERO_Z + ztotal
@@ -159,7 +143,6 @@ class LSM303Accelerometer(object):
 
         self.ZERO_X = -1 * xtotal / 500
         self.ZERO_Y = -1 * ytotal / 500
-        print 'after: ', self.ZERO_X, self.ZERO_Y, self.ZERO_Z
 
     def get_raw_data(self):
         x = 256 * self.bus.read_byte_data(LSM303Accelerometer.LSM_ACC_ADDR, LSM303Accelerometer.OUT_X_H_A) + \
@@ -235,23 +218,17 @@ class L3GD20Gyroscope(object):
         ytotal = 0
         ztotal = 0
 
-        print 'before: ', self.ZERO_X, self.ZERO_Y, self.ZERO_Z
-
         while count < 100:
             x, y, z = self.get_raw_data()
             count = 1 + count
-            print ('x = {0:.2f}, y = {1:.2f}, z = {1:.2f}').format(
-                x / self.scale, y / self.scale, z / self.scale)
             xtotal = x / self.scale - self.ZERO_X + xtotal
             ytotal = y / self.scale - self.ZERO_Y + ytotal
             ztotal = z / self.scale - self.ZERO_Z + ztotal
             time.sleep(.075)
 
-        print xtotal / 100, ytotal / 100, ztotal / 100
         self.ZERO_X = -1 * xtotal / 100
         self.ZERO_Y = -1 * ytotal / 100
         self.ZERO_Z = -1 * ztotal / 100
-        print 'after: ', self.ZERO_X, self.ZERO_Y, self.ZERO_Z
 
     def get_raw_data(self):
         x = 256 * self.bus.read_byte_data(L3GD20Gyroscope.L3GADDR, L3GD20Gyroscope.XOUTHIGH) + \
