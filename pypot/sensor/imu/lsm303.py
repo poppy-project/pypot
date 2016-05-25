@@ -1,10 +1,10 @@
-from smbus import SMBus
 import math
 import threading
 import numpy
 import time
 
 from kalman_filter import KalmanFilter
+from ...utils.i2c_controller import I2cController
 
 
 class IMU(object):
@@ -122,7 +122,7 @@ class LSM303Accelerometer(object):
     # 73.312 -36.512 4102.48
 
     def __init__(self, i2cBus, gaussScale):
-        self.bus = SMBus(i2cBus)
+        self.bus = I2cController(i2cBus)
         self.bus.write_byte_data(
             LSM303Accelerometer.LSM_ACC_ADDR, LSM303Accelerometer.CTRL_REG1_A, LSM303Accelerometer.POWER_ON)
         self.bus.write_byte_data(
@@ -218,7 +218,7 @@ class L3GD20Gyroscope(object):
     # 35.17 -142.38 52.83
 
     def __init__(self, i2cBus, dps):
-        self.bus = SMBus(i2cBus)
+        self.bus = I2cController(i2cBus)
         self.bus.write_byte_data(
             L3GD20Gyroscope.L3GADDR, L3GD20Gyroscope.CTREG1, L3GD20Gyroscope.ON)
         self.bus.write_byte_data(L3GD20Gyroscope.L3GADDR, L3GD20Gyroscope.CTREG4, dps)
