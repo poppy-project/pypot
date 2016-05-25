@@ -3,8 +3,13 @@ import numpy
 import math
 import time
 
+from collections import namedtuple
+
 from ...utils.i2c_controller import I2cController
 from .kalman_filter import KalmanFilter
+
+
+Orientation = namedtuple('Orientation', 'roll pitch yaw')
 
 
 class IMU(object):
@@ -17,10 +22,7 @@ class IMU(object):
         self.gyro = L3GD20Gyroscope(i2cBus, L3GD20Gyroscope.DPS2000)
         self.accel = LSM303Accelerometer(i2cBus, LSM303Accelerometer.SCALE_A_8G)
 
-        init_orientation = self.accel.get_orientation()
-        self.roll = init_orientation.roll
-        self.pitch = init_orientation.pitch
-        self.yaw = init_orientation.yaw
+        self.roll, self.pitch, self.yaw = self.accel.get_orientation()
 
         self.thread = threading.Thread(target=self.update_orientation)
         self.thread.daemon = True
@@ -53,13 +55,6 @@ class IMU(object):
 
     def get_orientation(self):
         return Orientation(self.roll, self.pitch, self.yaw)
-
-
-class Orientation(object):
-    def __init__(self, roll, pitch, yaw):
-        self.roll = roll
-        self.pitch = pitch
-        self.yaw = yaw
 
 
 class LSM303Accelerometer(object):
