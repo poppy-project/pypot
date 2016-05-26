@@ -38,7 +38,7 @@ class IMU(StoppableThread):
     ACCEL_NOISE = 0.01
 
     def __init__(self, i2c_bus=1):
-        StoppableThread.__init__(target=self.update_orientation)
+        StoppableThread.__init__(self, target=self.update_orientation)
 
         self.gyro = L3GD20Gyroscope(i2c_bus, L3GD20Gyroscope.DPS2000)
         self.accel = LSM303Accelerometer(i2c_bus, LSM303Accelerometer.SCALE_A_8G)
