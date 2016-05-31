@@ -99,22 +99,10 @@ class Sonar(object):
 
     def _ping(self, address, data=None):
         d = data if data is not None else self.results_type['centimeters']
-
-        while True:
-            try:
-                self.i2c.write_byte_data(address, 0, d)
-                break
-            except IOError:
-                time.sleep(0.005)
-                self.__errors += 1
+        self.i2c.write_byte_data(address, 0, d)
 
     def _read(self, address, reg=2):
-        while True:
-            try:
-                return int(self.i2c.read_word_data(address, reg)) / 256
-            except IOError:
-                time.sleep(0.005)
-                self.__errors += 1
+        return int(self.i2c.read_word_data(address, reg)) / 256
 
 
 if __name__ == '__main__':
