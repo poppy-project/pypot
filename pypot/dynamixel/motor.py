@@ -326,6 +326,37 @@ class DxlXL320Motor(DxlMXMotor):
         self.max_pos = 150
 
 
+class DxlSRMotor(DxlMotor):
+    """ This class represents the robotis motor found in the seed robotics hand.
+
+        This class adds access to:
+            * force control enable
+            * goal force
+
+        """
+#    registers = list(DxlMotor.registers) + ['force_control_enable', 'goal_force']
+    registers = list(DxlMotor.registers)
+
+    force_control_enable = DxlRegister(rw=True)
+    goal_force = DxlRegister(rw=True)
+
+    def __init__(self, id, name=None, model='',
+                 direct=True, offset=0.0, broken=False,
+                 angle_limit=None):
+        """ This class represents the robotis motor found in the seed robotics hand.
+
+        This class adds access to:
+            * PID gains (see the robotis website for details)
+            * force control enable
+            * goal force
+
+            """
+        DxlMotor.__init__(self, id, name, model,
+                          direct, offset, broken,
+                          angle_limit)
+        self.max_pos = 180
+
+
 class SafeCompliance(StoppableLoopThread):
     """ This class creates a controller to active compliance only if the current motor position is included in the angle limit, else the compliance is turned off. """
 

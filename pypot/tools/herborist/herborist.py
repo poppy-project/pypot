@@ -266,7 +266,7 @@ class HerboristApp(PyQt4.QtGui.QApplication):
             self.window.firmware_label.setText(str(firmware))
             self.window.torque_max_slider.setValue(torque_max)
 
-            limit = 180 if model.startswith('MX') else 150
+            limit = 180 if model.startswith('MX') or model.startswith('SR') else 150
             for widget_name in ('lower_limit_dial', 'upper_limit_dial',
                                 'present_position_dial', 'goal_position_dial'):
                 getattr(self.window, widget_name).setMinimum(-limit)

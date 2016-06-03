@@ -36,8 +36,15 @@ class DxlIO(AbstractDxlIO):
         self.set_control_mode(dict(zip(ids, itertools.repeat('joint'))))
 
     def set_control_mode(self, mode_for_id):
-        models = ['MX' if m.startswith('MX') else '*'
-                  for m in self.get_model(list(mode_for_id.keys()))]
+        models = []
+        for m in self.get_model(list(mode_for_id.keys())):
+            if m.startswith('MX'):
+                models += ['MX']
+            elif m.startswith('SR'):
+                models += ['SR']
+            else:
+                models += ['*']
+
         pos_max = [conv.position_range[m][0] for m in models]
         limits = ((0, 0) if mode == 'wheel' else (0, pos_max[i] - 1)
                   for i, mode in enumerate(mode_for_id.itervalues()))
@@ -239,3 +246,13 @@ _add_control('moving',
              access=_DxlAccess.readonly,
              dxl_to_si=conv.dxl_to_bool,
              getter_name='is_moving')
+
+_add_control('force control enable',
+             address=0x46, length=1,
+             models=('SR-DH4D',),
+             dxl_to_si=conv.dxl_to_bool,
+             si_to_dxl=conv.bool_to_dxl)
+
+_add_control('goal force',
+             address=0x47,
+             models=('SR-DH4D',))

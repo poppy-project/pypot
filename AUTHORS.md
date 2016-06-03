@@ -8,3 +8,4 @@ People who have contributed to Pypot:
 
 * Rémi Barraquand
 * Haylee Fogg
+* Marcus Soll

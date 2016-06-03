@@ -142,6 +142,7 @@ class PosSpeedLoadDxlController(DxlController):
         for m, c in zip(self.working_motors, torques):
             m.compliant = not c
         self._old_torques = torques
+        self._old_goals = {m.id: 0.0 for m in self.motors}
 
         try:
             values = self.io.get_goal_position_speed_load(self.ids)
@@ -183,7 +184,17 @@ class PosSpeedLoadDxlController(DxlController):
         if change_torque:
             self.io._set_torque_enable(change_torque)
 
-        rigid_motors = [m for m in motors if not m.compliant]
+        rigid_motors = []
+
+        for m in motors:
+            # Filter force control motors - only update values if goal_position has changed
+            if m.force_control_enable and not m.compliant and self._old_goals[m.id] != m.__dict__['goal_position']:
+                rigid_motors += [m]
+                self._old_goals[m.id] = m.__dict__['goal_position']
+            # Do not filter motors without force control
+            elif not m.force_control_enable and not m.compliant:
+                rigid_motors += [m]
+
         ids = tuple(m.id for m in rigid_motors)
 
         if not ids:

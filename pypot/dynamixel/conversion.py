@@ -21,6 +21,7 @@ from enum import Enum
 
 position_range = {
     'MX': (4096, 360.0),
+    'SR': (4096, 360.0),
     '*': (1024, 300.0)
 }
 
@@ -34,6 +35,7 @@ torque_max = {  # in N.m
     'RX-28': 2.5,
     'RX-64': 4.,
     'XL-320': 0.39,
+    'SR-DH4D': 2.5, #TODO Correct value
 }
 
 velocity = {  # in degree/s
@@ -45,18 +47,27 @@ velocity = {  # in degree/s
     'AX-18': 582.,
     'RX-28': 402.,
     'RX-64': 294.,
+    'SR-DH4D': 330., #TODO Correct value
 }
 
 
 def dxl_to_degree(value, model):
-    model = 'MX' if model.startswith('MX') else '*'
+    model = '*'
+    if model.startswith('MX'):
+        model = 'MX'
+    elif model.startswith('SR'):
+        model = 'SR'
     max_pos, max_deg = position_range[model]
 
     return round(((max_deg * float(value)) / (max_pos - 1)) - (max_deg / 2), 2)
 
 
 def degree_to_dxl(value, model):
-    model = 'MX' if model.startswith('MX') else '*'
+    model = '*'
+    if model.startswith('MX'):
+        model = 'MX'
+    elif model.startswith('SR'):
+        model = 'SR'
     max_pos, max_deg = position_range[model]
 
     pos = int(round((max_pos - 1) * ((max_deg / 2 + float(value)) / max_deg), 0))
@@ -71,14 +82,18 @@ def dxl_to_speed(value, model):
     cw, speed = divmod(value, 1024)
     direction = (-2 * cw + 1)
 
-    speed_factor = 0.114 if model.startswith('MX') else 0.111
+    speed_factor = 0.111
+    if model.startswith('MX') or model.startswith('SR'):
+        speed_factor = 0.114
 
     return direction * (speed * speed_factor) * 6
 
 
 def speed_to_dxl(value, model):
     direction = 1024 if value < 0 else 0
-    speed_factor = 0.114 if model.startswith('MX') else 0.111
+    speed_factor = 0.111
+    if model.startswith('MX') or model.startswith('SR'):
+        speed_factor = 0.114
 
     max_value = 1023 * speed_factor * 6
     value = min(max(value, -max_value), max_value)
@@ -127,6 +142,8 @@ dynamixelModels = {
     310: 'MX-64',   # 54 + (1<<8)
     320: 'MX-106',  # 64 + (1<<8)
     350: 'XL-320',  # 94 + (1<<8)
+    400: 'SR-DH4D',
+    401: 'SR-DH4D', # Virtual motor
 }
 
 

@@ -9,7 +9,7 @@ import serial.tools.list_ports
 from .io import DxlIO, Dxl320IO
 from .error import BaseErrorHandler
 from .syncloop import BaseDxlController
-from .motor import DxlMXMotor, DxlAXRXMotor, DxlXL320Motor
+from .motor import DxlMXMotor, DxlAXRXMotor, DxlXL320Motor, DxlSRMotor
 
 from ..robot import Robot
 
@@ -124,7 +124,8 @@ def autodetect_robot():
                 'MX': DxlMXMotor,
                 'RX': DxlAXRXMotor,
                 'AX': DxlAXRXMotor,
-                'XL': DxlXL320Motor
+                'XL': DxlXL320Motor,
+                'SR': DxlSRMotor,
             }
 
             motors = [motorcls[model[:2]](id, model=model)
