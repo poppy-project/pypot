@@ -191,7 +191,7 @@
 <dl class="class">
 <dt id="pypot.robot.robot.Robot">
 <em class="property">class </em><code class="descclassname">pypot.robot.robot.</code><code class="descname">Robot</code><span class="sig-paren">(</span><em>motor_controllers=[]</em>, <em>sensor_controllers=[]</em>, <em>sync=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/robot/robot.html#Robot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.robot.robot.Robot" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference external" href="http://docs.python.org/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
 <p>This class is used to regroup all motors and sensors of your robots.</p>
 <p>Most of the time, you do not want to directly instantiate this class, but you rather want to use a factory which creates a robot instance - e.g. from a python dictionnary (see <a class="reference internal" href="controller.html#config-file"><span class="std std-ref">Writing the configuration</span></a>).</p>
 <p>This class encapsulates the different controllers (such as dynamixel ones) that automatically synchronize the virtual sensors/effectors instances held by the robot class with the real devices. By doing so, each sensor/effector can be synchronized at a different frequency.</p>
@@ -201,9 +201,9 @@
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>motor_controllers</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a>) &#8211; motors controllers to attach to the robot</li>
-<li><strong>sensor_controllers</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a>) &#8211; sensors controllers to attach to the robot</li>
-<li><strong>sync</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; choose if automatically starts the synchronization loops</li>
+<li><strong>motor_controllers</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a>) &#8211; motors controllers to attach to the robot</li>
+<li><strong>sensor_controllers</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a>) &#8211; sensors controllers to attach to the robot</li>
+<li><strong>sync</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; choose if automatically starts the synchronization loops</li>
 </ul>
 </td>
 </tr>
@@ -271,10 +271,10 @@
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>position_for_motors</strong> (<a class="reference external" href="http://docs.python.org/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; which motors you want to move {motor_name: pos, motor_name: pos,...}</li>
-<li><strong>duration</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) &#8211; duration of the move</li>
-<li><strong>control</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; control type (&#8216;dummy&#8217;, &#8216;minjerk&#8217;)</li>
-<li><strong>wait</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; whether or not to wait for the end of the move</li>
+<li><strong>position_for_motors</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; which motors you want to move {motor_name: pos, motor_name: pos,...}</li>
+<li><strong>duration</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) &#8211; duration of the move</li>
+<li><strong>control</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; control type (&#8216;dummy&#8217;, &#8216;minjerk&#8217;)</li>
+<li><strong>wait</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; whether or not to wait for the end of the move</li>
 </ul>
 </td>
 </tr>
@@ -306,7 +306,7 @@
 <dl class="class">
 <dt id="pypot.robot.motor.Motor">
 <em class="property">class </em><code class="descclassname">pypot.robot.motor.</code><code class="descname">Motor</code><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/robot/motor.html#Motor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.robot.motor.Motor" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference external" href="http://docs.python.org/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
 <p>Purely abstract class representing any motor object.</p>
 <dl class="attribute">
 <dt id="pypot.robot.motor.Motor.registers">
@@ -326,7 +326,7 @@
 <dl class="class">
 <dt id="pypot.robot.sensor.Sensor">
 <em class="property">class </em><code class="descclassname">pypot.robot.sensor.</code><code class="descname">Sensor</code><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/robot/sensor.html#Sensor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.robot.sensor.Sensor" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference external" href="http://docs.python.org/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
 <p>Purely abstract class representing any sensor object.</p>
 <dl class="attribute">
 <dt id="pypot.robot.sensor.Sensor.registers">
@@ -377,7 +377,7 @@
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>io</strong> (<a class="reference internal" href="#pypot.robot.io.AbstractIO" title="pypot.robot.io.AbstractIO"><code class="xref py py-class docutils literal"><span class="pre">AbstractIO</span></code></a>) &#8211; IO used to communicate with the hardware motors</li>
-<li><strong>sync_freq</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) &#8211; synchronization frequency</li>
+<li><strong>sync_freq</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) &#8211; synchronization frequency</li>
 </ul>
 </td>
 </tr>
@@ -408,8 +408,8 @@
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>io</strong> (<a class="reference internal" href="#pypot.robot.io.AbstractIO" title="pypot.robot.io.AbstractIO"><code class="xref py py-class docutils literal"><span class="pre">AbstractIO</span></code></a>) &#8211; IO used to communicate with the hardware motors</li>
-<li><strong>motors</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a>) &#8211; list of motors attached to the controller</li>
-<li><strong>sync_freq</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) &#8211; synchronization frequency</li>
+<li><strong>motors</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a>) &#8211; list of motors attached to the controller</li>
+<li><strong>sync_freq</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) &#8211; synchronization frequency</li>
 </ul>
 </td>
 </tr>
@@ -445,8 +445,8 @@
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>io</strong> (<a class="reference internal" href="#pypot.robot.io.AbstractIO" title="pypot.robot.io.AbstractIO"><code class="xref py py-class docutils literal"><span class="pre">AbstractIO</span></code></a>) &#8211; IO used to communicate with the hardware motors</li>
-<li><strong>sensors</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a>) &#8211; list of sensors attached to the controller</li>
-<li><strong>sync_freq</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) &#8211; synchronization frequency</li>
+<li><strong>sensors</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a>) &#8211; list of sensors attached to the controller</li>
+<li><strong>sync_freq</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) &#8211; synchronization frequency</li>
 </ul>
 </td>
 </tr>
@@ -456,11 +456,11 @@
 
 </div>
 <div class="section" id="module-pypot.robot.io">
-<span id="io-module"></span><h2><a class="reference external" href="http://docs.python.org/library/io.html#module-io" title="(in Python v2.7)"><code class="xref py py-mod docutils literal"><span class="pre">io</span></code></a> Module<a class="headerlink" href="#module-pypot.robot.io" title="Permalink to this headline">¶</a></h2>
+<span id="io-module"></span><h2><a class="reference external" href="https://docs.python.org/2/library/io.html#module-io" title="(in Python v2.7)"><code class="xref py py-mod docutils literal"><span class="pre">io</span></code></a> Module<a class="headerlink" href="#module-pypot.robot.io" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="pypot.robot.io.AbstractIO">
 <em class="property">class </em><code class="descclassname">pypot.robot.io.</code><code class="descname">AbstractIO</code><a class="reference internal" href="_modules/pypot/robot/io.html#AbstractIO"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.robot.io.AbstractIO" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference external" href="http://docs.python.org/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
 <p>AbstractIO class which handles communication with &#8220;hardware&#8221; motors.</p>
 <dl class="method">
 <dt id="pypot.robot.io.AbstractIO.close">
@@ -489,9 +489,9 @@
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>config</strong> (<a class="reference external" href="http://docs.python.org/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; robot configuration dictionary</li>
-<li><strong>strict</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; make sure that all ports, motors are availaible.</li>
-<li><strong>sync</strong> (<a class="reference external" href="http://docs.python.org/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; choose if automatically starts the synchronization loops</li>
+<li><strong>config</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; robot configuration dictionary</li>
+<li><strong>strict</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; make sure that all ports, motors are availaible.</li>
+<li><strong>sync</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; choose if automatically starts the synchronization loops</li>
 </ul>
 </td>
 </tr>
@@ -550,7 +550,7 @@ Check if the return delay time is set to 0.</p>
 <dl class="class">
 <dt id="pypot.robot.remote.RemoteRobotClient">
 <em class="property">class </em><code class="descclassname">pypot.robot.remote.</code><code class="descname">RemoteRobotClient</code><span class="sig-paren">(</span><em>host</em>, <em>port</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/robot/remote.html#RemoteRobotClient"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.robot.remote.RemoteRobotClient" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference external" href="http://docs.python.org/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
 <p>Remote Access to a Robot through the REST API.</p>
 <p>This RemoteRobot gives you access to motors and alias.
 For each motor you can read/write all of their registers.</p>
@@ -601,7 +601,7 @@ More specifically you can start/stop them.</p>
       <!-- footer -->
       <footer role="contentinfo">
           &copy; Copyright 2015, Poppy-Project.
-        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.4.1.
+        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.4.3.
       </footer>
       <!-- /footer -->
 

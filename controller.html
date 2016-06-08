@@ -506,7 +506,7 @@
 <p class="first admonition-title">Warning</p>
 <p class="last">You should be careful that all your primitives correctly respond to the stop signal. Indeed, having a blocking primitive will prevent the <a class="reference internal" href="pypot.robot.html#pypot.robot.robot.Robot.close" title="pypot.robot.robot.Robot.close"><code class="xref py py-meth docutils literal"><span class="pre">close()</span></code></a> method to terminate (please refer to <a class="reference internal" href="primitive.html#start-prim"><span class="std std-ref">Start, Stop, Pause, and Resume</span></a> for details).</p>
 </div>
-<p>Thanks to the <a class="reference external" href="http://docs.python.org/library/contextlib.html#contextlib.closing" title="(in Python v2.7)"><code class="xref py py-func docutils literal"><span class="pre">contextlib.closing()</span></code></a> decorator you can easily make sure that the close function of your robot is always called whatever happened inside your code:</p>
+<p>Thanks to the <a class="reference external" href="https://docs.python.org/2/library/contextlib.html#contextlib.closing" title="(in Python v2.7)"><code class="xref py py-func docutils literal"><span class="pre">contextlib.closing()</span></code></a> decorator you can easily make sure that the close function of your robot is always called whatever happened inside your code:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">contextlib</span> <span class="k">import</span> <span class="n">closing</span>
 
 <span class="kn">import</span> <span class="nn">pypot.robot</span>
@@ -556,7 +556,7 @@
       <!-- footer -->
       <footer role="contentinfo">
           &copy; Copyright 2015, Poppy-Project.
-        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.4.1.
+        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.4.3.
       </footer>
       <!-- /footer -->
 
