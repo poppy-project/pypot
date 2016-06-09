@@ -16,7 +16,8 @@ if sys.version_info >= (3,):
 
 install_requires = ['numpy',
                     'pyserial>2.6',
-                    'scipy']
+                    'scipy',
+                    ]
 
 if sys.version_info < (2, 7):
     print("python version < 2.7 is not supported")
@@ -37,7 +38,8 @@ setup(name='pypot',
           'http-server': ['bottle', 'tornado'],
           'zmq-server': ['pyzmq'],
           'remote-robot': ['zerorpc'],
-          'camera': ['hampy']  # Extras require: opencv (not a PyPi packet)
+          'camera': ['hampy'],  # Extras require: opencv (not a PyPi packet)
+          'adafruit-DHT': [],  # Adafruit_Python_DHT: can be installed from https://github.com/nicolas-rabault/Adafruit_Python_DHT for latest version!
       },
 
       entry_points={
