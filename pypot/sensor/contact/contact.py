@@ -4,7 +4,7 @@ from ...robot.sensor import Sensor
 
 
 class ContactSensor(Sensor):
-    """ this class gives access to a contact sensor """
+    """ This class gives access to a contact sensor. """
     registers = Sensor.registers + ['contact']
 
     def __init__(self, name, gpio_number):
