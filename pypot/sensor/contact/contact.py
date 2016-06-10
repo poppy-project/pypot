@@ -18,4 +18,4 @@ class ContactSensor(Sensor):
 
     @property
     def contact(self):
-        return GPIO.input(self._pin)
+        return GPIO.input(self._pin) != 0
