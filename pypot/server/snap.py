@@ -261,8 +261,12 @@ class SnapRobotServer(AbstractServer):
             return '/'.join(rr.get_primitive_methods_list(primitive))
 
         @self.app.get('/primitive/<primitive>/call/<method>/<args>')
-        def call_primitive_methode(primitive, method, args):
-            kwargs = dict(item.split(":") for item in args.split(";"))
+        @self.app.get('/primitive/<primitive>/call/<method>')
+        def call_primitive_methode(primitive, method, args=None):
+            if args is not None:
+                kwargs = dict(item.split(":") for item in args.split(";"))
+            else:
+                kwargs = {}
             return rr._call_primitive_method(primitive, method, **kwargs)
 
         # Hacks (no restfull) to record movements
