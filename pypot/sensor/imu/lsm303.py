@@ -65,6 +65,23 @@ class IMU(StoppableThread):
             self.roll = self.kalman_filter.filterX(roll, gyro_x, self.elapsed_time)
             self.pitch = self.kalman_filter.filterY(pitch, gyro_y, self.elapsed_time)
 
+            if abs(gyro_x) > 0.5:
+                self.roll += (gyro_x * self.elapsed_time)
+
+            if abs(gyro_y) > 0.5:
+                self.pitch += (gyro_y * self.elapsed_time)
+
+            if abs(gyro_z) > 0.5:
+                self.yaw += (gyro_z * self.elapsed_time)
+
+            # complementary filter
+            self.roll = self.roll * 0.95 + roll * 0.05
+            self.pitch = self.pitch * 0.95 + pitch * 0.05
+
+            # low pass filter
+            self.roll = self.roll * 0.5 + roll * 0.5
+            self.pitch = self.pitch * 0.5 + pitch * 0.5
+
             time.sleep(max(0, IMU.DELAY_TIME - (time.time() - start_time)))
             self.elapsed_time = time.time() - start_time
 
@@ -176,6 +193,7 @@ class LSM303Accelerometer(object):
 
     def get_orientation(self):
         x, y, z = self.get_raw_data()
+
         roll = math.atan2(y, z) + math.pi
         pitch = math.atan2(x, z) + math.pi
         if roll > math.pi:
