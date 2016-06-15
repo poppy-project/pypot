@@ -14,12 +14,11 @@ class ContactSensor(Sensor):
         GPIO.setmode(GPIO.BCM)
         GPIO.setwarnings(False)
         GPIO.setup(self._pin, GPIO.IN)
-        
+
         if gpio_vcc is not None:
             self._vcc = gpio_vcc
-            GPIO.setup(self._vcc, GPIO.OUT)     
+            GPIO.setup(self._vcc, GPIO.OUT)
             GPIO.output(self._vcc, GPIO.HIGH)
-        
 
     @property
     def contact(self):
