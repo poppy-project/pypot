@@ -1,3 +1,8 @@
+import RPi.GPIO as GPIO
+
+from ...robot.sensor import Sensor
+
+
 class ContactSensor(Sensor):
     """ Gives access to a micro switch sensor. """
     registers = Sensor.registers + ['contact']
