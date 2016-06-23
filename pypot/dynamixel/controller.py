@@ -188,11 +188,11 @@ class PosSpeedLoadDxlController(DxlController):
 
         for m in motors:
             # Filter force control motors - only update values if goal_position has changed
-            if m.force_control_enable and not m.compliant and self._old_goals[m.id] != m.__dict__['goal_position']:
+            if getattr(m, "force_control_enable", False) and not m.compliant and self._old_goals[m.id] != m.__dict__['goal_position']:
                 rigid_motors += [m]
                 self._old_goals[m.id] = m.__dict__['goal_position']
             # Do not filter motors without force control
-            elif not m.force_control_enable and not m.compliant:
+            elif not m.compliant:
                 rigid_motors += [m]
 
         ids = tuple(m.id for m in rigid_motors)
