@@ -64,6 +64,15 @@ class BaseDxlController(MetaDxlController):
             controllers.insert(0, DxlController(io, force_control_motors, 10., False,
                                                 'set', 'goal_force', 'goal_force'))
 
+        current_motors = [m for m in motors
+                          if (m.model.startswith('MX-64') or
+                              m.model.startswith('MX-106') or
+                              m.model.startswith('SR'))]
+
+        if current_motors:
+            controllers.insert(0, DxlController(io, current_motors, 10., False,
+                                                'get', 'present_current', 'present_current'))
+
         margin_slope_motors = [m for m in motors
                                if (m.model.startswith('AX') or
                                    m.model.startswith('RX'))]

@@ -212,6 +212,16 @@ def dxl_to_temperature(value, model):
 def temperature_to_dxl(value, model):
     return int(value)
 
+# MARK: - Current
+
+
+def dxl_to_current(value, model):
+    if model.startswith('SR'):
+        # The SR motors do not use the robotis schema of transmitting current
+        return value
+    else:
+        return 4.5 * (value - 2048.0) / 1000.0
+
 # MARK: - Voltage
 
 

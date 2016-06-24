@@ -247,6 +247,12 @@ _add_control('moving',
              dxl_to_si=conv.dxl_to_bool,
              getter_name='is_moving')
 
+_add_control('present current',
+             address=0x44,
+             access=_DxlAccess.readonly,
+             models=('MX-64', 'MX-106', 'SR-DH4D',),
+             dxl_to_si=conv.dxl_to_current)
+
 _add_control('force control enable',
              address=0x46, length=1,
              models=('SR-DH4D',),

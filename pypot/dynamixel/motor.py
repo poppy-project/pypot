@@ -310,6 +310,30 @@ class DxlMXMotor(DxlMotor):
                           angle_limit)
         self.max_pos = 180
 
+class DxlMX64106Motor(DxlMXMotor):
+    """ This class represents the MX-64 and MX-106 robotis motor.
+
+        This class adds access to:
+            * present current
+
+        """
+
+    registers = list(DxlMXMotor.registers)
+
+    present_current = DxlRegister()
+
+    def __init__(self, id, name=None, model='',
+                 direct=True, offset=0.0, broken=False,
+                 angle_limit=None):
+        """ This class represents the RX and MX robotis motor.
+
+            This class adds access to:
+                * PID gains (see the robotis website for details)
+
+            """
+        DxlMotor.__init__(self, id, name, model,
+                          direct, offset, broken,
+                          angle_limit)
 
 class DxlXL320Motor(DxlMXMotor):
     registers = list(DxlMXMotor.registers)
@@ -332,13 +356,14 @@ class DxlSRMotor(DxlMotor):
         This class adds access to:
             * force control enable
             * goal force
+            * present current
 
         """
-#    registers = list(DxlMotor.registers) + ['force_control_enable', 'goal_force']
     registers = list(DxlMotor.registers)
 
     force_control_enable = DxlRegister(rw=True)
     goal_force = DxlRegister(rw=True)
+    present_current = DxlRegister()
 
     def __init__(self, id, name=None, model='',
                  direct=True, offset=0.0, broken=False,
