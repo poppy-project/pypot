@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-
+from io import open
 import re
 import sys
 
@@ -54,10 +54,10 @@ setup(name='pypot',
 
       zip_safe=False,
 
-      author=open('AUTHORS.md').read(),
+      author=open('AUTHORS.md', encoding='utf-8').read(),
       author_email='pierre.rouanet@gmail.com',
       description='Python Library for Robot Control',
-      long_description=open('README.md').read(),
+      long_description=open('README.md', encoding='utf-8').read(),
       url='https://github.com/poppy-project/pypot',
       license='GNU GENERAL PUBLIC LICENSE Version 3',
 
