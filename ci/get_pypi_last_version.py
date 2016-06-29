@@ -12,7 +12,7 @@ if __name__ == '__main__':
                         type=str,
                         help='Python package to check version.')
     args = parser.parse_args()
-    client = xmlrpclib.ServerProxy('http://pypi.python.org/pypi')
+    client = xmlrpclib.ServerProxy('https://pypi.python.org/pypi')
     available = client.package_releases(args.package)
     if not available:
         print('0')
