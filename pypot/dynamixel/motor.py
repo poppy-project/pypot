@@ -334,6 +334,7 @@ class DxlMX64106Motor(DxlMXMotor):
         DxlMotor.__init__(self, id, name, model,
                           direct, offset, broken,
                           angle_limit)
+        self.max_pos = 180
 
 class DxlXL320Motor(DxlMXMotor):
     registers = list(DxlMXMotor.registers)
