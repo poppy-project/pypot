@@ -52,23 +52,23 @@ velocity = {  # in degree/s
 
 
 def dxl_to_degree(value, model):
-    model = '*'
+    determined_model = '*'
     if model.startswith('MX'):
-        model = 'MX'
+        determined_model = 'MX'
     elif model.startswith('SR'):
-        model = 'SR'
-    max_pos, max_deg = position_range[model]
+        determined_model = 'SR'
+    max_pos, max_deg = position_range[determined_model]
 
     return round(((max_deg * float(value)) / (max_pos - 1)) - (max_deg / 2), 2)
 
 
 def degree_to_dxl(value, model):
-    model = '*'
+    determined_model = '*'
     if model.startswith('MX'):
-        model = 'MX'
+        determined_model = 'MX'
     elif model.startswith('SR'):
-        model = 'SR'
-    max_pos, max_deg = position_range[model]
+        determined_model = 'SR'
+    max_pos, max_deg = position_range[determined_model]
 
     pos = int(round((max_pos - 1) * ((max_deg / 2 + float(value)) / max_deg), 0))
     pos = min(max(pos, 0), max_pos - 1)
