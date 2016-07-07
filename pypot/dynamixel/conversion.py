@@ -217,8 +217,9 @@ def temperature_to_dxl(value, model):
 
 def dxl_to_current(value, model):
     if model.startswith('SR'):
-        # The SR motors do not use the robotis schema of transmitting current
-        return value
+        # The SR motors do use a different conversion formula than the dynamixel motors
+        # See http://kb.seedrobotics.com/doku.php?id=dh4d:dynamixelcontroltables
+        return (value * 0.4889) / 1000.0
     else:
         return 4.5 * (value - 2048.0) / 1000.0
 
