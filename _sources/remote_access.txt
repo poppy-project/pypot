@@ -39,4 +39,4 @@ As an example of what you can do, here is the code of getting the load of a moto
 Protocol
 --------
 
-The entire protocol is entirely described `here <https://github.com/pierre-rouanet/pypot/blob/master/REST-APIs.md>`_.
+The entire protocol is entirely described `here <https://github.com/poppy-project/pypot/blob/master/REST-APIs.md>`_.
