@@ -11,20 +11,6 @@ from pypot.robot import Robot, from_json, use_dummy_robot
 from pypot.server.snap import SnapRobotServer, find_local_ip
 
 logger = logging.getLogger(__name__)
-SERVICE_THREADS = {}
-
-
-class DeamonThread(Thread):
-    def __init__(self, *args, **kwargs):
-        Thread.__init__(self, *args, **kwargs)
-        self.setDaemon(True)
-
-    def run(self, *args, **kwargs):
-        try:
-            logger.info("Start thread %s" % self)
-            Thread.run(self, *args, **kwargs)
-        except:
-            logger.exception("Error on thread %s " % self)
 
 
 class classproperty(property):
@@ -158,16 +144,12 @@ class AbstractPoppyCreature(Robot):
     @classmethod
     def start_background_services(cls, robot, services=['snap', 'http', 'remote']):
         for service in services:
-            if(hasattr(robot, service)):
-                if service in SERVICE_THREADS:
-                    logger.warning(
-                        "A {} background service is already running, you may have to restart your script or reset your notebook kernel to start it again.".format(service))
-                else:
-                    SERVICE_THREADS[service] = DeamonThread(
-                        target=getattr(robot, service).run, name="{}_server".format(service))
-                    SERVICE_THREADS[service].daemon = True
-                    SERVICE_THREADS[service].start()
-                    logger.info("Starting {} service".format(service))
+            if hasattr(robot, service):
+                s = Thread(target=getattr(robot, service).run,
+                           name='{}_server'.format(service))
+                s.daemon = True
+                s.start()
+                logger.info("Starting {} service".format(service))
 
     @classmethod
     def setup(cls, robot):

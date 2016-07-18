@@ -5,10 +5,12 @@ import time
 from pypot.creatures import PoppyErgoJr
 from pypot.primitive import LoopPrimitive
 
+from utils import get_open_port
+
 
 class TestPrimLifeCycle(unittest.TestCase):
     def setUp(self):
-        self.jr = PoppyErgoJr(simulator='poppy-simu')
+        self.jr = PoppyErgoJr(simulator='poppy-simu', http_port=get_open_port())
 
     def test_teardown(self):
         self.jr.dance.start()
