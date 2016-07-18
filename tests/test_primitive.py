@@ -2,7 +2,7 @@ import unittest
 import random
 import time
 
-from poppy.creatures import PoppyErgoJr
+from pypot.creatures import PoppyErgoJr
 from pypot.primitive import LoopPrimitive
 
 

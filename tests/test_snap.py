@@ -2,7 +2,7 @@ import unittest
 import requests
 import random
 
-from poppy.creatures import PoppyErgoJr
+from pypot.creatures import PoppyErgoJr
 from pypot.dynamixel.conversion import XL320LEDColors
 
 

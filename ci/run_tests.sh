@@ -47,7 +47,7 @@ else
 
     pushd tests
         pip install coverage requests
-        pip install --pre poppy-creature poppy-ergo-jr
+        pip install --pre poppy-ergo-jr
         python -m unittest discover
     popd
 fi

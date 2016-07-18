@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+
 from io import open
 import re
 import sys

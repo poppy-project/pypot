@@ -1,7 +1,7 @@
 import time
 import unittest
 
-from poppy.creatures import PoppyErgoJr
+from pypot.creatures import PoppyErgoJr
 
 
 class TestIK(unittest.TestCase):
