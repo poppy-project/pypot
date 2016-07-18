@@ -141,12 +141,12 @@
 <span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">import</span> <span class="nn">threading</span>
 
-<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">deque</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="k">import</span> <span class="n">deque</span>
 
-<span class="kn">from</span> <span class="nn">..utils</span> <span class="kn">import</span> <span class="n">pypot_time</span> <span class="k">as</span> <span class="n">time</span>
+<span class="kn">from</span> <span class="nn">..utils</span> <span class="k">import</span> <span class="n">pypot_time</span> <span class="k">as</span> <span class="n">time</span>
 
-<span class="kn">from</span> <span class="nn">..utils.stoppablethread</span> <span class="kn">import</span> <span class="n">StoppableThread</span><span class="p">,</span> <span class="n">make_update_loop</span>
-<span class="kn">from</span> <span class="nn">..utils.trajectory</span> <span class="kn">import</span> <span class="n">GotoMinJerk</span>
+<span class="kn">from</span> <span class="nn">..utils.stoppablethread</span> <span class="k">import</span> <span class="n">StoppableThread</span><span class="p">,</span> <span class="n">make_update_loop</span>
+<span class="kn">from</span> <span class="nn">..utils.trajectory</span> <span class="k">import</span> <span class="n">GotoMinJerk</span>
 
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="n">__name__</span><span class="p">)</span>
 
@@ -260,7 +260,7 @@
 
         <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Primitive </span><span class="si">%s</span><span class="s2"> started.&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Primitive.stop"><a class="viewcode-back" href="../../../pypot.primitive.html#pypot.primitive.primitive.Primitive.stop">[docs]</a>    <span class="k">def</span> <span class="nf">stop</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">wait</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+<div class="viewcode-block" id="Primitive.stop"><a class="viewcode-back" href="../../../pypot.primitive.html#pypot.primitive.primitive.Primitive.stop">[docs]</a>    <span class="k">def</span> <span class="nf">stop</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">wait</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Requests the primitive to stop. &quot;&quot;&quot;</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Primitive </span><span class="si">%s</span><span class="s2"> stopped.&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
         <span class="n">StoppableThread</span><span class="o">.</span><span class="n">stop</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">wait</span><span class="p">)</span></div>
@@ -275,7 +275,7 @@
 
 <div class="viewcode-block" id="Primitive.get_mockup_motor"><a class="viewcode-back" href="../../../pypot.primitive.html#pypot.primitive.primitive.Primitive.get_mockup_motor">[docs]</a>    <span class="k">def</span> <span class="nf">get_mockup_motor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">motor</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Gets the equivalent :class:`~pypot.primitive.primitive.MockupMotor`. &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="nb">next</span><span class="p">((</span><span class="n">m</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">robot</span><span class="o">.</span><span class="n">motors</span> <span class="k">if</span> <span class="n">m</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">motor</span><span class="o">.</span><span class="n">name</span><span class="p">),</span> <span class="bp">None</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="nb">next</span><span class="p">((</span><span class="n">m</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">robot</span><span class="o">.</span><span class="n">motors</span> <span class="k">if</span> <span class="n">m</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">motor</span><span class="o">.</span><span class="n">name</span><span class="p">),</span> <span class="kc">None</span><span class="p">)</span></div>
 
     <span class="c1"># Utility function to try to help to better control</span>
     <span class="c1"># the synchronization and merging process of primitives</span>
@@ -350,9 +350,9 @@
     <span class="k">def</span> <span class="nf">__getattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_robot</span><span class="p">,</span> <span class="n">attr</span><span class="p">)</span>
 
-<div class="viewcode-block" id="MockupRobot.goto_position"><a class="viewcode-back" href="../../../pypot.primitive.html#pypot.primitive.primitive.MockupRobot.goto_position">[docs]</a>    <span class="k">def</span> <span class="nf">goto_position</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">position_for_motors</span><span class="p">,</span> <span class="n">duration</span><span class="p">,</span> <span class="n">control</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">wait</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+<div class="viewcode-block" id="MockupRobot.goto_position"><a class="viewcode-back" href="../../../pypot.primitive.html#pypot.primitive.primitive.MockupRobot.goto_position">[docs]</a>    <span class="k">def</span> <span class="nf">goto_position</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">position_for_motors</span><span class="p">,</span> <span class="n">duration</span><span class="p">,</span> <span class="n">control</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">wait</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">motor_name</span><span class="p">,</span> <span class="n">position</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">position_for_motors</span><span class="o">.</span><span class="n">iteritems</span><span class="p">()):</span>
-            <span class="n">w</span> <span class="o">=</span> <span class="bp">False</span> <span class="k">if</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">position_for_motors</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span> <span class="k">else</span> <span class="n">wait</span>
+            <span class="n">w</span> <span class="o">=</span> <span class="kc">False</span> <span class="k">if</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">position_for_motors</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span> <span class="k">else</span> <span class="n">wait</span>
 
             <span class="n">m</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">motor_name</span><span class="p">)</span>
             <span class="n">m</span><span class="o">.</span><span class="n">goto_position</span><span class="p">(</span><span class="n">position</span><span class="p">,</span> <span class="n">duration</span><span class="p">,</span> <span class="n">control</span><span class="p">,</span> <span class="n">wait</span><span class="o">=</span><span class="n">w</span><span class="p">)</span></div>
@@ -364,7 +364,7 @@
 
 <div class="viewcode-block" id="MockupRobot.power_max"><a class="viewcode-back" href="../../../pypot.primitive.html#pypot.primitive.primitive.MockupRobot.power_max">[docs]</a>    <span class="k">def</span> <span class="nf">power_max</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">motors</span><span class="p">:</span>
-            <span class="n">m</span><span class="o">.</span><span class="n">compliant</span> <span class="o">=</span> <span class="bp">False</span>
+            <span class="n">m</span><span class="o">.</span><span class="n">compliant</span> <span class="o">=</span> <span class="kc">False</span>
             <span class="n">m</span><span class="o">.</span><span class="n">moving_speed</span> <span class="o">=</span> <span class="mi">0</span>
             <span class="n">m</span><span class="o">.</span><span class="n">torque_limit</span> <span class="o">=</span> <span class="mf">100.0</span></div></div>
 
@@ -391,10 +391,10 @@
             <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Setting MockupMotor &#39;</span><span class="si">%s</span><span class="s2">.</span><span class="si">%s</span><span class="s2">&#39; to </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span>
                          <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">attr</span><span class="p">,</span> <span class="n">val</span><span class="p">)</span>
 
-<div class="viewcode-block" id="MockupMotor.goto_position"><a class="viewcode-back" href="../../../pypot.primitive.html#pypot.primitive.primitive.MockupMotor.goto_position">[docs]</a>    <span class="k">def</span> <span class="nf">goto_position</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">position</span><span class="p">,</span> <span class="n">duration</span><span class="p">,</span> <span class="n">control</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">wait</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+<div class="viewcode-block" id="MockupMotor.goto_position"><a class="viewcode-back" href="../../../pypot.primitive.html#pypot.primitive.primitive.MockupMotor.goto_position">[docs]</a>    <span class="k">def</span> <span class="nf">goto_position</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">position</span><span class="p">,</span> <span class="n">duration</span><span class="p">,</span> <span class="n">control</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">wait</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Automatically sets the goal position and the moving speed to reach the desired position within the duration. &quot;&quot;&quot;</span>
 
-        <span class="k">if</span> <span class="n">control</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">control</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">control</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">goto_behavior</span>
 
         <span class="k">if</span> <span class="n">control</span> <span class="o">==</span> <span class="s1">&#39;minjerk&#39;</span><span class="p">:</span>
@@ -424,7 +424,7 @@
 <span class="sd">            &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">numpy</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">goal_position</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">moving_speed</span>
 
-    <span class="nd">@goal_speed.setter</span>
+    <span class="nd">@goal_speed</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">goal_speed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">sys</span><span class="o">.</span><span class="n">float_info</span><span class="o">.</span><span class="n">epsilon</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">goal_position</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">present_position</span>
@@ -469,7 +469,7 @@
       <!-- footer -->
       <footer role="contentinfo">
           &copy; Copyright 2015, Poppy-Project.
-        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.4.4.
+        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.4.5.
       </footer>
       <!-- /footer -->
 

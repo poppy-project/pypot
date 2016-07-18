@@ -135,15 +135,15 @@
                 <div class="body">
                   
   <h1>Source code for pypot.primitive.move</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">division</span>
+<span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">division</span>
 
 <span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">import</span> <span class="nn">time</span>
 <span class="kn">import</span> <span class="nn">logging</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
-<span class="kn">from</span> <span class="nn">.primitive</span> <span class="kn">import</span> <span class="n">LoopPrimitive</span>
-<span class="kn">from</span> <span class="nn">pypot.utils.interpolation</span> <span class="kn">import</span> <span class="n">KDTreeDict</span>
+<span class="kn">from</span> <span class="nn">.primitive</span> <span class="k">import</span> <span class="n">LoopPrimitive</span>
+<span class="kn">from</span> <span class="nn">pypot.utils.interpolation</span> <span class="k">import</span> <span class="n">KDTreeDict</span>
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="n">__name__</span><span class="p">)</span>
 
 
@@ -160,7 +160,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_timed_positions</span> <span class="o">=</span> <span class="n">KDTreeDict</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="s1">&#39;&lt;Move framerate={} #keyframes={}&gt;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">framerate</span><span class="p">,</span>
+        <span class="k">return</span> <span class="s1">&#39;&lt;Move framerate=</span><span class="si">{}</span><span class="s1"> #keyframes=</span><span class="si">{}</span><span class="s1">&gt;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">framerate</span><span class="p">,</span>
                                                           <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">positions</span><span class="p">()))</span>
 
     <span class="k">def</span> <span class="nf">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span>
@@ -212,7 +212,7 @@
         <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Time (in s)&#39;</span><span class="p">)</span>
         <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Position (in degree)&#39;</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Move.save"><a class="viewcode-back" href="../../../pypot.primitive.html#pypot.primitive.move.Move.save">[docs]</a>    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">file</span><span class="p">):</span>
+<div class="viewcode-block" id="Move.save"><a class="viewcode-back" href="../../../pypot.primitive.html#pypot.primitive.move.Move.save">[docs]</a>    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Saves the :class:`~pypot.primitive.move.Move` to a json file.</span>
 
 <span class="sd">        .. note:: The format used to store the :class:`~pypot.primitive.move.Move` is extremely verbose and should be obviously optimized for long moves.</span>
@@ -221,7 +221,7 @@
             <span class="s1">&#39;framerate&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">framerate</span><span class="p">,</span>
             <span class="s1">&#39;positions&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_timed_positions</span><span class="p">,</span>
         <span class="p">}</span>
-        <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="nb">file</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span></div>
+        <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">file</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span></div>
 
     <span class="nd">@classmethod</span>
 <div class="viewcode-block" id="Move.create"><a class="viewcode-back" href="../../../pypot.primitive.html#pypot.primitive.move.Move.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">d</span><span class="p">):</span>
@@ -231,9 +231,9 @@
         <span class="k">return</span> <span class="n">move</span></div>
 
     <span class="nd">@classmethod</span>
-<div class="viewcode-block" id="Move.load"><a class="viewcode-back" href="../../../pypot.primitive.html#pypot.primitive.move.Move.load">[docs]</a>    <span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="nb">file</span><span class="p">):</span>
+<div class="viewcode-block" id="Move.load"><a class="viewcode-back" href="../../../pypot.primitive.html#pypot.primitive.move.Move.load">[docs]</a>    <span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">file</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Loads a :class:`~pypot.primitive.move.Move` from a json file. &quot;&quot;&quot;</span>
-        <span class="n">d</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="nb">file</span><span class="p">)</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">cls</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">d</span><span class="p">)</span></div>
 
     <span class="nd">@classmethod</span>
@@ -287,21 +287,21 @@
 <span class="sd">        The play_speed attribute change only time lockup/interpolation</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">robot</span><span class="p">,</span> <span class="n">move</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">play_speed</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">move_filename</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">start_max_speed</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">robot</span><span class="p">,</span> <span class="n">move</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">play_speed</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">move_filename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">start_max_speed</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">move</span> <span class="o">=</span> <span class="n">move</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">backwards</span> <span class="o">=</span> <span class="bp">False</span>
-        <span class="k">if</span> <span class="n">move_filename</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">backwards</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">if</span> <span class="n">move_filename</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">move_filename</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">move</span> <span class="o">=</span> <span class="n">Move</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">play_speed</span> <span class="o">=</span> <span class="n">play_speed</span> <span class="k">if</span> <span class="n">play_speed</span> <span class="o">!=</span> <span class="mi">0</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">play_speed</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span> <span class="k">else</span> <span class="mf">1.0</span>
-        <span class="n">framerate</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">move</span><span class="o">.</span><span class="n">framerate</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">move</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="k">else</span> <span class="mf">50.0</span>
+        <span class="n">framerate</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">move</span><span class="o">.</span><span class="n">framerate</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">move</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="mf">50.0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">start_max_speed</span> <span class="o">=</span> <span class="n">start_max_speed</span> <span class="k">if</span> <span class="n">start_max_speed</span> <span class="o">!=</span> <span class="mi">0</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span>
         <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
         <span class="n">LoopPrimitive</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">robot</span><span class="p">,</span> <span class="n">framerate</span><span class="p">)</span>
 
 <div class="viewcode-block" id="MovePlayer.setup"><a class="viewcode-back" href="../../../pypot.primitive.html#pypot.primitive.move.MovePlayer.setup">[docs]</a>    <span class="k">def</span> <span class="nf">setup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">move</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">move</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="s2">&quot;Attribute move is not defined&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">period</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">move</span><span class="o">.</span><span class="n">framerate</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">positions</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">move</span><span class="o">.</span><span class="n">positions</span><span class="p">()</span>
@@ -320,7 +320,7 @@
             <span class="n">position</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">positions</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
         <span class="k">for</span> <span class="n">motor</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">position</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
             <span class="n">motor</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">robot</span><span class="p">,</span> <span class="n">motor</span><span class="p">)</span>
-            <span class="n">motor</span><span class="o">.</span><span class="n">compliant</span> <span class="o">=</span> <span class="bp">False</span>
+            <span class="n">motor</span><span class="o">.</span><span class="n">compliant</span> <span class="o">=</span> <span class="kc">False</span>
             <span class="n">delta_angle</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">motor</span><span class="o">.</span><span class="n">present_position</span> <span class="o">-</span> <span class="n">value</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
             <span class="k">if</span> <span class="n">delta_angle</span> <span class="o">&gt;</span> <span class="mi">5</span><span class="p">:</span>
                 <span class="n">goto_time</span> <span class="o">=</span> <span class="n">delta_angle</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">start_max_speed</span>
@@ -338,14 +338,14 @@
 
             <span class="k">for</span> <span class="n">motor</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">position</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
                 <span class="c1"># TODO: Ask pierre if its not a fgi to turn off the compliance</span>
-                <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">robot</span><span class="p">,</span> <span class="n">motor</span><span class="p">)</span><span class="o">.</span><span class="n">compliant</span> <span class="o">=</span> <span class="bp">False</span>
+                <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">robot</span><span class="p">,</span> <span class="n">motor</span><span class="p">)</span><span class="o">.</span><span class="n">compliant</span> <span class="o">=</span> <span class="kc">False</span>
                 <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">robot</span><span class="p">,</span> <span class="n">motor</span><span class="p">)</span><span class="o">.</span><span class="n">goal_position</span> <span class="o">=</span> <span class="n">value</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="MovePlayer.duration"><a class="viewcode-back" href="../../../pypot.primitive.html#pypot.primitive.move.MovePlayer.duration">[docs]</a>    <span class="k">def</span> <span class="nf">duration</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">move</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">move</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">move</span><span class="o">.</span><span class="n">positions</span><span class="p">())</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">move</span><span class="o">.</span><span class="n">framerate</span><span class="p">)</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">play_speed</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="mf">1.0</span></div></div>
@@ -382,7 +382,7 @@
       <!-- footer -->
       <footer role="contentinfo">
           &copy; Copyright 2015, Poppy-Project.
-        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.4.4.
+        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.4.5.
       </footer>
       <!-- /footer -->
 

@@ -150,7 +150,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">):</span>
         <span class="n">client</span> <span class="o">=</span> <span class="n">zerorpc</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
-        <span class="n">client</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s1">&#39;tcp://{}:{}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">))</span>
+        <span class="n">client</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s1">&#39;tcp://</span><span class="si">{}</span><span class="s1">:</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">))</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">motors</span> <span class="o">=</span> <span class="p">[]</span>
 
@@ -168,9 +168,9 @@
 
             <span class="k">class</span> <span class="nc">Motor</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
                 <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-                    <span class="k">return</span> <span class="p">(</span><span class="s1">&#39;&lt;Motor name={self.name} &#39;</span>
-                            <span class="s1">&#39;id={self.id} &#39;</span>
-                            <span class="s1">&#39;pos={self.present_position}&gt;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
+                    <span class="k">return</span> <span class="p">(</span><span class="s1">&#39;&lt;Motor name=</span><span class="si">{self.name}</span><span class="s1"> &#39;</span>
+                            <span class="s1">&#39;id=</span><span class="si">{self.id}</span><span class="s1"> &#39;</span>
+                            <span class="s1">&#39;pos=</span><span class="si">{self.present_position}</span><span class="s1">&gt;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
 
             <span class="k">for</span> <span class="n">reg</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">get_registers_list</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
                 <span class="nb">setattr</span><span class="p">(</span><span class="n">Motor</span><span class="p">,</span> <span class="n">reg</span><span class="p">,</span> <span class="n">Register</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">reg</span><span class="p">))</span>
@@ -236,7 +236,7 @@
       <!-- footer -->
       <footer role="contentinfo">
           &copy; Copyright 2015, Poppy-Project.
-        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.4.4.
+        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.4.5.
       </footer>
       <!-- /footer -->
 

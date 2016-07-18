@@ -140,10 +140,10 @@
 <span class="kn">import</span> <span class="nn">time</span>
 <span class="kn">import</span> <span class="nn">ctypes</span>
 
-<span class="kn">from</span> <span class="nn">threading</span> <span class="kn">import</span> <span class="n">Lock</span>
+<span class="kn">from</span> <span class="nn">threading</span> <span class="k">import</span> <span class="n">Lock</span>
 
-<span class="kn">from</span> <span class="nn">.remoteApiBindings</span> <span class="kn">import</span> <span class="n">vrep</span> <span class="k">as</span> <span class="n">remote_api</span>
-<span class="kn">from</span> <span class="nn">..robot.io</span> <span class="kn">import</span> <span class="n">AbstractIO</span>
+<span class="kn">from</span> <span class="nn">.remoteApiBindings</span> <span class="k">import</span> <span class="n">vrep</span> <span class="k">as</span> <span class="n">remote_api</span>
+<span class="kn">from</span> <span class="nn">..robot.io</span> <span class="k">import</span> <span class="n">AbstractIO</span>
 
 
 <span class="n">vrep_error</span> <span class="o">=</span> <span class="p">{</span>
@@ -174,7 +174,7 @@
     <span class="n">MAX_ITER</span> <span class="o">=</span> <span class="mi">5</span>
     <span class="n">TIMEOUT</span> <span class="o">=</span> <span class="mf">0.4</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vrep_host</span><span class="o">=</span><span class="s1">&#39;127.0.0.1&#39;</span><span class="p">,</span> <span class="n">vrep_port</span><span class="o">=</span><span class="mi">19997</span><span class="p">,</span> <span class="n">scene</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vrep_host</span><span class="o">=</span><span class="s1">&#39;127.0.0.1&#39;</span><span class="p">,</span> <span class="n">vrep_port</span><span class="o">=</span><span class="mi">19997</span><span class="p">,</span> <span class="n">scene</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Starts the connection with the V-REP remote API server.</span>
 
 <span class="sd">        :param str vrep_host: V-REP remote API server host</span>
@@ -209,16 +209,16 @@
 
 <div class="viewcode-block" id="VrepIO.open_io"><a class="viewcode-back" href="../../../pypot.vrep.html#pypot.vrep.io.VrepIO.open_io">[docs]</a>    <span class="k">def</span> <span class="nf">open_io</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">client_id</span> <span class="o">=</span> <span class="n">remote_api</span><span class="o">.</span><span class="n">simxStart</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">vrep_host</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">vrep_port</span><span class="p">,</span> <span class="bp">True</span><span class="p">,</span> <span class="bp">True</span><span class="p">,</span> <span class="mi">5000</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">vrep_host</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">vrep_port</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="mi">5000</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">client_id</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
-            <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;Could not connect to V-REP server on {}:{}. &#39;</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;Could not connect to V-REP server on </span><span class="si">{}</span><span class="s1">:</span><span class="si">{}</span><span class="s1">. &#39;</span>
                    <span class="s1">&#39;This could also means that you still have &#39;</span>
                    <span class="s1">&#39;a previously opened connection running! &#39;</span>
                    <span class="s1">&#39;(try pypot.vrep.close_all_connections())&#39;</span><span class="p">)</span>
             <span class="k">raise</span> <span class="n">VrepConnectionError</span><span class="p">(</span>
                 <span class="n">msg</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vrep_host</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">vrep_port</span><span class="p">))</span>
 
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">scene</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">scene</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">load_scene</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">scene</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">start</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="VrepIO.close"><a class="viewcode-back" href="../../../pypot.vrep.html#pypot.vrep.io.VrepIO.close">[docs]</a>    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -226,7 +226,7 @@
         <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lock</span><span class="p">:</span>
             <span class="n">remote_api</span><span class="o">.</span><span class="n">simxFinish</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">client_id</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="VrepIO.load_scene"><a class="viewcode-back" href="../../../pypot.vrep.html#pypot.vrep.io.VrepIO.load_scene">[docs]</a>    <span class="k">def</span> <span class="nf">load_scene</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scene_path</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+<div class="viewcode-block" id="VrepIO.load_scene"><a class="viewcode-back" href="../../../pypot.vrep.html#pypot.vrep.io.VrepIO.load_scene">[docs]</a>    <span class="k">def</span> <span class="nf">load_scene</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scene_path</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Loads a scene on the V-REP server.</span>
 
 <span class="sd">        :param str scene_path: path to a V-REP scene file</span>
@@ -238,9 +238,9 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">stop_simulation</span><span class="p">()</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">scene_path</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s2">&quot;No such file or directory: &#39;{}&#39;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">scene_path</span><span class="p">))</span>
+            <span class="k">raise</span> <span class="ne">IOError</span><span class="p">(</span><span class="s2">&quot;No such file or directory: &#39;</span><span class="si">{}</span><span class="s2">&#39;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">scene_path</span><span class="p">))</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">call_remote_api</span><span class="p">(</span><span class="s1">&#39;simxLoadScene&#39;</span><span class="p">,</span> <span class="n">scene_path</span><span class="p">,</span> <span class="bp">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">call_remote_api</span><span class="p">(</span><span class="s1">&#39;simxLoadScene&#39;</span><span class="p">,</span> <span class="n">scene_path</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">start</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">start_simulation</span><span class="p">()</span></div>
@@ -282,37 +282,37 @@
         <span class="sd">&quot;&quot;&quot; Gets the motor current position. &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">call_remote_api</span><span class="p">(</span><span class="s1">&#39;simxGetJointPosition&#39;</span><span class="p">,</span>
                                     <span class="bp">self</span><span class="o">.</span><span class="n">get_object_handle</span><span class="p">(</span><span class="n">motor_name</span><span class="p">),</span>
-                                    <span class="n">streaming</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span></div>
+                                    <span class="n">streaming</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="VrepIO.set_motor_position"><a class="viewcode-back" href="../../../pypot.vrep.html#pypot.vrep.io.VrepIO.set_motor_position">[docs]</a>    <span class="k">def</span> <span class="nf">set_motor_position</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">motor_name</span><span class="p">,</span> <span class="n">position</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Sets the motor target position. &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">call_remote_api</span><span class="p">(</span><span class="s1">&#39;simxSetJointTargetPosition&#39;</span><span class="p">,</span>
                              <span class="bp">self</span><span class="o">.</span><span class="n">get_object_handle</span><span class="p">(</span><span class="n">motor_name</span><span class="p">),</span>
                              <span class="n">position</span><span class="p">,</span>
-                             <span class="n">sending</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span></div>
+                             <span class="n">sending</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="VrepIO.get_motor_force"><a class="viewcode-back" href="../../../pypot.vrep.html#pypot.vrep.io.VrepIO.get_motor_force">[docs]</a>    <span class="k">def</span> <span class="nf">get_motor_force</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">motor_name</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Retrieves the force or torque applied to a joint along/about its active axis. &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">call_remote_api</span><span class="p">(</span><span class="s1">&#39;simxGetJointForce&#39;</span><span class="p">,</span>
                                     <span class="bp">self</span><span class="o">.</span><span class="n">get_object_handle</span><span class="p">(</span><span class="n">motor_name</span><span class="p">),</span>
-                                    <span class="n">streaming</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span></div>
+                                    <span class="n">streaming</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="VrepIO.set_motor_force"><a class="viewcode-back" href="../../../pypot.vrep.html#pypot.vrep.io.VrepIO.set_motor_force">[docs]</a>    <span class="k">def</span> <span class="nf">set_motor_force</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">motor_name</span><span class="p">,</span> <span class="n">force</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;  Sets the maximum force or torque that a joint can exert. &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">call_remote_api</span><span class="p">(</span><span class="s1">&#39;simxSetJointForce&#39;</span><span class="p">,</span>
                              <span class="bp">self</span><span class="o">.</span><span class="n">get_object_handle</span><span class="p">(</span><span class="n">motor_name</span><span class="p">),</span>
                              <span class="n">force</span><span class="p">,</span>
-                             <span class="n">sending</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span></div>
+                             <span class="n">sending</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="VrepIO.get_object_position"><a class="viewcode-back" href="../../../pypot.vrep.html#pypot.vrep.io.VrepIO.get_object_position">[docs]</a>    <span class="k">def</span> <span class="nf">get_object_position</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">object_name</span><span class="p">,</span> <span class="n">relative_to_object</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="VrepIO.get_object_position"><a class="viewcode-back" href="../../../pypot.vrep.html#pypot.vrep.io.VrepIO.get_object_position">[docs]</a>    <span class="k">def</span> <span class="nf">get_object_position</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">object_name</span><span class="p">,</span> <span class="n">relative_to_object</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Gets the object position. &quot;&quot;&quot;</span>
         <span class="n">h</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_object_handle</span><span class="p">(</span><span class="n">object_name</span><span class="p">)</span>
-        <span class="n">relative_handle</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span> <span class="k">if</span> <span class="n">relative_to_object</span> <span class="ow">is</span> <span class="bp">None</span>
+        <span class="n">relative_handle</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span> <span class="k">if</span> <span class="n">relative_to_object</span> <span class="ow">is</span> <span class="kc">None</span>
                            <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_object_handle</span><span class="p">(</span><span class="n">relative_to_object</span><span class="p">))</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">call_remote_api</span><span class="p">(</span><span class="s1">&#39;simxGetObjectPosition&#39;</span><span class="p">,</span>
                                     <span class="n">h</span><span class="p">,</span> <span class="n">relative_handle</span><span class="p">,</span>
-                                    <span class="n">streaming</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span></div>
+                                    <span class="n">streaming</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="VrepIO.set_object_position"><a class="viewcode-back" href="../../../pypot.vrep.html#pypot.vrep.io.VrepIO.set_object_position">[docs]</a>    <span class="k">def</span> <span class="nf">set_object_position</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">object_name</span><span class="p">,</span> <span class="n">position</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]):</span>
         <span class="sd">&quot;&quot;&quot; Sets the object position. &quot;&quot;&quot;</span>
@@ -320,17 +320,17 @@
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">call_remote_api</span><span class="p">(</span><span class="s1">&#39;simxSetObjectPosition&#39;</span><span class="p">,</span>
                                     <span class="n">h</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">position</span><span class="p">,</span>
-                                    <span class="n">sending</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span></div>
+                                    <span class="n">sending</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="VrepIO.get_object_orientation"><a class="viewcode-back" href="../../../pypot.vrep.html#pypot.vrep.io.VrepIO.get_object_orientation">[docs]</a>    <span class="k">def</span> <span class="nf">get_object_orientation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">object_name</span><span class="p">,</span> <span class="n">relative_to_object</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="VrepIO.get_object_orientation"><a class="viewcode-back" href="../../../pypot.vrep.html#pypot.vrep.io.VrepIO.get_object_orientation">[docs]</a>    <span class="k">def</span> <span class="nf">get_object_orientation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">object_name</span><span class="p">,</span> <span class="n">relative_to_object</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Gets the object orientation. &quot;&quot;&quot;</span>
         <span class="n">h</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_object_handle</span><span class="p">(</span><span class="n">object_name</span><span class="p">)</span>
-        <span class="n">relative_handle</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span> <span class="k">if</span> <span class="n">relative_to_object</span> <span class="ow">is</span> <span class="bp">None</span>
+        <span class="n">relative_handle</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span> <span class="k">if</span> <span class="n">relative_to_object</span> <span class="ow">is</span> <span class="kc">None</span>
                            <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_object_handle</span><span class="p">(</span><span class="n">relative_to_object</span><span class="p">))</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">call_remote_api</span><span class="p">(</span><span class="s1">&#39;simxGetObjectOrientation&#39;</span><span class="p">,</span>
                                     <span class="n">h</span><span class="p">,</span> <span class="n">relative_handle</span><span class="p">,</span>
-                                    <span class="n">streaming</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span></div>
+                                    <span class="n">streaming</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
 
     <span class="k">def</span> <span class="nf">_get_object_handle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">call_remote_api</span><span class="p">(</span><span class="s1">&#39;simxGetObjectHandle&#39;</span><span class="p">,</span> <span class="n">obj</span><span class="p">)</span>
@@ -346,7 +346,7 @@
         <span class="sd">&quot;&quot;&quot; Gets the collision state. &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">call_remote_api</span><span class="p">(</span><span class="s1">&#39;simxReadCollision&#39;</span><span class="p">,</span>
                                     <span class="bp">self</span><span class="o">.</span><span class="n">get_collision_handle</span><span class="p">(</span><span class="n">collision_name</span><span class="p">),</span>
-                                    <span class="n">streaming</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span></div>
+                                    <span class="n">streaming</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
 
     <span class="k">def</span> <span class="nf">_get_collision_handle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">collision</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">call_remote_api</span><span class="p">(</span><span class="s1">&#39;simxGetCollisionHandle&#39;</span><span class="p">,</span> <span class="n">collision</span><span class="p">)</span>
@@ -362,7 +362,7 @@
 <div class="viewcode-block" id="VrepIO.get_simulation_current_time"><a class="viewcode-back" href="../../../pypot.vrep.html#pypot.vrep.io.VrepIO.get_simulation_current_time">[docs]</a>    <span class="k">def</span> <span class="nf">get_simulation_current_time</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">timer</span><span class="o">=</span><span class="s1">&#39;CurrentTime&#39;</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Gets the simulation current time. &quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">call_remote_api</span><span class="p">(</span><span class="s1">&#39;simxGetFloatSignal&#39;</span><span class="p">,</span> <span class="n">timer</span><span class="p">,</span> <span class="n">streaming</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">call_remote_api</span><span class="p">(</span><span class="s1">&#39;simxGetFloatSignal&#39;</span><span class="p">,</span> <span class="n">timer</span><span class="p">,</span> <span class="n">streaming</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="k">except</span> <span class="n">VrepIOErrors</span><span class="p">:</span>
             <span class="k">return</span> <span class="mf">0.0</span></div>
 
@@ -395,12 +395,12 @@
         <span class="n">h</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_object_handle</span><span class="p">(</span><span class="n">old_name</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">old_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_object_handles</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_object_handles</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">old_name</span><span class="p">)</span>
-        <span class="n">lua_code</span> <span class="o">=</span> <span class="s2">&quot;simSetObjectName({}, &#39;{}&#39;)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="n">new_name</span><span class="p">)</span>
+        <span class="n">lua_code</span> <span class="o">=</span> <span class="s2">&quot;simSetObjectName(</span><span class="si">{}</span><span class="s2">, &#39;</span><span class="si">{}</span><span class="s2">&#39;)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="n">new_name</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_inject_lua_code</span><span class="p">(</span><span class="n">lua_code</span><span class="p">)</span></div>
 
     <span class="k">def</span> <span class="nf">_create_pure_shape</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">primitive_type</span><span class="p">,</span> <span class="n">options</span><span class="p">,</span> <span class="n">sizes</span><span class="p">,</span> <span class="n">mass</span><span class="p">,</span> <span class="n">precision</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Create Pure Shape &quot;&quot;&quot;</span>
-        <span class="n">lua_code</span> <span class="o">=</span> <span class="s2">&quot;simCreatePureShape({}, {}, {{{}, {}, {}}}, {}, {{{}, {}}})&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+        <span class="n">lua_code</span> <span class="o">=</span> <span class="s2">&quot;simCreatePureShape(</span><span class="si">{}</span><span class="s2">, </span><span class="si">{}</span><span class="s2">, {{</span><span class="si">{}</span><span class="s2">, </span><span class="si">{}</span><span class="s2">, </span><span class="si">{}</span><span class="s2">}}, </span><span class="si">{}</span><span class="s2">, {{</span><span class="si">{}</span><span class="s2">, </span><span class="si">{}</span><span class="s2">}})&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
             <span class="n">primitive_type</span><span class="p">,</span> <span class="n">options</span><span class="p">,</span> <span class="n">sizes</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">sizes</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">sizes</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">mass</span><span class="p">,</span> <span class="n">precision</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">precision</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_inject_lua_code</span><span class="p">(</span><span class="n">lua_code</span><span class="p">)</span>
 
@@ -436,9 +436,9 @@
 
         <span class="k">if</span> <span class="s1">&#39;_force&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
             <span class="k">del</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;_force&#39;</span><span class="p">]</span>
-            <span class="n">_force</span> <span class="o">=</span> <span class="bp">True</span>
+            <span class="n">_force</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">_force</span> <span class="o">=</span> <span class="bp">False</span>
+            <span class="n">_force</span> <span class="o">=</span> <span class="kc">False</span>
 
         <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">VrepIO</span><span class="o">.</span><span class="n">MAX_ITER</span><span class="p">):</span>
             <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lock</span><span class="p">:</span>
@@ -448,7 +448,7 @@
                 <span class="k">return</span>
 
             <span class="k">if</span> <span class="n">mode</span> <span class="o">==</span> <span class="s1">&#39;sending&#39;</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ret</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
-                <span class="n">err</span><span class="p">,</span> <span class="n">res</span> <span class="o">=</span> <span class="n">ret</span><span class="p">,</span> <span class="bp">None</span>
+                <span class="n">err</span><span class="p">,</span> <span class="n">res</span> <span class="o">=</span> <span class="n">ret</span><span class="p">,</span> <span class="kc">None</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">err</span><span class="p">,</span> <span class="n">res</span> <span class="o">=</span> <span class="n">ret</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">ret</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
                 <span class="n">res</span> <span class="o">=</span> <span class="n">res</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">res</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span> <span class="k">else</span> <span class="n">res</span>
@@ -518,7 +518,7 @@
     <span class="sd">&quot;&quot;&quot; Base class for V-REP IO Errors. &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">error_code</span><span class="p">,</span> <span class="n">message</span><span class="p">):</span>
-        <span class="n">message</span> <span class="o">=</span> <span class="s1">&#39;V-REP error code {} ({}): &quot;{}&quot;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+        <span class="n">message</span> <span class="o">=</span> <span class="s1">&#39;V-REP error code </span><span class="si">{}</span><span class="s1"> (</span><span class="si">{}</span><span class="s1">): &quot;</span><span class="si">{}</span><span class="s1">&quot;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
             <span class="n">error_code</span><span class="p">,</span> <span class="n">vrep_error</span><span class="p">[</span><span class="n">error_code</span><span class="p">],</span> <span class="n">message</span><span class="p">)</span>
         <span class="ne">Exception</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">)</span></div>
 
@@ -565,7 +565,7 @@
       <!-- footer -->
       <footer role="contentinfo">
           &copy; Copyright 2015, Poppy-Project.
-        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.4.4.
+        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.4.5.
       </footer>
       <!-- /footer -->
 

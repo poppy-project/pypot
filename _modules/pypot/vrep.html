@@ -138,22 +138,22 @@
 <span></span><span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">import</span> <span class="nn">logging</span>
 
-<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">partial</span>
-<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">OrderedDict</span>
+<span class="kn">from</span> <span class="nn">functools</span> <span class="k">import</span> <span class="n">partial</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="k">import</span> <span class="n">OrderedDict</span>
 
-<span class="kn">from</span> <span class="nn">.io</span> <span class="kn">import</span> <span class="p">(</span><span class="n">VrepIO</span><span class="p">,</span> <span class="n">close_all_connections</span><span class="p">,</span>
+<span class="kn">from</span> <span class="nn">.io</span> <span class="k">import</span> <span class="p">(</span><span class="n">VrepIO</span><span class="p">,</span> <span class="n">close_all_connections</span><span class="p">,</span>
                  <span class="n">VrepIOError</span><span class="p">,</span> <span class="n">VrepConnectionError</span><span class="p">)</span>
 
-<span class="kn">from</span> <span class="nn">.controller</span> <span class="kn">import</span> <span class="n">VrepController</span><span class="p">,</span> <span class="n">VrepObjectTracker</span>
-<span class="kn">from</span> <span class="nn">.controller</span> <span class="kn">import</span> <span class="n">VrepCollisionTracker</span><span class="p">,</span> <span class="n">VrepCollisionDetector</span>
+<span class="kn">from</span> <span class="nn">.controller</span> <span class="k">import</span> <span class="n">VrepController</span><span class="p">,</span> <span class="n">VrepObjectTracker</span>
+<span class="kn">from</span> <span class="nn">.controller</span> <span class="k">import</span> <span class="n">VrepCollisionTracker</span><span class="p">,</span> <span class="n">VrepCollisionDetector</span>
 
-<span class="kn">from</span> <span class="nn">..robot</span> <span class="kn">import</span> <span class="n">Robot</span>
-<span class="kn">from</span> <span class="nn">..robot.sensor</span> <span class="kn">import</span> <span class="n">ObjectTracker</span>
-<span class="kn">from</span> <span class="nn">..robot.config</span> <span class="kn">import</span> <span class="n">motor_from_confignode</span><span class="p">,</span> <span class="n">make_alias</span>
+<span class="kn">from</span> <span class="nn">..robot</span> <span class="k">import</span> <span class="n">Robot</span>
+<span class="kn">from</span> <span class="nn">..robot.sensor</span> <span class="k">import</span> <span class="n">ObjectTracker</span>
+<span class="kn">from</span> <span class="nn">..robot.config</span> <span class="k">import</span> <span class="n">motor_from_confignode</span><span class="p">,</span> <span class="n">make_alias</span>
 
 
-<span class="kn">import</span> <span class="nn">pypot.utils.pypot_time</span> <span class="kn">as</span> <span class="nn">pypot_time</span>
-<span class="kn">import</span> <span class="nn">time</span> <span class="kn">as</span> <span class="nn">sys_time</span>
+<span class="kn">import</span> <span class="nn">pypot.utils.pypot_time</span> <span class="k">as</span> <span class="nn">pypot_time</span>
+<span class="kn">import</span> <span class="nn">time</span> <span class="k">as</span> <span class="nn">sys_time</span>
 
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="n">__name__</span><span class="p">)</span>
 
@@ -176,7 +176,7 @@
 
 <div class="viewcode-block" id="vrep_time.sleep"><a class="viewcode-back" href="../../pypot.vrep.html#pypot.vrep.vrep_time.sleep">[docs]</a>    <span class="k">def</span> <span class="nf">sleep</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">t</span> <span class="o">&gt;</span> <span class="mi">1000</span><span class="p">:</span>  <span class="c1"># That&#39;s probably due to an error in get_time</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;Big vrep sleep: {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">t</span><span class="p">))</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;Big vrep sleep: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">t</span><span class="p">))</span>
             <span class="n">t</span> <span class="o">=</span> <span class="mi">1</span>
 
         <span class="n">t0</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_time</span><span class="p">()</span>
@@ -186,7 +186,7 @@
             <span class="n">sys_time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.01</span><span class="p">)</span></div></div>
 
 
-<div class="viewcode-block" id="from_vrep"><a class="viewcode-back" href="../../pypot.vrep.html#pypot.vrep.from_vrep">[docs]</a><span class="k">def</span> <span class="nf">from_vrep</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">vrep_host</span><span class="o">=</span><span class="s1">&#39;127.0.0.1&#39;</span><span class="p">,</span> <span class="n">vrep_port</span><span class="o">=</span><span class="mi">19997</span><span class="p">,</span> <span class="n">scene</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+<div class="viewcode-block" id="from_vrep"><a class="viewcode-back" href="../../pypot.vrep.html#pypot.vrep.from_vrep">[docs]</a><span class="k">def</span> <span class="nf">from_vrep</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">vrep_host</span><span class="o">=</span><span class="s1">&#39;127.0.0.1&#39;</span><span class="p">,</span> <span class="n">vrep_port</span><span class="o">=</span><span class="mi">19997</span><span class="p">,</span> <span class="n">scene</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
               <span class="n">tracked_objects</span><span class="o">=</span><span class="p">[],</span> <span class="n">tracked_collisions</span><span class="o">=</span><span class="p">[]):</span>
     <span class="sd">&quot;&quot;&quot; Create a robot from a V-REP instance.</span>
 
@@ -223,7 +223,7 @@
     <span class="n">pypot_time</span><span class="o">.</span><span class="n">time</span> <span class="o">=</span> <span class="n">vreptime</span><span class="o">.</span><span class="n">get_time</span>
     <span class="n">pypot_time</span><span class="o">.</span><span class="n">sleep</span> <span class="o">=</span> <span class="n">vreptime</span><span class="o">.</span><span class="n">sleep</span>
 
-    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="nb">basestring</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">basestring</span><span class="p">):</span>
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">config</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
             <span class="n">config</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">object_pairs_hook</span><span class="o">=</span><span class="n">OrderedDict</span><span class="p">)</span>
 
@@ -295,11 +295,11 @@
         <span class="k">return</span> <span class="n">robot</span><span class="o">.</span><span class="n">_controllers</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">get_simulation_current_time</span><span class="p">()</span>
     <span class="n">Robot</span><span class="o">.</span><span class="n">current_simulation_time</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="k">lambda</span> <span class="n">robot</span><span class="p">:</span> <span class="n">current_simulation_time</span><span class="p">(</span><span class="n">robot</span><span class="p">))</span>
 
-    <span class="k">def</span> <span class="nf">get_object_position</span><span class="p">(</span><span class="n">robot</span><span class="p">,</span> <span class="nb">object</span><span class="p">,</span> <span class="n">relative_to_object</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">get_object_position</span><span class="p">(</span><span class="n">robot</span><span class="p">,</span> <span class="nb">object</span><span class="p">,</span> <span class="n">relative_to_object</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">vrep_io</span><span class="o">.</span><span class="n">get_object_position</span><span class="p">(</span><span class="nb">object</span><span class="p">,</span> <span class="n">relative_to_object</span><span class="p">)</span>
     <span class="n">Robot</span><span class="o">.</span><span class="n">get_object_position</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span><span class="n">get_object_position</span><span class="p">,</span> <span class="n">robot</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">get_object_orientation</span><span class="p">(</span><span class="n">robot</span><span class="p">,</span> <span class="nb">object</span><span class="p">,</span> <span class="n">relative_to_object</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">get_object_orientation</span><span class="p">(</span><span class="n">robot</span><span class="p">,</span> <span class="nb">object</span><span class="p">,</span> <span class="n">relative_to_object</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">vrep_io</span><span class="o">.</span><span class="n">get_object_orientation</span><span class="p">(</span><span class="nb">object</span><span class="p">,</span> <span class="n">relative_to_object</span><span class="p">)</span>
     <span class="n">Robot</span><span class="o">.</span><span class="n">get_object_orientation</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span><span class="n">get_object_orientation</span><span class="p">,</span> <span class="n">robot</span><span class="p">)</span>
 
@@ -337,7 +337,7 @@
       <!-- footer -->
       <footer role="contentinfo">
           &copy; Copyright 2015, Poppy-Project.
-        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.4.4.
+        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.4.5.
       </footer>
       <!-- /footer -->
 

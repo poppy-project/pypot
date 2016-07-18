@@ -193,7 +193,7 @@
 <div class="viewcode-block" id="BaseErrorHandler"><a class="viewcode-back" href="../../../pypot.dynamixel.html#pypot.dynamixel.error.BaseErrorHandler">[docs]</a><span class="k">class</span> <span class="nc">BaseErrorHandler</span><span class="p">(</span><span class="n">DxlErrorHandler</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; This class is a basic handler that just skip the communication errors. &quot;&quot;&quot;</span>
 <div class="viewcode-block" id="BaseErrorHandler.handle_timeout"><a class="viewcode-back" href="../../../pypot.dynamixel.html#pypot.dynamixel.error.BaseErrorHandler.handle_timeout">[docs]</a>    <span class="k">def</span> <span class="nf">handle_timeout</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">timeout_error</span><span class="p">):</span>
-        <span class="n">msg</span> <span class="o">=</span> <span class="s1">&#39;Timeout after sending {} to motors {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">timeout_error</span><span class="o">.</span><span class="n">instruction_packet</span><span class="p">,</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="s1">&#39;Timeout after sending </span><span class="si">{}</span><span class="s1"> to motors </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">timeout_error</span><span class="o">.</span><span class="n">instruction_packet</span><span class="p">,</span>
                                                              <span class="n">timeout_error</span><span class="o">.</span><span class="n">ids</span><span class="p">)</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span>
                        <span class="n">extra</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;port&#39;</span><span class="p">:</span> <span class="n">timeout_error</span><span class="o">.</span><span class="n">dxl_io</span><span class="o">.</span><span class="n">port</span><span class="p">,</span>
@@ -201,7 +201,7 @@
                               <span class="s1">&#39;timeout&#39;</span><span class="p">:</span> <span class="n">timeout_error</span><span class="o">.</span><span class="n">dxl_io</span><span class="o">.</span><span class="n">timeout</span><span class="p">})</span></div>
 
 <div class="viewcode-block" id="BaseErrorHandler.handle_communication_error"><a class="viewcode-back" href="../../../pypot.dynamixel.html#pypot.dynamixel.error.BaseErrorHandler.handle_communication_error">[docs]</a>    <span class="k">def</span> <span class="nf">handle_communication_error</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">com_error</span><span class="p">):</span>
-        <span class="n">msg</span> <span class="o">=</span> <span class="s1">&#39;Communication error after sending {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">com_error</span><span class="o">.</span><span class="n">instruction_packet</span><span class="p">)</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="s1">&#39;Communication error after sending </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">com_error</span><span class="o">.</span><span class="n">instruction_packet</span><span class="p">)</span>
 
         <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span>
                        <span class="n">extra</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;port&#39;</span><span class="p">:</span> <span class="n">com_error</span><span class="o">.</span><span class="n">dxl_io</span><span class="o">.</span><span class="n">port</span><span class="p">,</span>
@@ -244,7 +244,7 @@
       <!-- footer -->
       <footer role="contentinfo">
           &copy; Copyright 2015, Poppy-Project.
-        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.4.4.
+        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.4.5.
       </footer>
       <!-- /footer -->
 

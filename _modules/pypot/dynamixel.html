@@ -143,13 +143,13 @@
 <span class="kn">import</span> <span class="nn">serial.tools.list_ports</span>
 
 
-<span class="kn">from</span> <span class="nn">.io</span> <span class="kn">import</span> <span class="n">DxlIO</span><span class="p">,</span> <span class="n">Dxl320IO</span>
-<span class="kn">from</span> <span class="nn">.error</span> <span class="kn">import</span> <span class="n">BaseErrorHandler</span>
-<span class="kn">from</span> <span class="nn">.syncloop</span> <span class="kn">import</span> <span class="n">BaseDxlController</span>
-<span class="kn">from</span> <span class="nn">.motor</span> <span class="kn">import</span> <span class="n">DxlMXMotor</span><span class="p">,</span> <span class="n">DxlAXRXMotor</span><span class="p">,</span> <span class="n">DxlXL320Motor</span>
-<span class="kn">from</span> <span class="nn">.io.abstract_io</span> <span class="kn">import</span> <span class="n">DxlError</span>
+<span class="kn">from</span> <span class="nn">.io</span> <span class="k">import</span> <span class="n">DxlIO</span><span class="p">,</span> <span class="n">Dxl320IO</span>
+<span class="kn">from</span> <span class="nn">.error</span> <span class="k">import</span> <span class="n">BaseErrorHandler</span>
+<span class="kn">from</span> <span class="nn">.syncloop</span> <span class="k">import</span> <span class="n">BaseDxlController</span>
+<span class="kn">from</span> <span class="nn">.motor</span> <span class="k">import</span> <span class="n">DxlMXMotor</span><span class="p">,</span> <span class="n">DxlAXRXMotor</span><span class="p">,</span> <span class="n">DxlXL320Motor</span>
+<span class="kn">from</span> <span class="nn">.io.abstract_io</span> <span class="k">import</span> <span class="n">DxlError</span>
 
-<span class="kn">from</span> <span class="nn">..robot</span> <span class="kn">import</span> <span class="n">Robot</span>
+<span class="kn">from</span> <span class="nn">..robot</span> <span class="k">import</span> <span class="n">Robot</span>
 
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="n">__name__</span><span class="p">)</span>
 
@@ -179,11 +179,11 @@
             <span class="k">except</span> <span class="ne">WindowsError</span><span class="p">:</span>
                 <span class="k">return</span> <span class="n">ports</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">EnvironmentError</span><span class="p">(</span><span class="s1">&#39;{} is an unsupported platform, cannot find serial ports !&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">platform</span><span class="o">.</span><span class="n">system</span><span class="p">()))</span>
+        <span class="k">raise</span> <span class="ne">EnvironmentError</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1"> is an unsupported platform, cannot find serial ports !&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">platform</span><span class="o">.</span><span class="n">system</span><span class="p">()))</span>
     <span class="k">return</span> <span class="p">[]</span>
 
 
-<div class="viewcode-block" id="get_available_ports"><a class="viewcode-back" href="../../pypot.dynamixel.html#pypot.dynamixel.get_available_ports">[docs]</a><span class="k">def</span> <span class="nf">get_available_ports</span><span class="p">(</span><span class="n">only_free</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+<div class="viewcode-block" id="get_available_ports"><a class="viewcode-back" href="../../pypot.dynamixel.html#pypot.dynamixel.get_available_ports">[docs]</a><span class="k">def</span> <span class="nf">get_available_ports</span><span class="p">(</span><span class="n">only_free</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="n">ports</span> <span class="o">=</span> <span class="n">_get_available_ports</span><span class="p">()</span>
 
     <span class="k">if</span> <span class="n">only_free</span><span class="p">:</span>
@@ -192,7 +192,7 @@
     <span class="k">return</span> <span class="n">ports</span></div>
 
 
-<span class="k">def</span> <span class="nf">get_port_vendor_info</span><span class="p">(</span><span class="n">port</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">get_port_vendor_info</span><span class="p">(</span><span class="n">port</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; Return vendor informations of a usb2serial device.</span>
 <span class="sd">        It may depends on the Operating System.</span>
 <span class="sd">        :param string port: port of the usb2serial device</span>
@@ -205,10 +205,10 @@
 <span class="sd">        Out[2]: &#39;USB VID:PID=0403:6001 SNR=A7005LKE&#39; &quot;&quot;&quot;</span>
 
     <span class="n">port_info_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">((</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">serial</span><span class="o">.</span><span class="n">tools</span><span class="o">.</span><span class="n">list_ports</span><span class="o">.</span><span class="n">comports</span><span class="p">())</span>
-    <span class="k">return</span> <span class="n">port_info_dict</span><span class="p">[</span><span class="n">port</span><span class="p">]</span> <span class="k">if</span> <span class="n">port</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="k">else</span> <span class="n">port_info_dict</span>
+    <span class="k">return</span> <span class="n">port_info_dict</span><span class="p">[</span><span class="n">port</span><span class="p">]</span> <span class="k">if</span> <span class="n">port</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">port_info_dict</span>
 
 
-<div class="viewcode-block" id="find_port"><a class="viewcode-back" href="../../pypot.dynamixel.html#pypot.dynamixel.find_port">[docs]</a><span class="k">def</span> <span class="nf">find_port</span><span class="p">(</span><span class="n">ids</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+<div class="viewcode-block" id="find_port"><a class="viewcode-back" href="../../pypot.dynamixel.html#pypot.dynamixel.find_port">[docs]</a><span class="k">def</span> <span class="nf">find_port</span><span class="p">(</span><span class="n">ids</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; Find the port with the specified attached motor ids.</span>
 
 <span class="sd">        :param list ids: list of motor ids to find</span>
@@ -229,17 +229,17 @@
                         <span class="k">return</span> <span class="n">port</span>
 
                     <span class="k">if</span> <span class="ow">not</span> <span class="n">strict</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">_ids_founds</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="nb">len</span><span class="p">(</span><span class="n">ids</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">:</span>
-                        <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;Missing ids: {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">ids</span><span class="p">,</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">ids</span><span class="p">)</span> <span class="o">-</span> <span class="nb">set</span><span class="p">(</span><span class="n">_ids_founds</span><span class="p">))))</span>
+                        <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;Missing ids: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">ids</span><span class="p">,</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">ids</span><span class="p">)</span> <span class="o">-</span> <span class="nb">set</span><span class="p">(</span><span class="n">_ids_founds</span><span class="p">))))</span>
                         <span class="k">return</span> <span class="n">port</span>
 
                     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">ids_founds</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-                        <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;Port:{} ids found:{}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">port</span><span class="p">,</span> <span class="n">_ids_founds</span><span class="p">))</span>
+                        <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;Port:</span><span class="si">{}</span><span class="s1"> ids found:</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">port</span><span class="p">,</span> <span class="n">_ids_founds</span><span class="p">))</span>
 
             <span class="k">except</span> <span class="n">DxlError</span><span class="p">:</span>
-                <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;DxlError on port {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">port</span><span class="p">))</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;DxlError on port </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">port</span><span class="p">))</span>
                 <span class="k">continue</span>
 
-    <span class="k">raise</span> <span class="ne">IndexError</span><span class="p">(</span><span class="s1">&#39;No suitable port found for ids {}. These ids are missing {} !&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+    <span class="k">raise</span> <span class="ne">IndexError</span><span class="p">(</span><span class="s1">&#39;No suitable port found for ids </span><span class="si">{}</span><span class="s1">. These ids are missing </span><span class="si">{}</span><span class="s1"> !&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
         <span class="n">ids</span><span class="p">,</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">ids</span><span class="p">)</span> <span class="o">-</span> <span class="nb">set</span><span class="p">(</span><span class="n">ids_founds</span><span class="p">))))</span></div>
 
 
@@ -305,7 +305,7 @@
       <!-- footer -->
       <footer role="contentinfo">
           &copy; Copyright 2015, Poppy-Project.
-        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.4.4.
+        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.4.5.
       </footer>
       <!-- /footer -->
 

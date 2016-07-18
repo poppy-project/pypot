@@ -145,12 +145,12 @@
 <span class="kn">import</span> <span class="nn">socket</span>
 <span class="kn">import</span> <span class="nn">logging</span>
 
-<span class="kn">from</span> <span class="nn">contextlib</span> <span class="kn">import</span> <span class="n">closing</span>
-<span class="kn">from</span> <span class="nn">ast</span> <span class="kn">import</span> <span class="n">literal_eval</span> <span class="k">as</span> <span class="n">make_tuple</span>
+<span class="kn">from</span> <span class="nn">contextlib</span> <span class="k">import</span> <span class="n">closing</span>
+<span class="kn">from</span> <span class="nn">ast</span> <span class="k">import</span> <span class="n">literal_eval</span> <span class="k">as</span> <span class="n">make_tuple</span>
 
-<span class="kn">from</span> <span class="nn">.server</span> <span class="kn">import</span> <span class="n">AbstractServer</span>
-<span class="kn">from</span> <span class="nn">.httpserver</span> <span class="kn">import</span> <span class="n">EnableCors</span>
-<span class="kn">from</span> <span class="nn">..utils.appdirs</span> <span class="kn">import</span> <span class="n">user_data_dir</span>
+<span class="kn">from</span> <span class="nn">.server</span> <span class="k">import</span> <span class="n">AbstractServer</span>
+<span class="kn">from</span> <span class="nn">.httpserver</span> <span class="k">import</span> <span class="n">EnableCors</span>
+<span class="kn">from</span> <span class="nn">..utils.appdirs</span> <span class="k">import</span> <span class="n">user_data_dir</span>
 
 
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="n">__name__</span><span class="p">)</span>
@@ -163,10 +163,10 @@
     <span class="k">return</span> <span class="n">snap_user_projects_directory</span></div>
 
 
-<div class="viewcode-block" id="find_local_ip"><a class="viewcode-back" href="../../../pypot.server.html#pypot.server.snap.find_local_ip">[docs]</a><span class="k">def</span> <span class="nf">find_local_ip</span><span class="p">(</span><span class="n">host</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="find_local_ip"><a class="viewcode-back" href="../../../pypot.server.html#pypot.server.snap.find_local_ip">[docs]</a><span class="k">def</span> <span class="nf">find_local_ip</span><span class="p">(</span><span class="n">host</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="c1"># see here: http://stackoverflow.com/questions/166506/</span>
     <span class="k">try</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">host</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">host</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">host</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="n">gethostname</span><span class="p">()</span>
 
         <span class="k">if</span> <span class="s1">&#39;local&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">host</span><span class="p">:</span>
@@ -178,7 +178,7 @@
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">ips</span><span class="p">):</span>
                 <span class="k">return</span> <span class="n">ips</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
         <span class="k">except</span> <span class="n">socket</span><span class="o">.</span><span class="n">gaierror</span><span class="p">:</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;socket gaierror with hostname {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">host</span><span class="p">))</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;socket gaierror with hostname </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">host</span><span class="p">))</span>
             <span class="k">pass</span>
 
         <span class="c1"># If the above method fails (depending on the system)</span>
@@ -202,11 +202,11 @@
     <span class="k">return</span> <span class="s1">&#39;127.0.0.1&#39;</span></div>
 
 
-<div class="viewcode-block" id="set_snap_server_variables"><a class="viewcode-back" href="../../../pypot.server.html#pypot.server.snap.set_snap_server_variables">[docs]</a><span class="k">def</span> <span class="nf">set_snap_server_variables</span><span class="p">(</span><span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">,</span> <span class="n">snap_extension</span><span class="o">=</span><span class="s1">&#39;.xml&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="set_snap_server_variables"><a class="viewcode-back" href="../../../pypot.server.html#pypot.server.snap.set_snap_server_variables">[docs]</a><span class="k">def</span> <span class="nf">set_snap_server_variables</span><span class="p">(</span><span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">,</span> <span class="n">snap_extension</span><span class="o">=</span><span class="s1">&#39;.xml&#39;</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; Change dynamically port and host variable in xml Snap! project file&quot;&quot;&quot;</span>
 
     <span class="n">localdir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()</span>
-    <span class="k">if</span> <span class="n">path</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">path</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">realpath</span><span class="p">(</span><span class="n">__file__</span><span class="p">)))</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
@@ -231,7 +231,7 @@
 
 <div class="viewcode-block" id="SnapRobotServer"><a class="viewcode-back" href="../../../pypot.server.html#pypot.server.snap.SnapRobotServer">[docs]</a><span class="k">class</span> <span class="nc">SnapRobotServer</span><span class="p">(</span><span class="n">AbstractServer</span><span class="p">):</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">robot</span><span class="p">,</span> <span class="n">host</span><span class="o">=</span><span class="s1">&#39;0.0.0.0&#39;</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="s1">&#39;6969&#39;</span><span class="p">,</span> <span class="n">quiet</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">robot</span><span class="p">,</span> <span class="n">host</span><span class="o">=</span><span class="s1">&#39;0.0.0.0&#39;</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="s1">&#39;6969&#39;</span><span class="p">,</span> <span class="n">quiet</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="n">AbstractServer</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">robot</span><span class="p">,</span> <span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">quiet</span> <span class="o">=</span> <span class="n">quiet</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">app</span> <span class="o">=</span> <span class="n">bottle</span><span class="o">.</span><span class="n">Bottle</span><span class="p">()</span>
@@ -246,38 +246,38 @@
                      <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">snap_system_projects_directory</span><span class="p">)</span> <span class="k">if</span> <span class="n">f</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;.xml&#39;</span><span class="p">)]</span>
         <span class="k">for</span> <span class="n">xml_file</span> <span class="ow">in</span> <span class="n">xml_files</span><span class="p">:</span>
             <span class="n">dst</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">get_snap_user_projects_directory</span><span class="p">(),</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">xml_file</span><span class="p">))</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Copy snap project from {}, to {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">xml_file</span><span class="p">,</span> <span class="n">dst</span><span class="p">))</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Copy snap project from </span><span class="si">{}</span><span class="s1">, to </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">xml_file</span><span class="p">,</span> <span class="n">dst</span><span class="p">))</span>
             <span class="n">shutil</span><span class="o">.</span><span class="n">copyfile</span><span class="p">(</span><span class="n">xml_file</span><span class="p">,</span> <span class="n">dst</span><span class="p">)</span>
 
         <span class="n">set_snap_server_variables</span><span class="p">(</span><span class="n">find_local_ip</span><span class="p">(),</span> <span class="n">port</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="n">get_snap_user_projects_directory</span><span class="p">())</span>
 
-        <span class="nd">@self.app.get</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)</span>
+        <span class="nd">@self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)</span>
         <span class="k">def</span> <span class="nf">get_sitemap</span><span class="p">():</span>
             <span class="k">return</span> <span class="s1">&#39;&lt;/br&gt;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">cgi</span><span class="o">.</span><span class="n">escape</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">rule</span><span class="o">.</span><span class="n">format</span><span class="p">())</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">routes</span><span class="p">])</span>
 
-        <span class="nd">@self.app.get</span><span class="p">(</span><span class="s1">&#39;/motors/&lt;alias&gt;&#39;</span><span class="p">)</span>
+        <span class="nd">@self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;/motors/&lt;alias&gt;&#39;</span><span class="p">)</span>
         <span class="k">def</span> <span class="nf">get_motors</span><span class="p">(</span><span class="n">alias</span><span class="p">):</span>
             <span class="k">return</span> <span class="s1">&#39;/&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">rr</span><span class="o">.</span><span class="n">get_motors_list</span><span class="p">(</span><span class="n">alias</span><span class="p">))</span>
 
-        <span class="nd">@self.app.get</span><span class="p">(</span><span class="s1">&#39;/motor/&lt;motor&gt;/get/&lt;register&gt;&#39;</span><span class="p">)</span>
+        <span class="nd">@self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;/motor/&lt;motor&gt;/get/&lt;register&gt;&#39;</span><span class="p">)</span>
         <span class="k">def</span> <span class="nf">get_motor_register</span><span class="p">(</span><span class="n">motor</span><span class="p">,</span> <span class="n">register</span><span class="p">):</span>
             <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">rr</span><span class="o">.</span><span class="n">get_motor_register_value</span><span class="p">(</span><span class="n">motor</span><span class="p">,</span> <span class="n">register</span><span class="p">))</span>
 
-        <span class="nd">@self.app.get</span><span class="p">(</span><span class="s1">&#39;/motors/get/positions&#39;</span><span class="p">)</span>
+        <span class="nd">@self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;/motors/get/positions&#39;</span><span class="p">)</span>
         <span class="k">def</span> <span class="nf">get_motors_positions</span><span class="p">():</span>
             <span class="n">get_pos</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">m</span><span class="p">:</span> <span class="n">rr</span><span class="o">.</span><span class="n">get_motor_register_value</span><span class="p">(</span>
                 <span class="n">m</span><span class="p">,</span> <span class="s1">&#39;present_position&#39;</span><span class="p">)</span>
-            <span class="n">msg</span> <span class="o">=</span> <span class="s1">&#39;/&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;{}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">get_pos</span><span class="p">(</span><span class="n">m</span><span class="p">))</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s1">&#39;/&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">get_pos</span><span class="p">(</span><span class="n">m</span><span class="p">))</span>
                            <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">rr</span><span class="o">.</span><span class="n">get_motors_list</span><span class="p">())</span>
-            <span class="n">msg</span> <span class="o">=</span> <span class="s1">&#39;;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;{}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">get_pos</span><span class="p">(</span><span class="n">m</span><span class="p">))</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="s1">&#39;;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">get_pos</span><span class="p">(</span><span class="n">m</span><span class="p">))</span>
                            <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">rr</span><span class="o">.</span><span class="n">get_motors_list</span><span class="p">())</span>
             <span class="k">return</span> <span class="n">msg</span>
 
-        <span class="nd">@self.app.get</span><span class="p">(</span><span class="s1">&#39;/motors/alias&#39;</span><span class="p">)</span>
+        <span class="nd">@self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;/motors/alias&#39;</span><span class="p">)</span>
         <span class="k">def</span> <span class="nf">get_robot_aliases</span><span class="p">():</span>
-            <span class="k">return</span> <span class="s1">&#39;/&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;{}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">alias</span><span class="p">)</span> <span class="k">for</span> <span class="n">alias</span> <span class="ow">in</span> <span class="n">rr</span><span class="o">.</span><span class="n">get_motors_alias</span><span class="p">())</span>
+            <span class="k">return</span> <span class="s1">&#39;/&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">alias</span><span class="p">)</span> <span class="k">for</span> <span class="n">alias</span> <span class="ow">in</span> <span class="n">rr</span><span class="o">.</span><span class="n">get_motors_alias</span><span class="p">())</span>
 
-        <span class="nd">@self.app.get</span><span class="p">(</span><span class="s1">&#39;/motors/&lt;motors&gt;/get/&lt;register&gt;&#39;</span><span class="p">)</span>
+        <span class="nd">@self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;/motors/&lt;motors&gt;/get/&lt;register&gt;&#39;</span><span class="p">)</span>
         <span class="k">def</span> <span class="nf">get_motors_registers</span><span class="p">(</span><span class="n">motors</span><span class="p">,</span> <span class="n">register</span><span class="p">):</span>
             <span class="sd">&quot;&quot;&quot; Allow getting of motors register with a single http request</span>
 <span class="sd">                Be carefull: with lot of motors, it could overlap the GET max</span>
@@ -286,7 +286,7 @@
             <span class="n">motors</span> <span class="o">=</span> <span class="n">motors</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;;&#39;</span><span class="p">)</span>
             <span class="k">return</span> <span class="s1">&#39;;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">rr</span><span class="o">.</span><span class="n">get_register_value</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">register</span><span class="p">))</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">motors</span><span class="p">)</span>
 
-        <span class="nd">@self.app.get</span><span class="p">(</span><span class="s1">&#39;/motors/set/goto/&lt;motors_position_duration&gt;&#39;</span><span class="p">)</span>
+        <span class="nd">@self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;/motors/set/goto/&lt;motors_position_duration&gt;&#39;</span><span class="p">)</span>
         <span class="k">def</span> <span class="nf">set_motors_goto</span><span class="p">(</span><span class="n">motors_position_duration</span><span class="p">):</span>
             <span class="sd">&quot;&quot;&quot; Allow lot of motors position settings with a single http request</span>
 <span class="sd">                Be carefull: with lot of motors, it could overlap the GET max</span>
@@ -297,7 +297,7 @@
                 <span class="n">rr</span><span class="o">.</span><span class="n">set_goto_position_for_motor</span><span class="p">(</span><span class="n">settings</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">float</span><span class="p">(</span><span class="n">settings</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="nb">float</span><span class="p">(</span><span class="n">settings</span><span class="p">[</span><span class="mi">2</span><span class="p">]))</span>
             <span class="k">return</span> <span class="s1">&#39;Done!&#39;</span>
 
-        <span class="nd">@self.app.get</span><span class="p">(</span><span class="s1">&#39;/motors/set/registers/&lt;motors_register_value&gt;&#39;</span><span class="p">)</span>
+        <span class="nd">@self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;/motors/set/registers/&lt;motors_register_value&gt;&#39;</span><span class="p">)</span>
         <span class="k">def</span> <span class="nf">set_motors_registers</span><span class="p">(</span><span class="n">motors_register_value</span><span class="p">):</span>
             <span class="sd">&quot;&quot;&quot; Allow lot of motors register settings with a single http request</span>
 <span class="sd">                Be carefull: with lot of motors, it could overlap the GET max</span>
@@ -311,159 +311,159 @@
             <span class="k">return</span> <span class="s1">&#39;Done!&#39;</span>
 
         <span class="c1"># TODO : delete ?</span>
-        <span class="nd">@self.app.get</span><span class="p">(</span><span class="s1">&#39;/motors/set/positions/&lt;positions&gt;&#39;</span><span class="p">)</span>
+        <span class="nd">@self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;/motors/set/positions/&lt;positions&gt;&#39;</span><span class="p">)</span>
         <span class="k">def</span> <span class="nf">set_motors_positions</span><span class="p">(</span><span class="n">positions</span><span class="p">):</span>
             <span class="n">positions</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">s</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">s</span><span class="p">),</span> <span class="n">positions</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;;&#39;</span><span class="p">))</span>
             <span class="k">for</span> <span class="n">m</span><span class="p">,</span> <span class="n">p</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">rr</span><span class="o">.</span><span class="n">get_motors_list</span><span class="p">(),</span> <span class="n">positions</span><span class="p">):</span>
                 <span class="n">rr</span><span class="o">.</span><span class="n">set_motor_register_value</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="s1">&#39;goal_position&#39;</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span>
             <span class="k">return</span> <span class="s1">&#39;Done!&#39;</span>
 
-        <span class="nd">@self.app.get</span><span class="p">(</span><span class="s1">&#39;/motor/&lt;motor&gt;/set/&lt;register&gt;/&lt;value&gt;&#39;</span><span class="p">)</span>
+        <span class="nd">@self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;/motor/&lt;motor&gt;/set/&lt;register&gt;/&lt;value&gt;&#39;</span><span class="p">)</span>
         <span class="k">def</span> <span class="nf">set_reg</span><span class="p">(</span><span class="n">motor</span><span class="p">,</span> <span class="n">register</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
             <span class="k">if</span> <span class="n">register</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;led&#39;</span><span class="p">):</span>
                 <span class="n">value</span> <span class="o">=</span> <span class="n">make_tuple</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
             <span class="n">rr</span><span class="o">.</span><span class="n">set_motor_register_value</span><span class="p">(</span><span class="n">motor</span><span class="p">,</span> <span class="n">register</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
             <span class="k">return</span> <span class="s1">&#39;Done!&#39;</span>
 
-        <span class="nd">@self.app.get</span><span class="p">(</span><span class="s1">&#39;/motor/&lt;motor&gt;/goto/&lt;position&gt;/&lt;duration&gt;&#39;</span><span class="p">)</span>
+        <span class="nd">@self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;/motor/&lt;motor&gt;/goto/&lt;position&gt;/&lt;duration&gt;&#39;</span><span class="p">)</span>
         <span class="k">def</span> <span class="nf">set_goto</span><span class="p">(</span><span class="n">motor</span><span class="p">,</span> <span class="n">position</span><span class="p">,</span> <span class="n">duration</span><span class="p">):</span>
             <span class="n">rr</span><span class="o">.</span><span class="n">set_goto_position_for_motor</span><span class="p">(</span>
                 <span class="n">motor</span><span class="p">,</span> <span class="nb">float</span><span class="p">(</span><span class="n">position</span><span class="p">),</span> <span class="nb">float</span><span class="p">(</span><span class="n">duration</span><span class="p">))</span>
             <span class="k">return</span> <span class="s1">&#39;Done!&#39;</span>
 
-        <span class="nd">@self.app.get</span><span class="p">(</span><span class="s1">&#39;/snap-blocks.xml&#39;</span><span class="p">)</span>
+        <span class="nd">@self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;/snap-blocks.xml&#39;</span><span class="p">)</span>
         <span class="k">def</span> <span class="nf">get_pypot_snap_blocks</span><span class="p">():</span>
             <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">get_snap_user_projects_directory</span><span class="p">(),</span> <span class="s1">&#39;pypot-snap-blocks.xml&#39;</span><span class="p">))</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
                 <span class="k">return</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
 
-        <span class="nd">@self.app.get</span><span class="p">(</span><span class="s1">&#39;/snap/&lt;project&gt;&#39;</span><span class="p">)</span>
+        <span class="nd">@self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;/snap/&lt;project&gt;&#39;</span><span class="p">)</span>
         <span class="k">def</span> <span class="nf">get_snap_projects</span><span class="p">(</span><span class="n">project</span><span class="p">):</span>
             <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">get_snap_user_projects_directory</span><span class="p">(),</span>
-                                   <span class="s1">&#39;{}.xml&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">project</span><span class="p">)))</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                                   <span class="s1">&#39;</span><span class="si">{}</span><span class="s1">.xml&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">project</span><span class="p">)))</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
                 <span class="k">return</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
 
-        <span class="nd">@self.app.get</span><span class="p">(</span><span class="s1">&#39;/ip/&#39;</span><span class="p">)</span>
-        <span class="nd">@self.app.get</span><span class="p">(</span><span class="s1">&#39;/ip/&lt;host&gt;&#39;</span><span class="p">)</span>
-        <span class="k">def</span> <span class="nf">get_ip</span><span class="p">(</span><span class="n">host</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="nd">@self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;/ip/&#39;</span><span class="p">)</span>
+        <span class="nd">@self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;/ip/&lt;host&gt;&#39;</span><span class="p">)</span>
+        <span class="k">def</span> <span class="nf">get_ip</span><span class="p">(</span><span class="n">host</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
             <span class="k">return</span> <span class="n">find_local_ip</span><span class="p">(</span><span class="n">host</span><span class="p">)</span>
 
-        <span class="nd">@self.app.get</span><span class="p">(</span><span class="s1">&#39;/reset-simulation&#39;</span><span class="p">)</span>
+        <span class="nd">@self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;/reset-simulation&#39;</span><span class="p">)</span>
         <span class="k">def</span> <span class="nf">reset_simulation</span><span class="p">():</span>
             <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">robot</span><span class="p">,</span> <span class="s1">&#39;reset_simulation&#39;</span><span class="p">):</span>
                 <span class="n">robot</span><span class="o">.</span><span class="n">reset_simulation</span><span class="p">()</span>
             <span class="k">return</span> <span class="s1">&#39;Done!&#39;</span>
 
-        <span class="nd">@self.app.get</span><span class="p">(</span><span class="s1">&#39;/primitives&#39;</span><span class="p">)</span>
+        <span class="nd">@self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;/primitives&#39;</span><span class="p">)</span>
         <span class="k">def</span> <span class="nf">get_primitives</span><span class="p">():</span>
             <span class="k">return</span> <span class="s1">&#39;/&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">rr</span><span class="o">.</span><span class="n">get_primitives_list</span><span class="p">())</span>
 
-        <span class="nd">@self.app.get</span><span class="p">(</span><span class="s1">&#39;/primitives/running&#39;</span><span class="p">)</span>
+        <span class="nd">@self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;/primitives/running&#39;</span><span class="p">)</span>
         <span class="k">def</span> <span class="nf">get_running_primitives</span><span class="p">():</span>
             <span class="k">return</span> <span class="s1">&#39;/&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">rr</span><span class="o">.</span><span class="n">get_running_primitives_list</span><span class="p">())</span>
 
-        <span class="nd">@self.app.get</span><span class="p">(</span><span class="s1">&#39;/primitive/&lt;primitive&gt;/start&#39;</span><span class="p">)</span>
+        <span class="nd">@self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;/primitive/&lt;primitive&gt;/start&#39;</span><span class="p">)</span>
         <span class="k">def</span> <span class="nf">start_primitive</span><span class="p">(</span><span class="n">primitive</span><span class="p">):</span>
             <span class="n">rr</span><span class="o">.</span><span class="n">start_primitive</span><span class="p">(</span><span class="n">primitive</span><span class="p">)</span>
             <span class="k">return</span> <span class="s1">&#39;Done!&#39;</span>
 
-        <span class="nd">@self.app.get</span><span class="p">(</span><span class="s1">&#39;/primitive/&lt;primitive&gt;/stop&#39;</span><span class="p">)</span>
+        <span class="nd">@self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;/primitive/&lt;primitive&gt;/stop&#39;</span><span class="p">)</span>
         <span class="k">def</span> <span class="nf">stop_primitive</span><span class="p">(</span><span class="n">primitive</span><span class="p">):</span>
             <span class="n">rr</span><span class="o">.</span><span class="n">stop_primitive</span><span class="p">(</span><span class="n">primitive</span><span class="p">)</span>
             <span class="k">return</span> <span class="s1">&#39;Done!&#39;</span>
 
-        <span class="nd">@self.app.get</span><span class="p">(</span><span class="s1">&#39;/primitive/&lt;primitive&gt;/pause&#39;</span><span class="p">)</span>
+        <span class="nd">@self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;/primitive/&lt;primitive&gt;/pause&#39;</span><span class="p">)</span>
         <span class="k">def</span> <span class="nf">pause_primitive</span><span class="p">(</span><span class="n">primitive</span><span class="p">):</span>
             <span class="n">rr</span><span class="o">.</span><span class="n">pause_primitive</span><span class="p">(</span><span class="n">primitive</span><span class="p">)</span>
             <span class="k">return</span> <span class="s1">&#39;Done!&#39;</span>
 
-        <span class="nd">@self.app.get</span><span class="p">(</span><span class="s1">&#39;/primitive/&lt;primitive&gt;/resume&#39;</span><span class="p">)</span>
+        <span class="nd">@self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;/primitive/&lt;primitive&gt;/resume&#39;</span><span class="p">)</span>
         <span class="k">def</span> <span class="nf">resume_primitive</span><span class="p">(</span><span class="n">primitive</span><span class="p">):</span>
             <span class="n">rr</span><span class="o">.</span><span class="n">resume_primitive</span><span class="p">(</span><span class="n">primitive</span><span class="p">)</span>
             <span class="k">return</span> <span class="s1">&#39;Done!&#39;</span>
 
-        <span class="nd">@self.app.get</span><span class="p">(</span><span class="s1">&#39;/primitive/&lt;primitive&gt;/properties&#39;</span><span class="p">)</span>
+        <span class="nd">@self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;/primitive/&lt;primitive&gt;/properties&#39;</span><span class="p">)</span>
         <span class="k">def</span> <span class="nf">get_primitive_properties_list</span><span class="p">(</span><span class="n">primitive</span><span class="p">):</span>
             <span class="k">return</span> <span class="s1">&#39;/&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">rr</span><span class="o">.</span><span class="n">get_primitive_properties_list</span><span class="p">(</span><span class="n">primitive</span><span class="p">))</span>
 
-        <span class="nd">@self.app.get</span><span class="p">(</span><span class="s1">&#39;/primitive/&lt;primitive&gt;/get/&lt;property&gt;&#39;</span><span class="p">)</span>
+        <span class="nd">@self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;/primitive/&lt;primitive&gt;/get/&lt;property&gt;&#39;</span><span class="p">)</span>
         <span class="k">def</span> <span class="nf">get_primitive_property</span><span class="p">(</span><span class="n">primitive</span><span class="p">,</span> <span class="nb">property</span><span class="p">):</span>
             <span class="k">return</span> <span class="n">rr</span><span class="o">.</span><span class="n">get_primitive_property</span><span class="p">(</span><span class="n">primitive</span><span class="p">,</span> <span class="nb">property</span><span class="p">)</span>
 
-        <span class="nd">@self.app.get</span><span class="p">(</span><span class="s1">&#39;/primitive/&lt;primitive&gt;/set/&lt;property&gt;/&lt;value&gt;&#39;</span><span class="p">)</span>
+        <span class="nd">@self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;/primitive/&lt;primitive&gt;/set/&lt;property&gt;/&lt;value&gt;&#39;</span><span class="p">)</span>
         <span class="k">def</span> <span class="nf">set_primitive_property</span><span class="p">(</span><span class="n">primitive</span><span class="p">,</span> <span class="nb">property</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
             <span class="k">return</span> <span class="n">rr</span><span class="o">.</span><span class="n">set_primitive_property</span><span class="p">(</span><span class="n">primitive</span><span class="p">,</span> <span class="nb">property</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
 
-        <span class="nd">@self.app.get</span><span class="p">(</span><span class="s1">&#39;/primitive/&lt;primitive&gt;/methodes&#39;</span><span class="p">)</span>
+        <span class="nd">@self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;/primitive/&lt;primitive&gt;/methodes&#39;</span><span class="p">)</span>
         <span class="k">def</span> <span class="nf">get_primitive_methodes_list</span><span class="p">(</span><span class="n">primitive</span><span class="p">):</span>
             <span class="k">return</span> <span class="s1">&#39;/&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">rr</span><span class="o">.</span><span class="n">get_primitive_methods_list</span><span class="p">(</span><span class="n">primitive</span><span class="p">))</span>
 
-        <span class="nd">@self.app.get</span><span class="p">(</span><span class="s1">&#39;/primitive/&lt;primitive&gt;/call/&lt;method&gt;/&lt;args&gt;&#39;</span><span class="p">)</span>
-        <span class="nd">@self.app.get</span><span class="p">(</span><span class="s1">&#39;/primitive/&lt;primitive&gt;/call/&lt;method&gt;&#39;</span><span class="p">)</span>
-        <span class="k">def</span> <span class="nf">call_primitive_methode</span><span class="p">(</span><span class="n">primitive</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
-            <span class="k">if</span> <span class="n">args</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="nd">@self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;/primitive/&lt;primitive&gt;/call/&lt;method&gt;/&lt;args&gt;&#39;</span><span class="p">)</span>
+        <span class="nd">@self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;/primitive/&lt;primitive&gt;/call/&lt;method&gt;&#39;</span><span class="p">)</span>
+        <span class="k">def</span> <span class="nf">call_primitive_methode</span><span class="p">(</span><span class="n">primitive</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">args</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">kwargs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">args</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;;&quot;</span><span class="p">))</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">kwargs</span> <span class="o">=</span> <span class="p">{}</span>
             <span class="k">return</span> <span class="n">rr</span><span class="o">.</span><span class="n">_call_primitive_method</span><span class="p">(</span><span class="n">primitive</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
         <span class="c1"># Hacks (no restfull) to record movements</span>
-        <span class="nd">@self.app.get</span><span class="p">(</span><span class="s1">&#39;/primitive/MoveRecorder/&lt;move_name&gt;/start&#39;</span><span class="p">)</span>
+        <span class="nd">@self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;/primitive/MoveRecorder/&lt;move_name&gt;/start&#39;</span><span class="p">)</span>
         <span class="k">def</span> <span class="nf">start_move_recorder</span><span class="p">(</span><span class="n">move_name</span><span class="p">):</span>
             <span class="n">rr</span><span class="o">.</span><span class="n">start_move_recorder</span><span class="p">(</span><span class="n">move_name</span><span class="p">)</span>
             <span class="k">return</span> <span class="s1">&#39;Done!&#39;</span>
 
-        <span class="nd">@self.app.get</span><span class="p">(</span><span class="s1">&#39;/primitive/MoveRecorder/&lt;move_name&gt;/stop&#39;</span><span class="p">)</span>
+        <span class="nd">@self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;/primitive/MoveRecorder/&lt;move_name&gt;/stop&#39;</span><span class="p">)</span>
         <span class="k">def</span> <span class="nf">stop_move_recorder</span><span class="p">(</span><span class="n">move_name</span><span class="p">):</span>
             <span class="n">rr</span><span class="o">.</span><span class="n">stop_move_recorder</span><span class="p">(</span><span class="n">move_name</span><span class="p">)</span>
             <span class="k">return</span> <span class="s1">&#39;Done!&#39;</span>
 
-        <span class="nd">@self.app.get</span><span class="p">(</span><span class="s1">&#39;/primitive/MoveRecorder/&lt;move_name&gt;/attach/&lt;motors&gt;&#39;</span><span class="p">)</span>
+        <span class="nd">@self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;/primitive/MoveRecorder/&lt;move_name&gt;/attach/&lt;motors&gt;&#39;</span><span class="p">)</span>
         <span class="k">def</span> <span class="nf">attach_move_recorder</span><span class="p">(</span><span class="n">move_name</span><span class="p">,</span> <span class="n">motors</span><span class="p">):</span>
             <span class="n">rr</span><span class="o">.</span><span class="n">attach_move_recorder</span><span class="p">(</span><span class="n">move_name</span><span class="p">,</span> <span class="n">motors</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;;&#39;</span><span class="p">))</span>
             <span class="k">return</span> <span class="s1">&#39;Done!&#39;</span>
 
-        <span class="nd">@self.app.get</span><span class="p">(</span><span class="s1">&#39;/primitive/MoveRecorder/&lt;move_name&gt;/get_motors&#39;</span><span class="p">)</span>
+        <span class="nd">@self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;/primitive/MoveRecorder/&lt;move_name&gt;/get_motors&#39;</span><span class="p">)</span>
         <span class="k">def</span> <span class="nf">get_move_recorder_motors</span><span class="p">(</span><span class="n">move_name</span><span class="p">):</span>
             <span class="n">motors</span> <span class="o">=</span> <span class="n">rr</span><span class="o">.</span><span class="n">get_move_recorder_motors</span><span class="p">(</span><span class="n">move_name</span><span class="p">)</span>
-            <span class="k">return</span> <span class="s1">&#39;/&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">motors</span><span class="p">)</span> <span class="k">if</span> <span class="n">motors</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="k">else</span> <span class="s1">&#39;None&#39;</span>
+            <span class="k">return</span> <span class="s1">&#39;/&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">motors</span><span class="p">)</span> <span class="k">if</span> <span class="n">motors</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="s1">&#39;None&#39;</span>
 
-        <span class="nd">@self.app.get</span><span class="p">(</span><span class="s1">&#39;/primitive/MoveRecorder/&lt;move_name&gt;/start/&lt;motors&gt;&#39;</span><span class="p">)</span>
+        <span class="nd">@self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;/primitive/MoveRecorder/&lt;move_name&gt;/start/&lt;motors&gt;&#39;</span><span class="p">)</span>
         <span class="k">def</span> <span class="nf">start_move_recorder_with_motors</span><span class="p">(</span><span class="n">move_name</span><span class="p">,</span> <span class="n">motors</span><span class="p">):</span>
             <span class="c1"># raise DeprecationWarning</span>
             <span class="n">rr</span><span class="o">.</span><span class="n">start_move_recorder</span><span class="p">(</span><span class="n">move_name</span><span class="p">,</span> <span class="n">motors</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;;&#39;</span><span class="p">))</span>
             <span class="k">return</span> <span class="s1">&#39;Done!&#39;</span>
 
-        <span class="nd">@self.app.get</span><span class="p">(</span><span class="s1">&#39;/primitive/MoveRecorder/&lt;move_name&gt;/remove&#39;</span><span class="p">)</span>
+        <span class="nd">@self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;/primitive/MoveRecorder/&lt;move_name&gt;/remove&#39;</span><span class="p">)</span>
         <span class="k">def</span> <span class="nf">remove_move_record</span><span class="p">(</span><span class="n">move_name</span><span class="p">):</span>
             <span class="n">rr</span><span class="o">.</span><span class="n">remove_move_record</span><span class="p">(</span><span class="n">move_name</span><span class="p">)</span>
             <span class="k">return</span> <span class="s1">&#39;Done!&#39;</span>
 
-        <span class="nd">@self.app.get</span><span class="p">(</span><span class="s1">&#39;/primitive/MoveRecorder&#39;</span><span class="p">)</span>
+        <span class="nd">@self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;/primitive/MoveRecorder&#39;</span><span class="p">)</span>
         <span class="k">def</span> <span class="nf">get_available_records</span><span class="p">():</span>
             <span class="k">return</span> <span class="s1">&#39;/&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">rr</span><span class="o">.</span><span class="n">get_available_record_list</span><span class="p">())</span>
 
-        <span class="nd">@self.app.get</span><span class="p">(</span><span class="s1">&#39;/primitive/MovePlayer&#39;</span><span class="p">)</span>
+        <span class="nd">@self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;/primitive/MovePlayer&#39;</span><span class="p">)</span>
         <span class="k">def</span> <span class="nf">get_available_records2</span><span class="p">():</span>
             <span class="k">return</span> <span class="s1">&#39;/&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">rr</span><span class="o">.</span><span class="n">get_available_record_list</span><span class="p">())</span>
 
-        <span class="nd">@self.app.get</span><span class="p">(</span><span class="s1">&#39;/primitive/MovePlayer/&lt;move_name&gt;/start&#39;</span><span class="p">)</span>
+        <span class="nd">@self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;/primitive/MovePlayer/&lt;move_name&gt;/start&#39;</span><span class="p">)</span>
         <span class="k">def</span> <span class="nf">start_move_player</span><span class="p">(</span><span class="n">move_name</span><span class="p">):</span>
             <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">rr</span><span class="o">.</span><span class="n">start_move_player</span><span class="p">(</span><span class="n">move_name</span><span class="p">))</span>
 
-        <span class="nd">@self.app.get</span><span class="p">(</span><span class="s1">&#39;/primitive/MovePlayer/&lt;move_name&gt;/start/&lt;move_speed&gt;&#39;</span><span class="p">)</span>
+        <span class="nd">@self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;/primitive/MovePlayer/&lt;move_name&gt;/start/&lt;move_speed&gt;&#39;</span><span class="p">)</span>
         <span class="k">def</span> <span class="nf">start_move_player_with_speed</span><span class="p">(</span><span class="n">move_name</span><span class="p">,</span> <span class="n">move_speed</span><span class="p">):</span>
             <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">rr</span><span class="o">.</span><span class="n">start_move_player</span><span class="p">(</span><span class="n">move_name</span><span class="p">,</span> <span class="nb">float</span><span class="p">(</span><span class="n">move_speed</span><span class="p">)))</span>
 
-        <span class="nd">@self.app.get</span><span class="p">(</span><span class="s1">&#39;/primitive/MovePlayer/&lt;move_name&gt;/start/&lt;move_speed&gt;/backwards&#39;</span><span class="p">)</span>
+        <span class="nd">@self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;/primitive/MovePlayer/&lt;move_name&gt;/start/&lt;move_speed&gt;/backwards&#39;</span><span class="p">)</span>
         <span class="k">def</span> <span class="nf">start_move_player_backwards_with_speed</span><span class="p">(</span><span class="n">move_name</span><span class="p">,</span> <span class="n">move_speed</span><span class="p">):</span>
-            <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">rr</span><span class="o">.</span><span class="n">start_move_player</span><span class="p">(</span><span class="n">move_name</span><span class="p">,</span> <span class="nb">float</span><span class="p">(</span><span class="n">move_speed</span><span class="p">),</span> <span class="n">backwards</span><span class="o">=</span><span class="bp">True</span><span class="p">))</span>
+            <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">rr</span><span class="o">.</span><span class="n">start_move_player</span><span class="p">(</span><span class="n">move_name</span><span class="p">,</span> <span class="nb">float</span><span class="p">(</span><span class="n">move_speed</span><span class="p">),</span> <span class="n">backwards</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
 
-        <span class="nd">@self.app.get</span><span class="p">(</span><span class="s1">&#39;/primitive/MovePlayer/&lt;move_name&gt;/stop&#39;</span><span class="p">)</span>
+        <span class="nd">@self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;/primitive/MovePlayer/&lt;move_name&gt;/stop&#39;</span><span class="p">)</span>
         <span class="k">def</span> <span class="nf">stop_move_player</span><span class="p">(</span><span class="n">move_name</span><span class="p">):</span>
-            <span class="n">rr</span><span class="o">.</span><span class="n">stop_primitive</span><span class="p">(</span><span class="s1">&#39;_{}_player&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">move_name</span><span class="p">))</span>
+            <span class="n">rr</span><span class="o">.</span><span class="n">stop_primitive</span><span class="p">(</span><span class="s1">&#39;_</span><span class="si">{}</span><span class="s1">_player&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">move_name</span><span class="p">))</span>
             <span class="k">return</span> <span class="s1">&#39;Done!&#39;</span>
 
-        <span class="nd">@self.app.get</span><span class="p">(</span><span class="s1">&#39;/detect/&lt;marker&gt;&#39;</span><span class="p">)</span>
+        <span class="nd">@self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;/detect/&lt;marker&gt;&#39;</span><span class="p">)</span>
         <span class="k">def</span> <span class="nf">detect_marker</span><span class="p">(</span><span class="n">marker</span><span class="p">):</span>
             <span class="n">markers</span> <span class="o">=</span> <span class="p">{</span>
                 <span class="s1">&#39;tetris&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">112259237</span><span class="p">],</span>
@@ -477,21 +477,21 @@
             <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
                 <span class="k">return</span> <span class="s1">&#39;Error: marker detector is not activated&#39;</span>
 
-        <span class="nd">@self.app.get</span><span class="p">(</span><span class="s1">&#39;/ik/&lt;chain&gt;/endeffector&#39;</span><span class="p">)</span>
+        <span class="nd">@self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;/ik/&lt;chain&gt;/endeffector&#39;</span><span class="p">)</span>
         <span class="k">def</span> <span class="nf">ik_endeffector</span><span class="p">(</span><span class="n">chain</span><span class="p">):</span>
             <span class="n">c</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">rr</span><span class="o">.</span><span class="n">robot</span><span class="p">,</span> <span class="n">chain</span><span class="p">)</span>
             <span class="n">pos</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">end_effector</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
             <span class="k">return</span> <span class="s1">&#39;,&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">pos</span><span class="p">))</span>
 
-        <span class="nd">@self.app.get</span><span class="p">(</span><span class="s1">&#39;/ik/&lt;chain&gt;/goto/&lt;x&gt;/&lt;y&gt;/&lt;z&gt;/&lt;duration&gt;&#39;</span><span class="p">)</span>
+        <span class="nd">@self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;/ik/&lt;chain&gt;/goto/&lt;x&gt;/&lt;y&gt;/&lt;z&gt;/&lt;duration&gt;&#39;</span><span class="p">)</span>
         <span class="k">def</span> <span class="nf">ik_goto</span><span class="p">(</span><span class="n">chain</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">duration</span><span class="p">):</span>
             <span class="n">c</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">rr</span><span class="o">.</span><span class="n">robot</span><span class="p">,</span> <span class="n">chain</span><span class="p">)</span>
-            <span class="n">c</span><span class="o">.</span><span class="n">goto</span><span class="p">([</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">],</span> <span class="n">duration</span><span class="p">,</span> <span class="n">wait</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+            <span class="n">c</span><span class="o">.</span><span class="n">goto</span><span class="p">([</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">],</span> <span class="n">duration</span><span class="p">,</span> <span class="n">wait</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
             <span class="k">return</span> <span class="s2">&quot;Done !&quot;</span>
 
-<div class="viewcode-block" id="SnapRobotServer.run"><a class="viewcode-back" href="../../../pypot.server.html#pypot.server.snap.SnapRobotServer.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">quiet</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">server</span><span class="o">=</span><span class="s1">&#39;tornado&#39;</span><span class="p">):</span>
+<div class="viewcode-block" id="SnapRobotServer.run"><a class="viewcode-back" href="../../../pypot.server.html#pypot.server.snap.SnapRobotServer.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">quiet</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">server</span><span class="o">=</span><span class="s1">&#39;tornado&#39;</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Start the bottle server, run forever. &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">quiet</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">quiet</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">quiet</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">quiet</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">bottle</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="p">,</span>
@@ -502,13 +502,13 @@
             <span class="c1"># If you are calling tornado inside tornado (Jupyter notebook)</span>
             <span class="c1"># you got a RuntimeError but everythong works fine</span>
             <span class="k">if</span> <span class="s2">&quot;IOLoop&quot;</span> <span class="ow">in</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">):</span>
-                <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Tornado RuntimeError {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Tornado RuntimeError </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
         <span class="k">except</span> <span class="n">socket</span><span class="o">.</span><span class="n">error</span> <span class="k">as</span> <span class="n">serr</span><span class="p">:</span>
             <span class="c1"># Re raise the socket error if not &quot;[Errno 98] Address already in use&quot;</span>
             <span class="k">if</span> <span class="n">serr</span><span class="o">.</span><span class="n">errno</span> <span class="o">!=</span> <span class="n">errno</span><span class="o">.</span><span class="n">EADDRINUSE</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="n">serr</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;The webserver port {} is already used.</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;The webserver port </span><span class="si">{}</span><span class="s2"> is already used.</span>
 <span class="s2">The SnapRobotServer is maybe already run or another software use this port.&quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">port</span><span class="p">))</span></div></div>
 </pre></div>
 
@@ -543,7 +543,7 @@
       <!-- footer -->
       <footer role="contentinfo">
           &copy; Copyright 2015, Poppy-Project.
-        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.4.4.
+        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.4.5.
       </footer>
       <!-- /footer -->
 

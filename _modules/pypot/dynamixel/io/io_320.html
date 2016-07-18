@@ -136,12 +136,12 @@
                 <div class="body">
                   
   <h1>Source code for pypot.dynamixel.io.io_320</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">repeat</span>
+<span></span><span class="kn">from</span> <span class="nn">itertools</span> <span class="k">import</span> <span class="n">repeat</span>
 
-<span class="kn">from</span> <span class="nn">.abstract_io</span> <span class="kn">import</span> <span class="p">(</span><span class="n">AbstractDxlIO</span><span class="p">,</span> <span class="n">_DxlControl</span><span class="p">,</span> <span class="n">_DxlAccess</span><span class="p">,</span>
+<span class="kn">from</span> <span class="nn">.abstract_io</span> <span class="k">import</span> <span class="p">(</span><span class="n">AbstractDxlIO</span><span class="p">,</span> <span class="n">_DxlControl</span><span class="p">,</span> <span class="n">_DxlAccess</span><span class="p">,</span>
                           <span class="n">DxlTimeoutError</span><span class="p">,</span> <span class="n">DxlCommunicationError</span><span class="p">)</span>
-<span class="kn">from</span> <span class="nn">..</span> <span class="kn">import</span> <span class="n">conversion</span> <span class="k">as</span> <span class="n">conv</span>
-<span class="kn">from</span> <span class="nn">..protocol</span> <span class="kn">import</span> <span class="n">v2</span> <span class="k">as</span> <span class="n">v2</span>
+<span class="kn">from</span> <span class="nn">..</span> <span class="k">import</span> <span class="n">conversion</span> <span class="k">as</span> <span class="n">conv</span>
+<span class="kn">from</span> <span class="nn">..protocol</span> <span class="k">import</span> <span class="n">v2</span> <span class="k">as</span> <span class="n">v2</span>
 
 
 <div class="viewcode-block" id="Dxl320IO"><a class="viewcode-back" href="../../../../pypot.dynamixel.html#pypot.dynamixel.io.io_320.Dxl320IO">[docs]</a><span class="k">class</span> <span class="nc">Dxl320IO</span><span class="p">(</span><span class="n">AbstractDxlIO</span><span class="p">):</span>
@@ -167,7 +167,7 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">set_torque_limit</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">value_for_ids</span><span class="o">.</span><span class="n">keys</span><span class="p">(),</span> <span class="n">values</span><span class="p">[</span><span class="mi">2</span><span class="p">])))</span></div>
 
-<div class="viewcode-block" id="Dxl320IO.factory_reset"><a class="viewcode-back" href="../../../../pypot.dynamixel.html#pypot.dynamixel.io.io_320.Dxl320IO.factory_reset">[docs]</a>    <span class="k">def</span> <span class="nf">factory_reset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ids</span><span class="p">,</span> <span class="n">except_ids</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">except_baudrate_and_ids</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+<div class="viewcode-block" id="Dxl320IO.factory_reset"><a class="viewcode-back" href="../../../../pypot.dynamixel.html#pypot.dynamixel.io.io_320.Dxl320IO.factory_reset">[docs]</a>    <span class="k">def</span> <span class="nf">factory_reset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ids</span><span class="p">,</span> <span class="n">except_ids</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">except_baudrate_and_ids</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Reset all motors on the bus to their factory default settings. &quot;&quot;&quot;</span>
 
         <span class="n">mode</span> <span class="o">=</span> <span class="p">(</span><span class="mh">0x02</span> <span class="k">if</span> <span class="n">except_baudrate_and_ids</span> <span class="k">else</span>
@@ -369,8 +369,8 @@
                  <span class="n">models</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;XL-320&#39;</span><span class="p">,</span> <span class="p">],</span>
                  <span class="n">dxl_to_si</span><span class="o">=</span><span class="k">lambda</span> <span class="n">val</span><span class="p">,</span> <span class="n">model</span><span class="p">:</span> <span class="n">val</span><span class="p">,</span>
                  <span class="n">si_to_dxl</span><span class="o">=</span><span class="k">lambda</span> <span class="n">val</span><span class="p">,</span> <span class="n">model</span><span class="p">:</span> <span class="n">val</span><span class="p">,</span>
-                 <span class="n">getter_name</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
-                 <span class="n">setter_name</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+                 <span class="n">getter_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">setter_name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 
     <span class="n">control</span> <span class="o">=</span> <span class="n">_DxlControl</span><span class="p">(</span><span class="n">name</span><span class="p">,</span>
                           <span class="n">address</span><span class="p">,</span> <span class="n">length</span><span class="p">,</span> <span class="n">nb_elem</span><span class="p">,</span>
@@ -417,7 +417,7 @@
       <!-- footer -->
       <footer role="contentinfo">
           &copy; Copyright 2015, Poppy-Project.
-        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.4.4.
+        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.4.5.
       </footer>
       <!-- /footer -->
 

@@ -152,9 +152,9 @@
 <span class="kn">import</span> <span class="nn">numpy</span>
 <span class="kn">import</span> <span class="nn">threading</span>
 
-<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">namedtuple</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="k">import</span> <span class="n">namedtuple</span>
 
-<span class="kn">from</span> <span class="nn">...utils</span> <span class="kn">import</span> <span class="n">Point3D</span><span class="p">,</span> <span class="n">Point2D</span><span class="p">,</span> <span class="n">Quaternion</span>
+<span class="kn">from</span> <span class="nn">...utils</span> <span class="k">import</span> <span class="n">Point3D</span><span class="p">,</span> <span class="n">Point2D</span><span class="p">,</span> <span class="n">Quaternion</span>
 
 <span class="n">torso_joints</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;hip_center&#39;</span><span class="p">,</span> <span class="s1">&#39;spine&#39;</span><span class="p">,</span> <span class="s1">&#39;shoulder_center&#39;</span><span class="p">,</span> <span class="s1">&#39;head&#39;</span><span class="p">)</span>
 <span class="n">left_arm_joints</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;shoulder_left&#39;</span><span class="p">,</span> <span class="s1">&#39;elbow_left&#39;</span><span class="p">,</span> <span class="s1">&#39;wrist_left&#39;</span><span class="p">,</span> <span class="s1">&#39;hand_left&#39;</span><span class="p">)</span>
@@ -178,11 +178,11 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">context</span> <span class="o">=</span> <span class="n">zmq</span><span class="o">.</span><span class="n">Context</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">sub_skel</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">socket</span><span class="p">(</span><span class="n">zmq</span><span class="o">.</span><span class="n">SUB</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">sub_skel</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s1">&#39;tcp://{}:{}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">addr</span><span class="p">,</span> <span class="n">port</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sub_skel</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s1">&#39;tcp://</span><span class="si">{}</span><span class="s1">:</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">addr</span><span class="p">,</span> <span class="n">port</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">sub_skel</span><span class="o">.</span><span class="n">setsockopt</span><span class="p">(</span><span class="n">zmq</span><span class="o">.</span><span class="n">SUBSCRIBE</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
 
         <span class="n">t</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">get_skeleton</span><span class="p">)</span>
-        <span class="n">t</span><span class="o">.</span><span class="n">daemon</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="n">t</span><span class="o">.</span><span class="n">daemon</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="n">t</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
 
 <div class="viewcode-block" id="KinectSensor.remove_user"><a class="viewcode-back" href="../../../../pypot.sensor.html#pypot.sensor.kinect.sensor.KinectSensor.remove_user">[docs]</a>    <span class="k">def</span> <span class="nf">remove_user</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user_index</span><span class="p">):</span>
@@ -198,13 +198,13 @@
         <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lock</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_skeleton</span>
 
-    <span class="nd">@tracked_skeleton.setter</span>
+    <span class="nd">@tracked_skeleton</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">tracked_skeleton</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">skeleton</span><span class="p">):</span>
         <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lock</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_skeleton</span><span class="p">[</span><span class="n">skeleton</span><span class="o">.</span><span class="n">user_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">skeleton</span>
 
 <div class="viewcode-block" id="KinectSensor.get_skeleton"><a class="viewcode-back" href="../../../../pypot.sensor.html#pypot.sensor.kinect.sensor.KinectSensor.get_skeleton">[docs]</a>    <span class="k">def</span> <span class="nf">get_skeleton</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
             <span class="n">md</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sub_skel</span><span class="o">.</span><span class="n">recv_json</span><span class="p">()</span>
             <span class="n">msg</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sub_skel</span><span class="o">.</span><span class="n">recv</span><span class="p">()</span>
             <span class="n">skel_array</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">fromstring</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;,&quot;</span><span class="p">)</span>
@@ -223,7 +223,7 @@
 
 <div class="viewcode-block" id="KinectSensor.run"><a class="viewcode-back" href="../../../../pypot.sensor.html#pypot.sensor.kinect.sensor.KinectSensor.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">cv2</span><span class="o">.</span><span class="n">startWindowThread</span><span class="p">()</span>
-        <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
             <span class="n">img</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">480</span><span class="p">,</span> <span class="mi">640</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
             <span class="n">skeleton</span> <span class="o">=</span> <span class="n">kinect</span><span class="o">.</span><span class="n">tracked_skeleton</span>
             <span class="k">if</span> <span class="n">skeleton</span><span class="p">:</span>
@@ -277,7 +277,7 @@
       <!-- footer -->
       <footer role="contentinfo">
           &copy; Copyright 2015, Poppy-Project.
-        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.4.4.
+        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.4.5.
       </footer>
       <!-- /footer -->
 
