@@ -8,6 +8,7 @@ logger = logging.getLogger(__name__)
 
 
 class DxlController(MotorsController):
+
     def __init__(self, io, motors, sync_freq, synchronous,
                  mode, regname, varname=None):
         MotorsController.__init__(self, io, motors, sync_freq)
@@ -92,6 +93,7 @@ class DxlController(MotorsController):
 
 
 class AngleLimitRegisterController(DxlController):
+
     def __init__(self, io, motors, sync_freq, synchronous):
         DxlController.__init__(self, io, motors, sync_freq,
                                synchronous, 'get', 'angle_limit')
@@ -133,12 +135,13 @@ class AngleLimitRegisterController(DxlController):
 
 
 class PosSpeedLoadDxlController(DxlController):
+
     def __init__(self, io, motors, sync_freq):
         DxlController.__init__(self, io, motors, sync_freq,
                                False, 'get', 'present_position')
         logger.info("Loading PosSpeedLoadDxlController with cache")
-        self.ncacherequests=0
-        self.ncachehits=0
+        self.ncacherequests = 0
+        self.ncachehits = 0
 
     def setup(self):
         torques = self.io.is_torque_enabled(self.ids)
@@ -196,23 +199,22 @@ class PosSpeedLoadDxlController(DxlController):
         values = ((m.__dict__['goal_position'],
                    m.__dict__['moving_speed'],
                    m.__dict__['torque_limit']) for m in rigid_motors)
-        commands = ((id,val) for id,val in zip(ids, values) if not self.is_cached(id,val) )
+        commands = ((id, val) for id, val in zip(
+            ids, values) if not self.is_cached(id, val))
         self.io.set_goal_position_speed_load(dict(commands))
-    
-    def is_cached(self,id,val):
-        if (self.ncacherequests%100)==0:
-            logger.debug("Cache miss/total %d/%d"%(self.ncacherequests-self.ncachehits,self.ncacherequests))
-        self.ncacherequests+=1
+
+    def is_cached(self, id, val):
+        if (self.ncacherequests % 100) == 0:
+            logger.debug("Cache miss/total %d/%d" %
+                         (self.ncacherequests - self.ncachehits, self.ncacherequests))
+        self.ncacherequests += 1
         if not id in self._cache.keys():
             self._cache[id] = val
             return False
         else:
-            if val==self._cache[id]:
-                self.ncachehits+=1
+            if val == self._cache[id]:
+                self.ncachehits += 1
                 return True
             else:
                 self._cache[id] = val
                 return False
-                
-                
-                
