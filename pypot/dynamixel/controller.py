@@ -208,7 +208,7 @@ class PosSpeedLoadDxlController(DxlController):
             logger.debug("Cache miss/total %d/%d" %
                          (self.ncacherequests - self.ncachehits, self.ncacherequests))
         self.ncacherequests += 1
-        if not id in self._cache.keys():
+        if id not in self._cache.keys():
             self._cache[id] = val
             return False
         else:
