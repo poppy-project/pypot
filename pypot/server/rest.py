@@ -1,21 +1,24 @@
 import os
 
 from operator import attrgetter
+
+from pypot.robot.motor import Motor
+from pypot.robot.sensor import Sensor
+
 from pypot.primitive.move import MovePlayer, MoveRecorder, Move
 
 
 class RESTRobot(object):
-
     """ REST API for a Robot.
 
     Through the REST API you can currently access:
-        * the motors list (and the aliases)
-        * the registers list for a specific motor
-        * read/write a value from/to a register of a specific motor
+        * the devices list (and the groups)
+        * the registers list for a specific device
+        * read/write a value from/to a register of a specific device
 
         * the sensors list
-        * the registers list for a specific motor
-        * read/write a value from/to a register of a specific motor
+        * the registers list for a specific device
+        * read/write a value from/to a register of a specific device
 
         * the primitives list (and the active)
         * start/stop primitives
@@ -24,52 +27,43 @@ class RESTRobot(object):
     def __init__(self, robot):
         self.robot = robot
 
-    # Access motor related values
+    # Access device related values
 
-    def get_motors_list(self, alias='motors'):
-        return [m.name for m in getattr(self.robot, alias)]
+    def get_devices_groups(self):
+        return self.robot.groups + ['motors', 'sensors']
 
-    def get_motor_registers_list(self, motor):
-        return self._get_register_value(motor, 'registers')
+    def get_devices_list(self, group):
+        return [d.name for d in getattr(self.robot, group)]
 
-    #   alias to above method
-    def get_registers_list(self, motor):
-        return self.get_motor_registers_list(motor)
+    def get_device_registers_list(self, device):
+        registers = list(self._get_register_value(device, 'registers'))
+        registers.remove('registers')
+        return registers
 
-    def get_motor_register_value(self, motor, register):
-        return self._get_register_value(motor, register)
+    def get_device_register_value(self, device, register):
+        return self._get_register_value(device, register)
 
-    #   alias to above method
-    def get_register_value(self, motor, register):
-        return self.get_motor_register_value(motor, register)
+    def set_device_register_value(self, device, register, value):
+        self._set_register_value(device, register, value)
 
-    def set_motor_register_value(self, motor, register, value):
-        self._set_register_value(motor, register, value)
+    def get_device_type(self, device_name):
+        device = getattr(self.robot, device_name)
 
-    #   alias to above method
-    def set_register_value(self, motor, register, value):
-        self.set_motor_register_value(motor, register, value)
+        device_types = {
+            Motor: 'motor',
+            Sensor: 'sensor'
+        }
 
-    def get_motors_alias(self):
-        return self.robot.alias
+        for cls, name in device_types.items():
+            if isinstance(device, cls):
+                return name
+        return 'unknown'
+
+    # Motor specific
 
     def set_goto_position_for_motor(self, motor, position, duration):
         m = getattr(self.robot, motor)
         m.goto_position(position, duration, wait=False)
-
-    # Access sensor related values
-
-    def get_sensors_list(self):
-        return [s.name for s in self.robot.sensors]
-
-    def get_sensors_registers_list(self, sensor):
-        return self._get_register_value(sensor, 'registers')
-
-    def get_sensor_register_value(self, sensor, register):
-        return self._get_register_value(sensor, register)
-
-    def set_sensor_register_value(self, sensor, register, value):
-        return self._set_register_value(sensor, register, value)
 
     # Access primitive related values
 
@@ -119,28 +113,28 @@ class RESTRobot(object):
         return f(*args, **kwargs)
 
     # TODO (Theo) : change names with a dic instead of ugly format
-    def start_move_recorder(self, move_name, motors_name=None):
+    def start_move_recorder(self, move_name, devices_name=None):
         if not hasattr(self.robot, '_{}_recorder'.format(move_name)):
-            if motors_name is not None:
-                motors = [getattr(self.robot, m) for m in motors_name]
+            if devices_name is not None:
+                devices = [getattr(self.robot, m) for m in devices_name]
             else:
-                motors = self.get_motors_list()
-            recorder = MoveRecorder(self.robot, 50, motors)
+                devices = self.get_devices_list()
+            recorder = MoveRecorder(self.robot, 50, devices)
             self.robot.attach_primitive(recorder, '_{}_recorder'.format(move_name))
             recorder.start()
         else:
             recorder = getattr(self.robot, '_{}_recorder'.format(move_name))
             recorder.start()
 
-    def attach_move_recorder(self, move_name, motors_name):
-        motors = [getattr(self.robot, m) for m in motors_name]
-        recorder = MoveRecorder(self.robot, 50, motors)
+    def attach_move_recorder(self, move_name, devices_name):
+        devices = [getattr(self.robot, m) for m in devices_name]
+        recorder = MoveRecorder(self.robot, 50, devices)
         self.robot.attach_primitive(recorder, '_{}_recorder'.format(move_name))
 
-    def get_move_recorder_motors(self, move_name):
+    def get_move_recorder_devices(self, move_name):
         try:
             recorder = getattr(self.robot, '_{}_recorder'.format(move_name))
-            return [str(m.name) for m in recorder.tracked_motors]
+            return [str(m.name) for m in recorder.tracked_devices]
         except AttributeError:
             return None
 
