@@ -25,12 +25,12 @@ else
         # Vrep start test
         echo "Starting a notebook Controlling a Poppy humanoid in V-REP using pypot.ipynb"
         if [[ -n "$SSH_VREP_SERVER"  ]]; then
-            pip install poppy-humanoid
+            pip install --pre poppy-humanoid
             # Download a PoppyHumanoid ipython notebook
-            curl -l -o nb.py https://gist.githubusercontent.com/pierre-rouanet/e6b89340a7ec781c5355/raw/64bb25ba01e077160e7b04e485d78164ac53fdf6/nb.py
+            curl -l -o nb.py https://gist.githubusercontent.com/pierre-rouanet/e6b89340a7ec781c5355/raw/6087117c4d0cc53b54269e1fb0d9c2fc17ef11a8/nb.py
             python nb.py
 
-            pip uninstall -y poppy-creature poppy-humanoid
+            pip uninstall -y poppy-humanoid
         fi
 
         # Old test of running VREP localy (network trouble)
