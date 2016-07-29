@@ -8,7 +8,6 @@ import re
 from threading import Thread
 
 from pypot.robot import Robot, from_json, use_dummy_robot
-from pypot.server.snap import SnapRobotServer, find_local_ip
 
 logger = logging.getLogger(__name__)
 
@@ -27,8 +26,6 @@ class AbstractPoppyCreature(Robot):
     def __new__(cls,
                 base_path=None, config=None,
                 simulator=None, scene=None, host='localhost', port=19997, id=0,
-                use_snap=False, snap_host='0.0.0.0', snap_port=6969, snap_quiet=True,
-                use_http=False, http_host='0.0.0.0', http_port=8080, http_quiet=True,
                 use_remote=False, remote_host='0.0.0.0', remote_port=4242,
                 start_background_services=True, sync=True,
                 **extra):
@@ -93,7 +90,6 @@ class AbstractPoppyCreature(Robot):
                     raise IOError('Connection to V-REP failed!')
 
             elif simulator == 'poppy-simu':
-                use_http = True
                 poppy_creature = use_dummy_robot(config)
             else:
                 raise ValueError('Unknown simulation mode: "{}"'.format(simulator))
@@ -114,20 +110,6 @@ class AbstractPoppyCreature(Robot):
                                               '{}.urdf'.format(creature)))
         poppy_creature.urdf_file = urdf_file
 
-        if use_snap:
-            poppy_creature.snap = SnapRobotServer(
-                poppy_creature, snap_host, snap_port, quiet=snap_quiet)
-            snap_url = 'http://snap.berkeley.edu/snapsource/snap.html'
-            block_url = 'http://{}:{}/snap-blocks.xml'.format(find_local_ip(), snap_port)
-            url = '{}#open:{}'.format(snap_url, block_url)
-            print('SnapRobotServer is now running on: http://{}:{}\n'.format(snap_host, snap_port))
-            print('You can open Snap! interface with loaded blocks at "{}"\n'.format(url))
-
-        if use_http:
-            from pypot.server.httpserver import HTTPRobotServer
-            poppy_creature.http = HTTPRobotServer(poppy_creature, http_host, http_port,
-                                                  cross_domain_origin="*", quiet=http_quiet)
-            print('HTTPRobotServer is now running on: http://{}:{}\n'.format(http_host, http_port))
 
         if use_remote:
             from pypot.server import RemoteRobotServer
