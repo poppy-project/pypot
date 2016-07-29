@@ -10,11 +10,15 @@ from utils import get_open_port
 
 class TestPrimLifeCycle(unittest.TestCase):
     def setUp(self):
-        self.jr = PoppyErgoJr(simulator='poppy-simu', http_port=get_open_port())
+        self.jr = PoppyErgoJr(simulator='poppy-simu',
+                              rest_api_port=get_open_port())
+
+    def teardown(self):
+        self.jr.close()
 
     def test_teardown(self):
         self.jr.dance.start()
-        time.sleep(random.random() * 5)
+        time.sleep(random.random())
         self.jr.dance.stop()
 
         self.assertEqual({m.led for m in self.jr.motors}, {'off'})
@@ -46,7 +50,7 @@ class TestPrimLifeCycle(unittest.TestCase):
                          ['off', 'off', 'pink', 'off', 'off', 'off'])
 
         p.current_state = not p.current_state
-        time.sleep(.3)
+        time.sleep(0.5)
 
         self.assertEqual([m.led for m in self.jr.motors],
                          ['red', 'red', 'red', 'red', 'red', 'red'])

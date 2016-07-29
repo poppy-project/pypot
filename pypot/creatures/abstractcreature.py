@@ -8,6 +8,7 @@ import re
 from threading import Thread
 
 from pypot.robot import Robot, from_json, use_dummy_robot
+from pypot.server import RestAPIServer
 
 logger = logging.getLogger(__name__)
 
@@ -26,6 +27,7 @@ class AbstractPoppyCreature(Robot):
     def __new__(cls,
                 base_path=None, config=None,
                 simulator=None, scene=None, host='localhost', port=19997, id=0,
+                serve_rest_api=False, rest_api_host='0.0.0.0', rest_api_port=6969, rest_api_debug=False,
                 use_remote=False, remote_host='0.0.0.0', remote_port=4242,
                 start_background_services=True, sync=True,
                 **extra):
@@ -90,6 +92,7 @@ class AbstractPoppyCreature(Robot):
                     raise IOError('Connection to V-REP failed!')
 
             elif simulator == 'poppy-simu':
+                serve_rest_api = True
                 poppy_creature = use_dummy_robot(config)
             else:
                 raise ValueError('Unknown simulation mode: "{}"'.format(simulator))
@@ -110,6 +113,12 @@ class AbstractPoppyCreature(Robot):
                                               '{}.urdf'.format(creature)))
         poppy_creature.urdf_file = urdf_file
 
+        if serve_rest_api:
+            poppy_creature.rest_api_server = RestAPIServer(
+                robot=poppy_creature,
+                host=rest_api_host, port=rest_api_port,
+                debug=rest_api_debug
+            )
 
         if use_remote:
             from pypot.server import RemoteRobotServer
@@ -124,7 +133,7 @@ class AbstractPoppyCreature(Robot):
         return poppy_creature
 
     @classmethod
-    def start_background_services(cls, robot, services=['snap', 'http', 'remote']):
+    def start_background_services(cls, robot, services=['rest_api_server', 'remote']):
         for service in services:
             if hasattr(robot, service):
                 s = Thread(target=getattr(robot, service).run,
