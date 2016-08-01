@@ -18,7 +18,7 @@ if sys.version_info >= (3,):
 install_requires = ['numpy',
                     'pyserial>2.6',
                     'scipy',
-                    'flask',
+                    'flask', 'flask-cors',
                     'ikpy>=2.0']
 
 if sys.version_info < (2, 7):

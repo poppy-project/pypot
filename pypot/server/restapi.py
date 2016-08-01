@@ -1,6 +1,7 @@
 import os
 
 from flask import Flask, Response, jsonify, request
+from flask_cors import CORS
 
 from .server import AbstractServer
 
@@ -20,6 +21,7 @@ class RestAPIServer(AbstractServer):
         self.app = Flask(__name__)  # TODO: use something better than __name__ here
         self.app.secret_key = os.urandom(24)
         self.app.debug = debug
+        CORS(self.app)
 
         # Robot's Heartbeat
         @self.app.route('/')
