@@ -1,3 +1,7 @@
+import time
+
+from math import copysign
+
 from ..utils.stoppablethread import StoppableLoopThread
 
 
@@ -56,12 +60,28 @@ class DummyController(MotorsController):
         MotorsController.__init__(self, None, motors)
 
     def setup(self):
+        self.last_update = time.time()
         for m in self.motors:
+            m.max_speed = 0.0
+            m.present_position = 0.0
             m.goal_position = 0.0
 
     def update(self):
+        delta_t = time.time() - self.last_update
+
         for m in self.motors:
-            m.__dict__['present_position'] = m.__dict__['goal_position']
+            # acceleration infinite, present_speed always equal max_speed
+            delta_pos = m.__dict__['goal_position'] - m.__dict__['present_position']  # degree
+            speed = m.__dict__['max_speed']  # degree par second, assumed absolute
+
+            delta_pos_effective = copysign(speed * delta_t, delta_pos)
+
+            if abs(delta_pos_effective) >= abs(delta_pos):
+                m.__dict__['present_position'] = m.__dict__['goal_position']
+            else:
+                m.__dict__['present_position'] += delta_pos_effective
+
+        self.last_update = time.time()
 
 
 class SensorsController(AbstractController):
