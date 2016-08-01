@@ -4,6 +4,7 @@ import unittest
 from flask import json
 
 from pypot.creatures import PoppyErgoJr
+from pypot.primitive.utils import Sinus
 
 from utils import get_open_port
 
@@ -17,6 +18,25 @@ class RestApiTestCase(unittest.TestCase):
         self.jr = PoppyErgoJr(simulator='poppy-simu',
                               rest_api_port=get_open_port())
         self.app = self.jr.rest_api_server.app.test_client()
+
+        for i in range(1, 4):
+            s = Sinus(self.jr, 10.0, motor_list=self.jr.motors,
+                      amp=random.random() * 10,
+                      freq=random.random() * 0.1)
+
+            self.jr.attach_primitive(s, 'sinus {}'.format(i))
+
+    def assertIsClose(self, a, b, accuracy=1.0):
+        if isinstance(b, float):
+            if abs(float(a) - b) > accuracy:
+                print(a, type(a), b, type(b), accuracy)
+
+            self.assertTrue(abs(float(a) - b) < accuracy)
+        else:
+            if a != jsonify(b):
+                print(a, type(a), b, type(b), accuracy)
+
+            self.assertEqual(a, jsonify(b))
 
     def check_meta_and_get_data(self, rv):
         self.assertEqual(rv.status_code, 200)
@@ -65,7 +85,7 @@ class RestApiTestCase(unittest.TestCase):
                              set(dev.registers))
 
             for reg, val in data['registers'].items():
-                self.assertEqual(val, jsonify(getattr(dev, reg)))
+                self.assertIsClose(val, getattr(dev, reg))
 
     # [GET] /devices/device_name/registers/register_name
     def test_get_device_specific_register(self):
@@ -131,9 +151,10 @@ class RestApiTestCase(unittest.TestCase):
 
                 for d in data['devices']:
                     self.assertEqual(set(d['registers'].keys()), set(reg))
+
+                    rd = getattr(self.jr, d['name'])
                     for r in reg:
-                        self.assertEqual(d['registers'][r],
-                                         jsonify(getattr(getattr(self.jr, d['name']), r)))
+                        self.assertIsClose(d['registers'][r], getattr(rd, r))
 
     def get_specific_reg_of_specific_devices(self):
         group = random.choice(self.jr.groups)

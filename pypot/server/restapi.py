@@ -20,6 +20,7 @@ class RestAPIServer(AbstractServer):
         self.app.secret_key = os.urandom(24)
         self.app.debug = debug
 
+        # Robot's Heartbeat
         @self.app.route('/')
         def index():
             return Response(status=204)
@@ -57,7 +58,7 @@ class RestAPIServer(AbstractServer):
                 'value': self.robot.get_device_register_value(device_name, register_name)
             })
 
-        # Groups
+        # Devices groups
         @self.app.route('/groups')
         def groups():
             groups = self.robot.get_devices_groups()
