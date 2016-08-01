@@ -191,55 +191,77 @@ class RestApiTestCase(unittest.TestCase):
         for _ in range(random.randint(1, 25)):
             self.get_specific_reg_of_specific_devices()
 
-    # # Primitives
-    # # [GET] /primitives?status=status
-    # def test_get_all_primitives(self):
-    #     rv = self.app.get('/primitives')
-    #     data = self.check_meta_and_get_data(rv)
+    # Primitives
+    # [GET] /primitives?status=status
+    def test_get_all_primitives(self):
+        rv = self.app.get('/primitives')
+        data = self.check_meta_and_get_data(rv)
+
+        self.assertEqual({d['name'] for d in data['primitives']},
+                         {p.name for p in self.jr.primitives})
+
+    def test_get_all_specific_status_primitives(self):
+        all_prim = []
+
+        for status in ('running', 'paused', 'stopped'):
+            rv = self.app.get('/primitives?status={}'.format(status))
+            data = self.check_meta_and_get_data(rv)
+
+            if data['primitives']:
+                self.assertEqual({d['status'] for d in data['primitives']},
+                                 {status})
+
+                all_prim.extend([d['name'] for d in data['primitives']])
+
+        self.assertEqual(len(all_prim), len(set(all_prim)))
+
+        rv = self.app.get('/primitives')
+        data = self.check_meta_and_get_data(rv)
+        self.assertEqual(set(all_prim),
+                         {d['name'] for d in data['primitives']})
+
+    # [GET] /primitives/primitive_name
+    def test_get_primitive(self):
+        for p in self.jr.primitives:
+            rv = self.app.get('/primitives/{}'.format(p.name))
+            data = self.check_meta_and_get_data(rv)
+
+            d = data['primitives']
+            self.assertEqual(d['name'], p.name)
+            self.assertEqual(d['status'], p.status)
+            self.assertEqual(set([m['name'] for m in d['methods']]), set(p.methods))
+
+            self.assertEqual(set(d['properties'].keys()), set(p.properties))
+            for prop, val in d['properties'].items():
+                self.assertIsClose(val, getattr(p, prop))
+
+    # [GET] /primitives/primitive_name/properties/property_name
+    def test_get_primitive_property(self):
+        for p in self.jr.primitives:
+            for prop in p.properties:
+                rv = self.app.get('/primitives/{}/properties/{}'.format(p.name, prop))
+                data = self.check_meta_and_get_data(rv)
+
+                self.assertEqual(data['property']['name'], prop)
+                self.assertIsClose(data['property']['value'], getattr(p, prop))
+
+    # [PUT] /primitives/primitive_name/properties/property_name
+    # TODO
+
+    # [GET] /primitives/primitive_name/methods/method_name
+    # TODO
+
+    # TODO: functional testing
+    # def test_led(self):
+    #     c = random.choice(list(XL320LEDColors))
+    #     m = random.choice(self.jr.motors)
     #
-    #     self.assertEqual({d['name'] for d in data['primitives']},
-    #                      {p.name for m in self.jr.primitives})
+    #     r = self.get('/motor/{}/set/led/{}'.format(m.name, c.name))
+    #     self.assertEqual(r.status_code, 200)
     #
-    # def test_get_all_specific_status_primitives(self):
-    #     for status in ('running', 'paused', 'stopped'):
-    #         rv = self.app.get('/primitives?status={}'.format(status))
-    #         data = self.check_meta_and_get_data(rv)
-    #
-    #         self.assertEqual({d['status'] for d in data['primitives']}, status)
-    #
-    #         # TODO: check actual retrieved primitives
-    #
-    # # [GET] /primitives/primitive_name
-    # def test_get_primitive(self):
-    #     for p in self.jr.primitives:
-    #         rv = self.app.get('/primitives/{}'.format(p.name))
-    #         data = self.check_meta_and_get_data(rv)
-    #
-    #         self.assertEqual(data['primitive']['name'], p.name)
-    #         self.assertTrue('status' in data['primitive'])
-    #         self.assertTrue('methods' in data['primitive'])
-    #         self.assertTrue('properties' in data['primitive'])
-    #
-    # # [GET] /primitives/primitive_name/properties/property_name
-    # # TODO
-    #
-    # # [PUT] /primitives/primitive_name/properties/property_name
-    # # TODO
-    #
-    # # [GET] /primitives/primitive_name/methods/method_name
-    # # TODO
-    #
-    # # TODO: functional testing
-    # # def test_led(self):
-    # #     c = random.choice(list(XL320LEDColors))
-    # #     m = random.choice(self.jr.motors)
-    # #
-    # #     r = self.get('/motor/{}/set/led/{}'.format(m.name, c.name))
-    # #     self.assertEqual(r.status_code, 200)
-    # #
-    # #     r = self.get('/motor/{}/get/led'.format(m.name))
-    # #     self.assertEqual(r.status_code, 200)
-    # #     self.assertEqual(r.text, c.name)
+    #     r = self.get('/motor/{}/get/led'.format(m.name))
+    #     self.assertEqual(r.status_code, 200)
+    #     self.assertEqual(r.text, c.name)
 
     def teardown(self):
         self.jr.close()

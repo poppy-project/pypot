@@ -88,5 +88,52 @@ class RestAPIServer(AbstractServer):
 
             return jsonify(devices=answer)
 
+        # Primitives
+        @self.app.route('/primitives')
+        def get_primitives():
+            status = request.args.getlist('status')
+            possible_status = {'running', 'stopped', 'paused'}
+
+            # TODO: what to do if a given status is not one of the possible ones?
+            status = possible_status.intersection(status)
+
+            if not status:
+                status = possible_status
+
+            primitives = []
+            for s in status:
+                for p in self.robot.get_primitives_list(by_status=s):
+                    primitives.append({
+                        'name': p,
+                        'status': s
+                    })
+
+            return jsonify(primitives=primitives)
+
+        @self.app.route('/primitives/<primitive_name>')
+        def get_primitive_information(primitive_name):
+            name = primitive_name
+
+            return jsonify(primitives={
+                'name': name,
+                'status': self.robot.get_primitive_property(name, 'status'),
+                'description': self.robot.get_primitive_property(name, '__doc__'),
+                'methods': [
+                    dict(name=m)
+                    for m in self.robot.get_primitive_methods_list(name)
+                ],
+                'properties': {
+                    prop: self.robot.get_primitive_property(name, prop)
+                    for prop in self.robot.get_primitive_properties_list(name)
+                },
+            })
+
+        @self.app.route('/primitives/<primitive_name>/properties/<property_name>')
+        def get_primitive_property(primitive_name, property_name):
+            return jsonify(property={
+                'name': property_name,
+                'value': self.robot.get_primitive_property(primitive_name, property_name)
+            })
+
     def run(self):
         self.app.run(self.host, self.port)
