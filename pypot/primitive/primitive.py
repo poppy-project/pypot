@@ -40,7 +40,7 @@ class Primitive(StoppableThread):
 
         """
     methods = ['start', 'stop', 'pause', 'resume']
-    properties = []
+    properties = ['elapsed_time', 'status']
 
     def __init__(self, robot):
         """ At instanciation, it automatically transforms the :class:`~pypot.robot.robot.Robot` into a :class:`~pypot.primitive.primitive.MockupRobot`.
@@ -110,6 +110,8 @@ class Primitive(StoppableThread):
     @property
     def elapsed_time(self):
         """ Elapsed time (in seconds) since the primitive runs. """
+        if not hasattr(self, 't0'):
+            return 0.0
         return time.time() - self.t0
 
     @property
