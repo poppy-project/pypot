@@ -9,44 +9,46 @@ from pypot.primitive.move import MovePlayer, MoveRecorder, Move
 
 
 class RESTRobot(object):
-    """ REST API for a Robot.
+    """ Bridge class to expose a REST API for a Robot.
 
     Through the REST API you can currently access:
-        * the devices list (and the groups)
+        * the devices (either motor or sensor) list (and the groups)
         * the registers list for a specific device
         * read/write a value from/to a register of a specific device
+        * the primitives list (and their status)
+        * call methods of a primitive (start, stop, ...)
+        * get/set properties of a primitive
 
-        * the sensors list
-        * the registers list for a specific device
-        * read/write a value from/to a register of a specific device
-
-        * the primitives list (and the active)
-        * start/stop primitives
     """
-
     def __init__(self, robot):
         self.robot = robot
 
-    # Access device related values
-
+    # Access groups related values
     def get_devices_groups(self):
+        """ Returns the names of the groups of devices. """
         return self.robot.groups + ['motors', 'sensors']
 
     def get_devices_list(self, group):
+        """ Returns the names of the devices of a group. """
         return [d.name for d in getattr(self.robot, group)]
 
+    # Access device related values
     def get_device_registers_list(self, device):
+        """ Returns the names of the registers of a device. """
         registers = list(self._get_register_value(device, 'registers'))
         registers.remove('registers')
         return registers
 
     def get_device_register_value(self, device, register):
+        """ Returns the register value of a device. """
         return self._get_register_value(device, register)
 
     def set_device_register_value(self, device, register, value):
+        """ Sets a new value of a register of a device. """
         self._set_register_value(device, register, value)
 
     def get_device_type(self, device_name):
+        """ Returns the device type (motor, sensor or unknown). """
         device = getattr(self.robot, device_name)
 
         device_types = {
@@ -59,42 +61,56 @@ class RESTRobot(object):
                 return name
         return 'unknown'
 
-    # Motor specific
-
+    # Motor specifics
     def set_goto_position_for_motor(self, motor, position, duration):
+        """ Triggers a goto position for a motor. """
         m = getattr(self.robot, motor)
         m.goto_position(position, duration, wait=False)
 
     # Access primitive related values
     def get_primitives_list(self, by_status=None):
+        """ Returns the list of primitives.
+
+            They can be filtred by status (running, paused, stopped).
+
+        """
         return [p.name for p in self.robot.primitives
                 if by_status is None or p.status == by_status]
 
     def start_primitive(self, primitive):
+        """ Starts a primitive. """
         self._call_primitive_method(primitive, 'start')
 
     def stop_primitive(self, primitive):
+        """ Stops a primitive. """
         self._call_primitive_method(primitive, 'stop')
 
     def pause_primitive(self, primitive):
+        """ Pauses a primitive. """
         self._call_primitive_method(primitive, 'pause')
 
     def resume_primitive(self, primitive):
+        """ Resumes a primitive. """
         self._call_primitive_method(primitive, 'resume')
 
     def get_primitive_properties_list(self, primitive):
+        """ Returns the names of the properties of a primitive. """
         return getattr(self.robot, primitive).properties
 
     def get_primitive_property(self, primitive, property):
+        """ Returns the value of a property of a primitive. """
         return self._get_register_value(primitive, property)
 
     def set_primitive_property(self, primitive, property, value):
+        """ Sets a new value for a property of a primitive. """
         self._set_register_value(primitive, property, value)
 
     def get_primitive_methods_list(self, primitive):
+        """ Returns the name of the methods of a primitive. """
         return getattr(self.robot, primitive).methods
 
     def call_primitive_method(self, primitive, method, kwargs):
+        """ Calls a method of a primitive (possibly with args). """
         self._call_primitive_method(primitive, method, **kwargs)
 
     def _set_register_value(self, object, register, value):

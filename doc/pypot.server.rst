@@ -14,10 +14,10 @@
     :undoc-members:
     :show-inheritance:
 
-:mod:`httpserver` Module
+:mod:`restapi` Module
 ------------------------
 
-.. automodule:: pypot.server.httpserver
+.. automodule:: pypot.server.restapi
     :members:
     :undoc-members:
     :show-inheritance:
@@ -27,14 +27,6 @@
 -----------------------
 
 .. automodule:: pypot.server.zmqserver
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-:mod:`snap` Module
------------------------
-
-.. automodule:: pypot.server.snap
     :members:
     :undoc-members:
     :show-inheritance:

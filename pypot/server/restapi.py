@@ -10,6 +10,7 @@ class RestAPIServer(AbstractServer):
         """ Serving a robot REST API using flask.
 
             The documented API can be found on http://docs.pypot.apiary.io/
+            All URLs are described, with example of requests and responses.
 
         """
         AbstractServer.__init__(self, robot, host, port)
@@ -136,4 +137,5 @@ class RestAPIServer(AbstractServer):
             })
 
     def run(self):
+        """ Starts the server (runs for ever). """
         self.app.run(self.host, self.port)
