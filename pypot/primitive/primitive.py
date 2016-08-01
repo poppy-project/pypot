@@ -112,6 +112,14 @@ class Primitive(StoppableThread):
         """ Elapsed time (in seconds) since the primitive runs. """
         return time.time() - self.t0
 
+    @property
+    def status(self):
+        """ Status of the primitives either 'running', 'paused', or 'stopped'. """
+        if self.running:
+            return 'paused' if self.paused else 'running'
+
+        return 'stopped'
+
     # MARK: - Start/Stop handling
     def start(self):
         """ Start or restart (the :meth:`~pypot.primitive.primitive.Primitive.stop` method will automatically be called) the primitive. """

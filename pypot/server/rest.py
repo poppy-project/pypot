@@ -66,12 +66,9 @@ class RESTRobot(object):
         m.goto_position(position, duration, wait=False)
 
     # Access primitive related values
-
-    def get_primitives_list(self):
-        return [p.name for p in self.robot.primitives]
-
-    def get_running_primitives_list(self):
-        return [p.name for p in self.robot.active_primitives if hasattr(p, 'name')]
+    def get_primitives_list(self, by_status=None):
+        return [p.name for p in self.robot.primitives
+                if by_status is None or p.status == by_status]
 
     def start_primitive(self, primitive):
         self._call_primitive_method(primitive, 'start')
