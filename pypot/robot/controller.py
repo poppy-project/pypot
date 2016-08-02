@@ -61,10 +61,11 @@ class DummyController(MotorsController):
 
     def setup(self):
         self.last_update = time.time()
+
         for m in self.motors:
-            m.max_speed = 0.0
-            m.present_position = 0.0
-            m.goal_position = 0.0
+            m.__dict__['max_speed'] = 0.0
+            m.__dict__['present_position'] = 0.0
+            m.__dict__['goal_position'] = 0.0
 
     def update(self):
         delta_t = time.time() - self.last_update
