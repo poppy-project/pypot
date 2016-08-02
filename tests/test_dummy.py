@@ -1,15 +1,18 @@
 import time
 import unittest
 
-from poppy.creatures import PoppyErgoJr
+from pypot.creatures import PoppyErgoJr
+
+from utils import get_open_port
 
 
 class TestIK(unittest.TestCase):
     def setUp(self):
-        self.jr = PoppyErgoJr(simulator='poppy-simu')
+        self.jr = PoppyErgoJr(simulator='poppy-simu', http_port=get_open_port())
 
     def test_dummy_controller(self):
         for m in self.jr.motors:
+            m.moving_speed = 10000
             m.goal_position = 25
 
         # Make sure it was synced

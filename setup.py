@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+
 from io import open
 import re
 import sys
@@ -16,7 +17,9 @@ if sys.version_info >= (3,):
 
 install_requires = ['numpy',
                     'pyserial>2.6',
-                    'scipy']
+                    'scipy',
+                    'bottle',
+                    'ikpy>=2.0']
 
 if sys.version_info < (2, 7):
     print("python version < 2.7 is not supported")
