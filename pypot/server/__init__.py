@@ -1,4 +1,4 @@
-from .restapi import RestAPIServer
+from .httpapi import HttpAPIServer
 
 try:
     from .zmqserver import ZMQRobotServer

@@ -9,7 +9,7 @@ from utils import get_open_port
 class TestIK(unittest.TestCase):
     def setUp(self):
         self.jr = PoppyErgoJr(simulator='poppy-simu',
-                              rest_api_port=get_open_port())
+                              http_api_port=get_open_port())
 
     def test_dummy_controller(self):
         for m in self.jr.motors:

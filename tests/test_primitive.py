@@ -11,7 +11,7 @@ from utils import get_open_port
 class TestPrimLifeCycle(unittest.TestCase):
     def setUp(self):
         self.jr = PoppyErgoJr(simulator='poppy-simu',
-                              rest_api_port=get_open_port())
+                              http_api_port=get_open_port())
 
     def teardown(self):
         self.jr.close()

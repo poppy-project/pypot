@@ -14,10 +14,10 @@
     :undoc-members:
     :show-inheritance:
 
-:mod:`restapi` Module
+:mod:`httpapi` Module
 ------------------------
 
-.. automodule:: pypot.server.restapi
+.. automodule:: pypot.server.httpapi
     :members:
     :undoc-members:
     :show-inheritance:

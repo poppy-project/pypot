@@ -13,11 +13,11 @@ def jsonify(val):
     return json.loads(json.dumps(val))
 
 
-class RestApiTestCase(unittest.TestCase):
+class httpApiTestCase(unittest.TestCase):
     def setUp(self):
         self.jr = PoppyErgoJr(simulator='poppy-simu',
-                              rest_api_port=get_open_port())
-        self.app = self.jr.rest_api_server.app.test_client()
+                              http_api_port=get_open_port())
+        self.app = self.jr.http_api_server.app.test_client()
 
         for i in range(1, 4):
             s = Sinus(self.jr, 10.0, motor_list=self.jr.motors,

@@ -6,9 +6,9 @@ from flask_cors import CORS
 from .server import AbstractServer
 
 
-class RestAPIServer(AbstractServer):
+class HttpAPIServer(AbstractServer):
     def __init__(self, robot, host, port, debug=False):
-        """ Serving a robot REST API using flask.
+        """ Serving a robot HTTP API using flask.
 
             The documented API can be found on http://docs.pypot.apiary.io/
             All URLs are described, with example of requests and responses.
