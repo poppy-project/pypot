@@ -63,7 +63,7 @@ class DummyController(MotorsController):
         self.last_update = time.time()
 
         for m in self.motors:
-            m.__dict__['max_speed'] = 0.0
+            m.__dict__['moving_speed'] = 0.0
             m.__dict__['present_position'] = 0.0
             m.__dict__['goal_position'] = 0.0
 
@@ -71,9 +71,9 @@ class DummyController(MotorsController):
         delta_t = time.time() - self.last_update
 
         for m in self.motors:
-            # acceleration infinite, present_speed always equal max_speed
+            # acceleration infinite, present_speed always equal moving_speed
             delta_pos = m.__dict__['goal_position'] - m.__dict__['present_position']  # degree
-            speed = m.__dict__['max_speed']  # degree par second, assumed absolute
+            speed = m.__dict__['moving_speed']  # degree par second, assumed absolute
 
             delta_pos_effective = copysign(speed * delta_t, delta_pos)
 
