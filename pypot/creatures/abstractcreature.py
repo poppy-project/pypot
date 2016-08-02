@@ -10,6 +10,7 @@ from threading import Thread
 from pypot.robot import Robot, from_json, use_dummy_robot
 from pypot.server import HttpAPIServer
 
+
 logger = logging.getLogger(__name__)
 
 
@@ -41,13 +42,15 @@ class AbstractPoppyCreature(Robot):
         :param str scene: specify a particular simulation scene (if None uses the default scene of the poppy creature - e.g. poppy_humanoid.ttt)
         :param str host: host of the simulator
         :param int port: port of the simulator
-        :param bool use_snap: start or not the Snap! API
-        :param str snap_host: host of Snap! API
-        :param int snap_port: port of the Snap!
-        :param bool use_http: start or not the HTTP API
-        :param str http_host: host of HTTP API
-        :param int http_port: port of the HTTP API
         :param int id: id of robot in the v-rep scene (not used yet!)
+        :param bool serve_http_api: start or not the HTTP API
+        :param str http_api_host: host of HTTP API
+        :param int http_api_port: port of the HTTP
+        :param bool http_api_debug: set Flask debug mode
+        :param bool use_remote: starts the zerorpc remote robot
+        :param str remote_host: host of the remote robot server
+        :param int remote_port: port of the remote robot server
+        :param bool start_background_services: starts automatically all backgroud services (http api, remote)
         :param bool sync: choose if automatically starts the synchronization loops
 
         You can also add extra keyword arguments to disable sensor. For instance, to use a DummyCamera, you can add the argument: camera='dummy'.
