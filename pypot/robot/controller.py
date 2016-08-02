@@ -59,6 +59,8 @@ class DummyController(MotorsController):
     def __init__(self, motors):
         MotorsController.__init__(self, None, motors)
 
+        self.max_speed = 360.0  # degree per second.
+
     def setup(self):
         self.last_update = time.time()
 
@@ -73,7 +75,11 @@ class DummyController(MotorsController):
         for m in self.motors:
             # acceleration infinite, present_speed always equal moving_speed
             delta_pos = m.__dict__['goal_position'] - m.__dict__['present_position']  # degree
-            speed = m.__dict__['moving_speed']  # degree par second, assumed absolute
+
+            # degree par second, assumed absolute
+            speed = (m.__dict__['moving_speed']
+                     if m.__dict__['moving_speed'] != 0.0 else
+                     self.max_speed)
 
             delta_pos_effective = copysign(speed * delta_t, delta_pos)
 
