@@ -12,6 +12,7 @@ class TestIK(unittest.TestCase):
 
     def test_dummy_controller(self):
         for m in self.jr.motors:
+            m.moving_speed = 10000
             m.goal_position = 25
 
         # Make sure it was synced
