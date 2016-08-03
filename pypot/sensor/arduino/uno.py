@@ -31,5 +31,5 @@ class ArduinoSensor(Sensor):
             line = self._ser.readline()
         try:
             self.sensor_dict = json.loads(line)
-        except:
+        except json.JSONDecodeError:
             pass
