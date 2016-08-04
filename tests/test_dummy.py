@@ -22,6 +22,9 @@ class TestIK(unittest.TestCase):
         for m in self.jr.motors:
             self.assertEqual(m.goal_position, m.present_position)
 
+    def tearDown(self):
+        self.jr.close()
+
 
 if __name__ == '__main__':
     unittest.main()
