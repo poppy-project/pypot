@@ -263,7 +263,7 @@ class httpApiTestCase(unittest.TestCase):
     #     self.assertEqual(r.status_code, 200)
     #     self.assertEqual(r.text, c.name)
 
-    def teardown(self):
+    def tearDown(self):
         self.jr.close()
 
 
