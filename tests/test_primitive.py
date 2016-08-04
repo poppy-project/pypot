@@ -16,6 +16,9 @@ class TestPrimLifeCycle(unittest.TestCase):
     def teardown(self):
         self.jr.close()
 
+    def tearDown(self):
+        self.jr.close()
+
     def test_teardown(self):
         self.jr.dance.start()
         time.sleep(random.random())
@@ -68,6 +71,7 @@ class TestPrimLifeCycle(unittest.TestCase):
 
     def test_start_stop_pause_resume_random_order(self):
         cmd = ['start', 'stop', 'pause', 'resume']
+
         for _ in range(10):
             getattr(self.jr.dance, random.choice(cmd))()
 

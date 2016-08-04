@@ -9,6 +9,7 @@ class TestIK(unittest.TestCase):
     def test_lowerlimit_correctly_setup(self):
         self.jr = PoppyErgoJr(simulator='poppy-simu',
                               http_api_port=get_open_port())
+        self.jr.close()
 
         # TODO: We should also make a unit test with a real/vrep robot.
 
