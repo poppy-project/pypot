@@ -104,7 +104,7 @@ class AbstractPoppyCreature(Robot):
             try:
                 poppy_creature = from_json(config, sync, **extra)
             except IndexError as e:
-                raise IOError('Connection to the robot failed! {}'.format(e.message))
+                raise IOError('Connection to the robot failed! {}'.format(str(e)))
             poppy_creature.simulated = False
 
         with open(config) as f:
