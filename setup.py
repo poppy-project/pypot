@@ -45,7 +45,9 @@ setup(name='pypot',
 
       entry_points={
           'console_scripts': [
-              'dxl-config = pypot.tools.dxlconfig:main'
+              'dxl-config = pypot.tools.dxlconfig:main',
+              'poppy-services=pypot.creatures.services_launcher:main',
+              'poppy-configure=pypot.creatures.configure_utility:main',
           ],
           'gui_scripts': [
               'herborist = pypot.tools.herborist.herborist:main [tools]',
