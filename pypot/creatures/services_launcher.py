@@ -12,7 +12,7 @@ import webbrowser
 from contextlib import closing
 from argparse import RawTextHelpFormatter
 
-from pypot.server.snap import find_local_ip
+from pypot.utils.network import find_local_ip
 from pypot.creatures import installed_poppy_creatures
 
 
@@ -33,23 +33,24 @@ def start_poppy_with_services(args):
     else:
         print('Could not start up the robot...')
 
-        # Re-raise the last exception allow to show traceback and debug the potiential code issue
+        # Re-raise the last exception allow to show traceback
+        # and debug the potiential code issue
         raise exc_inst
         sys.exit(1)
 
 
 def poppy_params_from_args(args):
     params = {
-        'use_snap': args.snap,
-        'snap_port': args.snap_port,
-        'use_http': args.http,
-        'http_port': args.http_port,
+        'serve_http_api': args.http,
+        'http_api_port': args.http_port,
         'use_remote': args.remote
     }
 
+    if args.snap:
+        params['serve_http_api'] = True
+
     if args.verbose:
-        params['snap_quiet'] = False
-        params['http_quiet'] = False
+        params['http_api_debug'] = False
 
     if args.vrep:
         params['simulator'] = 'vrep'
@@ -83,20 +84,17 @@ Examples:
                         help='use a Three.js visualization',
                         action='store_true')
     parser.add_argument('--snap',
-                        help='start a Snap! robot server',
+                        help='make sure the HTTP API is launched for Snap!',
                         action='store_true')
-    parser.add_argument('--snap-port',
-                        help='port used by the Snap! server',
-                        default=6969, type=int)
     parser.add_argument('-nb', '--no-browser',
                         help='avoid automatic start of Snap! in web browser',
                         action='store_true')
     parser.add_argument('--http',
-                        help='start a http robot server',
+                        help='start a HTTP API robot server',
                         action='store_true')
     parser.add_argument('--http-port',
-                        help='port of HttpRobotServer, used for poppy-simu',
-                        default=8080, type=int)
+                        help='port of HttpRobotServer',
+                        default=6969, type=int)
     parser.add_argument('--remote',
                         help='start a remote robot server',
                         action='store_true')
@@ -137,9 +135,6 @@ Examples:
         logging.getLogger('').addHandler(fh)
 
     if args.verbose:
-        args.snap_quiet = False
-        args.http_quiet = False
-
         if args.verbose == 1:
             lvl = logging.WARNING
         elif args.verbose == 2:
@@ -163,7 +158,10 @@ Examples:
 
     if args.snap and not args.no_browser:
         snap_url = 'http://snap.berkeley.edu/snapsource/snap.html'
-        block_url = 'http://{}:{}/snap-blocks.xml'.format(find_local_ip(), args.snap_port)
+        # TODO: we still need a rule for serving snap project filename
+        # if we want to keep this feature.
+        block_url = 'http://{}:{}/snap-blocks.xml'.format(find_local_ip(),
+                                                          args.http_port)
         url = '{}#open:{}'.format(snap_url, block_url)
 
         for browser_name in ['chromium-browser', 'chromium', 'google-chrome',
