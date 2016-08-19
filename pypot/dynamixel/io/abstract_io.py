@@ -130,7 +130,8 @@ class AbstractDxlIO(object):
                 self._serial = serial.Serial(port, baudrate, timeout=timeout)
                 self.__used_ports.add(port)
 
-            if platform.system() == 'Darwin' and self._sync_read:
+            if (platform.system() == 'Darwin' and
+                    self._protocol.name == 'v1' and self._sync_read):
                 if not self.ping(self._protocol.DxlBroadcast):
                     self.close()
                     continue
