@@ -100,11 +100,10 @@ class httpApiTestCase(unittest.TestCase):
                 rv = self.app.get('/devices/{}/registers/{}'.format(dev.name, reg))
                 data = self.check_meta_and_get_data(rv)
 
-                self.assertEqual(data['register'],
-                                 {
-                                    'name': reg,
-                                    'value': jsonify(getattr(dev, reg))
-                                })
+                self.assertEqual(data['register'], {
+                    'name': reg,
+                    'value': jsonify(getattr(dev, reg))
+                })
 
     # [PUT] /devices/device_name/registers/register_name
     # TODO
@@ -168,7 +167,7 @@ class httpApiTestCase(unittest.TestCase):
 
         registers = devices[0].registers
         random.shuffle(registers)
-        registers = registers[:random.randint(1, 5)]# TODO: len(registers))]
+        registers = registers[:random.randint(1, 5)]  # TODO: len(registers))]
 
         url = '/groups/{}/registers?device_names={}&register_names={}'.format(
             group,
