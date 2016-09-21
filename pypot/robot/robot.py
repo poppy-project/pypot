@@ -25,7 +25,7 @@ class Robot(object):
         """
         self._motors = []
         self._sensors = []
-        self.alias = []
+        self.groups = ['motors', 'sensors']
 
         self._controllers = sensor_controllers + motor_controllers
 
@@ -114,6 +114,11 @@ class Robot(object):
     def primitives(self):
         """ Returns all the primitives name attached to the robot. """
         return self._attached_primitives.values()
+
+    @property
+    def alias(self):
+        """ Kept as for compatiblity reason. """
+        return self.groups
 
     @property
     def compliant(self):

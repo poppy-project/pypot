@@ -19,7 +19,7 @@ git_url=https://$GH_TOKEN@github.com/$GH_USERNAME/$GH_REPO.git
 #     echo "Gevent bug, not possible to build zmq with"
 
 # Install Sphinx
-pip install -q Sphinx sphinxjp.themes.basicstrap bottle zerorpc
+pip install -q Sphinx==1.4.4 sphinxjp.themes.basicstrap zerorpc
 
 # Build the doc
 pushd ..

@@ -1,7 +1,4 @@
-try:
-    from .httpserver import HTTPRobotServer
-except ImportError:
-    pass
+from .httpapi import HttpAPIServer
 
 try:
     from .zmqserver import ZMQRobotServer

@@ -96,7 +96,7 @@ class DxlMotor(Motor):
 
     registers = Motor.registers + ['registers',
                                    'goal_speed',
-                                   'compliant', 'safe_compliant',
+                                   'compliant', 'compliant_behavior',
                                    'angle_limit']
 
     id = DxlRegister()

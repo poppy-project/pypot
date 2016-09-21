@@ -40,7 +40,7 @@ class Primitive(StoppableThread):
 
         """
     methods = ['start', 'stop', 'pause', 'resume']
-    properties = []
+    properties = ['elapsed_time', 'status']
 
     def __init__(self, robot):
         """ At instanciation, it automatically transforms the :class:`~pypot.robot.robot.Robot` into a :class:`~pypot.primitive.primitive.MockupRobot`.
@@ -110,7 +110,17 @@ class Primitive(StoppableThread):
     @property
     def elapsed_time(self):
         """ Elapsed time (in seconds) since the primitive runs. """
+        if not hasattr(self, 't0'):
+            return 0.0
         return time.time() - self.t0
+
+    @property
+    def status(self):
+        """ Status of the primitives either 'running', 'paused', or 'stopped'. """
+        if self.running:
+            return 'paused' if self.paused else 'running'
+
+        return 'stopped'
 
     # MARK: - Start/Stop handling
     def start(self):
@@ -199,7 +209,7 @@ class MockupRobot(object):
         self._robot = robot
         self._motors = []
 
-        for a in robot.alias:
+        for a in robot.groups:
             setattr(self, a, [])
 
         for m in robot.motors:
@@ -207,7 +217,7 @@ class MockupRobot(object):
             self._motors.append(mockup_motor)
             setattr(self, m.name, mockup_motor)
 
-            for a in [a for a in robot.alias if m in getattr(robot, a)]:
+            for a in [a for a in robot.groups if m in getattr(robot, a)]:
                 getattr(self, a).append(mockup_motor)
 
     def __getattr__(self, attr):
@@ -219,11 +229,6 @@ class MockupRobot(object):
 
             m = getattr(self, motor_name)
             m.goto_position(position, duration, control, wait=w)
-
-    @property
-    def motors(self):
-        """ List of all attached :class:`~pypot.primitive.primitive.MockupMotor`. """
-        return self._motors
 
     def power_max(self):
         for m in self.motors:
