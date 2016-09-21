@@ -48,7 +48,7 @@ matrix:
     - python: 2.7
       os: linux
       language: python
-      env: SSH_VREP_SERVER=test42-vrep4.ci UPDATE_DOC=true
+      env: UPDATE_DOC=true
 
     - python: 3.4
       language: python
