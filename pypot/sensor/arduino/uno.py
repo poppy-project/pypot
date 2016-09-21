@@ -7,10 +7,27 @@ from ...utils import StoppableLoopThread
 
 class ArduinoSensor(Sensor):
     """ Give acces to arduino sensor.
-
-        Be careful to set the sync_freq of your controller faster than the data comes from your arduino.
-        If not, you won't be able to retrieve the more recent data.
-
+        
+        Here it is an example of the arduino code to retrieve the time :
+        
+        unsigned long time;
+        void setup(){
+        Serial.begin(1000000);
+        }
+        void loop(){
+        //prints fixed data in json format
+        Serial.print("{\"Day\":\"monday\",");
+        Serial.print("\"Time\":");
+        time = millis();
+        //prints time since program started
+        Serial.print(time);
+        Serial.println("}");
+        // wait 20 ms to send the data at 50 Hz
+        delay(0.02);
+        }
+        
+        Be careful to not set the sync_freq of your controller slower than the data comes from your arduino (here 50 Hz).
+        
     """
     def __init__(self, name, port, baud, sync_freq=50.0):
         Sensor.__init__(self, name)
