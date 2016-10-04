@@ -76,7 +76,14 @@ def from_config(config, strict=True, sync=True, use_dummy_io=False, **extra):
         else:
             controllers.append(DummyController(attached_motors))
 
-    robot = Robot(motor_controllers=controllers, sync=sync)
+    try:
+        robot = Robot(motor_controllers=controllers, sync=sync)
+    except RuntimeError:
+        for c in controllers:
+            c.io.close()
+
+        raise
+
     make_alias(config, robot)
 
     # Create all sensors and attached them
@@ -173,7 +180,12 @@ def dxl_io_from_confignode(config, c_params, ids, strict):
                       use_sync_read=sync_read,
                       error_handler_cls=handler)
 
-    found_ids = dxl_io.scan(ids)
+    try:
+        found_ids = dxl_io.scan(ids)
+    except pypot.dynamixel.io.DxlError:
+        dxl_io.close()
+        found_ids = []
+
     if ids != found_ids:
         missing_ids = tuple(set(ids) - set(found_ids))
         msg = 'Could not find the motors {} on bus {}.'.format(missing_ids,
@@ -181,6 +193,7 @@ def dxl_io_from_confignode(config, c_params, ids, strict):
         logger.warning(msg)
 
         if strict:
+            dxl_io.close()
             raise pypot.dynamixel.io.DxlError(msg)
 
     return dxl_io
