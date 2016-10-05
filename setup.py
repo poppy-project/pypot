@@ -54,7 +54,7 @@ setup(name='pypot',
 
       zip_safe=False,
 
-      author=open('AUTHORS.md', encoding='utf-8').read(),
+      author='See https://github.com/poppy-project/pypot/graphs/contributors',
       author_email='pierre.rouanet@gmail.com',
       description='Python Library for Robot Control',
       long_description=open('README.md', encoding='utf-8').read(),
