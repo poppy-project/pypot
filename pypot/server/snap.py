@@ -57,7 +57,8 @@ def find_local_ip(host=None):
 
     except IOError as e:
         # network unreachable
-        if e.errno == errno.ENETUNREACH:
+        # error no 10065 = WSAESERVERUNREACH Windows Network unreachable
+        if e.errno == errno.ENETUNREACH or e.errno == 10065:
             logger.debug('network unreachable')
             pass
         else:
