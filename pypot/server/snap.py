@@ -358,7 +358,7 @@ class SnapRobotServer(AbstractServer):
             return "Done !"
 
     def run(self, quiet=None, server=''):
-        """ Start the tornado server, run forever. 
+        """ Start the tornado server, run forever.
             'quiet' and 'server' arguments are no longer used, they are keep only for backward compatibility
         """
 
