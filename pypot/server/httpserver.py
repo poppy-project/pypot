@@ -4,6 +4,11 @@ import errno
 import numpy
 import bottle
 from bottle import response
+
+from tornado.wsgi import WSGIContainer
+from tornado.httpserver import HTTPServer
+from tornado.ioloop import IOLoop
+
 import logging
 
 from .server import AbstractServer
@@ -220,21 +225,17 @@ class HTTPRobotServer(AbstractServer):
 
             return registers_motors
 
-    def run(self, quiet=None, server='tornado'):
-        """ Start the bottle server, run forever. """
-        if quiet is None:
-            quiet = self.quiet
+    def run(self, quiet=None):
+        """ Start the tornado server, run forever.
+            'quiet' and 'server' arguments are no longer used, they are keep only for backward compatibility.
+        """
+
         try:
-            bottle.run(self.app,
-                       host=self.host, port=self.port,
-                       quiet=quiet,
-                       server=server)
-        except RuntimeError as e:
-            # If you are calling tornado inside tornado (Jupyter notebook)
-            # you got a RuntimeError but everythong works fine
-            if "IOLoop" in str(e):
-                logger.info("Tornado RuntimeError {}".format(e))
-                pass
+            loop = IOLoop()
+            http_server = HTTPServer(WSGIContainer(self.app))
+            http_server.listen(self.port)
+            loop.start()
+
         except socket.error as serr:
             # Re raise the socket error if not "[Errno 98] Address already in use"
             if serr.errno != errno.EADDRINUSE:
