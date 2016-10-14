@@ -9,7 +9,7 @@
   <head>
     <meta charset="utf-8" />
     
-    <title>server Package &mdash; pypot 2.11.8 documentation</title>
+    <title>server Package &mdash; pypot 2.11.9 documentation</title>
     <meta name="description" content="">
     <meta name="author" content="">
 
@@ -35,7 +35,7 @@
 <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
             URL_ROOT:    './',
-            VERSION:     '2.11.8',
+            VERSION:     '2.11.9',
             COLLAPSE_INDEX: false,
             FILE_SUFFIX: '.html',
             HAS_SOURCE:  true
@@ -53,7 +53,7 @@
     <link rel="author" title="About these documents" href="about.html" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="top" title="pypot 2.11.8 documentation" href="index.html" />
+    <link rel="top" title="pypot 2.11.9 documentation" href="index.html" />
     <link rel="up" title="Pypot’s API" href="api.html" />
     <link rel="next" title="vrep Package" href="pypot.vrep.html" />
     <link rel="prev" title="sensor Package" href="pypot.sensor.html" /> 
@@ -68,7 +68,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="index.html">pypot 2.11.8 documentation</a>
+          <a class="navbar-brand" href="index.html">pypot 2.11.9 documentation</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
@@ -447,8 +447,9 @@ The default is UTF-8.</p>
 <p>Please refer to the REST API for an exhaustive list of the possible routes.</p>
 <dl class="method">
 <dt id="pypot.server.httpserver.HTTPRobotServer.run">
-<code class="descname">run</code><span class="sig-paren">(</span><em>quiet=None</em>, <em>server='tornado'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/server/httpserver.html#HTTPRobotServer.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.server.httpserver.HTTPRobotServer.run" title="Permalink to this definition">¶</a></dt>
-<dd><p>Start the bottle server, run forever.</p>
+<code class="descname">run</code><span class="sig-paren">(</span><em>quiet=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/server/httpserver.html#HTTPRobotServer.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.server.httpserver.HTTPRobotServer.run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Start the tornado server, run forever.
+&#8216;quiet&#8217; and &#8216;server&#8217; arguments are no longer used, they are keep only for backward compatibility.</p>
 </dd></dl>
 
 </dd></dl>
@@ -500,8 +501,9 @@ The default is UTF-8.</p>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">pypot.server.server.AbstractServer</span></code></p>
 <dl class="method">
 <dt id="pypot.server.snap.SnapRobotServer.run">
-<code class="descname">run</code><span class="sig-paren">(</span><em>quiet=None</em>, <em>server='tornado'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/server/snap.html#SnapRobotServer.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.server.snap.SnapRobotServer.run" title="Permalink to this definition">¶</a></dt>
-<dd><p>Start the bottle server, run forever.</p>
+<code class="descname">run</code><span class="sig-paren">(</span><em>quiet=None</em>, <em>server=''</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/server/snap.html#SnapRobotServer.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.server.snap.SnapRobotServer.run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Start the tornado server, run forever.
+&#8216;quiet&#8217; and &#8216;server&#8217; arguments are no longer used, they are keep only for backward compatibility</p>
 </dd></dl>
 
 </dd></dl>
@@ -524,7 +526,7 @@ The default is UTF-8.</p>
 <div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
   <div class="navbar-inner">
     <ul class="nav navbar-nav ">
-        <li><a href="index.html">pypot 2.11.8 documentation</a></li>
+        <li><a href="index.html">pypot 2.11.9 documentation</a></li>
     </ul>
 <ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
       
