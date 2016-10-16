@@ -1,5 +1,8 @@
 [![PyPI](https://img.shields.io/pypi/v/pypot.svg)](https://pypi.python.org/pypi/pypot/)
-[![Build Status](https://travis-ci.org/poppy-project/pypot.svg?branch=master)](https://travis-ci.org/poppy-project/pypot) [![Cite this librairy](https://zenodo.org/badge/3914/poppy-project/pypot.png)](http://zenodo.org/record/13941)
+[![Build Status](https://travis-ci.org/poppy-project/pypot.svg?branch=master)](https://travis-ci.org/poppy-project/pypot) 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.13941.svg)](https://doi.org/10.5281/zenodo.13941)
+
+
 
 # Pypot: A Python lib for Dynamixel motors control
 
