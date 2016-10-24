@@ -51,7 +51,7 @@ class Robot(object):
     def close(self):
         """ Cleans the robot by stopping synchronization and all controllers."""
         self.stop_sync()
-        [c.io.close() for c in self._controllers]
+        [c.io.close() for c in self._controllers if c.io is not None]
 
     def __repr__(self):
         return '<Robot motors={}>'.format(self.motors)

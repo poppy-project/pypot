@@ -10,6 +10,9 @@ class TestPrimLifeCycle(unittest.TestCase):
     def setUp(self):
         self.jr = PoppyErgoJr(simulator='poppy-simu')
 
+    def tearDown(self):
+        self.jr.close()
+
     def test_teardown(self):
         self.jr.dance.start()
         time.sleep(random.random() * 5)
