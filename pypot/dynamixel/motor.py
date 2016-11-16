@@ -255,7 +255,7 @@ class DxlMotor(Motor):
 
         elif control == 'dummy':
             dp = abs(self.present_position - position)
-            speed = (dp / float(duration)) if duration > 0 else numpy.inf
+            speed = (dp / float(duration)) if duration > 0 else 0
 
             self.moving_speed = speed
             self.goal_position = position
