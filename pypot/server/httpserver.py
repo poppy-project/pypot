@@ -43,15 +43,29 @@ class EnableCors(object):
     def apply(self, fn, context):
         def _enable_cors(*args, **kwargs):
             # set CORS headers
-            response.headers['Access-Control-Allow-Origin'] = self.origin
-            response.headers['Access-Control-Allow-Methods'] = 'GET, POST, PUT, OPTIONS'
-            response.headers['Access-Control-Allow-Headers'] = 'Origin, Accept, Content-Type, X-Requested-With, X-CSRF-Token'
+            response.set_header('Access-Control-Allow-Origin', self.origin)
+            response.set_header('Access-Control-Allow-Methods', 'GET, POST, PUT, OPTIONS')
+            response.set_header('Access-Control-Allow-Headers', 'Origin, Accept, Content-Type, X-Requested-With, X-CSRF-Token')
 
             if bottle.request.method != 'OPTIONS':
                 # actual request; reply with the actual response
                 return fn(*args, **kwargs)
 
         return _enable_cors
+
+
+class CacheBuster(object):
+    """Add response headers to disable cache"""
+
+    name = 'cache_buster'
+    api = 2
+
+    def apply(self, fn, context):
+        def _ext(*args, **kwargs):
+            response.set_header('Cache-control', 'no-store')
+            return fn(*args, **kwargs)
+
+        return _ext
 
 
 class HTTPRobotServer(AbstractServer):
@@ -69,8 +83,9 @@ class HTTPRobotServer(AbstractServer):
 
         jd = lambda s: json.dumps(s, cls=MyJSONEncoder)
         self.app.install(bottle.JSONPlugin(json_dumps=jd))
+        self.app.install(CacheBuster())
 
-        if(cross_domain_origin):
+        if (cross_domain_origin):
             self.app.install(EnableCors(cross_domain_origin))
 
         rr = self.restfull_robot
@@ -242,4 +257,4 @@ class HTTPRobotServer(AbstractServer):
                 raise serr
             else:
                 logger.warning("""The webserver port {} is already used.
-The HttpRobotServer is maybe already run or another software use this port.""".format(self.port))
+May be the HttpRobotServer is already running or another software is using this port.""".format(self.port))

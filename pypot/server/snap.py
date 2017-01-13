@@ -17,6 +17,7 @@ from ast import literal_eval as make_tuple
 
 from .server import AbstractServer
 from .httpserver import EnableCors
+from .httpserver import CacheBuster
 from ..utils.appdirs import user_data_dir
 
 
@@ -104,6 +105,7 @@ class SnapRobotServer(AbstractServer):
         self.quiet = quiet
         self.app = bottle.Bottle()
         self.app.install(EnableCors())
+        self.app.install(CacheBuster())
 
         rr = self.restfull_robot
 
@@ -168,7 +170,7 @@ class SnapRobotServer(AbstractServer):
         @self.app.get('/motors/set/registers/<motors_register_value>')
         def set_motors_registers(motors_register_value):
             """ Allow lot of motors register settings with a single http request
-                Be carefull: with lot of motors, it could overlap the GET max
+                Be careful: with lot of motors, it could overlap the GET max
                     lentgh of your web browser
                 """
             for m_settings in motors_register_value.split(';'):
