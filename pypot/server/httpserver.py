@@ -58,9 +58,14 @@ class CacheBuster(object):
     """Add response headers to disable cache"""
 
     name = 'cache_buster'
+    api = 2
 
     def apply(self, fn, context):
-        response.set_header('Cache-control', 'no-store')
+        def _ext(*args, **kwargs):
+            response.set_header('Cache-control', 'no-store')
+            return fn(*args, **kwargs)
+
+        return _ext
 
 
 class HTTPRobotServer(AbstractServer):
