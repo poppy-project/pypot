@@ -107,7 +107,7 @@ class SnapRobotServer(AbstractServer):
         self.app.install(EnableCors())
         self.app.install(CacheBuster())
 
-        rr = self.restfull_robot
+        rr = self.restful_robot
 
         # Copy Snap files from system directory to user directory. It avoids
         # right issue while PyPot is installed from pip in an admin directory
