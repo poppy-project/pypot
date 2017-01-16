@@ -12,3 +12,8 @@ try:
     from .server import RemoteRobotServer
 except ImportError:
     pass
+
+try:
+    from .scratch import ScratchRobotServer
+except ImportError:
+    pass

@@ -11,6 +11,7 @@ from tornado.web import Application
 
 from bottle import response
 
+import rest
 import json
 import logging
 
@@ -44,7 +45,6 @@ class EnableCors(object):
 
     def apply(self, fn, context):
         def _enable_cors(*args, **kwargs):
-            # set CORS headers
             response.set_header('Access-Control-Allow-Origin', self.origin)
             response.set_header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
             response.set_header('Access-Control-Allow-Headers', 'Origin, Accept, Content-Type, X-Requested-With, X-CSRF-Token')
@@ -82,14 +82,15 @@ class PoppyRequestHandler(RequestHandler):
         self.set_header('Access-Control-Allow-Headers', 'Origin, Accept, Content-Type, X-Requested-With, X-CSRF-Token')
         self.set_header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
 
-    def options(self):
+    def options(self, *args, **kwargs):
         self.set_status(204)
 
     def write_json(self, obj):
         self.write(json.dumps(obj))
 
+
 class IndexHandler(PoppyRequestHandler):
-    def get(self):
+    def get(self, *args):
         out = {
             'motors': [],
             'primitives': []
@@ -121,101 +122,97 @@ class IndexHandler(PoppyRequestHandler):
 
         self.write_json(out)
 
-# @self.app.get('/motor/list.json')
-# @self.app.get('/motor/<alias>/list.json')
+
 class MotorsListHandler(PoppyRequestHandler):
     def get(self, alias='motors'):
         self.write_json({
             'alias': self.restful_robot.get_motors_list(alias)
         })
 
-# @self.app.get('/sensor/list.json')
+
 class SensorsListHandler(PoppyRequestHandler):
     def get(self):
         self.write_json({
             'sensors': self.restful_robot.get_sensors_list()
         })
 
-# @self.app.get('/motor/alias/list.json')
+
 class MotorsAliasesListHandler(PoppyRequestHandler):
     def get(self):
         self.write_json({
             'alias': self.restful_robot.get_motors_alias()
         })
 
-# @self.app.get('/motor/<motor_name>/register/list.json')
-# @self.app.get('/sensor/<motor_name>/register/list.json')
+
 class MotorRegistersListHandler(PoppyRequestHandler):
     def get(self, motor_name):
         self.write_json({
             'registers': self.restful_robot.get_motor_registers_list(motor_name)
         })
 
-# @self.app.get('/motor/<motor_name>/register/<register_name>')
-# @self.app.get('/sensor/<motor_name>/register/<register_name>')
+
 class MotorRegisterHandler(PoppyRequestHandler):
     def get(self, motor_name, register_name):
         self.write_json({
             register_name: self.restful_robot.get_motor_register_value(motor_name, register_name)
         })
 
-# @self.app.post('/motor/<motor_name>/register/<register_name>/value.json')
-# @self.app.post('/sensor/<motor_name>/register/<register_name>/value.json')
+
 class UpdateMotorRegisterHandler(PoppyRequestHandler):
     def post(self, motor_name, register_name):
-        pass
-        # self.restful_robot.set_motor_register_value(
-        #     motor_name, register_name, bottle.request.json)
-        # self.write_json({})
+        data = json.loads(self.request.body)
+        response = self.restful_robot.set_motor_register_value(motor_name, register_name, data)
+        self.write_json({})
 
-# @self.app.get('/primitive/list.json')
+
 class PrimitivesListHandler(PoppyRequestHandler):
     def get(self):
         self.write_json({
             'primitives': self.restful_robot.get_primitives_list()
         })
 
-# @self.app.get('/primitive/running/list.json')
+
 class RunningPrimitivesListHandler(PoppyRequestHandler):
     def get(self):
         self.write_json({
             'running_primitives': self.restful_robot.get_running_primitives_list()
         })
 
-# @self.app.get('/primitive/<prim>/start.json')
+
 class StartPrimitiveHandler(PoppyRequestHandler):
     def get(self, primitive_name):
         self.restful_robot.start_primitive(primitive_name)
 
-# @self.app.get('/primitive/<prim>/stop.json')
+
 class StopPrimitiveHandler(PoppyRequestHandler):
     def get(self, primitive_name):
         self.restful_robot.stop_primitive(primitive_name)
 
-# @self.app.get('/primitive/<prim>/pause.json')
+
 class PausePrimitiveHandler(PoppyRequestHandler):
     def get(self, primitive_name):
         self.restful_robot.pause_primitive(primitive_name)
 
-# @self.app.get('/primitive/<prim>/resume.json')
+
 class ResumePrimitiveHandler(PoppyRequestHandler):
     def get(self, primitive_name):
         self.restful_robot.resume_primitive(primitive_name)
 
-# @self.app.get('/primitive/<prim>/property/list.json')
+
 class PrimitivePropertiesListHandler(PoppyRequestHandler):
     def get(self, primitive_name):
         self.write_json({
             'property': self.restful_robot.get_primitive_properties_list(primitive_name)
         })
 
-# @self.app.get('/primitive/<prim>/property/<prop>')
+
 class PrimitivePropertyHandler(PoppyRequestHandler):
     def get(self, primitive_name, prop):
         response = self.restful_robot.get_primitive_property(primitive_name, prop)
         self.write_json({
             '{}.{}'.format(primitive_name, prop): response
         })
+
 
 # ????
 # @self.app.post('/primitive/<prim>/property/<prop>/value.json')
@@ -224,35 +221,27 @@ class PrimitivePropertyHandler(PoppyRequestHandler):
 #                               bottle.request.json)
 class SetPrimitivePropertyHandler(PoppyRequestHandler):
     def post(self, primitive_name, prop):
-        pass
-        # data = self.get_argument('data', {})
+        data = json.loads(self.request.body)
+        self.restful_robot.set_primitive_property(primitive_name, prop, data)
+        self.set_status(204)
 
-        # self.restful_robot.set_primitive_property(
-        #     primitive_name, prop, bottle.request.json)
 
-# @self.app.get('/primitive/<prim>/method/list.json')
 class ListPrimitiveMethodsHandler(PoppyRequestHandler):
     def get(self, primitive_name):
         self.write_json({
             'methods': self.restful_robot.get_primitive_methods_list(self, primitive_name)
         })
 
-# @self.app.post('/primitive/<prim>/method/<meth>/args.json')
-# def call_primitive_method(prim, meth):
-#     res = rr.call_primitive_method(prim, meth,
-#                                    bottle.request.json)
-#     return {
-#         '{}:{}'.format(prim, meth): res
-#     }
+
 class CallPrimitiveMethodHandler(PoppyRequestHandler):
     def post(self, primitive_name, method_name):
-        # @TODO remove bottle
-        # response = rr.call_primitive_method(primitive_name, method_name, bottle.request.json)
-        # self.write_json({
-        #     '{}:{}'.format(primitive_name, method_name): response
-        # })
+        data = json.loads(self.request.body)
+        response = self.restful_robot.call_primitive_method(primitive_name, method_name, data)
+        self.write_json({
+            '{}:{}'.format(primitive_name, method_name): response
+        })
 
-# @self.app.get('/motors/register/<register_name>')
+
 class MotorsRegistersHandler(PoppyRequestHandler):
     def get(self, register_name):
         motors_list = self.restful_robot.get_motors_list('motors')
@@ -268,25 +257,30 @@ class MotorsRegistersHandler(PoppyRequestHandler):
 
 
 class HTTPRobotServer(AbstractServer):
-
     """Refer to the REST API for an exhaustive list of the possible routes."""
 
     def __init__(self, robot, host='0.0.0.0', port='8080', cross_domain_origin='*', **kwargs):
         AbstractServer.__init__(self, robot, host, port)
 
-        # jd = lambda s: json.dumps(s, cls=MyJSONEncoder)
-
     def make_app(self):
         PoppyRequestHandler.restful_robot = self.restful_robot
         return Application([
-            (r'/(robots\.json)?', IndexHandler),
+            (r'/(robot\.json)?', IndexHandler),
+            (r'/motor/alias/list\.json', MotorsAliasesListHandler),
             (r'/motor/(?P<alias>[a-zA-Z0-9_]+)/?list\.json', MotorsListHandler),
             (r'/sensor/list\.json', SensorsListHandler),
-            (r'/motor/alias/list\.json', MotorsAliasesListHandler),
             (r'/motor/(?P<motor_name>[a-zA-Z0-9_]+)/register/list\.json', MotorRegistersListHandler),
-            (r'/(motor|sensor)/(?P<motor_name>[a-zA-Z0-9_]+)/register/(?P<register_name>[a-zA-Z0-9_]+)/list/.json', MotorRegistersListHandler),
-            (r'/(motor|sensor)/(?P<motor_name>[a-zA-Z0-9_]+)/register/(?P<register_name>[a-zA-Z0-9_]+)', MotorRegisterHandler),
-            (r'/(motor|sensor)/(?P<motor_name>[a-zA-Z0-9_]+)/register/(?P<register_name>[a-zA-Z0-9_]+)/value\.json', UpdateMotorRegisterHandler),
+            (r'/sensor/(?P<motor_name>[a-zA-Z0-9_]+)/register/list\.json', MotorRegistersListHandler),
+
+            (r'/motor/(?P<motor_name>[a-zA-Z0-9_]+)/register/(?P<register_name>[a-zA-Z0-9_]+)/list\.json', MotorRegisterHandler),
+            (r'/sensor/(?P<motor_name>[a-zA-Z0-9_]+)/register/(?P<register_name>[a-zA-Z0-9_]+)/list\.json', MotorRegisterHandler),
+
+            (r'/motor/(?P<motor_name>[a-zA-Z0-9_]+)/register/(?P<register_name>[a-zA-Z0-9_]+)', MotorRegisterHandler),
+            (r'/sensor/(?P<motor_name>[a-zA-Z0-9_]+)/register/(?P<register_name>[a-zA-Z0-9_]+)', MotorRegisterHandler),
+
+            (r'/motor/(?P<motor_name>[a-zA-Z0-9_]+)/register/(?P<register_name>[a-zA-Z0-9_]+)/value\.json', UpdateMotorRegisterHandler),
+            (r'/sensor/(?P<motor_name>[a-zA-Z0-9_]+)/register/(?P<register_name>[a-zA-Z0-9_]+)/value\.json', UpdateMotorRegisterHandler),
+
             (r'/primitive/list\.json', PrimitivesListHandler),
             (r'/primitive/running/list\.json', RunningPrimitivesListHandler),
             (r'/primitive/(?P<primitive_name>[a-zA-Z0-9_]+)/start\.json', StartPrimitiveHandler),
@@ -295,10 +289,8 @@ class HTTPRobotServer(AbstractServer):
             (r'/primitive/(?P<primitive_name>[a-zA-Z0-9_]+)/resume\.json', ResumePrimitiveHandler),
             (r'/primitive/(?P<primitive_name>[a-zA-Z0-9_]+)/property/list\.json', PrimitivePropertiesListHandler),
             (r'/primitive/(?P<primitive_name>[a-zA-Z0-9_]+)/property/(?P<prop>[a-zA-Z0-9_]+)', PrimitivePropertyHandler),
-            # @TODO fix next route
             (r'/primitive/(?P<primitive_name>[a-zA-Z0-9_]+)/property/(?P<prop>[a-zA-Z0-9_]+)/value\.json', SetPrimitivePropertyHandler),
             (r'/primitive/(?P<primitive_name>[a-zA-Z0-9_]+)/method/list\.json', ListPrimitiveMethodsHandler),
-            # @TODO fix next route
             (r'/primitive/(?P<primitive_name>[a-zA-Z0-9_]+)/method/(?P<method_name>[a-zA-Z0-9_]+)/args\.json', CallPrimitiveMethodHandler),
             (r'/motors/register/(?P<register_name>[a-zA-Z0-9_]+)', MotorsRegistersHandler),
         ])
