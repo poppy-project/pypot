@@ -3,7 +3,11 @@ from __future__ import division
 import time
 import json
 
-from tornado import websocket, web, ioloop
+from threading import Timer
+
+from tornado.ioloop import IOLoop
+from tornado.websocket import WebSocketHandler
+from tornado.web import Application
 
 from .server import AbstractServer
 
@@ -34,7 +38,7 @@ class RepeatedTimer(object):
         self.is_running = False
 
 
-class ScratchSocketHandler(websocket.WebSocketHandler):
+class ScratchSocketHandler(WebSocketHandler):
 
     time_step = 1 / 30
 
@@ -49,16 +53,14 @@ class ScratchSocketHandler(websocket.WebSocketHandler):
 
     def on_close(self):
         if not self.quiet:
-            print('WebSocket connection closed: {0}'.format(reason))
+            print('WebSocket connection closed: {0}'.format(self.close_reason))
+        self.rt.stop()
 
     def on_message(self, message):
-        if isBinary:
-            return
-
         if not self.quiet:
-            print('{}: Received {}'.format(time.time(), payload))
+            print('{}: Received {}'.format(time.time(), message))
 
-        self.handle_command(json.loads(payload))
+        self.handle_command(json.loads(message))
 
     def publish_robot_state(self):
         state = {
@@ -69,13 +71,13 @@ class ScratchSocketHandler(websocket.WebSocketHandler):
                 'led': m.led,
                 'present_temperature': m.present_temperature,
             }
-            for m in robot.motors
+            for m in self.robot.motors
         }
-        self.sendMessage(json.dumps(state), False)
+        self.write_message(json.dumps(state))
 
     def handle_command(self, command):
         for motor, values in command.items():
-            m = getattr(robot, motor)
+            m = getattr(self.robot, motor)
 
             for register, value in values.items():
                 setattr(m, register, value)
@@ -84,10 +86,13 @@ class ScratchSocketHandler(websocket.WebSocketHandler):
 class ScratchRobotServer(AbstractServer):
     def __init__(self, robot, host='0.0.0.0', port='9009', quiet=False):
         AbstractServer.__init__(self, robot, host, port)
+        ScratchSocketHandler.robot = robot
+        ScratchSocketHandler.quiet = quiet
 
     def run(self):
+        loop = IOLoop()
         app = Application([
             (r'/', ScratchSocketHandler)
         ])
         app.listen(self.port)
-        tornado.ioloop.IOLoop.current().start()
+        loop.start()
