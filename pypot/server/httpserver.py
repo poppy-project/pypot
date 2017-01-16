@@ -2,18 +2,14 @@ import json
 import socket
 import errno
 import numpy
+import logging
 
-from tornado.wsgi import WSGIContainer
-from tornado.httpserver import HTTPServer
 from tornado.ioloop import IOLoop
 from tornado.web import RequestHandler
 from tornado.web import Application
 
+from bottle import request
 from bottle import response
-
-import rest
-import json
-import logging
 
 from .server import AbstractServer
 
@@ -49,7 +45,7 @@ class EnableCors(object):
             response.set_header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
             response.set_header('Access-Control-Allow-Headers', 'Origin, Accept, Content-Type, X-Requested-With, X-CSRF-Token')
 
-            if bottle.request.method != 'OPTIONS':
+            if request.method != 'OPTIONS':
                 # actual request; reply with the actual response
                 return fn(*args, **kwargs)
 
@@ -161,7 +157,7 @@ class MotorRegisterHandler(PoppyRequestHandler):
 class UpdateMotorRegisterHandler(PoppyRequestHandler):
     def post(self, motor_name, register_name):
         data = json.loads(self.request.body)
-        response = self.restful_robot.set_motor_register_value(motor_name, register_name, data)
+        self.restful_robot.set_motor_register_value(motor_name, register_name, data)
         self.write_json({})
 
 
@@ -214,11 +210,6 @@ class PrimitivePropertyHandler(PoppyRequestHandler):
         })
 
 
-# ????
-# @self.app.post('/primitive/<prim>/property/<prop>/value.json')
-# def set_primitive_property(prim, prop):
-#     rr.set_primitive_property(prim, prop,
-#                               bottle.request.json)
 class SetPrimitivePropertyHandler(PoppyRequestHandler):
     def post(self, primitive_name, prop):
         data = json.loads(self.request.body)
