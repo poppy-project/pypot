@@ -14,6 +14,6 @@ except ImportError:
     pass
 
 try:
-    from .scratch import ScratchRobotServer
+    from .ws import ScratchRobotServer
 except ImportError:
     pass
