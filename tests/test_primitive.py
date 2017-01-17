@@ -2,13 +2,18 @@ import unittest
 import random
 import time
 
-from poppy.creatures import PoppyErgoJr
+from pypot.creatures import PoppyErgoJr
 from pypot.primitive import LoopPrimitive
+
+from utils import get_open_port
 
 
 class TestPrimLifeCycle(unittest.TestCase):
     def setUp(self):
-        self.jr = PoppyErgoJr(simulator='poppy-simu')
+        self.jr = PoppyErgoJr(simulator='poppy-simu', http_port=get_open_port())
+
+    def tearDown(self):
+        self.jr.close()
 
     def tearDown(self):
         self.jr.close()
@@ -65,6 +70,7 @@ class TestPrimLifeCycle(unittest.TestCase):
 
     def test_start_stop_pause_resume_random_order(self):
         cmd = ['start', 'stop', 'pause', 'resume']
+
         for _ in range(10):
             getattr(self.jr.dance, random.choice(cmd))()
 

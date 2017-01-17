@@ -2,14 +2,18 @@ import unittest
 import requests
 import random
 
-from poppy.creatures import PoppyErgoJr
+from pypot.creatures import PoppyErgoJr
 from pypot.dynamixel.conversion import XL320LEDColors
+
+from utils import get_open_port
 
 
 class TestPrimTeardown(unittest.TestCase):
     def setUp(self):
-        self.jr = PoppyErgoJr(simulator='poppy-simu', use_snap=True)
-        self.base_url = 'http://127.0.0.1:6969'
+        port = get_open_port()
+
+        self.jr = PoppyErgoJr(simulator='poppy-simu', use_snap=True, snap_port=port)
+        self.base_url = 'http://127.0.0.1:{}'.format(port)
 
     def get(self, url):
         url = '{}{}'.format(self.base_url, url)
