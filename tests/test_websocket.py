@@ -1,18 +1,38 @@
+import json
+import time
 import unittest
 import websocket
-import json
 
 from pypot.creatures import PoppyErgoJr
 from utils import get_open_port
+
 
 class TestWebsocketsCommunication(unittest.TestCase):
     """docstring for TestWebsocketsCommunication"""
     def setUp(self):
         port = get_open_port()
         self.jr = PoppyErgoJr(simulator='poppy-simu', use_ws=True, ws_port=port)
+
         self.ws_url = 'ws://127.0.0.1:{}'.format(port)
-        self.ws = websocket.WebSocket()
-        self.ws.connect(self.ws_url)
+
+        while True:
+            try:
+                self.ws = websocket.WebSocket()
+                self.ws.connect(self.ws_url)
+                break
+            except ConnectionRefusedError:
+                time.sleep(1.0)
+
+    def tearDown(self):
+        self.ws.close()
+
+    def test_connected(self):
+        self.assertTrue(self.ws.connected)
+
+    def test_recv_state(self):
+        state = json.loads(self.ws.recv())
+        self.assertSetEqual(set(state.keys()),
+                            {m.name for m in self.jr.motors})
 
     def test_led(self):
         obj = {
