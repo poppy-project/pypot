@@ -32,6 +32,7 @@ class AbstractPoppyCreature(Robot):
                 use_snap=False, snap_host='0.0.0.0', snap_port=6969, snap_quiet=True,
                 use_http=False, http_host='0.0.0.0', http_port=8080, http_quiet=True,
                 use_remote=False, remote_host='0.0.0.0', remote_port=4242,
+                use_ws=False, ws_host='0.0.0.0', ws_port=9009,
                 start_background_services=True, sync=True,
                 **extra):
         """ Poppy Creature Factory.
@@ -139,6 +140,11 @@ class AbstractPoppyCreature(Robot):
             poppy_creature.remote = RemoteRobotServer(poppy_creature, remote_host, remote_port)
             print('RemoteRobotServer is now running on: http://{}:{}\n'.format(remote_host, remote_port))
 
+        if use_ws:
+            from pypot.server import WsRobotServer
+            poppy_creature.ws = WsRobotServer(poppy_creature, ws_host, ws_port)
+            print('Ws server is now running on: ws://{}:{}\n'.format(ws_host, ws_port))
+
         cls.setup(poppy_creature)
 
         if start_background_services:
@@ -147,7 +153,7 @@ class AbstractPoppyCreature(Robot):
         return poppy_creature
 
     @classmethod
-    def start_background_services(cls, robot, services=['snap', 'http', 'remote']):
+    def start_background_services(cls, robot, services=['snap', 'http', 'remote', 'ws']):
         for service in services:
             if hasattr(robot, service):
                 s = Thread(target=getattr(robot, service).run,
