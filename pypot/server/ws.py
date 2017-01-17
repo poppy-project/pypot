@@ -38,7 +38,7 @@ class RepeatedTimer(object):
         self.is_running = False
 
 
-class ScratchSocketHandler(WebSocketHandler):
+class WsSocketHandler(WebSocketHandler):
 
     time_step = 1 / 30
 
@@ -83,16 +83,16 @@ class ScratchSocketHandler(WebSocketHandler):
                 setattr(m, register, value)
 
 
-class ScratchRobotServer(AbstractServer):
+class WsRobotServer(AbstractServer):
     def __init__(self, robot, host='0.0.0.0', port='9009', quiet=False):
         AbstractServer.__init__(self, robot, host, port)
-        ScratchSocketHandler.robot = robot
-        ScratchSocketHandler.quiet = quiet
+        WsSocketHandler.robot = robot
+        WsSocketHandler.quiet = quiet
 
     def run(self):
         loop = IOLoop()
         app = Application([
-            (r'/', ScratchSocketHandler)
+            (r'/', WsSocketHandler)
         ])
         app.listen(self.port)
         loop.start()
