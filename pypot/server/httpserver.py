@@ -8,9 +8,6 @@ from tornado.ioloop import IOLoop
 from tornado.web import RequestHandler
 from tornado.web import Application
 
-from bottle import request
-from bottle import response
-
 from .server import AbstractServer
 
 logger = logging.getLogger(__name__)
@@ -28,42 +25,6 @@ class MyJSONEncoder(json.JSONEncoder):
             return list(obj)
 
         return json.JSONEncoder.default(self, obj)
-
-
-class EnableCors(object):
-
-    """Enable CORS (Cross-Origin Resource Sharing) headers"""
-    name = 'enable_cors'
-    api = 2
-
-    def __init__(self, origin="*"):
-        self.origin = origin
-
-    def apply(self, fn, context):
-        def _enable_cors(*args, **kwargs):
-            response.set_header('Access-Control-Allow-Origin', self.origin)
-            response.set_header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
-            response.set_header('Access-Control-Allow-Headers', 'Origin, Accept, Content-Type, X-Requested-With, X-CSRF-Token')
-
-            if request.method != 'OPTIONS':
-                # actual request; reply with the actual response
-                return fn(*args, **kwargs)
-
-        return _enable_cors
-
-
-class CacheBuster(object):
-    """Add response headers to disable cache"""
-
-    name = 'cache_buster'
-    api = 2
-
-    def apply(self, fn, context):
-        def _ext(*args, **kwargs):
-            response.set_header('Cache-control', 'no-store')
-            return fn(*args, **kwargs)
-
-        return _ext
 
 
 class PoppyRequestHandler(RequestHandler):
