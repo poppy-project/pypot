@@ -1,6 +1,6 @@
 import os
 import re
-import cgi
+import html
 import numpy
 import errno
 import shutil
@@ -160,7 +160,7 @@ class SnapRobotServer(AbstractServer):
 
         @self.app.get('/')
         def get_sitemap():
-            return '</br>'.join([cgi.escape(r.rule.format()) for r in self.app.routes])
+            return '</br>'.join([html.escape(r.rule.format()) for r in self.app.routes])
 
         @self.app.get('/motors/<alias>')
         def get_motors(alias):
