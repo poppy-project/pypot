@@ -39,11 +39,11 @@ setup(name='pypot',
       install_requires=install_requires,
 
       extras_require={
-        'doc': ['sphinx', 'sphinxjp.themes.basicstrap', 'sphinx-bootstrap-theme'],
-        'zmq-server': ['zmq'],
-        'remote-robot': ['zerorpc'],
-        'camera': ['hampy', 'zmq'],  # Extras require: opencv (not a PyPi packet)
-        'tests': ['requests', 'websocket-client', 'poppy-ergo-jr'],
+          'doc': ['sphinx', 'sphinxjp.themes.basicstrap', 'sphinx-bootstrap-theme'],
+          'zmq-server': ['zmq'],
+          'remote-robot': ['zerorpc'],
+          'camera': ['hampy', 'zmq'],  # Extras require: opencv (not a PyPi packet)
+          'tests': ['requests', 'websocket-client', 'poppy-ergo-jr'],
       },
 
       entry_points={

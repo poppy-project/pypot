@@ -5,9 +5,9 @@ set +e
 # Pep8 tests
 if [[ "$PEP8_CAUSE_FAILLURE" == "true" ]]; then
   set -e
-  pip install pyflakes
+  pip install flake8
   cat setup.cfg
-  pyflakes .
+  flake8 --statistics --count .
 # Else unit and integration tests
 else
     set -e
