@@ -1,6 +1,6 @@
 import os
 import re
-import html
+import sys
 import numpy
 import errno
 import shutil
@@ -23,6 +23,13 @@ from ..utils.appdirs import user_data_dir
 
 
 logger = logging.getLogger(__name__)
+
+if sys.version_info < (3, 2):
+    import cgi
+    escape = cgi.escape
+else:
+    import html
+    escape = html.escape
 
 
 def get_snap_user_projects_directory():
@@ -160,7 +167,7 @@ class SnapRobotServer(AbstractServer):
 
         @self.app.get('/')
         def get_sitemap():
-            return '</br>'.join([html.escape(r.rule.format()) for r in self.app.routes])
+            return '</br>'.join([escape(r.rule.format()) for r in self.app.routes])
 
         @self.app.get('/motors/<alias>')
         def get_motors(alias):
