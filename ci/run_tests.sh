@@ -46,8 +46,8 @@ else
     popd
 
     pushd tests
-        pip install coverage requests websocket-client
         pip install --pre poppy-ergo-jr
+        pip install -e ..[tests]
         python -m unittest discover
     popd
 fi

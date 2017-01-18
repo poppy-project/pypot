@@ -1,1 +1,4 @@
-from .sensor import KinectSensor
+try:
+    from .sensor import KinectSensor
+except ImportError:
+    pass
