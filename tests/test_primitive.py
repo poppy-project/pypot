@@ -15,9 +15,6 @@ class TestPrimLifeCycle(unittest.TestCase):
     def tearDown(self):
         self.jr.close()
 
-    def tearDown(self):
-        self.jr.close()
-
     def test_teardown(self):
         self.jr.dance.start()
         time.sleep(random.random() * 5)
