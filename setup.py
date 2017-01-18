@@ -20,6 +20,7 @@ install_requires = ['numpy',
                     'pyserial>2.6',
                     'tornado',
                     'scipy',
+                    'bottle',
                     ]
 
 if sys.version_info < (2, 7):
