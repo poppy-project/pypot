@@ -4,8 +4,6 @@ import unittest
 from pypot.creatures import PoppyErgoJr
 from pypot.primitive import LoopPrimitive
 
-from utils import get_open_port
-
 
 class EmptyPrim(LoopPrimitive):
     def setup(self):
@@ -20,7 +18,7 @@ class EmptyPrim(LoopPrimitive):
 
 class TestDummy(unittest.TestCase):
     def setUp(self):
-        self.jr = PoppyErgoJr(simulator='poppy-simu', http_port=get_open_port())
+        self.jr = PoppyErgoJr(simulator='poppy-simu')
 
     def test_dummy_controller(self):
         for m in self.jr.motors:
