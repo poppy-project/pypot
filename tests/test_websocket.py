@@ -1,3 +1,4 @@
+import sys
 import json
 import time
 import unittest
@@ -5,6 +6,11 @@ import websocket
 
 from pypot.creatures import PoppyErgoJr
 from utils import get_open_port
+
+
+if sys.version_info[0] < 3:
+    import socket
+    ConnectionError = socket.error
 
 
 class TestWebsocketsCommunication(unittest.TestCase):
@@ -20,7 +26,7 @@ class TestWebsocketsCommunication(unittest.TestCase):
                 self.ws = websocket.WebSocket()
                 self.ws.connect(self.ws_url)
                 break
-            except ConnectionRefusedError:
+            except ConnectionError:
                 time.sleep(1.0)
 
     def tearDown(self):
