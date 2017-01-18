@@ -106,10 +106,10 @@ class AbstractPoppyCreature(Robot):
             for _ in range(MAX_SETUP_TRIALS):
                 try:
                     poppy_creature = from_json(config, sync, **extra)
-                    print('Init successful')
+                    logger.info('Init successful')
                     break
                 except Exception as e:
-                    print('Fail: {}'.format(str(e)))
+                    logger.warning('Init fail: {}'.format(str(e)))
             poppy_creature.simulated = False
 
         with open(config) as f:
@@ -125,24 +125,24 @@ class AbstractPoppyCreature(Robot):
             snap_url = 'http://snap.berkeley.edu/snapsource/snap.html'
             block_url = 'http://{}:{}/snap-blocks.xml'.format(find_local_ip(), snap_port)
             url = '{}#open:{}'.format(snap_url, block_url)
-            print('SnapRobotServer is now running on: http://{}:{}\n'.format(snap_host, snap_port))
-            print('You can open Snap! interface with loaded blocks at "{}"\n'.format(url))
+            logger.info('SnapRobotServer is now running on: http://{}:{}\n'.format(snap_host, snap_port))
+            logger.info('You can open Snap! interface with loaded blocks at "{}"\n'.format(url))
 
         if use_http:
             from pypot.server.httpserver import HTTPRobotServer
             poppy_creature.http = HTTPRobotServer(poppy_creature, http_host, http_port,
                                                   cross_domain_origin="*", quiet=http_quiet)
-            print('HTTPRobotServer is now running on: http://{}:{}\n'.format(http_host, http_port))
+            logger.info('HTTPRobotServer is now running on: http://{}:{}\n'.format(http_host, http_port))
 
         if use_remote:
             from pypot.server import RemoteRobotServer
             poppy_creature.remote = RemoteRobotServer(poppy_creature, remote_host, remote_port)
-            print('RemoteRobotServer is now running on: http://{}:{}\n'.format(remote_host, remote_port))
+            logger.info('RemoteRobotServer is now running on: http://{}:{}\n'.format(remote_host, remote_port))
 
         if use_ws:
             from pypot.server import WsRobotServer
             poppy_creature.ws = WsRobotServer(poppy_creature, ws_host, ws_port)
-            print('Ws server is now running on: ws://{}:{}\n'.format(ws_host, ws_port))
+            logger.info('Ws server is now running on: ws://{}:{}\n'.format(ws_host, ws_port))
 
         cls.setup(poppy_creature)
 

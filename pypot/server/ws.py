@@ -39,7 +39,6 @@ class RepeatedTimer(object):
 
 
 class WsSocketHandler(WebSocketHandler):
-
     time_step = 1 / 30
 
     def check_origin(self, origin):
@@ -84,7 +83,7 @@ class WsSocketHandler(WebSocketHandler):
 
 
 class WsRobotServer(AbstractServer):
-    def __init__(self, robot, host='0.0.0.0', port='9009', quiet=False):
+    def __init__(self, robot, host='0.0.0.0', port='9009', quiet=True):
         AbstractServer.__init__(self, robot, host, port)
         WsSocketHandler.robot = robot
         WsSocketHandler.quiet = quiet
