@@ -43,6 +43,14 @@ matrix:
       python: 3.4 # For travis UI only
       language: objective-c
       env: TRAVIS_OS_NAME=osx TRAVIS_PYTHON_VERSION=3.4
+    - os: osx
+      python: 3.5 # For travis UI only
+      language: objective-c
+      env: TRAVIS_OS_NAME=osx TRAVIS_PYTHON_VERSION=3.5
+    - os: osx
+      python: 3.6 # For travis UI only
+      language: objective-c
+      env: TRAVIS_OS_NAME=osx TRAVIS_PYTHON_VERSION=3.6
 
     # Linux VM
     - python: 2.7
@@ -58,7 +66,11 @@ matrix:
       language: python
       os: linux
 
-    - python: 2.7
+    - python: 3.6
+      language: python
+      os: linux
+
+    - python: 3.6
       language: python
       os: linux
       env: PEP8_CAUSE_FAILLURE=true
