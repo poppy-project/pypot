@@ -9,5 +9,6 @@ class TestIK(unittest.TestCase):
         self.jr.close()
         # TODO: We should also make a unit test with a real/vrep robot.
 
+
 if __name__ == '__main__':
     unittest.main()
