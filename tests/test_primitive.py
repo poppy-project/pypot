@@ -2,6 +2,8 @@ import unittest
 import random
 import time
 
+from threading import Event
+
 from pypot.creatures import PoppyErgoJr
 from pypot.primitive import LoopPrimitive
 
@@ -29,6 +31,8 @@ class TestPrimLifeCycle(unittest.TestCase):
                 self.current_state = False
                 self.old_state = self.current_state
 
+                self.switched = Event()
+
             def update(self):
                 if self.current_state != self.old_state:
                     for m in self.robot.motors:
@@ -36,6 +40,8 @@ class TestPrimLifeCycle(unittest.TestCase):
                                          'red' if self.current_state else 'off')
 
                     self.old_state = self.current_state
+
+                    self.switched.set()
 
         p = Switcher(self.jr, 10)
         p.start()
@@ -48,8 +54,9 @@ class TestPrimLifeCycle(unittest.TestCase):
         self.assertEqual([m.led for m in self.jr.motors],
                          ['off', 'off', 'pink', 'off', 'off', 'off'])
 
+        p.switched.clear()
         p.current_state = not p.current_state
-        time.sleep(.3)
+        p.switched.wait()
 
         self.assertEqual([m.led for m in self.jr.motors],
                          ['red', 'red', 'red', 'red', 'red', 'red'])
