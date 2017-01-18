@@ -15,6 +15,14 @@ class TestPrimTeardown(unittest.TestCase):
         self.jr = PoppyErgoJr(simulator='poppy-simu', use_snap=True, snap_port=port)
         self.base_url = 'http://127.0.0.1:{}'.format(port)
 
+        # Make sure the Snap API is running before actually testing.
+        while True:
+            try:
+                self.get('/')
+                break
+            except requests.exceptions.ConnectionError:
+                time.sleep(1)
+
     def get(self, url):
         url = '{}{}'.format(self.base_url, url)
         return requests.get(url)
