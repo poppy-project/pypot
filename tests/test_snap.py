@@ -1,6 +1,7 @@
 import unittest
 import requests
 import random
+import time
 
 from pypot.creatures import PoppyErgoJr
 from pypot.dynamixel.conversion import XL320LEDColors
@@ -8,7 +9,7 @@ from pypot.dynamixel.conversion import XL320LEDColors
 from utils import get_open_port
 
 
-class TestPrimTeardown(unittest.TestCase):
+class TestSnap(unittest.TestCase):
     def setUp(self):
         port = get_open_port()
 
