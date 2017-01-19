@@ -44,12 +44,15 @@ def poppy_params_from_args(args):
         'snap_port': args.snap_port,
         'use_http': args.http,
         'http_port': args.http_port,
-        'use_remote': args.remote
+        'use_remote': args.remote,
+        'use_ws': args.ws,
+        'ws_port': args.ws_port,
     }
 
     if args.verbose:
         params['snap_quiet'] = False
         params['http_quiet'] = False
+        params['ws_quiet'] = False
 
     if args.vrep:
         params['simulator'] = 'vrep'
@@ -100,6 +103,9 @@ Examples:
     parser.add_argument('--remote',
                         help='start a remote robot server',
                         action='store_true')
+    parser.add_argument('--ws',
+                        help='start the websocket server',
+                        action='store_true')
     parser.add_argument('--disable-camera',
                         help='Start the robot without the camera.',
                         action='store_true')
@@ -139,6 +145,7 @@ Examples:
     if args.verbose:
         args.snap_quiet = False
         args.http_quiet = False
+        args.ws_quiet = False
 
         if args.verbose == 1:
             lvl = logging.WARNING
@@ -157,7 +164,7 @@ Examples:
         ch.setFormatter(formatter)
         logging.getLogger('').addHandler(ch)
 
-    if not any([args.snap, args.http, args.remote, args.poppy_simu]):
+    if not any([args.snap, args.http, args.remote, args.poppy_simu, args.ws]):
         print('No service specified! See --help for details.')
         sys.exit(1)
 
