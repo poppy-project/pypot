@@ -9,6 +9,7 @@ class AbstractServer(object):
     def run(self):
         raise NotImplementedError
 
+
 try:
     import zerorpc
 

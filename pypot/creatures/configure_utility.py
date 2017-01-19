@@ -65,5 +65,6 @@ def main():
     ]
     call(['dxl-config'] + map(str, args))
 
+
 if __name__ == '__main__':
     main()

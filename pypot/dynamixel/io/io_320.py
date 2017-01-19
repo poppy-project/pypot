@@ -243,5 +243,6 @@ def _add_control(name,
 
     Dxl320IO._generate_accessors(control)
 
+
 for name, args in controls.items():
     _add_control(name, **args)

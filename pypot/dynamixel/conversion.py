@@ -114,10 +114,12 @@ def dxl_to_pid(value, model):
 
 
 def pid_to_dxl(value, model):
-    truncate = lambda x: int(max(0, min(x, 254)))
+    def truncate(x):
+        return int(max(0, min(x, 254)))
     return [truncate(x * y) for x, y in zip(value, (250, 2.048, 8.0))]
 
 # MARK: - Model
+
 
 dynamixelModels = {
     12: 'AX-12',    # 12 + (0<<8)
@@ -151,6 +153,7 @@ def drive_mode_to_dxl(value, model):
     return (int('slave' in value) << 1 | int('reverse' in value))
 
 # MARK: - Baudrate
+
 
 dynamixelBaudrates = {
     1: 1000000.0,
@@ -210,6 +213,7 @@ def voltage_to_dxl(value, model):
 
 # MARK: - Status Return Level
 
+
 status_level = ('never', 'read', 'always')
 
 
@@ -225,6 +229,8 @@ def status_to_dxl(value, model):
 # MARK: - Error
 
 # TODO: depend on protocol v1 vs v2
+
+
 dynamixelErrors = ['None Error',
                    'Instruction Error',
                    'Overload Error',
@@ -265,14 +271,20 @@ def led_color_to_dxl(value, model):
     value = int(value) & 0b111
     return value
 
+
 control_modes = {
     1: 'wheel',
     2: 'joint',
 }
 
-dxl_to_control_mode = lambda value, _: control_modes[value]
-control_mode_to_dxl = lambda mode, _: (next((v for v, m in control_modes.items()
-                                             if m == mode), None))
+
+def dxl_to_control_mode(value, _):
+    return control_modes[value]
+
+
+def control_mode_to_dxl(mode, _):
+    return (next((v for v, m in control_modes.items()
+                  if m == mode), None))
 
 # MARK: - Various utility functions
 
