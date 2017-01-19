@@ -110,6 +110,8 @@ class AbstractPoppyCreature(Robot):
                     break
                 except Exception as e:
                     logger.warning('Init fail: {}'.format(str(e)))
+            else:
+                raise OSError('Could not initalize robot!')
             poppy_creature.simulated = False
 
         with open(config) as f:
