@@ -74,6 +74,7 @@ addons:
       - dvipng
 
 before_install:
+  - rvm get head
   - . ./ci/before_install.sh
 
 install:
