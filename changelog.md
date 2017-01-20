@@ -31,7 +31,7 @@
 * Fix offset/orientation issue in DummyController
 * Fix hostname resolution
 * Make initialization of synchronization loop more robust
-
+* Fix #155: Closing a DummyRobot raises an issue
 
 ## V 2.10
 ### Features
