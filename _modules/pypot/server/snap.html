@@ -9,7 +9,7 @@
   <head>
     <meta charset="utf-8" />
     
-    <title>pypot.server.snap &mdash; pypot 2.11.10 documentation</title>
+    <title>pypot.server.snap &mdash; pypot 3.0.0.rc1 documentation</title>
     <meta name="description" content="">
     <meta name="author" content="">
 
@@ -35,7 +35,7 @@
 <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
             URL_ROOT:    '../../../',
-            VERSION:     '2.11.10',
+            VERSION:     '3.0.0.rc1',
             COLLAPSE_INDEX: false,
             FILE_SUFFIX: '.html',
             HAS_SOURCE:  true
@@ -53,7 +53,7 @@
     <link rel="author" title="About these documents" href="../../../about.html" />
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
-    <link rel="top" title="pypot 2.11.10 documentation" href="../../../index.html" />
+    <link rel="top" title="pypot 3.0.0.rc1 documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body role="document">
@@ -66,7 +66,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="../../../index.html">pypot 2.11.10 documentation</a>
+          <a class="navbar-brand" href="../../../index.html">pypot 3.0.0.rc1 documentation</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
@@ -139,7 +139,7 @@
   <h1>Source code for pypot.server.snap</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">re</span>
-<span class="kn">import</span> <span class="nn">cgi</span>
+<span class="kn">import</span> <span class="nn">sys</span>
 <span class="kn">import</span> <span class="nn">numpy</span>
 <span class="kn">import</span> <span class="nn">errno</span>
 <span class="kn">import</span> <span class="nn">shutil</span>
@@ -151,15 +151,24 @@
 <span class="kn">from</span> <span class="nn">tornado.httpserver</span> <span class="k">import</span> <span class="n">HTTPServer</span>
 <span class="kn">from</span> <span class="nn">tornado.ioloop</span> <span class="k">import</span> <span class="n">IOLoop</span>
 
+<span class="kn">from</span> <span class="nn">bottle</span> <span class="k">import</span> <span class="n">request</span>
+<span class="kn">from</span> <span class="nn">bottle</span> <span class="k">import</span> <span class="n">response</span>
+
 <span class="kn">from</span> <span class="nn">contextlib</span> <span class="k">import</span> <span class="n">closing</span>
 <span class="kn">from</span> <span class="nn">ast</span> <span class="k">import</span> <span class="n">literal_eval</span> <span class="k">as</span> <span class="n">make_tuple</span>
 
 <span class="kn">from</span> <span class="nn">.server</span> <span class="k">import</span> <span class="n">AbstractServer</span>
-<span class="kn">from</span> <span class="nn">.httpserver</span> <span class="k">import</span> <span class="n">EnableCors</span>
 <span class="kn">from</span> <span class="nn">..utils.appdirs</span> <span class="k">import</span> <span class="n">user_data_dir</span>
 
 
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="n">__name__</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">version_info</span> <span class="o">&lt;</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">):</span>
+    <span class="kn">import</span> <span class="nn">cgi</span>
+    <span class="n">escape</span> <span class="o">=</span> <span class="n">cgi</span><span class="o">.</span><span class="n">escape</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">html</span>
+    <span class="n">escape</span> <span class="o">=</span> <span class="n">html</span><span class="o">.</span><span class="n">escape</span>
 
 
 <div class="viewcode-block" id="get_snap_user_projects_directory"><a class="viewcode-back" href="../../../pypot.server.html#pypot.server.snap.get_snap_user_projects_directory">[docs]</a><span class="k">def</span> <span class="nf">get_snap_user_projects_directory</span><span class="p">():</span>
@@ -236,6 +245,42 @@
     <span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="n">localdir</span><span class="p">)</span></div>
 
 
+<div class="viewcode-block" id="EnableCors"><a class="viewcode-back" href="../../../pypot.server.html#pypot.server.snap.EnableCors">[docs]</a><span class="k">class</span> <span class="nc">EnableCors</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;Enable CORS (Cross-Origin Resource Sharing) headers&quot;&quot;&quot;</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;enable_cors&#39;</span>
+    <span class="n">api</span> <span class="o">=</span> <span class="mi">2</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="s1">&#39;*&#39;</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">origin</span> <span class="o">=</span> <span class="n">origin</span>
+
+<div class="viewcode-block" id="EnableCors.apply"><a class="viewcode-back" href="../../../pypot.server.html#pypot.server.snap.EnableCors.apply">[docs]</a>    <span class="k">def</span> <span class="nf">apply</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fn</span><span class="p">,</span> <span class="n">context</span><span class="p">):</span>
+        <span class="k">def</span> <span class="nf">_enable_cors</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+            <span class="n">response</span><span class="o">.</span><span class="n">set_header</span><span class="p">(</span><span class="s1">&#39;Access-Control-Allow-Origin&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">origin</span><span class="p">)</span>
+            <span class="n">response</span><span class="o">.</span><span class="n">set_header</span><span class="p">(</span><span class="s1">&#39;Access-Control-Allow-Methods&#39;</span><span class="p">,</span> <span class="s1">&#39;GET, POST, PUT, DELETE, OPTIONS&#39;</span><span class="p">)</span>
+            <span class="n">response</span><span class="o">.</span><span class="n">set_header</span><span class="p">(</span><span class="s1">&#39;Access-Control-Allow-Headers&#39;</span><span class="p">,</span> <span class="s1">&#39;Origin, Accept, Content-Type, X-Requested-With, X-CSRF-Token&#39;</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">!=</span> <span class="s1">&#39;OPTIONS&#39;</span><span class="p">:</span>
+                <span class="c1"># actual request; reply with the actual response</span>
+                <span class="k">return</span> <span class="n">fn</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">_enable_cors</span></div></div>
+
+
+<div class="viewcode-block" id="CacheBuster"><a class="viewcode-back" href="../../../pypot.server.html#pypot.server.snap.CacheBuster">[docs]</a><span class="k">class</span> <span class="nc">CacheBuster</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Add response headers to disable cache&quot;&quot;&quot;</span>
+
+    <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;cache_buster&#39;</span>
+    <span class="n">api</span> <span class="o">=</span> <span class="mi">2</span>
+
+<div class="viewcode-block" id="CacheBuster.apply"><a class="viewcode-back" href="../../../pypot.server.html#pypot.server.snap.CacheBuster.apply">[docs]</a>    <span class="k">def</span> <span class="nf">apply</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fn</span><span class="p">,</span> <span class="n">context</span><span class="p">):</span>
+        <span class="k">def</span> <span class="nf">_ext</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+            <span class="n">response</span><span class="o">.</span><span class="n">set_header</span><span class="p">(</span><span class="s1">&#39;Cache-control&#39;</span><span class="p">,</span> <span class="s1">&#39;no-store&#39;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">fn</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">_ext</span></div></div>
+
+
 <div class="viewcode-block" id="SnapRobotServer"><a class="viewcode-back" href="../../../pypot.server.html#pypot.server.snap.SnapRobotServer">[docs]</a><span class="k">class</span> <span class="nc">SnapRobotServer</span><span class="p">(</span><span class="n">AbstractServer</span><span class="p">):</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">robot</span><span class="p">,</span> <span class="n">host</span><span class="o">=</span><span class="s1">&#39;0.0.0.0&#39;</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="s1">&#39;6969&#39;</span><span class="p">,</span> <span class="n">quiet</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
@@ -243,8 +288,9 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">quiet</span> <span class="o">=</span> <span class="n">quiet</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">app</span> <span class="o">=</span> <span class="n">bottle</span><span class="o">.</span><span class="n">Bottle</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">install</span><span class="p">(</span><span class="n">EnableCors</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">install</span><span class="p">(</span><span class="n">CacheBuster</span><span class="p">())</span>
 
-        <span class="n">rr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">restfull_robot</span>
+        <span class="n">rr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">restful_robot</span>
 
         <span class="c1"># Copy Snap files from system directory to user directory. It avoids</span>
         <span class="c1"># right issue while PyPot is installed from pip in an admin directory</span>
@@ -260,7 +306,7 @@
 
         <span class="nd">@self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)</span>
         <span class="k">def</span> <span class="nf">get_sitemap</span><span class="p">():</span>
-            <span class="k">return</span> <span class="s1">&#39;&lt;/br&gt;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">cgi</span><span class="o">.</span><span class="n">escape</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">rule</span><span class="o">.</span><span class="n">format</span><span class="p">())</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">routes</span><span class="p">])</span>
+            <span class="k">return</span> <span class="s1">&#39;&lt;/br&gt;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">escape</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">rule</span><span class="o">.</span><span class="n">format</span><span class="p">())</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">routes</span><span class="p">])</span>
 
         <span class="nd">@self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;/motors/&lt;alias&gt;&#39;</span><span class="p">)</span>
         <span class="k">def</span> <span class="nf">get_motors</span><span class="p">(</span><span class="n">alias</span><span class="p">):</span>
@@ -287,7 +333,7 @@
         <span class="nd">@self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;/motors/&lt;motors&gt;/get/&lt;register&gt;&#39;</span><span class="p">)</span>
         <span class="k">def</span> <span class="nf">get_motors_registers</span><span class="p">(</span><span class="n">motors</span><span class="p">,</span> <span class="n">register</span><span class="p">):</span>
             <span class="sd">&quot;&quot;&quot; Allow getting of motors register with a single http request</span>
-<span class="sd">                Be carefull: with lot of motors, it could overlap the GET max</span>
+<span class="sd">                Be careful: with a lot of motors, it could overlap the GET max</span>
 <span class="sd">                    lentgh of your web browser</span>
 <span class="sd">                &quot;&quot;&quot;</span>
             <span class="n">motors</span> <span class="o">=</span> <span class="n">motors</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;;&#39;</span><span class="p">)</span>
@@ -296,7 +342,7 @@
         <span class="nd">@self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;/motors/set/goto/&lt;motors_position_duration&gt;&#39;</span><span class="p">)</span>
         <span class="k">def</span> <span class="nf">set_motors_goto</span><span class="p">(</span><span class="n">motors_position_duration</span><span class="p">):</span>
             <span class="sd">&quot;&quot;&quot; Allow lot of motors position settings with a single http request</span>
-<span class="sd">                Be carefull: with lot of motors, it could overlap the GET max</span>
+<span class="sd">                Be careful: with a lot of motors, it could overlap the GET max</span>
 <span class="sd">                    lentgh of your web browser</span>
 <span class="sd">                &quot;&quot;&quot;</span>
             <span class="k">for</span> <span class="n">m_settings</span> <span class="ow">in</span> <span class="n">motors_position_duration</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;;&#39;</span><span class="p">):</span>
@@ -307,7 +353,7 @@
         <span class="nd">@self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;/motors/set/registers/&lt;motors_register_value&gt;&#39;</span><span class="p">)</span>
         <span class="k">def</span> <span class="nf">set_motors_registers</span><span class="p">(</span><span class="n">motors_register_value</span><span class="p">):</span>
             <span class="sd">&quot;&quot;&quot; Allow lot of motors register settings with a single http request</span>
-<span class="sd">                Be carefull: with lot of motors, it could overlap the GET max</span>
+<span class="sd">                Be careful: with a lot of motors, it could overlap the GET max</span>
 <span class="sd">                    lentgh of your web browser</span>
 <span class="sd">                &quot;&quot;&quot;</span>
             <span class="k">for</span> <span class="n">m_settings</span> <span class="ow">in</span> <span class="n">motors_register_value</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;;&#39;</span><span class="p">):</span>
@@ -317,7 +363,7 @@
                 <span class="n">rr</span><span class="o">.</span><span class="n">set_motor_register_value</span><span class="p">(</span><span class="n">motor</span><span class="p">,</span> <span class="n">register</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
             <span class="k">return</span> <span class="s1">&#39;Done!&#39;</span>
 
-        <span class="c1"># TODO : delete ?</span>
+        <span class="c1"># TODO: delete ?</span>
         <span class="nd">@self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;/motors/set/positions/&lt;positions&gt;&#39;</span><span class="p">)</span>
         <span class="k">def</span> <span class="nf">set_motors_positions</span><span class="p">(</span><span class="n">positions</span><span class="p">):</span>
             <span class="n">positions</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">s</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">s</span><span class="p">),</span> <span class="n">positions</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;;&#39;</span><span class="p">))</span>
@@ -413,7 +459,7 @@
                 <span class="n">kwargs</span> <span class="o">=</span> <span class="p">{}</span>
             <span class="k">return</span> <span class="n">rr</span><span class="o">.</span><span class="n">_call_primitive_method</span><span class="p">(</span><span class="n">primitive</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
-        <span class="c1"># Hacks (no restfull) to record movements</span>
+        <span class="c1"># Hacks (no restful) to record movements</span>
         <span class="nd">@self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;/primitive/MoveRecorder/&lt;move_name&gt;/start&#39;</span><span class="p">)</span>
         <span class="k">def</span> <span class="nf">start_move_recorder</span><span class="p">(</span><span class="n">move_name</span><span class="p">):</span>
             <span class="n">rr</span><span class="o">.</span><span class="n">start_move_recorder</span><span class="p">(</span><span class="n">move_name</span><span class="p">)</span>
@@ -494,7 +540,7 @@
         <span class="k">def</span> <span class="nf">ik_goto</span><span class="p">(</span><span class="n">chain</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">duration</span><span class="p">):</span>
             <span class="n">c</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">rr</span><span class="o">.</span><span class="n">robot</span><span class="p">,</span> <span class="n">chain</span><span class="p">)</span>
             <span class="n">c</span><span class="o">.</span><span class="n">goto</span><span class="p">([</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">],</span> <span class="n">duration</span><span class="p">,</span> <span class="n">wait</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-            <span class="k">return</span> <span class="s2">&quot;Done !&quot;</span>
+            <span class="k">return</span> <span class="s1">&#39;Done !&#39;</span>
 
 <div class="viewcode-block" id="SnapRobotServer.run"><a class="viewcode-back" href="../../../pypot.server.html#pypot.server.snap.SnapRobotServer.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">quiet</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">server</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Start the tornado server, run forever.</span>
@@ -530,7 +576,7 @@
 <div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
   <div class="navbar-inner">
     <ul class="nav navbar-nav ">
-        <li><a href="../../../index.html">pypot 2.11.10 documentation</a></li>
+        <li><a href="../../../index.html">pypot 3.0.0.rc1 documentation</a></li>
     </ul>
 <ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
       

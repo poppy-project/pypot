@@ -10,7 +10,7 @@
   <head>
     <meta charset="utf-8" />
     
-    <title>Index &mdash; pypot 2.11.10 documentation</title>
+    <title>Index &mdash; pypot 3.0.0.rc1 documentation</title>
     <meta name="description" content="">
     <meta name="author" content="">
 
@@ -36,7 +36,7 @@
 <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
             URL_ROOT:    './',
-            VERSION:     '2.11.10',
+            VERSION:     '3.0.0.rc1',
             COLLAPSE_INDEX: false,
             FILE_SUFFIX: '.html',
             HAS_SOURCE:  true
@@ -54,7 +54,7 @@
     <link rel="author" title="About these documents" href="about.html" />
     <link rel="index" title="Index" href="#" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="top" title="pypot 2.11.10 documentation" href="index.html" /> 
+    <link rel="top" title="pypot 3.0.0.rc1 documentation" href="index.html" /> 
   </head>
   <body role="document">
     <div id="navbar-top" class="navbar navbar-fixed-top navbar-default" role="navigation" aria-label="top navigation">
@@ -66,7 +66,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="index.html">pypot 2.11.10 documentation</a>
+          <a class="navbar-brand" href="index.html">pypot 3.0.0.rc1 documentation</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
@@ -193,20 +193,28 @@
 </li>
       <li><a href="pypot.primitive.html#pypot.primitive.move.MoveRecorder.add_tracked_motors">add_tracked_motors() (pypot.primitive.move.MoveRecorder method)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="pypot.primitive.html#pypot.primitive.primitive.Primitive.affect_once">affect_once() (pypot.primitive.primitive.Primitive method)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="pypot.dynamixel.html#pypot.dynamixel.conversion.alarm_to_dxl">alarm_to_dxl() (in module pypot.dynamixel.conversion)</a>
 </li>
       <li><a href="pypot.primitive.html#pypot.primitive.utils.Sinus.amplitude">amplitude (pypot.primitive.utils.Sinus attribute)</a>
 </li>
       <li><a href="pypot.dynamixel.html#pypot.dynamixel.controller.AngleLimitRegisterController">AngleLimitRegisterController (class in pypot.dynamixel.controller)</a>
 </li>
-      <li><a href="pypot.server.html#pypot.server.httpserver.EnableCors.api">api (pypot.server.httpserver.EnableCors attribute)</a>
+      <li><a href="pypot.server.html#pypot.server.snap.CacheBuster.api">api (pypot.server.snap.CacheBuster attribute)</a>
+
+      <ul>
+        <li><a href="pypot.server.html#pypot.server.snap.EnableCors.api">(pypot.server.snap.EnableCors attribute)</a>
 </li>
-      <li><a href="pypot.server.html#pypot.server.httpserver.EnableCors.apply">apply() (pypot.server.httpserver.EnableCors method)</a>
+      </ul></li>
+      <li><a href="pypot.server.html#pypot.server.snap.CacheBuster.apply">apply() (pypot.server.snap.CacheBuster method)</a>
+
+      <ul>
+        <li><a href="pypot.server.html#pypot.server.snap.EnableCors.apply">(pypot.server.snap.EnableCors method)</a>
 </li>
+      </ul></li>
       <li><a href="pypot.server.html#pypot.server.rest.RESTRobot.attach_move_recorder">attach_move_recorder() (pypot.server.rest.RESTRobot method)</a>
 </li>
       <li><a href="pypot.robot.html#pypot.robot.robot.Robot.attach_primitive">attach_primitive() (pypot.robot.robot.Robot method)</a>
@@ -237,9 +245,13 @@
 <h2 id="C">C</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="pypot.server.html#pypot.server.snap.CacheBuster">CacheBuster (class in pypot.server.snap)</a>
+</li>
       <li><a href="pypot.server.html#pypot.server.rest.RESTRobot.call_primitive_method">call_primitive_method() (pypot.server.rest.RESTRobot method)</a>
 </li>
       <li><a href="pypot.vrep.html#pypot.vrep.io.VrepIO.call_remote_api">call_remote_api() (pypot.vrep.io.VrepIO method)</a>
+</li>
+      <li><a href="pypot.server.html#pypot.server.httpserver.CallPrimitiveMethodHandler">CallPrimitiveMethodHandler (class in pypot.server.httpserver)</a>
 </li>
       <li><a href="pypot.vrep.html#pypot.vrep.io.VrepIO.change_object_name">change_object_name() (pypot.vrep.io.VrepIO method)</a>
 </li>
@@ -435,7 +447,7 @@
       </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="pypot.server.html#pypot.server.httpserver.EnableCors">EnableCors (class in pypot.server.httpserver)</a>
+      <li><a href="pypot.server.html#pypot.server.snap.EnableCors">EnableCors (class in pypot.server.snap)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -485,6 +497,40 @@
 <h2 id="G">G</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="pypot.server.html#pypot.server.httpserver.IndexHandler.get">get() (pypot.server.httpserver.IndexHandler method)</a>
+
+      <ul>
+        <li><a href="pypot.server.html#pypot.server.httpserver.ListPrimitiveMethodsHandler.get">(pypot.server.httpserver.ListPrimitiveMethodsHandler method)</a>
+</li>
+        <li><a href="pypot.server.html#pypot.server.httpserver.MotorRegisterHandler.get">(pypot.server.httpserver.MotorRegisterHandler method)</a>
+</li>
+        <li><a href="pypot.server.html#pypot.server.httpserver.MotorRegistersListHandler.get">(pypot.server.httpserver.MotorRegistersListHandler method)</a>
+</li>
+        <li><a href="pypot.server.html#pypot.server.httpserver.MotorsAliasesListHandler.get">(pypot.server.httpserver.MotorsAliasesListHandler method)</a>
+</li>
+        <li><a href="pypot.server.html#pypot.server.httpserver.MotorsListHandler.get">(pypot.server.httpserver.MotorsListHandler method)</a>
+</li>
+        <li><a href="pypot.server.html#pypot.server.httpserver.MotorsRegistersHandler.get">(pypot.server.httpserver.MotorsRegistersHandler method)</a>
+</li>
+        <li><a href="pypot.server.html#pypot.server.httpserver.PausePrimitiveHandler.get">(pypot.server.httpserver.PausePrimitiveHandler method)</a>
+</li>
+        <li><a href="pypot.server.html#pypot.server.httpserver.PrimitivePropertiesListHandler.get">(pypot.server.httpserver.PrimitivePropertiesListHandler method)</a>
+</li>
+        <li><a href="pypot.server.html#pypot.server.httpserver.PrimitivePropertyHandler.get">(pypot.server.httpserver.PrimitivePropertyHandler method)</a>
+</li>
+        <li><a href="pypot.server.html#pypot.server.httpserver.PrimitivesListHandler.get">(pypot.server.httpserver.PrimitivesListHandler method)</a>
+</li>
+        <li><a href="pypot.server.html#pypot.server.httpserver.ResumePrimitiveHandler.get">(pypot.server.httpserver.ResumePrimitiveHandler method)</a>
+</li>
+        <li><a href="pypot.server.html#pypot.server.httpserver.RunningPrimitivesListHandler.get">(pypot.server.httpserver.RunningPrimitivesListHandler method)</a>
+</li>
+        <li><a href="pypot.server.html#pypot.server.httpserver.SensorsListHandler.get">(pypot.server.httpserver.SensorsListHandler method)</a>
+</li>
+        <li><a href="pypot.server.html#pypot.server.httpserver.StartPrimitiveHandler.get">(pypot.server.httpserver.StartPrimitiveHandler method)</a>
+</li>
+        <li><a href="pypot.server.html#pypot.server.httpserver.StopPrimitiveHandler.get">(pypot.server.httpserver.StopPrimitiveHandler method)</a>
+</li>
+      </ul></li>
       <li><a href="pypot.dynamixel.html#pypot.dynamixel.io.io.DxlIO.get_alarm_LED">get_alarm_LED() (pypot.dynamixel.io.io.DxlIO method)</a>
 </li>
       <li><a href="pypot.dynamixel.html#pypot.dynamixel.io.io.DxlIO.get_alarm_shutdown">get_alarm_shutdown() (pypot.dynamixel.io.io.DxlIO method)</a>
@@ -567,6 +613,8 @@
 </li>
       <li><a href="pypot.server.html#pypot.server.rest.RESTRobot.get_motors_list">get_motors_list() (pypot.server.rest.RESTRobot method)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="pypot.server.html#pypot.server.rest.RESTRobot.get_move_recorder_motors">get_move_recorder_motors() (pypot.server.rest.RESTRobot method)</a>
 </li>
       <li><a href="pypot.dynamixel.html#pypot.dynamixel.io.io.DxlIO.get_moving_speed">get_moving_speed() (pypot.dynamixel.io.io.DxlIO method)</a>
@@ -587,8 +635,6 @@
         <li><a href="pypot.dynamixel.html#pypot.dynamixel.io.io_320.Dxl320IO.get_present_load">(pypot.dynamixel.io.io_320.Dxl320IO method)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="pypot.dynamixel.html#pypot.dynamixel.io.io.DxlIO.get_present_position">get_present_position() (pypot.dynamixel.io.io.DxlIO method)</a>
 
       <ul>
@@ -745,6 +791,8 @@
 <h2 id="I">I</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="pypot.server.html#pypot.server.httpserver.IndexHandler">IndexHandler (class in pypot.server.httpserver)</a>
+</li>
       <li><a href="pypot.robot.html#pypot.robot.config.instatiate_motors">instatiate_motors() (in module pypot.robot.config)</a>
 </li>
       <li><a href="pypot.primitive.html#pypot.primitive.primitive.Primitive.is_alive">is_alive() (pypot.primitive.primitive.Primitive method)</a>
@@ -755,14 +803,14 @@
         <li><a href="pypot.dynamixel.html#pypot.dynamixel.io.io_320.Dxl320IO.is_led_on">(pypot.dynamixel.io.io_320.Dxl320IO method)</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="pypot.dynamixel.html#pypot.dynamixel.io.io.DxlIO.is_moving">is_moving() (pypot.dynamixel.io.io.DxlIO method)</a>
 
       <ul>
         <li><a href="pypot.dynamixel.html#pypot.dynamixel.io.io_320.Dxl320IO.is_moving">(pypot.dynamixel.io.io_320.Dxl320IO method)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="pypot.utils.html#pypot.utils.SyncEvent.is_recent">is_recent (pypot.utils.SyncEvent attribute)</a>
 </li>
       <li><a href="pypot.dynamixel.html#pypot.dynamixel.io.io.DxlIO.is_torque_enabled">is_torque_enabled() (pypot.dynamixel.io.io.DxlIO method)</a>
@@ -815,6 +863,8 @@
       </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="pypot.server.html#pypot.server.httpserver.ListPrimitiveMethodsHandler">ListPrimitiveMethodsHandler (class in pypot.server.httpserver)</a>
+</li>
       <li><a href="pypot.primitive.html#pypot.primitive.move.Move.load">load() (pypot.primitive.move.Move class method)</a>
 </li>
       <li><a href="pypot.vrep.html#pypot.vrep.io.VrepIO.load_scene">load_scene() (pypot.vrep.io.VrepIO method)</a>
@@ -830,6 +880,8 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="pypot.robot.html#pypot.robot.config.make_alias">make_alias() (in module pypot.robot.config)</a>
+</li>
+      <li><a href="pypot.server.html#pypot.server.httpserver.HTTPRobotServer.make_app">make_app() (pypot.server.httpserver.HTTPRobotServer method)</a>
 </li>
       <li><a href="pypot.utils.html#pypot.utils.stoppablethread.make_update_loop">make_update_loop() (in module pypot.utils.stoppablethread)</a>
 </li>
@@ -849,11 +901,15 @@
 </li>
       <li><a href="pypot.primitive.html#pypot.primitive.primitive.MockupRobot">MockupRobot (class in pypot.primitive.primitive)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="pypot.robot.html#pypot.robot.motor.Motor">Motor (class in pypot.robot.motor)</a>
 </li>
       <li><a href="pypot.robot.html#pypot.robot.config.motor_from_confignode">motor_from_confignode() (in module pypot.robot.config)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="pypot.server.html#pypot.server.httpserver.MotorRegisterHandler">MotorRegisterHandler (class in pypot.server.httpserver)</a>
+</li>
+      <li><a href="pypot.server.html#pypot.server.httpserver.MotorRegistersListHandler">MotorRegistersListHandler (class in pypot.server.httpserver)</a>
 </li>
       <li><a href="pypot.primitive.html#pypot.primitive.primitive.MockupRobot.motors">motors (pypot.primitive.primitive.MockupRobot attribute)</a>
 
@@ -861,7 +917,13 @@
         <li><a href="pypot.robot.html#pypot.robot.robot.Robot.motors">(pypot.robot.robot.Robot attribute)</a>
 </li>
       </ul></li>
+      <li><a href="pypot.server.html#pypot.server.httpserver.MotorsAliasesListHandler">MotorsAliasesListHandler (class in pypot.server.httpserver)</a>
+</li>
       <li><a href="pypot.robot.html#pypot.robot.controller.MotorsController">MotorsController (class in pypot.robot.controller)</a>
+</li>
+      <li><a href="pypot.server.html#pypot.server.httpserver.MotorsListHandler">MotorsListHandler (class in pypot.server.httpserver)</a>
+</li>
+      <li><a href="pypot.server.html#pypot.server.httpserver.MotorsRegistersHandler">MotorsRegistersHandler (class in pypot.server.httpserver)</a>
 </li>
       <li><a href="pypot.primitive.html#pypot.primitive.move.Move">Move (class in pypot.primitive.move)</a>
 </li>
@@ -884,7 +946,9 @@
       <ul>
         <li><a href="pypot.robot.html#pypot.robot.sensor.Sensor.name">(pypot.robot.sensor.Sensor attribute)</a>
 </li>
-        <li><a href="pypot.server.html#pypot.server.httpserver.EnableCors.name">(pypot.server.httpserver.EnableCors attribute)</a>
+        <li><a href="pypot.server.html#pypot.server.snap.CacheBuster.name">(pypot.server.snap.CacheBuster attribute)</a>
+</li>
+        <li><a href="pypot.server.html#pypot.server.snap.EnableCors.name">(pypot.server.snap.EnableCors attribute)</a>
 </li>
       </ul></li>
   </ul></td>
@@ -905,6 +969,8 @@
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="pypot.server.html#pypot.server.httpserver.PoppyRequestHandler.options">options() (pypot.server.httpserver.PoppyRequestHandler method)</a>
+</li>
       <li><a href="pypot.robot.html#pypot.robot.sensor.ObjectTracker.orientation">orientation (pypot.robot.sensor.ObjectTracker attribute)</a>
 
       <ul>
@@ -926,6 +992,8 @@
       <li><a href="pypot.vrep.html#pypot.vrep.io.VrepIO.pause_simulation">pause_simulation() (pypot.vrep.io.VrepIO method)</a>
 </li>
       <li><a href="pypot.utils.html#pypot.utils.stoppablethread.StoppableThread.paused">paused (pypot.utils.stoppablethread.StoppableThread attribute)</a>
+</li>
+      <li><a href="pypot.server.html#pypot.server.httpserver.PausePrimitiveHandler">PausePrimitiveHandler (class in pypot.server.httpserver)</a>
 </li>
       <li><a href="pypot.primitive.html#pypot.primitive.utils.Sinus.phase">phase (pypot.primitive.utils.Sinus attribute)</a>
 </li>
@@ -951,6 +1019,8 @@
 </li>
       <li><a href="pypot.utils.html#pypot.utils.Point3D">Point3D (class in pypot.utils)</a>
 </li>
+      <li><a href="pypot.server.html#pypot.server.httpserver.PoppyRequestHandler">PoppyRequestHandler (class in pypot.server.httpserver)</a>
+</li>
       <li><a href="pypot.robot.html#pypot.robot.sensor.ObjectTracker.position">position (pypot.robot.sensor.ObjectTracker attribute)</a>
 
       <ul>
@@ -965,6 +1035,14 @@
 </li>
       <li><a href="pypot.dynamixel.html#pypot.dynamixel.controller.PosSpeedLoadDxlController">PosSpeedLoadDxlController (class in pypot.dynamixel.controller)</a>
 </li>
+      <li><a href="pypot.server.html#pypot.server.httpserver.CallPrimitiveMethodHandler.post">post() (pypot.server.httpserver.CallPrimitiveMethodHandler method)</a>
+
+      <ul>
+        <li><a href="pypot.server.html#pypot.server.httpserver.SetPrimitivePropertyHandler.post">(pypot.server.httpserver.SetPrimitivePropertyHandler method)</a>
+</li>
+        <li><a href="pypot.server.html#pypot.server.httpserver.UpdateMotorRegisterHandler.post">(pypot.server.httpserver.UpdateMotorRegisterHandler method)</a>
+</li>
+      </ul></li>
       <li><a href="pypot.primitive.html#pypot.primitive.primitive.MockupRobot.power_max">power_max() (pypot.primitive.primitive.MockupRobot method)</a>
 </li>
       <li><a href="pypot.robot.html#pypot.robot.robot.Robot.power_up">power_up() (pypot.robot.robot.Robot method)</a>
@@ -973,26 +1051,32 @@
 </li>
       <li><a href="pypot.primitive.html#pypot.primitive.manager.PrimitiveManager">PrimitiveManager (class in pypot.primitive.manager)</a>
 </li>
+      <li><a href="pypot.server.html#pypot.server.httpserver.PrimitivePropertiesListHandler">PrimitivePropertiesListHandler (class in pypot.server.httpserver)</a>
+</li>
+      <li><a href="pypot.server.html#pypot.server.httpserver.PrimitivePropertyHandler">PrimitivePropertyHandler (class in pypot.server.httpserver)</a>
+</li>
       <li><a href="pypot.primitive.html#pypot.primitive.manager.PrimitiveManager.primitives">primitives (pypot.primitive.manager.PrimitiveManager attribute)</a>
 
       <ul>
         <li><a href="pypot.robot.html#pypot.robot.robot.Robot.primitives">(pypot.robot.robot.Robot attribute)</a>
 </li>
       </ul></li>
+      <li><a href="pypot.server.html#pypot.server.httpserver.PrimitivesListHandler">PrimitivesListHandler (class in pypot.server.httpserver)</a>
+</li>
       <li><a href="pypot.primitive.html#pypot.primitive.primitive.Primitive.properties">properties (pypot.primitive.primitive.Primitive attribute)</a>
 
       <ul>
         <li><a href="pypot.primitive.html#pypot.primitive.utils.Sinus.properties">(pypot.primitive.utils.Sinus attribute)</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="pypot.dynamixel.html#module-pypot.dynamixel.controller">pypot.dynamixel.controller (module)</a>
 </li>
       <li><a href="pypot.dynamixel.html#module-pypot.dynamixel.conversion">pypot.dynamixel.conversion (module)</a>
 </li>
       <li><a href="pypot.dynamixel.html#module-pypot.dynamixel.error">pypot.dynamixel.error (module)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="pypot.dynamixel.html#module-pypot.dynamixel.io">pypot.dynamixel.io (module)</a>
 </li>
       <li><a href="pypot.dynamixel.html#module-pypot.dynamixel.io.io">pypot.dynamixel.io.io (module)</a>
@@ -1129,6 +1213,8 @@
 </li>
       <li><a href="pypot.vrep.html#pypot.vrep.io.VrepIO.resume_simulation">resume_simulation() (pypot.vrep.io.VrepIO method)</a>
 </li>
+      <li><a href="pypot.server.html#pypot.server.httpserver.ResumePrimitiveHandler">ResumePrimitiveHandler (class in pypot.server.httpserver)</a>
+</li>
       <li><a href="pypot.robot.html#pypot.robot.robot.Robot">Robot (class in pypot.robot.robot)</a>
 </li>
       <li><a href="pypot.primitive.html#pypot.primitive.primitive.LoopPrimitive.run">run() (pypot.primitive.primitive.LoopPrimitive method)</a>
@@ -1153,6 +1239,8 @@
       </ul></li>
       <li><a href="pypot.utils.html#pypot.utils.stoppablethread.StoppableThread.running">running (pypot.utils.stoppablethread.StoppableThread attribute)</a>
 </li>
+      <li><a href="pypot.server.html#pypot.server.httpserver.RunningPrimitivesListHandler">RunningPrimitivesListHandler (class in pypot.server.httpserver)</a>
+</li>
   </ul></td>
 </tr></table>
 
@@ -1170,6 +1258,8 @@
       <li><a href="pypot.robot.html#pypot.robot.robot.Robot.sensors">sensors (pypot.robot.robot.Robot attribute)</a>
 </li>
       <li><a href="pypot.robot.html#pypot.robot.controller.SensorsController">SensorsController (class in pypot.robot.controller)</a>
+</li>
+      <li><a href="pypot.server.html#pypot.server.httpserver.SensorsListHandler">SensorsListHandler (class in pypot.server.httpserver)</a>
 </li>
       <li><a href="pypot.dynamixel.html#pypot.dynamixel.io.io.DxlIO.set_alarm_LED">set_alarm_LED() (pypot.dynamixel.io.io.DxlIO method)</a>
 </li>
@@ -1195,6 +1285,8 @@
         <li><a href="pypot.dynamixel.html#pypot.dynamixel.io.io_320.Dxl320IO.set_control_mode">(pypot.dynamixel.io.io_320.Dxl320IO method)</a>
 </li>
       </ul></li>
+      <li><a href="pypot.server.html#pypot.server.httpserver.PoppyRequestHandler.set_default_headers">set_default_headers() (pypot.server.httpserver.PoppyRequestHandler method)</a>
+</li>
       <li><a href="pypot.dynamixel.html#pypot.dynamixel.io.io.DxlIO.set_drive_mode">set_drive_mode() (pypot.dynamixel.io.io.DxlIO method)</a>
 </li>
       <li><a href="pypot.dynamixel.html#pypot.dynamixel.io.io.DxlIO.set_goal_position">set_goal_position() (pypot.dynamixel.io.io.DxlIO method)</a>
@@ -1285,6 +1377,8 @@
       </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="pypot.server.html#pypot.server.httpserver.SetPrimitivePropertyHandler">SetPrimitivePropertyHandler (class in pypot.server.httpserver)</a>
+</li>
       <li><a href="pypot.dynamixel.html#pypot.dynamixel.controller.DxlController.setup">setup() (pypot.dynamixel.controller.DxlController method)</a>
 
       <ul>
@@ -1349,6 +1443,8 @@
 </li>
       <li><a href="pypot.utils.html#pypot.utils.stoppablethread.StoppableThread.started">started (pypot.utils.stoppablethread.StoppableThread attribute)</a>
 </li>
+      <li><a href="pypot.server.html#pypot.server.httpserver.StartPrimitiveHandler">StartPrimitiveHandler (class in pypot.server.httpserver)</a>
+</li>
       <li><a href="pypot.dynamixel.html#pypot.dynamixel.conversion.status_to_dxl">status_to_dxl() (in module pypot.dynamixel.conversion)</a>
 </li>
       <li><a href="pypot.primitive.html#pypot.primitive.manager.PrimitiveManager.stop">stop() (pypot.primitive.manager.PrimitiveManager method)</a>
@@ -1370,6 +1466,8 @@
       <li><a href="pypot.utils.html#pypot.utils.stoppablethread.StoppableLoopThread">StoppableLoopThread (class in pypot.utils.stoppablethread)</a>
 </li>
       <li><a href="pypot.utils.html#pypot.utils.stoppablethread.StoppableThread">StoppableThread (class in pypot.utils.stoppablethread)</a>
+</li>
+      <li><a href="pypot.server.html#pypot.server.httpserver.StopPrimitiveHandler">StopPrimitiveHandler (class in pypot.server.httpserver)</a>
 </li>
       <li><a href="pypot.dynamixel.html#pypot.dynamixel.protocol.v1.DxlInstruction.SYNC_READ">SYNC_READ (pypot.dynamixel.protocol.v1.DxlInstruction attribute)</a>
 
@@ -1473,6 +1571,8 @@
       </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="pypot.server.html#pypot.server.httpserver.UpdateMotorRegisterHandler">UpdateMotorRegisterHandler (class in pypot.server.httpserver)</a>
+</li>
       <li><a href="pypot.robot.html#pypot.robot.config.use_dummy_robot">use_dummy_robot() (in module pypot.robot.config)</a>
 </li>
   </ul></td>
@@ -1519,10 +1619,10 @@
 </li>
       <li><a href="pypot.utils.html#pypot.utils.stoppablethread.StoppableThread.wait_to_start">wait_to_start() (pypot.utils.stoppablethread.StoppableThread method)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="pypot.utils.html#pypot.utils.stoppablethread.StoppableThread.wait_to_stop">wait_to_stop() (pypot.utils.stoppablethread.StoppableThread method)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="pypot.dynamixel.html#pypot.dynamixel.controller.DxlController.working_motors">working_motors (pypot.dynamixel.controller.DxlController attribute)</a>
 </li>
       <li><a href="pypot.dynamixel.html#pypot.dynamixel.protocol.v1.DxlInstruction.WRITE_DATA">WRITE_DATA (pypot.dynamixel.protocol.v1.DxlInstruction attribute)</a>
@@ -1531,6 +1631,8 @@
         <li><a href="pypot.dynamixel.html#pypot.dynamixel.protocol.v2.DxlInstruction.WRITE_DATA">(pypot.dynamixel.protocol.v2.DxlInstruction attribute)</a>
 </li>
       </ul></li>
+      <li><a href="pypot.server.html#pypot.server.httpserver.PoppyRequestHandler.write_json">write_json() (pypot.server.httpserver.PoppyRequestHandler method)</a>
+</li>
   </ul></td>
 </tr></table>
 
@@ -1604,7 +1706,7 @@
 <div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
   <div class="navbar-inner">
     <ul class="nav navbar-nav ">
-        <li><a href="index.html">pypot 2.11.10 documentation</a></li>
+        <li><a href="index.html">pypot 3.0.0.rc1 documentation</a></li>
     </ul>
 <ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
       

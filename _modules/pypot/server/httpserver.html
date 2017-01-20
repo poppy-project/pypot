@@ -9,7 +9,7 @@
   <head>
     <meta charset="utf-8" />
     
-    <title>pypot.server.httpserver &mdash; pypot 2.11.10 documentation</title>
+    <title>pypot.server.httpserver &mdash; pypot 3.0.0.rc1 documentation</title>
     <meta name="description" content="">
     <meta name="author" content="">
 
@@ -35,7 +35,7 @@
 <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
             URL_ROOT:    '../../../',
-            VERSION:     '2.11.10',
+            VERSION:     '3.0.0.rc1',
             COLLAPSE_INDEX: false,
             FILE_SUFFIX: '.html',
             HAS_SOURCE:  true
@@ -53,7 +53,7 @@
     <link rel="author" title="About these documents" href="../../../about.html" />
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
-    <link rel="top" title="pypot 2.11.10 documentation" href="../../../index.html" />
+    <link rel="top" title="pypot 3.0.0.rc1 documentation" href="../../../index.html" />
     <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body role="document">
@@ -66,7 +66,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="../../../index.html">pypot 2.11.10 documentation</a>
+          <a class="navbar-brand" href="../../../index.html">pypot 3.0.0.rc1 documentation</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
@@ -141,17 +141,13 @@
 <span class="kn">import</span> <span class="nn">socket</span>
 <span class="kn">import</span> <span class="nn">errno</span>
 <span class="kn">import</span> <span class="nn">numpy</span>
-<span class="kn">import</span> <span class="nn">bottle</span>
-<span class="kn">from</span> <span class="nn">bottle</span> <span class="k">import</span> <span class="n">response</span>
-
-<span class="kn">from</span> <span class="nn">tornado.wsgi</span> <span class="k">import</span> <span class="n">WSGIContainer</span>
-<span class="kn">from</span> <span class="nn">tornado.httpserver</span> <span class="k">import</span> <span class="n">HTTPServer</span>
-<span class="kn">from</span> <span class="nn">tornado.ioloop</span> <span class="k">import</span> <span class="n">IOLoop</span>
-
 <span class="kn">import</span> <span class="nn">logging</span>
 
-<span class="kn">from</span> <span class="nn">.server</span> <span class="k">import</span> <span class="n">AbstractServer</span>
+<span class="kn">from</span> <span class="nn">tornado.ioloop</span> <span class="k">import</span> <span class="n">IOLoop</span>
+<span class="kn">from</span> <span class="nn">tornado.web</span> <span class="k">import</span> <span class="n">RequestHandler</span>
+<span class="kn">from</span> <span class="nn">tornado.web</span> <span class="k">import</span> <span class="n">Application</span>
 
+<span class="kn">from</span> <span class="nn">.server</span> <span class="k">import</span> <span class="n">AbstractServer</span>
 
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="n">__name__</span><span class="p">)</span>
 
@@ -170,209 +166,233 @@
         <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">JSONEncoder</span><span class="o">.</span><span class="n">default</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">)</span></div></div>
 
 
-<div class="viewcode-block" id="EnableCors"><a class="viewcode-back" href="../../../pypot.server.html#pypot.server.httpserver.EnableCors">[docs]</a><span class="k">class</span> <span class="nc">EnableCors</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="PoppyRequestHandler"><a class="viewcode-back" href="../../../pypot.server.html#pypot.server.httpserver.PoppyRequestHandler">[docs]</a><span class="k">class</span> <span class="nc">PoppyRequestHandler</span><span class="p">(</span><span class="n">RequestHandler</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Custom request handler.</span>
 
-    <span class="sd">&quot;&quot;&quot;Enable CORS (Cross-Origin Resource Sharing) headers&quot;&quot;&quot;</span>
-    <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;enable_cors&#39;</span>
-    <span class="n">api</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="sd">    Automatically sets CORS and cache headers, and manages</span>
+<span class="sd">    every OPTIONS request.&quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="s2">&quot;*&quot;</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">origin</span> <span class="o">=</span> <span class="n">origin</span>
+<div class="viewcode-block" id="PoppyRequestHandler.set_default_headers"><a class="viewcode-back" href="../../../pypot.server.html#pypot.server.httpserver.PoppyRequestHandler.set_default_headers">[docs]</a>    <span class="k">def</span> <span class="nf">set_default_headers</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_header</span><span class="p">(</span><span class="s1">&#39;Cache-control&#39;</span><span class="p">,</span> <span class="s1">&#39;no-store&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_header</span><span class="p">(</span><span class="s1">&#39;Access-Control-Allow-Origin&#39;</span><span class="p">,</span> <span class="s1">&#39;*&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_header</span><span class="p">(</span><span class="s1">&#39;Access-Control-Allow-Headers&#39;</span><span class="p">,</span> <span class="s1">&#39;Origin, Accept, Content-Type, X-Requested-With, X-CSRF-Token&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_header</span><span class="p">(</span><span class="s1">&#39;Access-Control-Allow-Methods&#39;</span><span class="p">,</span> <span class="s1">&#39;GET, POST, PUT, DELETE, OPTIONS&#39;</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="EnableCors.apply"><a class="viewcode-back" href="../../../pypot.server.html#pypot.server.httpserver.EnableCors.apply">[docs]</a>    <span class="k">def</span> <span class="nf">apply</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fn</span><span class="p">,</span> <span class="n">context</span><span class="p">):</span>
-        <span class="k">def</span> <span class="nf">_enable_cors</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-            <span class="c1"># set CORS headers</span>
-            <span class="n">response</span><span class="o">.</span><span class="n">headers</span><span class="p">[</span><span class="s1">&#39;Access-Control-Allow-Origin&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">origin</span>
-            <span class="n">response</span><span class="o">.</span><span class="n">headers</span><span class="p">[</span><span class="s1">&#39;Access-Control-Allow-Methods&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;GET, POST, PUT, OPTIONS&#39;</span>
-            <span class="n">response</span><span class="o">.</span><span class="n">headers</span><span class="p">[</span><span class="s1">&#39;Access-Control-Allow-Headers&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;Origin, Accept, Content-Type, X-Requested-With, X-CSRF-Token&#39;</span>
+<div class="viewcode-block" id="PoppyRequestHandler.options"><a class="viewcode-back" href="../../../pypot.server.html#pypot.server.httpserver.PoppyRequestHandler.options">[docs]</a>    <span class="k">def</span> <span class="nf">options</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_status</span><span class="p">(</span><span class="mi">204</span><span class="p">)</span></div>
 
-            <span class="k">if</span> <span class="n">bottle</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">!=</span> <span class="s1">&#39;OPTIONS&#39;</span><span class="p">:</span>
-                <span class="c1"># actual request; reply with the actual response</span>
-                <span class="k">return</span> <span class="n">fn</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+<div class="viewcode-block" id="PoppyRequestHandler.write_json"><a class="viewcode-back" href="../../../pypot.server.html#pypot.server.httpserver.PoppyRequestHandler.write_json">[docs]</a>    <span class="k">def</span> <span class="nf">write_json</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">obj</span><span class="p">))</span></div></div>
 
-        <span class="k">return</span> <span class="n">_enable_cors</span></div></div>
+
+<div class="viewcode-block" id="IndexHandler"><a class="viewcode-back" href="../../../pypot.server.html#pypot.server.httpserver.IndexHandler">[docs]</a><span class="k">class</span> <span class="nc">IndexHandler</span><span class="p">(</span><span class="n">PoppyRequestHandler</span><span class="p">):</span>
+<div class="viewcode-block" id="IndexHandler.get"><a class="viewcode-back" href="../../../pypot.server.html#pypot.server.httpserver.IndexHandler.get">[docs]</a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;motors&#39;</span><span class="p">:</span> <span class="p">[],</span>
+            <span class="s1">&#39;primitives&#39;</span><span class="p">:</span> <span class="p">[]</span>
+        <span class="p">}</span>
+        <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">restful_robot</span><span class="o">.</span><span class="n">get_motors_list</span><span class="p">(</span><span class="s1">&#39;motors&#39;</span><span class="p">):</span>
+            <span class="n">motor</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">restful_robot</span><span class="o">.</span><span class="n">get_motor_registers_list</span><span class="p">(</span><span class="n">m</span><span class="p">):</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">motor</span><span class="p">[</span><span class="n">r</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">restful_robot</span><span class="o">.</span><span class="n">get_motor_register_value</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">r</span><span class="p">)</span>
+                <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+                    <span class="k">pass</span>
+            <span class="n">out</span><span class="p">[</span><span class="s1">&#39;motors&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">motor</span><span class="p">)</span>
+
+        <span class="n">running_primitives</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">restful_robot</span><span class="o">.</span><span class="n">get_running_primitives_list</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">prim</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">restful_robot</span><span class="o">.</span><span class="n">get_primitives_list</span><span class="p">():</span>
+            <span class="n">primitve</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s1">&#39;primitive&#39;</span><span class="p">:</span> <span class="n">prim</span><span class="p">,</span>
+                <span class="s1">&#39;running&#39;</span><span class="p">:</span> <span class="n">prim</span> <span class="ow">in</span> <span class="n">running_primitives</span><span class="p">,</span>
+                <span class="s1">&#39;properties&#39;</span><span class="p">:</span> <span class="p">[],</span>
+                <span class="c1"># XXX pas de self en param ?</span>
+                <span class="s1">&#39;methods&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">restful_robot</span><span class="o">.</span><span class="n">get_primitive_methods_list</span><span class="p">(</span><span class="n">prim</span><span class="p">)</span>
+            <span class="p">}</span>
+            <span class="k">for</span> <span class="n">prop</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">restful_robot</span><span class="o">.</span><span class="n">get_primitive_properties_list</span><span class="p">(</span><span class="n">prim</span><span class="p">):</span>
+                <span class="n">primitve</span><span class="p">[</span><span class="s1">&#39;properties&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
+                    <span class="s1">&#39;property&#39;</span><span class="p">:</span> <span class="n">prop</span><span class="p">,</span>
+                    <span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">restful_robot</span><span class="o">.</span><span class="n">get_primitive_property</span><span class="p">(</span><span class="n">prim</span><span class="p">,</span> <span class="n">prop</span><span class="p">)</span>
+                <span class="p">})</span>
+            <span class="n">out</span><span class="p">[</span><span class="s1">&#39;primitives&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">primitve</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">write_json</span><span class="p">(</span><span class="n">out</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="MotorsListHandler"><a class="viewcode-back" href="../../../pypot.server.html#pypot.server.httpserver.MotorsListHandler">[docs]</a><span class="k">class</span> <span class="nc">MotorsListHandler</span><span class="p">(</span><span class="n">PoppyRequestHandler</span><span class="p">):</span>
+<div class="viewcode-block" id="MotorsListHandler.get"><a class="viewcode-back" href="../../../pypot.server.html#pypot.server.httpserver.MotorsListHandler.get">[docs]</a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">alias</span><span class="o">=</span><span class="s1">&#39;motors&#39;</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">write_json</span><span class="p">({</span>
+            <span class="s1">&#39;alias&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">restful_robot</span><span class="o">.</span><span class="n">get_motors_list</span><span class="p">(</span><span class="n">alias</span><span class="p">)</span>
+        <span class="p">})</span></div></div>
+
+
+<div class="viewcode-block" id="SensorsListHandler"><a class="viewcode-back" href="../../../pypot.server.html#pypot.server.httpserver.SensorsListHandler">[docs]</a><span class="k">class</span> <span class="nc">SensorsListHandler</span><span class="p">(</span><span class="n">PoppyRequestHandler</span><span class="p">):</span>
+<div class="viewcode-block" id="SensorsListHandler.get"><a class="viewcode-back" href="../../../pypot.server.html#pypot.server.httpserver.SensorsListHandler.get">[docs]</a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">write_json</span><span class="p">({</span>
+            <span class="s1">&#39;sensors&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">restful_robot</span><span class="o">.</span><span class="n">get_sensors_list</span><span class="p">()</span>
+        <span class="p">})</span></div></div>
+
+
+<div class="viewcode-block" id="MotorsAliasesListHandler"><a class="viewcode-back" href="../../../pypot.server.html#pypot.server.httpserver.MotorsAliasesListHandler">[docs]</a><span class="k">class</span> <span class="nc">MotorsAliasesListHandler</span><span class="p">(</span><span class="n">PoppyRequestHandler</span><span class="p">):</span>
+<div class="viewcode-block" id="MotorsAliasesListHandler.get"><a class="viewcode-back" href="../../../pypot.server.html#pypot.server.httpserver.MotorsAliasesListHandler.get">[docs]</a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">write_json</span><span class="p">({</span>
+            <span class="s1">&#39;alias&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">restful_robot</span><span class="o">.</span><span class="n">get_motors_alias</span><span class="p">()</span>
+        <span class="p">})</span></div></div>
+
+
+<div class="viewcode-block" id="MotorRegistersListHandler"><a class="viewcode-back" href="../../../pypot.server.html#pypot.server.httpserver.MotorRegistersListHandler">[docs]</a><span class="k">class</span> <span class="nc">MotorRegistersListHandler</span><span class="p">(</span><span class="n">PoppyRequestHandler</span><span class="p">):</span>
+<div class="viewcode-block" id="MotorRegistersListHandler.get"><a class="viewcode-back" href="../../../pypot.server.html#pypot.server.httpserver.MotorRegistersListHandler.get">[docs]</a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">motor_name</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">write_json</span><span class="p">({</span>
+            <span class="s1">&#39;registers&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">restful_robot</span><span class="o">.</span><span class="n">get_motor_registers_list</span><span class="p">(</span><span class="n">motor_name</span><span class="p">)</span>
+        <span class="p">})</span></div></div>
+
+
+<div class="viewcode-block" id="MotorRegisterHandler"><a class="viewcode-back" href="../../../pypot.server.html#pypot.server.httpserver.MotorRegisterHandler">[docs]</a><span class="k">class</span> <span class="nc">MotorRegisterHandler</span><span class="p">(</span><span class="n">PoppyRequestHandler</span><span class="p">):</span>
+<div class="viewcode-block" id="MotorRegisterHandler.get"><a class="viewcode-back" href="../../../pypot.server.html#pypot.server.httpserver.MotorRegisterHandler.get">[docs]</a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">motor_name</span><span class="p">,</span> <span class="n">register_name</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">write_json</span><span class="p">({</span>
+            <span class="n">register_name</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">restful_robot</span><span class="o">.</span><span class="n">get_motor_register_value</span><span class="p">(</span><span class="n">motor_name</span><span class="p">,</span> <span class="n">register_name</span><span class="p">)</span>
+        <span class="p">})</span></div></div>
+
+
+<div class="viewcode-block" id="UpdateMotorRegisterHandler"><a class="viewcode-back" href="../../../pypot.server.html#pypot.server.httpserver.UpdateMotorRegisterHandler">[docs]</a><span class="k">class</span> <span class="nc">UpdateMotorRegisterHandler</span><span class="p">(</span><span class="n">PoppyRequestHandler</span><span class="p">):</span>
+<div class="viewcode-block" id="UpdateMotorRegisterHandler.post"><a class="viewcode-back" href="../../../pypot.server.html#pypot.server.httpserver.UpdateMotorRegisterHandler.post">[docs]</a>    <span class="k">def</span> <span class="nf">post</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">motor_name</span><span class="p">,</span> <span class="n">register_name</span><span class="p">):</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">body</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">restful_robot</span><span class="o">.</span><span class="n">set_motor_register_value</span><span class="p">(</span><span class="n">motor_name</span><span class="p">,</span> <span class="n">register_name</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">write_json</span><span class="p">({})</span></div></div>
+
+
+<div class="viewcode-block" id="PrimitivesListHandler"><a class="viewcode-back" href="../../../pypot.server.html#pypot.server.httpserver.PrimitivesListHandler">[docs]</a><span class="k">class</span> <span class="nc">PrimitivesListHandler</span><span class="p">(</span><span class="n">PoppyRequestHandler</span><span class="p">):</span>
+<div class="viewcode-block" id="PrimitivesListHandler.get"><a class="viewcode-back" href="../../../pypot.server.html#pypot.server.httpserver.PrimitivesListHandler.get">[docs]</a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">write_json</span><span class="p">({</span>
+            <span class="s1">&#39;primitives&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">restful_robot</span><span class="o">.</span><span class="n">get_primitives_list</span><span class="p">()</span>
+        <span class="p">})</span></div></div>
+
+
+<div class="viewcode-block" id="RunningPrimitivesListHandler"><a class="viewcode-back" href="../../../pypot.server.html#pypot.server.httpserver.RunningPrimitivesListHandler">[docs]</a><span class="k">class</span> <span class="nc">RunningPrimitivesListHandler</span><span class="p">(</span><span class="n">PoppyRequestHandler</span><span class="p">):</span>
+<div class="viewcode-block" id="RunningPrimitivesListHandler.get"><a class="viewcode-back" href="../../../pypot.server.html#pypot.server.httpserver.RunningPrimitivesListHandler.get">[docs]</a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">write_json</span><span class="p">({</span>
+            <span class="s1">&#39;running_primitives&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">restful_robot</span><span class="o">.</span><span class="n">get_running_primitives_list</span><span class="p">()</span>
+        <span class="p">})</span></div></div>
+
+
+<div class="viewcode-block" id="StartPrimitiveHandler"><a class="viewcode-back" href="../../../pypot.server.html#pypot.server.httpserver.StartPrimitiveHandler">[docs]</a><span class="k">class</span> <span class="nc">StartPrimitiveHandler</span><span class="p">(</span><span class="n">PoppyRequestHandler</span><span class="p">):</span>
+<div class="viewcode-block" id="StartPrimitiveHandler.get"><a class="viewcode-back" href="../../../pypot.server.html#pypot.server.httpserver.StartPrimitiveHandler.get">[docs]</a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">primitive_name</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">restful_robot</span><span class="o">.</span><span class="n">start_primitive</span><span class="p">(</span><span class="n">primitive_name</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="StopPrimitiveHandler"><a class="viewcode-back" href="../../../pypot.server.html#pypot.server.httpserver.StopPrimitiveHandler">[docs]</a><span class="k">class</span> <span class="nc">StopPrimitiveHandler</span><span class="p">(</span><span class="n">PoppyRequestHandler</span><span class="p">):</span>
+<div class="viewcode-block" id="StopPrimitiveHandler.get"><a class="viewcode-back" href="../../../pypot.server.html#pypot.server.httpserver.StopPrimitiveHandler.get">[docs]</a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">primitive_name</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">restful_robot</span><span class="o">.</span><span class="n">stop_primitive</span><span class="p">(</span><span class="n">primitive_name</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="PausePrimitiveHandler"><a class="viewcode-back" href="../../../pypot.server.html#pypot.server.httpserver.PausePrimitiveHandler">[docs]</a><span class="k">class</span> <span class="nc">PausePrimitiveHandler</span><span class="p">(</span><span class="n">PoppyRequestHandler</span><span class="p">):</span>
+<div class="viewcode-block" id="PausePrimitiveHandler.get"><a class="viewcode-back" href="../../../pypot.server.html#pypot.server.httpserver.PausePrimitiveHandler.get">[docs]</a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">primitive_name</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">restful_robot</span><span class="o">.</span><span class="n">pause_primitive</span><span class="p">(</span><span class="n">primitive_name</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="ResumePrimitiveHandler"><a class="viewcode-back" href="../../../pypot.server.html#pypot.server.httpserver.ResumePrimitiveHandler">[docs]</a><span class="k">class</span> <span class="nc">ResumePrimitiveHandler</span><span class="p">(</span><span class="n">PoppyRequestHandler</span><span class="p">):</span>
+<div class="viewcode-block" id="ResumePrimitiveHandler.get"><a class="viewcode-back" href="../../../pypot.server.html#pypot.server.httpserver.ResumePrimitiveHandler.get">[docs]</a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">primitive_name</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">restful_robot</span><span class="o">.</span><span class="n">resume_primitive</span><span class="p">(</span><span class="n">primitive_name</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="PrimitivePropertiesListHandler"><a class="viewcode-back" href="../../../pypot.server.html#pypot.server.httpserver.PrimitivePropertiesListHandler">[docs]</a><span class="k">class</span> <span class="nc">PrimitivePropertiesListHandler</span><span class="p">(</span><span class="n">PoppyRequestHandler</span><span class="p">):</span>
+<div class="viewcode-block" id="PrimitivePropertiesListHandler.get"><a class="viewcode-back" href="../../../pypot.server.html#pypot.server.httpserver.PrimitivePropertiesListHandler.get">[docs]</a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">primitive_name</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">write_json</span><span class="p">({</span>
+            <span class="s1">&#39;property&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">restful_robot</span><span class="o">.</span><span class="n">get_primitive_properties_list</span><span class="p">(</span><span class="n">primitive_name</span><span class="p">)</span>
+        <span class="p">})</span></div></div>
+
+
+<div class="viewcode-block" id="PrimitivePropertyHandler"><a class="viewcode-back" href="../../../pypot.server.html#pypot.server.httpserver.PrimitivePropertyHandler">[docs]</a><span class="k">class</span> <span class="nc">PrimitivePropertyHandler</span><span class="p">(</span><span class="n">PoppyRequestHandler</span><span class="p">):</span>
+<div class="viewcode-block" id="PrimitivePropertyHandler.get"><a class="viewcode-back" href="../../../pypot.server.html#pypot.server.httpserver.PrimitivePropertyHandler.get">[docs]</a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">primitive_name</span><span class="p">,</span> <span class="n">prop</span><span class="p">):</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">restful_robot</span><span class="o">.</span><span class="n">get_primitive_property</span><span class="p">(</span><span class="n">primitive_name</span><span class="p">,</span> <span class="n">prop</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">write_json</span><span class="p">({</span>
+            <span class="s1">&#39;</span><span class="si">{}</span><span class="s1">.</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">primitive_name</span><span class="p">,</span> <span class="n">prop</span><span class="p">):</span> <span class="n">response</span>
+        <span class="p">})</span></div></div>
+
+
+<div class="viewcode-block" id="SetPrimitivePropertyHandler"><a class="viewcode-back" href="../../../pypot.server.html#pypot.server.httpserver.SetPrimitivePropertyHandler">[docs]</a><span class="k">class</span> <span class="nc">SetPrimitivePropertyHandler</span><span class="p">(</span><span class="n">PoppyRequestHandler</span><span class="p">):</span>
+<div class="viewcode-block" id="SetPrimitivePropertyHandler.post"><a class="viewcode-back" href="../../../pypot.server.html#pypot.server.httpserver.SetPrimitivePropertyHandler.post">[docs]</a>    <span class="k">def</span> <span class="nf">post</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">primitive_name</span><span class="p">,</span> <span class="n">prop</span><span class="p">):</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">body</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">restful_robot</span><span class="o">.</span><span class="n">set_primitive_property</span><span class="p">(</span><span class="n">primitive_name</span><span class="p">,</span> <span class="n">prop</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_status</span><span class="p">(</span><span class="mi">204</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="ListPrimitiveMethodsHandler"><a class="viewcode-back" href="../../../pypot.server.html#pypot.server.httpserver.ListPrimitiveMethodsHandler">[docs]</a><span class="k">class</span> <span class="nc">ListPrimitiveMethodsHandler</span><span class="p">(</span><span class="n">PoppyRequestHandler</span><span class="p">):</span>
+<div class="viewcode-block" id="ListPrimitiveMethodsHandler.get"><a class="viewcode-back" href="../../../pypot.server.html#pypot.server.httpserver.ListPrimitiveMethodsHandler.get">[docs]</a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">primitive_name</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">write_json</span><span class="p">({</span>
+            <span class="s1">&#39;methods&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">restful_robot</span><span class="o">.</span><span class="n">get_primitive_methods_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">primitive_name</span><span class="p">)</span>
+        <span class="p">})</span></div></div>
+
+
+<div class="viewcode-block" id="CallPrimitiveMethodHandler"><a class="viewcode-back" href="../../../pypot.server.html#pypot.server.httpserver.CallPrimitiveMethodHandler">[docs]</a><span class="k">class</span> <span class="nc">CallPrimitiveMethodHandler</span><span class="p">(</span><span class="n">PoppyRequestHandler</span><span class="p">):</span>
+<div class="viewcode-block" id="CallPrimitiveMethodHandler.post"><a class="viewcode-back" href="../../../pypot.server.html#pypot.server.httpserver.CallPrimitiveMethodHandler.post">[docs]</a>    <span class="k">def</span> <span class="nf">post</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">primitive_name</span><span class="p">,</span> <span class="n">method_name</span><span class="p">):</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">body</span><span class="p">)</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">restful_robot</span><span class="o">.</span><span class="n">call_primitive_method</span><span class="p">(</span><span class="n">primitive_name</span><span class="p">,</span> <span class="n">method_name</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">write_json</span><span class="p">({</span>
+            <span class="s1">&#39;</span><span class="si">{}</span><span class="s1">:</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">primitive_name</span><span class="p">,</span> <span class="n">method_name</span><span class="p">):</span> <span class="n">response</span>
+        <span class="p">})</span></div></div>
+
+
+<div class="viewcode-block" id="MotorsRegistersHandler"><a class="viewcode-back" href="../../../pypot.server.html#pypot.server.httpserver.MotorsRegistersHandler">[docs]</a><span class="k">class</span> <span class="nc">MotorsRegistersHandler</span><span class="p">(</span><span class="n">PoppyRequestHandler</span><span class="p">):</span>
+<div class="viewcode-block" id="MotorsRegistersHandler.get"><a class="viewcode-back" href="../../../pypot.server.html#pypot.server.httpserver.MotorsRegistersHandler.get">[docs]</a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">register_name</span><span class="p">):</span>
+        <span class="n">motors_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">restful_robot</span><span class="o">.</span><span class="n">get_motors_list</span><span class="p">(</span><span class="s1">&#39;motors&#39;</span><span class="p">)</span>
+        <span class="n">registers_motors</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="k">for</span> <span class="n">motor_name</span> <span class="ow">in</span> <span class="n">motors_list</span><span class="p">:</span>
+            <span class="n">registers_motors</span><span class="p">[</span><span class="n">motor_name</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="n">register_name</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">restful_robot</span><span class="o">.</span><span class="n">get_motor_register_value</span><span class="p">(</span>
+                    <span class="n">motor_name</span><span class="p">,</span> <span class="n">register_name</span><span class="p">)</span>
+            <span class="p">}</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">write_json</span><span class="p">(</span><span class="n">registers_motors</span><span class="p">)</span></div></div>
 
 
 <div class="viewcode-block" id="HTTPRobotServer"><a class="viewcode-back" href="../../../pypot.server.html#pypot.server.httpserver.HTTPRobotServer">[docs]</a><span class="k">class</span> <span class="nc">HTTPRobotServer</span><span class="p">(</span><span class="n">AbstractServer</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Refer to the REST API for an exhaustive list of the possible routes.&quot;&quot;&quot;</span>
 
-    <span class="sd">&quot;&quot;&quot; Bottle based HTTPServer used to remote access a robot.</span>
-
-<span class="sd">        Please refer to the REST API for an exhaustive list of the possible routes.</span>
-
-<span class="sd">     &quot;&quot;&quot;</span>
-
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">robot</span><span class="p">,</span> <span class="n">host</span><span class="o">=</span><span class="s1">&#39;0.0.0.0&#39;</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="s1">&#39;8080&#39;</span><span class="p">,</span> <span class="n">cross_domain_origin</span><span class="o">=</span><span class="s1">&#39;*&#39;</span><span class="p">,</span> <span class="n">quiet</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">robot</span><span class="p">,</span> <span class="n">host</span><span class="o">=</span><span class="s1">&#39;0.0.0.0&#39;</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="s1">&#39;8080&#39;</span><span class="p">,</span> <span class="n">cross_domain_origin</span><span class="o">=</span><span class="s1">&#39;*&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="n">AbstractServer</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">robot</span><span class="p">,</span> <span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">quiet</span> <span class="o">=</span> <span class="n">quiet</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">app</span> <span class="o">=</span> <span class="n">bottle</span><span class="o">.</span><span class="n">Bottle</span><span class="p">()</span>
 
-        <span class="n">jd</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">s</span><span class="p">:</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">cls</span><span class="o">=</span><span class="n">MyJSONEncoder</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">install</span><span class="p">(</span><span class="n">bottle</span><span class="o">.</span><span class="n">JSONPlugin</span><span class="p">(</span><span class="n">json_dumps</span><span class="o">=</span><span class="n">jd</span><span class="p">))</span>
+<div class="viewcode-block" id="HTTPRobotServer.make_app"><a class="viewcode-back" href="../../../pypot.server.html#pypot.server.httpserver.HTTPRobotServer.make_app">[docs]</a>    <span class="k">def</span> <span class="nf">make_app</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">PoppyRequestHandler</span><span class="o">.</span><span class="n">restful_robot</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">restful_robot</span>
+        <span class="k">return</span> <span class="n">Application</span><span class="p">([</span>
+            <span class="p">(</span><span class="s1">r&#39;/(robot\.json)?&#39;</span><span class="p">,</span> <span class="n">IndexHandler</span><span class="p">),</span>
+            <span class="p">(</span><span class="s1">r&#39;/motor/alias/list\.json&#39;</span><span class="p">,</span> <span class="n">MotorsAliasesListHandler</span><span class="p">),</span>
+            <span class="p">(</span><span class="s1">r&#39;/motor/(?P&lt;alias&gt;[a-zA-Z0-9_]+)/?list\.json&#39;</span><span class="p">,</span> <span class="n">MotorsListHandler</span><span class="p">),</span>
+            <span class="p">(</span><span class="s1">r&#39;/sensor/list\.json&#39;</span><span class="p">,</span> <span class="n">SensorsListHandler</span><span class="p">),</span>
+            <span class="p">(</span><span class="s1">r&#39;/motor/(?P&lt;motor_name&gt;[a-zA-Z0-9_]+)/register/list\.json&#39;</span><span class="p">,</span> <span class="n">MotorRegistersListHandler</span><span class="p">),</span>
+            <span class="p">(</span><span class="s1">r&#39;/sensor/(?P&lt;motor_name&gt;[a-zA-Z0-9_]+)/register/list\.json&#39;</span><span class="p">,</span> <span class="n">MotorRegistersListHandler</span><span class="p">),</span>
 
-        <span class="k">if</span><span class="p">(</span><span class="n">cross_domain_origin</span><span class="p">):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">install</span><span class="p">(</span><span class="n">EnableCors</span><span class="p">(</span><span class="n">cross_domain_origin</span><span class="p">))</span>
+            <span class="p">(</span><span class="s1">r&#39;/motor/(?P&lt;motor_name&gt;[a-zA-Z0-9_]+)/register/(?P&lt;register_name&gt;[a-zA-Z0-9_]+)/list\.json&#39;</span><span class="p">,</span> <span class="n">MotorRegisterHandler</span><span class="p">),</span>
+            <span class="p">(</span><span class="s1">r&#39;/sensor/(?P&lt;motor_name&gt;[a-zA-Z0-9_]+)/register/(?P&lt;register_name&gt;[a-zA-Z0-9_]+)/list\.json&#39;</span><span class="p">,</span> <span class="n">MotorRegisterHandler</span><span class="p">),</span>
 
-        <span class="n">rr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">restfull_robot</span>
+            <span class="p">(</span><span class="s1">r&#39;/motor/(?P&lt;motor_name&gt;[a-zA-Z0-9_]+)/register/(?P&lt;register_name&gt;[a-zA-Z0-9_]+)&#39;</span><span class="p">,</span> <span class="n">MotorRegisterHandler</span><span class="p">),</span>
+            <span class="p">(</span><span class="s1">r&#39;/sensor/(?P&lt;motor_name&gt;[a-zA-Z0-9_]+)/register/(?P&lt;register_name&gt;[a-zA-Z0-9_]+)&#39;</span><span class="p">,</span> <span class="n">MotorRegisterHandler</span><span class="p">),</span>
 
-        <span class="nd">@self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;OPTIONS&#39;</span><span class="p">])</span>
-        <span class="nd">@self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s2">&quot;/&lt;p:path&gt;&quot;</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;OPTIONS&#39;</span><span class="p">])</span>
-        <span class="k">def</span> <span class="nf">options</span><span class="p">(</span><span class="n">p</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
-            <span class="k">return</span> <span class="s2">&quot;&quot;</span>
+            <span class="p">(</span><span class="s1">r&#39;/motor/(?P&lt;motor_name&gt;[a-zA-Z0-9_]+)/register/(?P&lt;register_name&gt;[a-zA-Z0-9_]+)/value\.json&#39;</span><span class="p">,</span> <span class="n">UpdateMotorRegisterHandler</span><span class="p">),</span>
+            <span class="p">(</span><span class="s1">r&#39;/sensor/(?P&lt;motor_name&gt;[a-zA-Z0-9_]+)/register/(?P&lt;register_name&gt;[a-zA-Z0-9_]+)/value\.json&#39;</span><span class="p">,</span> <span class="n">UpdateMotorRegisterHandler</span><span class="p">),</span>
 
-        <span class="c1"># Motors route</span>
-        <span class="nd">@self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)</span>
-        <span class="nd">@self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;/robot.json&#39;</span><span class="p">)</span>
-        <span class="k">def</span> <span class="nf">robot</span><span class="p">():</span>
-            <span class="n">out</span> <span class="o">=</span> <span class="p">{</span>
-                <span class="s1">&#39;motors&#39;</span><span class="p">:</span> <span class="p">[],</span>
-                <span class="s1">&#39;primitives&#39;</span><span class="p">:</span> <span class="p">[]</span>
-            <span class="p">}</span>
-            <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">rr</span><span class="o">.</span><span class="n">get_motors_list</span><span class="p">(</span><span class="s1">&#39;motors&#39;</span><span class="p">):</span>
-                <span class="n">motor</span> <span class="o">=</span> <span class="p">{}</span>
-                <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">rr</span><span class="o">.</span><span class="n">get_motor_registers_list</span><span class="p">(</span><span class="n">m</span><span class="p">):</span>
-                    <span class="k">try</span><span class="p">:</span>
-                        <span class="n">motor</span><span class="p">[</span><span class="n">r</span><span class="p">]</span> <span class="o">=</span> <span class="n">rr</span><span class="o">.</span><span class="n">get_motor_register_value</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">r</span><span class="p">)</span>
-                    <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
-                        <span class="k">pass</span>
-                <span class="n">out</span><span class="p">[</span><span class="s1">&#39;motors&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">motor</span><span class="p">)</span>
+            <span class="p">(</span><span class="s1">r&#39;/primitive/list\.json&#39;</span><span class="p">,</span> <span class="n">PrimitivesListHandler</span><span class="p">),</span>
+            <span class="p">(</span><span class="s1">r&#39;/primitive/running/list\.json&#39;</span><span class="p">,</span> <span class="n">RunningPrimitivesListHandler</span><span class="p">),</span>
+            <span class="p">(</span><span class="s1">r&#39;/primitive/(?P&lt;primitive_name&gt;[a-zA-Z0-9_]+)/start\.json&#39;</span><span class="p">,</span> <span class="n">StartPrimitiveHandler</span><span class="p">),</span>
+            <span class="p">(</span><span class="s1">r&#39;/primitive/(?P&lt;primitive_name&gt;[a-zA-Z0-9_]+)/stop\.json&#39;</span><span class="p">,</span> <span class="n">StopPrimitiveHandler</span><span class="p">),</span>
+            <span class="p">(</span><span class="s1">r&#39;/primitive/(?P&lt;primitive_name&gt;[a-zA-Z0-9_]+)/pause\.json&#39;</span><span class="p">,</span> <span class="n">PausePrimitiveHandler</span><span class="p">),</span>
+            <span class="p">(</span><span class="s1">r&#39;/primitive/(?P&lt;primitive_name&gt;[a-zA-Z0-9_]+)/resume\.json&#39;</span><span class="p">,</span> <span class="n">ResumePrimitiveHandler</span><span class="p">),</span>
+            <span class="p">(</span><span class="s1">r&#39;/primitive/(?P&lt;primitive_name&gt;[a-zA-Z0-9_]+)/property/list\.json&#39;</span><span class="p">,</span> <span class="n">PrimitivePropertiesListHandler</span><span class="p">),</span>
+            <span class="p">(</span><span class="s1">r&#39;/primitive/(?P&lt;primitive_name&gt;[a-zA-Z0-9_]+)/property/(?P&lt;prop&gt;[a-zA-Z0-9_]+)&#39;</span><span class="p">,</span> <span class="n">PrimitivePropertyHandler</span><span class="p">),</span>
+            <span class="p">(</span><span class="s1">r&#39;/primitive/(?P&lt;primitive_name&gt;[a-zA-Z0-9_]+)/property/(?P&lt;prop&gt;[a-zA-Z0-9_]+)/value\.json&#39;</span><span class="p">,</span> <span class="n">SetPrimitivePropertyHandler</span><span class="p">),</span>
+            <span class="p">(</span><span class="s1">r&#39;/primitive/(?P&lt;primitive_name&gt;[a-zA-Z0-9_]+)/method/list\.json&#39;</span><span class="p">,</span> <span class="n">ListPrimitiveMethodsHandler</span><span class="p">),</span>
+            <span class="p">(</span><span class="s1">r&#39;/primitive/(?P&lt;primitive_name&gt;[a-zA-Z0-9_]+)/method/(?P&lt;method_name&gt;[a-zA-Z0-9_]+)/args\.json&#39;</span><span class="p">,</span> <span class="n">CallPrimitiveMethodHandler</span><span class="p">),</span>
+            <span class="p">(</span><span class="s1">r&#39;/motors/register/(?P&lt;register_name&gt;[a-zA-Z0-9_]+)&#39;</span><span class="p">,</span> <span class="n">MotorsRegistersHandler</span><span class="p">),</span>
+        <span class="p">])</span></div>
 
-            <span class="n">running_primitives</span> <span class="o">=</span> <span class="n">rr</span><span class="o">.</span><span class="n">get_running_primitives_list</span><span class="p">()</span>
-            <span class="k">for</span> <span class="n">prim</span> <span class="ow">in</span> <span class="n">rr</span><span class="o">.</span><span class="n">get_primitives_list</span><span class="p">():</span>
-                <span class="n">primitve</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;primitive&#39;</span><span class="p">:</span> <span class="n">prim</span><span class="p">,</span>
-                            <span class="s1">&#39;running&#39;</span><span class="p">:</span> <span class="n">prim</span> <span class="ow">in</span> <span class="n">running_primitives</span><span class="p">,</span>
-                            <span class="s1">&#39;properties&#39;</span><span class="p">:</span> <span class="p">[],</span>
-                            <span class="s1">&#39;methods&#39;</span><span class="p">:</span> <span class="n">rr</span><span class="o">.</span><span class="n">get_primitive_methods_list</span><span class="p">(</span><span class="n">prim</span><span class="p">)</span>
-                            <span class="p">}</span>
-                <span class="k">for</span> <span class="n">prop</span> <span class="ow">in</span> <span class="n">rr</span><span class="o">.</span><span class="n">get_primitive_properties_list</span><span class="p">(</span><span class="n">prim</span><span class="p">):</span>
-                    <span class="n">primitve</span><span class="p">[</span><span class="s1">&#39;properties&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s1">&#39;property&#39;</span><span class="p">:</span> <span class="n">prop</span><span class="p">,</span> <span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="n">rr</span><span class="o">.</span><span class="n">get_primitive_property</span><span class="p">(</span><span class="n">prim</span><span class="p">,</span> <span class="n">prop</span><span class="p">)})</span>
-                <span class="n">out</span><span class="p">[</span><span class="s1">&#39;primitives&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">primitve</span><span class="p">)</span>
-
-            <span class="k">return</span> <span class="n">out</span>
-
-        <span class="nd">@self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;/motor/list.json&#39;</span><span class="p">)</span>
-        <span class="nd">@self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;/motor/&lt;alias&gt;/list.json&#39;</span><span class="p">)</span>
-        <span class="k">def</span> <span class="nf">get_motor_list</span><span class="p">(</span><span class="n">alias</span><span class="o">=</span><span class="s1">&#39;motors&#39;</span><span class="p">):</span>
-            <span class="k">return</span> <span class="p">{</span>
-                <span class="n">alias</span><span class="p">:</span> <span class="n">rr</span><span class="o">.</span><span class="n">get_motors_list</span><span class="p">(</span><span class="n">alias</span><span class="p">)</span>
-            <span class="p">}</span>
-
-        <span class="nd">@self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;/sensor/list.json&#39;</span><span class="p">)</span>
-        <span class="k">def</span> <span class="nf">get_sensor_list</span><span class="p">():</span>
-            <span class="k">return</span> <span class="p">{</span>
-                <span class="s1">&#39;sensors&#39;</span><span class="p">:</span> <span class="n">rr</span><span class="o">.</span><span class="n">get_sensors_list</span><span class="p">()</span>
-            <span class="p">}</span>
-
-        <span class="nd">@self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;/motor/alias/list.json&#39;</span><span class="p">)</span>
-        <span class="k">def</span> <span class="nf">get_motor_alias</span><span class="p">():</span>
-            <span class="k">return</span> <span class="p">{</span>
-                <span class="s1">&#39;alias&#39;</span><span class="p">:</span> <span class="n">rr</span><span class="o">.</span><span class="n">get_motors_alias</span><span class="p">()</span>
-            <span class="p">}</span>
-
-        <span class="nd">@self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;/motor/&lt;motor_name&gt;/register/list.json&#39;</span><span class="p">)</span>
-        <span class="nd">@self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;/sensor/&lt;motor_name&gt;/register/list.json&#39;</span><span class="p">)</span>
-        <span class="k">def</span> <span class="nf">get_motor_registers</span><span class="p">(</span><span class="n">motor_name</span><span class="p">):</span>
-            <span class="k">return</span> <span class="p">{</span>
-                <span class="s1">&#39;registers&#39;</span><span class="p">:</span> <span class="n">rr</span><span class="o">.</span><span class="n">get_motor_registers_list</span><span class="p">(</span><span class="n">motor_name</span><span class="p">)</span>
-            <span class="p">}</span>
-
-        <span class="nd">@self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;/motor/&lt;motor_name&gt;/register/&lt;register_name&gt;&#39;</span><span class="p">)</span>
-        <span class="nd">@self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;/sensor/&lt;motor_name&gt;/register/&lt;register_name&gt;&#39;</span><span class="p">)</span>
-        <span class="k">def</span> <span class="nf">get_register_value</span><span class="p">(</span><span class="n">motor_name</span><span class="p">,</span> <span class="n">register_name</span><span class="p">):</span>
-            <span class="k">return</span> <span class="p">{</span>
-                <span class="n">register_name</span><span class="p">:</span> <span class="n">rr</span><span class="o">.</span><span class="n">get_motor_register_value</span><span class="p">(</span><span class="n">motor_name</span><span class="p">,</span> <span class="n">register_name</span><span class="p">)</span>
-            <span class="p">}</span>
-
-        <span class="nd">@self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s1">&#39;/motor/&lt;motor_name&gt;/register/&lt;register_name&gt;/value.json&#39;</span><span class="p">)</span>
-        <span class="nd">@self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s1">&#39;/sensor/&lt;motor_name&gt;/register/&lt;register_name&gt;/value.json&#39;</span><span class="p">)</span>
-        <span class="k">def</span> <span class="nf">set_register_value</span><span class="p">(</span><span class="n">motor_name</span><span class="p">,</span> <span class="n">register_name</span><span class="p">):</span>
-            <span class="n">rr</span><span class="o">.</span><span class="n">set_motor_register_value</span><span class="p">(</span><span class="n">motor_name</span><span class="p">,</span> <span class="n">register_name</span><span class="p">,</span>
-                                        <span class="n">bottle</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">json</span><span class="p">)</span>
-            <span class="k">return</span> <span class="p">{}</span>
-
-        <span class="c1"># Sensors route</span>
-
-        <span class="c1"># Primitives route</span>
-        <span class="nd">@self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;/primitive/list.json&#39;</span><span class="p">)</span>
-        <span class="k">def</span> <span class="nf">get_primitives_list</span><span class="p">():</span>
-            <span class="k">return</span> <span class="p">{</span>
-                <span class="s1">&#39;primitives&#39;</span><span class="p">:</span> <span class="n">rr</span><span class="o">.</span><span class="n">get_primitives_list</span><span class="p">()</span>
-            <span class="p">}</span>
-
-        <span class="nd">@self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;/primitive/running/list.json&#39;</span><span class="p">)</span>
-        <span class="k">def</span> <span class="nf">get_running_primitives_list</span><span class="p">():</span>
-            <span class="k">return</span> <span class="p">{</span>
-                <span class="s1">&#39;running_primitives&#39;</span><span class="p">:</span> <span class="n">rr</span><span class="o">.</span><span class="n">get_running_primitives_list</span><span class="p">()</span>
-            <span class="p">}</span>
-
-        <span class="nd">@self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;/primitive/&lt;prim&gt;/start.json&#39;</span><span class="p">)</span>
-        <span class="k">def</span> <span class="nf">start_primitive</span><span class="p">(</span><span class="n">prim</span><span class="p">):</span>
-            <span class="n">rr</span><span class="o">.</span><span class="n">start_primitive</span><span class="p">(</span><span class="n">prim</span><span class="p">)</span>
-
-        <span class="nd">@self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;/primitive/&lt;prim&gt;/stop.json&#39;</span><span class="p">)</span>
-        <span class="k">def</span> <span class="nf">stop_primitive</span><span class="p">(</span><span class="n">prim</span><span class="p">):</span>
-            <span class="n">rr</span><span class="o">.</span><span class="n">stop_primitive</span><span class="p">(</span><span class="n">prim</span><span class="p">)</span>
-
-        <span class="nd">@self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;/primitive/&lt;prim&gt;/pause.json&#39;</span><span class="p">)</span>
-        <span class="k">def</span> <span class="nf">pause_primitive</span><span class="p">(</span><span class="n">prim</span><span class="p">):</span>
-            <span class="n">rr</span><span class="o">.</span><span class="n">pause_primitive</span><span class="p">(</span><span class="n">prim</span><span class="p">)</span>
-
-        <span class="nd">@self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;/primitive/&lt;prim&gt;/resume.json&#39;</span><span class="p">)</span>
-        <span class="k">def</span> <span class="nf">resume_primitive</span><span class="p">(</span><span class="n">prim</span><span class="p">):</span>
-            <span class="n">rr</span><span class="o">.</span><span class="n">resume_primitive</span><span class="p">(</span><span class="n">prim</span><span class="p">)</span>
-
-        <span class="nd">@self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;/primitive/&lt;prim&gt;/property/list.json&#39;</span><span class="p">)</span>
-        <span class="k">def</span> <span class="nf">get_primitive_properties_list</span><span class="p">(</span><span class="n">prim</span><span class="p">):</span>
-            <span class="k">return</span> <span class="p">{</span>
-                <span class="s1">&#39;property&#39;</span><span class="p">:</span> <span class="n">rr</span><span class="o">.</span><span class="n">get_primitive_properties_list</span><span class="p">(</span><span class="n">prim</span><span class="p">)</span>
-            <span class="p">}</span>
-
-        <span class="nd">@self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;/primitive/&lt;prim&gt;/property/&lt;prop&gt;&#39;</span><span class="p">)</span>
-        <span class="k">def</span> <span class="nf">get_primitive_property</span><span class="p">(</span><span class="n">prim</span><span class="p">,</span> <span class="n">prop</span><span class="p">):</span>
-            <span class="n">res</span> <span class="o">=</span> <span class="n">rr</span><span class="o">.</span><span class="n">get_primitive_property</span><span class="p">(</span><span class="n">prim</span><span class="p">,</span> <span class="n">prop</span><span class="p">)</span>
-            <span class="k">return</span> <span class="p">{</span>
-                <span class="s1">&#39;</span><span class="si">{}</span><span class="s1">.</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">prim</span><span class="p">,</span> <span class="n">prop</span><span class="p">):</span> <span class="n">res</span>
-            <span class="p">}</span>
-
-        <span class="nd">@self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s1">&#39;/primitive/&lt;prim&gt;/property/&lt;prop&gt;/value.json&#39;</span><span class="p">)</span>
-        <span class="k">def</span> <span class="nf">set_primitive_property</span><span class="p">(</span><span class="n">prim</span><span class="p">,</span> <span class="n">prop</span><span class="p">):</span>
-            <span class="n">rr</span><span class="o">.</span><span class="n">set_primitive_property</span><span class="p">(</span><span class="n">prim</span><span class="p">,</span> <span class="n">prop</span><span class="p">,</span>
-                                      <span class="n">bottle</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">json</span><span class="p">)</span>
-
-        <span class="nd">@self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;/primitive/&lt;prim&gt;/method/list.json&#39;</span><span class="p">)</span>
-        <span class="k">def</span> <span class="nf">get_primitive_methods_list</span><span class="p">(</span><span class="n">prim</span><span class="p">):</span>
-            <span class="k">return</span> <span class="p">{</span>
-                <span class="s1">&#39;methods&#39;</span><span class="p">:</span> <span class="n">rr</span><span class="o">.</span><span class="n">get_primitive_methods_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prim</span><span class="p">)</span>
-            <span class="p">}</span>
-
-        <span class="nd">@self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s1">&#39;/primitive/&lt;prim&gt;/method/&lt;meth&gt;/args.json&#39;</span><span class="p">)</span>
-        <span class="k">def</span> <span class="nf">call_primitive_method</span><span class="p">(</span><span class="n">prim</span><span class="p">,</span> <span class="n">meth</span><span class="p">):</span>
-            <span class="n">res</span> <span class="o">=</span> <span class="n">rr</span><span class="o">.</span><span class="n">call_primitive_method</span><span class="p">(</span><span class="n">prim</span><span class="p">,</span> <span class="n">meth</span><span class="p">,</span>
-                                           <span class="n">bottle</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">json</span><span class="p">)</span>
-            <span class="k">return</span> <span class="p">{</span>
-                <span class="s1">&#39;</span><span class="si">{}</span><span class="s1">:</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">prim</span><span class="p">,</span> <span class="n">meth</span><span class="p">):</span> <span class="n">res</span>
-            <span class="p">}</span>
-
-        <span class="nd">@self</span><span class="o">.</span><span class="n">app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;/motors/register/&lt;register_name&gt;&#39;</span><span class="p">)</span>
-        <span class="k">def</span> <span class="nf">get_motors_register_value</span><span class="p">(</span><span class="n">register_name</span><span class="p">):</span>
-            <span class="n">motors_list</span> <span class="o">=</span> <span class="n">rr</span><span class="o">.</span><span class="n">get_motors_list</span><span class="p">(</span><span class="s1">&#39;motors&#39;</span><span class="p">)</span>
-            <span class="n">registers_motors</span> <span class="o">=</span> <span class="p">{}</span>
-
-            <span class="k">for</span> <span class="n">motor_name</span> <span class="ow">in</span> <span class="n">motors_list</span><span class="p">:</span>
-                <span class="n">registers_motors</span><span class="p">[</span><span class="n">motor_name</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
-                    <span class="n">register_name</span><span class="p">:</span> <span class="n">rr</span><span class="o">.</span><span class="n">get_motor_register_value</span><span class="p">(</span><span class="n">motor_name</span><span class="p">,</span> <span class="n">register_name</span><span class="p">)</span>
-                <span class="p">}</span>
-
-            <span class="k">return</span> <span class="n">registers_motors</span>
-
-<div class="viewcode-block" id="HTTPRobotServer.run"><a class="viewcode-back" href="../../../pypot.server.html#pypot.server.httpserver.HTTPRobotServer.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">quiet</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Start the tornado server, run forever.</span>
-<span class="sd">            &#39;quiet&#39; and &#39;server&#39; arguments are no longer used, they are keep only for backward compatibility.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="HTTPRobotServer.run"><a class="viewcode-back" href="../../../pypot.server.html#pypot.server.httpserver.HTTPRobotServer.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Start the tornado server, run forever&quot;&quot;&quot;</span>
 
         <span class="k">try</span><span class="p">:</span>
             <span class="n">loop</span> <span class="o">=</span> <span class="n">IOLoop</span><span class="p">()</span>
-            <span class="n">http_server</span> <span class="o">=</span> <span class="n">HTTPServer</span><span class="p">(</span><span class="n">WSGIContainer</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="p">))</span>
-            <span class="n">http_server</span><span class="o">.</span><span class="n">listen</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">port</span><span class="p">)</span>
+            <span class="n">app</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_app</span><span class="p">()</span>
+            <span class="n">app</span><span class="o">.</span><span class="n">listen</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">port</span><span class="p">)</span>
             <span class="n">loop</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
 
         <span class="k">except</span> <span class="n">socket</span><span class="o">.</span><span class="n">error</span> <span class="k">as</span> <span class="n">serr</span><span class="p">:</span>
@@ -380,8 +400,7 @@
             <span class="k">if</span> <span class="n">serr</span><span class="o">.</span><span class="n">errno</span> <span class="o">!=</span> <span class="n">errno</span><span class="o">.</span><span class="n">EADDRINUSE</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="n">serr</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;The webserver port </span><span class="si">{}</span><span class="s2"> is already used.</span>
-<span class="s2">The HttpRobotServer is maybe already run or another software use this port.&quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">port</span><span class="p">))</span></div></div>
+                <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;The webserver port </span><span class="si">{}</span><span class="s1"> is already used. May be the HttpRobotServer is already running or another software is using this port.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">port</span><span class="p">))</span></div></div>
 </pre></div>
 
                 </div>
@@ -398,7 +417,7 @@
 <div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
   <div class="navbar-inner">
     <ul class="nav navbar-nav ">
-        <li><a href="../../../index.html">pypot 2.11.10 documentation</a></li>
+        <li><a href="../../../index.html">pypot 3.0.0.rc1 documentation</a></li>
     </ul>
 <ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
       

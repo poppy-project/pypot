@@ -9,7 +9,7 @@
   <head>
     <meta charset="utf-8" />
     
-    <title>server Package &mdash; pypot 2.11.10 documentation</title>
+    <title>server Package &mdash; pypot 3.0.0.rc1 documentation</title>
     <meta name="description" content="">
     <meta name="author" content="">
 
@@ -35,7 +35,7 @@
 <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
             URL_ROOT:    './',
-            VERSION:     '2.11.10',
+            VERSION:     '3.0.0.rc1',
             COLLAPSE_INDEX: false,
             FILE_SUFFIX: '.html',
             HAS_SOURCE:  true
@@ -53,7 +53,7 @@
     <link rel="author" title="About these documents" href="about.html" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="top" title="pypot 2.11.10 documentation" href="index.html" />
+    <link rel="top" title="pypot 3.0.0.rc1 documentation" href="index.html" />
     <link rel="up" title="Pypot’s API" href="api.html" />
     <link rel="next" title="vrep Package" href="pypot.vrep.html" />
     <link rel="prev" title="sensor Package" href="pypot.sensor.html" /> 
@@ -68,7 +68,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="index.html">pypot 2.11.10 documentation</a>
+          <a class="navbar-brand" href="index.html">pypot 3.0.0.rc1 documentation</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
@@ -418,38 +418,252 @@ The default is UTF-8.</p>
 </dd></dl>
 
 <dl class="class">
-<dt id="pypot.server.httpserver.EnableCors">
-<em class="property">class </em><code class="descclassname">pypot.server.httpserver.</code><code class="descname">EnableCors</code><span class="sig-paren">(</span><em>origin='*'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/server/httpserver.html#EnableCors"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.server.httpserver.EnableCors" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
-<p>Enable CORS (Cross-Origin Resource Sharing) headers</p>
-<dl class="attribute">
-<dt id="pypot.server.httpserver.EnableCors.name">
-<code class="descname">name</code><em class="property"> = 'enable_cors'</em><a class="headerlink" href="#pypot.server.httpserver.EnableCors.name" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="pypot.server.httpserver.EnableCors.api">
-<code class="descname">api</code><em class="property"> = 2</em><a class="headerlink" href="#pypot.server.httpserver.EnableCors.api" title="Permalink to this definition">¶</a></dt>
+<dt id="pypot.server.httpserver.PoppyRequestHandler">
+<em class="property">class </em><code class="descclassname">pypot.server.httpserver.</code><code class="descname">PoppyRequestHandler</code><span class="sig-paren">(</span><em>application</em>, <em>request</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/server/httpserver.html#PoppyRequestHandler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.server.httpserver.PoppyRequestHandler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">tornado.web.RequestHandler</span></code></p>
+<p>Custom request handler.</p>
+<p>Automatically sets CORS and cache headers, and manages
+every OPTIONS request.</p>
+<dl class="method">
+<dt id="pypot.server.httpserver.PoppyRequestHandler.set_default_headers">
+<code class="descname">set_default_headers</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/server/httpserver.html#PoppyRequestHandler.set_default_headers"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.server.httpserver.PoppyRequestHandler.set_default_headers" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
-<dt id="pypot.server.httpserver.EnableCors.apply">
-<code class="descname">apply</code><span class="sig-paren">(</span><em>fn</em>, <em>context</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/server/httpserver.html#EnableCors.apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.server.httpserver.EnableCors.apply" title="Permalink to this definition">¶</a></dt>
+<dt id="pypot.server.httpserver.PoppyRequestHandler.options">
+<code class="descname">options</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/server/httpserver.html#PoppyRequestHandler.options"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.server.httpserver.PoppyRequestHandler.options" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pypot.server.httpserver.PoppyRequestHandler.write_json">
+<code class="descname">write_json</code><span class="sig-paren">(</span><em>obj</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/server/httpserver.html#PoppyRequestHandler.write_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.server.httpserver.PoppyRequestHandler.write_json" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pypot.server.httpserver.IndexHandler">
+<em class="property">class </em><code class="descclassname">pypot.server.httpserver.</code><code class="descname">IndexHandler</code><span class="sig-paren">(</span><em>application</em>, <em>request</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/server/httpserver.html#IndexHandler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.server.httpserver.IndexHandler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pypot.server.httpserver.PoppyRequestHandler" title="pypot.server.httpserver.PoppyRequestHandler"><code class="xref py py-class docutils literal"><span class="pre">pypot.server.httpserver.PoppyRequestHandler</span></code></a></p>
+<dl class="method">
+<dt id="pypot.server.httpserver.IndexHandler.get">
+<code class="descname">get</code><span class="sig-paren">(</span><em>*args</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/server/httpserver.html#IndexHandler.get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.server.httpserver.IndexHandler.get" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pypot.server.httpserver.MotorsListHandler">
+<em class="property">class </em><code class="descclassname">pypot.server.httpserver.</code><code class="descname">MotorsListHandler</code><span class="sig-paren">(</span><em>application</em>, <em>request</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/server/httpserver.html#MotorsListHandler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.server.httpserver.MotorsListHandler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pypot.server.httpserver.PoppyRequestHandler" title="pypot.server.httpserver.PoppyRequestHandler"><code class="xref py py-class docutils literal"><span class="pre">pypot.server.httpserver.PoppyRequestHandler</span></code></a></p>
+<dl class="method">
+<dt id="pypot.server.httpserver.MotorsListHandler.get">
+<code class="descname">get</code><span class="sig-paren">(</span><em>alias='motors'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/server/httpserver.html#MotorsListHandler.get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.server.httpserver.MotorsListHandler.get" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pypot.server.httpserver.SensorsListHandler">
+<em class="property">class </em><code class="descclassname">pypot.server.httpserver.</code><code class="descname">SensorsListHandler</code><span class="sig-paren">(</span><em>application</em>, <em>request</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/server/httpserver.html#SensorsListHandler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.server.httpserver.SensorsListHandler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pypot.server.httpserver.PoppyRequestHandler" title="pypot.server.httpserver.PoppyRequestHandler"><code class="xref py py-class docutils literal"><span class="pre">pypot.server.httpserver.PoppyRequestHandler</span></code></a></p>
+<dl class="method">
+<dt id="pypot.server.httpserver.SensorsListHandler.get">
+<code class="descname">get</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/server/httpserver.html#SensorsListHandler.get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.server.httpserver.SensorsListHandler.get" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pypot.server.httpserver.MotorsAliasesListHandler">
+<em class="property">class </em><code class="descclassname">pypot.server.httpserver.</code><code class="descname">MotorsAliasesListHandler</code><span class="sig-paren">(</span><em>application</em>, <em>request</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/server/httpserver.html#MotorsAliasesListHandler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.server.httpserver.MotorsAliasesListHandler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pypot.server.httpserver.PoppyRequestHandler" title="pypot.server.httpserver.PoppyRequestHandler"><code class="xref py py-class docutils literal"><span class="pre">pypot.server.httpserver.PoppyRequestHandler</span></code></a></p>
+<dl class="method">
+<dt id="pypot.server.httpserver.MotorsAliasesListHandler.get">
+<code class="descname">get</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/server/httpserver.html#MotorsAliasesListHandler.get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.server.httpserver.MotorsAliasesListHandler.get" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pypot.server.httpserver.MotorRegistersListHandler">
+<em class="property">class </em><code class="descclassname">pypot.server.httpserver.</code><code class="descname">MotorRegistersListHandler</code><span class="sig-paren">(</span><em>application</em>, <em>request</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/server/httpserver.html#MotorRegistersListHandler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.server.httpserver.MotorRegistersListHandler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pypot.server.httpserver.PoppyRequestHandler" title="pypot.server.httpserver.PoppyRequestHandler"><code class="xref py py-class docutils literal"><span class="pre">pypot.server.httpserver.PoppyRequestHandler</span></code></a></p>
+<dl class="method">
+<dt id="pypot.server.httpserver.MotorRegistersListHandler.get">
+<code class="descname">get</code><span class="sig-paren">(</span><em>motor_name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/server/httpserver.html#MotorRegistersListHandler.get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.server.httpserver.MotorRegistersListHandler.get" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pypot.server.httpserver.MotorRegisterHandler">
+<em class="property">class </em><code class="descclassname">pypot.server.httpserver.</code><code class="descname">MotorRegisterHandler</code><span class="sig-paren">(</span><em>application</em>, <em>request</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/server/httpserver.html#MotorRegisterHandler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.server.httpserver.MotorRegisterHandler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pypot.server.httpserver.PoppyRequestHandler" title="pypot.server.httpserver.PoppyRequestHandler"><code class="xref py py-class docutils literal"><span class="pre">pypot.server.httpserver.PoppyRequestHandler</span></code></a></p>
+<dl class="method">
+<dt id="pypot.server.httpserver.MotorRegisterHandler.get">
+<code class="descname">get</code><span class="sig-paren">(</span><em>motor_name</em>, <em>register_name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/server/httpserver.html#MotorRegisterHandler.get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.server.httpserver.MotorRegisterHandler.get" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pypot.server.httpserver.UpdateMotorRegisterHandler">
+<em class="property">class </em><code class="descclassname">pypot.server.httpserver.</code><code class="descname">UpdateMotorRegisterHandler</code><span class="sig-paren">(</span><em>application</em>, <em>request</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/server/httpserver.html#UpdateMotorRegisterHandler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.server.httpserver.UpdateMotorRegisterHandler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pypot.server.httpserver.PoppyRequestHandler" title="pypot.server.httpserver.PoppyRequestHandler"><code class="xref py py-class docutils literal"><span class="pre">pypot.server.httpserver.PoppyRequestHandler</span></code></a></p>
+<dl class="method">
+<dt id="pypot.server.httpserver.UpdateMotorRegisterHandler.post">
+<code class="descname">post</code><span class="sig-paren">(</span><em>motor_name</em>, <em>register_name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/server/httpserver.html#UpdateMotorRegisterHandler.post"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.server.httpserver.UpdateMotorRegisterHandler.post" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pypot.server.httpserver.PrimitivesListHandler">
+<em class="property">class </em><code class="descclassname">pypot.server.httpserver.</code><code class="descname">PrimitivesListHandler</code><span class="sig-paren">(</span><em>application</em>, <em>request</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/server/httpserver.html#PrimitivesListHandler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.server.httpserver.PrimitivesListHandler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pypot.server.httpserver.PoppyRequestHandler" title="pypot.server.httpserver.PoppyRequestHandler"><code class="xref py py-class docutils literal"><span class="pre">pypot.server.httpserver.PoppyRequestHandler</span></code></a></p>
+<dl class="method">
+<dt id="pypot.server.httpserver.PrimitivesListHandler.get">
+<code class="descname">get</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/server/httpserver.html#PrimitivesListHandler.get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.server.httpserver.PrimitivesListHandler.get" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pypot.server.httpserver.RunningPrimitivesListHandler">
+<em class="property">class </em><code class="descclassname">pypot.server.httpserver.</code><code class="descname">RunningPrimitivesListHandler</code><span class="sig-paren">(</span><em>application</em>, <em>request</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/server/httpserver.html#RunningPrimitivesListHandler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.server.httpserver.RunningPrimitivesListHandler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pypot.server.httpserver.PoppyRequestHandler" title="pypot.server.httpserver.PoppyRequestHandler"><code class="xref py py-class docutils literal"><span class="pre">pypot.server.httpserver.PoppyRequestHandler</span></code></a></p>
+<dl class="method">
+<dt id="pypot.server.httpserver.RunningPrimitivesListHandler.get">
+<code class="descname">get</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/server/httpserver.html#RunningPrimitivesListHandler.get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.server.httpserver.RunningPrimitivesListHandler.get" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pypot.server.httpserver.StartPrimitiveHandler">
+<em class="property">class </em><code class="descclassname">pypot.server.httpserver.</code><code class="descname">StartPrimitiveHandler</code><span class="sig-paren">(</span><em>application</em>, <em>request</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/server/httpserver.html#StartPrimitiveHandler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.server.httpserver.StartPrimitiveHandler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pypot.server.httpserver.PoppyRequestHandler" title="pypot.server.httpserver.PoppyRequestHandler"><code class="xref py py-class docutils literal"><span class="pre">pypot.server.httpserver.PoppyRequestHandler</span></code></a></p>
+<dl class="method">
+<dt id="pypot.server.httpserver.StartPrimitiveHandler.get">
+<code class="descname">get</code><span class="sig-paren">(</span><em>primitive_name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/server/httpserver.html#StartPrimitiveHandler.get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.server.httpserver.StartPrimitiveHandler.get" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pypot.server.httpserver.StopPrimitiveHandler">
+<em class="property">class </em><code class="descclassname">pypot.server.httpserver.</code><code class="descname">StopPrimitiveHandler</code><span class="sig-paren">(</span><em>application</em>, <em>request</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/server/httpserver.html#StopPrimitiveHandler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.server.httpserver.StopPrimitiveHandler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pypot.server.httpserver.PoppyRequestHandler" title="pypot.server.httpserver.PoppyRequestHandler"><code class="xref py py-class docutils literal"><span class="pre">pypot.server.httpserver.PoppyRequestHandler</span></code></a></p>
+<dl class="method">
+<dt id="pypot.server.httpserver.StopPrimitiveHandler.get">
+<code class="descname">get</code><span class="sig-paren">(</span><em>primitive_name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/server/httpserver.html#StopPrimitiveHandler.get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.server.httpserver.StopPrimitiveHandler.get" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pypot.server.httpserver.PausePrimitiveHandler">
+<em class="property">class </em><code class="descclassname">pypot.server.httpserver.</code><code class="descname">PausePrimitiveHandler</code><span class="sig-paren">(</span><em>application</em>, <em>request</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/server/httpserver.html#PausePrimitiveHandler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.server.httpserver.PausePrimitiveHandler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pypot.server.httpserver.PoppyRequestHandler" title="pypot.server.httpserver.PoppyRequestHandler"><code class="xref py py-class docutils literal"><span class="pre">pypot.server.httpserver.PoppyRequestHandler</span></code></a></p>
+<dl class="method">
+<dt id="pypot.server.httpserver.PausePrimitiveHandler.get">
+<code class="descname">get</code><span class="sig-paren">(</span><em>primitive_name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/server/httpserver.html#PausePrimitiveHandler.get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.server.httpserver.PausePrimitiveHandler.get" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pypot.server.httpserver.ResumePrimitiveHandler">
+<em class="property">class </em><code class="descclassname">pypot.server.httpserver.</code><code class="descname">ResumePrimitiveHandler</code><span class="sig-paren">(</span><em>application</em>, <em>request</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/server/httpserver.html#ResumePrimitiveHandler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.server.httpserver.ResumePrimitiveHandler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pypot.server.httpserver.PoppyRequestHandler" title="pypot.server.httpserver.PoppyRequestHandler"><code class="xref py py-class docutils literal"><span class="pre">pypot.server.httpserver.PoppyRequestHandler</span></code></a></p>
+<dl class="method">
+<dt id="pypot.server.httpserver.ResumePrimitiveHandler.get">
+<code class="descname">get</code><span class="sig-paren">(</span><em>primitive_name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/server/httpserver.html#ResumePrimitiveHandler.get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.server.httpserver.ResumePrimitiveHandler.get" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pypot.server.httpserver.PrimitivePropertiesListHandler">
+<em class="property">class </em><code class="descclassname">pypot.server.httpserver.</code><code class="descname">PrimitivePropertiesListHandler</code><span class="sig-paren">(</span><em>application</em>, <em>request</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/server/httpserver.html#PrimitivePropertiesListHandler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.server.httpserver.PrimitivePropertiesListHandler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pypot.server.httpserver.PoppyRequestHandler" title="pypot.server.httpserver.PoppyRequestHandler"><code class="xref py py-class docutils literal"><span class="pre">pypot.server.httpserver.PoppyRequestHandler</span></code></a></p>
+<dl class="method">
+<dt id="pypot.server.httpserver.PrimitivePropertiesListHandler.get">
+<code class="descname">get</code><span class="sig-paren">(</span><em>primitive_name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/server/httpserver.html#PrimitivePropertiesListHandler.get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.server.httpserver.PrimitivePropertiesListHandler.get" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pypot.server.httpserver.PrimitivePropertyHandler">
+<em class="property">class </em><code class="descclassname">pypot.server.httpserver.</code><code class="descname">PrimitivePropertyHandler</code><span class="sig-paren">(</span><em>application</em>, <em>request</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/server/httpserver.html#PrimitivePropertyHandler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.server.httpserver.PrimitivePropertyHandler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pypot.server.httpserver.PoppyRequestHandler" title="pypot.server.httpserver.PoppyRequestHandler"><code class="xref py py-class docutils literal"><span class="pre">pypot.server.httpserver.PoppyRequestHandler</span></code></a></p>
+<dl class="method">
+<dt id="pypot.server.httpserver.PrimitivePropertyHandler.get">
+<code class="descname">get</code><span class="sig-paren">(</span><em>primitive_name</em>, <em>prop</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/server/httpserver.html#PrimitivePropertyHandler.get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.server.httpserver.PrimitivePropertyHandler.get" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pypot.server.httpserver.SetPrimitivePropertyHandler">
+<em class="property">class </em><code class="descclassname">pypot.server.httpserver.</code><code class="descname">SetPrimitivePropertyHandler</code><span class="sig-paren">(</span><em>application</em>, <em>request</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/server/httpserver.html#SetPrimitivePropertyHandler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.server.httpserver.SetPrimitivePropertyHandler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pypot.server.httpserver.PoppyRequestHandler" title="pypot.server.httpserver.PoppyRequestHandler"><code class="xref py py-class docutils literal"><span class="pre">pypot.server.httpserver.PoppyRequestHandler</span></code></a></p>
+<dl class="method">
+<dt id="pypot.server.httpserver.SetPrimitivePropertyHandler.post">
+<code class="descname">post</code><span class="sig-paren">(</span><em>primitive_name</em>, <em>prop</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/server/httpserver.html#SetPrimitivePropertyHandler.post"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.server.httpserver.SetPrimitivePropertyHandler.post" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pypot.server.httpserver.ListPrimitiveMethodsHandler">
+<em class="property">class </em><code class="descclassname">pypot.server.httpserver.</code><code class="descname">ListPrimitiveMethodsHandler</code><span class="sig-paren">(</span><em>application</em>, <em>request</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/server/httpserver.html#ListPrimitiveMethodsHandler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.server.httpserver.ListPrimitiveMethodsHandler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pypot.server.httpserver.PoppyRequestHandler" title="pypot.server.httpserver.PoppyRequestHandler"><code class="xref py py-class docutils literal"><span class="pre">pypot.server.httpserver.PoppyRequestHandler</span></code></a></p>
+<dl class="method">
+<dt id="pypot.server.httpserver.ListPrimitiveMethodsHandler.get">
+<code class="descname">get</code><span class="sig-paren">(</span><em>primitive_name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/server/httpserver.html#ListPrimitiveMethodsHandler.get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.server.httpserver.ListPrimitiveMethodsHandler.get" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pypot.server.httpserver.CallPrimitiveMethodHandler">
+<em class="property">class </em><code class="descclassname">pypot.server.httpserver.</code><code class="descname">CallPrimitiveMethodHandler</code><span class="sig-paren">(</span><em>application</em>, <em>request</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/server/httpserver.html#CallPrimitiveMethodHandler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.server.httpserver.CallPrimitiveMethodHandler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pypot.server.httpserver.PoppyRequestHandler" title="pypot.server.httpserver.PoppyRequestHandler"><code class="xref py py-class docutils literal"><span class="pre">pypot.server.httpserver.PoppyRequestHandler</span></code></a></p>
+<dl class="method">
+<dt id="pypot.server.httpserver.CallPrimitiveMethodHandler.post">
+<code class="descname">post</code><span class="sig-paren">(</span><em>primitive_name</em>, <em>method_name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/server/httpserver.html#CallPrimitiveMethodHandler.post"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.server.httpserver.CallPrimitiveMethodHandler.post" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pypot.server.httpserver.MotorsRegistersHandler">
+<em class="property">class </em><code class="descclassname">pypot.server.httpserver.</code><code class="descname">MotorsRegistersHandler</code><span class="sig-paren">(</span><em>application</em>, <em>request</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/server/httpserver.html#MotorsRegistersHandler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.server.httpserver.MotorsRegistersHandler" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pypot.server.httpserver.PoppyRequestHandler" title="pypot.server.httpserver.PoppyRequestHandler"><code class="xref py py-class docutils literal"><span class="pre">pypot.server.httpserver.PoppyRequestHandler</span></code></a></p>
+<dl class="method">
+<dt id="pypot.server.httpserver.MotorsRegistersHandler.get">
+<code class="descname">get</code><span class="sig-paren">(</span><em>register_name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/server/httpserver.html#MotorsRegistersHandler.get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.server.httpserver.MotorsRegistersHandler.get" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
 <dl class="class">
 <dt id="pypot.server.httpserver.HTTPRobotServer">
-<em class="property">class </em><code class="descclassname">pypot.server.httpserver.</code><code class="descname">HTTPRobotServer</code><span class="sig-paren">(</span><em>robot</em>, <em>host='0.0.0.0'</em>, <em>port='8080'</em>, <em>cross_domain_origin='*'</em>, <em>quiet=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/server/httpserver.html#HTTPRobotServer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.server.httpserver.HTTPRobotServer" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">pypot.server.httpserver.</code><code class="descname">HTTPRobotServer</code><span class="sig-paren">(</span><em>robot</em>, <em>host='0.0.0.0'</em>, <em>port='8080'</em>, <em>cross_domain_origin='*'</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/server/httpserver.html#HTTPRobotServer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.server.httpserver.HTTPRobotServer" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">pypot.server.server.AbstractServer</span></code></p>
-<p>Bottle based HTTPServer used to remote access a robot.</p>
-<p>Please refer to the REST API for an exhaustive list of the possible routes.</p>
+<p>Refer to the REST API for an exhaustive list of the possible routes.</p>
+<dl class="method">
+<dt id="pypot.server.httpserver.HTTPRobotServer.make_app">
+<code class="descname">make_app</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/server/httpserver.html#HTTPRobotServer.make_app"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.server.httpserver.HTTPRobotServer.make_app" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="method">
 <dt id="pypot.server.httpserver.HTTPRobotServer.run">
-<code class="descname">run</code><span class="sig-paren">(</span><em>quiet=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/server/httpserver.html#HTTPRobotServer.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.server.httpserver.HTTPRobotServer.run" title="Permalink to this definition">¶</a></dt>
-<dd><p>Start the tornado server, run forever.
-&#8216;quiet&#8217; and &#8216;server&#8217; arguments are no longer used, they are keep only for backward compatibility.</p>
+<code class="descname">run</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/server/httpserver.html#HTTPRobotServer.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.server.httpserver.HTTPRobotServer.run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Start the tornado server, run forever</p>
 </dd></dl>
 
 </dd></dl>
@@ -496,6 +710,50 @@ The default is UTF-8.</p>
 </dd></dl>
 
 <dl class="class">
+<dt id="pypot.server.snap.EnableCors">
+<em class="property">class </em><code class="descclassname">pypot.server.snap.</code><code class="descname">EnableCors</code><span class="sig-paren">(</span><em>origin='*'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/server/snap.html#EnableCors"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.server.snap.EnableCors" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<p>Enable CORS (Cross-Origin Resource Sharing) headers</p>
+<dl class="attribute">
+<dt id="pypot.server.snap.EnableCors.name">
+<code class="descname">name</code><em class="property"> = 'enable_cors'</em><a class="headerlink" href="#pypot.server.snap.EnableCors.name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pypot.server.snap.EnableCors.api">
+<code class="descname">api</code><em class="property"> = 2</em><a class="headerlink" href="#pypot.server.snap.EnableCors.api" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pypot.server.snap.EnableCors.apply">
+<code class="descname">apply</code><span class="sig-paren">(</span><em>fn</em>, <em>context</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/server/snap.html#EnableCors.apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.server.snap.EnableCors.apply" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pypot.server.snap.CacheBuster">
+<em class="property">class </em><code class="descclassname">pypot.server.snap.</code><code class="descname">CacheBuster</code><a class="reference internal" href="_modules/pypot/server/snap.html#CacheBuster"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.server.snap.CacheBuster" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<p>Add response headers to disable cache</p>
+<dl class="attribute">
+<dt id="pypot.server.snap.CacheBuster.name">
+<code class="descname">name</code><em class="property"> = 'cache_buster'</em><a class="headerlink" href="#pypot.server.snap.CacheBuster.name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="pypot.server.snap.CacheBuster.api">
+<code class="descname">api</code><em class="property"> = 2</em><a class="headerlink" href="#pypot.server.snap.CacheBuster.api" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pypot.server.snap.CacheBuster.apply">
+<code class="descname">apply</code><span class="sig-paren">(</span><em>fn</em>, <em>context</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/server/snap.html#CacheBuster.apply"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.server.snap.CacheBuster.apply" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
 <dt id="pypot.server.snap.SnapRobotServer">
 <em class="property">class </em><code class="descclassname">pypot.server.snap.</code><code class="descname">SnapRobotServer</code><span class="sig-paren">(</span><em>robot</em>, <em>host='0.0.0.0'</em>, <em>port='6969'</em>, <em>quiet=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/server/snap.html#SnapRobotServer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.server.snap.SnapRobotServer" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">pypot.server.server.AbstractServer</span></code></p>
@@ -526,7 +784,7 @@ The default is UTF-8.</p>
 <div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
   <div class="navbar-inner">
     <ul class="nav navbar-nav ">
-        <li><a href="index.html">pypot 2.11.10 documentation</a></li>
+        <li><a href="index.html">pypot 3.0.0.rc1 documentation</a></li>
     </ul>
 <ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
       
