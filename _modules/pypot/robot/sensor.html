@@ -156,7 +156,7 @@
     <span class="n">registers</span> <span class="o">=</span> <span class="n">Sensor</span><span class="o">.</span><span class="n">registers</span> <span class="o">+</span> <span class="p">[</span><span class="s1">&#39;position&#39;</span><span class="p">,</span> <span class="s1">&#39;orientation&#39;</span><span class="p">]</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
-        <span class="n">Sensor</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+        <span class="n">Sensor</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_pos</span> <span class="o">=</span> <span class="n">zeros</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_ori</span> <span class="o">=</span> <span class="n">zeros</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
@@ -209,7 +209,7 @@
       <!-- footer -->
       <footer role="contentinfo">
           &copy; Copyright 2015, Poppy-Project.
-        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.5.1.
+        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.5.2.
       </footer>
       <!-- /footer -->
 

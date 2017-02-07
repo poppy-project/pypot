@@ -149,7 +149,7 @@
 
 <span class="kn">from</span> <span class="nn">.server</span> <span class="k">import</span> <span class="n">AbstractServer</span>
 
-<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="n">__name__</span><span class="p">)</span>
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="MyJSONEncoder"><a class="viewcode-back" href="../../../pypot.server.html#pypot.server.httpserver.MyJSONEncoder">[docs]</a><span class="k">class</span> <span class="nc">MyJSONEncoder</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">JSONEncoder</span><span class="p">):</span>
@@ -351,39 +351,39 @@
     <span class="sd">&quot;&quot;&quot;Refer to the REST API for an exhaustive list of the possible routes.&quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">robot</span><span class="p">,</span> <span class="n">host</span><span class="o">=</span><span class="s1">&#39;0.0.0.0&#39;</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="s1">&#39;8080&#39;</span><span class="p">,</span> <span class="n">cross_domain_origin</span><span class="o">=</span><span class="s1">&#39;*&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="n">AbstractServer</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">robot</span><span class="p">,</span> <span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">)</span>
+        <span class="n">AbstractServer</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">robot</span><span class="p">,</span> <span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">)</span>
 
 <div class="viewcode-block" id="HTTPRobotServer.make_app"><a class="viewcode-back" href="../../../pypot.server.html#pypot.server.httpserver.HTTPRobotServer.make_app">[docs]</a>    <span class="k">def</span> <span class="nf">make_app</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">PoppyRequestHandler</span><span class="o">.</span><span class="n">restful_robot</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">restful_robot</span>
         <span class="k">return</span> <span class="n">Application</span><span class="p">([</span>
-            <span class="p">(</span><span class="s1">r&#39;/(robot\.json)?&#39;</span><span class="p">,</span> <span class="n">IndexHandler</span><span class="p">),</span>
-            <span class="p">(</span><span class="s1">r&#39;/motor/alias/list\.json&#39;</span><span class="p">,</span> <span class="n">MotorsAliasesListHandler</span><span class="p">),</span>
-            <span class="p">(</span><span class="s1">r&#39;/motor/(?P&lt;alias&gt;[a-zA-Z0-9_]+)/?list\.json&#39;</span><span class="p">,</span> <span class="n">MotorsListHandler</span><span class="p">),</span>
-            <span class="p">(</span><span class="s1">r&#39;/sensor/list\.json&#39;</span><span class="p">,</span> <span class="n">SensorsListHandler</span><span class="p">),</span>
-            <span class="p">(</span><span class="s1">r&#39;/motor/(?P&lt;motor_name&gt;[a-zA-Z0-9_]+)/register/list\.json&#39;</span><span class="p">,</span> <span class="n">MotorRegistersListHandler</span><span class="p">),</span>
-            <span class="p">(</span><span class="s1">r&#39;/sensor/(?P&lt;motor_name&gt;[a-zA-Z0-9_]+)/register/list\.json&#39;</span><span class="p">,</span> <span class="n">MotorRegistersListHandler</span><span class="p">),</span>
+            <span class="p">(</span><span class="sa">r</span><span class="s1">&#39;/(robot\.json)?&#39;</span><span class="p">,</span> <span class="n">IndexHandler</span><span class="p">),</span>
+            <span class="p">(</span><span class="sa">r</span><span class="s1">&#39;/motor/alias/list\.json&#39;</span><span class="p">,</span> <span class="n">MotorsAliasesListHandler</span><span class="p">),</span>
+            <span class="p">(</span><span class="sa">r</span><span class="s1">&#39;/motor/(?P&lt;alias&gt;[a-zA-Z0-9_]+)/?list\.json&#39;</span><span class="p">,</span> <span class="n">MotorsListHandler</span><span class="p">),</span>
+            <span class="p">(</span><span class="sa">r</span><span class="s1">&#39;/sensor/list\.json&#39;</span><span class="p">,</span> <span class="n">SensorsListHandler</span><span class="p">),</span>
+            <span class="p">(</span><span class="sa">r</span><span class="s1">&#39;/motor/(?P&lt;motor_name&gt;[a-zA-Z0-9_]+)/register/list\.json&#39;</span><span class="p">,</span> <span class="n">MotorRegistersListHandler</span><span class="p">),</span>
+            <span class="p">(</span><span class="sa">r</span><span class="s1">&#39;/sensor/(?P&lt;motor_name&gt;[a-zA-Z0-9_]+)/register/list\.json&#39;</span><span class="p">,</span> <span class="n">MotorRegistersListHandler</span><span class="p">),</span>
 
-            <span class="p">(</span><span class="s1">r&#39;/motor/(?P&lt;motor_name&gt;[a-zA-Z0-9_]+)/register/(?P&lt;register_name&gt;[a-zA-Z0-9_]+)/list\.json&#39;</span><span class="p">,</span> <span class="n">MotorRegisterHandler</span><span class="p">),</span>
-            <span class="p">(</span><span class="s1">r&#39;/sensor/(?P&lt;motor_name&gt;[a-zA-Z0-9_]+)/register/(?P&lt;register_name&gt;[a-zA-Z0-9_]+)/list\.json&#39;</span><span class="p">,</span> <span class="n">MotorRegisterHandler</span><span class="p">),</span>
+            <span class="p">(</span><span class="sa">r</span><span class="s1">&#39;/motor/(?P&lt;motor_name&gt;[a-zA-Z0-9_]+)/register/(?P&lt;register_name&gt;[a-zA-Z0-9_]+)/list\.json&#39;</span><span class="p">,</span> <span class="n">MotorRegisterHandler</span><span class="p">),</span>
+            <span class="p">(</span><span class="sa">r</span><span class="s1">&#39;/sensor/(?P&lt;motor_name&gt;[a-zA-Z0-9_]+)/register/(?P&lt;register_name&gt;[a-zA-Z0-9_]+)/list\.json&#39;</span><span class="p">,</span> <span class="n">MotorRegisterHandler</span><span class="p">),</span>
 
-            <span class="p">(</span><span class="s1">r&#39;/motor/(?P&lt;motor_name&gt;[a-zA-Z0-9_]+)/register/(?P&lt;register_name&gt;[a-zA-Z0-9_]+)&#39;</span><span class="p">,</span> <span class="n">MotorRegisterHandler</span><span class="p">),</span>
-            <span class="p">(</span><span class="s1">r&#39;/sensor/(?P&lt;motor_name&gt;[a-zA-Z0-9_]+)/register/(?P&lt;register_name&gt;[a-zA-Z0-9_]+)&#39;</span><span class="p">,</span> <span class="n">MotorRegisterHandler</span><span class="p">),</span>
+            <span class="p">(</span><span class="sa">r</span><span class="s1">&#39;/motor/(?P&lt;motor_name&gt;[a-zA-Z0-9_]+)/register/(?P&lt;register_name&gt;[a-zA-Z0-9_]+)&#39;</span><span class="p">,</span> <span class="n">MotorRegisterHandler</span><span class="p">),</span>
+            <span class="p">(</span><span class="sa">r</span><span class="s1">&#39;/sensor/(?P&lt;motor_name&gt;[a-zA-Z0-9_]+)/register/(?P&lt;register_name&gt;[a-zA-Z0-9_]+)&#39;</span><span class="p">,</span> <span class="n">MotorRegisterHandler</span><span class="p">),</span>
 
-            <span class="p">(</span><span class="s1">r&#39;/motor/(?P&lt;motor_name&gt;[a-zA-Z0-9_]+)/register/(?P&lt;register_name&gt;[a-zA-Z0-9_]+)/value\.json&#39;</span><span class="p">,</span> <span class="n">UpdateMotorRegisterHandler</span><span class="p">),</span>
-            <span class="p">(</span><span class="s1">r&#39;/sensor/(?P&lt;motor_name&gt;[a-zA-Z0-9_]+)/register/(?P&lt;register_name&gt;[a-zA-Z0-9_]+)/value\.json&#39;</span><span class="p">,</span> <span class="n">UpdateMotorRegisterHandler</span><span class="p">),</span>
+            <span class="p">(</span><span class="sa">r</span><span class="s1">&#39;/motor/(?P&lt;motor_name&gt;[a-zA-Z0-9_]+)/register/(?P&lt;register_name&gt;[a-zA-Z0-9_]+)/value\.json&#39;</span><span class="p">,</span> <span class="n">UpdateMotorRegisterHandler</span><span class="p">),</span>
+            <span class="p">(</span><span class="sa">r</span><span class="s1">&#39;/sensor/(?P&lt;motor_name&gt;[a-zA-Z0-9_]+)/register/(?P&lt;register_name&gt;[a-zA-Z0-9_]+)/value\.json&#39;</span><span class="p">,</span> <span class="n">UpdateMotorRegisterHandler</span><span class="p">),</span>
 
-            <span class="p">(</span><span class="s1">r&#39;/primitive/list\.json&#39;</span><span class="p">,</span> <span class="n">PrimitivesListHandler</span><span class="p">),</span>
-            <span class="p">(</span><span class="s1">r&#39;/primitive/running/list\.json&#39;</span><span class="p">,</span> <span class="n">RunningPrimitivesListHandler</span><span class="p">),</span>
-            <span class="p">(</span><span class="s1">r&#39;/primitive/(?P&lt;primitive_name&gt;[a-zA-Z0-9_]+)/start\.json&#39;</span><span class="p">,</span> <span class="n">StartPrimitiveHandler</span><span class="p">),</span>
-            <span class="p">(</span><span class="s1">r&#39;/primitive/(?P&lt;primitive_name&gt;[a-zA-Z0-9_]+)/stop\.json&#39;</span><span class="p">,</span> <span class="n">StopPrimitiveHandler</span><span class="p">),</span>
-            <span class="p">(</span><span class="s1">r&#39;/primitive/(?P&lt;primitive_name&gt;[a-zA-Z0-9_]+)/pause\.json&#39;</span><span class="p">,</span> <span class="n">PausePrimitiveHandler</span><span class="p">),</span>
-            <span class="p">(</span><span class="s1">r&#39;/primitive/(?P&lt;primitive_name&gt;[a-zA-Z0-9_]+)/resume\.json&#39;</span><span class="p">,</span> <span class="n">ResumePrimitiveHandler</span><span class="p">),</span>
-            <span class="p">(</span><span class="s1">r&#39;/primitive/(?P&lt;primitive_name&gt;[a-zA-Z0-9_]+)/property/list\.json&#39;</span><span class="p">,</span> <span class="n">PrimitivePropertiesListHandler</span><span class="p">),</span>
-            <span class="p">(</span><span class="s1">r&#39;/primitive/(?P&lt;primitive_name&gt;[a-zA-Z0-9_]+)/property/(?P&lt;prop&gt;[a-zA-Z0-9_]+)&#39;</span><span class="p">,</span> <span class="n">PrimitivePropertyHandler</span><span class="p">),</span>
-            <span class="p">(</span><span class="s1">r&#39;/primitive/(?P&lt;primitive_name&gt;[a-zA-Z0-9_]+)/property/(?P&lt;prop&gt;[a-zA-Z0-9_]+)/value\.json&#39;</span><span class="p">,</span> <span class="n">SetPrimitivePropertyHandler</span><span class="p">),</span>
-            <span class="p">(</span><span class="s1">r&#39;/primitive/(?P&lt;primitive_name&gt;[a-zA-Z0-9_]+)/method/list\.json&#39;</span><span class="p">,</span> <span class="n">ListPrimitiveMethodsHandler</span><span class="p">),</span>
-            <span class="p">(</span><span class="s1">r&#39;/primitive/(?P&lt;primitive_name&gt;[a-zA-Z0-9_]+)/method/(?P&lt;method_name&gt;[a-zA-Z0-9_]+)/args\.json&#39;</span><span class="p">,</span> <span class="n">CallPrimitiveMethodHandler</span><span class="p">),</span>
-            <span class="p">(</span><span class="s1">r&#39;/motors/register/(?P&lt;register_name&gt;[a-zA-Z0-9_]+)&#39;</span><span class="p">,</span> <span class="n">MotorsRegistersHandler</span><span class="p">),</span>
+            <span class="p">(</span><span class="sa">r</span><span class="s1">&#39;/primitive/list\.json&#39;</span><span class="p">,</span> <span class="n">PrimitivesListHandler</span><span class="p">),</span>
+            <span class="p">(</span><span class="sa">r</span><span class="s1">&#39;/primitive/running/list\.json&#39;</span><span class="p">,</span> <span class="n">RunningPrimitivesListHandler</span><span class="p">),</span>
+            <span class="p">(</span><span class="sa">r</span><span class="s1">&#39;/primitive/(?P&lt;primitive_name&gt;[a-zA-Z0-9_]+)/start\.json&#39;</span><span class="p">,</span> <span class="n">StartPrimitiveHandler</span><span class="p">),</span>
+            <span class="p">(</span><span class="sa">r</span><span class="s1">&#39;/primitive/(?P&lt;primitive_name&gt;[a-zA-Z0-9_]+)/stop\.json&#39;</span><span class="p">,</span> <span class="n">StopPrimitiveHandler</span><span class="p">),</span>
+            <span class="p">(</span><span class="sa">r</span><span class="s1">&#39;/primitive/(?P&lt;primitive_name&gt;[a-zA-Z0-9_]+)/pause\.json&#39;</span><span class="p">,</span> <span class="n">PausePrimitiveHandler</span><span class="p">),</span>
+            <span class="p">(</span><span class="sa">r</span><span class="s1">&#39;/primitive/(?P&lt;primitive_name&gt;[a-zA-Z0-9_]+)/resume\.json&#39;</span><span class="p">,</span> <span class="n">ResumePrimitiveHandler</span><span class="p">),</span>
+            <span class="p">(</span><span class="sa">r</span><span class="s1">&#39;/primitive/(?P&lt;primitive_name&gt;[a-zA-Z0-9_]+)/property/list\.json&#39;</span><span class="p">,</span> <span class="n">PrimitivePropertiesListHandler</span><span class="p">),</span>
+            <span class="p">(</span><span class="sa">r</span><span class="s1">&#39;/primitive/(?P&lt;primitive_name&gt;[a-zA-Z0-9_]+)/property/(?P&lt;prop&gt;[a-zA-Z0-9_]+)&#39;</span><span class="p">,</span> <span class="n">PrimitivePropertyHandler</span><span class="p">),</span>
+            <span class="p">(</span><span class="sa">r</span><span class="s1">&#39;/primitive/(?P&lt;primitive_name&gt;[a-zA-Z0-9_]+)/property/(?P&lt;prop&gt;[a-zA-Z0-9_]+)/value\.json&#39;</span><span class="p">,</span> <span class="n">SetPrimitivePropertyHandler</span><span class="p">),</span>
+            <span class="p">(</span><span class="sa">r</span><span class="s1">&#39;/primitive/(?P&lt;primitive_name&gt;[a-zA-Z0-9_]+)/method/list\.json&#39;</span><span class="p">,</span> <span class="n">ListPrimitiveMethodsHandler</span><span class="p">),</span>
+            <span class="p">(</span><span class="sa">r</span><span class="s1">&#39;/primitive/(?P&lt;primitive_name&gt;[a-zA-Z0-9_]+)/method/(?P&lt;method_name&gt;[a-zA-Z0-9_]+)/args\.json&#39;</span><span class="p">,</span> <span class="n">CallPrimitiveMethodHandler</span><span class="p">),</span>
+            <span class="p">(</span><span class="sa">r</span><span class="s1">&#39;/motors/register/(?P&lt;register_name&gt;[a-zA-Z0-9_]+)&#39;</span><span class="p">,</span> <span class="n">MotorsRegistersHandler</span><span class="p">),</span>
         <span class="p">])</span></div>
 
 <div class="viewcode-block" id="HTTPRobotServer.run"><a class="viewcode-back" href="../../../pypot.server.html#pypot.server.httpserver.HTTPRobotServer.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
@@ -434,7 +434,7 @@
       <!-- footer -->
       <footer role="contentinfo">
           &copy; Copyright 2015, Poppy-Project.
-        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.5.1.
+        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.5.2.
       </footer>
       <!-- /footer -->
 

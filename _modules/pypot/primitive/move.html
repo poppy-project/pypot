@@ -146,7 +146,7 @@
 
 <span class="kn">from</span> <span class="nn">.primitive</span> <span class="k">import</span> <span class="n">LoopPrimitive</span>
 <span class="kn">from</span> <span class="nn">pypot.utils.interpolation</span> <span class="k">import</span> <span class="n">KDTreeDict</span>
-<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="n">__name__</span><span class="p">)</span>
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="Move"><a class="viewcode-back" href="../../../pypot.primitive.html#pypot.primitive.move.Move">[docs]</a><span class="k">class</span> <span class="nc">Move</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -226,23 +226,23 @@
         <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">file</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span></div>
 
     <span class="nd">@classmethod</span>
-<div class="viewcode-block" id="Move.create"><a class="viewcode-back" href="../../../pypot.primitive.html#pypot.primitive.move.Move.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">d</span><span class="p">):</span>
+<div class="viewcode-block" id="Move.create"><a class="viewcode-back" href="../../../pypot.primitive.html#pypot.primitive.move.Move.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">d</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Create a :class:`~pypot.primitive.move.Move` from a dictionary. &quot;&quot;&quot;</span>
-        <span class="n">move</span> <span class="o">=</span> <span class="n">cls</span><span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;framerate&#39;</span><span class="p">])</span>
+        <span class="n">move</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;framerate&#39;</span><span class="p">])</span>
         <span class="n">move</span><span class="o">.</span><span class="n">_timed_positions</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;positions&#39;</span><span class="p">])</span>
         <span class="k">return</span> <span class="n">move</span></div>
 
     <span class="nd">@classmethod</span>
-<div class="viewcode-block" id="Move.load"><a class="viewcode-back" href="../../../pypot.primitive.html#pypot.primitive.move.Move.load">[docs]</a>    <span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">file</span><span class="p">):</span>
+<div class="viewcode-block" id="Move.load"><a class="viewcode-back" href="../../../pypot.primitive.html#pypot.primitive.move.Move.load">[docs]</a>    <span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">file</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Loads a :class:`~pypot.primitive.move.Move` from a json file. &quot;&quot;&quot;</span>
         <span class="n">d</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">cls</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">d</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">d</span><span class="p">)</span></div>
 
     <span class="nd">@classmethod</span>
-<div class="viewcode-block" id="Move.loads"><a class="viewcode-back" href="../../../pypot.primitive.html#pypot.primitive.move.Move.loads">[docs]</a>    <span class="k">def</span> <span class="nf">loads</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+<div class="viewcode-block" id="Move.loads"><a class="viewcode-back" href="../../../pypot.primitive.html#pypot.primitive.move.Move.loads">[docs]</a>    <span class="k">def</span> <span class="nf">loads</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Loads a :class:`~pypot.primitive.move.Move` from a json string. &quot;&quot;&quot;</span>
         <span class="n">d</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">cls</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">d</span><span class="p">)</span></div></div>
+        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">d</span><span class="p">)</span></div></div>
 
 
 <div class="viewcode-block" id="MoveRecorder"><a class="viewcode-back" href="../../../pypot.primitive.html#pypot.primitive.move.MoveRecorder">[docs]</a><span class="k">class</span> <span class="nc">MoveRecorder</span><span class="p">(</span><span class="n">LoopPrimitive</span><span class="p">):</span>
@@ -256,7 +256,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">robot</span><span class="p">,</span> <span class="n">freq</span><span class="p">,</span> <span class="n">tracked_motors</span><span class="p">):</span>
-        <span class="n">LoopPrimitive</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">robot</span><span class="p">,</span> <span class="n">freq</span><span class="p">)</span>
+        <span class="n">LoopPrimitive</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">robot</span><span class="p">,</span> <span class="n">freq</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">freq</span> <span class="o">=</span> <span class="n">freq</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">tracked_motors</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_mockup_motor</span><span class="p">,</span> <span class="n">tracked_motors</span><span class="p">)</span>
 
@@ -300,7 +300,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">start_max_speed</span> <span class="o">=</span> <span class="n">start_max_speed</span> <span class="k">if</span> <span class="n">start_max_speed</span> <span class="o">!=</span> <span class="mi">0</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span>
         <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
-        <span class="n">LoopPrimitive</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">robot</span><span class="p">,</span> <span class="n">framerate</span><span class="p">)</span>
+        <span class="n">LoopPrimitive</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">robot</span><span class="p">,</span> <span class="n">framerate</span><span class="p">)</span>
 
 <div class="viewcode-block" id="MovePlayer.setup"><a class="viewcode-back" href="../../../pypot.primitive.html#pypot.primitive.move.MovePlayer.setup">[docs]</a>    <span class="k">def</span> <span class="nf">setup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">move</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -384,7 +384,7 @@
       <!-- footer -->
       <footer role="contentinfo">
           &copy; Copyright 2015, Poppy-Project.
-        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.5.1.
+        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.5.2.
       </footer>
       <!-- /footer -->
 

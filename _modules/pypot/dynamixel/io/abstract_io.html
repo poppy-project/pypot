@@ -153,7 +153,7 @@
                           <span class="n">dxl_to_model</span><span class="p">)</span>
 
 
-<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="n">__name__</span><span class="p">)</span>
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 <span class="c1"># With this logger you should always provide as extra:</span>
 <span class="c1"># - the port</span>
 <span class="c1"># - the baudrate</span>
@@ -180,8 +180,8 @@
     <span class="n">_protocol</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">get_used_ports</span><span class="p">(</span><span class="n">cls</span><span class="p">):</span>
-        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">cls</span><span class="o">.</span><span class="n">__used_ports</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">get_used_ports</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">__used_ports</span><span class="p">)</span>
 
     <span class="c1"># MARK: - Open, Close and Flush the communication</span>
 
@@ -490,28 +490,28 @@
         <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
 
     <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">_generate_accessors</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">control</span><span class="p">):</span>
-        <span class="n">cls</span><span class="o">.</span><span class="n">__controls</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">control</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">_generate_accessors</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">control</span><span class="p">):</span>
+        <span class="bp">cls</span><span class="o">.</span><span class="n">__controls</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">control</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">control</span><span class="o">.</span><span class="n">access</span> <span class="ow">in</span> <span class="p">(</span><span class="n">_DxlAccess</span><span class="o">.</span><span class="n">readonly</span><span class="p">,</span> <span class="n">_DxlAccess</span><span class="o">.</span><span class="n">readwrite</span><span class="p">):</span>
             <span class="k">def</span> <span class="nf">my_getter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ids</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
                 <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_control_value</span><span class="p">(</span><span class="n">control</span><span class="p">,</span> <span class="n">ids</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
             <span class="n">func_name</span> <span class="o">=</span> <span class="n">control</span><span class="o">.</span><span class="n">getter_name</span> <span class="k">if</span> <span class="n">control</span><span class="o">.</span><span class="n">getter_name</span> <span class="k">else</span> <span class="s1">&#39;get_</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">control</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">,</span> <span class="s1">&#39;_&#39;</span><span class="p">))</span>
-            <span class="n">func_name</span> <span class="o">=</span> <span class="s1">&#39;_</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">func_name</span><span class="p">)</span> <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">func_name</span><span class="p">)</span> <span class="k">else</span> <span class="n">func_name</span>
-            <span class="n">my_getter</span><span class="o">.</span><span class="n">__doc__</span> <span class="o">=</span> <span class="s1">&#39;Gets </span><span class="si">{}</span><span class="s1"> from the specified motors.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">control</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
-            <span class="n">my_getter</span><span class="o">.</span><span class="n">__name__</span> <span class="o">=</span> <span class="n">func_name</span>
-            <span class="nb">setattr</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">func_name</span><span class="p">,</span> <span class="n">my_getter</span><span class="p">)</span>
+            <span class="n">func_name</span> <span class="o">=</span> <span class="s1">&#39;_</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">func_name</span><span class="p">)</span> <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">func_name</span><span class="p">)</span> <span class="k">else</span> <span class="n">func_name</span>
+            <span class="n">my_getter</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="s1">&#39;Gets </span><span class="si">{}</span><span class="s1"> from the specified motors.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">control</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+            <span class="n">my_getter</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">=</span> <span class="n">func_name</span>
+            <span class="nb">setattr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">func_name</span><span class="p">,</span> <span class="n">my_getter</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">control</span><span class="o">.</span><span class="n">access</span> <span class="ow">in</span> <span class="p">(</span><span class="n">_DxlAccess</span><span class="o">.</span><span class="n">writeonly</span><span class="p">,</span> <span class="n">_DxlAccess</span><span class="o">.</span><span class="n">readwrite</span><span class="p">):</span>
             <span class="k">def</span> <span class="nf">my_setter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value_for_id</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_set_control_value</span><span class="p">(</span><span class="n">control</span><span class="p">,</span> <span class="n">value_for_id</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
             <span class="n">func_name</span> <span class="o">=</span> <span class="n">control</span><span class="o">.</span><span class="n">setter_name</span> <span class="k">if</span> <span class="n">control</span><span class="o">.</span><span class="n">setter_name</span> <span class="k">else</span> <span class="s1">&#39;set_</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">control</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">,</span> <span class="s1">&#39;_&#39;</span><span class="p">))</span>
-            <span class="n">func_name</span> <span class="o">=</span> <span class="s1">&#39;_</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">func_name</span><span class="p">)</span> <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">func_name</span><span class="p">)</span> <span class="k">else</span> <span class="n">func_name</span>
-            <span class="n">my_setter</span><span class="o">.</span><span class="n">__doc__</span> <span class="o">=</span> <span class="s1">&#39;Sets </span><span class="si">{}</span><span class="s1"> to the specified motors.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">control</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
-            <span class="n">my_setter</span><span class="o">.</span><span class="n">__name__</span> <span class="o">=</span> <span class="n">func_name</span>
-            <span class="nb">setattr</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">func_name</span><span class="p">,</span> <span class="n">my_setter</span><span class="p">)</span>
+            <span class="n">func_name</span> <span class="o">=</span> <span class="s1">&#39;_</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">func_name</span><span class="p">)</span> <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">func_name</span><span class="p">)</span> <span class="k">else</span> <span class="n">func_name</span>
+            <span class="n">my_setter</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="s1">&#39;Sets </span><span class="si">{}</span><span class="s1"> to the specified motors.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">control</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+            <span class="n">my_setter</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">=</span> <span class="n">func_name</span>
+            <span class="nb">setattr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">func_name</span><span class="p">,</span> <span class="n">my_setter</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_get_control_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">control</span><span class="p">,</span> <span class="n">ids</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">ids</span><span class="p">:</span>
@@ -705,7 +705,7 @@
 <span class="k">class</span> <span class="nc">DxlTimeoutError</span><span class="p">(</span><span class="n">DxlCommunicationError</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; Timeout error encountered when using :class:`~pypot.dynamixel.io.DxlIO`. &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dxl_io</span><span class="p">,</span> <span class="n">instruction_packet</span><span class="p">,</span> <span class="n">ids</span><span class="p">):</span>
-        <span class="n">DxlCommunicationError</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dxl_io</span><span class="p">,</span> <span class="s1">&#39;timeout occured&#39;</span><span class="p">,</span> <span class="n">instruction_packet</span><span class="p">)</span>
+        <span class="n">DxlCommunicationError</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dxl_io</span><span class="p">,</span> <span class="s1">&#39;timeout occured&#39;</span><span class="p">,</span> <span class="n">instruction_packet</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ids</span> <span class="o">=</span> <span class="n">ids</span>
 
     <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -749,7 +749,7 @@
       <!-- footer -->
       <footer role="contentinfo">
           &copy; Copyright 2015, Poppy-Project.
-        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.5.1.
+        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.5.2.
       </footer>
       <!-- /footer -->
 

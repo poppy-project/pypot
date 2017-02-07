@@ -173,13 +173,13 @@
     <span class="n">marker</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">((</span><span class="mh">0xFF</span><span class="p">,</span> <span class="mh">0xFF</span><span class="p">))</span>
 
     <span class="nd">@classmethod</span>
-<div class="viewcode-block" id="DxlPacketHeader.from_string"><a class="viewcode-back" href="../../../../pypot.dynamixel.html#pypot.dynamixel.protocol.v1.DxlPacketHeader.from_string">[docs]</a>    <span class="k">def</span> <span class="nf">from_string</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+<div class="viewcode-block" id="DxlPacketHeader.from_string"><a class="viewcode-back" href="../../../../pypot.dynamixel.html#pypot.dynamixel.protocol.v1.DxlPacketHeader.from_string">[docs]</a>    <span class="k">def</span> <span class="nf">from_string</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
         <span class="n">header</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">header</span><span class="p">)</span> <span class="o">!=</span> <span class="n">cls</span><span class="o">.</span><span class="n">length</span> <span class="ow">or</span> <span class="n">header</span><span class="p">[:</span><span class="nb">len</span><span class="p">(</span><span class="n">cls</span><span class="o">.</span><span class="n">marker</span><span class="p">)]</span> <span class="o">!=</span> <span class="n">cls</span><span class="o">.</span><span class="n">marker</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">header</span><span class="p">)</span> <span class="o">!=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">length</span> <span class="ow">or</span> <span class="n">header</span><span class="p">[:</span><span class="nb">len</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">marker</span><span class="p">)]</span> <span class="o">!=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">marker</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;try to parse corrupted data (</span><span class="si">{}</span><span class="s1">)&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">header</span><span class="p">))</span>
 
-        <span class="k">return</span> <span class="n">cls</span><span class="p">(</span><span class="n">header</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">header</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span></div></div>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">header</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">header</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span></div></div>
 
 
 <span class="c1"># MARK: - Instruction Packet</span>
@@ -215,8 +215,8 @@
 
 <div class="viewcode-block" id="DxlPingPacket"><a class="viewcode-back" href="../../../../pypot.dynamixel.html#pypot.dynamixel.protocol.v1.DxlPingPacket">[docs]</a><span class="k">class</span> <span class="nc">DxlPingPacket</span><span class="p">(</span><span class="n">DxlInstructionPacket</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; This class is used to represent ping packet. &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">__new__</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="nb">id</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">DxlInstructionPacket</span><span class="o">.</span><span class="n">__new__</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="nb">id</span><span class="p">,</span> <span class="n">DxlInstruction</span><span class="o">.</span><span class="n">PING</span><span class="p">,</span> <span class="p">())</span>
+    <span class="k">def</span> <span class="nf">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="nb">id</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">DxlInstructionPacket</span><span class="o">.</span><span class="fm">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="nb">id</span><span class="p">,</span> <span class="n">DxlInstruction</span><span class="o">.</span><span class="n">PING</span><span class="p">,</span> <span class="p">())</span>
 
     <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="s1">&#39;DxlPingPacket(id=</span><span class="si">{}</span><span class="s1">)&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">)</span></div>
@@ -224,15 +224,15 @@
 
 <div class="viewcode-block" id="DxlResetPacket"><a class="viewcode-back" href="../../../../pypot.dynamixel.html#pypot.dynamixel.protocol.v1.DxlResetPacket">[docs]</a><span class="k">class</span> <span class="nc">DxlResetPacket</span><span class="p">(</span><span class="n">DxlInstructionPacket</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; This class is used to represent reset packet. &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">__new__</span><span class="p">(</span><span class="n">cls</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">DxlInstructionPacket</span><span class="o">.</span><span class="n">__new__</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">DxlBroadcast</span><span class="p">,</span>
+    <span class="k">def</span> <span class="nf">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">DxlInstructionPacket</span><span class="o">.</span><span class="fm">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">DxlBroadcast</span><span class="p">,</span>
                                             <span class="n">DxlInstruction</span><span class="o">.</span><span class="n">RESET</span><span class="p">,</span> <span class="p">())</span></div>
 
 
 <div class="viewcode-block" id="DxlReadDataPacket"><a class="viewcode-back" href="../../../../pypot.dynamixel.html#pypot.dynamixel.protocol.v1.DxlReadDataPacket">[docs]</a><span class="k">class</span> <span class="nc">DxlReadDataPacket</span><span class="p">(</span><span class="n">DxlInstructionPacket</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; This class is used to represent read data packet (to read value). &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">__new__</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="nb">id</span><span class="p">,</span> <span class="n">address</span><span class="p">,</span> <span class="n">length</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">DxlInstructionPacket</span><span class="o">.</span><span class="n">__new__</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="nb">id</span><span class="p">,</span>
+    <span class="k">def</span> <span class="nf">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="nb">id</span><span class="p">,</span> <span class="n">address</span><span class="p">,</span> <span class="n">length</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">DxlInstructionPacket</span><span class="o">.</span><span class="fm">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="nb">id</span><span class="p">,</span>
                                             <span class="n">DxlInstruction</span><span class="o">.</span><span class="n">READ_DATA</span><span class="p">,</span>
                                             <span class="p">(</span><span class="n">address</span><span class="p">,</span> <span class="n">length</span><span class="p">))</span>
 
@@ -245,8 +245,8 @@
 
 <div class="viewcode-block" id="DxlSyncReadPacket"><a class="viewcode-back" href="../../../../pypot.dynamixel.html#pypot.dynamixel.protocol.v1.DxlSyncReadPacket">[docs]</a><span class="k">class</span> <span class="nc">DxlSyncReadPacket</span><span class="p">(</span><span class="n">DxlInstructionPacket</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; This class is used to represent sync read packet (to synchronously read values). &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">__new__</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">ids</span><span class="p">,</span> <span class="n">address</span><span class="p">,</span> <span class="n">length</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">DxlInstructionPacket</span><span class="o">.</span><span class="n">__new__</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">DxlBroadcast</span><span class="p">,</span>
+    <span class="k">def</span> <span class="nf">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">ids</span><span class="p">,</span> <span class="n">address</span><span class="p">,</span> <span class="n">length</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">DxlInstructionPacket</span><span class="o">.</span><span class="fm">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">DxlBroadcast</span><span class="p">,</span>
                                             <span class="n">DxlInstruction</span><span class="o">.</span><span class="n">SYNC_READ</span><span class="p">,</span>
                                             <span class="nb">tuple</span><span class="p">(</span><span class="n">itertools</span><span class="o">.</span><span class="n">chain</span><span class="p">((</span><span class="n">address</span><span class="p">,</span> <span class="n">length</span><span class="p">),</span>
                                                                   <span class="n">ids</span><span class="p">)))</span>
@@ -260,8 +260,8 @@
 
 <div class="viewcode-block" id="DxlWriteDataPacket"><a class="viewcode-back" href="../../../../pypot.dynamixel.html#pypot.dynamixel.protocol.v1.DxlWriteDataPacket">[docs]</a><span class="k">class</span> <span class="nc">DxlWriteDataPacket</span><span class="p">(</span><span class="n">DxlInstructionPacket</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; This class is used to reprensent write data packet (to write value). &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">__new__</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="nb">id</span><span class="p">,</span> <span class="n">address</span><span class="p">,</span> <span class="n">coded_value</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">DxlInstructionPacket</span><span class="o">.</span><span class="n">__new__</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="nb">id</span><span class="p">,</span>
+    <span class="k">def</span> <span class="nf">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="nb">id</span><span class="p">,</span> <span class="n">address</span><span class="p">,</span> <span class="n">coded_value</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">DxlInstructionPacket</span><span class="o">.</span><span class="fm">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="nb">id</span><span class="p">,</span>
                                             <span class="n">DxlInstruction</span><span class="o">.</span><span class="n">WRITE_DATA</span><span class="p">,</span>
                                             <span class="nb">tuple</span><span class="p">(</span><span class="n">itertools</span><span class="o">.</span><span class="n">chain</span><span class="p">((</span><span class="n">address</span><span class="p">,),</span>
                                                                   <span class="n">coded_value</span><span class="p">)))</span>
@@ -275,8 +275,8 @@
 
 <div class="viewcode-block" id="DxlSyncWritePacket"><a class="viewcode-back" href="../../../../pypot.dynamixel.html#pypot.dynamixel.protocol.v1.DxlSyncWritePacket">[docs]</a><span class="k">class</span> <span class="nc">DxlSyncWritePacket</span><span class="p">(</span><span class="n">DxlInstructionPacket</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; This class is used to represent sync write packet (to synchronously write values). &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">__new__</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">address</span><span class="p">,</span> <span class="n">length</span><span class="p">,</span> <span class="n">id_value_couples</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">DxlInstructionPacket</span><span class="o">.</span><span class="n">__new__</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">DxlBroadcast</span><span class="p">,</span>
+    <span class="k">def</span> <span class="nf">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">address</span><span class="p">,</span> <span class="n">length</span><span class="p">,</span> <span class="n">id_value_couples</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">DxlInstructionPacket</span><span class="o">.</span><span class="fm">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">DxlBroadcast</span><span class="p">,</span>
                                             <span class="n">DxlInstruction</span><span class="o">.</span><span class="n">SYNC_WRITE</span><span class="p">,</span>
                                             <span class="nb">tuple</span><span class="p">(</span><span class="n">itertools</span><span class="o">.</span><span class="n">chain</span><span class="p">((</span><span class="n">address</span><span class="p">,</span> <span class="n">length</span><span class="p">),</span>
                                                                   <span class="n">id_value_couples</span><span class="p">)))</span>
@@ -307,19 +307,19 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
     <span class="nd">@classmethod</span>
-<div class="viewcode-block" id="DxlStatusPacket.from_string"><a class="viewcode-back" href="../../../../pypot.dynamixel.html#pypot.dynamixel.protocol.v1.DxlStatusPacket.from_string">[docs]</a>    <span class="k">def</span> <span class="nf">from_string</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+<div class="viewcode-block" id="DxlStatusPacket.from_string"><a class="viewcode-back" href="../../../../pypot.dynamixel.html#pypot.dynamixel.protocol.v1.DxlStatusPacket.from_string">[docs]</a>    <span class="k">def</span> <span class="nf">from_string</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
         <span class="n">packet</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
 
         <span class="n">header</span> <span class="o">=</span> <span class="n">DxlPacketHeader</span><span class="o">.</span><span class="n">from_string</span><span class="p">(</span><span class="n">packet</span><span class="p">[:</span><span class="mi">4</span><span class="p">])</span>
 
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">packet</span><span class="p">)</span> <span class="o">!=</span> <span class="n">DxlPacketHeader</span><span class="o">.</span><span class="n">length</span> <span class="o">+</span> <span class="n">header</span><span class="o">.</span><span class="n">packet_length</span> \
-                <span class="ow">or</span> <span class="n">cls</span><span class="o">.</span><span class="n">_checksum</span><span class="p">(</span><span class="n">packet</span><span class="p">)</span> <span class="o">!=</span> <span class="n">packet</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
+                <span class="ow">or</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_checksum</span><span class="p">(</span><span class="n">packet</span><span class="p">)</span> <span class="o">!=</span> <span class="n">packet</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;try to parse corrupted data (</span><span class="si">{}</span><span class="s1">)&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">packet</span><span class="p">))</span>
 
-        <span class="k">return</span> <span class="n">cls</span><span class="p">(</span><span class="n">header</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">packet</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">packet</span><span class="p">[</span><span class="mi">5</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span></div>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">header</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">packet</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">packet</span><span class="p">[</span><span class="mi">5</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span></div>
 
     <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">_checksum</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">packet</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_checksum</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">packet</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="mi">255</span> <span class="o">-</span> <span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">packet</span><span class="p">[</span><span class="mi">2</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="o">%</span> <span class="mi">256</span><span class="p">))</span></div>
 </pre></div>
 
@@ -355,7 +355,7 @@
       <!-- footer -->
       <footer role="contentinfo">
           &copy; Copyright 2015, Poppy-Project.
-        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.5.1.
+        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.5.2.
       </footer>
       <!-- /footer -->
 
