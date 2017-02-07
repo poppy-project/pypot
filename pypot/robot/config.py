@@ -127,6 +127,9 @@ def motor_from_confignode(config, motor_name):
 
     broken = 'broken' in params and params['broken']
 
+    if 'wheel_mode' in params and params['wheel_mode']:
+        params['angle_limit'] = (0, 0)
+
     m = MotorCls(id=params['id'],
                  name=motor_name,
                  model=type,
@@ -222,12 +225,18 @@ def check_motor_eprom_configuration(config, dxl_io, motor_names):
             changed_return_delay_time[id] = 0
 
         new_limits = m['angle_limit']
-        d = numpy.linalg.norm(numpy.asarray(new_limits) - numpy.asarray(old_limits))
-        if d > 1:
-            logger.warning("Limits of '%s' changed from %s to %s",
-                           name, old_limits, new_limits,
-                           extra={'config': config})
-            changed_angle_limits[id] = new_limits
+        if 'wheel_mode' in m and m['wheel_mode']:
+            dxl_io.set_wheel_mode([m['id']])
+            time.sleep(0.5)
+        else:
+            dxl_io.set_joint_mode([m['id']])
+
+            d = numpy.linalg.norm(numpy.asarray(new_limits) - numpy.asarray(old_limits))
+            if d > 1:
+                logger.warning("Limits of '%s' changed from %s to %s",
+                               name, old_limits, new_limits,
+                               extra={'config': config})
+                changed_angle_limits[id] = new_limits
 
     if changed_angle_limits:
         dxl_io.set_angle_limit(changed_angle_limits)
