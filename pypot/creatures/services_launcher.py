@@ -106,6 +106,9 @@ Examples:
     parser.add_argument('--ws',
                         help='start the websocket server',
                         action='store_true')
+    parser.add_argument('--ws-port',
+                        help='port of Websocket Server',
+                        default=6969, type=int)
     parser.add_argument('--disable-camera',
                         help='Start the robot without the camera.',
                         action='store_true')
