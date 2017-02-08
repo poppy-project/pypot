@@ -24,6 +24,9 @@ class MyJSONEncoder(json.JSONEncoder):
         if isinstance(obj, numpy.ndarray):
             return list(obj)
 
+        if isinstance(obj, numpy.integer):
+            return int(obj)
+
         return json.JSONEncoder.default(self, obj)
 
 
@@ -43,7 +46,7 @@ class PoppyRequestHandler(RequestHandler):
         self.set_status(204)
 
     def write_json(self, obj):
-        self.write(json.dumps(obj))
+        self.write(json.dumps(obj, cls=MyJSONEncoder))
 
 
 class IndexHandler(PoppyRequestHandler):
