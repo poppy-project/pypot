@@ -21,7 +21,7 @@ from enum import Enum
 
 position_range = {
     'MX': (4096, 360.0),
-    'SR': (1050, 150.0),
+    'SR': (4096, 360.0),
     '*': (1024, 300.0)
 }
 
