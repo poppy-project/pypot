@@ -1,0 +1,27 @@
+V-REP PRO EDU LICENSE AGREEMENT
+
+By installing V-REP PRO EDU (the SOFTWARE), you (either an individual or a single entity, the LICENSEE) accept the terms and conditions of this licensing agreement.
+
+If the LICENSEE does not agree with the terms of this license, the LICENSEE must remove all files related to the SOFTWARE from any storage devices and cease to use the SOFTWARE.
+
+The V-REP PRO EDU educational license applies ONLY to EDUCATIONAL ENTITIES composed by following people and institutions:
+
+1. Hobbyists, students, teachers and professors
+2. Schools and universities
+
+EDUCATIONAL ENTITIES do NOT include companies, research institutions, non-profit organisations, foundations, etc.
+
+An EDUCATIONAL ENTITY may use V-REP PRO EDU under following conditions:
+ 
+1. Usage should be non-commercial.
+
+V-REP PRO EDU IS DISTRIBUTED "AS IS", WITHOUT ANY EXPRESS OR IMPLIED WARRANTY. THE LICENSEE WILL USE IT AT HIS/HER OWN RISK. THE ORIGINAL AUTHORS AND COPPELIA ROBOTICS GMBH WILL NOT BE LIABLE FOR DATA LOSS, DAMAGES, LOSS OF PROFITS OR ANY OTHER KIND OF LOSS WHILE USING OR MISUSING THIS SOFTWARE.
+
+V-REP PRO EDU is copyrighted by Coppelia Robotics GmbH. All rights reserved.
+
+(a copy of this license agreement can be found in the installation directory)
+
+
+
+
+
