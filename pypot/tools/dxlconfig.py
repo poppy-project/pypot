@@ -93,7 +93,7 @@ def main():
         sys.exit(1)
 
     # Switch to 1M bauds
-    if args.type.startswith('MX'):
+    if args.type.startswith('MX') or args.type.startswith('SR'):
         print('Changing to 1M bauds...')
         with DxlIO(args.port, baudrate=factory_baudrate) as io:
             io.change_baudrate({1: 1000000})
