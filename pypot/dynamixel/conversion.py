@@ -148,7 +148,7 @@ dynamixelModels = {
     320: 'MX-106',  # 64 + (1<<8)
     350: 'XL-320',  # 94 + (1<<8)
     400: 'SR-RH4D',
-    401: 'SR-RH4D', # Virtual motor
+    401: 'SR-RH4D',  # Virtual motor
 }
 
 

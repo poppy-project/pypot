@@ -310,6 +310,7 @@ class DxlMXMotor(DxlMotor):
                           angle_limit)
         self.max_pos = 180
 
+
 class DxlMX64106Motor(DxlMXMotor):
     """ This class represents the MX-64 and MX-106 robotis motor.
 
@@ -335,6 +336,7 @@ class DxlMX64106Motor(DxlMXMotor):
                           direct, offset, broken,
                           angle_limit)
         self.max_pos = 180
+
 
 class DxlXL320Motor(DxlMXMotor):
     registers = list(DxlMXMotor.registers)
