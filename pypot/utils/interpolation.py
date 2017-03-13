@@ -82,15 +82,15 @@ class KDTreeDict(dict):
             return self[nearest_keys[0]]
 
         # Problem if ValueError: A value in x_new is above the interpolation range.
-        elif input_key < float(min(nearest_keys)):
+        elif input_key < min(nearest_keys):
             return self[min(nearest_keys)]
-        elif input_key > float(max(nearest_keys)):
+        elif input_key > max(nearest_keys):
             return self[max(nearest_keys)]
 
         interpolated_positions = {}
         for (k, v), (k2, v2) in zip(self[nearest_keys[0]].items(), self[nearest_keys[1]].items()):
             if k == k2:
-                x = np.array(nearest_keys).astype(np.float)
+                x = np.array(nearest_keys)
                 y_pos = np.array([v[0], v2[0]])
                 y_speed = np.array([v[1], v2[1]])
                 f_pos = interp1d(x, y_pos, bounds_error=False)
