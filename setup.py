@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+
 from io import open
 import re
 import sys
@@ -10,13 +11,18 @@ def version():
     with open('pypot/_version.py') as f:
         return re.search(r"^__version__ = ['\"]([^'\"]*)['\"]", f.read()).group(1)
 
+
 extra = {}
 if sys.version_info >= (3,):
     extra['use_2to3'] = True
 
 install_requires = ['numpy',
                     'pyserial>2.6',
-                    'scipy']
+                    'tornado',
+                    'scipy',
+                    'ikpy',
+                    'bottle',
+                    ]
 
 if sys.version_info < (2, 7):
     print("python version < 2.7 is not supported")
@@ -25,6 +31,7 @@ if sys.version_info < (2, 7):
 if sys.version_info < (3, 4):
     install_requires.append('enum34')
 
+
 setup(name='pypot',
       version=version(),
       packages=find_packages(),
@@ -32,20 +39,18 @@ setup(name='pypot',
       install_requires=install_requires,
 
       extras_require={
-          'tools': [],  # Extras require: PyQt4 (not a PyPi packet)
           'doc': ['sphinx', 'sphinxjp.themes.basicstrap', 'sphinx-bootstrap-theme'],
-          'http-server': ['bottle', 'tornado'],
-          'zmq-server': ['pyzmq'],
+          'zmq-server': ['zmq'],
           'remote-robot': ['zerorpc'],
-          'camera': ['hampy']  # Extras require: opencv (not a PyPi packet)
+          'camera': ['hampy', 'zmq'],  # Extras require: opencv (not a PyPi packet)
+          'tests': ['requests', 'websocket-client', 'poppy-ergo-jr'],
       },
 
       entry_points={
           'console_scripts': [
-              'dxl-config = pypot.tools.dxlconfig:main'
-          ],
-          'gui_scripts': [
-              'herborist = pypot.tools.herborist.herborist:main [tools]',
+              'dxl-config = pypot.tools.dxlconfig:main',
+              'poppy-services=pypot.creatures.services_launcher:main',
+              'poppy-configure=pypot.creatures.configure_utility:main',
           ],
       },
 

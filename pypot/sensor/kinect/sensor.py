@@ -102,6 +102,7 @@ class KinectSensor(object):
         self.sub_skel.close()
         self.context.term()
 
+
 if __name__ == '__main__':
     import cv2
 

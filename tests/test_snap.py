@@ -1,15 +1,28 @@
 import unittest
 import requests
 import random
+import time
 
-from poppy.creatures import PoppyErgoJr
+from pypot.creatures import PoppyErgoJr
 from pypot.dynamixel.conversion import XL320LEDColors
 
+from utils import get_open_port
 
-class TestPrimTeardown(unittest.TestCase):
+
+class TestSnap(unittest.TestCase):
     def setUp(self):
-        self.jr = PoppyErgoJr(simulator='poppy-simu', use_snap=True)
-        self.base_url = 'http://127.0.0.1:6969'
+        port = get_open_port()
+
+        self.jr = PoppyErgoJr(simulator='poppy-simu', use_snap=True, snap_port=port)
+        self.base_url = 'http://127.0.0.1:{}'.format(port)
+
+        # Make sure the Snap API is running before actually testing.
+        while True:
+            try:
+                self.get('/')
+                break
+            except requests.exceptions.ConnectionError:
+                time.sleep(1)
 
     def get(self, url):
         url = '{}{}'.format(self.base_url, url)

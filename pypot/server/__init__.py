@@ -12,3 +12,8 @@ try:
     from .server import RemoteRobotServer
 except ImportError:
     pass
+
+try:
+    from .ws import WsRobotServer
+except ImportError:
+    pass

@@ -37,7 +37,7 @@ class ZMQRobotServer(AbstractServer):
 
     def handle_request(self, request):
         meth_name, kwargs = request['robot'].popitem()
-        meth = getattr(self.restfull_robot, meth_name)
+        meth = getattr(self.restful_robot, meth_name)
 
         for key in ('value', 'args'):
             if key in kwargs:
