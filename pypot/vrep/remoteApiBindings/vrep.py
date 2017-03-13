@@ -30,26 +30,25 @@ import platform
 import struct
 import sys
 import ctypes as ct
-from vrepConst import *
+from .vrepConst import *
 
 #load library
 libsimx = None
-try:
-    if platform.system() =='cli':
-        libsimx = ct.CDLL("./remoteApi.dll")
-    elif platform.system() =='Windows':
-        libsimx = ct.CDLL("./remoteApi.dll") 
-    elif platform.system() == 'Darwin':
-        libsimx = ct.CDLL("./remoteApi.dylib")
-    else:
-        libsimx = ct.CDLL("./remoteApi.so")
-except:
-    print ('----------------------------------------------------')
-    print ('The remoteApi library could not be loaded. Make sure')
-    print ('it is located in the same folder as "vrep.py", or')
-    print ('appropriately adjust the file "vrep.py"')
-    print ('----------------------------------------------------')
-    print ('')
+ 
+ import os
+ import sys
+ 
+ basepath = os.path.join(os.path.dirname(__file__), 'lib')
+ version = '64Bit' if sys.maxsize > 2**32 else '32Bit'
+ 
+ if platform.system() == 'Windows':
+     dyn_lib = os.path.join(basepath, 'windows', version, 'remoteApi.dll')
+ elif platform.system() == 'Darwin':
+     dyn_lib = os.path.join(basepath, 'mac', version, 'remoteApi.dylib')
+ else:
+     dyn_lib = os.path.join(basepath, 'linux', version, 'remoteApi.so')
+ 
+ libsimx = CDLL(dyn_lib)
 
 #ctypes wrapper prototypes 
 c_GetJointPosition          = ct.CFUNCTYPE(ct.c_int32,ct.c_int32, ct.c_int32, ct.POINTER(ct.c_float), ct.c_int32)(("simxGetJointPosition", libsimx))
