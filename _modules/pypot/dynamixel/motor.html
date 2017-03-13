@@ -451,6 +451,33 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">max_pos</span> <span class="o">=</span> <span class="mi">180</span></div>
 
 
+<div class="viewcode-block" id="DxlMX64106Motor"><a class="viewcode-back" href="../../../pypot.dynamixel.html#pypot.dynamixel.motor.DxlMX64106Motor">[docs]</a><span class="k">class</span> <span class="nc">DxlMX64106Motor</span><span class="p">(</span><span class="n">DxlMXMotor</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; This class represents the MX-64 and MX-106 robotis motor.</span>
+
+<span class="sd">        This class adds access to:</span>
+<span class="sd">            * present current</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+    <span class="n">registers</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">DxlMXMotor</span><span class="o">.</span><span class="n">registers</span><span class="p">)</span>
+
+    <span class="n">present_current</span> <span class="o">=</span> <span class="n">DxlRegister</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span>
+                 <span class="n">direct</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">broken</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                 <span class="n">angle_limit</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; This class represents the RX and MX robotis motor.</span>
+
+<span class="sd">            This class adds access to:</span>
+<span class="sd">                * PID gains (see the robotis website for details)</span>
+
+<span class="sd">            &quot;&quot;&quot;</span>
+        <span class="n">DxlMotor</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span>
+                          <span class="n">direct</span><span class="p">,</span> <span class="n">offset</span><span class="p">,</span> <span class="n">broken</span><span class="p">,</span>
+                          <span class="n">angle_limit</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">max_pos</span> <span class="o">=</span> <span class="mi">180</span></div>
+
+
 <span class="k">class</span> <span class="nc">DxlXL320Motor</span><span class="p">(</span><span class="n">DxlMXMotor</span><span class="p">):</span>
     <span class="n">registers</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">DxlMXMotor</span><span class="o">.</span><span class="n">registers</span><span class="p">)</span>
 
@@ -464,6 +491,38 @@
                             <span class="n">direct</span><span class="p">,</span> <span class="n">offset</span><span class="p">,</span> <span class="n">broken</span><span class="p">,</span>
                             <span class="n">angle_limit</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">max_pos</span> <span class="o">=</span> <span class="mi">150</span>
+
+
+<div class="viewcode-block" id="DxlSRMotor"><a class="viewcode-back" href="../../../pypot.dynamixel.html#pypot.dynamixel.motor.DxlSRMotor">[docs]</a><span class="k">class</span> <span class="nc">DxlSRMotor</span><span class="p">(</span><span class="n">DxlMotor</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; This class represents the robotis motor found in the seed robotics hand.</span>
+
+<span class="sd">        This class adds access to:</span>
+<span class="sd">            * force control enable</span>
+<span class="sd">            * goal force</span>
+<span class="sd">            * present current</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+    <span class="n">registers</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">DxlMotor</span><span class="o">.</span><span class="n">registers</span><span class="p">)</span>
+
+    <span class="n">force_control_enable</span> <span class="o">=</span> <span class="n">DxlRegister</span><span class="p">(</span><span class="n">rw</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">goal_force</span> <span class="o">=</span> <span class="n">DxlRegister</span><span class="p">(</span><span class="n">rw</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">present_current</span> <span class="o">=</span> <span class="n">DxlRegister</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span>
+                 <span class="n">direct</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">broken</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                 <span class="n">angle_limit</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; This class represents the robotis motor found in the seed robotics hand.</span>
+
+<span class="sd">        This class adds access to:</span>
+<span class="sd">            * PID gains (see the robotis website for details)</span>
+<span class="sd">            * force control enable</span>
+<span class="sd">            * goal force</span>
+
+<span class="sd">            &quot;&quot;&quot;</span>
+        <span class="n">DxlMotor</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span>
+                          <span class="n">direct</span><span class="p">,</span> <span class="n">offset</span><span class="p">,</span> <span class="n">broken</span><span class="p">,</span>
+                          <span class="n">angle_limit</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">max_pos</span> <span class="o">=</span> <span class="mi">180</span></div>
 
 
 <div class="viewcode-block" id="SafeCompliance"><a class="viewcode-back" href="../../../pypot.dynamixel.html#pypot.dynamixel.motor.SafeCompliance">[docs]</a><span class="k">class</span> <span class="nc">SafeCompliance</span><span class="p">(</span><span class="n">StoppableLoopThread</span><span class="p">):</span>
@@ -513,7 +572,7 @@
       <!-- footer -->
       <footer role="contentinfo">
           &copy; Copyright 2015, Poppy-Project.
-        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.5.2.
+        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.5.3.
       </footer>
       <!-- /footer -->
 

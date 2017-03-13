@@ -176,8 +176,15 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">set_control_mode</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">ids</span><span class="p">,</span> <span class="n">itertools</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="s1">&#39;joint&#39;</span><span class="p">))))</span></div>
 
 <div class="viewcode-block" id="DxlIO.set_control_mode"><a class="viewcode-back" href="../../../../pypot.dynamixel.html#pypot.dynamixel.io.io.DxlIO.set_control_mode">[docs]</a>    <span class="k">def</span> <span class="nf">set_control_mode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mode_for_id</span><span class="p">):</span>
-        <span class="n">models</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;MX&#39;</span> <span class="k">if</span> <span class="n">m</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;MX&#39;</span><span class="p">)</span> <span class="k">else</span> <span class="s1">&#39;*&#39;</span>
-                  <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_model</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">mode_for_id</span><span class="o">.</span><span class="n">keys</span><span class="p">()))]</span>
+        <span class="n">models</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_model</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">mode_for_id</span><span class="o">.</span><span class="n">keys</span><span class="p">())):</span>
+            <span class="k">if</span> <span class="n">m</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;MX&#39;</span><span class="p">):</span>
+                <span class="n">models</span> <span class="o">+=</span> <span class="p">[</span><span class="s1">&#39;MX&#39;</span><span class="p">]</span>
+            <span class="k">elif</span> <span class="n">m</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;SR&#39;</span><span class="p">):</span>
+                <span class="n">models</span> <span class="o">+=</span> <span class="p">[</span><span class="s1">&#39;SR&#39;</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">models</span> <span class="o">+=</span> <span class="p">[</span><span class="s1">&#39;*&#39;</span><span class="p">]</span>
+
         <span class="n">pos_max</span> <span class="o">=</span> <span class="p">[</span><span class="n">conv</span><span class="o">.</span><span class="n">position_range</span><span class="p">[</span><span class="n">m</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">models</span><span class="p">]</span>
         <span class="n">limits</span> <span class="o">=</span> <span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="k">if</span> <span class="n">mode</span> <span class="o">==</span> <span class="s1">&#39;wheel&#39;</span> <span class="k">else</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">pos_max</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
                   <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">mode</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">mode_for_id</span><span class="o">.</span><span class="n">itervalues</span><span class="p">()))</span>
@@ -383,6 +390,22 @@
 <span class="n">_add_control</span><span class="p">(</span><span class="s1">&#39;punch&#39;</span><span class="p">,</span>
              <span class="n">address</span><span class="o">=</span><span class="mh">0x30</span><span class="p">,</span> <span class="n">length</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
              <span class="n">models</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;AX-12&#39;</span><span class="p">,</span> <span class="s1">&#39;AX-18&#39;</span><span class="p">,</span> <span class="s1">&#39;RX-24&#39;</span><span class="p">,</span> <span class="s1">&#39;RX-28&#39;</span><span class="p">,</span> <span class="s1">&#39;RX-64&#39;</span><span class="p">))</span>
+
+<span class="n">_add_control</span><span class="p">(</span><span class="s1">&#39;present current&#39;</span><span class="p">,</span>
+             <span class="n">address</span><span class="o">=</span><span class="mh">0x44</span><span class="p">,</span>
+             <span class="n">access</span><span class="o">=</span><span class="n">_DxlAccess</span><span class="o">.</span><span class="n">readonly</span><span class="p">,</span>
+             <span class="n">models</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;MX-64&#39;</span><span class="p">,</span> <span class="s1">&#39;MX-106&#39;</span><span class="p">,</span> <span class="s1">&#39;SR-RH4D&#39;</span><span class="p">,),</span>
+             <span class="n">dxl_to_si</span><span class="o">=</span><span class="n">conv</span><span class="o">.</span><span class="n">dxl_to_current</span><span class="p">)</span>
+
+<span class="n">_add_control</span><span class="p">(</span><span class="s1">&#39;force control enable&#39;</span><span class="p">,</span>
+             <span class="n">address</span><span class="o">=</span><span class="mh">0x46</span><span class="p">,</span> <span class="n">length</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+             <span class="n">models</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;SR-RH4D&#39;</span><span class="p">,),</span>
+             <span class="n">dxl_to_si</span><span class="o">=</span><span class="n">conv</span><span class="o">.</span><span class="n">dxl_to_bool</span><span class="p">,</span>
+             <span class="n">si_to_dxl</span><span class="o">=</span><span class="n">conv</span><span class="o">.</span><span class="n">bool_to_dxl</span><span class="p">)</span>
+
+<span class="n">_add_control</span><span class="p">(</span><span class="s1">&#39;goal force&#39;</span><span class="p">,</span>
+             <span class="n">address</span><span class="o">=</span><span class="mh">0x47</span><span class="p">,</span>
+             <span class="n">models</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;SR-RH4D&#39;</span><span class="p">,))</span>
 </pre></div>
 
                 </div>
@@ -417,7 +440,7 @@
       <!-- footer -->
       <footer role="contentinfo">
           &copy; Copyright 2015, Poppy-Project.
-        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.5.2.
+        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.5.3.
       </footer>
       <!-- /footer -->
 

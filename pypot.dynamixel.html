@@ -331,6 +331,18 @@
 </dd></dl>
 
 <dl class="method">
+<dt id="pypot.dynamixel.io.io.DxlIO.get_force_control_enable">
+<code class="descname">get_force_control_enable</code><span class="sig-paren">(</span><em>ids</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pypot.dynamixel.io.io.DxlIO.get_force_control_enable" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets force control enable from the specified motors.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.io.io.DxlIO.get_goal_force">
+<code class="descname">get_goal_force</code><span class="sig-paren">(</span><em>ids</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pypot.dynamixel.io.io.DxlIO.get_goal_force" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets goal force from the specified motors.</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="pypot.dynamixel.io.io.DxlIO.get_goal_position">
 <code class="descname">get_goal_position</code><span class="sig-paren">(</span><em>ids</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pypot.dynamixel.io.io.DxlIO.get_goal_position" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gets goal position from the specified motors.</p>
@@ -358,6 +370,12 @@
 <dt id="pypot.dynamixel.io.io.DxlIO.get_moving_speed">
 <code class="descname">get_moving_speed</code><span class="sig-paren">(</span><em>ids</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pypot.dynamixel.io.io.DxlIO.get_moving_speed" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gets moving speed from the specified motors.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.io.io.DxlIO.get_present_current">
+<code class="descname">get_present_current</code><span class="sig-paren">(</span><em>ids</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pypot.dynamixel.io.io.DxlIO.get_present_current" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets present current from the specified motors.</p>
 </dd></dl>
 
 <dl class="method">
@@ -466,6 +484,18 @@
 <dt id="pypot.dynamixel.io.io.DxlIO.set_drive_mode">
 <code class="descname">set_drive_mode</code><span class="sig-paren">(</span><em>value_for_id</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pypot.dynamixel.io.io.DxlIO.set_drive_mode" title="Permalink to this definition">¶</a></dt>
 <dd><p>Sets drive mode to the specified motors.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.io.io.DxlIO.set_force_control_enable">
+<code class="descname">set_force_control_enable</code><span class="sig-paren">(</span><em>value_for_id</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pypot.dynamixel.io.io.DxlIO.set_force_control_enable" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets force control enable to the specified motors.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.io.io.DxlIO.set_goal_force">
+<code class="descname">set_goal_force</code><span class="sig-paren">(</span><em>value_for_id</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pypot.dynamixel.io.io.DxlIO.set_goal_force" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets goal force to the specified motors.</p>
 </dd></dl>
 
 <dl class="method">
@@ -850,6 +880,54 @@
 </dd></dl>
 
 <dl class="class">
+<dt id="pypot.dynamixel.motor.DxlMX64106Motor">
+<em class="property">class </em><code class="descclassname">pypot.dynamixel.motor.</code><code class="descname">DxlMX64106Motor</code><span class="sig-paren">(</span><em>id</em>, <em>name=None</em>, <em>model=''</em>, <em>direct=True</em>, <em>offset=0.0</em>, <em>broken=False</em>, <em>angle_limit=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/dynamixel/motor.html#DxlMX64106Motor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.motor.DxlMX64106Motor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pypot.dynamixel.motor.DxlMXMotor" title="pypot.dynamixel.motor.DxlMXMotor"><code class="xref py py-class docutils literal"><span class="pre">pypot.dynamixel.motor.DxlMXMotor</span></code></a></p>
+<p>This class represents the MX-64 and MX-106 robotis motor.</p>
+<dl class="docutils">
+<dt>This class adds access to:</dt>
+<dd><ul class="first last simple">
+<li>present current</li>
+</ul>
+</dd>
+</dl>
+<p>This class represents the RX and MX robotis motor.</p>
+<dl class="docutils">
+<dt>This class adds access to:</dt>
+<dd><ul class="first last simple">
+<li>PID gains (see the robotis website for details)</li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="class">
+<dt id="pypot.dynamixel.motor.DxlSRMotor">
+<em class="property">class </em><code class="descclassname">pypot.dynamixel.motor.</code><code class="descname">DxlSRMotor</code><span class="sig-paren">(</span><em>id</em>, <em>name=None</em>, <em>model=''</em>, <em>direct=True</em>, <em>offset=0.0</em>, <em>broken=False</em>, <em>angle_limit=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/dynamixel/motor.html#DxlSRMotor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.motor.DxlSRMotor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pypot.dynamixel.motor.DxlMotor" title="pypot.dynamixel.motor.DxlMotor"><code class="xref py py-class docutils literal"><span class="pre">pypot.dynamixel.motor.DxlMotor</span></code></a></p>
+<p>This class represents the robotis motor found in the seed robotics hand.</p>
+<dl class="docutils">
+<dt>This class adds access to:</dt>
+<dd><ul class="first last simple">
+<li>force control enable</li>
+<li>goal force</li>
+<li>present current</li>
+</ul>
+</dd>
+</dl>
+<p>This class represents the robotis motor found in the seed robotics hand.</p>
+<dl class="docutils">
+<dt>This class adds access to:</dt>
+<dd><ul class="first last simple">
+<li>PID gains (see the robotis website for details)</li>
+<li>force control enable</li>
+<li>goal force</li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="class">
 <dt id="pypot.dynamixel.motor.SafeCompliance">
 <em class="property">class </em><code class="descclassname">pypot.dynamixel.motor.</code><code class="descname">SafeCompliance</code><span class="sig-paren">(</span><em>motor</em>, <em>frequency=50</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/dynamixel/motor.html#SafeCompliance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.motor.SafeCompliance" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="pypot.utils.html#pypot.utils.stoppablethread.StoppableLoopThread" title="pypot.utils.stoppablethread.StoppableLoopThread"><code class="xref py py-class docutils literal"><span class="pre">pypot.utils.stoppablethread.StoppableLoopThread</span></code></a></p>
@@ -1145,6 +1223,11 @@
 <dl class="function">
 <dt id="pypot.dynamixel.conversion.temperature_to_dxl">
 <code class="descclassname">pypot.dynamixel.conversion.</code><code class="descname">temperature_to_dxl</code><span class="sig-paren">(</span><em>value</em>, <em>model</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/dynamixel/conversion.html#temperature_to_dxl"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.conversion.temperature_to_dxl" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="pypot.dynamixel.conversion.dxl_to_current">
+<code class="descclassname">pypot.dynamixel.conversion.</code><code class="descname">dxl_to_current</code><span class="sig-paren">(</span><em>value</em>, <em>model</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/dynamixel/conversion.html#dxl_to_current"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.conversion.dxl_to_current" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="function">
@@ -1601,7 +1684,7 @@
       <!-- footer -->
       <footer role="contentinfo">
           &copy; Copyright 2015, Poppy-Project.
-        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.5.2.
+        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.5.3.
       </footer>
       <!-- /footer -->
 

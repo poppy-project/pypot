@@ -161,6 +161,7 @@
 
 <span class="n">position_range</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s1">&#39;MX&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">4096</span><span class="p">,</span> <span class="mf">360.0</span><span class="p">),</span>
+    <span class="s1">&#39;SR&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">4096</span><span class="p">,</span> <span class="mf">360.0</span><span class="p">),</span>
     <span class="s1">&#39;*&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">1024</span><span class="p">,</span> <span class="mf">300.0</span><span class="p">)</span>
 <span class="p">}</span>
 
@@ -175,6 +176,7 @@
     <span class="s1">&#39;RX-28&#39;</span><span class="p">:</span> <span class="mf">2.5</span><span class="p">,</span>
     <span class="s1">&#39;RX-64&#39;</span><span class="p">:</span> <span class="mf">4.</span><span class="p">,</span>
     <span class="s1">&#39;XL-320&#39;</span><span class="p">:</span> <span class="mf">0.39</span><span class="p">,</span>
+    <span class="s1">&#39;SR-RH4D&#39;</span><span class="p">:</span> <span class="mf">0.57</span><span class="p">,</span>
 <span class="p">}</span>
 
 <span class="n">velocity</span> <span class="o">=</span> <span class="p">{</span>  <span class="c1"># in degree/s</span>
@@ -187,19 +189,28 @@
     <span class="s1">&#39;RX-24&#39;</span><span class="p">:</span> <span class="mf">756.</span><span class="p">,</span>
     <span class="s1">&#39;RX-28&#39;</span><span class="p">:</span> <span class="mf">402.</span><span class="p">,</span>
     <span class="s1">&#39;RX-64&#39;</span><span class="p">:</span> <span class="mf">294.</span><span class="p">,</span>
+    <span class="s1">&#39;SR-RH4D&#39;</span><span class="p">:</span> <span class="mf">300.</span><span class="p">,</span>
 <span class="p">}</span>
 
 
 <div class="viewcode-block" id="dxl_to_degree"><a class="viewcode-back" href="../../../pypot.dynamixel.html#pypot.dynamixel.conversion.dxl_to_degree">[docs]</a><span class="k">def</span> <span class="nf">dxl_to_degree</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">model</span><span class="p">):</span>
-    <span class="n">model</span> <span class="o">=</span> <span class="s1">&#39;MX&#39;</span> <span class="k">if</span> <span class="n">model</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;MX&#39;</span><span class="p">)</span> <span class="k">else</span> <span class="s1">&#39;*&#39;</span>
-    <span class="n">max_pos</span><span class="p">,</span> <span class="n">max_deg</span> <span class="o">=</span> <span class="n">position_range</span><span class="p">[</span><span class="n">model</span><span class="p">]</span>
+    <span class="n">determined_model</span> <span class="o">=</span> <span class="s1">&#39;*&#39;</span>
+    <span class="k">if</span> <span class="n">model</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;MX&#39;</span><span class="p">):</span>
+        <span class="n">determined_model</span> <span class="o">=</span> <span class="s1">&#39;MX&#39;</span>
+    <span class="k">elif</span> <span class="n">model</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;SR&#39;</span><span class="p">):</span>
+        <span class="n">determined_model</span> <span class="o">=</span> <span class="s1">&#39;SR&#39;</span>
+    <span class="n">max_pos</span><span class="p">,</span> <span class="n">max_deg</span> <span class="o">=</span> <span class="n">position_range</span><span class="p">[</span><span class="n">determined_model</span><span class="p">]</span>
 
     <span class="k">return</span> <span class="nb">round</span><span class="p">(((</span><span class="n">max_deg</span> <span class="o">*</span> <span class="nb">float</span><span class="p">(</span><span class="n">value</span><span class="p">))</span> <span class="o">/</span> <span class="p">(</span><span class="n">max_pos</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span> <span class="o">-</span> <span class="p">(</span><span class="n">max_deg</span> <span class="o">/</span> <span class="mi">2</span><span class="p">),</span> <span class="mi">2</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="degree_to_dxl"><a class="viewcode-back" href="../../../pypot.dynamixel.html#pypot.dynamixel.conversion.degree_to_dxl">[docs]</a><span class="k">def</span> <span class="nf">degree_to_dxl</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">model</span><span class="p">):</span>
-    <span class="n">model</span> <span class="o">=</span> <span class="s1">&#39;MX&#39;</span> <span class="k">if</span> <span class="n">model</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;MX&#39;</span><span class="p">)</span> <span class="k">else</span> <span class="s1">&#39;*&#39;</span>
-    <span class="n">max_pos</span><span class="p">,</span> <span class="n">max_deg</span> <span class="o">=</span> <span class="n">position_range</span><span class="p">[</span><span class="n">model</span><span class="p">]</span>
+    <span class="n">determined_model</span> <span class="o">=</span> <span class="s1">&#39;*&#39;</span>
+    <span class="k">if</span> <span class="n">model</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;MX&#39;</span><span class="p">):</span>
+        <span class="n">determined_model</span> <span class="o">=</span> <span class="s1">&#39;MX&#39;</span>
+    <span class="k">elif</span> <span class="n">model</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;SR&#39;</span><span class="p">):</span>
+        <span class="n">determined_model</span> <span class="o">=</span> <span class="s1">&#39;SR&#39;</span>
+    <span class="n">max_pos</span><span class="p">,</span> <span class="n">max_deg</span> <span class="o">=</span> <span class="n">position_range</span><span class="p">[</span><span class="n">determined_model</span><span class="p">]</span>
 
     <span class="n">pos</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">((</span><span class="n">max_pos</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="p">((</span><span class="n">max_deg</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="nb">float</span><span class="p">(</span><span class="n">value</span><span class="p">))</span> <span class="o">/</span> <span class="n">max_deg</span><span class="p">),</span> <span class="mi">0</span><span class="p">))</span>
     <span class="n">pos</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="n">pos</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">max_pos</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
@@ -213,14 +224,18 @@
     <span class="n">cw</span><span class="p">,</span> <span class="n">speed</span> <span class="o">=</span> <span class="nb">divmod</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="mi">1024</span><span class="p">)</span>
     <span class="n">direction</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="mi">2</span> <span class="o">*</span> <span class="n">cw</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
 
-    <span class="n">speed_factor</span> <span class="o">=</span> <span class="mf">0.114</span> <span class="k">if</span> <span class="n">model</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;MX&#39;</span><span class="p">)</span> <span class="k">else</span> <span class="mf">0.111</span>
+    <span class="n">speed_factor</span> <span class="o">=</span> <span class="mf">0.111</span>
+    <span class="k">if</span> <span class="n">model</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;MX&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">model</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;SR&#39;</span><span class="p">):</span>
+        <span class="n">speed_factor</span> <span class="o">=</span> <span class="mf">0.114</span>
 
     <span class="k">return</span> <span class="n">direction</span> <span class="o">*</span> <span class="p">(</span><span class="n">speed</span> <span class="o">*</span> <span class="n">speed_factor</span><span class="p">)</span> <span class="o">*</span> <span class="mi">6</span></div>
 
 
 <div class="viewcode-block" id="speed_to_dxl"><a class="viewcode-back" href="../../../pypot.dynamixel.html#pypot.dynamixel.conversion.speed_to_dxl">[docs]</a><span class="k">def</span> <span class="nf">speed_to_dxl</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">model</span><span class="p">):</span>
     <span class="n">direction</span> <span class="o">=</span> <span class="mi">1024</span> <span class="k">if</span> <span class="n">value</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="mi">0</span>
-    <span class="n">speed_factor</span> <span class="o">=</span> <span class="mf">0.114</span> <span class="k">if</span> <span class="n">model</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;MX&#39;</span><span class="p">)</span> <span class="k">else</span> <span class="mf">0.111</span>
+    <span class="n">speed_factor</span> <span class="o">=</span> <span class="mf">0.111</span>
+    <span class="k">if</span> <span class="n">model</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;MX&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">model</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;SR&#39;</span><span class="p">):</span>
+        <span class="n">speed_factor</span> <span class="o">=</span> <span class="mf">0.114</span>
 
     <span class="n">max_value</span> <span class="o">=</span> <span class="mi">1023</span> <span class="o">*</span> <span class="n">speed_factor</span> <span class="o">*</span> <span class="mi">6</span>
     <span class="n">value</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="o">-</span><span class="n">max_value</span><span class="p">),</span> <span class="n">max_value</span><span class="p">)</span>
@@ -272,6 +287,8 @@
     <span class="mi">310</span><span class="p">:</span> <span class="s1">&#39;MX-64&#39;</span><span class="p">,</span>   <span class="c1"># 54 + (1&lt;&lt;8)</span>
     <span class="mi">320</span><span class="p">:</span> <span class="s1">&#39;MX-106&#39;</span><span class="p">,</span>  <span class="c1"># 64 + (1&lt;&lt;8)</span>
     <span class="mi">350</span><span class="p">:</span> <span class="s1">&#39;XL-320&#39;</span><span class="p">,</span>  <span class="c1"># 94 + (1&lt;&lt;8)</span>
+    <span class="mi">400</span><span class="p">:</span> <span class="s1">&#39;SR-RH4D&#39;</span><span class="p">,</span>
+    <span class="mi">401</span><span class="p">:</span> <span class="s1">&#39;SR-RH4D&#39;</span><span class="p">,</span>  <span class="c1"># Virtual motor</span>
 <span class="p">}</span>
 
 
@@ -340,6 +357,17 @@
 
 <div class="viewcode-block" id="temperature_to_dxl"><a class="viewcode-back" href="../../../pypot.dynamixel.html#pypot.dynamixel.conversion.temperature_to_dxl">[docs]</a><span class="k">def</span> <span class="nf">temperature_to_dxl</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">model</span><span class="p">):</span>
     <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">value</span><span class="p">)</span></div>
+
+<span class="c1"># MARK: - Current</span>
+
+
+<div class="viewcode-block" id="dxl_to_current"><a class="viewcode-back" href="../../../pypot.dynamixel.html#pypot.dynamixel.conversion.dxl_to_current">[docs]</a><span class="k">def</span> <span class="nf">dxl_to_current</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">model</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">model</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;SR&#39;</span><span class="p">):</span>
+        <span class="c1"># The SR motors do use a different conversion formula than the dynamixel motors</span>
+        <span class="c1"># See http://kb.seedrobotics.com/doku.php?id=dh4d:dynamixelcontroltables</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">value</span> <span class="o">*</span> <span class="mf">0.4889</span><span class="p">)</span> <span class="o">/</span> <span class="mf">1000.0</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mf">4.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">value</span> <span class="o">-</span> <span class="mf">2048.0</span><span class="p">)</span> <span class="o">/</span> <span class="mf">1000.0</span></div>
 
 <span class="c1"># MARK: - Voltage</span>
 
@@ -506,7 +534,7 @@
       <!-- footer -->
       <footer role="contentinfo">
           &copy; Copyright 2015, Poppy-Project.
-        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.5.2.
+        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.5.3.
       </footer>
       <!-- /footer -->
 

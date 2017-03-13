@@ -148,7 +148,7 @@
 <span class="kn">from</span> <span class="nn">.io</span> <span class="k">import</span> <span class="n">DxlIO</span><span class="p">,</span> <span class="n">Dxl320IO</span>
 <span class="kn">from</span> <span class="nn">.error</span> <span class="k">import</span> <span class="n">BaseErrorHandler</span>
 <span class="kn">from</span> <span class="nn">.syncloop</span> <span class="k">import</span> <span class="n">BaseDxlController</span>
-<span class="kn">from</span> <span class="nn">.motor</span> <span class="k">import</span> <span class="n">DxlMXMotor</span><span class="p">,</span> <span class="n">DxlAXRXMotor</span><span class="p">,</span> <span class="n">DxlXL320Motor</span>
+<span class="kn">from</span> <span class="nn">.motor</span> <span class="k">import</span> <span class="n">DxlMXMotor</span><span class="p">,</span> <span class="n">DxlAXRXMotor</span><span class="p">,</span> <span class="n">DxlXL320Motor</span><span class="p">,</span> <span class="n">DxlSRMotor</span>
 <span class="kn">from</span> <span class="nn">.io.abstract_io</span> <span class="k">import</span> <span class="n">DxlError</span>
 
 <span class="kn">from</span> <span class="nn">..robot</span> <span class="k">import</span> <span class="n">Robot</span>
@@ -264,7 +264,8 @@
                 <span class="s1">&#39;MX&#39;</span><span class="p">:</span> <span class="n">DxlMXMotor</span><span class="p">,</span>
                 <span class="s1">&#39;RX&#39;</span><span class="p">:</span> <span class="n">DxlAXRXMotor</span><span class="p">,</span>
                 <span class="s1">&#39;AX&#39;</span><span class="p">:</span> <span class="n">DxlAXRXMotor</span><span class="p">,</span>
-                <span class="s1">&#39;XL&#39;</span><span class="p">:</span> <span class="n">DxlXL320Motor</span>
+                <span class="s1">&#39;XL&#39;</span><span class="p">:</span> <span class="n">DxlXL320Motor</span><span class="p">,</span>
+                <span class="s1">&#39;SR&#39;</span><span class="p">:</span> <span class="n">DxlSRMotor</span><span class="p">,</span>
             <span class="p">}</span>
 
             <span class="n">motors</span> <span class="o">=</span> <span class="p">[</span><span class="n">motorcls</span><span class="p">[</span><span class="n">model</span><span class="p">[:</span><span class="mi">2</span><span class="p">]](</span><span class="nb">id</span><span class="p">,</span> <span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">)</span>
@@ -307,7 +308,7 @@
       <!-- footer -->
       <footer role="contentinfo">
           &copy; Copyright 2015, Poppy-Project.
-        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.5.2.
+        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.5.3.
       </footer>
       <!-- /footer -->
 
