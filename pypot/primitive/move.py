@@ -48,7 +48,11 @@ class Move(object):
         """ Returns a copy of the stored positions. """
         return self._timed_positions
 
-    def plot(self, ax):
+    def plot(self, ax=None):
+        if not ax:
+            import matplotlib.pyplot as plt
+            ax = plt.gca()
+
         pos = self.positions()
 
         if not pos:
