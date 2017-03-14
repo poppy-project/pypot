@@ -41,7 +41,7 @@ class KDTreeDict(dict):
             raise TypeError("update expected at most 1 arguments, got %d" % len(args))
         other = dict(*args, **kwargs)
         for key in other:
-            self[key] = other[key]
+            self[float(key)] = other[key]
 
     def generate_tree(self):
         self.__tree = cKDTree(self.__keys)
