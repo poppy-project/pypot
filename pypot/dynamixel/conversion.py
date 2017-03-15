@@ -21,6 +21,7 @@ from enum import Enum
 
 position_range = {
     'MX': (4096, 360.0),
+    'SR': (4096, 360.0),
     '*': (1024, 300.0)
 }
 
@@ -35,6 +36,7 @@ torque_max = {  # in N.m
     'RX-28': 2.5,
     'RX-64': 4.,
     'XL-320': 0.39,
+    'SR-RH4D': 0.57,
 }
 
 velocity = {  # in degree/s
@@ -47,19 +49,28 @@ velocity = {  # in degree/s
     'RX-24': 756.,
     'RX-28': 402.,
     'RX-64': 294.,
+    'SR-RH4D': 300.,
 }
 
 
 def dxl_to_degree(value, model):
-    model = 'MX' if model.startswith('MX') else '*'
-    max_pos, max_deg = position_range[model]
+    determined_model = '*'
+    if model.startswith('MX'):
+        determined_model = 'MX'
+    elif model.startswith('SR'):
+        determined_model = 'SR'
+    max_pos, max_deg = position_range[determined_model]
 
     return round(((max_deg * float(value)) / (max_pos - 1)) - (max_deg / 2), 2)
 
 
 def degree_to_dxl(value, model):
-    model = 'MX' if model.startswith('MX') else '*'
-    max_pos, max_deg = position_range[model]
+    determined_model = '*'
+    if model.startswith('MX'):
+        determined_model = 'MX'
+    elif model.startswith('SR'):
+        determined_model = 'SR'
+    max_pos, max_deg = position_range[determined_model]
 
     pos = int(round((max_pos - 1) * ((max_deg / 2 + float(value)) / max_deg), 0))
     pos = min(max(pos, 0), max_pos - 1)
@@ -73,14 +84,18 @@ def dxl_to_speed(value, model):
     cw, speed = divmod(value, 1024)
     direction = (-2 * cw + 1)
 
-    speed_factor = 0.114 if model.startswith('MX') else 0.111
+    speed_factor = 0.111
+    if model.startswith('MX') or model.startswith('SR'):
+        speed_factor = 0.114
 
     return direction * (speed * speed_factor) * 6
 
 
 def speed_to_dxl(value, model):
     direction = 1024 if value < 0 else 0
-    speed_factor = 0.114 if model.startswith('MX') else 0.111
+    speed_factor = 0.111
+    if model.startswith('MX') or model.startswith('SR'):
+        speed_factor = 0.114
 
     max_value = 1023 * speed_factor * 6
     value = min(max(value, -max_value), max_value)
@@ -114,10 +129,12 @@ def dxl_to_pid(value, model):
 
 
 def pid_to_dxl(value, model):
-    truncate = lambda x: int(max(0, min(x, 254)))
+    def truncate(x):
+        return int(max(0, min(x, 254)))
     return [truncate(x * y) for x, y in zip(value, (250, 2.048, 8.0))]
 
 # MARK: - Model
+
 
 dynamixelModels = {
     12: 'AX-12',    # 12 + (0<<8)
@@ -130,6 +147,8 @@ dynamixelModels = {
     310: 'MX-64',   # 54 + (1<<8)
     320: 'MX-106',  # 64 + (1<<8)
     350: 'XL-320',  # 94 + (1<<8)
+    400: 'SR-RH4D',
+    401: 'SR-RH4D',  # Virtual motor
 }
 
 
@@ -151,6 +170,7 @@ def drive_mode_to_dxl(value, model):
     return (int('slave' in value) << 1 | int('reverse' in value))
 
 # MARK: - Baudrate
+
 
 dynamixelBaudrates = {
     1: 1000000.0,
@@ -198,6 +218,17 @@ def dxl_to_temperature(value, model):
 def temperature_to_dxl(value, model):
     return int(value)
 
+# MARK: - Current
+
+
+def dxl_to_current(value, model):
+    if model.startswith('SR'):
+        # The SR motors do use a different conversion formula than the dynamixel motors
+        # See http://kb.seedrobotics.com/doku.php?id=dh4d:dynamixelcontroltables
+        return (value * 0.4889) / 1000.0
+    else:
+        return 4.5 * (value - 2048.0) / 1000.0
+
 # MARK: - Voltage
 
 
@@ -209,6 +240,7 @@ def voltage_to_dxl(value, model):
     return int(value * 10)
 
 # MARK: - Status Return Level
+
 
 status_level = ('never', 'read', 'always')
 
@@ -225,6 +257,8 @@ def status_to_dxl(value, model):
 # MARK: - Error
 
 # TODO: depend on protocol v1 vs v2
+
+
 dynamixelErrors = ['None Error',
                    'Instruction Error',
                    'Overload Error',
@@ -265,14 +299,20 @@ def led_color_to_dxl(value, model):
     value = int(value) & 0b111
     return value
 
+
 control_modes = {
     1: 'wheel',
     2: 'joint',
 }
 
-dxl_to_control_mode = lambda value, _: control_modes[value]
-control_mode_to_dxl = lambda mode, _: (next((v for v, m in control_modes.items()
-                                             if m == mode), None))
+
+def dxl_to_control_mode(value, _):
+    return control_modes[value]
+
+
+def control_mode_to_dxl(mode, _):
+    return (next((v for v, m in control_modes.items()
+                  if m == mode), None))
 
 # MARK: - Various utility functions
 

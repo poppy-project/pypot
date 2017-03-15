@@ -120,12 +120,19 @@ def motor_from_confignode(config, motor_name):
     type = params['type']
     if type == 'XL-320':
         MotorCls = pypot.dynamixel.motor.DxlXL320Motor
+    elif type == 'MX-64' or type == 'MX-106':
+        MotorCls = pypot.dynamixel.motor.DxlMX64106Motor
     elif type.startswith('MX'):
         MotorCls = pypot.dynamixel.motor.DxlMXMotor
     elif type.startswith('AX') or type.startswith('RX'):
         MotorCls = pypot.dynamixel.motor.DxlAXRXMotor
+    elif type.startswith('SR'):
+        MotorCls = pypot.dynamixel.motor.DxlSRMotor
 
     broken = 'broken' in params and params['broken']
+
+    if 'wheel_mode' in params and params['wheel_mode']:
+        params['angle_limit'] = (0, 0)
 
     m = MotorCls(id=params['id'],
                  name=motor_name,
@@ -222,12 +229,18 @@ def check_motor_eprom_configuration(config, dxl_io, motor_names):
             changed_return_delay_time[id] = 0
 
         new_limits = m['angle_limit']
-        d = numpy.linalg.norm(numpy.asarray(new_limits) - numpy.asarray(old_limits))
-        if d > 1:
-            logger.warning("Limits of '%s' changed from %s to %s",
-                           name, old_limits, new_limits,
-                           extra={'config': config})
-            changed_angle_limits[id] = new_limits
+        if 'wheel_mode' in m and m['wheel_mode']:
+            dxl_io.set_wheel_mode([m['id']])
+            time.sleep(0.5)
+        else:
+            dxl_io.set_joint_mode([m['id']])
+
+            d = numpy.linalg.norm(numpy.asarray(new_limits) - numpy.asarray(old_limits))
+            if d > 1:
+                logger.warning("Limits of '%s' changed from %s to %s",
+                               name, old_limits, new_limits,
+                               extra={'config': config})
+                changed_angle_limits[id] = new_limits
 
     if changed_angle_limits:
         dxl_io.set_angle_limit(changed_angle_limits)
@@ -242,8 +255,13 @@ def instatiate_motors(config):
     motors = []
 
     for m_name, m_params in config['motors']:
-        MotorCls = (pypot.dynamixel.motor.DxlMXMotor if m_params['type'].startswith('MX')
-                    else pypot.dynamixel.motor.DxlAXRXMotor)
+        MotorCls = pypot.dynamixel.motor.DxlAXRXMotor
+        if m_params['type'].startswith('MX-64') or m_params['type'].startswith('MX-106'):
+            MotorCls = pypot.dynamixel.motor.DxlMX64106Motor
+        elif m_params['type'].startswith('MX'):
+            MotorCls = pypot.dynamixel.motor.DxlMXMotor
+        elif m_params['type'].startswith('SR'):
+            MotorCls = pypot.dynamixel.DxlSRMotor
 
         m = MotorCls(id=m_params['id'],
                      name=m_name,

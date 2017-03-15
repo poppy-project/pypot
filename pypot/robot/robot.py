@@ -179,6 +179,9 @@ class Robot(object):
                 'angle_limit': m.angle_limit,
             }
 
+            if m.angle_limit == (0, 0):
+                config['motors']['wheel_mode'] = True
+
         config['motorgroups'] = {}
 
         return config

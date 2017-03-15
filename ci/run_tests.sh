@@ -5,6 +5,7 @@ set +e
 # Pep8 tests
 if [[ "$PEP8_CAUSE_FAILLURE" == "true" ]]; then
   set -e
+  pip install flake8
   cat setup.cfg
   flake8 --statistics --count .
 # Else unit and integration tests
@@ -46,8 +47,8 @@ else
     popd
 
     pushd tests
-        pip install coverage requests
-        pip install poppy-creature poppy-ergo-jr
+        pip install --pre poppy-ergo-jr
+        pip install -e ..[tests]
         python -m unittest discover
     popd
 fi

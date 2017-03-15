@@ -1,6 +1,6 @@
 import os
 import re
-import cgi
+import sys
 import numpy
 import errno
 import shutil
@@ -12,15 +12,24 @@ from tornado.wsgi import WSGIContainer
 from tornado.httpserver import HTTPServer
 from tornado.ioloop import IOLoop
 
+from bottle import request
+from bottle import response
+
 from contextlib import closing
 from ast import literal_eval as make_tuple
 
 from .server import AbstractServer
-from .httpserver import EnableCors
 from ..utils.appdirs import user_data_dir
 
 
 logger = logging.getLogger(__name__)
+
+if sys.version_info < (3, 2):
+    import cgi
+    escape = cgi.escape
+else:
+    import html
+    escape = html.escape
 
 
 def get_snap_user_projects_directory():
@@ -97,6 +106,42 @@ def set_snap_server_variables(host, port, snap_extension='.xml', path=None):
     os.chdir(localdir)
 
 
+class EnableCors(object):
+
+    """Enable CORS (Cross-Origin Resource Sharing) headers"""
+    name = 'enable_cors'
+    api = 2
+
+    def __init__(self, origin='*'):
+        self.origin = origin
+
+    def apply(self, fn, context):
+        def _enable_cors(*args, **kwargs):
+            response.set_header('Access-Control-Allow-Origin', self.origin)
+            response.set_header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
+            response.set_header('Access-Control-Allow-Headers', 'Origin, Accept, Content-Type, X-Requested-With, X-CSRF-Token')
+
+            if request.method != 'OPTIONS':
+                # actual request; reply with the actual response
+                return fn(*args, **kwargs)
+
+        return _enable_cors
+
+
+class CacheBuster(object):
+    """Add response headers to disable cache"""
+
+    name = 'cache_buster'
+    api = 2
+
+    def apply(self, fn, context):
+        def _ext(*args, **kwargs):
+            response.set_header('Cache-control', 'no-store')
+            return fn(*args, **kwargs)
+
+        return _ext
+
+
 class SnapRobotServer(AbstractServer):
 
     def __init__(self, robot, host='0.0.0.0', port='6969', quiet=True):
@@ -104,8 +149,9 @@ class SnapRobotServer(AbstractServer):
         self.quiet = quiet
         self.app = bottle.Bottle()
         self.app.install(EnableCors())
+        self.app.install(CacheBuster())
 
-        rr = self.restfull_robot
+        rr = self.restful_robot
 
         # Copy Snap files from system directory to user directory. It avoids
         # right issue while PyPot is installed from pip in an admin directory
@@ -121,7 +167,7 @@ class SnapRobotServer(AbstractServer):
 
         @self.app.get('/')
         def get_sitemap():
-            return '</br>'.join([cgi.escape(r.rule.format()) for r in self.app.routes])
+            return '</br>'.join([escape(r.rule.format()) for r in self.app.routes])
 
         @self.app.get('/motors/<alias>')
         def get_motors(alias):
@@ -148,7 +194,7 @@ class SnapRobotServer(AbstractServer):
         @self.app.get('/motors/<motors>/get/<register>')
         def get_motors_registers(motors, register):
             """ Allow getting of motors register with a single http request
-                Be carefull: with lot of motors, it could overlap the GET max
+                Be careful: with a lot of motors, it could overlap the GET max
                     lentgh of your web browser
                 """
             motors = motors.split(';')
@@ -157,7 +203,7 @@ class SnapRobotServer(AbstractServer):
         @self.app.get('/motors/set/goto/<motors_position_duration>')
         def set_motors_goto(motors_position_duration):
             """ Allow lot of motors position settings with a single http request
-                Be carefull: with lot of motors, it could overlap the GET max
+                Be careful: with a lot of motors, it could overlap the GET max
                     lentgh of your web browser
                 """
             for m_settings in motors_position_duration.split(';'):
@@ -168,7 +214,7 @@ class SnapRobotServer(AbstractServer):
         @self.app.get('/motors/set/registers/<motors_register_value>')
         def set_motors_registers(motors_register_value):
             """ Allow lot of motors register settings with a single http request
-                Be carefull: with lot of motors, it could overlap the GET max
+                Be careful: with a lot of motors, it could overlap the GET max
                     lentgh of your web browser
                 """
             for m_settings in motors_register_value.split(';'):
@@ -178,7 +224,7 @@ class SnapRobotServer(AbstractServer):
                 rr.set_motor_register_value(motor, register, value)
             return 'Done!'
 
-        # TODO : delete ?
+        # TODO: delete ?
         @self.app.get('/motors/set/positions/<positions>')
         def set_motors_positions(positions):
             positions = map(lambda s: float(s), positions[:-1].split(';'))
@@ -274,7 +320,7 @@ class SnapRobotServer(AbstractServer):
                 kwargs = {}
             return rr._call_primitive_method(primitive, method, **kwargs)
 
-        # Hacks (no restfull) to record movements
+        # Hacks (no restful) to record movements
         @self.app.get('/primitive/MoveRecorder/<move_name>/start')
         def start_move_recorder(move_name):
             rr.start_move_recorder(move_name)
@@ -355,7 +401,7 @@ class SnapRobotServer(AbstractServer):
         def ik_goto(chain, x, y, z, duration):
             c = getattr(rr.robot, chain)
             c.goto([x, y, z], duration, wait=False)
-            return "Done !"
+            return 'Done !'
 
     def run(self, quiet=None, server=''):
         """ Start the tornado server, run forever.

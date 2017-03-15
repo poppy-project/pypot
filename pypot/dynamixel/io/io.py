@@ -21,7 +21,7 @@ class DxlIO(AbstractDxlIO):
         """ Gets the mode ('joint' or 'wheel') for the specified motors. """
         to_get_ids = [id for id in ids if id not in self._known_mode]
         limits = self.get_angle_limit(to_get_ids, convert=False)
-        modes = ('wheel' if limit == (0, 0) else 'joint' for limit in limits)
+        modes = ['wheel' if limit == (0, 0) else 'joint' for limit in limits]
 
         self._known_mode.update(zip(to_get_ids, modes))
 
@@ -36,8 +36,15 @@ class DxlIO(AbstractDxlIO):
         self.set_control_mode(dict(zip(ids, itertools.repeat('joint'))))
 
     def set_control_mode(self, mode_for_id):
-        models = ['MX' if m.startswith('MX') else '*'
-                  for m in self.get_model(list(mode_for_id.keys()))]
+        models = []
+        for m in self.get_model(list(mode_for_id.keys())):
+            if m.startswith('MX'):
+                models += ['MX']
+            elif m.startswith('SR'):
+                models += ['SR']
+            else:
+                models += ['*']
+
         pos_max = [conv.position_range[m][0] for m in models]
         limits = ((0, 0) if mode == 'wheel' else (0, pos_max[i] - 1)
                   for i, mode in enumerate(mode_for_id.itervalues()))
@@ -243,3 +250,19 @@ _add_control('moving',
 _add_control('punch',
              address=0x30, length=2,
              models=('AX-12', 'AX-18', 'RX-24', 'RX-28', 'RX-64'))
+
+_add_control('present current',
+             address=0x44,
+             access=_DxlAccess.readonly,
+             models=('MX-64', 'MX-106', 'SR-RH4D',),
+             dxl_to_si=conv.dxl_to_current)
+
+_add_control('force control enable',
+             address=0x46, length=1,
+             models=('SR-RH4D',),
+             dxl_to_si=conv.dxl_to_bool,
+             si_to_dxl=conv.bool_to_dxl)
+
+_add_control('goal force',
+             address=0x47,
+             models=('SR-RH4D',))

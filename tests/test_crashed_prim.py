@@ -1,6 +1,4 @@
 import unittest
-import random
-import time
 
 from pypot.robot.controller import MotorsController
 
