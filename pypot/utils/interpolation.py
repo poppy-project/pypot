@@ -5,7 +5,7 @@ import numpy as np
 
 class KDTreeDict(dict):
 
-    def __init__(self, gen_tree_on_add=False, distance_upper_bound=0.2, k_neighbors=2):
+    def __init__(self, gen_tree_on_add=False, distance_upper_bound=100, k_neighbors=2):
         super(KDTreeDict, self).__init__()
         self.gen_tree_on_add = gen_tree_on_add
         self.distance_upper_bound = distance_upper_bound
@@ -26,8 +26,6 @@ class KDTreeDict(dict):
         super(KDTreeDict, self).__setitem__(key, val)
 
     def __getitem__(self, key):
-        # if not isinstance(key, tuple):
-        #     key = (key,)
         return super(KDTreeDict, self).__getitem__(key)
 
     def __iter__(self):

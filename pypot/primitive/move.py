@@ -48,6 +48,10 @@ class Move(object):
         """ Returns a copy of the stored positions. """
         return self._timed_positions
 
+    def duration(self):
+        """ Returns duration of the movement"""
+        return max(self.positions().keys()) - min(self.positions().keys())
+
     def plot(self, ax=None):
         if not ax:
             import matplotlib.pyplot as plt
@@ -147,21 +151,21 @@ class MoveRecorder(LoopPrimitive):
 class MovePlayer(LoopPrimitive):
 
     """ Primitive used to play a :class:`~pypot.primitive.move.Move`.
+    You can play a movement with a higher framerate than the one it was recorded,
+    point keys are interpolated so the movement will be oversampled.
+    Generally, it is sufficiant to record a movement at 20hz, and play it at 50Hz.
 
     The playing can be :meth:`~pypot.primitive.primitive.Primitive.start` and :meth:`~pypot.primitive.primitive.Primitive.stop` by using the :class:`~pypot.primitive.primitive.LoopPrimitive` methods.
 
-    .. warning:: the primitive is run automatically the same framerate than the move record.
-        The play_speed attribute change only time lockup/interpolation
     """
 
-    def __init__(self, robot, move=None, play_speed=1.0, move_filename=None, start_max_speed=50, **kwargs):
+    def __init__(self, robot, move=None, play_speed=1.0, move_filename=None, start_max_speed=50, framerate=50, **kwargs):
         self.move = move
         self.backwards = False
         if move_filename is not None:
             with open(move_filename, 'r') as f:
                 self.move = Move.load(f)
-        self.play_speed = play_speed if play_speed != 0 and isinstance(play_speed, float) else 1.0
-        framerate = self.move.framerate if self.move is not None else 50.0
+        self.play_speed = play_speed if play_speed != 0 else 1.0
         self.start_max_speed = start_max_speed if start_max_speed != 0 else np.inf
         for key, value in kwargs.items():
             setattr(self, key, value)
@@ -170,7 +174,6 @@ class MovePlayer(LoopPrimitive):
     def setup(self):
         if self.move is None:
             raise AttributeError("Attribute move is not defined")
-        self.period = 1.0 / self.move.framerate
         self.positions = self.move.positions()
         self.__duration = self.duration()
         if self.play_speed < 0:
@@ -211,8 +214,9 @@ class MovePlayer(LoopPrimitive):
             self.stop()
 
     def duration(self):
+        """ Duration of the played movement """
 
         if self.move is not None:
-            return (len(self.move.positions()) / self.move.framerate) / self.play_speed
+            return self.move.duration() / self.play_speed
         else:
             return 1.0
