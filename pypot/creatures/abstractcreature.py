@@ -90,11 +90,11 @@ class AbstractPoppyCreature(Robot):
                     scene = os.path.join(scene_path, scene)
                 # TODO: use the id so we can have multiple poppy creatures
                 # inside a single vrep scene
-                
+
                 # vrep.simxStart no longer listen on localhost
                 if host == 'localhost':
                     host = '127.0.0.1'
-                    
+
                 try:
                     poppy_creature = from_vrep(config, host, port, scene)
                 except VrepConnectionError:
