@@ -1,6 +1,5 @@
 import serial
 import json
-import time
 
 from ...robot.sensor import Sensor
 from ...utils import StoppableLoopThread
