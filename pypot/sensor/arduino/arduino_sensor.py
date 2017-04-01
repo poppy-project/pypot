@@ -26,7 +26,8 @@ class ArduinoSensor(Sensor):
             delay(0.02);
         }
 
-        Be careful to not set the sync_freq of your controller slower than the data comes from your arduino (here 50 Hz).
+        Be careful to not set the sync_freq of your controller
+        slower than the data comes from your arduino (here 50 Hz).
 
     """
     def __init__(self, name, port, baud, sync_freq=50.0):
