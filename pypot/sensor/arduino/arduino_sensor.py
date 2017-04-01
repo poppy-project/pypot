@@ -1,5 +1,6 @@
 import serial
 import json
+import time
 
 from ...robot.sensor import Sensor
 from ...utils import StoppableLoopThread
@@ -37,6 +38,7 @@ class ArduinoSensor(Sensor):
 
     def start(self):
         self._ser = serial.Serial(self.port, self.baud)
+        self._line = ''
         self._controller.start()
 
     def close(self):
@@ -45,8 +47,8 @@ class ArduinoSensor(Sensor):
 
     def update(self):
         while self._ser.inWaiting() > 0:
-            line = self._ser.readline()
+            self._line = self._ser.readline().decode()
         try:
-            self.sensor_dict = json.loads(line)
-        except json.JSONDecodeError:
+            self.sensor_dict = json.loads(self._line)
+        except ValueError:
             pass
