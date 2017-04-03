@@ -123,15 +123,15 @@ def dxl_to_load(value, model):
 
 
 def dxl_to_pid(value, model):
-    return (value[2] * 0.004,
+    return (value[0] * 0.004,
             value[1] * 0.48828125,
-            value[0] * 0.125)
+            value[2] * 0.125)
 
 
 def pid_to_dxl(value, model):
     def truncate(x):
         return int(max(0, min(x, 254)))
-    return [truncate(x * y) for x, y in zip(value, (250, 2.048, 8.0))].reverse()
+    return [truncate(x * y) for x, y in zip(value, (250, 2.048, 8.0))]
 
 # MARK: - Model
 
