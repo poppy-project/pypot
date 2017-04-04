@@ -40,6 +40,7 @@ requirements:
     - tornado
     - bottle
     - ikpy
+    - poppy-creature >=2
 
 test:
   # TODO upload these requires to conda to make tests
