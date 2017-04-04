@@ -26,6 +26,9 @@ requirements:
     - enum34  [py27 or py33]
     - pyzmq
     - tornado
+    - bottle
+    - ikpy
+    - poppy-creature >=2
 
   run:
     - python
@@ -35,6 +38,8 @@ requirements:
     - enum34  [py27 or py33]
     - pyzmq
     - tornado
+    - bottle
+    - ikpy
 
 test:
   # TODO upload these requires to conda to make tests
