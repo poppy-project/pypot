@@ -9,7 +9,7 @@
   <head>
     <meta charset="utf-8" />
     
-    <title>pypot.dynamixel.conversion &mdash; pypot 3.0.0.rc1 documentation</title>
+    <title>pypot.dynamixel.conversion &mdash; pypot 3.0.0 documentation</title>
     <meta name="description" content="">
     <meta name="author" content="">
 
@@ -35,7 +35,7 @@
 <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
             URL_ROOT:    '../../../',
-            VERSION:     '3.0.0.rc1',
+            VERSION:     '3.0.0',
             COLLAPSE_INDEX: false,
             FILE_SUFFIX: '.html',
             HAS_SOURCE:  true
@@ -53,7 +53,7 @@
     <link rel="author" title="About these documents" href="../../../about.html" />
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
-    <link rel="top" title="pypot 3.0.0.rc1 documentation" href="../../../index.html" />
+    <link rel="top" title="pypot 3.0.0 documentation" href="../../../index.html" />
     <link rel="up" title="pypot.dynamixel" href="../dynamixel.html" /> 
   </head>
   <body role="document">
@@ -66,7 +66,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="../../../index.html">pypot 3.0.0.rc1 documentation</a>
+          <a class="navbar-brand" href="../../../index.html">pypot 3.0.0 documentation</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
@@ -263,15 +263,15 @@
 
 
 <div class="viewcode-block" id="dxl_to_pid"><a class="viewcode-back" href="../../../pypot.dynamixel.html#pypot.dynamixel.conversion.dxl_to_pid">[docs]</a><span class="k">def</span> <span class="nf">dxl_to_pid</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">model</span><span class="p">):</span>
-    <span class="k">return</span> <span class="p">(</span><span class="n">value</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="mf">0.004</span><span class="p">,</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">value</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="mf">0.004</span><span class="p">,</span>
             <span class="n">value</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="mf">0.48828125</span><span class="p">,</span>
-            <span class="n">value</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="mf">0.125</span><span class="p">)</span></div>
+            <span class="n">value</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="mf">0.125</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="pid_to_dxl"><a class="viewcode-back" href="../../../pypot.dynamixel.html#pypot.dynamixel.conversion.pid_to_dxl">[docs]</a><span class="k">def</span> <span class="nf">pid_to_dxl</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">model</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">truncate</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">min</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="mi">254</span><span class="p">)))</span>
-    <span class="k">return</span> <span class="p">[</span><span class="n">truncate</span><span class="p">(</span><span class="n">x</span> <span class="o">*</span> <span class="n">y</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="p">(</span><span class="mi">250</span><span class="p">,</span> <span class="mf">2.048</span><span class="p">,</span> <span class="mf">8.0</span><span class="p">))]</span><span class="o">.</span><span class="n">reverse</span><span class="p">()</span></div>
+    <span class="k">return</span> <span class="p">[</span><span class="n">truncate</span><span class="p">(</span><span class="n">x</span> <span class="o">*</span> <span class="n">y</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="p">(</span><span class="mi">250</span><span class="p">,</span> <span class="mf">2.048</span><span class="p">,</span> <span class="mf">8.0</span><span class="p">))]</span></div>
 
 <span class="c1"># MARK: - Model</span>
 
@@ -516,7 +516,7 @@
 <div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
   <div class="navbar-inner">
     <ul class="nav navbar-nav ">
-        <li><a href="../../../index.html">pypot 3.0.0.rc1 documentation</a></li>
+        <li><a href="../../../index.html">pypot 3.0.0 documentation</a></li>
     </ul>
 <ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
       
@@ -534,7 +534,7 @@
       <!-- footer -->
       <footer role="contentinfo">
           &copy; Copyright 2015, Poppy-Project.
-        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.5.3.
+        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.5.5.
       </footer>
       <!-- /footer -->
 
