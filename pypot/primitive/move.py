@@ -6,7 +6,7 @@ import logging
 import numpy as np
 
 from .primitive import LoopPrimitive
-from pypot.utils.interpolation import KDTreeDict
+from pypot.utils.interpolation import PositionsInterpolationDict
 logger = logging.getLogger(__name__)
 
 
@@ -20,7 +20,7 @@ class Move(object):
 
     def __init__(self, freq):
         self._framerate = freq
-        self._timed_positions = KDTreeDict()
+        self._timed_positions = PositionsInterpolationDict()
 
     def __repr__(self):
         return '<Move framerate={} #keyframes={}>'.format(self.framerate,
@@ -66,7 +66,6 @@ class Move(object):
 
         n = len(pos)
         t = np.linspace(0, n / self.framerate, n)
-        pos = self.positions()
 
         p = {}
         for name in motors:
@@ -135,7 +134,7 @@ class MoveRecorder(LoopPrimitive):
     def update(self):
         position = dict([(m.name, (m.present_position, m.present_speed))
                          for m in self.tracked_motors])
-        self._move.add_position(position, self.elapsed_time)
+        self._move.add_position(position, round(self.elapsed_time,6))
 
     @property
     def move(self):
@@ -207,7 +206,6 @@ class MovePlayer(LoopPrimitive):
                 position = self.positions[self.elapsed_time * self.play_speed]
 
             for motor, value in position.iteritems():
-                # TODO: Ask pierre if its not a fgi to turn off the compliance
                 getattr(self.robot, motor).compliant = False
                 getattr(self.robot, motor).goal_position = value[0]
         else:
