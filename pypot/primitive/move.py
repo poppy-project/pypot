@@ -134,7 +134,7 @@ class MoveRecorder(LoopPrimitive):
     def update(self):
         position = dict([(m.name, (m.present_position, m.present_speed))
                          for m in self.tracked_motors])
-        self._move.add_position(position, round(self.elapsed_time,6))
+        self._move.add_position(position, round(self.elapsed_time, 6))
 
     @property
     def move(self):
