@@ -1,5 +1,5 @@
 try:
-    from .uno import ArduinoSensor
+    from .arduino_sensor import ArduinoSensor
 
 except ImportError:
     pass

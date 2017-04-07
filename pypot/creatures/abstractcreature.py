@@ -42,7 +42,7 @@ class AbstractPoppyCreature(Robot):
         :param str config: path to a specific json config (if None uses the default config of the poppy creature - e.g. poppy_humanoid.json)
 
         :param str simulator: name of the simulator used : 'vrep' or 'poppy-simu'
-        :param str scene: specify a particular simulation scene (if None uses the default scene of the poppy creature - e.g. poppy_humanoid.ttt)
+        :param str scene: specify a particular simulation scene (if None uses the default scene of the poppy creature, use "keep-existing" to keep the current VRep scene - e.g. poppy_humanoid.ttt)
         :param str host: host of the simulator
         :param int port: port of the simulator
         :param bool use_snap: start or not the Snap! API
@@ -78,16 +78,16 @@ class AbstractPoppyCreature(Robot):
                 from pypot.vrep import from_vrep, VrepConnectionError
 
                 scene_path = os.path.join(base_path, 'vrep-scene')
+                if scene != "keep-existing":
+                    if scene is None:
+                        scene = '{}.ttt'.format(creature)
 
-                if scene is None:
-                    scene = '{}.ttt'.format(creature)
+                    elif not os.path.exists(scene):
+                        if ((os.path.basename(scene) != scene) or
+                                (not os.path.exists(os.path.join(scene_path, scene)))):
+                            raise ValueError('Could not find the scene "{}"!'.format(scene))
 
-                if not os.path.exists(scene):
-                    if ((os.path.basename(scene) != scene) or
-                            (not os.path.exists(os.path.join(scene_path, scene)))):
-                        raise ValueError('Could not find the scene "{}"!'.format(scene))
-
-                    scene = os.path.join(scene_path, scene)
+                        scene = os.path.join(scene_path, scene)
                 # TODO: use the id so we can have multiple poppy creatures
                 # inside a single vrep scene
 
@@ -96,7 +96,7 @@ class AbstractPoppyCreature(Robot):
                     host = '127.0.0.1'
 
                 try:
-                    poppy_creature = from_vrep(config, host, port, scene)
+                    poppy_creature = from_vrep(config, host, port, scene if scene != "keep-existing" else None)
                 except VrepConnectionError:
                     raise IOError('Connection to V-REP failed!')
 
