@@ -21,9 +21,9 @@ class PositionsInterpolationDict(OrderedDict):
         time_keys = []
         for i in range(number_of_keys):
             if i % 2 == 0:
-                tmp_index = index_ref + (-1) * ceil(i / 2)
+                tmp_index = int(index_ref + (-1) * ceil(i / 2))
             else:
-                tmp_index = index_ref + ceil(i / 2)
+                tmp_index = int(index_ref + ceil(i / 2))
             # Filter to avoid IndexError
             if tmp_index > len(self) - 1:
                 tmp_index = len(self) - 1
@@ -35,7 +35,6 @@ class PositionsInterpolationDict(OrderedDict):
     def _interpolate_timed_positions(self, input_time_key):
         """ Return a dict of position and speed (linear) interpolated for each motor at the given time frame key. """
         nearest_time_keys = self._nearest_time_keys(input_time_key)
-        print("_interpolate_timed_positions", nearest_time_keys, input_time_key)
         interpolated_positions = {}
         x = np.array(nearest_time_keys)
 
