@@ -8,10 +8,10 @@ import operator
 class PositionsInterpolationDict(OrderedDict):
     def __init__(self, *args, **kwargs):
         self.interpolation_kind = 'linear'
-        super(OrderedDict).__init__(*args, **kwargs)
+        super(OrderedDict, self).__init__(*args, **kwargs)
 
     def __setitem__(self, key, value):
-        super(OrderedDict).__setitem__(float(key), value)
+        super(OrderedDict, self).__setitem__(float(key), value)
 
     def _nearest_time_keys(self, key, number_of_keys=3):
         """ Find nearest keys on position timestamps with a dichotomy (bisect) algorithm """
