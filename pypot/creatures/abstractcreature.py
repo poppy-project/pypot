@@ -87,7 +87,7 @@ class AbstractPoppyCreature(Robot):
                                 (not os.path.exists(os.path.join(scene_path, scene)))):
                             raise ValueError('Could not find the scene "{}"!'.format(scene))
 
-                        scene = os.path.join(scene_path, scene)
+                    scene = os.path.join(scene_path, scene)
                 # TODO: use the id so we can have multiple poppy creatures
                 # inside a single vrep scene
 
