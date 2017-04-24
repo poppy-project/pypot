@@ -120,7 +120,7 @@ class MotorRegisterHandler(PoppyRequestHandler):
 
 class UpdateMotorRegisterHandler(PoppyRequestHandler):
     def post(self, motor_name, register_name):
-        data = json.loads(self.request.body)
+        data = json.loads(self.request.body.decode())
         self.restful_robot.set_motor_register_value(motor_name, register_name, data)
         self.write_json({})
 
@@ -176,7 +176,7 @@ class PrimitivePropertyHandler(PoppyRequestHandler):
 
 class SetPrimitivePropertyHandler(PoppyRequestHandler):
     def post(self, primitive_name, prop):
-        data = json.loads(self.request.body)
+        data = json.loads(self.request.body.decode())
         self.restful_robot.set_primitive_property(primitive_name, prop, data)
         self.set_status(204)
 
@@ -190,7 +190,7 @@ class ListPrimitiveMethodsHandler(PoppyRequestHandler):
 
 class CallPrimitiveMethodHandler(PoppyRequestHandler):
     def post(self, primitive_name, method_name):
-        data = json.loads(self.request.body)
+        data = json.loads(self.request.body.decode())
         response = self.restful_robot.call_primitive_method(primitive_name, method_name, data)
         self.write_json({
             '{}:{}'.format(primitive_name, method_name): response
