@@ -117,7 +117,7 @@ class LightDxlController(MetaDxlController):
                                              'set', 'LED_color', 'led'))
 
         MetaDxlController.__init__(self, io, motors, controllers)
-        
+
 class RoboticiaDxlController(MetaDxlController):
     def __init__(self, io, motors):
         controllers = [
@@ -150,4 +150,3 @@ class RoboticiaDxlController(MetaDxlController):
                                              'set', 'LED_color', 'led'))
 
         MetaDxlController.__init__(self, io, motors, controllers)
-
