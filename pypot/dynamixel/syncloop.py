@@ -118,6 +118,7 @@ class LightDxlController(MetaDxlController):
 
         MetaDxlController.__init__(self, io, motors, controllers)
 
+
 class RoboticiaDxlController(MetaDxlController):
     def __init__(self, io, motors):
         controllers = [
