@@ -9,15 +9,15 @@ class AbstractServer(object):
     def run(self):
         raise NotImplementedError
 
-
-try:
-    import zerorpc
-
-    class RemoteRobotServer(AbstractServer):
-        def run(self):
+        
+class RemoteRobotServer(AbstractServer):
+    def run(self):
+        try: 
+            import zerorpc
             server = zerorpc.Server(self.restful_robot)
             server.bind('tcp://{}:{}'.format(self.host, self.port))
             server.run()
-
-except ImportError:
-    pass
+        except ImportError:
+            print (("Warning: The Python module 'zerorpc' is not installed. "
+                    "Therefore the feature RemoteRobotServer is disabled. "
+                    "On most systems this module can be installed with the command 'pip install zerorpc'."))
