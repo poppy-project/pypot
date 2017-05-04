@@ -13,10 +13,10 @@ class AbstractServer(object):
     def run(self):
         raise NotImplementedError
 
-        
+
 class RemoteRobotServer(AbstractServer):
     def run(self):
-        try: 
+        try:
             import zerorpc
             server = zerorpc.Server(self.restful_robot)
             server.bind('tcp://{}:{}'.format(self.host, self.port))
