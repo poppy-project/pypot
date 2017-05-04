@@ -1,5 +1,9 @@
 from .rest import RESTRobot
 
+import logging
+
+logger = logging.getLogger(__name__)
+
 
 class AbstractServer(object):
     def __init__(self, robot, host, port):
@@ -18,6 +22,6 @@ class RemoteRobotServer(AbstractServer):
             server.bind('tcp://{}:{}'.format(self.host, self.port))
             server.run()
         except ImportError:
-            print (("Warning: The Python module 'zerorpc' is not installed. "
-                    "Therefore the feature RemoteRobotServer is disabled. "
-                    "On most systems this module can be installed with the command 'pip install zerorpc'."))
+            logger.warning(("Warning: The Python module 'zerorpc' is not installed. "
+                            "Therefore the feature RemoteRobotServer is disabled. "
+                            "On most systems this module can be installed with the command 'pip install zerorpc'."))
