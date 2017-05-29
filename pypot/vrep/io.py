@@ -1,6 +1,7 @@
 import os
 import time
 import ctypes
+import warnings
 
 from threading import Lock
 
@@ -106,6 +107,13 @@ class VrepIO(AbstractIO):
 
         if start:
             self.start_simulation()
+            time.sleep(1)
+            # testing if the vrep pop-up for new vrep user has raised
+            t = remote_api.simxGetPingTime(self.client_id)
+            if t[1] > 4000:
+                warnings.warn('Communication with Vrep blocked. If a Vrep Pop-up has raised '
+                              'close it now !')
+                time.sleep(5)
 
     def start_simulation(self):
         """ Starts the simulation.
@@ -317,7 +325,7 @@ class VrepIO(AbstractIO):
 
             err = [bool((err >> i) & 1) for i in range(len(vrep_error))]
 
-            if remote_api.simx_return_novalue_flag not in err:
+            if True not in err:
                 break
 
             time.sleep(VrepIO.TIMEOUT)
@@ -375,16 +383,6 @@ def close_all_connections():
 
 
 # V-REP Errors
-class VrepIOError(Exception):
-
-    """ Base class for V-REP IO Errors. """
-
-    def __init__(self, error_code, message):
-        message = 'V-REP error code {} ({}): "{}"'.format(
-            error_code, vrep_error[error_code], message)
-        Exception.__init__(self, message)
-
-
 class VrepIOErrors(Exception):
     pass
 

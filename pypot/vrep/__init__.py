@@ -4,8 +4,7 @@ import logging
 from functools import partial
 from collections import OrderedDict
 
-from .io import (VrepIO, close_all_connections,
-                 VrepIOError, VrepConnectionError)
+from .io import (VrepIO, close_all_connections, VrepConnectionError)
 
 from .controller import VrepController, VrepObjectTracker
 from .controller import VrepCollisionTracker, VrepCollisionDetector
@@ -94,8 +93,6 @@ def from_vrep(config, vrep_host='127.0.0.1', vrep_port=19997, scene=None,
               for name in config['motors'].keys()]
 
     vc = VrepController(vrep_io, scene, motors)
-    vc._init_vrep_streaming()
-
     sensor_controllers = []
 
     if tracked_objects:
