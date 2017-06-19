@@ -194,7 +194,7 @@
 </div>
 <div class="section" id="connecting-the-robot-to-your-computer">
 <h2>Connecting the robot to your computer<a class="headerlink" href="#connecting-the-robot-to-your-computer" title="Permalink to this headline">¶</a></h2>
-<p>Now that you have your own robot, let&#8217;s start writing the code necessary to control it.</p>
+<p>Now that you have your own robot, let’s start writing the code necessary to control it.</p>
 <p>The first step is to setup the configuration for your robot. It will describe the motor configuration of your robot, the USB2serial controller used and make the initialization really easy. Configurations are described as Python dictionaries. Yet, they can be quite repetitive to write. Luckily, the pypot package comes with an example of a configuration for an Ergo-Robot. You can first import it, so you can modify it:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pypot.robot.config</span> <span class="k">import</span> <span class="n">ergo_robot_config</span>
 </pre></div>
@@ -221,7 +221,7 @@
 </div>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p>Since pypot 1.7, you can now set the port to &#8216;auto&#8217; in the dictionary. When loading the configuration, pypot will automatically try to find the port with the corresponding attached motor ids.
+<p>Since pypot 1.7, you can now set the port to ‘auto’ in the dictionary. When loading the configuration, pypot will automatically try to find the port with the corresponding attached motor ids.
 For instance:</p>
 <div class="last highlight-default"><div class="highlight"><pre><span></span><span class="n">my_config</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">ergo_robot_config</span><span class="p">)</span>
 <span class="n">my_config</span><span class="p">[</span><span class="s1">&#39;controllers&#39;</span><span class="p">][</span><span class="s1">&#39;my_dxl_controller&#39;</span><span class="p">][</span><span class="s1">&#39;port&#39;</span><span class="p">]</span>  <span class="o">=</span> <span class="s1">&#39;auto&#39;</span>
@@ -238,14 +238,14 @@ For instance:</p>
 </div>
 <div class="section" id="controlling-your-ergo-robot">
 <span id="dance"></span><h2>Controlling your Ergo-Robot<a class="headerlink" href="#controlling-your-ergo-robot" title="Permalink to this headline">¶</a></h2>
-<p>Now that you are connected to your Ergo-Robot, let&#8217;s write a very simple program to make it dance a bit.</p>
+<p>Now that you are connected to your Ergo-Robot, let’s write a very simple program to make it dance a bit.</p>
 <p>First, write the following lines to start you robot (we assume that you have correctly setup your configuration):</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pypot.robot</span>
 
 <span class="n">ergo_robot</span> <span class="o">=</span> <span class="n">pypot</span><span class="o">.</span><span class="n">robot</span><span class="o">.</span><span class="n">from_config</span><span class="p">(</span><span class="n">my_config</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Everything should be clear now. When creating your robot, it automatically starts the synchronization between the &#8220;software&#8221; robot and the real one, i.e. all commands that you will send in python code will automatically be sent to the physical Ergo-Robot (for details on the underlying mechanisms, see <a class="reference internal" href="controller.html#sync-loop"><span class="std std-ref">Sync Loop</span></a>).</p>
+<p>Everything should be clear now. When creating your robot, it automatically starts the synchronization between the “software” robot and the real one, i.e. all commands that you will send in python code will automatically be sent to the physical Ergo-Robot (for details on the underlying mechanisms, see <a class="reference internal" href="controller.html#sync-loop"><span class="std std-ref">Sync Loop</span></a>).</p>
 <p>Now, we are going to put the robot in its initial position:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">ergo_robot</span><span class="o">.</span><span class="n">motors</span><span class="p">:</span>
     <span class="n">m</span><span class="o">.</span><span class="n">compliant</span> <span class="o">=</span> <span class="kc">False</span>
@@ -329,7 +329,7 @@ For instance:</p>
       <!-- footer -->
       <footer role="contentinfo">
           &copy; Copyright 2015, Poppy-Project.
-        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.5.5.
+        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.6.2.
       </footer>
       <!-- /footer -->
 

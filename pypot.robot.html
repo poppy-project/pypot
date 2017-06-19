@@ -96,7 +96,7 @@
               <li><a href="pypot.sensor.html" title="sensor Package" accesskey="N">next </a></li>
               <li><a href="py-modindex.html" title="Python Module Index" >modules </a></li>
               <li><a href="genindex.html" title="General Index" accesskey="I">index </a></li>
-              <li><a href="api.html" accesskey="U">Pypot&#8217;s API</a></li>
+              <li><a href="api.html" accesskey="U">Pypot’s API</a></li>
             
             <li class="visible-xs"><a href="_sources/pypot.robot.rst.txt" rel="nofollow">Show Source</a></li>
 
@@ -203,9 +203,9 @@
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>motor_controllers</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a>) &#8211; motors controllers to attach to the robot</li>
-<li><strong>sensor_controllers</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a>) &#8211; sensors controllers to attach to the robot</li>
-<li><strong>sync</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; choose if automatically starts the synchronization loops</li>
+<li><strong>motor_controllers</strong> (<em>list</em>) – motors controllers to attach to the robot</li>
+<li><strong>sensor_controllers</strong> (<em>list</em>) – sensors controllers to attach to the robot</li>
+<li><strong>sync</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) – choose if automatically starts the synchronization loops</li>
 </ul>
 </td>
 </tr>
@@ -273,10 +273,10 @@
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>position_for_motors</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; which motors you want to move {motor_name: pos, motor_name: pos,...}</li>
-<li><strong>duration</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) &#8211; duration of the move</li>
-<li><strong>control</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) &#8211; control type (&#8216;dummy&#8217;, &#8216;minjerk&#8217;)</li>
-<li><strong>wait</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; whether or not to wait for the end of the move</li>
+<li><strong>position_for_motors</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) – which motors you want to move {motor_name: pos, motor_name: pos,…}</li>
+<li><strong>duration</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) – duration of the move</li>
+<li><strong>control</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#str" title="(in Python v2.7)"><em>str</em></a>) – control type (‘dummy’, ‘minjerk’)</li>
+<li><strong>wait</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) – whether or not to wait for the end of the move</li>
 </ul>
 </td>
 </tr>
@@ -348,7 +348,7 @@
 <dd><p>Bases: <a class="reference internal" href="#pypot.robot.sensor.Sensor" title="pypot.robot.sensor.Sensor"><code class="xref py py-class docutils literal"><span class="pre">pypot.robot.sensor.Sensor</span></code></a></p>
 <dl class="attribute">
 <dt id="pypot.robot.sensor.ObjectTracker.registers">
-<code class="descname">registers</code><em class="property"> = ['position', 'orientation']</em><a class="headerlink" href="#pypot.robot.sensor.ObjectTracker.registers" title="Permalink to this definition">¶</a></dt>
+<code class="descname">registers</code><em class="property"> = [‘position’, ‘orientation’]</em><a class="headerlink" href="#pypot.robot.sensor.ObjectTracker.registers" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
@@ -371,15 +371,15 @@
 <em class="property">class </em><code class="descclassname">pypot.robot.controller.</code><code class="descname">AbstractController</code><span class="sig-paren">(</span><em>io</em>, <em>sync_freq</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/robot/controller.html#AbstractController"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.robot.controller.AbstractController" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="pypot.utils.html#pypot.utils.stoppablethread.StoppableLoopThread" title="pypot.utils.stoppablethread.StoppableLoopThread"><code class="xref py py-class docutils literal"><span class="pre">pypot.utils.stoppablethread.StoppableLoopThread</span></code></a></p>
 <p>Abstract class for motor/sensor controller.</p>
-<p>The controller role is to synchronize the reading/writing of a set of instances with their &#8220;hardware&#8221; equivalent through an <a class="reference internal" href="#pypot.robot.io.AbstractIO" title="pypot.robot.io.AbstractIO"><code class="xref py py-class docutils literal"><span class="pre">AbstractIO</span></code></a> object. It is defined as a <a class="reference internal" href="pypot.utils.html#pypot.utils.stoppablethread.StoppableLoopThread" title="pypot.utils.stoppablethread.StoppableLoopThread"><code class="xref py py-class docutils literal"><span class="pre">StoppableLoopThread</span></code></a> where each loop update synchronizes  values from the &#8220;software&#8221; objects with their &#8220;hardware&#8221; equivalent.</p>
+<p>The controller role is to synchronize the reading/writing of a set of instances with their “hardware” equivalent through an <a class="reference internal" href="#pypot.robot.io.AbstractIO" title="pypot.robot.io.AbstractIO"><code class="xref py py-class docutils literal"><span class="pre">AbstractIO</span></code></a> object. It is defined as a <a class="reference internal" href="pypot.utils.html#pypot.utils.stoppablethread.StoppableLoopThread" title="pypot.utils.stoppablethread.StoppableLoopThread"><code class="xref py py-class docutils literal"><span class="pre">StoppableLoopThread</span></code></a> where each loop update synchronizes  values from the “software” objects with their “hardware” equivalent.</p>
 <p>To define your Controller, you need to define the <a class="reference internal" href="pypot.utils.html#pypot.utils.stoppablethread.StoppableLoopThread.update" title="pypot.utils.stoppablethread.StoppableLoopThread.update"><code class="xref py py-meth docutils literal"><span class="pre">update()</span></code></a> method. This method will be called at the predefined frequency. An exemple of how to do it can be found in <code class="xref py py-class docutils literal"><span class="pre">BaseDxlController</span></code>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>io</strong> (<a class="reference internal" href="#pypot.robot.io.AbstractIO" title="pypot.robot.io.AbstractIO"><code class="xref py py-class docutils literal"><span class="pre">AbstractIO</span></code></a>) &#8211; IO used to communicate with the hardware motors</li>
-<li><strong>sync_freq</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) &#8211; synchronization frequency</li>
+<li><strong>io</strong> (<a class="reference internal" href="#pypot.robot.io.AbstractIO" title="pypot.robot.io.AbstractIO"><code class="xref py py-class docutils literal"><span class="pre">AbstractIO</span></code></a>) – IO used to communicate with the hardware motors</li>
+<li><strong>sync_freq</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) – synchronization frequency</li>
 </ul>
 </td>
 </tr>
@@ -403,15 +403,15 @@
 <em class="property">class </em><code class="descclassname">pypot.robot.controller.</code><code class="descname">MotorsController</code><span class="sig-paren">(</span><em>io</em>, <em>motors</em>, <em>sync_freq=50</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/robot/controller.html#MotorsController"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.robot.controller.MotorsController" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#pypot.robot.controller.AbstractController" title="pypot.robot.controller.AbstractController"><code class="xref py py-class docutils literal"><span class="pre">pypot.robot.controller.AbstractController</span></code></a></p>
 <p>Abstract class for motors controller.</p>
-<p>The controller synchronizes the reading/writing of a set of motor instances with their &#8220;hardware&#8221;. Each update loop synchronizes values from the &#8220;software&#8221; <a class="reference internal" href="pypot.dynamixel.html#pypot.dynamixel.motor.DxlMotor" title="pypot.dynamixel.motor.DxlMotor"><code class="xref py py-class docutils literal"><span class="pre">DxlMotor</span></code></a> with their &#8220;hardware&#8221; equivalent.</p>
+<p>The controller synchronizes the reading/writing of a set of motor instances with their “hardware”. Each update loop synchronizes values from the “software” <a class="reference internal" href="pypot.dynamixel.html#pypot.dynamixel.motor.DxlMotor" title="pypot.dynamixel.motor.DxlMotor"><code class="xref py py-class docutils literal"><span class="pre">DxlMotor</span></code></a> with their “hardware” equivalent.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>io</strong> (<a class="reference internal" href="#pypot.robot.io.AbstractIO" title="pypot.robot.io.AbstractIO"><code class="xref py py-class docutils literal"><span class="pre">AbstractIO</span></code></a>) &#8211; IO used to communicate with the hardware motors</li>
-<li><strong>motors</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a>) &#8211; list of motors attached to the controller</li>
-<li><strong>sync_freq</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) &#8211; synchronization frequency</li>
+<li><strong>io</strong> (<a class="reference internal" href="#pypot.robot.io.AbstractIO" title="pypot.robot.io.AbstractIO"><code class="xref py py-class docutils literal"><span class="pre">AbstractIO</span></code></a>) – IO used to communicate with the hardware motors</li>
+<li><strong>motors</strong> (<em>list</em>) – list of motors attached to the controller</li>
+<li><strong>sync_freq</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) – synchronization frequency</li>
 </ul>
 </td>
 </tr>
@@ -440,15 +440,15 @@
 <em class="property">class </em><code class="descclassname">pypot.robot.controller.</code><code class="descname">SensorsController</code><span class="sig-paren">(</span><em>io</em>, <em>sensors</em>, <em>sync_freq=50.0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/robot/controller.html#SensorsController"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.robot.controller.SensorsController" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#pypot.robot.controller.AbstractController" title="pypot.robot.controller.AbstractController"><code class="xref py py-class docutils literal"><span class="pre">pypot.robot.controller.AbstractController</span></code></a></p>
 <p>Abstract class for sensors controller.</p>
-<p>The controller frequently pulls new data from a &#8220;real&#8221; sensor and updates its corresponding software instance.</p>
+<p>The controller frequently pulls new data from a “real” sensor and updates its corresponding software instance.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>io</strong> (<a class="reference internal" href="#pypot.robot.io.AbstractIO" title="pypot.robot.io.AbstractIO"><code class="xref py py-class docutils literal"><span class="pre">AbstractIO</span></code></a>) &#8211; IO used to communicate with the hardware motors</li>
-<li><strong>sensors</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a>) &#8211; list of sensors attached to the controller</li>
-<li><strong>sync_freq</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) &#8211; synchronization frequency</li>
+<li><strong>io</strong> (<a class="reference internal" href="#pypot.robot.io.AbstractIO" title="pypot.robot.io.AbstractIO"><code class="xref py py-class docutils literal"><span class="pre">AbstractIO</span></code></a>) – IO used to communicate with the hardware motors</li>
+<li><strong>sensors</strong> (<em>list</em>) – list of sensors attached to the controller</li>
+<li><strong>sync_freq</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) – synchronization frequency</li>
 </ul>
 </td>
 </tr>
@@ -463,7 +463,7 @@
 <dt id="pypot.robot.io.AbstractIO">
 <em class="property">class </em><code class="descclassname">pypot.robot.io.</code><code class="descname">AbstractIO</code><a class="reference internal" href="_modules/pypot/robot/io.html#AbstractIO"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.robot.io.AbstractIO" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
-<p>AbstractIO class which handles communication with &#8220;hardware&#8221; motors.</p>
+<p>AbstractIO class which handles communication with “hardware” motors.</p>
 <dl class="method">
 <dt id="pypot.robot.io.AbstractIO.close">
 <code class="descname">close</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/robot/io.html#AbstractIO.close"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.robot.io.AbstractIO.close" title="Permalink to this definition">¶</a></dt>
@@ -491,9 +491,9 @@
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>config</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) &#8211; robot configuration dictionary</li>
-<li><strong>strict</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; make sure that all ports, motors are availaible.</li>
-<li><strong>sync</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; choose if automatically starts the synchronization loops</li>
+<li><strong>config</strong> (<a class="reference external" href="https://docs.python.org/2/library/stdtypes.html#dict" title="(in Python v2.7)"><em>dict</em></a>) – robot configuration dictionary</li>
+<li><strong>strict</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) – make sure that all ports, motors are availaible.</li>
+<li><strong>sync</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) – choose if automatically starts the synchronization loops</li>
 </ul>
 </td>
 </tr>
@@ -592,7 +592,7 @@ More specifically you can start/stop them.</p>
         <li><a href="pypot.sensor.html" title="sensor Package" >next</a></li>
         <li><a href="py-modindex.html" title="Python Module Index" >modules</a></li>
         <li><a href="genindex.html" title="General Index" >index</a></li>
-        <li><a href="api.html" >Pypot&#8217;s API</a></li>
+        <li><a href="api.html" >Pypot’s API</a></li>
         <li><a href="#">top</a></li> 
       
     </ul>
@@ -603,7 +603,7 @@ More specifically you can start/stop them.</p>
       <!-- footer -->
       <footer role="contentinfo">
           &copy; Copyright 2015, Poppy-Project.
-        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.5.5.
+        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.6.2.
       </footer>
       <!-- /footer -->
 

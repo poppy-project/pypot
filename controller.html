@@ -217,7 +217,7 @@
 <p class="first admonition-title">Note</p>
 <p class="last">The configuration can be written programmatically or can be loaded from any file that can be loaded as a dict (e.g. a JSON file).</p>
 </div>
-<p>Now let&#8217;s detail each section. To better understand how the configuration is structure it is probably easier to start from one of the example provided with pypot and modify it (e.g. <code class="xref py py-obj docutils literal"><span class="pre">pypot.robot.config.ergo_robot_config</span></code>):</p>
+<p>Now let’s detail each section. To better understand how the configuration is structure it is probably easier to start from one of the example provided with pypot and modify it (e.g. <code class="xref py py-obj docutils literal"><span class="pre">pypot.robot.config.ergo_robot_config</span></code>):</p>
 <ol class="arabic">
 <li><p class="first"><strong>controllers</strong>: You can have a single or multiple <a class="reference internal" href="pypot.dynamixel.html#pypot.dynamixel.controller.DxlController" title="pypot.dynamixel.controller.DxlController"><code class="xref py py-class docutils literal"><span class="pre">DxlController</span></code></a>. For each of them, you should indicate whether or not to use the SYNC_READ instruction (only the USB2AX device currently supported it). When you describe your controller, you must also include the port that the device is connected to (see <a class="reference internal" href="dynamixel.html#open-connection"><span class="std std-ref">Opening/Closing a communication port</span></a>). In this section, you can also specify which robotis protocol to use (if not specified it uses the v1). You also have to specify which motors are attached to this bus. You can either give individual motors or groups (see the sections below):</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">my_config</span><span class="p">[</span><span class="s1">&#39;controllers&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
@@ -336,7 +336,7 @@
 <span class="p">}</span>
 </pre></div>
 </div>
-<p>Since pypot 1.7, you can now set the port to &#8216;auto&#8217; in the dictionary. When loading the configuration, pypot will automatically try to find the port with the corresponding attached motor ids.</p>
+<p>Since pypot 1.7, you can now set the port to ‘auto’ in the dictionary. When loading the configuration, pypot will automatically try to find the port with the corresponding attached motor ids.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">While this is convenient as the same config file can be use on multiple machine, it also slows the creation of the <a class="reference internal" href="pypot.robot.html#pypot.robot.robot.Robot" title="pypot.robot.robot.Robot"><code class="xref py py-class docutils literal"><span class="pre">Robot</span></code></a>.</p>
@@ -376,10 +376,10 @@
 </div>
 <div class="section" id="dynamixel-controller-and-synchronization-loop">
 <span id="sync-loop"></span><h2>Dynamixel controller and Synchronization Loop<a class="headerlink" href="#dynamixel-controller-and-synchronization-loop" title="Permalink to this headline">¶</a></h2>
-<p>As indicated above, the <a class="reference internal" href="pypot.robot.html#pypot.robot.robot.Robot" title="pypot.robot.robot.Robot"><code class="xref py py-class docutils literal"><span class="pre">Robot</span></code></a> held instances of <a class="reference internal" href="pypot.dynamixel.html#pypot.dynamixel.motor.DxlMotor" title="pypot.dynamixel.motor.DxlMotor"><code class="xref py py-class docutils literal"><span class="pre">DxlMotor</span></code></a>. Each of this instance represents a real motor of your physical robot. The attributes of those &#8220;software&#8221; motors are automatically synchronized with the real &#8220;hardware&#8221; motors. In order to do that, the <a class="reference internal" href="pypot.robot.html#pypot.robot.robot.Robot" title="pypot.robot.robot.Robot"><code class="xref py py-class docutils literal"><span class="pre">Robot</span></code></a> class uses a <a class="reference internal" href="pypot.dynamixel.html#pypot.dynamixel.controller.DxlController" title="pypot.dynamixel.controller.DxlController"><code class="xref py py-class docutils literal"><span class="pre">DxlController</span></code></a> which defines synchronization loops that will read/write the registers of dynamixel motors at a predefined frequency.</p>
+<p>As indicated above, the <a class="reference internal" href="pypot.robot.html#pypot.robot.robot.Robot" title="pypot.robot.robot.Robot"><code class="xref py py-class docutils literal"><span class="pre">Robot</span></code></a> held instances of <a class="reference internal" href="pypot.dynamixel.html#pypot.dynamixel.motor.DxlMotor" title="pypot.dynamixel.motor.DxlMotor"><code class="xref py py-class docutils literal"><span class="pre">DxlMotor</span></code></a>. Each of this instance represents a real motor of your physical robot. The attributes of those “software” motors are automatically synchronized with the real “hardware” motors. In order to do that, the <a class="reference internal" href="pypot.robot.html#pypot.robot.robot.Robot" title="pypot.robot.robot.Robot"><code class="xref py py-class docutils literal"><span class="pre">Robot</span></code></a> class uses a <a class="reference internal" href="pypot.dynamixel.html#pypot.dynamixel.controller.DxlController" title="pypot.dynamixel.controller.DxlController"><code class="xref py py-class docutils literal"><span class="pre">DxlController</span></code></a> which defines synchronization loops that will read/write the registers of dynamixel motors at a predefined frequency.</p>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
-<p class="last">The synchronization loops will try to run at the defined frequency, however don&#8217;t forget that you are limited by the bus bandwidth! For instance, depending on your robot you will not be able to read/write the position of all motors at 100Hz. Moreover, the loops are implemented as python thread and we can thus not guarantee the exact frequency of the loop.</p>
+<p class="last">The synchronization loops will try to run at the defined frequency, however don’t forget that you are limited by the bus bandwidth! For instance, depending on your robot you will not be able to read/write the position of all motors at 100Hz. Moreover, the loops are implemented as python thread and we can thus not guarantee the exact frequency of the loop.</p>
 </div>
 <p>If you looked closely at the example above, you could have noticed that even without defining any controller nor synchronization loop, you can already read the present position of the motors. Indeed, by default the class <a class="reference internal" href="pypot.robot.html#pypot.robot.robot.Robot" title="pypot.robot.robot.Robot"><code class="xref py py-class docutils literal"><span class="pre">Robot</span></code></a> uses a particular controller <code class="xref py py-class docutils literal"><span class="pre">BaseDxlController</span></code> which already defines synchronization loops. More precisely, this controller:</p>
 <ul class="simple">
@@ -405,7 +405,7 @@
 <span id="control-robot"></span><h2>Controlling your robot<a class="headerlink" href="#controlling-your-robot" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="controlling-in-position">
 <h3>Controlling in position<a class="headerlink" href="#controlling-in-position" title="Permalink to this headline">¶</a></h3>
-<p>As shown in the examples above, the robot class let you directly access the different motors. For instance, let&#8217;s assume we are working with an Ergo-robot, you could then write:</p>
+<p>As shown in the examples above, the robot class let you directly access the different motors. For instance, let’s assume we are working with an Ergo-robot, you could then write:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pypot.robot</span>
 
 <span class="kn">from</span> <span class="nn">pypot.robot.config</span> <span class="k">import</span> <span class="n">ergo_robot_config</span>
@@ -558,7 +558,7 @@
       <!-- footer -->
       <footer role="contentinfo">
           &copy; Copyright 2015, Poppy-Project.
-        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.5.5.
+        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.6.2.
       </footer>
       <!-- /footer -->
 

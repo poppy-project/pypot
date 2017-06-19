@@ -172,8 +172,8 @@
     <span class="n">length</span> <span class="o">=</span> <span class="mi">7</span>
     <span class="n">marker</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">((</span><span class="mh">0xFF</span><span class="p">,</span> <span class="mh">0xFF</span><span class="p">,</span> <span class="mh">0xFD</span><span class="p">,</span> <span class="mh">0x00</span><span class="p">))</span>
 
-    <span class="nd">@classmethod</span>
-<div class="viewcode-block" id="DxlPacketHeader.from_string"><a class="viewcode-back" href="../../../../pypot.dynamixel.html#pypot.dynamixel.protocol.v2.DxlPacketHeader.from_string">[docs]</a>    <span class="k">def</span> <span class="nf">from_string</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+<div class="viewcode-block" id="DxlPacketHeader.from_string"><a class="viewcode-back" href="../../../../pypot.dynamixel.html#pypot.dynamixel.protocol.v2.DxlPacketHeader.from_string">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_string</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
         <span class="n">header</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">header</span><span class="p">)</span> <span class="o">!=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">length</span> <span class="ow">or</span> <span class="n">header</span><span class="p">[:</span><span class="nb">len</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">marker</span><span class="p">)]</span> <span class="o">!=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">marker</span><span class="p">:</span>
@@ -312,8 +312,8 @@
 <span class="sd">        (for more details see http://support.robotis.com/en/product/dxl_main.htm)</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-    <span class="nd">@classmethod</span>
-<div class="viewcode-block" id="DxlStatusPacket.from_string"><a class="viewcode-back" href="../../../../pypot.dynamixel.html#pypot.dynamixel.protocol.v2.DxlStatusPacket.from_string">[docs]</a>    <span class="k">def</span> <span class="nf">from_string</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+<div class="viewcode-block" id="DxlStatusPacket.from_string"><a class="viewcode-back" href="../../../../pypot.dynamixel.html#pypot.dynamixel.protocol.v2.DxlStatusPacket.from_string">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_string</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
         <span class="n">packet</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
 
         <span class="n">header</span> <span class="o">=</span> <span class="n">DxlPacketHeader</span><span class="o">.</span><span class="n">from_string</span><span class="p">(</span><span class="n">packet</span><span class="p">[:</span><span class="n">DxlPacketHeader</span><span class="o">.</span><span class="n">length</span><span class="p">])</span>
@@ -405,7 +405,7 @@
       <!-- footer -->
       <footer role="contentinfo">
           &copy; Copyright 2015, Poppy-Project.
-        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.5.5.
+        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.6.2.
       </footer>
       <!-- /footer -->
 

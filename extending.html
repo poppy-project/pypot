@@ -76,7 +76,7 @@
                 <ul class="dropdown-menu localtoc sp-localtoc" role="menu" aria-labelledby="localToc">
                 <ul>
 <li><a class="reference internal" href="#">Extending pypot</a><ul>
-<li><a class="reference internal" href="#pypot-s-architecture">Pypot&#8217;s architecture</a></li>
+<li><a class="reference internal" href="#pypot-s-architecture">Pypot’s architecture</a></li>
 <li><a class="reference internal" href="#adding-another-layer">Adding another layer</a><ul>
 <li><a class="reference internal" href="#writing-a-new-io">Writing a new IO</a></li>
 <li><a class="reference internal" href="#writing-a-new-controller">Writing a new Controller</a></li>
@@ -134,7 +134,7 @@
   <h3><a href="index.html">Table Of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">Extending pypot</a><ul>
-<li><a class="reference internal" href="#pypot-s-architecture">Pypot&#8217;s architecture</a></li>
+<li><a class="reference internal" href="#pypot-s-architecture">Pypot’s architecture</a></li>
 <li><a class="reference internal" href="#adding-another-layer">Adding another layer</a><ul>
 <li><a class="reference internal" href="#writing-a-new-io">Writing a new IO</a></li>
 <li><a class="reference internal" href="#writing-a-new-controller">Writing a new Controller</a></li>
@@ -196,17 +196,17 @@
 <p class="first admonition-title">Note</p>
 <p class="last">While in most of this documentation, we will show how support for other motors can be added, similar methods can be applied to also support other sensors.</p>
 </div>
-<p>The rest of this section will describe the main concept behing pypot&#8217;s architecture and then give examples of how to extend it.</p>
+<p>The rest of this section will describe the main concept behing pypot’s architecture and then give examples of how to extend it.</p>
 <div class="section" id="pypot-s-architecture">
-<h2>Pypot&#8217;s architecture<a class="headerlink" href="#pypot-s-architecture" title="Permalink to this headline">¶</a></h2>
-<p>Pypot&#8217;s architecture is built upon the following basic concepts:</p>
+<h2>Pypot’s architecture<a class="headerlink" href="#pypot-s-architecture" title="Permalink to this headline">¶</a></h2>
+<p>Pypot’s architecture is built upon the following basic concepts:</p>
 <ul class="simple">
 <li><strong>I/O</strong>: low-level layer handling the communication with motors or sensors. This abstract layer has been designed to be as generic as possible. The idea is to keep each specific communication protocol separated from the rest of the architecture and allow for an easy replacement of an IO by another one - such an example is detailed in the next section when <a class="reference external" href="http://poppy-project.github.io/pypot/pypot.dynamixel.html#module-pypot.dynamixel.io">dynamixel IO</a> is replaced by the <a class="reference external" href="http://poppy-project.github.io/pypot/pypot.vrep.html#module-pypot.vrep.io">communication layout with the VREP</a> simulator.</li>
-<li><strong>Controller</strong>: set of update loops to keep an (or multiple) &#8220;hardware&#8221; device(s) up to date with their &#8220;software&#8221; equivalent. This synchronization can goes only from the hard to the soft (e.g. in the case of a sensor) or both ways (e.g. for reading motor values and sending motor commands). The calls can be asynchronous or synchronous, each controller can have its own refresh frequency. An example of <code class="xref py py-class docutils literal"><span class="pre">Controller</span></code> is the <a class="reference internal" href="pypot.dynamixel.html#pypot.dynamixel.controller.DxlController" title="pypot.dynamixel.controller.DxlController"><code class="xref py py-class docutils literal"><span class="pre">DxlController</span></code></a> which synchronizes position/speed/load of all motors on a dynamixel bus in both directions.</li>
+<li><strong>Controller</strong>: set of update loops to keep an (or multiple) “hardware” device(s) up to date with their “software” equivalent. This synchronization can goes only from the hard to the soft (e.g. in the case of a sensor) or both ways (e.g. for reading motor values and sending motor commands). The calls can be asynchronous or synchronous, each controller can have its own refresh frequency. An example of <code class="xref py py-class docutils literal"><span class="pre">Controller</span></code> is the <a class="reference internal" href="pypot.dynamixel.html#pypot.dynamixel.controller.DxlController" title="pypot.dynamixel.controller.DxlController"><code class="xref py py-class docutils literal"><span class="pre">DxlController</span></code></a> which synchronizes position/speed/load of all motors on a dynamixel bus in both directions.</li>
 <li><strong>Robot</strong>: The robot layer is a pure abstraction which aims at bringing together different types of motors and sensors. This high-level is most likely to be the one accessed by the end-user which wants to directly control the motors of its robot no matter what is the IO used underneath. The robot can be directly created using a <a class="reference external" href="http://poppy-project.github.io/pypot/controller.html#writing-the-configuration">configuration file</a> describing all IO and Controllers used.</li>
 <li><strong>Primitive</strong>: independent behaviors applied to a robot. They are not directly accessing the robot registers but are first combined through a <a class="reference external" href="http://poppy-project.github.io/pypot/primitive.html">Primitive Manager</a> which sends the results of this combination to the robot. This abstraction is used to designed behavioral-unit that can be combined into more complex behaviors (e.g. a walking primitive and and balance primitive combined to obtain a balanced-walking). Primitives are also a convenient way to monitor or remotely access a robot - ensuring some sort of sandboxing.</li>
 </ul>
-<p>Those main aspects of pypot&#8217;s architecture are summarized in the figure below.</p>
+<p>Those main aspects of pypot’s architecture are summarized in the figure below.</p>
 <a class="reference internal image-reference" href="_images/pypot-archi.jpg"><img alt="_images/pypot-archi.jpg" class="align-center" src="_images/pypot-archi.jpg" style="width: 60%;" /></a>
 </div>
 <div class="section" id="adding-another-layer">
@@ -215,17 +215,17 @@
 <p>Adding support for the V-REP simulator in pypot could be sum up in three main steps:</p>
 <ul class="simple">
 <li>Writing the low-level IO for V-REP.</li>
-<li>Writing the controller to synchronize pypot&#8217;s <a class="reference internal" href="pypot.robot.html#pypot.robot.robot.Robot" title="pypot.robot.robot.Robot"><code class="xref py py-class docutils literal"><span class="pre">Robot</span></code></a> with the V-REP&#8217;s one.</li>
+<li>Writing the controller to synchronize pypot’s <a class="reference internal" href="pypot.robot.html#pypot.robot.robot.Robot" title="pypot.robot.robot.Robot"><code class="xref py py-class docutils literal"><span class="pre">Robot</span></code></a> with the V-REP’s one.</li>
 <li>Integrates it to a <a class="reference internal" href="pypot.robot.html#pypot.robot.robot.Robot" title="pypot.robot.robot.Robot"><code class="xref py py-class docutils literal"><span class="pre">Robot</span></code></a></li>
 </ul>
 <div class="section" id="writing-a-new-io">
 <h3>Writing a new IO<a class="headerlink" href="#writing-a-new-io" title="Permalink to this headline">¶</a></h3>
-<p>In pypot&#8217;s architecture, the IO aims at providing convenient methods to access (read/write) value from a device - which could be a motor, a camera, or a simulator. It is the role of the IO to handle the communication:</p>
+<p>In pypot’s architecture, the IO aims at providing convenient methods to access (read/write) value from a device - which could be a motor, a camera, or a simulator. It is the role of the IO to handle the communication:</p>
 <ul class="simple">
 <li>open/close the communication channel,</li>
 <li>encapsulate the protocol.</li>
 </ul>
-<p>For example, the <code class="xref py py-class docutils literal"><span class="pre">DxlIO</span></code> (for dynamixel buses) open/closes the serial port and provides high-level methods for sending dynamixel packet - e.g. for getting a motor position. Similarly, writing the <a class="reference internal" href="pypot.vrep.html#pypot.vrep.io.VrepIO" title="pypot.vrep.io.VrepIO"><code class="xref py py-class docutils literal"><span class="pre">VrepIO</span></code></a> consists in opening the communication socket to the V-REP simulator (thanks to <a class="reference external" href="http://www.coppeliarobotics.com/helpFiles/en/remoteApiFunctionsPython.htm">V-REP&#8217;s remote API</a>) and then encapsulating all methods for getting/setting all the simulated motors registers.</p>
+<p>For example, the <code class="xref py py-class docutils literal"><span class="pre">DxlIO</span></code> (for dynamixel buses) open/closes the serial port and provides high-level methods for sending dynamixel packet - e.g. for getting a motor position. Similarly, writing the <a class="reference internal" href="pypot.vrep.html#pypot.vrep.io.VrepIO" title="pypot.vrep.io.VrepIO"><code class="xref py py-class docutils literal"><span class="pre">VrepIO</span></code></a> consists in opening the communication socket to the V-REP simulator (thanks to <a class="reference external" href="http://www.coppeliarobotics.com/helpFiles/en/remoteApiFunctionsPython.htm">V-REP’s remote API</a>) and then encapsulating all methods for getting/setting all the simulated motors registers.</p>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
 <p class="last">While this is not by any mean mandatory, it is often a good practice to write all IO access as synchronous calls. The higher-level synchronization loop is usually written as a <a class="reference internal" href="pypot.robot.html#pypot.robot.controller.AbstractController" title="pypot.robot.controller.AbstractController"><code class="xref py py-class docutils literal"><span class="pre">AbstractController</span></code></a>.</p>
@@ -238,13 +238,13 @@
 </div>
 <div class="section" id="writing-a-new-controller">
 <h3>Writing a new Controller<a class="headerlink" href="#writing-a-new-controller" title="Permalink to this headline">¶</a></h3>
-<p>A <code class="xref py py-class docutils literal"><span class="pre">Controller</span></code> is basically a synchronization loop which role is to keep up to date the state of the device and its &#8220;software&#8221; equivalent - through the associated IO.</p>
-<p>In the case of the <a class="reference internal" href="pypot.dynamixel.html#pypot.dynamixel.controller.DxlController" title="pypot.dynamixel.controller.DxlController"><code class="xref py py-class docutils literal"><span class="pre">DxlController</span></code></a>, it runs a 50Hz loop which reads the actual position/speed/load of the real motor and sets it to the associated register in the <a class="reference internal" href="pypot.dynamixel.html#pypot.dynamixel.motor.DxlMotor" title="pypot.dynamixel.motor.DxlMotor"><code class="xref py py-class docutils literal"><span class="pre">DxlMotor</span></code></a>. It also reads the goal position/speed/load set in the <a class="reference internal" href="pypot.dynamixel.html#pypot.dynamixel.motor.DxlMotor" title="pypot.dynamixel.motor.DxlMotor"><code class="xref py py-class docutils literal"><span class="pre">DxlMotor</span></code></a> and sends them to the &#8220;real&#8221; motor.</p>
+<p>A <code class="xref py py-class docutils literal"><span class="pre">Controller</span></code> is basically a synchronization loop which role is to keep up to date the state of the device and its “software” equivalent - through the associated IO.</p>
+<p>In the case of the <a class="reference internal" href="pypot.dynamixel.html#pypot.dynamixel.controller.DxlController" title="pypot.dynamixel.controller.DxlController"><code class="xref py py-class docutils literal"><span class="pre">DxlController</span></code></a>, it runs a 50Hz loop which reads the actual position/speed/load of the real motor and sets it to the associated register in the <a class="reference internal" href="pypot.dynamixel.html#pypot.dynamixel.motor.DxlMotor" title="pypot.dynamixel.motor.DxlMotor"><code class="xref py py-class docutils literal"><span class="pre">DxlMotor</span></code></a>. It also reads the goal position/speed/load set in the <a class="reference internal" href="pypot.dynamixel.html#pypot.dynamixel.motor.DxlMotor" title="pypot.dynamixel.motor.DxlMotor"><code class="xref py py-class docutils literal"><span class="pre">DxlMotor</span></code></a> and sends them to the “real” motor.</p>
 <p>As most controller will have the same general structure - i.e. calling a sync. method at a predefined frequency - pypot provides an abstract class, the <a class="reference internal" href="pypot.robot.html#pypot.robot.controller.AbstractController" title="pypot.robot.controller.AbstractController"><code class="xref py py-class docutils literal"><span class="pre">AbstractController</span></code></a>, which does exactly that. If your controller fits within this conception, you should only have to overide the <code class="xref py py-meth docutils literal"><span class="pre">update()</span></code> method.</p>
-<p>In the case of the <a class="reference internal" href="pypot.vrep.html#pypot.vrep.controller.VrepController" title="pypot.vrep.controller.VrepController"><code class="xref py py-class docutils literal"><span class="pre">VrepController</span></code></a>, the update loop simply retrieves each motor&#8217;s present position and send the new target position. A similar approach is used to retrieve values form V-REP sensors.</p>
+<p>In the case of the <a class="reference internal" href="pypot.vrep.html#pypot.vrep.controller.VrepController" title="pypot.vrep.controller.VrepController"><code class="xref py py-class docutils literal"><span class="pre">VrepController</span></code></a>, the update loop simply retrieves each motor’s present position and send the new target position. A similar approach is used to retrieve values form V-REP sensors.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">Each controller can run at its own pre-defined frequency and live within its own thread. Thus, the update never blocks the main thread and you can used tight synchronization loop where they are needed (e.g. for motor&#8217;s command) and slower one when latency is not a big issue (e.g. a temperature sensor).</p>
+<p class="last">Each controller can run at its own pre-defined frequency and live within its own thread. Thus, the update never blocks the main thread and you can used tight synchronization loop where they are needed (e.g. for motor’s command) and slower one when latency is not a big issue (e.g. a temperature sensor).</p>
 </div>
 </div>
 <div class="section" id="integrates-it-into-the-robot">
@@ -288,7 +288,7 @@
       <!-- footer -->
       <footer role="contentinfo">
           &copy; Copyright 2015, Poppy-Project.
-        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.5.5.
+        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.6.2.
       </footer>
       <!-- /footer -->
 

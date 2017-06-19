@@ -225,21 +225,21 @@
         <span class="p">}</span>
         <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">file</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span></div>
 
-    <span class="nd">@classmethod</span>
-<div class="viewcode-block" id="Move.create"><a class="viewcode-back" href="../../../pypot.primitive.html#pypot.primitive.move.Move.create">[docs]</a>    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">d</span><span class="p">):</span>
+<div class="viewcode-block" id="Move.create"><a class="viewcode-back" href="../../../pypot.primitive.html#pypot.primitive.move.Move.create">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">create</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">d</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Create a :class:`~pypot.primitive.move.Move` from a dictionary. &quot;&quot;&quot;</span>
         <span class="n">move</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;framerate&#39;</span><span class="p">])</span>
         <span class="n">move</span><span class="o">.</span><span class="n">_timed_positions</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;positions&#39;</span><span class="p">])</span>
         <span class="k">return</span> <span class="n">move</span></div>
 
-    <span class="nd">@classmethod</span>
-<div class="viewcode-block" id="Move.load"><a class="viewcode-back" href="../../../pypot.primitive.html#pypot.primitive.move.Move.load">[docs]</a>    <span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">file</span><span class="p">):</span>
+<div class="viewcode-block" id="Move.load"><a class="viewcode-back" href="../../../pypot.primitive.html#pypot.primitive.move.Move.load">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">file</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Loads a :class:`~pypot.primitive.move.Move` from a json file. &quot;&quot;&quot;</span>
         <span class="n">d</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">d</span><span class="p">)</span></div>
 
-    <span class="nd">@classmethod</span>
-<div class="viewcode-block" id="Move.loads"><a class="viewcode-back" href="../../../pypot.primitive.html#pypot.primitive.move.Move.loads">[docs]</a>    <span class="k">def</span> <span class="nf">loads</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+<div class="viewcode-block" id="Move.loads"><a class="viewcode-back" href="../../../pypot.primitive.html#pypot.primitive.move.Move.loads">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">loads</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Loads a :class:`~pypot.primitive.move.Move` from a json string. &quot;&quot;&quot;</span>
         <span class="n">d</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">d</span><span class="p">)</span></div></div>
@@ -384,7 +384,7 @@
       <!-- footer -->
       <footer role="contentinfo">
           &copy; Copyright 2015, Poppy-Project.
-        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.5.5.
+        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.6.2.
       </footer>
       <!-- /footer -->
 

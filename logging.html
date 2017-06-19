@@ -77,7 +77,7 @@
                 <ul>
 <li><a class="reference internal" href="#">Mastering the logging system</a><ul>
 <li><a class="reference internal" href="#logging-structure">Logging structure</a></li>
-<li><a class="reference internal" href="#using-pypot-s-logging">Using Pypot&#8217;s logging</a></li>
+<li><a class="reference internal" href="#using-pypot-s-logging">Using Pypot’s logging</a></li>
 </ul>
 </li>
 </ul>
@@ -130,7 +130,7 @@
   <ul>
 <li><a class="reference internal" href="#">Mastering the logging system</a><ul>
 <li><a class="reference internal" href="#logging-structure">Logging structure</a></li>
-<li><a class="reference internal" href="#using-pypot-s-logging">Using Pypot&#8217;s logging</a></li>
+<li><a class="reference internal" href="#using-pypot-s-logging">Using Pypot’s logging</a></li>
 </ul>
 </li>
 </ul>
@@ -176,7 +176,7 @@
                   
   <div class="section" id="mastering-the-logging-system">
 <h1>Mastering the logging system<a class="headerlink" href="#mastering-the-logging-system" title="Permalink to this headline">¶</a></h1>
-<p>Pypot used the Python&#8217;s builtin <a class="reference external" href="http://docs.python.org/2/library/logging.html">logging</a> module for logging. For details on how to use this module please refer to Python&#8217;s own documentation or the one on <a class="reference external" href="https://docs.djangoproject.com/en/1.6/topics/logging/">django webstite</a>. Here, we will only describe what pypot is logging and how it is organised (see section <a class="reference internal" href="#log-struct"><span class="std std-ref">Logging structure</span></a>). We will also present a few examples on how to use pypot logging and parse the information (see section <a class="reference internal" href="#log-ex"><span class="std std-ref">Using Pypot&#8217;s logging</span></a>).</p>
+<p>Pypot used the Python’s builtin <a class="reference external" href="http://docs.python.org/2/library/logging.html">logging</a> module for logging. For details on how to use this module please refer to Python’s own documentation or the one on <a class="reference external" href="https://docs.djangoproject.com/en/1.6/topics/logging/">django webstite</a>. Here, we will only describe what pypot is logging and how it is organised (see section <a class="reference internal" href="#log-struct"><span class="std std-ref">Logging structure</span></a>). We will also present a few examples on how to use pypot logging and parse the information (see section <a class="reference internal" href="#log-ex"><span class="std std-ref">Using Pypot’s logging</span></a>).</p>
 <div class="section" id="logging-structure">
 <span id="log-struct"></span><h2>Logging structure<a class="headerlink" href="#logging-structure" title="Permalink to this headline">¶</a></h2>
 <p>Pypot is logging information at all different levels:</p>
@@ -190,9 +190,9 @@
 <p class="first admonition-title">Note</p>
 <p class="last">As you probably do not want to log everything (pypot is sending a lot of messages!!!), you have to select in the logging structure what is relevant in your program and define it in your logging configuration.</p>
 </div>
-<p>Pypot&#8217;s logging naming convention is following pypot&#8217;s architecture. Here is the detail of what pypot is logging with the associated logger&#8217;s name:</p>
+<p>Pypot’s logging naming convention is following pypot’s architecture. Here is the detail of what pypot is logging with the associated logger’s name:</p>
 <ul class="simple">
-<li>The logger&#8217;s name <strong>pypot.dynamixel.io</strong> is logging information related to opening/closing port (INFO) and each sent/received package (DEBUG). The communication and timeout error are also logged (WARNING). This logger always provides you the port name, the baudrate and timout of your connection as extra information.</li>
+<li>The logger’s name <strong>pypot.dynamixel.io</strong> is logging information related to opening/closing port (INFO) and each sent/received package (DEBUG). The communication and timeout error are also logged (WARNING). This logger always provides you the port name, the baudrate and timout of your connection as extra information.</li>
 <li>The logger <strong>pypot.dynamixel.motor</strong> is logging each time a register of a motor is set (DEBUG). The name of the register, the name of the motor and the set value are given in the message.</li>
 <li><strong>pypot.robot.config</strong> is logging information regarding the creation of a robot through a config dictionary. A message is sent for each motor, controller and alias added (INFO). A WARNING message is also sent when the angle limits of a motor are changed. We provide as extra the entire config dictionary.</li>
 <li>The logger <strong>pypot.robot.robot</strong> is logging when the synchronization is started/stopped (INFO) and when a primitive is attached (INFO).</li>
@@ -202,9 +202,9 @@
 </ul>
 </div>
 <div class="section" id="using-pypot-s-logging">
-<span id="log-ex"></span><h2>Using Pypot&#8217;s logging<a class="headerlink" href="#using-pypot-s-logging" title="Permalink to this headline">¶</a></h2>
-<p>As an example of what you can do with the logging system, here is how you can check the &#8220;real&#8221; update frequency of a loop primitive.</p>
-<p>First, you have to define a logging config. As you can see, here we specify that we only want the log coming form &#8216;pypot.primitive&#8217; and the message is formatted so we only keep the timestamp:</p>
+<span id="log-ex"></span><h2>Using Pypot’s logging<a class="headerlink" href="#using-pypot-s-logging" title="Permalink to this headline">¶</a></h2>
+<p>As an example of what you can do with the logging system, here is how you can check the “real” update frequency of a loop primitive.</p>
+<p>First, you have to define a logging config. As you can see, here we specify that we only want the log coming form ‘pypot.primitive’ and the message is formatted so we only keep the timestamp:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">LOGGING</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s1">&#39;version&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
     <span class="s1">&#39;disable_existing_loggers&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
@@ -248,7 +248,7 @@
     <span class="n">p</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
 </pre></div>
 </div>
-<p>The execution of the program above will create a file named &#8216;pypot.log&#8217; where each line corresponds to the timestamp of each primitive update. This file can then be easily parsed:</p>
+<p>The execution of the program above will create a file named ‘pypot.log’ where each line corresponds to the timestamp of each primitive update. This file can then be easily parsed:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">t</span> <span class="o">=</span> <span class="p">[]</span>
 
 <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;pypot.log&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
@@ -302,7 +302,7 @@
       <!-- footer -->
       <footer role="contentinfo">
           &copy; Copyright 2015, Poppy-Project.
-        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.5.5.
+        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.6.2.
       </footer>
       <!-- /footer -->
 

@@ -93,7 +93,7 @@
               <li><a href="pypot.vrep.html" title="vrep Package" accesskey="N">next </a></li>
               <li><a href="py-modindex.html" title="Python Module Index" >modules </a></li>
               <li><a href="genindex.html" title="General Index" accesskey="I">index </a></li>
-              <li><a href="api.html" accesskey="U">Pypot&#8217;s API</a></li>
+              <li><a href="api.html" accesskey="U">Pypot’s API</a></li>
             
             <li class="visible-xs"><a href="_sources/pypot.server.rst.txt" rel="nofollow">Show Source</a></li>
 
@@ -205,7 +205,7 @@
 </dl>
 <dl class="method">
 <dt id="pypot.server.rest.RESTRobot.get_motors_list">
-<code class="descname">get_motors_list</code><span class="sig-paren">(</span><em>alias='motors'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/server/rest.html#RESTRobot.get_motors_list"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.server.rest.RESTRobot.get_motors_list" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get_motors_list</code><span class="sig-paren">(</span><em>alias=’motors’</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/server/rest.html#RESTRobot.get_motors_list"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.server.rest.RESTRobot.get_motors_list" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
@@ -370,7 +370,7 @@
 <span id="httpserver-module"></span><h2><code class="xref py py-mod docutils literal"><span class="pre">httpserver</span></code> Module<a class="headerlink" href="#module-pypot.server.httpserver" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="pypot.server.httpserver.MyJSONEncoder">
-<em class="property">class </em><code class="descclassname">pypot.server.httpserver.</code><code class="descname">MyJSONEncoder</code><span class="sig-paren">(</span><em>skipkeys=False</em>, <em>ensure_ascii=True</em>, <em>check_circular=True</em>, <em>allow_nan=True</em>, <em>sort_keys=False</em>, <em>indent=None</em>, <em>separators=None</em>, <em>encoding='utf-8'</em>, <em>default=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/server/httpserver.html#MyJSONEncoder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.server.httpserver.MyJSONEncoder" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">pypot.server.httpserver.</code><code class="descname">MyJSONEncoder</code><span class="sig-paren">(</span><em>skipkeys=False</em>, <em>ensure_ascii=True</em>, <em>check_circular=True</em>, <em>allow_nan=True</em>, <em>sort_keys=False</em>, <em>indent=None</em>, <em>separators=None</em>, <em>encoding=’utf-8’</em>, <em>default=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/server/httpserver.html#MyJSONEncoder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.server.httpserver.MyJSONEncoder" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">json.encoder.JSONEncoder</span></code></p>
 <p>JSONEncoder which tries to call a json property before using the enconding default function.</p>
 <p>Constructor for JSONEncoder, with sensible defaults.</p>
@@ -398,14 +398,14 @@ that JSON serializations can be compared on a day-to-day basis.</p>
 elements and object members will be pretty-printed with that
 indent level.  An indent level of 0 will only insert newlines.
 None is the most compact representation.  Since the default
-item separator is &#8216;, &#8216;,  the output might include trailing
+item separator is ‘, ‘,  the output might include trailing
 whitespace when indent is specified.  You can use
-separators=(&#8216;,&#8217;, &#8216;: &#8216;) to avoid this.</p>
+separators=(‘,’, ‘: ‘) to avoid this.</p>
 <p>If specified, separators should be a (item_separator, key_separator)
-tuple.  The default is (&#8216;, &#8216;, &#8216;: &#8216;).  To get the most compact JSON
-representation you should specify (&#8216;,&#8217;, &#8216;:&#8217;) to eliminate whitespace.</p>
+tuple.  The default is (‘, ‘, ‘: ‘).  To get the most compact JSON
+representation you should specify (‘,’, ‘:’) to eliminate whitespace.</p>
 <p>If specified, default is a function that gets called for objects
-that can&#8217;t otherwise be serialized.  It should return a JSON encodable
+that can’t otherwise be serialized.  It should return a JSON encodable
 version of the object or raise a <code class="docutils literal"><span class="pre">TypeError</span></code>.</p>
 <p>If encoding is not None, then all input strings will be
 transformed into unicode using that encoding prior to JSON-encoding.
@@ -458,7 +458,7 @@ every OPTIONS request.</p>
 <dd><p>Bases: <a class="reference internal" href="#pypot.server.httpserver.PoppyRequestHandler" title="pypot.server.httpserver.PoppyRequestHandler"><code class="xref py py-class docutils literal"><span class="pre">pypot.server.httpserver.PoppyRequestHandler</span></code></a></p>
 <dl class="method">
 <dt id="pypot.server.httpserver.MotorsListHandler.get">
-<code class="descname">get</code><span class="sig-paren">(</span><em>alias='motors'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/server/httpserver.html#MotorsListHandler.get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.server.httpserver.MotorsListHandler.get" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get</code><span class="sig-paren">(</span><em>alias=’motors’</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/server/httpserver.html#MotorsListHandler.get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.server.httpserver.MotorsListHandler.get" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -652,7 +652,7 @@ every OPTIONS request.</p>
 
 <dl class="class">
 <dt id="pypot.server.httpserver.HTTPRobotServer">
-<em class="property">class </em><code class="descclassname">pypot.server.httpserver.</code><code class="descname">HTTPRobotServer</code><span class="sig-paren">(</span><em>robot</em>, <em>host='0.0.0.0'</em>, <em>port='8080'</em>, <em>cross_domain_origin='*'</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/server/httpserver.html#HTTPRobotServer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.server.httpserver.HTTPRobotServer" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">pypot.server.httpserver.</code><code class="descname">HTTPRobotServer</code><span class="sig-paren">(</span><em>robot</em>, <em>host=‘0.0.0.0’</em>, <em>port=‘8080’</em>, <em>cross_domain_origin=’*’</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/server/httpserver.html#HTTPRobotServer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.server.httpserver.HTTPRobotServer" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">pypot.server.server.AbstractServer</span></code></p>
 <p>Refer to the REST API for an exhaustive list of the possible routes.</p>
 <dl class="method">
@@ -705,18 +705,18 @@ every OPTIONS request.</p>
 
 <dl class="function">
 <dt id="pypot.server.snap.set_snap_server_variables">
-<code class="descclassname">pypot.server.snap.</code><code class="descname">set_snap_server_variables</code><span class="sig-paren">(</span><em>host</em>, <em>port</em>, <em>snap_extension='.xml'</em>, <em>path=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/server/snap.html#set_snap_server_variables"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.server.snap.set_snap_server_variables" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">pypot.server.snap.</code><code class="descname">set_snap_server_variables</code><span class="sig-paren">(</span><em>host</em>, <em>port</em>, <em>snap_extension=’.xml’</em>, <em>path=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/server/snap.html#set_snap_server_variables"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.server.snap.set_snap_server_variables" title="Permalink to this definition">¶</a></dt>
 <dd><p>Change dynamically port and host variable in xml Snap! project file</p>
 </dd></dl>
 
 <dl class="class">
 <dt id="pypot.server.snap.EnableCors">
-<em class="property">class </em><code class="descclassname">pypot.server.snap.</code><code class="descname">EnableCors</code><span class="sig-paren">(</span><em>origin='*'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/server/snap.html#EnableCors"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.server.snap.EnableCors" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">pypot.server.snap.</code><code class="descname">EnableCors</code><span class="sig-paren">(</span><em>origin=’*’</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/server/snap.html#EnableCors"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.server.snap.EnableCors" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
 <p>Enable CORS (Cross-Origin Resource Sharing) headers</p>
 <dl class="attribute">
 <dt id="pypot.server.snap.EnableCors.name">
-<code class="descname">name</code><em class="property"> = 'enable_cors'</em><a class="headerlink" href="#pypot.server.snap.EnableCors.name" title="Permalink to this definition">¶</a></dt>
+<code class="descname">name</code><em class="property"> = ‘enable_cors’</em><a class="headerlink" href="#pypot.server.snap.EnableCors.name" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
@@ -738,7 +738,7 @@ every OPTIONS request.</p>
 <p>Add response headers to disable cache</p>
 <dl class="attribute">
 <dt id="pypot.server.snap.CacheBuster.name">
-<code class="descname">name</code><em class="property"> = 'cache_buster'</em><a class="headerlink" href="#pypot.server.snap.CacheBuster.name" title="Permalink to this definition">¶</a></dt>
+<code class="descname">name</code><em class="property"> = ‘cache_buster’</em><a class="headerlink" href="#pypot.server.snap.CacheBuster.name" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
@@ -755,13 +755,13 @@ every OPTIONS request.</p>
 
 <dl class="class">
 <dt id="pypot.server.snap.SnapRobotServer">
-<em class="property">class </em><code class="descclassname">pypot.server.snap.</code><code class="descname">SnapRobotServer</code><span class="sig-paren">(</span><em>robot</em>, <em>host='0.0.0.0'</em>, <em>port='6969'</em>, <em>quiet=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/server/snap.html#SnapRobotServer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.server.snap.SnapRobotServer" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">pypot.server.snap.</code><code class="descname">SnapRobotServer</code><span class="sig-paren">(</span><em>robot</em>, <em>host=‘0.0.0.0’</em>, <em>port=‘6969’</em>, <em>quiet=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/server/snap.html#SnapRobotServer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.server.snap.SnapRobotServer" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">pypot.server.server.AbstractServer</span></code></p>
 <dl class="method">
 <dt id="pypot.server.snap.SnapRobotServer.run">
-<code class="descname">run</code><span class="sig-paren">(</span><em>quiet=None</em>, <em>server=''</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/server/snap.html#SnapRobotServer.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.server.snap.SnapRobotServer.run" title="Permalink to this definition">¶</a></dt>
+<code class="descname">run</code><span class="sig-paren">(</span><em>quiet=None</em>, <em>server=”</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/server/snap.html#SnapRobotServer.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.server.snap.SnapRobotServer.run" title="Permalink to this definition">¶</a></dt>
 <dd><p>Start the tornado server, run forever.
-&#8216;quiet&#8217; and &#8216;server&#8217; arguments are no longer used, they are keep only for backward compatibility</p>
+‘quiet’ and ‘server’ arguments are no longer used, they are keep only for backward compatibility</p>
 </dd></dl>
 
 </dd></dl>
@@ -792,7 +792,7 @@ every OPTIONS request.</p>
         <li><a href="pypot.vrep.html" title="vrep Package" >next</a></li>
         <li><a href="py-modindex.html" title="Python Module Index" >modules</a></li>
         <li><a href="genindex.html" title="General Index" >index</a></li>
-        <li><a href="api.html" >Pypot&#8217;s API</a></li>
+        <li><a href="api.html" >Pypot’s API</a></li>
         <li><a href="#">top</a></li> 
       
     </ul>
@@ -803,7 +803,7 @@ every OPTIONS request.</p>
       <!-- footer -->
       <footer role="contentinfo">
           &copy; Copyright 2015, Poppy-Project.
-        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.5.5.
+        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.6.2.
       </footer>
       <!-- /footer -->
 

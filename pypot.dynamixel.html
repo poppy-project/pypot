@@ -99,7 +99,7 @@
               <li><a href="pypot.primitive.html" title="primitive Package" accesskey="N">next </a></li>
               <li><a href="py-modindex.html" title="Python Module Index" >modules </a></li>
               <li><a href="genindex.html" title="General Index" accesskey="I">index </a></li>
-              <li><a href="api.html" accesskey="U">Pypot&#8217;s API</a></li>
+              <li><a href="api.html" accesskey="U">Pypot’s API</a></li>
             
             <li class="visible-xs"><a href="_sources/pypot.dynamixel.rst.txt" rel="nofollow">Show Source</a></li>
 
@@ -155,7 +155,7 @@
 
   <h4>Previous topic</h4>
   <p class="topless"><a href="api.html"
-                        title="previous chapter">Pypot&#8217;s API</a></p>
+                        title="previous chapter">Pypot’s API</a></p>
   <h4>Next topic</h4>
   <p class="topless"><a href="pypot.primitive.html"
                         title="next chapter"><code class="docutils literal"><span class="pre">primitive</span></code> Package</a></p>
@@ -208,8 +208,8 @@
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>ids</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#list" title="(in Python v2.7)"><em>list</em></a>) &#8211; list of motor ids to find</li>
-<li><strong>strict</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; specify if all ids should be find (when set to False, only half motor must be found)</li>
+<li><strong>ids</strong> (<em>list</em>) – list of motor ids to find</li>
+<li><strong>strict</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) – specify if all ids should be find (when set to False, only half motor must be found)</li>
 </ul>
 </td>
 </tr>
@@ -239,12 +239,12 @@
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>port</strong> (<a class="reference external" href="https://docs.python.org/2/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; the serial port to use (e.g. Unix (/dev/tty...), Windows (COM...)).</li>
-<li><strong>baudrate</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; default for new motors: 57600, for PyPot motors: 1000000</li>
-<li><strong>timeout</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) &#8211; read timeout in seconds</li>
-<li><strong>use_sync_read</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; whether or not to use the SYNC_READ instruction</li>
-<li><strong>error_handler</strong> (<a class="reference internal" href="#pypot.dynamixel.error.DxlErrorHandler" title="pypot.dynamixel.error.DxlErrorHandler"><code class="xref py py-class docutils literal"><span class="pre">DxlErrorHandler</span></code></a>) &#8211; set a handler that will receive the different errors</li>
-<li><strong>convert</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; whether or not convert values to units expressed in the standard system</li>
+<li><strong>port</strong> (<a class="reference external" href="https://docs.python.org/2/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) – the serial port to use (e.g. Unix (/dev/tty…), Windows (COM…)).</li>
+<li><strong>baudrate</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) – default for new motors: 57600, for PyPot motors: 1000000</li>
+<li><strong>timeout</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) – read timeout in seconds</li>
+<li><strong>use_sync_read</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) – whether or not to use the SYNC_READ instruction</li>
+<li><strong>error_handler</strong> (<a class="reference internal" href="#pypot.dynamixel.error.DxlErrorHandler" title="pypot.dynamixel.error.DxlErrorHandler"><code class="xref py py-class docutils literal"><span class="pre">DxlErrorHandler</span></code></a>) – set a handler that will receive the different errors</li>
+<li><strong>convert</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) – whether or not convert values to units expressed in the standard system</li>
 </ul>
 </td>
 </tr>
@@ -262,7 +262,7 @@
 <dl class="method">
 <dt id="pypot.dynamixel.io.io.DxlIO.get_control_mode">
 <code class="descname">get_control_mode</code><span class="sig-paren">(</span><em>ids</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/dynamixel/io/io.html#DxlIO.get_control_mode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.io.io.DxlIO.get_control_mode" title="Permalink to this definition">¶</a></dt>
-<dd><p>Gets the mode (&#8216;joint&#8217; or &#8216;wheel&#8217;) for the specified motors.</p>
+<dd><p>Gets the mode (‘joint’ or ‘wheel’) for the specified motors.</p>
 </dd></dl>
 
 <dl class="method">
@@ -564,12 +564,12 @@
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>port</strong> (<a class="reference external" href="https://docs.python.org/2/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) &#8211; the serial port to use (e.g. Unix (/dev/tty...), Windows (COM...)).</li>
-<li><strong>baudrate</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) &#8211; default for new motors: 57600, for PyPot motors: 1000000</li>
-<li><strong>timeout</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) &#8211; read timeout in seconds</li>
-<li><strong>use_sync_read</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; whether or not to use the SYNC_READ instruction</li>
-<li><strong>error_handler</strong> (<a class="reference internal" href="#pypot.dynamixel.error.DxlErrorHandler" title="pypot.dynamixel.error.DxlErrorHandler"><code class="xref py py-class docutils literal"><span class="pre">DxlErrorHandler</span></code></a>) &#8211; set a handler that will receive the different errors</li>
-<li><strong>convert</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) &#8211; whether or not convert values to units expressed in the standard system</li>
+<li><strong>port</strong> (<a class="reference external" href="https://docs.python.org/2/library/string.html#module-string" title="(in Python v2.7)"><em>string</em></a>) – the serial port to use (e.g. Unix (/dev/tty…), Windows (COM…)).</li>
+<li><strong>baudrate</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#int" title="(in Python v2.7)"><em>int</em></a>) – default for new motors: 57600, for PyPot motors: 1000000</li>
+<li><strong>timeout</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#float" title="(in Python v2.7)"><em>float</em></a>) – read timeout in seconds</li>
+<li><strong>use_sync_read</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) – whether or not to use the SYNC_READ instruction</li>
+<li><strong>error_handler</strong> (<a class="reference internal" href="#pypot.dynamixel.error.DxlErrorHandler" title="pypot.dynamixel.error.DxlErrorHandler"><code class="xref py py-class docutils literal"><span class="pre">DxlErrorHandler</span></code></a>) – set a handler that will receive the different errors</li>
+<li><strong>convert</strong> (<a class="reference external" href="https://docs.python.org/2/library/functions.html#bool" title="(in Python v2.7)"><em>bool</em></a>) – whether or not convert values to units expressed in the standard system</li>
 </ul>
 </td>
 </tr>
@@ -803,7 +803,7 @@
 <span id="motor-module"></span><h2><code class="xref py py-mod docutils literal"><span class="pre">motor</span></code> Module<a class="headerlink" href="#module-pypot.dynamixel.motor" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="pypot.dynamixel.motor.DxlMotor">
-<em class="property">class </em><code class="descclassname">pypot.dynamixel.motor.</code><code class="descname">DxlMotor</code><span class="sig-paren">(</span><em>id</em>, <em>name=None</em>, <em>model=''</em>, <em>direct=True</em>, <em>offset=0.0</em>, <em>broken=False</em>, <em>angle_limit=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/dynamixel/motor.html#DxlMotor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.motor.DxlMotor" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">pypot.dynamixel.motor.</code><code class="descname">DxlMotor</code><span class="sig-paren">(</span><em>id</em>, <em>name=None</em>, <em>model=”</em>, <em>direct=True</em>, <em>offset=0.0</em>, <em>broken=False</em>, <em>angle_limit=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/dynamixel/motor.html#DxlMotor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.motor.DxlMotor" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="pypot.robot.html#pypot.robot.motor.Motor" title="pypot.robot.motor.Motor"><code class="xref py py-class docutils literal"><span class="pre">pypot.robot.motor.Motor</span></code></a></p>
 <p>High-level class used to represent and control a generic dynamixel motor.</p>
 <dl class="docutils">
@@ -845,7 +845,7 @@
 
 <dl class="class">
 <dt id="pypot.dynamixel.motor.DxlAXRXMotor">
-<em class="property">class </em><code class="descclassname">pypot.dynamixel.motor.</code><code class="descname">DxlAXRXMotor</code><span class="sig-paren">(</span><em>id</em>, <em>name=None</em>, <em>model=''</em>, <em>direct=True</em>, <em>offset=0.0</em>, <em>broken=False</em>, <em>angle_limit=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/dynamixel/motor.html#DxlAXRXMotor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.motor.DxlAXRXMotor" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">pypot.dynamixel.motor.</code><code class="descname">DxlAXRXMotor</code><span class="sig-paren">(</span><em>id</em>, <em>name=None</em>, <em>model=”</em>, <em>direct=True</em>, <em>offset=0.0</em>, <em>broken=False</em>, <em>angle_limit=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/dynamixel/motor.html#DxlAXRXMotor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.motor.DxlAXRXMotor" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#pypot.dynamixel.motor.DxlMotor" title="pypot.dynamixel.motor.DxlMotor"><code class="xref py py-class docutils literal"><span class="pre">pypot.dynamixel.motor.DxlMotor</span></code></a></p>
 <p>This class represents the AX robotis motor.</p>
 <dl class="docutils">
@@ -859,7 +859,7 @@
 
 <dl class="class">
 <dt id="pypot.dynamixel.motor.DxlMXMotor">
-<em class="property">class </em><code class="descclassname">pypot.dynamixel.motor.</code><code class="descname">DxlMXMotor</code><span class="sig-paren">(</span><em>id</em>, <em>name=None</em>, <em>model=''</em>, <em>direct=True</em>, <em>offset=0.0</em>, <em>broken=False</em>, <em>angle_limit=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/dynamixel/motor.html#DxlMXMotor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.motor.DxlMXMotor" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">pypot.dynamixel.motor.</code><code class="descname">DxlMXMotor</code><span class="sig-paren">(</span><em>id</em>, <em>name=None</em>, <em>model=”</em>, <em>direct=True</em>, <em>offset=0.0</em>, <em>broken=False</em>, <em>angle_limit=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/dynamixel/motor.html#DxlMXMotor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.motor.DxlMXMotor" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#pypot.dynamixel.motor.DxlMotor" title="pypot.dynamixel.motor.DxlMotor"><code class="xref py py-class docutils literal"><span class="pre">pypot.dynamixel.motor.DxlMotor</span></code></a></p>
 <p>This class represents the RX and MX robotis motor.</p>
 <dl class="docutils">
@@ -881,7 +881,7 @@
 
 <dl class="class">
 <dt id="pypot.dynamixel.motor.DxlMX64106Motor">
-<em class="property">class </em><code class="descclassname">pypot.dynamixel.motor.</code><code class="descname">DxlMX64106Motor</code><span class="sig-paren">(</span><em>id</em>, <em>name=None</em>, <em>model=''</em>, <em>direct=True</em>, <em>offset=0.0</em>, <em>broken=False</em>, <em>angle_limit=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/dynamixel/motor.html#DxlMX64106Motor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.motor.DxlMX64106Motor" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">pypot.dynamixel.motor.</code><code class="descname">DxlMX64106Motor</code><span class="sig-paren">(</span><em>id</em>, <em>name=None</em>, <em>model=”</em>, <em>direct=True</em>, <em>offset=0.0</em>, <em>broken=False</em>, <em>angle_limit=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/dynamixel/motor.html#DxlMX64106Motor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.motor.DxlMX64106Motor" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#pypot.dynamixel.motor.DxlMXMotor" title="pypot.dynamixel.motor.DxlMXMotor"><code class="xref py py-class docutils literal"><span class="pre">pypot.dynamixel.motor.DxlMXMotor</span></code></a></p>
 <p>This class represents the MX-64 and MX-106 robotis motor.</p>
 <dl class="docutils">
@@ -903,7 +903,7 @@
 
 <dl class="class">
 <dt id="pypot.dynamixel.motor.DxlSRMotor">
-<em class="property">class </em><code class="descclassname">pypot.dynamixel.motor.</code><code class="descname">DxlSRMotor</code><span class="sig-paren">(</span><em>id</em>, <em>name=None</em>, <em>model=''</em>, <em>direct=True</em>, <em>offset=0.0</em>, <em>broken=False</em>, <em>angle_limit=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/dynamixel/motor.html#DxlSRMotor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.motor.DxlSRMotor" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">pypot.dynamixel.motor.</code><code class="descname">DxlSRMotor</code><span class="sig-paren">(</span><em>id</em>, <em>name=None</em>, <em>model=”</em>, <em>direct=True</em>, <em>offset=0.0</em>, <em>broken=False</em>, <em>angle_limit=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/dynamixel/motor.html#DxlSRMotor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.motor.DxlSRMotor" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#pypot.dynamixel.motor.DxlMotor" title="pypot.dynamixel.motor.DxlMotor"><code class="xref py py-class docutils literal"><span class="pre">pypot.dynamixel.motor.DxlMotor</span></code></a></p>
 <p>This class represents the robotis motor found in the seed robotics hand.</p>
 <dl class="docutils">
@@ -936,7 +936,7 @@
 
 <dl class="attribute">
 <dt id="pypot.dynamixel.motor.DxlMotor.registers">
-<code class="descclassname">DxlMotor.</code><code class="descname">registers</code><em class="property"> = ['registers', 'goal_speed', 'compliant', 'safe_compliant', 'angle_limit', 'present_load', 'id', 'present_temperature', 'moving_speed', 'torque_limit', 'goal_position', 'upper_limit', 'lower_limit', 'name', 'present_speed', 'present_voltage', 'present_position', 'model']</em><a class="headerlink" href="#pypot.dynamixel.motor.DxlMotor.registers" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">DxlMotor.</code><code class="descname">registers</code><em class="property"> = [‘registers’, ‘goal_speed’, ‘compliant’, ‘safe_compliant’, ‘angle_limit’, ‘present_load’, ‘id’, ‘present_temperature’, ‘moving_speed’, ‘torque_limit’, ‘goal_position’, ‘upper_limit’, ‘lower_limit’, ‘name’, ‘present_speed’, ‘present_voltage’, ‘present_position’, ‘model’]</em><a class="headerlink" href="#pypot.dynamixel.motor.DxlMotor.registers" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </div>
@@ -1033,7 +1033,7 @@
 <p>The errors can be of two types:</p>
 <ul class="simple">
 <li>communication error (timeout, communication)</li>
-<li>motor error (voltage, limit, overload...)</li>
+<li>motor error (voltage, limit, overload…)</li>
 </ul>
 <p>This class was designed as an abstract class and so you should write your own handler by subclassing this class and defining the apropriate behavior for your program.</p>
 <div class="admonition warning">
@@ -1117,12 +1117,12 @@
 </div>
 <div class="section" id="module-pypot.dynamixel.conversion">
 <span id="conversion-module"></span><h2><code class="xref py py-mod docutils literal"><span class="pre">conversion</span></code> Module<a class="headerlink" href="#module-pypot.dynamixel.conversion" title="Permalink to this headline">¶</a></h2>
-<p>This module describes all the conversion method used to transform value from the representation used by the dynamixel motor to a more standard form (e.g. degrees, volt...).</p>
+<p>This module describes all the conversion method used to transform value from the representation used by the dynamixel motor to a more standard form (e.g. degrees, volt…).</p>
 <dl class="docutils">
 <dt>For compatibility issue all comparison method should be written in the following form (even if the model is not actually used):</dt>
 <dd><ul class="first last simple">
-<li>def my_conversion_from_dxl_to_si(value, model): ...</li>
-<li>def my_conversion_from_si_to_dxl(value, model): ...</li>
+<li>def my_conversion_from_dxl_to_si(value, model): …</li>
+<li>def my_conversion_from_si_to_dxl(value, model): …</li>
 </ul>
 </dd>
 </dl>
@@ -1383,7 +1383,7 @@
 
 <dl class="attribute">
 <dt id="pypot.dynamixel.protocol.v1.DxlPacketHeader.marker">
-<code class="descname">marker</code><em class="property"> = bytearray(b'\xff\xff')</em><a class="headerlink" href="#pypot.dynamixel.protocol.v1.DxlPacketHeader.marker" title="Permalink to this definition">¶</a></dt>
+<code class="descname">marker</code><em class="property"> = bytearray(b’\xff\xff’)</em><a class="headerlink" href="#pypot.dynamixel.protocol.v1.DxlPacketHeader.marker" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="classmethod">
@@ -1399,7 +1399,7 @@
 <dd><p>Bases: <a class="reference internal" href="#pypot.dynamixel.protocol.v1.DxlInstructionPacket" title="pypot.dynamixel.protocol.v1.DxlInstructionPacket"><code class="xref py py-class docutils literal"><span class="pre">pypot.dynamixel.protocol.v1.DxlInstructionPacket</span></code></a></p>
 <p>This class is used to represent a dynamixel instruction packet.</p>
 <p>An instruction packet is constructed as follows:
-[0xFF, 0xFF, ID, LENGTH, INSTRUCTION, PARAM 1, PARAM 2, ..., PARAM N, CHECKSUM]</p>
+[0xFF, 0xFF, ID, LENGTH, INSTRUCTION, PARAM 1, PARAM 2, …, PARAM N, CHECKSUM]</p>
 <p>(for more details see <a class="reference external" href="http://support.robotis.com/en/product/dxl_main.htm">http://support.robotis.com/en/product/dxl_main.htm</a>)</p>
 <p>Create new instance of DxlInstructionPacket(id, instruction, parameters)</p>
 <dl class="method">
@@ -1472,7 +1472,7 @@
 <dd><p>Bases: <a class="reference internal" href="#pypot.dynamixel.protocol.v1.DxlStatusPacket" title="pypot.dynamixel.protocol.v1.DxlStatusPacket"><code class="xref py py-class docutils literal"><span class="pre">pypot.dynamixel.protocol.v1.DxlStatusPacket</span></code></a></p>
 <p>This class is used to represent a dynamixel status packet.</p>
 <p>A status packet is constructed as follows:
-[0xFF, 0xFF, ID, LENGTH, ERROR, PARAM 1, PARAM 2, ..., PARAM N, CHECKSUM]</p>
+[0xFF, 0xFF, ID, LENGTH, ERROR, PARAM 1, PARAM 2, …, PARAM N, CHECKSUM]</p>
 <p>(for more details see <a class="reference external" href="http://support.robotis.com/en/product/dxl_main.htm">http://support.robotis.com/en/product/dxl_main.htm</a>)</p>
 <p>Create new instance of DxlStatusPacket(id, error, parameters)</p>
 <dl class="classmethod">
@@ -1542,7 +1542,7 @@
 
 <dl class="attribute">
 <dt id="pypot.dynamixel.protocol.v2.DxlPacketHeader.marker">
-<code class="descname">marker</code><em class="property"> = bytearray(b'\xff\xff\xfd\x00')</em><a class="headerlink" href="#pypot.dynamixel.protocol.v2.DxlPacketHeader.marker" title="Permalink to this definition">¶</a></dt>
+<code class="descname">marker</code><em class="property"> = bytearray(b’\xff\xff\xfd\x00’)</em><a class="headerlink" href="#pypot.dynamixel.protocol.v2.DxlPacketHeader.marker" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="classmethod">
@@ -1558,7 +1558,7 @@
 <dd><p>Bases: <a class="reference internal" href="#pypot.dynamixel.protocol.v2.DxlInstructionPacket" title="pypot.dynamixel.protocol.v2.DxlInstructionPacket"><code class="xref py py-class docutils literal"><span class="pre">pypot.dynamixel.protocol.v2.DxlInstructionPacket</span></code></a></p>
 <p>This class is used to represent a dynamixel instruction packet.</p>
 <p>An instruction packet is constructed as follows:
-[0xFF, 0xFF, 0xFD, 0x00, ID, LEN_L, LEN_H, INST, PARAM 1, PARAM 2, ..., PARAM N, CRC_L, CRC_H]</p>
+[0xFF, 0xFF, 0xFD, 0x00, ID, LEN_L, LEN_H, INST, PARAM 1, PARAM 2, …, PARAM N, CRC_L, CRC_H]</p>
 <p>(for more details see <a class="reference external" href="http://support.robotis.com/en/product/dxl_main.htm">http://support.robotis.com/en/product/dxl_main.htm</a>)</p>
 <p>Create new instance of DxlInstructionPacket(id, instruction, parameters)</p>
 <dl class="method">
@@ -1631,7 +1631,7 @@
 <dd><p>Bases: <a class="reference internal" href="#pypot.dynamixel.protocol.v2.DxlStatusPacket" title="pypot.dynamixel.protocol.v2.DxlStatusPacket"><code class="xref py py-class docutils literal"><span class="pre">pypot.dynamixel.protocol.v2.DxlStatusPacket</span></code></a></p>
 <p>This class is used to represent a dynamixel status packet.</p>
 <p>A status packet is constructed as follows:
-[0xFF, 0xFF, 0xFD, 0x00, ID, LEN_L, LEN_H, 0x55, ERROR, PARAM 1, PARAM 2, ..., PARAM N, CRC_L, CRC_H]</p>
+[0xFF, 0xFF, 0xFD, 0x00, ID, LEN_L, LEN_H, 0x55, ERROR, PARAM 1, PARAM 2, …, PARAM N, CRC_L, CRC_H]</p>
 <p>(for more details see <a class="reference external" href="http://support.robotis.com/en/product/dxl_main.htm">http://support.robotis.com/en/product/dxl_main.htm</a>)</p>
 <p>Create new instance of DxlStatusPacket(id, error, parameters)</p>
 <dl class="classmethod">
@@ -1673,7 +1673,7 @@
         <li><a href="pypot.primitive.html" title="primitive Package" >next</a></li>
         <li><a href="py-modindex.html" title="Python Module Index" >modules</a></li>
         <li><a href="genindex.html" title="General Index" >index</a></li>
-        <li><a href="api.html" >Pypot&#8217;s API</a></li>
+        <li><a href="api.html" >Pypot’s API</a></li>
         <li><a href="#">top</a></li> 
       
     </ul>
@@ -1684,7 +1684,7 @@
       <!-- footer -->
       <footer role="contentinfo">
           &copy; Copyright 2015, Poppy-Project.
-        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.5.5.
+        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.6.2.
       </footer>
       <!-- /footer -->
 
