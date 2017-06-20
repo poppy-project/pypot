@@ -266,3 +266,7 @@ _add_control('force control enable',
 _add_control('goal force',
              address=0x47,
              models=('SR-RH4D',))
+
+_add_control('goal acceleration',
+             address=0x49, length=1,
+             models=('MX-12, MX-28', 'MX-64', 'MX-106'))
