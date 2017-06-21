@@ -269,4 +269,6 @@ _add_control('goal force',
 
 _add_control('goal acceleration',
              address=0x49, length=1,
-             models=('MX-12, MX-28', 'MX-64', 'MX-106'))
+             models=('MX-12, MX-28', 'MX-64', 'MX-106'),
+             dxl_to_si=conv.dxl_to_acceleration,
+             si_to_dxl=conv.acceleration_to_dxl)
