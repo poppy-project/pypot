@@ -134,5 +134,6 @@ def autodetect_robot():
 
             c = BaseDxlController(dxl_io, motors)
             motor_controllers.append(c)
+            break
 
     return Robot(motor_controllers)
