@@ -337,6 +337,12 @@
 </dd></dl>
 
 <dl class="method">
+<dt id="pypot.dynamixel.io.io.DxlIO.get_goal_acceleration">
+<code class="descname">get_goal_acceleration</code><span class="sig-paren">(</span><em>ids</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pypot.dynamixel.io.io.DxlIO.get_goal_acceleration" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets goal acceleration from the specified motors.</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="pypot.dynamixel.io.io.DxlIO.get_goal_force">
 <code class="descname">get_goal_force</code><span class="sig-paren">(</span><em>ids</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pypot.dynamixel.io.io.DxlIO.get_goal_force" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gets goal force from the specified motors.</p>
@@ -490,6 +496,12 @@
 <dt id="pypot.dynamixel.io.io.DxlIO.set_force_control_enable">
 <code class="descname">set_force_control_enable</code><span class="sig-paren">(</span><em>value_for_id</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pypot.dynamixel.io.io.DxlIO.set_force_control_enable" title="Permalink to this definition">¶</a></dt>
 <dd><p>Sets force control enable to the specified motors.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pypot.dynamixel.io.io.DxlIO.set_goal_acceleration">
+<code class="descname">set_goal_acceleration</code><span class="sig-paren">(</span><em>value_for_id</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#pypot.dynamixel.io.io.DxlIO.set_goal_acceleration" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets goal acceleration to the specified motors.</p>
 </dd></dl>
 
 <dl class="method">
@@ -1164,6 +1176,18 @@
 <dt id="pypot.dynamixel.conversion.dxl_to_load">
 <code class="descclassname">pypot.dynamixel.conversion.</code><code class="descname">dxl_to_load</code><span class="sig-paren">(</span><em>value</em>, <em>model</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/dynamixel/conversion.html#dxl_to_load"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.conversion.dxl_to_load" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
+
+<dl class="function">
+<dt id="pypot.dynamixel.conversion.dxl_to_acceleration">
+<code class="descclassname">pypot.dynamixel.conversion.</code><code class="descname">dxl_to_acceleration</code><span class="sig-paren">(</span><em>value</em>, <em>model</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/dynamixel/conversion.html#dxl_to_acceleration"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.conversion.dxl_to_acceleration" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts from ticks to degress/second^2</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="pypot.dynamixel.conversion.acceleration_to_dxl">
+<code class="descclassname">pypot.dynamixel.conversion.</code><code class="descname">acceleration_to_dxl</code><span class="sig-paren">(</span><em>value</em>, <em>model</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/dynamixel/conversion.html#acceleration_to_dxl"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.dynamixel.conversion.acceleration_to_dxl" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts from degrees/second^2 to ticks</p>
+</dd></dl>
 
 <dl class="function">
 <dt id="pypot.dynamixel.conversion.dxl_to_pid">

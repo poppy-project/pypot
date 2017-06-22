@@ -406,6 +406,12 @@
 <span class="n">_add_control</span><span class="p">(</span><span class="s1">&#39;goal force&#39;</span><span class="p">,</span>
              <span class="n">address</span><span class="o">=</span><span class="mh">0x47</span><span class="p">,</span>
              <span class="n">models</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;SR-RH4D&#39;</span><span class="p">,))</span>
+
+<span class="n">_add_control</span><span class="p">(</span><span class="s1">&#39;goal acceleration&#39;</span><span class="p">,</span>
+             <span class="n">address</span><span class="o">=</span><span class="mh">0x49</span><span class="p">,</span> <span class="n">length</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+             <span class="n">models</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;MX-12, MX-28&#39;</span><span class="p">,</span> <span class="s1">&#39;MX-64&#39;</span><span class="p">,</span> <span class="s1">&#39;MX-106&#39;</span><span class="p">),</span>
+             <span class="n">dxl_to_si</span><span class="o">=</span><span class="n">conv</span><span class="o">.</span><span class="n">dxl_to_acceleration</span><span class="p">,</span>
+             <span class="n">si_to_dxl</span><span class="o">=</span><span class="n">conv</span><span class="o">.</span><span class="n">acceleration_to_dxl</span><span class="p">)</span>
 </pre></div>
 
                 </div>
