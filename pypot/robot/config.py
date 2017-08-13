@@ -68,7 +68,6 @@ def from_config(config, strict=True, sync=True, use_dummy_io=False, **extra):
 
             syncloop = (c_params['syncloop'] if 'syncloop' in c_params
                         else 'BaseDxlController')
-            #SyncLoopCls = getattr(pypot.dynamixel.syncloop, syncloop)
             SyncLoopCls = retrieve_class(syncloop)
 
             c = SyncLoopCls(dxl_io, attached_motors)
@@ -169,7 +168,7 @@ def dxl_io_from_confignode(config, c_params, ids, strict):
         logger.info('sync_read is {}. Vendor pid = {}'.format(sync_read, vendor_pid))
 
     handler = pypot.dynamixel.error.BaseErrorHandler
-    
+
     # TO DO - make this also dynamic based on the JSON specification of the class
     DxlIOCls = (pypot.dynamixel.io.Dxl320IO
                 if 'protocol' in c_params and c_params['protocol'] == 2

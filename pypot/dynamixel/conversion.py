@@ -121,6 +121,7 @@ def dxl_to_load(value, model):
 
 # MARK - Acceleration
 
+
 def dxl_to_acceleration(value, model):
     """Converts from ticks to degress/second^2"""
 
@@ -131,8 +132,6 @@ def acceleration_to_dxl(value, model):
     """Converts from degrees/second^2 to ticks"""
 
     return int(round(value / 8.583, 0))  # degrees / sec**2
-
-
 
 
 # PID Gains
