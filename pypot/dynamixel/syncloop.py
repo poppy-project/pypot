@@ -4,6 +4,7 @@ from .controller import (DxlController,
                          PosSpeedLoadDxlController,
                          AngleLimitRegisterController)
 
+from pypot.utils.factory import register_class
 
 class MetaDxlController(MotorsController):
     """ Synchronizes the reading/writing of :class:`~pypot.dynamixel.motor.DxlMotor` with the real motors.
@@ -84,6 +85,7 @@ class BaseDxlController(MetaDxlController):
 
         MetaDxlController.__init__(self, io, motors, controllers)
 
+register_class(BaseDxlController, "BaseDxlController")
 
 class LightDxlController(MetaDxlController):
     def __init__(self, io, motors):
@@ -117,3 +119,5 @@ class LightDxlController(MetaDxlController):
                                              'set', 'LED_color', 'led'))
 
         MetaDxlController.__init__(self, io, motors, controllers)
+
+register_class(LightDxlController, "LightDxlController")

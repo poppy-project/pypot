@@ -19,8 +19,7 @@ import pypot.sensor
 import pypot.dynamixel
 import pypot.dynamixel.io
 import pypot.dynamixel.error
-import pypot.dynamixel.motor
-import pypot.dynamixel.syncloop
+from pypot.utils.factory import retrieve_class
 
 from .robot import Robot
 from .controller import DummyController
@@ -69,7 +68,8 @@ def from_config(config, strict=True, sync=True, use_dummy_io=False, **extra):
 
             syncloop = (c_params['syncloop'] if 'syncloop' in c_params
                         else 'BaseDxlController')
-            SyncLoopCls = getattr(pypot.dynamixel.syncloop, syncloop)
+            #SyncLoopCls = getattr(pypot.dynamixel.syncloop, syncloop)
+            SyncLoopCls = retrieve_class(syncloop)
 
             c = SyncLoopCls(dxl_io, attached_motors)
             controllers.append(c)
@@ -118,16 +118,7 @@ def motor_from_confignode(config, motor_name):
     params = config['motors'][motor_name]
 
     type = params['type']
-    if type == 'XL-320':
-        MotorCls = pypot.dynamixel.motor.DxlXL320Motor
-    elif type == 'MX-64' or type == 'MX-106':
-        MotorCls = pypot.dynamixel.motor.DxlMX64106Motor
-    elif type.startswith('MX'):
-        MotorCls = pypot.dynamixel.motor.DxlMXMotor
-    elif type.startswith('AX') or type.startswith('RX'):
-        MotorCls = pypot.dynamixel.motor.DxlAXRXMotor
-    elif type.startswith('SR'):
-        MotorCls = pypot.dynamixel.motor.DxlSRMotor
+    MotorCls = retrieve_class(type)
 
     broken = 'broken' in params and params['broken']
 
@@ -178,7 +169,8 @@ def dxl_io_from_confignode(config, c_params, ids, strict):
         logger.info('sync_read is {}. Vendor pid = {}'.format(sync_read, vendor_pid))
 
     handler = pypot.dynamixel.error.BaseErrorHandler
-
+    
+    # TO DO - make this also dynamic based on the JSON specification of the class
     DxlIOCls = (pypot.dynamixel.io.Dxl320IO
                 if 'protocol' in c_params and c_params['protocol'] == 2
                 else pypot.dynamixel.io.DxlIO)

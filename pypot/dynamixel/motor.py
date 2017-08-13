@@ -11,6 +11,8 @@ from ..utils import SyncEvent
 from ..utils.trajectory import GotoMinJerk
 from ..utils.stoppablethread import StoppableLoopThread
 
+from pypot.utils.factory import register_class
+
 
 logger = logging.getLogger(__name__)
 
@@ -284,6 +286,11 @@ class DxlAXRXMotor(DxlMotor):
                           angle_limit)
         self.max_pos = 150
 
+register_class(DxlAXRXMotor, "AX-12")
+register_class(DxlAXRXMotor, "AX-18")
+register_class(DxlAXRXMotor, "RX-24")
+register_class(DxlAXRXMotor, "RX-28")
+register_class(DxlAXRXMotor, "RX-64")
 
 class DxlMXMotor(DxlMotor):
     """ This class represents the RX and MX robotis motor.
@@ -310,6 +317,8 @@ class DxlMXMotor(DxlMotor):
                           angle_limit)
         self.max_pos = 180
 
+register_class(DxlMXMotor, "MX-12")
+register_class(DxlMXMotor, "MX-28")
 
 class DxlMX64106Motor(DxlMXMotor):
     """ This class represents the MX-64 and MX-106 robotis motor.
@@ -337,6 +346,8 @@ class DxlMX64106Motor(DxlMXMotor):
                           angle_limit)
         self.max_pos = 180
 
+register_class(DxlMX64106Motor, "MX-64")
+register_class(DxlMX64106Motor, "MX-106")
 
 class DxlXL320Motor(DxlMXMotor):
     registers = list(DxlMXMotor.registers)
@@ -352,6 +363,7 @@ class DxlXL320Motor(DxlMXMotor):
                             angle_limit)
         self.max_pos = 150
 
+register_class(DxlXL320Motor, "XL-320")
 
 class DxlSRMotor(DxlMotor):
     """ This class represents the robotis motor found in the seed robotics hand.
@@ -383,6 +395,8 @@ class DxlSRMotor(DxlMotor):
                           direct, offset, broken,
                           angle_limit)
         self.max_pos = 180
+
+register_class(DxlSRMotor, "SR-RH4D")
 
 
 class SafeCompliance(StoppableLoopThread):
