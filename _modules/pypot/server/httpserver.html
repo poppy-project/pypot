@@ -323,7 +323,7 @@
 <div class="viewcode-block" id="ListPrimitiveMethodsHandler"><a class="viewcode-back" href="../../../pypot.server.html#pypot.server.httpserver.ListPrimitiveMethodsHandler">[docs]</a><span class="k">class</span> <span class="nc">ListPrimitiveMethodsHandler</span><span class="p">(</span><span class="n">PoppyRequestHandler</span><span class="p">):</span>
 <div class="viewcode-block" id="ListPrimitiveMethodsHandler.get"><a class="viewcode-back" href="../../../pypot.server.html#pypot.server.httpserver.ListPrimitiveMethodsHandler.get">[docs]</a>    <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">primitive_name</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">write_json</span><span class="p">({</span>
-            <span class="s1">&#39;methods&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">restful_robot</span><span class="o">.</span><span class="n">get_primitive_methods_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">primitive_name</span><span class="p">)</span>
+            <span class="s1">&#39;methods&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">restful_robot</span><span class="o">.</span><span class="n">get_primitive_methods_list</span><span class="p">(</span><span class="n">primitive_name</span><span class="p">)</span>
         <span class="p">})</span></div></div>
 
 
