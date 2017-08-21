@@ -106,7 +106,7 @@ class DxlMotor(Motor):
     present_position = DxlPositionRegister()
     goal_position = DxlPositionRegister(rw=True)
     present_speed = DxlOrientedRegister()
-    moving_speed = DxlRegister(rw=True)
+    moving_speed = DxlOrientedRegister(rw=True)
     present_load = DxlOrientedRegister()
     torque_limit = DxlRegister(rw=True)
 
@@ -342,6 +342,7 @@ class DxlXL320Motor(DxlMXMotor):
     registers = list(DxlMXMotor.registers)
 
     led = DxlRegister(rw=True)
+    control_mode = DxlRegister(rw=True)
 
     """ This class represents the XL-320 robotis motor. """
     def __init__(self, id, name=None, model='XL-320',
