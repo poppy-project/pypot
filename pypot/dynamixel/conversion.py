@@ -133,7 +133,6 @@ def acceleration_to_dxl(value, model):
 
     return int(round(value / 8.583, 0))  # degrees / sec**2
 
-
 # PID Gains
 
 
