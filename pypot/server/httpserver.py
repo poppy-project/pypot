@@ -184,7 +184,7 @@ class SetPrimitivePropertyHandler(PoppyRequestHandler):
 class ListPrimitiveMethodsHandler(PoppyRequestHandler):
     def get(self, primitive_name):
         self.write_json({
-            'methods': self.restful_robot.get_primitive_methods_list(self, primitive_name)
+            'methods': self.restful_robot.get_primitive_methods_list(primitive_name)
         })
 
 
