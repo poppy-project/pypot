@@ -101,6 +101,9 @@ class AbstractPoppyCreature(Robot):
                     raise IOError('Connection to V-REP failed!')
 
             elif simulator == 'poppy-simu':
+                use_http = True
+                poppy_creature = use_dummy_robot(config)
+            elif simulator == 'dummy':
                 poppy_creature = use_dummy_robot(config)
             else:
                 raise ValueError('Unknown simulation mode: "{}"'.format(simulator))

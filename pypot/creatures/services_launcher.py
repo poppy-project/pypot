@@ -58,6 +58,8 @@ def poppy_params_from_args(args):
         params['simulator'] = 'vrep'
     elif args.poppy_simu:
         params['simulator'] = 'poppy-simu'
+    elif args.dummy:
+        params['simulator'] = 'dummy'
 
     if args.disable_camera:
         params['camera'] = 'dummy'
@@ -79,6 +81,9 @@ Examples:
                         help='poppy creature name',
                         action='store', nargs='?',
                         choices=installed_poppy_creatures.keys())
+    parser.add_argument('--dummy',
+                        help='use a dummy robot',
+                        action='store_true')
     parser.add_argument('--vrep',
                         help='use a V-REP simulated Poppy Creature',
                         action='store_true')
@@ -167,7 +172,7 @@ Examples:
         ch.setFormatter(formatter)
         logging.getLogger('').addHandler(ch)
 
-    if not any([args.snap, args.http, args.remote, args.poppy_simu, args.ws]):
+    if not any([args.snap, args.http, args.remote, args.poppy_simu, args.ws, args.dummy]):
         print('No service specified! See --help for details.')
         sys.exit(1)
 
