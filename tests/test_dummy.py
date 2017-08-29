@@ -17,7 +17,7 @@ class EmptyPrim(LoopPrimitive):
 
 class TestDummy(unittest.TestCase):
     def setUp(self):
-        self.jr = PoppyErgoJr(simulator='poppy-simu')
+        self.jr = PoppyErgoJr(simulator='dummy')
 
     def test_dummy_controller(self):
         for m in self.jr.motors:
