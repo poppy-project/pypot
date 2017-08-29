@@ -82,13 +82,13 @@ Examples:
                         action='store', nargs='?',
                         choices=installed_poppy_creatures.keys())
     parser.add_argument('--dummy',
-                        help='use a dummy robot',
+                        help='use a simulated dummy robot',
                         action='store_true')
     parser.add_argument('--vrep',
                         help='use a V-REP simulated Poppy Creature',
                         action='store_true')
     parser.add_argument('--poppy-simu',
-                        help='use a Three.js visualization',
+                        help='start a simulated dummy robot and the HTTP API to connect to the viewer on simu.poppy-project.org',
                         action='store_true')
     parser.add_argument('--snap',
                         help='start a Snap! robot server',
