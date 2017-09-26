@@ -3484,6 +3484,12 @@
       <input type="%s">posicion_actual</input>
       <input type="%s">nombre_motor</input>
     </inputs>
+    <inputs><input type="%s" readonly="true">posicion_axtual<options>posicion_axtual=present_position
+velocidad=present_speed
+torque (fuerza)=present_load
+temperatura=present_temperature
+voltage=present_voltage
+led</options></input><input type="%s">nombre_del_motor</input></inputs>
     <script>
       <block s="doDeclareVariables">
         <list>
@@ -3697,9 +3703,8 @@
   <block-definition s="$robot comportamientos %&apos;running&apos;" type="reporter" category="sensing">
     <header></header>
     <code></code>
-    <inputs>
-      <input type="%s">todos</input>
-    </inputs>
+    <inputs><input type="%s" readonly="true">todos<options>todos
+    activos</options></input></inputs>
     <script>
       <block s="doIfElse">
         <block s="reportIsIdentical"><block var="running"/>
@@ -3740,14 +3745,11 @@
       </block>
     </script>
   </block-definition>
-  <block-definition s="$robot obtener %&apos;input&apos; %&apos;del&apos; comportamiento %&apos;primitive&apos;" type="reporter" category="sensing">
+  <block-definition s="$robot obtener %&apos;input%&apos; del comportamiento %&apos;primitive&apos;" type="reporter" category="sensing">
     <header></header>
     <code></code>
-    <inputs>
-      <input type="%s">metodos</input>
-      <input type="%s"></input>
-      <input type="%s"></input>
-    </inputs>
+    <inputs><input type="%s" readonly="true">métodos<options>métodos=methodes
+    propiedades=properties</options></input><input type="%txt">nombre_del_comportamiento</input></inputs>
     <script>
       <block s="doDeclareVariables">
         <list>
@@ -3864,7 +3866,7 @@
     <inputs>
       <input type="%txt">caribou<options>caribou
         tetris
-        lapin</options></input>
+        rabbit</options></input>
     </inputs>
     <script>
       <block s="doDeclareVariables">
