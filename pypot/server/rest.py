@@ -124,7 +124,7 @@ class RESTRobot(object):
             if motors_name is not None:
                 motors = [getattr(self.robot, m) for m in motors_name]
             else:
-                motors = self.get_motors_list()
+                motors = getattr(self.robot, 'motors')
             recorder = MoveRecorder(self.robot, 50, motors)
             self.robot.attach_primitive(recorder, '_{}_recorder'.format(move_name))
             recorder.start()
