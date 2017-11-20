@@ -272,3 +272,11 @@ _add_control('goal acceleration',
              models=('MX-12, MX-28', 'MX-64', 'MX-106'),
              dxl_to_si=conv.dxl_to_acceleration,
              si_to_dxl=conv.acceleration_to_dxl)
+
+_add_control('present_thumb_current',
+             address=0x70, length=2,
+             models=('SR-RH4D',))
+
+_add_control('present_finger_current',
+             address=0x72, length=2,
+             models=('SR-RH4D',))

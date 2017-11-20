@@ -50,6 +50,7 @@ velocity = {  # in degree/s
     'RX-28': 402.,
     'RX-64': 294.,
     'SR-RH4D': 300.,
+    'SR-RH4D': 90.,
 }
 
 
@@ -163,6 +164,8 @@ dynamixelModels = {
     350: 'XL-320',  # 94 + (1<<8)
     400: 'SR-RH4D',
     401: 'SR-RH4D',  # Virtual motor
+    405: 'SR-RH4D',
+    406: 'SR-RH4D',  # Virtual motor
 }
 
 
