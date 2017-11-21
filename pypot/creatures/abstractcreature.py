@@ -1,6 +1,7 @@
 from __future__ import print_function
 
 import logging
+import warnings
 import json
 import os
 import re
@@ -117,7 +118,7 @@ class AbstractPoppyCreature(Robot):
                     logger.info('Init successful')
                     break
                 except Exception as e:
-                    logger.warning('Init fail: {}'.format(str(e)))
+                    warnings.warn('Init fail: {}'.format(str(e)))
             else:
                 raise OSError('Could not initalize robot!')
             poppy_creature.simulated = False
