@@ -29,12 +29,8 @@ def start_poppy_with_services(args):
             # Give the robot some time to statup, reboot...
             time.sleep(random.random())
             print(e)
-            exc_type, exc_inst, tb = sys.exc_info()
     else:
         print('Could not start up the robot...')
-
-        # Re-raise the last exception allow to show traceback and debug the potiential code issue
-        raise exc_inst
         sys.exit(1)
 
 
@@ -190,7 +186,7 @@ Examples:
                 browser = webbrowser.get(browser_name)
                 browser.open(url, new=0, autoraise=True)
                 break
-            except:
+            except Exception:
                 pass
 
     with closing(start_poppy_with_services(args)):
