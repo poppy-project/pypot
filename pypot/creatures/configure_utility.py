@@ -15,6 +15,7 @@ from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
 from subprocess import call
 
 from pypot.creatures import installed_poppy_creatures
+from pypot.utils import flushed_print as print
 
 
 def find_port_for_motor(config, motor):

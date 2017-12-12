@@ -14,6 +14,7 @@ from argparse import RawTextHelpFormatter
 
 from pypot.server.snap import find_local_ip
 from pypot.creatures import installed_poppy_creatures
+from pypot.utils import flushed_print as print
 
 
 def start_poppy_with_services(args):
@@ -142,7 +143,8 @@ Examples:
     if args.log_file:
         fh = logging.FileHandler(args.log_file)
         fh.setLevel(logging.DEBUG)
-        formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+        formatter = logging.Formatter(
+            '%(asctime)s - %(name)s - %(levelname)s - %(message)s')
         fh.setFormatter(formatter)
         logging.getLogger('').addHandler(fh)
 
@@ -164,7 +166,8 @@ Examples:
             ch = logging.StreamHandler()
 
         ch.setLevel(lvl)
-        formatter = logging.Formatter('%(name)-12s: %(levelname)-8s %(message)s')
+        formatter = logging.Formatter(
+            '%(name)-12s: %(levelname)-8s %(message)s')
         ch.setFormatter(formatter)
         logging.getLogger('').addHandler(ch)
 
@@ -174,7 +177,8 @@ Examples:
 
     if args.snap and not args.no_browser:
         snap_url = 'http://snap.berkeley.edu/snapsource/snap.html'
-        block_url = 'http://{}:{}/snap-blocks.xml'.format(find_local_ip(), args.snap_port)
+        block_url = 'http://{}:{}/snap-blocks.xml'.format(
+            find_local_ip(), args.snap_port)
         url = '{}#open:{}'.format(snap_url, block_url)
 
         # Wait for the Snap server to be started before openning the Snap URL

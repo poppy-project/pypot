@@ -23,6 +23,7 @@ from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
 
 from pypot.dynamixel.conversion import dynamixelModels
 from pypot.dynamixel import DxlIO, Dxl320IO, get_available_ports
+from pypot.utils import flushed_print as print
 
 
 def check(pred, msg):
@@ -131,8 +132,8 @@ def main():
 
             time.sleep(.5)
             check(all(map(lambda p1, p2: abs(p1 - p2) < 1.,
-                      io.get_angle_limit([args.id])[0],
-                      args.angle_limit)),
+                          io.get_angle_limit([args.id])[0],
+                          args.angle_limit)),
                   'Could not change angle limit to {}'.format(args.angle_limit))
         print('Done!')
 

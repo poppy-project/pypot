@@ -4,6 +4,7 @@ from threading import Event
 
 from .stoppablethread import StoppableThread, StoppableLoopThread
 from .pypot_time import time
+from .flushed_print import flushed_print
 
 Point2D = namedtuple('Point2D', ('x', 'y'))
 Point3D = namedtuple('Point3D', ('x', 'y', 'z'))
