@@ -243,7 +243,7 @@
     <span class="c1"># If anything goes wrong when adding sensors</span>
     <span class="c1"># We have to make sure we close the robot properly</span>
     <span class="c1"># Otherwise trying to open it again will fail.</span>
-    <span class="k">except</span><span class="p">:</span>
+    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
         <span class="n">robot</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
         <span class="k">raise</span>
 
@@ -447,14 +447,14 @@
 
 
 <span class="k">def</span> <span class="nf">_motor_extractor</span><span class="p">(</span><span class="n">alias</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
-    <span class="n">l</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">motors</span> <span class="o">=</span> <span class="p">[]</span>
 
     <span class="k">if</span> <span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">alias</span><span class="p">:</span>
         <span class="k">return</span> <span class="p">[</span><span class="n">name</span><span class="p">]</span>
 
     <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">alias</span><span class="p">[</span><span class="n">name</span><span class="p">]:</span>
-        <span class="n">l</span> <span class="o">+=</span> <span class="n">_motor_extractor</span><span class="p">(</span><span class="n">alias</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span> <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">alias</span> <span class="k">else</span> <span class="p">[</span><span class="n">key</span><span class="p">]</span>
-    <span class="k">return</span> <span class="n">l</span>
+        <span class="n">motors</span> <span class="o">+=</span> <span class="n">_motor_extractor</span><span class="p">(</span><span class="n">alias</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span> <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">alias</span> <span class="k">else</span> <span class="p">[</span><span class="n">key</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">motors</span>
 
 
 <span class="n">ergo_robot_config</span> <span class="o">=</span> <span class="p">{</span>
