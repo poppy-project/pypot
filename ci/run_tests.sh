@@ -33,17 +33,7 @@ else
 
             pip uninstall -y poppy-creature poppy-humanoid
         fi
-
-        # Old test of running VREP localy (network trouble)
-        #     pushd $VREP_ROOT_DIR/
-        #         if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
-        #             xvfb-run --auto-servernum --server-num=1 ./vrep.sh -h  &
-        #         else
-        #             ./vrep.app/Contents/MacOS/vrep -h  &
-        #         fi
-        #         sleep 10
-        #     popd
-        #     python ci/test_vrep.py
+        
     popd
 
     pushd tests
