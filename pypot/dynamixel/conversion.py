@@ -201,11 +201,12 @@ dynamixelBaudrates = {
     252: 3000000.0,
 }
 
-dynamixelBaudratesWithModel = { 'XL-320': {
-        0:9600.0, 
-        1:57600.0,
-        2:115200.0,
-        3:1000000.0
+dynamixelBaudratesWithModel = {
+    'XL-320': {
+        0: 9600.0,
+        1: 57600.0,
+        2: 115200.0,
+        3: 1000000.0
     }
 }
 
@@ -215,10 +216,11 @@ def dxl_to_baudrate(value, model):
 
 
 def baudrate_to_dxl(value, model):
-    for k, v in dynamixelBaudrates.iteritems():
+    current_baudrates = dynamixelBaudratesWithModel.get(model, dynamixelBaudrates)
+    for k, v in current_baudrates.iteritems():
         if (abs(v - value) / float(value)) < 0.05:
             return k
-    raise ValueError('incorrect baudrate {} (possible values {})'.format(value, dynamixelBaudrates.values()))
+    raise ValueError('incorrect baudrate {} (possible values {})'.format(value, current_baudrates.values()))
 
 # MARK: - Return Delay Time
 
