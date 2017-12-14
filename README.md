@@ -1,6 +1,6 @@
 [![PyPI](https://img.shields.io/pypi/v/pypot.svg)](https://pypi.python.org/pypi/pypot/)
 [![Build Status](https://travis-ci.org/poppy-project/pypot.svg?branch=master)](https://travis-ci.org/poppy-project/pypot) 
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.13941.svg)](https://doi.org/10.5281/zenodo.13941)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.591809.svg)](https://doi.org/10.5281/zenodo.591809)
 
 
 
