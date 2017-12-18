@@ -341,16 +341,26 @@
     <span class="mi">252</span><span class="p">:</span> <span class="mf">3000000.0</span><span class="p">,</span>
 <span class="p">}</span>
 
+<span class="n">dynamixelBaudratesWithModel</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;XL-320&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="mi">0</span><span class="p">:</span> <span class="mf">9600.0</span><span class="p">,</span>
+        <span class="mi">1</span><span class="p">:</span> <span class="mf">57600.0</span><span class="p">,</span>
+        <span class="mi">2</span><span class="p">:</span> <span class="mf">115200.0</span><span class="p">,</span>
+        <span class="mi">3</span><span class="p">:</span> <span class="mf">1000000.0</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
 
 <div class="viewcode-block" id="dxl_to_baudrate"><a class="viewcode-back" href="../../../pypot.dynamixel.html#pypot.dynamixel.conversion.dxl_to_baudrate">[docs]</a><span class="k">def</span> <span class="nf">dxl_to_baudrate</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">model</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">dynamixelBaudrates</span><span class="p">[</span><span class="n">value</span><span class="p">]</span></div>
+    <span class="k">return</span> <span class="n">dynamixelBaudratesWithModel</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">dynamixelBaudrates</span><span class="p">)[</span><span class="n">value</span><span class="p">]</span></div>
 
 
 <div class="viewcode-block" id="baudrate_to_dxl"><a class="viewcode-back" href="../../../pypot.dynamixel.html#pypot.dynamixel.conversion.baudrate_to_dxl">[docs]</a><span class="k">def</span> <span class="nf">baudrate_to_dxl</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">model</span><span class="p">):</span>
-    <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">dynamixelBaudrates</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+    <span class="n">current_baudrates</span> <span class="o">=</span> <span class="n">dynamixelBaudratesWithModel</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">dynamixelBaudrates</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">current_baudrates</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
         <span class="k">if</span> <span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">v</span> <span class="o">-</span> <span class="n">value</span><span class="p">)</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">value</span><span class="p">))</span> <span class="o">&lt;</span> <span class="mf">0.05</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">k</span>
-    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;incorrect baudrate </span><span class="si">{}</span><span class="s1"> (possible values </span><span class="si">{}</span><span class="s1">)&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">dynamixelBaudrates</span><span class="o">.</span><span class="n">values</span><span class="p">()))</span></div>
+    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;incorrect baudrate </span><span class="si">{}</span><span class="s1"> (possible values </span><span class="si">{}</span><span class="s1">)&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">current_baudrates</span><span class="o">.</span><span class="n">values</span><span class="p">()))</span></div>
 
 <span class="c1"># MARK: - Return Delay Time</span>
 
