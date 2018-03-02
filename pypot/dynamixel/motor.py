@@ -368,6 +368,10 @@ class DxlSRMotor(DxlMotor):
     force_control_enable = DxlRegister(rw=True)
     goal_force = DxlRegister(rw=True)
     present_current = DxlRegister()
+    present_thumb_current = DxlRegister()
+    present_finger_current = DxlRegister()
+    present_wrist_rotation_current = DxlRegister()
+    present_wrist_flexion_current = DxlRegister()
 
     def __init__(self, id, name=None, model='',
                  direct=True, offset=0.0, broken=False,

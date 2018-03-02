@@ -73,6 +73,19 @@ class BaseDxlController(MetaDxlController):
             controllers.insert(0, DxlController(io, current_motors, 10., False,
                                                 'get', 'present_current', 'present_current'))
 
+        seed_logic_board = [m for m in motors
+                                 if (m.model.startswith('SR-EROSBRD'))]
+
+        if seed_logic_board:
+            controllers.insert(0, DxlController(io, seed_logic_board, 10., False,
+                                                'get', 'present_wrist_rotation_current', 'present_wrist_rotation_current'))
+            controllers.insert(0, DxlController(io, seed_logic_board, 10., False,
+                                                'get', 'present_wrist_flexion_current', 'present_wrist_flexion_current'))
+            controllers.insert(0, DxlController(io, seed_logic_board, 10., False,
+                                                'get', 'present_thumb_current', 'present_thumb_current'))
+            controllers.insert(0, DxlController(io, seed_logic_board, 10., False,
+                                                'get', 'present_finger_current', 'present_finger_current'))
+
         margin_slope_motors = [m for m in motors
                                if (m.model.startswith('AX') or
                                    m.model.startswith('RX'))]
