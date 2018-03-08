@@ -36,10 +36,15 @@ class RemoteRobotClient(object):
                             'pos={self.present_position}>').format(self=self)
 
             for reg in client.get_registers_list(name):
+                try:
+                    # in Py3 the register names are <class 'bytes'>
+                    reg = reg.decode()
+                except AttributeError:
+                    pass
                 setattr(Motor, reg, Register(name, reg))
 
             m = Motor()
-            setattr(self, m.name, m)
+            setattr(self, name, m)
             self.motors.append(m)
 
         for alias in client.get_motors_alias():
@@ -58,6 +63,12 @@ class RemoteRobotClient(object):
 
         self.primitives = []
         for p in client.get_primitives_list():
+            try:
+                # in Py3 the primitives are <class 'bytes'>
+                p = p.decode()
+            except AttributeError:
+                pass
+
             prim = Primitive(p)
             setattr(self, p, prim)
             self.primitives.append(prim)
@@ -66,3 +77,4 @@ class RemoteRobotClient(object):
 def from_remote(host, port):
     """ Remote access to a Robot through the REST API. """
     return RemoteRobotClient(host, port)
+
