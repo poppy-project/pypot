@@ -273,18 +273,30 @@ _add_control('goal acceleration',
              dxl_to_si=conv.dxl_to_acceleration,
              si_to_dxl=conv.acceleration_to_dxl)
 
-_add_control('present_wrist_rotation_current',
+_add_control('present_current_port_1',
              address=0x6C, length=2,
              models=('SR-EROSBRD',))
 
-_add_control('present_wrist_flexion_current',
+_add_control('present_current_port_2',
              address=0x6E, length=2,
              models=('SR-EROSBRD',))
 
-_add_control('present_thumb_current',
+_add_control('present_current_port_3',
              address=0x70, length=2,
              models=('SR-EROSBRD',))
 
-_add_control('present_finger_current',
+_add_control('present_current_port_4',
              address=0x72, length=2,
+             models=('SR-EROSBRD',))
+
+_add_control('present_current_port_5',
+             address=0x74, length=2,
+             models=('SR-EROSBRD',))
+
+_add_control('present_current_port_6',
+             address=0x76, length=2,
+             models=('SR-EROSBRD',))
+
+_add_control('present_current_port_7',
+             address=0x78, length=2,
              models=('SR-EROSBRD',))

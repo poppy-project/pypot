@@ -37,7 +37,9 @@ torque_max = {  # in N.m
     'RX-64': 4.,
     'XL-320': 0.39,
     'SR-RH4D': 0.57,
+    'SR-SEED28':0.28, # RH7D
     'SR-EROSBRD':0.1, #compatibility only; this is a logic board
+    'SR-SEED56':0.57, # RH4D
 }
 
 velocity = {  # in degree/s
@@ -50,9 +52,10 @@ velocity = {  # in degree/s
     'RX-24': 756.,
     'RX-28': 402.,
     'RX-64': 294.,
-    'SR-RH4D': 300.,
     'SR-RH4D': 90.,
+    'SR-SEED28':300., # RH7D
     'SR-EROSBRD': 300., #compatibility only; this is a logic board
+    'SR-SEED56':300., # RH4D
 }
 
 
@@ -166,8 +169,9 @@ dynamixelModels = {
     350: 'XL-320',  # 94 + (1<<8)
     400: 'SR-RH4D',
     401: 'SR-RH4D',  # Virtual motor
+    404: 'SR-SEED28', # RH7D
     405: 'SR-EROSBRD', # this is a logic board
-    406: 'SR-RH4D',
+    406: 'SR-SEED56', # RH4D
 }
 
 

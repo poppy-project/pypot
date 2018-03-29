@@ -368,10 +368,6 @@ class DxlSRMotor(DxlMotor):
     force_control_enable = DxlRegister(rw=True)
     goal_force = DxlRegister(rw=True)
     present_current = DxlRegister()
-    present_thumb_current = DxlRegister()
-    present_finger_current = DxlRegister()
-    present_wrist_rotation_current = DxlRegister()
-    present_wrist_flexion_current = DxlRegister()
 
     def __init__(self, id, name=None, model='',
                  direct=True, offset=0.0, broken=False,
@@ -389,6 +385,36 @@ class DxlSRMotor(DxlMotor):
                           angle_limit)
         self.max_pos = 180
 
+class DxlSRBoard(DxlMotor):
+    """ This class represents the logic board found in the seed robotics hand.
+
+        This class adds access to:
+            * current port readings
+
+        """
+    registers = list(DxlMotor.registers)
+
+    present_current_port_1 = DxlRegister()
+    present_current_port_2 = DxlRegister()
+    present_current_port_3 = DxlRegister()
+    present_current_port_4 = DxlRegister()
+    present_current_port_5 = DxlRegister()
+    present_current_port_6 = DxlRegister()
+    present_current_port_7 = DxlRegister()
+
+    def __init__(self, id, name=None, model='',
+                 direct=True, offset=0.0, broken=False,
+                 angle_limit=None):
+        """ This class represents the logic board found in the seed robotics hand.
+
+            This class adds access to:
+                * current port readings
+
+            """
+        DxlMotor.__init__(self, id, name, model,
+                          direct, offset, broken,
+                          angle_limit)
+        self.max_pos = 180
 
 class SafeCompliance(StoppableLoopThread):
     """ This class creates a controller to active compliance only if the current motor position is included in the angle limit, else the compliance is turned off. """

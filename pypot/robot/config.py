@@ -126,6 +126,8 @@ def motor_from_confignode(config, motor_name):
         MotorCls = pypot.dynamixel.motor.DxlMXMotor
     elif type.startswith('AX') or type.startswith('RX'):
         MotorCls = pypot.dynamixel.motor.DxlAXRXMotor
+    elif type == 'SR-EROSBRD':
+        MotorCls = pypot.dynamixel.motor.DxlSRBoard
     elif type.startswith('SR'):
         MotorCls = pypot.dynamixel.motor.DxlSRMotor
 
@@ -260,6 +262,8 @@ def instatiate_motors(config):
             MotorCls = pypot.dynamixel.motor.DxlMX64106Motor
         elif m_params['type'].startswith('MX'):
             MotorCls = pypot.dynamixel.motor.DxlMXMotor
+        elif m_params['type'].startswith('SR-EROSBRD'):
+            MotorCls = pypot.dynamixel.motor.DxlSRBoard
         elif m_params['type'].startswith('SR'):
             MotorCls = pypot.dynamixel.DxlSRMotor
 
