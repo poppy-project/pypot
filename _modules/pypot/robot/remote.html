@@ -175,7 +175,7 @@
                             <span class="s1">&#39;pos=</span><span class="si">{self.present_position}</span><span class="s1">&gt;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
 
             <span class="k">for</span> <span class="n">reg</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">get_registers_list</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
-                <span class="nb">setattr</span><span class="p">(</span><span class="n">Motor</span><span class="p">,</span> <span class="n">reg</span><span class="p">,</span> <span class="n">Register</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">reg</span><span class="p">))</span>
+                <span class="nb">setattr</span><span class="p">(</span><span class="n">Motor</span><span class="p">,</span> <span class="n">reg</span><span class="o">.</span><span class="n">decode</span><span class="p">(),</span> <span class="n">Register</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">reg</span><span class="p">))</span>
 
             <span class="n">m</span> <span class="o">=</span> <span class="n">Motor</span><span class="p">()</span>
             <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">m</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">m</span><span class="p">)</span>
@@ -198,7 +198,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">primitives</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">get_primitives_list</span><span class="p">():</span>
             <span class="n">prim</span> <span class="o">=</span> <span class="n">Primitive</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
-            <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">prim</span><span class="p">)</span>
+            <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">decode</span><span class="p">(),</span> <span class="n">prim</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">primitives</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">prim</span><span class="p">)</span></div>
 
 
@@ -238,7 +238,7 @@
       <!-- footer -->
       <footer role="contentinfo">
           &copy; Copyright 2015, Poppy-Project.
-        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.6.5.
+        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.7.2.
       </footer>
       <!-- /footer -->
 

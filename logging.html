@@ -196,7 +196,7 @@
 <li>The logger <strong>pypot.dynamixel.motor</strong> is logging each time a register of a motor is set (DEBUG). The name of the register, the name of the motor and the set value are given in the message.</li>
 <li><strong>pypot.robot.config</strong> is logging information regarding the creation of a robot through a config dictionary. A message is sent for each motor, controller and alias added (INFO). A WARNING message is also sent when the angle limits of a motor are changed. We provide as extra the entire config dictionary.</li>
 <li>The logger <strong>pypot.robot.robot</strong> is logging when the synchronization is started/stopped (INFO) and when a primitive is attached (INFO).</li>
-<li><strong>pypot.primitive.primitive</strong> logs a message when the primitive is started/stopped and paused/resumed (INFO). Eeach <a class="reference internal" href="pypot.primitive.html#pypot.primitive.primitive.LoopPrimitive.update" title="pypot.primitive.primitive.LoopPrimitive.update"><code class="xref py py-meth docutils literal"><span class="pre">update()</span></code></a> of a LoopPrimitive is also logged (DEBUG). Each time a primitive sets a value to a register a message is also logged (DEBUG).</li>
+<li><strong>pypot.primitive.primitive</strong> logs a message when the primitive is started/stopped and paused/resumed (INFO). Eeach <a class="reference internal" href="pypot.primitive.html#pypot.primitive.primitive.LoopPrimitive.update" title="pypot.primitive.primitive.LoopPrimitive.update"><code class="xref py py-meth docutils literal notranslate"><span class="pre">update()</span></code></a> of a LoopPrimitive is also logged (DEBUG). Each time a primitive sets a value to a register a message is also logged (DEBUG).</li>
 <li><strong>pypot.primitive.manager</strong> provides you information on how the values sent within primitives were combined (DEBUG).</li>
 <li><strong>pypot.server</strong> logs when the server is started (INFO) and each handled request (DEBUG).</li>
 </ul>
@@ -205,7 +205,7 @@
 <span id="log-ex"></span><h2>Using Pypot’s logging<a class="headerlink" href="#using-pypot-s-logging" title="Permalink to this headline">¶</a></h2>
 <p>As an example of what you can do with the logging system, here is how you can check the “real” update frequency of a loop primitive.</p>
 <p>First, you have to define a logging config. As you can see, here we specify that we only want the log coming form ‘pypot.primitive’ and the message is formatted so we only keep the timestamp:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">LOGGING</span> <span class="o">=</span> <span class="p">{</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">LOGGING</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s1">&#39;version&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
     <span class="s1">&#39;disable_existing_loggers&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
     <span class="s1">&#39;formatters&#39;</span><span class="p">:</span> <span class="p">{</span>
@@ -231,7 +231,7 @@
 </pre></div>
 </div>
 <p>Then, we just have to write a simple program, where for instance we run our dummy primitive for ten seconds:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pypot.robot</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pypot.robot</span>
 <span class="p">[</span><span class="o">...</span><span class="p">]</span>
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
@@ -249,7 +249,7 @@
 </pre></div>
 </div>
 <p>The execution of the program above will create a file named ‘pypot.log’ where each line corresponds to the timestamp of each primitive update. This file can then be easily parsed:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">t</span> <span class="o">=</span> <span class="p">[]</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">t</span> <span class="o">=</span> <span class="p">[]</span>
 
 <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;pypot.log&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
     <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">f</span><span class="o">.</span><span class="n">readlines</span><span class="p">():</span>
@@ -302,7 +302,7 @@
       <!-- footer -->
       <footer role="contentinfo">
           &copy; Copyright 2015, Poppy-Project.
-        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.6.5.
+        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.7.2.
       </footer>
       <!-- /footer -->
 

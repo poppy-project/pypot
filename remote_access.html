@@ -177,12 +177,12 @@
 <p>We add the possibility to remotely access and control your robot through TCP network. This can be useful both to work with client/server architecture (e.g. to separate the low-level control running on an embedded computer and higher-level computation on a more powerful computer) and to allow you to plug your existing code written in another language to the pypot’s API.</p>
 <p>We defined a protocol which permits the access of all the robot variables and method (including motors and primitives) via a JSON request. The protocol is entirely described in the section <a class="reference internal" href="#remote-protocol"><span class="std std-ref">Protocol</span></a> below. Two transport methods have been developed so far:</p>
 <ul class="simple">
-<li>HTTP via GET and POST request (see the <a class="reference internal" href="pypot.server.html#pypot.server.httpserver.HTTPRobotServer" title="pypot.server.httpserver.HTTPRobotServer"><code class="xref py py-class docutils literal"><span class="pre">HTTPRobotServer</span></code></a>)</li>
-<li>ZMQ socket (see the <a class="reference internal" href="pypot.server.html#pypot.server.zmqserver.ZMQRobotServer" title="pypot.server.zmqserver.ZMQRobotServer"><code class="xref py py-class docutils literal"><span class="pre">ZMQRobotServer</span></code></a>)</li>
+<li>HTTP via GET and POST request (see the <a class="reference internal" href="pypot.server.html#pypot.server.httpserver.HTTPRobotServer" title="pypot.server.httpserver.HTTPRobotServer"><code class="xref py py-class docutils literal notranslate"><span class="pre">HTTPRobotServer</span></code></a>)</li>
+<li>ZMQ socket (see the <a class="reference internal" href="pypot.server.html#pypot.server.zmqserver.ZMQRobotServer" title="pypot.server.zmqserver.ZMQRobotServer"><code class="xref py py-class docutils literal notranslate"><span class="pre">ZMQRobotServer</span></code></a>)</li>
 </ul>
-<p>The <a class="reference internal" href="pypot.server.html#pypot.server.rest.RESTRobot" title="pypot.server.rest.RESTRobot"><code class="xref py py-class docutils literal"><span class="pre">RESTRobot</span></code></a> has been abstracted from the server, so you can easily add new transport methods if needed.</p>
+<p>The <a class="reference internal" href="pypot.server.html#pypot.server.rest.RESTRobot" title="pypot.server.rest.RESTRobot"><code class="xref py py-class docutils literal notranslate"><span class="pre">RESTRobot</span></code></a> has been abstracted from the server, so you can easily add new transport methods if needed.</p>
 <p>As an example of what you can do, here is the code of getting the load of a motor and changing its position:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">zmq</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">zmq</span>
 <span class="kn">import</span> <span class="nn">threading</span>
 
 <span class="n">robot</span> <span class="o">=</span> <span class="n">pypot</span><span class="o">.</span><span class="n">robot</span><span class="o">.</span><span class="n">from_config</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
@@ -244,7 +244,7 @@
       <!-- footer -->
       <footer role="contentinfo">
           &copy; Copyright 2015, Poppy-Project.
-        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.6.5.
+        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.7.2.
       </footer>
       <!-- /footer -->
 

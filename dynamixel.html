@@ -180,7 +180,7 @@
                   
   <div class="section" id="dynamixel-low-level-io">
 <span id="low-level"></span><h1>Dynamixel Low-level IO<a class="headerlink" href="#dynamixel-low-level-io" title="Permalink to this headline">¶</a></h1>
-<p>The low-level API almost directly encapsulates the communication protocol used by dynamixel motors. This protocol can be used to access any register of these motors. The <a class="reference internal" href="pypot.dynamixel.html#pypot.dynamixel.io.io.DxlIO" title="pypot.dynamixel.io.io.DxlIO"><code class="xref py py-class docutils literal"><span class="pre">DxlIO</span></code></a> class is used to handle the communication with a particular port.</p>
+<p>The low-level API almost directly encapsulates the communication protocol used by dynamixel motors. This protocol can be used to access any register of these motors. The <a class="reference internal" href="pypot.dynamixel.html#pypot.dynamixel.io.io.DxlIO" title="pypot.dynamixel.io.io.DxlIO"><code class="xref py py-class docutils literal notranslate"><span class="pre">DxlIO</span></code></a> class is used to handle the communication with a particular port.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">The port can only be accessed by a single DxlIO instance.</p>
@@ -193,7 +193,7 @@
 </ul>
 <p>The communication is thread-safe to avoid collision in the communication buses.</p>
 <p>As an example, you can write:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">itertools</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">itertools</span>
 
 <span class="k">with</span> <span class="n">DxlIO</span><span class="p">(</span><span class="s1">&#39;/dev/USB0&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">dxl_io</span><span class="p">:</span>
     <span class="n">ids</span> <span class="o">=</span> <span class="n">dxl_io</span><span class="o">.</span><span class="n">scan</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">])</span>
@@ -204,13 +204,13 @@
 </div>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">Since pypot version 2.2, support for the robotis protocol v2 and for XL-320 motors has been added. To avoid confusion there is a another class that should be used: <a class="reference internal" href="pypot.dynamixel.html#pypot.dynamixel.io.io_320.Dxl320IO" title="pypot.dynamixel.io.io_320.Dxl320IO"><code class="xref py py-class docutils literal"><span class="pre">Dxl320IO</span></code></a> in this case.</p>
+<p class="last">Since pypot version 2.2, support for the robotis protocol v2 and for XL-320 motors has been added. To avoid confusion there is a another class that should be used: <a class="reference internal" href="pypot.dynamixel.html#pypot.dynamixel.io.io_320.Dxl320IO" title="pypot.dynamixel.io.io_320.Dxl320IO"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dxl320IO</span></code></a> in this case.</p>
 </div>
 <div class="section" id="opening-closing-a-communication-port">
 <span id="open-connection"></span><h2>Opening/Closing a communication port<a class="headerlink" href="#opening-closing-a-communication-port" title="Permalink to this headline">¶</a></h2>
-<p>In order to open a connection with the device, you will need to know what port it is connected to. Pypot has a function named <a class="reference internal" href="pypot.dynamixel.html#pypot.dynamixel.get_available_ports" title="pypot.dynamixel.get_available_ports"><code class="xref py py-func docutils literal"><span class="pre">get_available_ports()</span></code></a> which will try to auto-discover any compatible devices connected to the communication ports.</p>
+<p>In order to open a connection with the device, you will need to know what port it is connected to. Pypot has a function named <a class="reference internal" href="pypot.dynamixel.html#pypot.dynamixel.get_available_ports" title="pypot.dynamixel.get_available_ports"><code class="xref py py-func docutils literal notranslate"><span class="pre">get_available_ports()</span></code></a> which will try to auto-discover any compatible devices connected to the communication ports.</p>
 <p>To create a connection, open up a python terminal and type the following code:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pypot.dynamixel</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pypot.dynamixel</span>
 
 <span class="n">ports</span> <span class="o">=</span> <span class="n">pypot</span><span class="o">.</span><span class="n">dynamixel</span><span class="o">.</span><span class="n">get_available_ports</span><span class="p">()</span>
 
@@ -229,15 +229,15 @@
 <p class="last">It is important to note that it will open a connection using a default baud rate. By default your motors are set up to work on the robotis default baud rate (57140) while pypot is set up to work with a 1000000 baud rate. To communicate with your motors, you must ensure that this baud rate is the same baud rate that the motors are configure to use. So, you will need to change either the configuration of your motors (see <a class="reference internal" href="herborist.html#herborist"><span class="std std-ref">Herborist</span></a> section) or change the default baud rate of your connection.</p>
 </div>
 <p>To set up a connection with another baud rate you can write:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">dxl_io</span> <span class="o">=</span> <span class="n">pypot</span><span class="o">.</span><span class="n">dynamixel</span><span class="o">.</span><span class="n">DxlIO</span><span class="p">(</span><span class="n">port</span><span class="p">,</span> <span class="n">baudrate</span><span class="o">=</span><span class="mi">57600</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dxl_io</span> <span class="o">=</span> <span class="n">pypot</span><span class="o">.</span><span class="n">dynamixel</span><span class="o">.</span><span class="n">DxlIO</span><span class="p">(</span><span class="n">port</span><span class="p">,</span> <span class="n">baudrate</span><span class="o">=</span><span class="mi">57600</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>The communication can be closed using the <code class="xref py py-meth docutils literal"><span class="pre">close()</span></code> method.</p>
+<p>The communication can be closed using the <code class="xref py py-meth docutils literal notranslate"><span class="pre">close()</span></code> method.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p>The class <code class="xref py py-class docutils literal"><span class="pre">DxlIO</span></code> can also be used as a <a class="reference external" href="https://docs.python.org/2/library/contextlib.html">Context Manager</a> (the <code class="xref py py-meth docutils literal"><span class="pre">close()</span></code> method will automatically be called at the end).
+<p>The class <code class="xref py py-class docutils literal notranslate"><span class="pre">DxlIO</span></code> can also be used as a <a class="reference external" href="https://docs.python.org/2/library/contextlib.html">Context Manager</a> (the <code class="xref py py-meth docutils literal notranslate"><span class="pre">close()</span></code> method will automatically be called at the end).
 For instance:</p>
-<div class="last highlight-default"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">pypot</span><span class="o">.</span><span class="n">dynamixel</span><span class="o">.</span><span class="n">DxlIO</span><span class="p">(</span><span class="s1">&#39;/dev/ttyUSB0&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">dxl_io</span><span class="p">:</span>
+<div class="last highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">pypot</span><span class="o">.</span><span class="n">dynamixel</span><span class="o">.</span><span class="n">DxlIO</span><span class="p">(</span><span class="s1">&#39;/dev/ttyUSB0&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">dxl_io</span><span class="p">:</span>
     <span class="o">...</span>
 </pre></div>
 </div>
@@ -247,9 +247,9 @@ For instance:</p>
 <h2>Finding motors<a class="headerlink" href="#finding-motors" title="Permalink to this headline">¶</a></h2>
 <p>Pypot has been designed to work specifically with the Robotis range of motors. These motors use two different protocols to communicate: TTL (3 wire bus) and RS485 (4 wire Bus). The motors can be daisy chained together with other types of motors on the same bus <em>as long as the bus communicates using the same protocol</em>. This means that MX-28 and AX-12 can communicate on the same bus, but cannot be connected to a RX-28.</p>
 <p>All motors work sufficiently well with a 12V supply. Some motors can use more than 12V but you must be careful not to connect an 18V supply on a bus that contains motors that can only use 12V! Connect this 12V SMPS supply (switch mode power supply) to a Robotis SMPS2Dynamixel device which regulates the voltage coming from the SMPS. Connect your controller device and a single motor to this SMPS2Dynamixel.</p>
-<p>Open your python terminal and create your <code class="xref py py-class docutils literal"><span class="pre">DxlIO</span></code> as described in the above section <a class="reference internal" href="#open-connection"><span class="std std-ref">Opening/Closing a communication port</span></a>.</p>
+<p>Open your python terminal and create your <code class="xref py py-class docutils literal notranslate"><span class="pre">DxlIO</span></code> as described in the above section <a class="reference internal" href="#open-connection"><span class="std std-ref">Opening/Closing a communication port</span></a>.</p>
 <p>To detect the motors and find their id you can scan the bus. To avoid spending a long time searching all possible values, you can add a list of values to test:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">dxl_io</span><span class="o">.</span><span class="n">scan</span><span class="p">()</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dxl_io</span><span class="o">.</span><span class="n">scan</span><span class="p">()</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">23</span><span class="p">,</span> <span class="mi">24</span><span class="p">,</span> <span class="mi">25</span><span class="p">]</span>
 
 <span class="n">dxl_io</span><span class="o">.</span><span class="n">scan</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">])</span>
@@ -257,7 +257,7 @@ For instance:</p>
 </pre></div>
 </div>
 <p>Or, you can use the shorthand:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">dxl_io</span><span class="o">.</span><span class="n">scan</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">))</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dxl_io</span><span class="o">.</span><span class="n">scan</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">))</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="p">[</span><span class="mi">4</span><span class="p">]</span>
 </pre></div>
 </div>
@@ -270,12 +270,12 @@ For instance:</p>
 <div class="section" id="low-level-control">
 <h2>Low-level control<a class="headerlink" href="#low-level-control" title="Permalink to this headline">¶</a></h2>
 <p>Now we have the id of the motors connected, we can begin to access their functions by using their id. Try to find out the present position (in degrees) of the motor by typing the following:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">dxl_io</span><span class="o">.</span><span class="n">get_present_position</span><span class="p">((</span><span class="mi">4</span><span class="p">,</span> <span class="p">))</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dxl_io</span><span class="o">.</span><span class="n">get_present_position</span><span class="p">((</span><span class="mi">4</span><span class="p">,</span> <span class="p">))</span>
 <span class="o">&gt;&gt;&gt;</span> <span class="p">(</span><span class="mf">67.8</span><span class="p">,</span> <span class="p">)</span>
 </pre></div>
 </div>
 <p>You can also write a goal position (in degrees) to the motor using the following:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">dxl_io</span><span class="o">.</span><span class="n">set_goal_position</span><span class="p">({</span><span class="mi">4</span><span class="p">:</span> <span class="mi">0</span><span class="p">})</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dxl_io</span><span class="o">.</span><span class="n">set_goal_position</span><span class="p">({</span><span class="mi">4</span><span class="p">:</span> <span class="mi">0</span><span class="p">})</span>
 </pre></div>
 </div>
 <p>The motors are handled in degrees where 0 is considered the central point of the motor turn. For the MX motors, the end points are -180° and 180°. For the AX and RX motors, these end points are -150° to 150°.</p>
@@ -284,7 +284,7 @@ For instance:</p>
 <p class="last">As you can see on the example above, you should always pass the id parameter as a list. This is intended as getting a value from several motors takes the same time as getting a value from a single motor (thanks to the SYNC_READ instruction). Similarly, we use dictionary with pairs of (id, value) to set value to a specific register of motors and benefit from the SYNC_WRITE instruction.</p>
 </div>
 <p>As an example of what you can do with the low-level API, we are going to apply a sinusoid on two motors (make sure that the motion will not damage your robot before running the example!). Here is a complete listing of the code needed:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">itertools</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">itertools</span>
 <span class="kn">import</span> <span class="nn">numpy</span>
 <span class="kn">import</span> <span class="nn">time</span>
 
@@ -334,7 +334,7 @@ For instance:</p>
         <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.02</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Thanks to pypot, you can access all registers of your motors using the same syntax (e.g. <code class="xref py py-meth docutils literal"><span class="pre">get_present_speed()</span></code>, <code class="xref py py-meth docutils literal"><span class="pre">set_max_torque()</span></code>, <code class="xref py py-meth docutils literal"><span class="pre">get_pid_gain()</span></code>). Some shortcuts have been provided to make the code more readable (e.g. <code class="xref py py-meth docutils literal"><span class="pre">enable_torque()</span></code> instead of set_torque_enabled). All the getter functions takes a list of ids as argument and the setter takes a dictionary of (id: value) pairs. You can refer to the documentation of <code class="xref py py-class docutils literal"><span class="pre">DxlIO</span></code> for a complete list of all the available methods.</p>
+<p>Thanks to pypot, you can access all registers of your motors using the same syntax (e.g. <code class="xref py py-meth docutils literal notranslate"><span class="pre">get_present_speed()</span></code>, <code class="xref py py-meth docutils literal notranslate"><span class="pre">set_max_torque()</span></code>, <code class="xref py py-meth docutils literal notranslate"><span class="pre">get_pid_gain()</span></code>). Some shortcuts have been provided to make the code more readable (e.g. <code class="xref py py-meth docutils literal notranslate"><span class="pre">enable_torque()</span></code> instead of set_torque_enabled). All the getter functions takes a list of ids as argument and the setter takes a dictionary of (id: value) pairs. You can refer to the documentation of <code class="xref py py-class docutils literal notranslate"><span class="pre">DxlIO</span></code> for a complete list of all the available methods.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">Pypot provides an easy way to extend the code and automatically create methods to access new registers added by robotis.</p>
@@ -376,7 +376,7 @@ For instance:</p>
       <!-- footer -->
       <footer role="contentinfo">
           &copy; Copyright 2015, Poppy-Project.
-        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.6.5.
+        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.7.2.
       </footer>
       <!-- /footer -->
 

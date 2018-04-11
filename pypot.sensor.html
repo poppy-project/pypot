@@ -76,9 +76,9 @@
                 <a role="button" id="localToc" data-toggle="dropdown" data-target="#" href="#">Table Of Contents <b class="caret"></b></a>
                 <ul class="dropdown-menu localtoc sp-localtoc" role="menu" aria-labelledby="localToc">
                 <ul>
-<li><a class="reference internal" href="#"><code class="docutils literal"><span class="pre">sensor</span></code> Package</a><ul>
-<li><a class="reference internal" href="#module-pypot.sensor.kinect.sensor"><code class="docutils literal"><span class="pre">kinect</span></code> Module</a></li>
-<li><a class="reference internal" href="#module-pypot.sensor.optitrack"><code class="docutils literal"><span class="pre">optitrack</span></code> Module</a></li>
+<li><a class="reference internal" href="#"><code class="docutils literal notranslate"><span class="pre">sensor</span></code> Package</a><ul>
+<li><a class="reference internal" href="#module-pypot.sensor.kinect.sensor"><code class="docutils literal notranslate"><span class="pre">kinect</span></code> Module</a></li>
+<li><a class="reference internal" href="#module-pypot.sensor.optitrack"><code class="docutils literal notranslate"><span class="pre">optitrack</span></code> Module</a></li>
 </ul>
 </li>
 </ul>
@@ -130,19 +130,19 @@
     </a></p>
   <h3><a href="index.html">Table Of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#"><code class="docutils literal"><span class="pre">sensor</span></code> Package</a><ul>
-<li><a class="reference internal" href="#module-pypot.sensor.kinect.sensor"><code class="docutils literal"><span class="pre">kinect</span></code> Module</a></li>
-<li><a class="reference internal" href="#module-pypot.sensor.optitrack"><code class="docutils literal"><span class="pre">optitrack</span></code> Module</a></li>
+<li><a class="reference internal" href="#"><code class="docutils literal notranslate"><span class="pre">sensor</span></code> Package</a><ul>
+<li><a class="reference internal" href="#module-pypot.sensor.kinect.sensor"><code class="docutils literal notranslate"><span class="pre">kinect</span></code> Module</a></li>
+<li><a class="reference internal" href="#module-pypot.sensor.optitrack"><code class="docutils literal notranslate"><span class="pre">optitrack</span></code> Module</a></li>
 </ul>
 </li>
 </ul>
 
   <h4>Previous topic</h4>
   <p class="topless"><a href="pypot.robot.html"
-                        title="previous chapter"><code class="docutils literal"><span class="pre">robot</span></code> Package</a></p>
+                        title="previous chapter"><code class="docutils literal notranslate"><span class="pre">robot</span></code> Package</a></p>
   <h4>Next topic</h4>
   <p class="topless"><a href="pypot.server.html"
-                        title="next chapter"><code class="docutils literal"><span class="pre">server</span></code> Package</a></p>
+                        title="next chapter"><code class="docutils literal notranslate"><span class="pre">server</span></code> Package</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -177,9 +177,9 @@
                 <div class="body">
                   
   <div class="section" id="module-pypot.sensor">
-<span id="sensor-package"></span><h1><code class="xref py py-mod docutils literal"><span class="pre">sensor</span></code> Package<a class="headerlink" href="#module-pypot.sensor" title="Permalink to this headline">¶</a></h1>
+<span id="sensor-package"></span><h1><code class="xref py py-mod docutils literal notranslate"><span class="pre">sensor</span></code> Package<a class="headerlink" href="#module-pypot.sensor" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="module-pypot.sensor.kinect.sensor">
-<span id="kinect-module"></span><h2><code class="xref py py-mod docutils literal"><span class="pre">kinect</span></code> Module<a class="headerlink" href="#module-pypot.sensor.kinect.sensor" title="Permalink to this headline">¶</a></h2>
+<span id="kinect-module"></span><h2><code class="xref py py-mod docutils literal notranslate"><span class="pre">kinect</span></code> Module<a class="headerlink" href="#module-pypot.sensor.kinect.sensor" title="Permalink to this headline">¶</a></h2>
 <p>This code has been developed by Baptiste Busch: <a class="reference external" href="https://github.com/buschbapti">https://github.com/buschbapti</a></p>
 <p>This module allows you to retrieve Skeleton information from a Kinect device.
 It is only the client side of a zmq client/server application.</p>
@@ -189,7 +189,7 @@ It used the Microsoft Kinect SDK and thus only work on Windows.</p>
 <dl class="class">
 <dt id="pypot.sensor.kinect.sensor.Skeleton">
 <em class="property">class </em><code class="descclassname">pypot.sensor.kinect.sensor.</code><code class="descname">Skeleton</code><a class="reference internal" href="_modules/pypot/sensor/kinect/sensor.html#Skeleton"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.sensor.kinect.sensor.Skeleton" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#pypot.sensor.kinect.sensor.Skeleton" title="pypot.sensor.kinect.sensor.Skeleton"><code class="xref py py-class docutils literal"><span class="pre">pypot.sensor.kinect.sensor.Skeleton</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="#pypot.sensor.kinect.sensor.Skeleton" title="pypot.sensor.kinect.sensor.Skeleton"><code class="xref py py-class docutils literal notranslate"><span class="pre">pypot.sensor.kinect.sensor.Skeleton</span></code></a></p>
 <p>Create new instance of Skeleton(timestamp, user_id, hip_center, spine, shoulder_center, head, shoulder_left, elbow_left, wrist_left, hand_left, shoulder_right, elbow_right, wrist_right, hand_right, hip_left, knee_left, ankle_left, foot_left, hip_right, knee_right, ankle_right, foot_right)</p>
 <dl class="attribute">
 <dt id="pypot.sensor.kinect.sensor.Skeleton.joints">
@@ -201,7 +201,7 @@ It used the Microsoft Kinect SDK and thus only work on Windows.</p>
 <dl class="class">
 <dt id="pypot.sensor.kinect.sensor.Joint">
 <em class="property">class </em><code class="descclassname">pypot.sensor.kinect.sensor.</code><code class="descname">Joint</code><span class="sig-paren">(</span><em>position</em>, <em>orientation</em>, <em>pixel_coordinate</em><span class="sig-paren">)</span><a class="headerlink" href="#pypot.sensor.kinect.sensor.Joint" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">tuple</span></code></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.6)"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></a></p>
 <p>Create new instance of Joint(position, orientation, pixel_coordinate)</p>
 <dl class="attribute">
 <dt id="pypot.sensor.kinect.sensor.Joint.orientation">
@@ -226,7 +226,7 @@ It used the Microsoft Kinect SDK and thus only work on Windows.</p>
 <dl class="class">
 <dt id="pypot.sensor.kinect.sensor.KinectSensor">
 <em class="property">class </em><code class="descclassname">pypot.sensor.kinect.sensor.</code><code class="descname">KinectSensor</code><span class="sig-paren">(</span><em>addr</em>, <em>port</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/sensor/kinect/sensor.html#KinectSensor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.sensor.kinect.sensor.KinectSensor" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.6)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <dl class="method">
 <dt id="pypot.sensor.kinect.sensor.KinectSensor.remove_user">
 <code class="descname">remove_user</code><span class="sig-paren">(</span><em>user_index</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pypot/sensor/kinect/sensor.html#KinectSensor.remove_user"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pypot.sensor.kinect.sensor.KinectSensor.remove_user" title="Permalink to this definition">¶</a></dt>
@@ -256,11 +256,11 @@ It used the Microsoft Kinect SDK and thus only work on Windows.</p>
 
 </div>
 <div class="section" id="module-pypot.sensor.optitrack">
-<span id="optitrack-module"></span><h2><code class="xref py py-mod docutils literal"><span class="pre">optitrack</span></code> Module<a class="headerlink" href="#module-pypot.sensor.optitrack" title="Permalink to this headline">¶</a></h2>
+<span id="optitrack-module"></span><h2><code class="xref py py-mod docutils literal notranslate"><span class="pre">optitrack</span></code> Module<a class="headerlink" href="#module-pypot.sensor.optitrack" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="pypot.sensor.optitrack.TrackedObject">
 <em class="property">class </em><code class="descclassname">pypot.sensor.optitrack.</code><code class="descname">TrackedObject</code><span class="sig-paren">(</span><em>position</em>, <em>quaternion</em>, <em>orientation</em>, <em>timestamp</em><span class="sig-paren">)</span><a class="headerlink" href="#pypot.sensor.optitrack.TrackedObject" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">tuple</span></code></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.6)"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></a></p>
 <p>Create new instance of TrackedObject(position, quaternion, orientation, timestamp)</p>
 <dl class="attribute">
 <dt id="pypot.sensor.optitrack.TrackedObject.orientation">
@@ -330,7 +330,7 @@ It used the Microsoft Kinect SDK and thus only work on Windows.</p>
       <!-- footer -->
       <footer role="contentinfo">
           &copy; Copyright 2015, Poppy-Project.
-        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.6.5.
+        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.7.2.
       </footer>
       <!-- /footer -->
 
