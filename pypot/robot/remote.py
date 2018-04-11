@@ -36,7 +36,7 @@ class RemoteRobotClient(object):
                             'pos={self.present_position}>').format(self=self)
 
             for reg in client.get_registers_list(name):
-                setattr(Motor, reg, Register(name, reg))
+                setattr(Motor, reg.decode(), Register(name, reg))
 
             m = Motor()
             setattr(self, m.name, m)
@@ -59,7 +59,7 @@ class RemoteRobotClient(object):
         self.primitives = []
         for p in client.get_primitives_list():
             prim = Primitive(p)
-            setattr(self, p, prim)
+            setattr(self, p.decode(), prim)
             self.primitives.append(prim)
 
 
