@@ -7,7 +7,6 @@ from .server import AbstractServer
 
 logger = logging.getLogger(__name__)
 
-
 class ZMQRobotServer(AbstractServer):
     def __init__(self, robot, host, port):
         """ A ZMQServer allowing remote access of a robot instance.
@@ -18,13 +17,13 @@ class ZMQRobotServer(AbstractServer):
         AbstractServer.__init__(self, robot, host, port)
 
         c = zmq.Context()
-        self.socket = c.socket(zmq.REP)
+        self.socket = c.socket(zmq.PAIR)
         self.socket.bind('tcp://{}:{}'.format(self.host, self.port))
 
         logger.info('Starting ZMQServer on tcp://%s:%s', self.host, self.port)
 
     def run(self):
-        """ Run an infinite REQ/REP loop. """
+        """ Run an infinite REQ/RES loop. """
         while True:
             req = self.socket.recv_json()
 

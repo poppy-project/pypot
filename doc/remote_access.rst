@@ -12,26 +12,58 @@ The :class:`~pypot.server.rest.RESTRobot` has been abstracted from the server, s
 
 As an example of what you can do, here is the code of getting the load of a motor and changing its position::
 
+    ### ON THE ROBOT START THE ZMQ SERVER:
+
+    poppy-services -vv --zmq poppy-ergo-jr
+    # (but substitute "poppy-ergo-jr" for the name of your robot)
+
+    ### THEN ON THE REMOTE PC RUN THIS SCRIPT:
+
+    import pypot
     import zmq
-    import threading
 
-    robot = pypot.robot.from_config(...)
+    ROBOT1 = "flogo4.local"  # <--- your robot's IP or hostname
+    PORT = 5757 # the IP of the robot's ZMQ server. This is fixed
 
-    server = pypot.server.ZMQServer(robot, host, port)
-    # We launch the server inside a thread
-    threading.Thread(target=lambda: server.run()).start()
+    context = zmq.Context()
+    socket = context.socket(zmq.PAIR)
+    print ("Connecting to server...")
+    socket.connect ("tcp://{}:{}".format(ROBOT1, PORT))
+    print ("Connected.")
 
-    c = zmq.Context()
-    s = c.socket(zmq.REQ)
 
+    ## get the value of one register of one specific motor (in this case the current load on motor 2)
     req = {"robot": {"get_register_value": {"motor": "m2", "register": "present_load"}}}
-    s.send_json(req)
-    answer = s.recv_json()
+    socket.send_json(req)
+    answer = socket.recv_json()
     print(answer)
 
-    req = {"robot": {"set_register_value": {"motor": "m2", "register": "goal_position", "value": 20}}}
-    s.send_json(req)
-    answer = s.recv_json()
+
+    ## get all the register names of a given motor
+    req = {"robot": {"get_motor_registers_list": {"motor": "m2"}}}
+    socket.send_json(req)
+    answer = socket.recv_json()
+    print(answer)
+
+
+    ## get all the current positions and current angular velocity
+    req = {"robot": {"get_pos_speed": {}}}
+    socket.send_json(req)
+    answer = socket.recv_json()
+    print(answer)
+
+
+    ## set all motors to a given angle (example: Ergo jr)
+    req = {"robot": {"set_pos": {"pos":[0, 0, 0, 0, 0, 0]}}}
+    socket.send_json(req)
+    answer = socket.recv_json()
+    print(answer)
+
+
+    ## set one motor to a given angle
+    req = {"robot": {"set_register_value": {"motor": "m1", "register": "goal_position", "value": "20"}}}
+    socket.send_json(req)
+    answer = socket.recv_json()
     print(answer)
 
 .. _remote_protocol:

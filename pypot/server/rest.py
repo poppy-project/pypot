@@ -5,7 +5,6 @@ from pypot.primitive.move import MovePlayer, MoveRecorder, Move
 
 
 class RESTRobot(object):
-
     """ REST API for a Robot.
 
     Through the REST API you can currently access:
@@ -23,11 +22,15 @@ class RESTRobot(object):
 
     def __init__(self, robot):
         self.robot = robot
+        self.motors = None
 
     # Access motor related values
 
     def get_motors_list(self, alias='motors'):
-        return [m.name for m in getattr(self.robot, alias)]
+        if self.motors is None:
+            self.motors = [m.name for m in getattr(self.robot, alias)]
+
+        return self.motors
 
     def get_motor_registers_list(self, motor):
         return self._get_register_value(motor, 'registers')
@@ -42,6 +45,20 @@ class RESTRobot(object):
     #   alias to above method
     def get_register_value(self, motor, register):
         return self.get_motor_register_value(motor, register)
+
+    def _check_motors(self):
+        if self.motors is None:
+            self.get_motors_list()
+
+    def get_pos_speed(self, alias_present_position="present_position", alias_present_speed = "present_speed"):
+        self._check_motors()
+        return [self.get_motor_register_value(m, alias_present_position) for m in self.motors] + \
+               [self.get_motor_register_value(m, alias_present_speed) for m in self.motors]
+
+    def set_pos(self, positions, alias_goal_position="goal_position"):
+        self._check_motors()
+        for i, m in enumerate(self.motors):
+            self.set_motor_register_value(m, alias_goal_position, str(positions[i]))
 
     def set_motor_register_value(self, motor, register, value):
         self._set_register_value(motor, register, value)

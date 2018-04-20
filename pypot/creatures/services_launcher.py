@@ -169,7 +169,7 @@ Examples:
         else:
             ch = logging.StreamHandler()
 
-        ch.setLevel(lvl)
+        logging.basicConfig(level=lvl)
         formatter = logging.Formatter(
             '%(name)-12s: %(levelname)-8s %(message)s')
         ch.setFormatter(formatter)

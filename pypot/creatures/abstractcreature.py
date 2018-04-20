@@ -156,7 +156,7 @@ class AbstractPoppyCreature(Robot):
         if use_zmq:
             from pypot.server import ZMQRobotServer
             poppy_creature.remote = ZMQRobotServer(poppy_creature, zmq_host, zmq_port)
-            logger.info('ZMQRobotServer is now running on: http://{}:{}\n'.format(zmq_host, zmq_port))
+            logger.info('ZMQRobotServer is now running on: tcp://{}:{}\n'.format(zmq_host, zmq_port))
 
         if use_ws:
             from pypot.server import WsRobotServer
