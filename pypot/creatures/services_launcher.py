@@ -42,6 +42,7 @@ def poppy_params_from_args(args):
         'use_http': args.http,
         'http_port': args.http_port,
         'use_remote': args.remote,
+        'use_zmq': args.zmq,
         'use_ws': args.ws,
         'ws_port': args.ws_port,
     }
@@ -104,6 +105,9 @@ Examples:
                         default=8080, type=int)
     parser.add_argument('--remote',
                         help='start a remote robot server',
+                        action='store_true')
+    parser.add_argument('--zmq',
+                        help='start a remote robot server (but with faster ZMQ)',
                         action='store_true')
     parser.add_argument('--ws',
                         help='start the websocket server',
@@ -171,7 +175,7 @@ Examples:
         ch.setFormatter(formatter)
         logging.getLogger('').addHandler(ch)
 
-    if not any([args.snap, args.http, args.remote, args.poppy_simu, args.ws, args.dummy]):
+    if not any([args.snap, args.http, args.remote, args.zmq, args.poppy_simu, args.ws, args.dummy]):
         print('No service specified! See --help for details.')
         sys.exit(1)
 
