@@ -50,7 +50,8 @@ class vrep_time():
 
 
 def from_vrep(config, vrep_host='127.0.0.1', vrep_port=19997, scene=None,
-              tracked_objects=[], tracked_collisions=[]):
+              tracked_objects=[], tracked_collisions=[],
+              shared_vrep_io=None):
     """ Create a robot from a V-REP instance.
 
     :param config: robot configuration (either the path to the json or directly the dictionary)
@@ -80,7 +81,10 @@ def from_vrep(config, vrep_host='127.0.0.1', vrep_port=19997, scene=None,
             simulated_robot = from_vrep(config, '127.0.0.1', 19997, 'poppy.ttt')
 
     """
-    vrep_io = VrepIO(vrep_host, vrep_port)
+    if shared_vrep_io is None:
+        vrep_io = VrepIO(vrep_host, vrep_port)
+    else:
+        vrep_io = shared_vrep_io
 
     vreptime = vrep_time(vrep_io)
     pypot_time.time = vreptime.get_time
