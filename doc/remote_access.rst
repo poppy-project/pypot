@@ -19,7 +19,6 @@ As an example of what you can do, here is the code of getting the load of a moto
 
     ### THEN ON THE REMOTE PC RUN THIS SCRIPT:
 
-    import pypot
     import zmq
 
     ROBOT1 = "flogo4.local"  # <--- your robot's IP or hostname

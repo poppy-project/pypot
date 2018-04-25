@@ -13,7 +13,7 @@ Uninstall the system PyPot package.
     
 Make a new directory and git clone this repo.
 
-    mkdir toold
+    mkdir tools
     cd tools
     git clone https://github.com/fgolemo/pypot.git
     
