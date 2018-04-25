@@ -1,5 +1,9 @@
 # Changelog
 
+## V 3.1
+
+* Add support for connecting multiple robots to a same VREP scene.
+
 ## V 2.11
 
 ## Features

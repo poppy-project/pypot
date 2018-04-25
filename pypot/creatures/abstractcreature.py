@@ -29,7 +29,7 @@ class AbstractPoppyCreature(Robot):
     """ Abstract Class for Any Poppy Creature. """
     def __new__(cls,
                 base_path=None, config=None,
-                simulator=None, scene=None, host='localhost', port=19997, id=0,
+                simulator=None, scene=None, host='localhost', port=19997, id=None, shared_vrep_io=None,
                 use_snap=False, snap_host='0.0.0.0', snap_port=6969, snap_quiet=True,
                 use_http=False, http_host='0.0.0.0', http_port=8080, http_quiet=True,
                 use_remote=False, remote_host='0.0.0.0', remote_port=4242,
@@ -46,6 +46,9 @@ class AbstractPoppyCreature(Robot):
         :param str scene: specify a particular simulation scene (if None uses the default scene of the poppy creature, use "keep-existing" to keep the current VRep scene - e.g. poppy_humanoid.ttt)
         :param str host: host of the simulator
         :param int port: port of the simulator
+        :param int id: robot id in simulator (useful when using a scene with multiple robots)
+        :param vrep_io: use an already connected VrepIO (useful when using a scene with multiple robots)
+        :type vrep_io: :class:`~pypot.vrep.io.VrepIO`
         :param bool use_snap: start or not the Snap! API
         :param str snap_host: host of Snap! API
         :param int snap_port: port of the Snap!
@@ -97,7 +100,7 @@ class AbstractPoppyCreature(Robot):
                     host = '127.0.0.1'
 
                 try:
-                    poppy_creature = from_vrep(config, host, port, scene if scene != "keep-existing" else None)
+                    poppy_creature = from_vrep(config, host, port, scene if scene != "keep-existing" else None, id=id, shared_vrep_io=shared_vrep_io)
                 except VrepConnectionError:
                     raise IOError('Connection to V-REP failed!')
 
