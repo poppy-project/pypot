@@ -50,6 +50,11 @@ class RESTRobot(object):
         if self.motors is None:
             self.get_motors_list()
 
+    def _verify_motor_name(self, motor_name):
+        self._check_motors()
+        if motor_name not in self.motors:
+            print("ERROR: motor '{}' not found in {}".format(motor_name, self.motors))
+
     def get_pos_speed(self, alias_present_position="present_position", alias_present_speed = "present_speed"):
         self._check_motors()
         return [self.get_motor_register_value(m, alias_present_position) for m in self.motors] + \
@@ -58,9 +63,10 @@ class RESTRobot(object):
     def set_pos(self, positions, alias_goal_position="goal_position"):
         self._check_motors()
         for i, m in enumerate(self.motors):
-            self.set_motor_register_value(m, alias_goal_position, str(positions[i]))
+            self.set_motor_register_value(m, alias_goal_position, float(positions[i]))
 
     def set_motor_register_value(self, motor, register, value):
+        self._verify_motor_name(motor)
         self._set_register_value(motor, register, value)
 
     #   alias to above method

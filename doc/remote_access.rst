@@ -53,7 +53,7 @@ As an example of what you can do, here is the code of getting the load of a moto
 
 
     ## set all motors to a given angle (example: Ergo jr)
-    req = {"robot": {"set_pos": {"pos":[0, 0, 0, 0, 0, 0]}}}
+    req = {"robot": {"set_pos": {"positions":[0, 0, 0, 0, 0, 0]}}}
     socket.send_json(req)
     answer = socket.recv_json()
     print(answer)

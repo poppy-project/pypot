@@ -81,7 +81,7 @@ Use the following code for reading the servo sensors or setting the goal positio
 
 
     ## SET ALL MOTORS TO AN ANGLE (in degrees)
-    req = {"robot": {"set_pos": {"pos":[0, 0, 0, 0, 0, 0]}}}
+    req = {"robot": {"set_pos": {"positions":[0, 0, 0, 0, 0, 0]}}}
     socket.send_json(req)
     answer = socket.recv_json()
     print(answer) # the answer should be empty "{}"
