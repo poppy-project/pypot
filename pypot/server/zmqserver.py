@@ -34,13 +34,27 @@ class ZMQRobotServer(AbstractServer):
             except (AttributeError, TypeError) as e:
                 self.socket.send_json({'error': str(e)})
 
+    def decode(self, value):
+        # type guessing
+
+        value = value.encode('utf-8')
+        try:
+            v = float(value)
+        except ValueError:
+            try:
+                v = int(value)
+            except ValueError:
+                v = str(value)
+        return v
+
+
     def handle_request(self, request):
         meth_name, kwargs = request['robot'].popitem()
         meth = getattr(self.restful_robot, meth_name)
 
         for key in ('value', 'args'):
             if key in kwargs:
-                kwargs[key] = json.loads(kwargs[key])
+                kwargs[key] = self.decode(kwargs[key])
 
         ret = meth(**kwargs)
         ret = {} if ret is None else ret
