@@ -9,7 +9,7 @@
   <head>
     <meta charset="utf-8" />
     
-    <title>pypot.vrep.controller &mdash; pypot 3.0.4 documentation</title>
+    <title>pypot.vrep.controller &mdash; pypot 3.1.0 documentation</title>
     <meta name="description" content="">
     <meta name="author" content="">
 
@@ -35,7 +35,7 @@
 <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
             URL_ROOT:    '../../../',
-            VERSION:     '3.0.4',
+            VERSION:     '3.1.0',
             COLLAPSE_INDEX: false,
             FILE_SUFFIX: '.html',
             HAS_SOURCE:  true
@@ -53,7 +53,7 @@
     <link rel="author" title="About these documents" href="../../../about.html" />
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
-    <link rel="top" title="pypot 3.0.4 documentation" href="../../../index.html" />
+    <link rel="top" title="pypot 3.1.0 documentation" href="../../../index.html" />
     <link rel="up" title="pypot.vrep" href="../vrep.html" /> 
   </head>
   <body role="document">
@@ -66,7 +66,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="../../../index.html">pypot 3.0.4 documentation</a>
+          <a class="navbar-brand" href="../../../index.html">pypot 3.1.0 documentation</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
@@ -151,16 +151,19 @@
 
     <span class="sd">&quot;&quot;&quot; V-REP motors controller. &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vrep_io</span><span class="p">,</span> <span class="n">scene</span><span class="p">,</span> <span class="n">motors</span><span class="p">,</span> <span class="n">sync_freq</span><span class="o">=</span><span class="mf">50.</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vrep_io</span><span class="p">,</span> <span class="n">scene</span><span class="p">,</span> <span class="n">motors</span><span class="p">,</span> <span class="n">sync_freq</span><span class="o">=</span><span class="mf">50.</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        :param vrep_io: vrep io instance</span>
 <span class="sd">        :type vrep_io: :class:`~pypot.vrep.io.VrepIO`</span>
 <span class="sd">        :param str scene: path to the V-REP scene file to start</span>
 <span class="sd">        :param list motors: list of motors attached to the controller</span>
 <span class="sd">        :param float sync_freq: synchronization frequency</span>
+<span class="sd">        :param int id: robot id in simulator (useful when using a scene with multiple robots)</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">MotorsController</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vrep_io</span><span class="p">,</span> <span class="n">motors</span><span class="p">,</span> <span class="n">sync_freq</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="nb">id</span>
 
         <span class="k">if</span> <span class="n">scene</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">vrep_io</span><span class="o">.</span><span class="n">load_scene</span><span class="p">(</span><span class="n">scene</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -193,30 +196,30 @@
 
             <span class="c1"># Read values from V-REP and set them to the Motor</span>
             <span class="n">p</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span>
-                <span class="n">rad2deg</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">get_motor_position</span><span class="p">(</span><span class="n">motor_name</span><span class="o">=</span><span class="n">m</span><span class="o">.</span><span class="n">name</span><span class="p">)),</span> <span class="mi">1</span><span class="p">)</span>
+                <span class="n">rad2deg</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">get_motor_position</span><span class="p">(</span><span class="n">motor_name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_motor_name</span><span class="p">(</span><span class="n">m</span><span class="p">))),</span> <span class="mi">1</span><span class="p">)</span>
             <span class="n">m</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="s1">&#39;present_position&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">p</span>
 
-            <span class="n">l</span> <span class="o">=</span> <span class="mf">100.</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">get_motor_force</span><span class="p">(</span><span class="n">motor_name</span><span class="o">=</span><span class="n">m</span><span class="o">.</span><span class="n">name</span><span class="p">)</span> <span class="o">/</span> <span class="n">tmax</span>
+            <span class="n">l</span> <span class="o">=</span> <span class="mf">100.</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">get_motor_force</span><span class="p">(</span><span class="n">motor_name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_motor_name</span><span class="p">(</span><span class="n">m</span><span class="p">))</span> <span class="o">/</span> <span class="n">tmax</span>
             <span class="n">m</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="s1">&#39;present_load&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">l</span>
 
             <span class="n">m</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="s1">&#39;_load_fifo&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">l</span><span class="p">))</span>
             <span class="n">m</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="s1">&#39;present_temperature&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">25</span> <span class="o">+</span> \
                 <span class="nb">round</span><span class="p">(</span><span class="mf">2.5</span> <span class="o">*</span> <span class="nb">sum</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="s1">&#39;_load_fifo&#39;</span><span class="p">])</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="s1">&#39;_load_fifo&#39;</span><span class="p">]),</span> <span class="mi">1</span><span class="p">)</span>
 
-            <span class="n">ll</span><span class="p">,</span> <span class="n">lr</span> <span class="o">=</span> <span class="n">limits4handle</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">_object_handles</span><span class="p">[</span><span class="n">m</span><span class="o">.</span><span class="n">name</span><span class="p">]]</span>
+            <span class="n">ll</span><span class="p">,</span> <span class="n">lr</span> <span class="o">=</span> <span class="n">limits4handle</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">_object_handles</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_motor_name</span><span class="p">(</span><span class="n">m</span><span class="p">)]]</span>
             <span class="n">m</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="s1">&#39;lower_limit&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">rad2deg</span><span class="p">(</span><span class="n">ll</span><span class="p">)</span>
             <span class="n">m</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="s1">&#39;upper_limit&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">rad2deg</span><span class="p">(</span><span class="n">ll</span><span class="p">)</span> <span class="o">+</span> <span class="n">rad2deg</span><span class="p">(</span><span class="n">lr</span><span class="p">)</span>
 
             <span class="c1"># Send new values from Motor to V-REP</span>
             <span class="n">p</span> <span class="o">=</span> <span class="n">deg2rad</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="s1">&#39;goal_position&#39;</span><span class="p">],</span> <span class="mi">1</span><span class="p">))</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">set_motor_position</span><span class="p">(</span><span class="n">motor_name</span><span class="o">=</span><span class="n">m</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">position</span><span class="o">=</span><span class="n">p</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">set_motor_position</span><span class="p">(</span><span class="n">motor_name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_motor_name</span><span class="p">(</span><span class="n">m</span><span class="p">),</span> <span class="n">position</span><span class="o">=</span><span class="n">p</span><span class="p">)</span>
 
             <span class="n">t</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="s1">&#39;torque_limit&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="n">tmax</span> <span class="o">/</span> <span class="mf">100.</span>
 
             <span class="k">if</span> <span class="n">m</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="s1">&#39;compliant&#39;</span><span class="p">]:</span>
                 <span class="n">t</span> <span class="o">=</span> <span class="mf">0.</span>
 
-            <span class="bp">self</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">set_motor_force</span><span class="p">(</span><span class="n">motor_name</span><span class="o">=</span><span class="n">m</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">force</span><span class="o">=</span><span class="n">t</span><span class="p">)</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">set_motor_force</span><span class="p">(</span><span class="n">motor_name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_motor_name</span><span class="p">(</span><span class="n">m</span><span class="p">),</span> <span class="n">force</span><span class="o">=</span><span class="n">t</span><span class="p">)</span></div>
 
     <span class="k">def</span> <span class="nf">_init_vrep_streaming</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># While the code below may look redundant and that</span>
@@ -229,24 +232,24 @@
         <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">motors</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">vrep_call</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;simxGetJointPosition&#39;</span><span class="p">,</span> <span class="s1">&#39;simxGetJointForce&#39;</span><span class="p">]:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">call_remote_api</span><span class="p">(</span><span class="n">vrep_call</span><span class="p">,</span>
-                                        <span class="bp">self</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">get_object_handle</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">name</span><span class="p">),</span>
+                                        <span class="bp">self</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">get_object_handle</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_motor_name</span><span class="p">(</span><span class="n">m</span><span class="p">)),</span>
                                         <span class="n">streaming</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
                                         <span class="n">_force</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
         <span class="c1"># Now actually retrieves all values</span>
-        <span class="n">pos</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">get_motor_position</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">name</span><span class="p">)</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">motors</span><span class="p">]</span>
+        <span class="n">pos</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">get_motor_position</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_motor_name</span><span class="p">(</span><span class="n">m</span><span class="p">))</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">motors</span><span class="p">]</span>
 
         <span class="c1"># Prepare streaming for setting position for each motor</span>
         <span class="k">for</span> <span class="n">m</span><span class="p">,</span> <span class="n">p</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">motors</span><span class="p">,</span> <span class="n">pos</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">call_remote_api</span><span class="p">(</span><span class="s1">&#39;simxSetJointTargetPosition&#39;</span><span class="p">,</span>
-                                    <span class="bp">self</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">get_object_handle</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">name</span><span class="p">),</span>
+                                    <span class="bp">self</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">get_object_handle</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_motor_name</span><span class="p">(</span><span class="n">m</span><span class="p">)),</span>
                                     <span class="n">p</span><span class="p">,</span>
                                     <span class="n">sending</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
                                     <span class="n">_force</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
         <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">motors</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">call_remote_api</span><span class="p">(</span><span class="s1">&#39;simxSetJointForce&#39;</span><span class="p">,</span>
-                                    <span class="bp">self</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">get_object_handle</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">name</span><span class="p">),</span>
+                                    <span class="bp">self</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">get_object_handle</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_motor_name</span><span class="p">(</span><span class="n">m</span><span class="p">)),</span>
                                     <span class="n">torque_max</span><span class="p">[</span><span class="n">m</span><span class="o">.</span><span class="n">model</span><span class="p">],</span>
                                     <span class="n">sending</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
                                     <span class="n">_force</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -260,13 +263,19 @@
 
         <span class="c1"># And actually affect them</span>
         <span class="k">for</span> <span class="n">m</span><span class="p">,</span> <span class="n">p</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">motors</span><span class="p">,</span> <span class="n">pos</span><span class="p">):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">set_motor_position</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">set_motor_position</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_motor_name</span><span class="p">(</span><span class="n">m</span><span class="p">),</span> <span class="n">p</span><span class="p">)</span>
             <span class="n">m</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="s1">&#39;goal_position&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">rad2deg</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
 
         <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">motors</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">set_motor_force</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">torque_max</span><span class="p">[</span><span class="n">m</span><span class="o">.</span><span class="n">model</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">set_motor_force</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_motor_name</span><span class="p">(</span><span class="n">m</span><span class="p">),</span> <span class="n">torque_max</span><span class="p">[</span><span class="n">m</span><span class="o">.</span><span class="n">model</span><span class="p">])</span>
             <span class="n">m</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="s1">&#39;torque_limit&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">100.</span>
-            <span class="n">m</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="s1">&#39;compliant&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span></div>
+            <span class="n">m</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="s1">&#39;compliant&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+
+    <span class="k">def</span> <span class="nf">_motor_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">m</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">m</span><span class="o">.</span><span class="n">name</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s1">&#39;</span><span class="si">{}{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="VrepObjectTracker"><a class="viewcode-back" href="../../../pypot.vrep.html#pypot.vrep.controller.VrepObjectTracker">[docs]</a><span class="k">class</span> <span class="nc">VrepObjectTracker</span><span class="p">(</span><span class="n">SensorsController</span><span class="p">):</span>
@@ -329,7 +338,7 @@
 <div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
   <div class="navbar-inner">
     <ul class="nav navbar-nav ">
-        <li><a href="../../../index.html">pypot 3.0.4 documentation</a></li>
+        <li><a href="../../../index.html">pypot 3.1.0 documentation</a></li>
     </ul>
 <ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
       
@@ -347,7 +356,7 @@
       <!-- footer -->
       <footer role="contentinfo">
           &copy; Copyright 2015, Poppy-Project.
-        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.7.2.
+        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.7.4.
       </footer>
       <!-- /footer -->
 
