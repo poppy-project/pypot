@@ -11,16 +11,19 @@ class VrepController(MotorsController):
 
     """ V-REP motors controller. """
 
-    def __init__(self, vrep_io, scene, motors, sync_freq=50.):
+    def __init__(self, vrep_io, scene, motors, sync_freq=50., id=None):
         """
         :param vrep_io: vrep io instance
         :type vrep_io: :class:`~pypot.vrep.io.VrepIO`
         :param str scene: path to the V-REP scene file to start
         :param list motors: list of motors attached to the controller
         :param float sync_freq: synchronization frequency
+        :param int id: robot id in simulator (useful when using a scene with multiple robots)
 
         """
         MotorsController.__init__(self, vrep_io, motors, sync_freq)
+
+        self.id = id
 
         if scene is not None:
             vrep_io.load_scene(scene, start=True)
@@ -53,30 +56,30 @@ class VrepController(MotorsController):
 
             # Read values from V-REP and set them to the Motor
             p = round(
-                rad2deg(self.io.get_motor_position(motor_name=m.name)), 1)
+                rad2deg(self.io.get_motor_position(motor_name=self._motor_name(m))), 1)
             m.__dict__['present_position'] = p
 
-            l = 100. * self.io.get_motor_force(motor_name=m.name) / tmax
+            l = 100. * self.io.get_motor_force(motor_name=self._motor_name(m)) / tmax
             m.__dict__['present_load'] = l
 
             m.__dict__['_load_fifo'].append(abs(l))
             m.__dict__['present_temperature'] = 25 + \
                 round(2.5 * sum(m.__dict__['_load_fifo']) / len(m.__dict__['_load_fifo']), 1)
 
-            ll, lr = limits4handle[self.io._object_handles[m.name]]
+            ll, lr = limits4handle[self.io._object_handles[self._motor_name(m)]]
             m.__dict__['lower_limit'] = rad2deg(ll)
             m.__dict__['upper_limit'] = rad2deg(ll) + rad2deg(lr)
 
             # Send new values from Motor to V-REP
             p = deg2rad(round(m.__dict__['goal_position'], 1))
-            self.io.set_motor_position(motor_name=m.name, position=p)
+            self.io.set_motor_position(motor_name=self._motor_name(m), position=p)
 
             t = m.__dict__['torque_limit'] * tmax / 100.
 
             if m.__dict__['compliant']:
                 t = 0.
 
-            self.io.set_motor_force(motor_name=m.name, force=t)
+            self.io.set_motor_force(motor_name=self._motor_name(m), force=t)
 
     def _init_vrep_streaming(self):
         # While the code below may look redundant and that
@@ -89,24 +92,24 @@ class VrepController(MotorsController):
         for m in self.motors:
             for vrep_call in ['simxGetJointPosition', 'simxGetJointForce']:
                 self.io.call_remote_api(vrep_call,
-                                        self.io.get_object_handle(m.name),
+                                        self.io.get_object_handle(self._motor_name(m)),
                                         streaming=True,
                                         _force=True)
 
         # Now actually retrieves all values
-        pos = [self.io.get_motor_position(m.name) for m in self.motors]
+        pos = [self.io.get_motor_position(self._motor_name(m)) for m in self.motors]
 
         # Prepare streaming for setting position for each motor
         for m, p in zip(self.motors, pos):
             self.io.call_remote_api('simxSetJointTargetPosition',
-                                    self.io.get_object_handle(m.name),
+                                    self.io.get_object_handle(self._motor_name(m)),
                                     p,
                                     sending=True,
                                     _force=True)
 
         for m in self.motors:
             self.io.call_remote_api('simxSetJointForce',
-                                    self.io.get_object_handle(m.name),
+                                    self.io.get_object_handle(self._motor_name(m)),
                                     torque_max[m.model],
                                     sending=True,
                                     _force=True)
@@ -120,13 +123,19 @@ class VrepController(MotorsController):
 
         # And actually affect them
         for m, p in zip(self.motors, pos):
-            self.io.set_motor_position(m.name, p)
+            self.io.set_motor_position(self._motor_name(m), p)
             m.__dict__['goal_position'] = rad2deg(p)
 
         for m in self.motors:
-            self.io.set_motor_force(m.name, torque_max[m.model])
+            self.io.set_motor_force(self._motor_name(m), torque_max[m.model])
             m.__dict__['torque_limit'] = 100.
             m.__dict__['compliant'] = False
+
+    def _motor_name(self, m):
+        if self.id is None:
+            return m.name
+        else:
+            return '{}{}'.format(m.name, self.id)
 
 
 class VrepObjectTracker(SensorsController):

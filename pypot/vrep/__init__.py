@@ -50,7 +50,8 @@ class vrep_time():
 
 
 def from_vrep(config, vrep_host='127.0.0.1', vrep_port=19997, scene=None,
-              tracked_objects=[], tracked_collisions=[]):
+              tracked_objects=[], tracked_collisions=[],
+              id=None, shared_vrep_io=None):
     """ Create a robot from a V-REP instance.
 
     :param config: robot configuration (either the path to the json or directly the dictionary)
@@ -60,6 +61,9 @@ def from_vrep(config, vrep_host='127.0.0.1', vrep_port=19997, scene=None,
     :param str scene: path to the V-REP scene to load and start
     :param list tracked_objects: list of V-REP dummy object to track
     :param list tracked_collisions: list of V-REP collision to track
+    :param int id: robot id in simulator (useful when using a scene with multiple robots)
+    :param vrep_io: use an already connected VrepIO (useful when using a scene with multiple robots)
+    :type vrep_io: :class:`~pypot.vrep.io.VrepIO`
 
     This function tries to connect to a V-REP instance and expects to find motors with names corresponding as the ones found in the config.
 
@@ -80,7 +84,10 @@ def from_vrep(config, vrep_host='127.0.0.1', vrep_port=19997, scene=None,
             simulated_robot = from_vrep(config, '127.0.0.1', 19997, 'poppy.ttt')
 
     """
-    vrep_io = VrepIO(vrep_host, vrep_port)
+    if shared_vrep_io is None:
+        vrep_io = VrepIO(vrep_host, vrep_port)
+    else:
+        vrep_io = shared_vrep_io
 
     vreptime = vrep_time(vrep_io)
     pypot_time.time = vreptime.get_time
@@ -93,7 +100,7 @@ def from_vrep(config, vrep_host='127.0.0.1', vrep_port=19997, scene=None,
     motors = [motor_from_confignode(config, name)
               for name in config['motors'].keys()]
 
-    vc = VrepController(vrep_io, scene, motors)
+    vc = VrepController(vrep_io, scene, motors, id=id)
     vc._init_vrep_streaming()
 
     sensor_controllers = []
