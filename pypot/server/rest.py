@@ -70,6 +70,11 @@ class RESTRobot(object):
         for i, m in enumerate(self.motors):
             self.set_motor_register_value(m, alias_compliant, bool(trueorfalse))
 
+    def set_max_speed(self, max_speed, alias_max_speed="moving_speed"):
+        self._check_motors()
+        for i, m in enumerate(self.motors):
+            self.set_motor_register_value(m, alias_max_speed, float(max_speed))
+
     def set_motor_register_value(self, motor, register, value):
         self._verify_motor_name(motor)
         self._set_register_value(motor, register, value)
