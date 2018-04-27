@@ -50,6 +50,7 @@ class ZMQRobotServer(AbstractServer):
             except (AttributeError, TypeError) as e:
                 self.socket.send_json({'error': str(e)})
 
+
     def decode(self, value):
         # type guessing
 
@@ -92,6 +93,11 @@ class ZMQRobotServer(AbstractServer):
 
             return ret
 
+    def __del__(self):
+        self.killswitch.put("quit")
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        self.__del__()
 
 class Keylogger(threading.Thread):
     def __init__(self, q, ks):
@@ -123,5 +129,4 @@ class Keylogger(threading.Thread):
             print("I'm a thread, and I received %s!!" % msg)
 
         # Always be friendly!
-
-    print('Bye byes!')
+        print('Bye byes!')

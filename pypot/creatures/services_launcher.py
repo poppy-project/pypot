@@ -213,6 +213,7 @@ Examples:
                 time.sleep(1000)
         except KeyboardInterrupt:
             print("Bye bye!")
+            quit()
 
 
 if __name__ == '__main__':
