@@ -215,8 +215,7 @@ Examples:
         except KeyboardInterrupt:
             print("Bye bye!")
             raise SystemExit
-            time.sleep(3)
-            os._exit(0) # sometimes the threads aren't cleaned up properly and this force-quits
+
 
 
 if __name__ == '__main__':

@@ -114,17 +114,20 @@ class Keylogger(threading.Thread):
         self._queue.put(key)
 
     def run(self):
-        while True:
-            # queue.get() blocks the current thread until
-            # an item is retrieved.
-            msg = self._killswitch.get()
-            # Checks if the current message is
-            # the "Poison Pill"
-            if isinstance(msg, str) and msg == 'quit':
-                # if so, exists the loop
-                break
-            # "Processes" (or in our case, prints) the queue item
-            print("I'm a thread, and I received %s!!" % msg)
+        try:
+            while True:
+                # queue.get() blocks the current thread until
+                # an item is retrieved.
+                msg = self._killswitch.get()
+                # Checks if the current message is
+                # the "Poison Pill"
+                if isinstance(msg, str) and msg == 'quit':
+                    # if so, exists the loop
+                    break
+                # "Processes" (or in our case, prints) the queue item
+                print("I'm a thread, and I received %s!!" % msg)
+        except KeyboardInterrupt:
+            pass
 
         # Always be friendly!
         print('Bye byes!')
