@@ -45,6 +45,7 @@ def poppy_params_from_args(args):
         'use_zmq': args.zmq,
         'use_ws': args.ws,
         'ws_port': args.ws_port,
+        'with_keylogger': args.with_keylogger
     }
 
     if args.verbose:
@@ -121,6 +122,9 @@ Examples:
     parser.add_argument('-v', '--verbose',
                         help='start services with verbose mode. There is 3 debug levels, add as "v" as debug level you want',
                         action='count')
+    parser.add_argument('-kl', '--with-keylogger',
+                        help='start a background key logger for hit detection',
+                        action='store_true')
     parser.add_argument('-f', '--log-file',
                         help='Log filename',
                         action='store')
@@ -169,7 +173,9 @@ Examples:
         else:
             ch = logging.StreamHandler()
 
-        logging.basicConfig(level=lvl)
+        logging.basicConfig(level=lvl) #FIXME: this is still not working properly.
+        # I.e. logging level isn't set properly across all files, because they are all initiated with
+        # the wrong logger name (non-dependent, just filename).
         formatter = logging.Formatter(
             '%(name)-12s: %(levelname)-8s %(message)s')
         ch.setFormatter(formatter)

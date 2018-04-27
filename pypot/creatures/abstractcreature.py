@@ -33,7 +33,7 @@ class AbstractPoppyCreature(Robot):
                 use_snap=False, snap_host='0.0.0.0', snap_port=6969, snap_quiet=True,
                 use_http=False, http_host='0.0.0.0', http_port=8080, http_quiet=True,
                 use_remote=False, remote_host='0.0.0.0', remote_port=4242,
-                use_zmq=False, zmq_host='0.0.0.0', zmq_port=5757,
+                use_zmq=False, zmq_host='0.0.0.0', zmq_port=5757, with_keylogger=False,
                 use_ws=False, ws_host='0.0.0.0', ws_port=9009,
                 start_background_services=True, sync=True,
                 **extra):
@@ -155,7 +155,7 @@ class AbstractPoppyCreature(Robot):
 
         if use_zmq:
             from pypot.server import ZMQRobotServer
-            poppy_creature.remote = ZMQRobotServer(poppy_creature, zmq_host, zmq_port)
+            poppy_creature.remote = ZMQRobotServer(poppy_creature, zmq_host, zmq_port, with_keylogger)
             logger.info('ZMQRobotServer is now running on: tcp://{}:{}\n'.format(zmq_host, zmq_port))
 
         if use_ws:
