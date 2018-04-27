@@ -69,7 +69,6 @@ class ZMQRobotServer(AbstractServer):
         while not self.queue_.empty():
             keys.append(self.queue_.get())
 
-        print("returning list of keys:", keys)
         return keys
 
     def handle_request(self, request):
@@ -112,7 +111,6 @@ class Keylogger(threading.Thread):
         # keyboard.add_hotkey(' ', self.add, args=['space was pressed'])
 
     def add(self, key):
-        print("putting {} in the queue".format(key))
         self._queue.put(key)
 
     def run(self):
