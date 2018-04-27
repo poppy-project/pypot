@@ -214,7 +214,7 @@ Examples:
                 time.sleep(1000)
         except KeyboardInterrupt:
             print("Bye bye!")
-            quit()
+            raise SystemExit
             time.sleep(3)
             os._exit(0) # sometimes the threads aren't cleaned up properly and this force-quits
 
