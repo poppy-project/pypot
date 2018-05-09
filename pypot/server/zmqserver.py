@@ -5,6 +5,8 @@ import zmq
 import json
 import logging
 
+from zmq.backend.cython.constants import NOBLOCK
+
 try:
     from queue import Queue
 except ImportError:
@@ -40,6 +42,7 @@ class ZMQRobotServer(AbstractServer):
 
     def run(self):
         """ Run an infinite REQ/RES loop. """
+        # self.socket.send(json.dumps([0]*12),NOBLOCK) # in case the robot was interrupted
         while True:
             req = self.socket.recv_json()
 
