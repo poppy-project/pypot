@@ -401,6 +401,10 @@ class DxlSRBoard(DxlMotor):
     present_current_port_5 = DxlRegister()
     present_current_port_6 = DxlRegister()
     present_current_port_7 = DxlRegister()
+    present_thumb_current = DxlRegister()
+    present_finger_current = DxlRegister()
+    present_wrist_z_current = DxlRegister()
+    present_wrist_y_current = DxlRegister()
 
     def __init__(self, id, name=None, model='',
                  direct=True, offset=0.0, broken=False,
