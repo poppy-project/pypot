@@ -148,7 +148,7 @@
 <span class="kn">from</span> <span class="nn">..robot.motor</span> <span class="k">import</span> <span class="n">Motor</span>
 
 <span class="kn">from</span> <span class="nn">..utils</span> <span class="k">import</span> <span class="n">SyncEvent</span>
-<span class="kn">from</span> <span class="nn">..utils.trajectory</span> <span class="k">import</span> <span class="n">GotoMinJerk</span>
+<span class="kn">from</span> <span class="nn">..utils.trajectory</span> <span class="k">import</span> <span class="n">GotoMinJerk</span><span class="p">,</span> <span class="n">GotoLinear</span>
 <span class="kn">from</span> <span class="nn">..utils.stoppablethread</span> <span class="k">import</span> <span class="n">StoppableLoopThread</span>
 
 
@@ -376,8 +376,8 @@
 
     <span class="nd">@goto_behavior</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span> <span class="nf">goto_behavior</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">value</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;dummy&#39;</span><span class="p">,</span> <span class="s1">&#39;minjerk&#39;</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Wrong compliant type! It should be either &quot;dummy&quot; or &quot;minjerk&quot;.&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">value</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;dummy&#39;</span><span class="p">,</span> <span class="s1">&#39;minjerk&#39;</span><span class="p">,</span> <span class="s1">&#39;linear&#39;</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Wrong compliant type! It should be either &quot;dummy&quot;, &quot;minjerk&quot; or &quot;linear&quot;.&#39;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_default_goto_behavior</span> <span class="o">=</span> <span class="n">value</span>
 
 <div class="viewcode-block" id="DxlMotor.goto_position"><a class="viewcode-back" href="../../../pypot.dynamixel.html#pypot.dynamixel.motor.DxlMotor.goto_position">[docs]</a>    <span class="k">def</span> <span class="nf">goto_position</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">position</span><span class="p">,</span> <span class="n">duration</span><span class="p">,</span> <span class="n">control</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">wait</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
@@ -401,7 +401,14 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">goal_position</span> <span class="o">=</span> <span class="n">position</span>
 
             <span class="k">if</span> <span class="n">wait</span><span class="p">:</span>
-                <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">duration</span><span class="p">)</span></div></div>
+                <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">duration</span><span class="p">)</span>
+
+        <span class="k">elif</span> <span class="n">control</span> <span class="o">==</span> <span class="s1">&#39;linear&#39;</span><span class="p">:</span>
+            <span class="n">goto_linear</span> <span class="o">=</span> <span class="n">GotoLinear</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">position</span><span class="p">,</span> <span class="n">duration</span><span class="p">)</span>
+            <span class="n">goto_linear</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+
+            <span class="k">if</span> <span class="n">wait</span><span class="p">:</span>
+                <span class="n">goto_linear</span><span class="o">.</span><span class="n">wait_to_stop</span><span class="p">()</span></div></div>
 
 
 <div class="viewcode-block" id="DxlAXRXMotor"><a class="viewcode-back" href="../../../pypot.dynamixel.html#pypot.dynamixel.motor.DxlAXRXMotor">[docs]</a><span class="k">class</span> <span class="nc">DxlAXRXMotor</span><span class="p">(</span><span class="n">DxlMotor</span><span class="p">):</span>
@@ -573,7 +580,7 @@
       <!-- footer -->
       <footer role="contentinfo">
           &copy; Copyright 2015, Poppy-Project.
-        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.7.4.
+        Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.7.6.
       </footer>
       <!-- /footer -->
 
