@@ -1,16 +1,13 @@
-import numpy
 import logging
-
 from collections import defaultdict
 
+import numpy
 import pypot.utils.pypot_time as time
 
 from ..robot.motor import Motor
-
 from ..utils import SyncEvent
-from ..utils.trajectory import GotoMinJerk
 from ..utils.stoppablethread import StoppableLoopThread
-
+from ..utils.trajectory import GotoMinJerk
 
 logger = logging.getLogger(__name__)
 
@@ -143,7 +140,8 @@ class DxlMotor(Motor):
         self._write_synced = defaultdict(SyncEvent)
 
         if angle_limit is not None:
-            self.__dict__['lower_limit'], self.__dict__['upper_limit'] = angle_limit
+            self.__dict__['lower_limit'], self.__dict__[
+                'upper_limit'] = angle_limit
 
     def __repr__(self):
         return ('<DxlMotor name={self.name} '
@@ -181,7 +179,8 @@ class DxlMotor(Motor):
     @compliant_behavior.setter
     def compliant_behavior(self, value):
         if value not in ('dummy', 'safe'):
-            raise ValueError('Wrong compliant type! It should be either "dummy" or "safe".')
+            raise ValueError(
+                'Wrong compliant type! It should be either "dummy" or "safe".')
 
         if hasattr(self, '_compliant_behavior') and self._compliant_behavior == value:
             return
@@ -237,7 +236,8 @@ class DxlMotor(Motor):
     @goto_behavior.setter
     def goto_behavior(self, value):
         if value not in ('dummy', 'minjerk'):
-            raise ValueError('Wrong compliant type! It should be either "dummy" or "minjerk".')
+            raise ValueError(
+                'Wrong compliant type! It should be either "dummy" or "minjerk".')
         self._default_goto_behavior = value
 
     def goto_position(self, position, duration, control=None, wait=False):
@@ -345,6 +345,7 @@ class DxlXL320Motor(DxlMXMotor):
     control_mode = DxlRegister(rw=True)
 
     """ This class represents the XL-320 robotis motor. """
+
     def __init__(self, id, name=None, model='XL-320',
                  direct=True, offset=0.0, broken=False,
                  angle_limit=None):
@@ -385,6 +386,7 @@ class DxlSRMotor(DxlMotor):
                           angle_limit)
         self.max_pos = 180
 
+
 class DxlSRBoard(DxlMotor):
     """ This class represents the logic board found in the seed robotics hand.
 
@@ -420,6 +422,7 @@ class DxlSRBoard(DxlMotor):
                           angle_limit)
         self.max_pos = 180
 
+
 class SafeCompliance(StoppableLoopThread):
     """ This class creates a controller to active compliance only if the current motor position is included in the angle limit, else the compliance is turned off. """
 
@@ -429,7 +432,8 @@ class SafeCompliance(StoppableLoopThread):
         self.motor = motor
 
     def update(self):
-        self.motor._set_compliancy((min(self.motor.angle_limit) < self.motor.present_position < max(self.motor.angle_limit)))
+        self.motor._set_compliancy(
+            (min(self.motor.angle_limit) < self.motor.present_position < max(self.motor.angle_limit)))
 
     def teardown(self):
         self.motor._set_compliancy(False)

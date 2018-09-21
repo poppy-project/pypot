@@ -1,8 +1,8 @@
-import time
 import logging
+import time
 
-from .io.abstract_io import DxlError
 from ..robot.controller import MotorsController
+from .io.abstract_io import DxlError
 
 logger = logging.getLogger(__name__)
 
@@ -89,7 +89,8 @@ class DxlController(MotorsController):
         ids = [m.id for m in motors]
 
         values = (m.__dict__[self.varname] for m in motors)
-        getattr(self.io, 'set_{}'.format(self.regname))(dict(zip(ids, values)))
+        getattr(self.io, 'set_{}'.format(self.regname))(
+            dict(zip(ids, values)))
 
         for m in motors:
             m._write_synced[self.varname].done()

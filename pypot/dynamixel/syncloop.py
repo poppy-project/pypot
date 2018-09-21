@@ -1,8 +1,6 @@
 from ..robot.controller import MotorsController
-
-from .controller import (DxlController,
-                         PosSpeedLoadDxlController,
-                         AngleLimitRegisterController)
+from .controller import (AngleLimitRegisterController, DxlController,
+                         PosSpeedLoadDxlController)
 
 
 class MetaDxlController(MotorsController):
@@ -13,6 +11,7 @@ class MetaDxlController(MotorsController):
         .. warning:: As all the loop attached to a controller shared the same bus, you should make sure that they can run without slowing down the other ones.
 
         """
+
     def __init__(self, io, motors, controllers):
         MotorsController.__init__(self, io, motors, 1.)
         self.controllers = controllers
@@ -40,6 +39,7 @@ class BaseDxlController(MetaDxlController):
         * reads the present voltage and temperature at 1Hz
 
     """
+
     def __init__(self, io, motors):
         controllers = [
             PosSpeedLoadDxlController(io, motors, 50.),
@@ -56,7 +56,8 @@ class BaseDxlController(MetaDxlController):
             controllers.insert(0, DxlController(io, pid_motors, 10., False,
                                                 'set', 'pid_gain', 'pid'))
 
-        force_control_motors = [m for m in motors if m.model.startswith('SR')]
+        force_control_motors = [
+            m for m in motors if m.model.startswith('SR-RH4D')]
 
         if force_control_motors:
             controllers.insert(0, DxlController(io, force_control_motors, 10., False,
@@ -74,10 +75,10 @@ class BaseDxlController(MetaDxlController):
                                                 'get', 'present_current', 'present_current'))
 
         seed_logic_board = [m for m in motors
-                                 if (m.model.startswith('SR-EROSBRD'))]
+                            if (m.model.startswith('SR-EROSBRD'))]
 
         if seed_logic_board:
-            for port_id in range(1,8):
+            for port_id in range(1, 8):
                 controllers.insert(0, DxlController(io, seed_logic_board, 10., False,
                                                     'get', 'present_current_port_{}'.format(port_id), 'present_current_port_{}'.format(port_id)))
 
