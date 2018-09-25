@@ -233,7 +233,8 @@ def check_motor_eprom_configuration(config, dxl_io, motor_names):
             dxl_io.set_wheel_mode([m['id']])
             time.sleep(0.5)
         else:
-            dxl_io.set_joint_mode([m['id']])
+            # TODO: we probably need a better fix for this.
+            # dxl_io.set_joint_mode([m['id']])
 
             d = numpy.linalg.norm(numpy.asarray(new_limits) - numpy.asarray(old_limits))
             if d > 1:
