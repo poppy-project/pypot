@@ -104,7 +104,7 @@ def from_config(config, strict=True, sync=True, use_dummy_io=False, **extra):
     # If anything goes wrong when adding sensors
     # We have to make sure we close the robot properly
     # Otherwise trying to open it again will fail.
-    except:
+    except Exception:
         robot.close()
         raise
 
@@ -238,7 +238,8 @@ def check_motor_eprom_configuration(config, dxl_io, motor_names):
             dxl_io.set_wheel_mode([m['id']])
             time.sleep(0.5)
         else:
-            dxl_io.set_joint_mode([m['id']])
+            # TODO: we probably need a better fix for this.
+            # dxl_io.set_joint_mode([m['id']])
 
             d = numpy.linalg.norm(numpy.asarray(
                 new_limits) - numpy.asarray(old_limits))
@@ -317,14 +318,14 @@ def use_dummy_robot(json_file):
 
 
 def _motor_extractor(alias, name):
-    l = []
+    motors = []
 
     if name not in alias:
         return [name]
 
     for key in alias[name]:
-        l += _motor_extractor(alias, key) if key in alias else [key]
-    return l
+        motors += _motor_extractor(alias, key) if key in alias else [key]
+    return motors
 
 
 ergo_robot_config = {

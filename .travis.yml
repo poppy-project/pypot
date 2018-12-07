@@ -1,13 +1,11 @@
-# Language is set to c because python isn't supported on the OSX Virtual Machines
-# on Travis. Anyway, python is install from conda.
-language: c
+language: generic
 
 env:
   global:
-    # - USE_SSH_FORWARDING=true
+
     # Directory of setup.py
     - SETUP_DIR=$TRAVIS_BUILD_DIR/.
-    # PyPi credentials foru ploads to Pypi on release.
+    # PyPi credentials for uploads to PyPi on release.
     - PYPI_USERNAME=pierre-rouanet
     # PYPI_PASSWD encrypted below > travis encrypt PYPI_PASSWD=XXXXXX --add
     - secure: "ovWnNtOxp9SzfayLkI/NbeQld76FatyUm7Bdj6d9XWxokQpj130pf5uBwrUs32TCDmWJxfIC/8Jn7IA4kMWLzH/hN+M6AIc290EiSmLNaNU4HOh6hdx6qERHLSoPFVHgI1xPTEUouNWXkP3LR8nFja/iK1ai4ecGUBoIrtG0TW4="    # Used to built the repo URL https://github.com/$GH_USERNAME/$GH_USERNAME.git
@@ -20,13 +18,13 @@ env:
     - secure: "TgJGS9wFmr9zrUSMFDSH/p4sj77+6FwGUpQin4Sfl97cEXoHjeKrDsJvkEV8HZG2mAHnMyMeEqnzJbmCdhCB+9GAu31hdpXies6fA0tFDgtMUbf2lD16M7pL8jJ3zTxR4FCXLLd6ST3x+HLSrPfITkbNvOt1jmgVXdVTHKsSLRM="
 
     # V-REP conf
-    - VREP_VERSION=3_1_2
-    - VREP_ROOT_DIR=$TRAVIS_BUILD_DIR/vrep
+    # - VREP_VERSION=3_1_2
+    # - VREP_ROOT_DIR=$TRAVIS_BUILD_DIR/vrep
 
     # travis encrypt id_rsa_encrypted_key=...
     # openssl aes-256-cbc -k $id_rsa_encrypted_key -in ../id_rsa -out id_rsa.enc
     # Key of encrypted id_rsa, ssh private key
-    - id_rsa_encrypted_key=fze16fz1ra6!
+    # - id_rsa_encrypted_key=fze16fz1ra6!
 
 
 matrix:
@@ -34,21 +32,22 @@ matrix:
   fast_finish: true
 
   include:
-    # hack to use MAC-OSX VM
-    - os: osx
-      python: 2.7 # For travis UI only
-      language: objective-c
-      env: TRAVIS_OS_NAME=osx TRAVIS_PYTHON_VERSION=2.7
-    - os: osx
-      python: 3.4 # For travis UI only
-      language: objective-c
-      env: TRAVIS_OS_NAME=osx TRAVIS_PYTHON_VERSION=3.4
-    - os: osx
-      python: 3.5 # For travis UI only
-      language: objective-c
-      env: TRAVIS_OS_NAME=osx TRAVIS_PYTHON_VERSION=3.5
+
+    # Remove OSX builds temporally as they are very slow to startup
+    # - os: osx
+    #   python: 2.7 # For travis UI only
+    #   osx_image: xcode6.4
+    #   env: TRAVIS_OS_NAME=osx TRAVIS_PYTHON_VERSION=2.7
+
+    # - os: osx
+    #   python: 3.6 # For travis UI only
+    #   osx_image: xcode6.4
+    #   env: TRAVIS_OS_NAME=osx TRAVIS_PYTHON_VERSION=3.6
 
     # Linux VM
+    # Python 3.4 is not supported anymore by conda
+    # https://github.com/ContinuumIO/anaconda-issues/issues/6615
+
     - python: 2.7
       os: linux
       language: python
@@ -62,6 +61,10 @@ matrix:
       language: python
       os: linux
 
+    - python: 3.6
+      language: python
+      os: linux
+
     - python: 3.5
       language: python
       os: linux
@@ -70,15 +73,12 @@ matrix:
 addons:
   apt:
     packages:
-      # Spoof x11 for starting vrep in travis (issues with network)
-      - xvfb
       # For building the pdf documentation
       - texlive
       - texlive-latex-extra
       - dvipng
 
 before_install:
-  - rvm get head
   - . ./ci/before_install.sh
 
 install:

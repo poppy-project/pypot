@@ -135,7 +135,7 @@ class StoppableThread(object):
         # we try/catch the exceptions
         # clear all Condition locks (to avoid blocking main thread)
         # and re-raise exception for backtrace
-        except:
+        except Exception:
             self._crashed = True
             self._started.set()
             self._running.clear()

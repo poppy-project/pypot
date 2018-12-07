@@ -6,6 +6,7 @@ import pypot.utils.pypot_time as time
 
 from ..robot.motor import Motor
 from ..utils import SyncEvent
+from ..utils.trajectory import GotoMinJerk, GotoLinear
 from ..utils.stoppablethread import StoppableLoopThread
 from ..utils.trajectory import GotoMinJerk
 
@@ -235,9 +236,8 @@ class DxlMotor(Motor):
 
     @goto_behavior.setter
     def goto_behavior(self, value):
-        if value not in ('dummy', 'minjerk'):
-            raise ValueError(
-                'Wrong compliant type! It should be either "dummy" or "minjerk".')
+        if value not in ('dummy', 'minjerk', 'linear'):
+            raise ValueError('Wrong compliant type! It should be either "dummy", "minjerk" or "linear".')
         self._default_goto_behavior = value
 
     def goto_position(self, position, duration, control=None, wait=False):
@@ -262,6 +262,13 @@ class DxlMotor(Motor):
 
             if wait:
                 time.sleep(duration)
+
+        elif control == 'linear':
+            goto_linear = GotoLinear(self, position, duration)
+            goto_linear.start()
+
+            if wait:
+                goto_linear.wait_to_stop()
 
 
 class DxlAXRXMotor(DxlMotor):

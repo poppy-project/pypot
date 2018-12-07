@@ -90,3 +90,25 @@ class GotoMinJerk(StoppableLoopThread):
     @property
     def elapsed_time(self):
         return time.time() - self.t0
+
+
+class GotoLinear(StoppableLoopThread):
+    def __init__(self, motor, position, duration, frequency=50):
+        StoppableLoopThread.__init__(self, frequency)
+
+        self.motor = motor
+
+        nb_step = round(duration * frequency)
+        start = motor.goal_position
+        end = position
+
+        self.positions = numpy.linspace(start, end, nb_step + 1)[1:]
+        self.positions = iter(self.positions)
+
+    def update(self):
+        try:
+            p = next(self.positions)
+            self.motor.goal_position = p
+
+        except StopIteration:
+            self.stop(wait=False)
