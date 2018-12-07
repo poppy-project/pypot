@@ -1,9 +1,9 @@
 import itertools
 
-from .abstract_io import (AbstractDxlIO, _DxlControl,
-                          _DxlAccess, DxlTimeoutError)
 from .. import conversion as conv
 from ..protocol import v1 as v1
+from .abstract_io import (AbstractDxlIO, DxlTimeoutError, _DxlAccess,
+                          _DxlControl)
 
 
 class DxlIO(AbstractDxlIO):
@@ -49,7 +49,8 @@ class DxlIO(AbstractDxlIO):
         limits = ((0, 0) if mode == 'wheel' else (0, pos_max[i] - 1)
                   for i, mode in enumerate(mode_for_id.itervalues()))
 
-        self._set_angle_limit(dict(zip(mode_for_id.keys(), limits)), convert=False)
+        self._set_angle_limit(
+            dict(zip(mode_for_id.keys(), limits)), convert=False)
         self._known_mode.update(mode_for_id.items())
 
     def set_angle_limit(self, limit_for_id, **kwargs):
@@ -57,7 +58,8 @@ class DxlIO(AbstractDxlIO):
         convert = kwargs['convert'] if 'convert' in kwargs else self._convert
 
         if 'wheel' in self.get_control_mode(limit_for_id.keys()):
-            raise ValueError('can not change the angle limit of a motor in wheel mode')
+            raise ValueError(
+                'can not change the angle limit of a motor in wheel mode')
 
         if (0, 0) in limit_for_id.values():
             raise ValueError('can not set limit to (0, 0)')
@@ -203,10 +205,12 @@ _add_control('torque limit',
 _add_control('goal position speed load',
              address=0x1E, nb_elem=3,
              dxl_to_si=lambda value, model: (conv.dxl_to_degree(value[0], model),
-                                             conv.dxl_to_speed(value[1], model),
+                                             conv.dxl_to_speed(
+                                                 value[1], model),
                                              conv.dxl_to_load(value[2], model)),
              si_to_dxl=lambda value, model: (conv.degree_to_dxl(value[0], model),
-                                             conv.speed_to_dxl(value[1], model),
+                                             conv.speed_to_dxl(
+                                                 value[1], model),
                                              conv.torque_to_dxl(value[2], model)))
 
 _add_control('present position',
@@ -228,7 +232,8 @@ _add_control('present position speed load',
              address=0x24, nb_elem=3,
              access=_DxlAccess.readonly,
              dxl_to_si=lambda value, model: (conv.dxl_to_degree(value[0], model),
-                                             conv.dxl_to_speed(value[1], model),
+                                             conv.dxl_to_speed(
+                                                 value[1], model),
                                              conv.dxl_to_load(value[2], model)))
 
 _add_control('present voltage',
@@ -316,3 +321,7 @@ _add_control('present_current_port_6',
 _add_control('present_current_port_7',
              address=0x78, length=2,
              models=('SR-EROSBRD',))
+
+_add_control('present_pwm',
+             address=0x5C, length=2,
+             models=('SR-SEED28', 'SR-SEED56',))

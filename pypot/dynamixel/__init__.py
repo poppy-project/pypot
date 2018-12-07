@@ -1,18 +1,16 @@
-import sys
-import platform
 import glob
 import logging
+import platform
+import sys
 
 import serial.tools.list_ports
 
-
-from .io import DxlIO, Dxl320IO
-from .error import BaseErrorHandler
-from .syncloop import BaseDxlController
-from .motor import DxlMXMotor, DxlAXRXMotor, DxlXL320Motor, DxlSRMotor
-from .io.abstract_io import DxlError
-
 from ..robot import Robot
+from .error import BaseErrorHandler
+from .io import Dxl320IO, DxlIO
+from .io.abstract_io import DxlError
+from .motor import DxlAXRXMotor, DxlMXMotor, DxlSRErosMotor, DxlXL320Motor
+from .syncloop import BaseDxlController
 
 logger = logging.getLogger(__name__)
 
@@ -42,7 +40,8 @@ def _get_available_ports():
             except WindowsError:
                 return ports
     else:
-        raise EnvironmentError('{} is an unsupported platform, cannot find serial ports !'.format(platform.system()))
+        raise EnvironmentError(
+            '{} is an unsupported platform, cannot find serial ports !'.format(platform.system()))
     return []
 
 
@@ -67,7 +66,8 @@ def get_port_vendor_info(port=None):
         In [2]: pypot.dynamixel.get_port_vendor_info('/dev/ttyUSB0')
         Out[2]: 'USB VID:PID=0403:6001 SNR=A7005LKE' """
 
-    port_info_dict = dict((x[0], x[2]) for x in serial.tools.list_ports.comports())
+    port_info_dict = dict((x[0], x[2])
+                          for x in serial.tools.list_ports.comports())
     return port_info_dict[port] if port is not None else port_info_dict
 
 
@@ -92,11 +92,13 @@ def find_port(ids, strict=True):
                         return port
 
                     if not strict and len(_ids_founds) >= len(ids) / 2:
-                        logger.warning('Missing ids: {}'.format(ids, list(set(ids) - set(_ids_founds))))
+                        logger.warning('Missing ids: {}'.format(
+                            ids, list(set(ids) - set(_ids_founds))))
                         return port
 
                     if len(ids_founds) > 0:
-                        logger.warning('Port:{} ids found:{}'.format(port, _ids_founds))
+                        logger.warning(
+                            'Port:{} ids found:{}'.format(port, _ids_founds))
 
             except DxlError:
                 logger.warning('DxlError on port {}'.format(port))
@@ -126,7 +128,7 @@ def autodetect_robot():
                 'RX': DxlAXRXMotor,
                 'AX': DxlAXRXMotor,
                 'XL': DxlXL320Motor,
-                'SR': DxlSRMotor,
+                'SR': DxlSRErosMotor,
             }
 
             motors = [motorcls[model[:2]](id, model=model)

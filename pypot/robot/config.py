@@ -8,23 +8,21 @@ Configuration are written as Python dictionary so you can define/modify them pro
 * motorgroups: It allows to define alias of group of motors. They can be nested.
 
 """
-import logging
-import numpy
-import time
 import json
-
+import logging
+import time
 from collections import OrderedDict
 
-import pypot.sensor
+import numpy
 import pypot.dynamixel
-import pypot.dynamixel.io
 import pypot.dynamixel.error
+import pypot.dynamixel.io
 import pypot.dynamixel.motor
 import pypot.dynamixel.syncloop
+import pypot.sensor
 
-from .robot import Robot
 from .controller import DummyController
-
+from .robot import Robot
 
 # This logger should always provides the config as extra
 logger = logging.getLogger(__name__)
@@ -59,7 +57,8 @@ def from_config(config, strict=True, sync=True, use_dummy_io=False, **extra):
 
         attached_ids = [m.id for m in attached_motors]
         if not use_dummy_io:
-            dxl_io = dxl_io_from_confignode(config, c_params, attached_ids, strict)
+            dxl_io = dxl_io_from_confignode(
+                config, c_params, attached_ids, strict)
 
             check_motor_eprom_configuration(config, dxl_io, motor_names)
 
@@ -92,7 +91,8 @@ def from_config(config, strict=True, sync=True, use_dummy_io=False, **extra):
             sensors = []
             for s_name in config['sensors'].keys():
                 if s_name in extra and extra[s_name] == 'dummy':
-                    config['sensors'][s_name]['type'] = 'Dummy{}'.format(s_name.capitalize())
+                    config['sensors'][s_name]['type'] = 'Dummy{}'.format(
+                        s_name.capitalize())
 
                 sensor = sensor_from_confignode(config, s_name, robot)
                 setattr(robot, s_name, sensor)
@@ -128,8 +128,10 @@ def motor_from_confignode(config, motor_name):
         MotorCls = pypot.dynamixel.motor.DxlAXRXMotor
     elif type == 'SR-EROSBRD':
         MotorCls = pypot.dynamixel.motor.DxlSRBoard
+    elif type.startswith('SR-SEED'):
+        MotorCls = pypot.dynamixel.motor.DxlSRErosMotor
     elif type.startswith('SR'):
-        MotorCls = pypot.dynamixel.motor.DxlSRMotor
+        MotorCls = pypot.dynamixel.motor.DxlSRAresMotor
 
     broken = 'broken' in params and params['broken']
 
@@ -177,7 +179,8 @@ def dxl_io_from_confignode(config, c_params, ids, strict):
         vendor_pid = pypot.dynamixel.get_port_vendor_info(port)
         sync_read = ('PID=0403:6001' in vendor_pid and c_params['protocol'] == 2 or
                      'PID=16d0:06a7' in vendor_pid)
-        logger.info('sync_read is {}. Vendor pid = {}'.format(sync_read, vendor_pid))
+        logger.info('sync_read is {}. Vendor pid = {}'.format(
+            sync_read, vendor_pid))
 
     handler = pypot.dynamixel.error.BaseErrorHandler
 
@@ -237,7 +240,8 @@ def check_motor_eprom_configuration(config, dxl_io, motor_names):
         else:
             dxl_io.set_joint_mode([m['id']])
 
-            d = numpy.linalg.norm(numpy.asarray(new_limits) - numpy.asarray(old_limits))
+            d = numpy.linalg.norm(numpy.asarray(
+                new_limits) - numpy.asarray(old_limits))
             if d > 1:
                 logger.warning("Limits of '%s' changed from %s to %s",
                                name, old_limits, new_limits,
@@ -286,7 +290,8 @@ def make_alias(config, robot):
 
     # Create the alias for the motorgroups
     for alias_name in alias:
-        motors = [getattr(robot, name) for name in _motor_extractor(alias, alias_name)]
+        motors = [getattr(robot, name)
+                  for name in _motor_extractor(alias, alias_name)]
         setattr(robot, alias_name, motors)
         robot.alias.append(alias_name)
 
