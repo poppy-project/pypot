@@ -22,6 +22,8 @@ install_requires = ['numpy',
                     'scipy',
                     'ikpy',
                     'bottle',
+                    'pyzmq',
+                    'keyboard',
                     'poppy-creature>=2'  # Kept to avoid breaking old imports
                     ]
 
