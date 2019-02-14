@@ -59,11 +59,15 @@ def main():
         '--id', motor_config['id'],
         '--type', motor_config['type'],
         '--port', find_port_for_motor(c, args.motor),
-        '--return-delay-time', 0,
-        '--angle-limit',
-        motor_config['angle_limit'][0], motor_config['angle_limit'][1],
-        '--goto-zero'
+        '--return-delay-time', 0
     ]
+    
+    if 'wheel_mode' in motor_config.keys():
+        args.extend(('--wheel-mode', motor_config['wheel_mode']))
+    else:
+        args.extend(('--angle-limit',motor_config['angle_limit'][0],motor_config['angle_limit'][1],
+                     '--goto-zero'))
+        
     call(['dxl-config'] + map(str, args))
 
 
