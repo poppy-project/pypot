@@ -6,9 +6,8 @@ import pypot.utils.pypot_time as time
 
 from ..robot.motor import Motor
 from ..utils import SyncEvent
-from ..utils.trajectory import GotoMinJerk, GotoLinear
 from ..utils.stoppablethread import StoppableLoopThread
-from ..utils.trajectory import GotoMinJerk
+from ..utils.trajectory import GotoLinear, GotoMinJerk
 
 logger = logging.getLogger(__name__)
 
@@ -237,7 +236,8 @@ class DxlMotor(Motor):
     @goto_behavior.setter
     def goto_behavior(self, value):
         if value not in ('dummy', 'minjerk', 'linear'):
-            raise ValueError('Wrong compliant type! It should be either "dummy", "minjerk" or "linear".')
+            raise ValueError(
+                'Wrong compliant type! It should be either "dummy", "minjerk" or "linear".')
         self._default_goto_behavior = value
 
     def goto_position(self, position, duration, control=None, wait=False):
@@ -402,12 +402,9 @@ class DxlSRErosMotor(DxlMotor):
 
         This class adds access to:
             * [TODO] PID gains (see the robotis website for details)
-            * Motor PWM
 
         """
     registers = list(DxlMotor.registers)
-
-    present_pwm = DxlRegister()
 
     def __init__(self, id, name=None, model='',
                  direct=True, offset=0.0, broken=False,
@@ -416,7 +413,6 @@ class DxlSRErosMotor(DxlMotor):
 
         This class adds access to:
             * [TODO] PID gains (see the robotis website for details)
-            * Motor PWM
 
             """
         DxlMotor.__init__(self, id, name, model,
