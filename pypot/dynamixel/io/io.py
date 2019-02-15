@@ -321,7 +321,3 @@ _add_control('present_current_port_6',
 _add_control('present_current_port_7',
              address=0x78, length=2,
              models=('SR-EROSBRD',))
-
-_add_control('present_pwm',
-             address=0x5C, length=2,
-             models=('SR-SEED28', 'SR-SEED56',))

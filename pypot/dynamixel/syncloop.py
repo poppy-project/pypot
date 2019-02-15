@@ -74,13 +74,6 @@ class BaseDxlController(MetaDxlController):
             controllers.insert(0, DxlController(io, current_motors, 10., False,
                                                 'get', 'present_current', 'present_current'))
 
-        sr_eros_motors = [m for m in motors if (m.model.startswith('SR-SEED'))]
-
-        if sr_eros_motors:
-            controllers.insert(0, DxlController(io, sr_eros_motors, 10., False,
-                                                'get', 'present_pwm',
-                                                'present_pwm'))
-
         seed_logic_board = [m for m in motors
                             if (m.model.startswith('SR-EROSBRD'))]
 
