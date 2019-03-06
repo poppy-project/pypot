@@ -364,7 +364,7 @@ class DxlXL320Motor(DxlMXMotor):
 
 class DxlSRAresMotor(DxlMotor):
     """ This class represents the seed robotics ares actuators found in
-        old versions of the RH4D hand.
+        old versions of the RH4D hand. (See Seed Robotics website for details)
 
         This class adds access to:
             * force control enable
@@ -382,7 +382,7 @@ class DxlSRAresMotor(DxlMotor):
                  direct=True, offset=0.0, broken=False,
                  angle_limit=None):
         """ This class represents the seed robotics ares actuators found in
-            old versions of the RH4D hand.
+        old versions of the RH4D hand. (See Seed Robotics website for details)
 
         This class adds access to:
             * force control enable
@@ -398,21 +398,27 @@ class DxlSRAresMotor(DxlMotor):
 
 class DxlSRErosMotor(DxlMotor):
     """ This class represents the seed robotics eros actuators found in
-        most of their hand models.
+        most of their hand models. (See Seed Robotics website for details)
 
         This class adds access to:
-            * [TODO] PID gains (see the robotis website for details)
+            * PID lock (has to be disabled to manipulate PID registers)
+            * PID gains (see the robotis website for details)
 
         """
     registers = list(DxlMotor.registers)
 
+    pid_lock = DxlRegister(rw=True)
+    pid = DxlRegister(rw=True)
+
     def __init__(self, id, name=None, model='',
                  direct=True, offset=0.0, broken=False,
                  angle_limit=None):
-        """ This class represents the robotis motor found in the seed robotics hand.
+        """ This class represents the seed robotics eros actuators found in
+            most of their hand models. (See Seed Robotics website for details)
 
         This class adds access to:
-            * [TODO] PID gains (see the robotis website for details)
+            * PID lock (has to be disabled to manipulate PID registers)
+            * PID gains (see the robotis website for details)
 
             """
         DxlMotor.__init__(self, id, name, model,
@@ -423,29 +429,23 @@ class DxlSRErosMotor(DxlMotor):
 
 class DxlSRBoard(DxlMotor):
     """ This class represents the logic board found in the seed robotics hands.
+        (See Seed Robotics website for details)
 
         This class adds access to:
-            * current port readings
+            * current readings of attached motors
+            * ids of attached motors
 
         """
     registers = list(DxlMotor.registers)
 
-    present_current_port_1 = DxlRegister()
-    present_current_port_2 = DxlRegister()
-    present_current_port_3 = DxlRegister()
-    present_current_port_4 = DxlRegister()
-    present_current_port_5 = DxlRegister()
-    present_current_port_6 = DxlRegister()
-    present_current_port_7 = DxlRegister()
-    present_thumb_current = DxlRegister()
-    present_finger_current = DxlRegister()
-    present_wrist_z_current = DxlRegister()
-    present_wrist_y_current = DxlRegister()
+    present_motor_currents = DxlRegister()
+    attached_motor_ids = DxlRegister(rw=True)
 
     def __init__(self, id, name=None, model='',
                  direct=True, offset=0.0, broken=False,
                  angle_limit=None):
-        """ This class represents the logic board found in the seed robotics hand.
+        """ This class represents the logic board found in the seed robotics
+            hand. (See Seed Robotics website for details)
 
             This class adds access to:
                 * current port readings

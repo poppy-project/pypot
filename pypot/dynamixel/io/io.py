@@ -173,9 +173,16 @@ _add_control('LED',
              setter_name='_set_LED',
              getter_name='is_led_on')
 
+_add_control('pid lock',
+             address=0x17, length=1,
+             models=('SR-SEED28', 'SR-SEED56'),
+             dxl_to_si=conv.dxl_to_bool,
+             si_to_dxl=conv.bool_to_dxl)
+
 _add_control('pid gain',
              address=0x1A, length=1, nb_elem=3,
-             models=('MX-12', 'MX-28', 'MX-64', 'MX-106'),
+             models=('MX-12', 'MX-28', 'MX-64',
+                     'MX-106', 'SR-SEED28', 'SR-SEED56'),
              dxl_to_si=conv.dxl_to_pid,
              si_to_dxl=conv.pid_to_dxl)
 
@@ -278,46 +285,15 @@ _add_control('goal acceleration',
              dxl_to_si=conv.dxl_to_acceleration,
              si_to_dxl=conv.acceleration_to_dxl)
 
-_add_control('present_thumb_current',
-             address=0x70, length=2,
-             models=('SR-RH4D',))
+_add_control('present_pwm',
+             address=0x5C, length=2,
+             models=('SR-SEED28', 'SR-SEED56',))
 
-_add_control('present_finger_current',
-             address=0x72, length=2,
-             models=('SR-RH4D',))
-
-_add_control('present_writst_z_current',
-             address=0x6C, length=2,
-             models=('SR-RH4D',))
-
-_add_control('present_wrist_y_current',
-             address=0x6E, length=2,
-             models=('SR-RH4D',))
-
-_add_control('present_current_port_1',
-             address=0x6C, length=2,
+_add_control('present_motor_currents',
+             address=0x6C, length=2, nb_elem=10,
+             access=_DxlAccess.readonly,
              models=('SR-EROSBRD',))
 
-_add_control('present_current_port_2',
-             address=0x6E, length=2,
-             models=('SR-EROSBRD',))
-
-_add_control('present_current_port_3',
-             address=0x70, length=2,
-             models=('SR-EROSBRD',))
-
-_add_control('present_current_port_4',
-             address=0x72, length=2,
-             models=('SR-EROSBRD',))
-
-_add_control('present_current_port_5',
-             address=0x74, length=2,
-             models=('SR-EROSBRD',))
-
-_add_control('present_current_port_6',
-             address=0x76, length=2,
-             models=('SR-EROSBRD',))
-
-_add_control('present_current_port_7',
-             address=0x78, length=2,
+_add_control('attached_motor_ids',
+             address=0x81, length=1, nb_elem=10,
              models=('SR-EROSBRD',))

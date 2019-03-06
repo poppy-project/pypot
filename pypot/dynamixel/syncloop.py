@@ -74,13 +74,23 @@ class BaseDxlController(MetaDxlController):
             controllers.insert(0, DxlController(io, current_motors, 10., False,
                                                 'get', 'present_current', 'present_current'))
 
-        seed_logic_board = [m for m in motors
-                            if (m.model.startswith('SR-EROSBRD'))]
+        seed_eros_motors = [m for m in motors if (
+            m.model.startswith('SR-SEED'))]
 
-        if seed_logic_board:
-            for port_id in range(1, 8):
-                controllers.insert(0, DxlController(io, seed_logic_board, 10., False,
-                                                    'get', 'present_current_port_{}'.format(port_id), 'present_current_port_{}'.format(port_id)))
+        if seed_eros_motors:
+            controllers.insert(0, DxlController(io, seed_eros_motors, 1., False,
+                                                'set', 'pid_lock', 'pid_lock'))
+            controllers.insert(0, DxlController(io, seed_eros_motors, 1., True,
+                                                'set', 'pid_gain', 'pid'))
+
+        seed_logic_boards = [m for m in motors
+                             if (m.model.startswith('SR-EROSBRD'))]
+
+        if seed_logic_boards:
+            controllers.insert(0, DxlController(io, seed_logic_boards, 10., False,
+                                                'get', 'present_motor_currents', 'present_motor_currents'))
+            controllers.insert(0, DxlController(io, seed_logic_boards, 1., False,
+                                                'set', 'attached_motor_ids', 'attached_motor_ids'))
 
         margin_slope_motors = [m for m in motors
                                if (m.model.startswith('AX') or
