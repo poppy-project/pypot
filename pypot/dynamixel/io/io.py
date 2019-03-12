@@ -186,6 +186,10 @@ _add_control('pid gain',
              dxl_to_si=conv.dxl_to_pid,
              si_to_dxl=conv.pid_to_dxl)
 
+_add_control('pid gain',
+             address=0x1A, length=1, nb_elem=3,
+             models=('SR-SEED28', 'SR-SEED56'))
+
 _add_control('compliance margin',
              address=0x1A, length=1, nb_elem=2,
              models=('AX-12', 'AX-18', 'RX-24', 'RX-28', 'RX-64'))
