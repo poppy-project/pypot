@@ -181,8 +181,7 @@ _add_control('pid lock',
 
 _add_control('pid gain',
              address=0x1A, length=1, nb_elem=3,
-             models=('MX-12', 'MX-28', 'MX-64',
-                     'MX-106', 'SR-SEED28', 'SR-SEED56'),
+             models=('MX-12', 'MX-28', 'MX-64', 'MX-106'),
              dxl_to_si=conv.dxl_to_pid,
              si_to_dxl=conv.pid_to_dxl)
 
