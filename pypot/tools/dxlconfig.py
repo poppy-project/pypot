@@ -52,6 +52,8 @@ def main():
                         help='Serial port connected to the motor.')
     parser.add_argument('--return-delay-time', type=int,
                         help='Set new return delay time.')
+    parser.add_argument('--wheel-mode', type=bool, default=False,
+                        help='Set wheel mode.')
     parser.add_argument('--angle-limit', type=float, nargs=2,
                         help='Set new angle limit.')
     parser.add_argument('--goto-zero', action='store_true',
@@ -124,6 +126,18 @@ def main():
                   'Could not set return delay time to {}'.format(args.return_delay_time))
         print('Done!')
 
+    # Set wheel Mode
+    if args.wheel_mode == True:
+        print('Set wheel mode')
+        with DxlIOPort(args.port) as io:
+            io.set_control_mode({args.id :'wheel'})
+
+            time.sleep(.5)
+            check(io.get_control_mode([args.id])[0] == 'wheel',
+                  'Could not set wheel Mode')
+        print('Done!')
+    
+    
     # Set Angle Limit
     if args.angle_limit is not None:
         print('Changing angle limit to {}...'.format(args.angle_limit))
