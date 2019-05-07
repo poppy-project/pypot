@@ -45,15 +45,10 @@ class MinimumJerkTrajectory(object):
         if not isinstance(x, collections.Iterable):
             x = numpy.array([x])
 
-        domain = []
-        for d in range(len(self.durations) - 1):
-            d1 = []
-            for xi in x:
-                d1.append(
-                    (xi >= self.durations[d]) & (xi < self.durations[d + 1]))
-            domain.append(numpy.array(d1))
-
-        return numpy.array(domain)
+        return numpy.array([
+            self.durations[0] <= xi < self.durations[1]
+            for xi in x
+        ])
 
     def test_domain(self, x):
         return [((numpy.array(x) >= self.durations[i])) for i in range(len(self.durations) - 1)]
