@@ -30,12 +30,10 @@ def find_port_for_motor(config, motor):
 
 
 def main():
-    robots = [c.replace('poppy-', '') for c in installed_poppy_creatures]
-
     parser = ArgumentParser(description='Configuration tool for Poppy robots ',
                             formatter_class=ArgumentDefaultsHelpFormatter)
 
-    parser.add_argument('robot', type=str, choices=robots,
+    parser.add_argument('robot', type=str, choices=installed_poppy_creatures,
                         help='Robot used.')
 
     parser.add_argument('motor', type=str,
@@ -43,7 +41,7 @@ def main():
 
     args = parser.parse_args()
 
-    RobotCls = installed_poppy_creatures['poppy-{}'.format(args.robot)]
+    RobotCls = installed_poppy_creatures[args.robot]
     c = RobotCls.default_config
 
     if args.motor not in c['motors']:
