@@ -11,7 +11,7 @@ existing_creatures = ['poppy-humanoid', 'poppy-torso', 'poppy-ergo-jr',
                       'poppy-ergo-starter', 'poppy-6dof-right-arm',
                       'poppy-dragster-mini', 'poppy-ergo', 'roboticia-quattro',
                       'roboticia-first', 'roboticia-uno', 'roboticia-drive',
-                      'doggy', 'poppy-ergo-pusher']
+                      'doggy', 'poppy-ergo-pusher', 'mila-slider', 'mila-pusher']
 
 for creature in existing_creatures:
     package = creature.replace('-', '_')
