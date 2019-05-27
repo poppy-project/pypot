@@ -3,6 +3,7 @@
 ## V 3.1
 
 * Add support for connecting multiple robots to a same VREP scene.
+* Fix a bug in the minjerk trajectory computation.
 
 ## V 2.11
 
