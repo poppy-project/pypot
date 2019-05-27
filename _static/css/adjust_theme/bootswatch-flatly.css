@@ -18,11 +18,17 @@
 
 
 
+
+
 /* Table
    ---------------------------------------------------------*/
 
 table.docutils {
   border-color: #ecf0f1;
+}
+table.docutils tr {
+  color: #2c3e50;
+  background-color: #fff ;
 }
 table.docutils th,
 table.docutils td

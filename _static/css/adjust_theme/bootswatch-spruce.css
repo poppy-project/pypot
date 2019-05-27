@@ -18,6 +18,8 @@
 
 
 
+
+
 div.navbar-inner ul.pull-right li a{
     font-size: 15px;
 }
@@ -39,6 +41,10 @@ color: #fff;
 
 table.docutils {
   border-color: #999999;
+}
+table.docutils tr {
+  color: #555;
+  background-color: #fff ;
 }
 table.docutils th,
 table.docutils td

@@ -22,6 +22,11 @@ table.docutils {
   border-right: 0;
 }
 
+table.docutils tr {
+  color: #333;
+  background-color: #fff;
+}
+
 table.docutils th {
   font-weight: bold;
 }
@@ -76,14 +81,30 @@ table.table-bordered > tfoot > tr > td {
 /* Highlight Table
    ---------------------------------------------------------*/
 
-.highlighttable .code pre {
-    font-size: 12px;
+.highlighttable {
+  width: 100%;
 }
 
+.highlighttable .code pre {
+  font-size: 12px;
+}
+
+.highlighttable .code {
+  max-width: 0;
+}
+
+.highlighttable .linenos {
+    width: 1%;
+}
 .highlighttable .linenos pre {
     word-break: normal;
     font-size: 12px;
 }
+
+.literal-block-wrapper {
+ padding: 0;
+}
+
 
 div.highlight {
   background: none;
@@ -173,7 +194,7 @@ dl dd {
 /* Admonition styles
    ----------------------------------------------------------- */
 div.admonition {
-  padding: 8px 35px 8px 0px;
+  padding: 0.5em 2.5em 0.5em 1em;
   margin-bottom: 20px;
   color: #c09853;
   text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
@@ -185,23 +206,17 @@ div.admonition {
 }
 
 div.admonition p {
-  margin: 0.5em 1em 0.5em 1em;
   padding: 0;
-}
-
-div.admonition pre {
-  margin: 0.4em 1em 0.4em 1em;
 }
 
 div.admonition p.admonition-title {
   margin: 0;
-  padding: 0.1em 0 0.1em 0.5em;
+  padding: 0.1em 0 0.1em 0;
   font-weight: bold;
 }
 
 div.admonition ul, div.admonition ol {
-  margin: 0.1em 0.5em 0.5em 3em;
-  padding: 0;
+  padding: 0.1em 0.5em 0.5em 2em;
 }
 
 /* -- danger, error -- */
@@ -212,12 +227,26 @@ div.error {
   border-color: #eed3d7;
 }
 
-
 /* -- warning, caution, attention -- */
 div.warning,
 div.caution,
 div.attention {
+}
 
+div.warning table.docutils,
+div.warning table.docutils th,
+div.warning table.docutils td,
+div.caution table.docutils,
+div.caution table.docutils th,
+div.caution table.docutils td,
+div.attention table.docutils,
+div.attention table.docutils th,
+div.attention table.docutils td {
+}
+
+div.warning blockquote,
+div.caution blockquote,
+div.attention blockquote {
 }
 
 /* -- note, important -- */
@@ -235,6 +264,8 @@ div.tip {
   background-color: #d9edf7;
   border-color: #bce8f1;
 }
+
+
 
 /* Etc
    ----------------------------------------------------------- */

@@ -5,6 +5,10 @@
 table.docutils {
   border-color: {{ table_border_color }};
 }
+table.docutils tr {
+  color: {{ table_color }};
+  background-color: {{ table_background_color }} ;
+}
 table.docutils th,
 table.docutils td
 {

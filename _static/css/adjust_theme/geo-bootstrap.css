@@ -23,6 +23,10 @@
 table.docutils {
   border-color: #228000;
 }
+table.docutils tr {
+  color: ;
+  background-color:  ;
+}
 table.docutils th,
 table.docutils td
 {
