@@ -11,7 +11,9 @@ existing_creatures = ['poppy-humanoid', 'poppy-torso', 'poppy-ergo-jr',
                       'poppy-ergo-starter', 'poppy-6dof-right-arm',
                       'poppy-dragster-mini', 'poppy-ergo', 'roboticia-quattro',
                       'roboticia-first', 'roboticia-uno', 'roboticia-drive',
-                      'doggy']
+                      'doggy', 'mila-pusher', 'mila-slider']
+
+# TODO implement user creating a file on the SD card root that has the name of the robot and on boot the sdcard automatically launches the ZMQ server for that robot
 
 for creature in existing_creatures:
     package = creature.replace('-', '_')

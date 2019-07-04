@@ -60,6 +60,10 @@ class RESTRobot(object):
         return [self.get_motor_register_value(m, alias_present_position) for m in self.motors] + \
                [self.get_motor_register_value(m, alias_present_speed) for m in self.motors]
 
+    def get_load(self, alias_load = "present_load"):
+        self._check_motors()
+        return [self.get_motor_register_value(m, alias_load) for m in self.motors]
+
     def set_pos(self, positions, alias_goal_position="goal_position"):
         self._check_motors()
         for i, m in enumerate(self.motors):
