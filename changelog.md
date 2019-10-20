@@ -4,6 +4,7 @@
 
 * Add support for connecting multiple robots to a same VREP scene.
 * Fix a bug in the minjerk trajectory computation.
+* Fix Snap HTTPS issues with an embedded copy of Snap 5.1.1
 
 ## V 2.11
 
