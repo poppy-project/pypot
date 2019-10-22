@@ -2,6 +2,7 @@
 
 from __future__ import print_function
 
+import os
 import sys
 import time
 import random
@@ -16,6 +17,12 @@ from pypot.server.snap import find_local_ip
 from pypot.creatures import installed_poppy_creatures
 from pypot.utils import flushed_print as print
 
+from multiprocessing import Process
+from http.server import HTTPServer
+try:
+    from http.server import SimpleHTTPRequestHandler  # Py3
+except ImportError:
+    from SimpleHTTPServer import SimpleHTTPRequestHandler  # Py2
 
 def start_poppy_with_services(args):
     params = poppy_params_from_args(args)
@@ -175,27 +182,34 @@ Examples:
         print('No service specified! See --help for details.')
         sys.exit(1)
 
-    if args.snap and not args.no_browser:
-        snap_url = 'http://snap.berkeley.edu/snapsource/snap.html'
+    static_server_started = False
+    if args.snap and not args.no_browser:     
+        snap_static_port = 8888
+        snap_static_server = HTTPServer(("0.0.0.0", snap_static_port), SimpleHTTPRequestHandler)
+
+        os.chdir(os.path.join(os.path.dirname(__file__), "..", "snap"))
+        snap_static_server_process = Process(target=snap_static_server.serve_forever, args=())
+        static_server_started = True
+        snap_static_server_process.start()
+
+        snap_url = 'http://127.0.0.1:{}/snap.html'.format(snap_static_port)
         block_url = 'http://{}:{}/snap-blocks.xml'.format(
             find_local_ip(), args.snap_port)
         url = '{}#open:{}'.format(snap_url, block_url)
 
-        # Wait for the Snap server to be started before openning the Snap URL
-        time.sleep(3)
-
-        for browser_name in ['chromium-browser', 'chromium', 'google-chrome',
-                             'chrome', 'safari', 'midori', None]:
-            try:
-                browser = webbrowser.get(browser_name)
-                browser.open(url, new=0, autoraise=True)
-                break
-            except Exception:
-                pass
-
     with closing(start_poppy_with_services(args)):
         print('Robot created and running!')
         sys.stdout.flush()
+
+        if static_server_started:
+            for browser_name in ['chromium-browser', 'chromium', 'google-chrome',
+                                'chrome', 'safari', 'midori', None]:
+                try:
+                    browser = webbrowser.get(browser_name)
+                    browser.open(url, new=0, autoraise=True)
+                    break
+                except Exception:
+                    pass
 
         # Just run4ever (until Ctrl-c...)
         try:
@@ -203,6 +217,9 @@ Examples:
                 time.sleep(1000)
         except KeyboardInterrupt:
             print("Bye bye!")
+            if static_server_started:
+                snap_static_server_process.terminate()
+                snap_static_server_process.join()
 
 
 if __name__ == '__main__':

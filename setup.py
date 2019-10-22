@@ -2,6 +2,7 @@
 
 from io import open
 import re
+import os
 import sys
 
 from setuptools import setup, find_packages
@@ -22,6 +23,7 @@ install_requires = ['numpy',
                     'scipy',
                     'ikpy',
                     'bottle',
+                    'requests',
                     'poppy-creature>=2'  # Kept to avoid breaking old imports
                     ]
 
@@ -32,6 +34,13 @@ if sys.version_info < (2, 7):
 if sys.version_info < (3, 4):
     install_requires.append('enum34')
 
+def package_files(directory):
+    paths = []
+    for (path, directories, filenames) in os.walk(directory):
+        for filename in filenames:
+            full_path = os.path.join(path, filename)
+            paths.append((path, [full_path]))
+    return paths
 
 setup(name='pypot',
       version=version(),
@@ -71,6 +80,8 @@ setup(name='pypot',
           "Programming Language :: Python :: 2",
           "Programming Language :: Python :: 3",
           "Topic :: Scientific/Engineering", ],
+
+      data_files=package_files("pypot/snap/"),
 
       **extra
       )
