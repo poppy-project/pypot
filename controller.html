@@ -9,7 +9,7 @@
   <head>
     <meta charset="utf-8" />
     
-    <title>Robot Controller &mdash; pypot 3.1.3 documentation</title>
+    <title>Robot Controller &mdash; pypot 3.1.4 documentation</title>
     <meta name="description" content="">
     <meta name="author" content="">
 
@@ -35,7 +35,7 @@
 <script type="text/javascript">
   var DOCUMENTATION_OPTIONS = {
             URL_ROOT:    './',
-            VERSION:     '3.1.3',
+            VERSION:     '3.1.4',
             COLLAPSE_INDEX: false,
             FILE_SUFFIX: '.html',
             HAS_SOURCE:  true
@@ -54,7 +54,7 @@
     <link rel="author" title="About these documents" href="about.html" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="top" title="pypot 3.1.3 documentation" href="index.html" />
+    <link rel="top" title="pypot 3.1.4 documentation" href="index.html" />
     <link rel="up" title="Controlling robot" href="controlling_robot.html" />
     <link rel="next" title="Primitives everywhere" href="primitive.html" />
     <link rel="prev" title="Dynamixel Low-level IO" href="dynamixel.html" /> 
@@ -69,7 +69,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="index.html">pypot 3.1.3 documentation</a>
+          <a class="navbar-brand" href="index.html">pypot 3.1.4 documentation</a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
@@ -509,7 +509,7 @@
 <p class="first admonition-title">Warning</p>
 <p class="last">You should be careful that all your primitives correctly respond to the stop signal. Indeed, having a blocking primitive will prevent the <a class="reference internal" href="pypot.robot.html#pypot.robot.robot.Robot.close" title="pypot.robot.robot.Robot.close"><code class="xref py py-meth docutils literal notranslate"><span class="pre">close()</span></code></a> method to terminate (please refer to <a class="reference internal" href="primitive.html#start-prim"><span class="std std-ref">Start, Stop, Pause, and Resume</span></a> for details).</p>
 </div>
-<p>Thanks to the <a class="reference external" href="https://docs.python.org/3/library/contextlib.html#contextlib.closing" title="(in Python v3.7)"><code class="xref py py-func docutils literal notranslate"><span class="pre">contextlib.closing()</span></code></a> decorator you can easily make sure that the close function of your robot is always called whatever happened inside your code:</p>
+<p>Thanks to the <a class="reference external" href="https://docs.python.org/3/library/contextlib.html#contextlib.closing" title="(in Python v3.8)"><code class="xref py py-func docutils literal notranslate"><span class="pre">contextlib.closing()</span></code></a> decorator you can easily make sure that the close function of your robot is always called whatever happened inside your code:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">contextlib</span> <span class="k">import</span> <span class="n">closing</span>
 
 <span class="kn">import</span> <span class="nn">pypot.robot</span>
@@ -540,7 +540,7 @@
 <div id="navbar-related" class=" related navbar navbar-default" role="navigation" aria-label="related navigation">
   <div class="navbar-inner">
     <ul class="nav navbar-nav ">
-        <li><a href="index.html">pypot 3.1.3 documentation</a></li>
+        <li><a href="index.html">pypot 3.1.4 documentation</a></li>
     </ul>
 <ul class="nav navbar-nav pull-right hidden-xs hidden-sm">
       
