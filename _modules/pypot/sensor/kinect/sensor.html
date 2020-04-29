@@ -155,9 +155,9 @@
 <span class="kn">import</span> <span class="nn">numpy</span>
 <span class="kn">import</span> <span class="nn">threading</span>
 
-<span class="kn">from</span> <span class="nn">collections</span> <span class="k">import</span> <span class="n">namedtuple</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">namedtuple</span>
 
-<span class="kn">from</span> <span class="nn">...utils</span> <span class="k">import</span> <span class="n">Point3D</span><span class="p">,</span> <span class="n">Point2D</span><span class="p">,</span> <span class="n">Quaternion</span>
+<span class="kn">from</span> <span class="nn">...utils</span> <span class="kn">import</span> <span class="n">Point3D</span><span class="p">,</span> <span class="n">Point2D</span><span class="p">,</span> <span class="n">Quaternion</span>
 
 <span class="n">torso_joints</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;hip_center&#39;</span><span class="p">,</span> <span class="s1">&#39;spine&#39;</span><span class="p">,</span> <span class="s1">&#39;shoulder_center&#39;</span><span class="p">,</span> <span class="s1">&#39;head&#39;</span><span class="p">)</span>
 <span class="n">left_arm_joints</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;shoulder_left&#39;</span><span class="p">,</span> <span class="s1">&#39;elbow_left&#39;</span><span class="p">,</span> <span class="s1">&#39;wrist_left&#39;</span><span class="p">,</span> <span class="s1">&#39;hand_left&#39;</span><span class="p">)</span>
@@ -175,7 +175,7 @@
 
 
 <div class="viewcode-block" id="KinectSensor"><a class="viewcode-back" href="../../../../pypot.sensor.html#pypot.sensor.kinect.sensor.KinectSensor">[docs]</a><span class="k">class</span> <span class="nc">KinectSensor</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">addr</span><span class="p">,</span> <span class="n">port</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">addr</span><span class="p">,</span> <span class="n">port</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_lock</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Lock</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_skeleton</span> <span class="o">=</span> <span class="p">{}</span>
 

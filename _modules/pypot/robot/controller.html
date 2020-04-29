@@ -140,9 +140,9 @@
   <h1>Source code for pypot.robot.controller</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">time</span>
 
-<span class="kn">from</span> <span class="nn">math</span> <span class="k">import</span> <span class="n">copysign</span>
+<span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">copysign</span>
 
-<span class="kn">from</span> <span class="nn">..utils.stoppablethread</span> <span class="k">import</span> <span class="n">StoppableLoopThread</span>
+<span class="kn">from</span> <span class="nn">..utils.stoppablethread</span> <span class="kn">import</span> <span class="n">StoppableLoopThread</span>
 
 
 <div class="viewcode-block" id="AbstractController"><a class="viewcode-back" href="../../../pypot.robot.html#pypot.robot.controller.AbstractController">[docs]</a><span class="k">class</span> <span class="nc">AbstractController</span><span class="p">(</span><span class="n">StoppableLoopThread</span><span class="p">):</span>
@@ -153,7 +153,7 @@
 <span class="sd">    To define your Controller, you need to define the :meth:`~pypot.utils.stoppablethread.StoppableLoopThread.update` method. This method will be called at the predefined frequency. An exemple of how to do it can be found in :class:`~pypot.dynamixel.controller.BaseDxlController`.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">io</span><span class="p">,</span> <span class="n">sync_freq</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">io</span><span class="p">,</span> <span class="n">sync_freq</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        :param io: IO used to communicate with the hardware motors</span>
 <span class="sd">        :type io: :class:`~pypot.robot.io.AbstractIO`</span>
@@ -182,7 +182,7 @@
 <span class="sd">    The controller synchronizes the reading/writing of a set of motor instances with their &quot;hardware&quot;. Each update loop synchronizes values from the &quot;software&quot; :class:`~pypot.dynamixel.motor.DxlMotor` with their &quot;hardware&quot; equivalent.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">io</span><span class="p">,</span> <span class="n">motors</span><span class="p">,</span> <span class="n">sync_freq</span><span class="o">=</span><span class="mi">50</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">io</span><span class="p">,</span> <span class="n">motors</span><span class="p">,</span> <span class="n">sync_freq</span><span class="o">=</span><span class="mi">50</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        :param io: IO used to communicate with the hardware motors</span>
 <span class="sd">        :type io: :class:`~pypot.robot.io.AbstractIO`</span>
@@ -196,7 +196,7 @@
 
 
 <div class="viewcode-block" id="DummyController"><a class="viewcode-back" href="../../../pypot.robot.html#pypot.robot.controller.DummyController">[docs]</a><span class="k">class</span> <span class="nc">DummyController</span><span class="p">(</span><span class="n">MotorsController</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">motors</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">motors</span><span class="p">):</span>
         <span class="n">MotorsController</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">motors</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">max_speed</span> <span class="o">=</span> <span class="mf">360.0</span>  <span class="c1"># degree per second.</span>
@@ -237,7 +237,7 @@
 <span class="sd">    The controller frequently pulls new data from a &quot;real&quot; sensor and updates its corresponding software instance.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">io</span><span class="p">,</span> <span class="n">sensors</span><span class="p">,</span> <span class="n">sync_freq</span><span class="o">=</span><span class="mf">50.</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">io</span><span class="p">,</span> <span class="n">sensors</span><span class="p">,</span> <span class="n">sync_freq</span><span class="o">=</span><span class="mf">50.</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        :param io: IO used to communicate with the hardware motors</span>
 <span class="sd">        :type io: :class:`~pypot.robot.io.AbstractIO`</span>

@@ -142,9 +142,9 @@
 <span></span><span class="kn">import</span> <span class="nn">numpy</span>
 <span class="kn">import</span> <span class="nn">itertools</span>
 
-<span class="kn">from</span> <span class="nn">collections</span> <span class="k">import</span> <span class="n">namedtuple</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">namedtuple</span>
 
-<span class="kn">from</span> <span class="nn">..conversion</span> <span class="k">import</span> <span class="n">dxl_code</span><span class="p">,</span> <span class="n">dxl_decode</span>
+<span class="kn">from</span> <span class="nn">..conversion</span> <span class="kn">import</span> <span class="n">dxl_code</span><span class="p">,</span> <span class="n">dxl_decode</span>
 
 <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;v2&#39;</span>
 
@@ -219,29 +219,29 @@
 
 <div class="viewcode-block" id="DxlPingPacket"><a class="viewcode-back" href="../../../../pypot.dynamixel.html#pypot.dynamixel.protocol.v2.DxlPingPacket">[docs]</a><span class="k">class</span> <span class="nc">DxlPingPacket</span><span class="p">(</span><span class="n">DxlInstructionPacket</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; This class is used to represent ping packet. &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="nb">id</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="nb">id</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">DxlInstructionPacket</span><span class="o">.</span><span class="fm">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="nb">id</span><span class="p">,</span> <span class="n">DxlInstruction</span><span class="o">.</span><span class="n">PING</span><span class="p">,</span> <span class="p">())</span>
 
-    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="s1">&#39;DxlPingPacket(id=</span><span class="si">{}</span><span class="s1">)&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="DxlResetPacket"><a class="viewcode-back" href="../../../../pypot.dynamixel.html#pypot.dynamixel.protocol.v2.DxlResetPacket">[docs]</a><span class="k">class</span> <span class="nc">DxlResetPacket</span><span class="p">(</span><span class="n">DxlInstructionPacket</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; This class is used to represent factory reset packet. &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="nb">id</span><span class="p">,</span> <span class="n">mode</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="nb">id</span><span class="p">,</span> <span class="n">mode</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">DxlInstructionPacket</span><span class="o">.</span><span class="fm">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="nb">id</span><span class="p">,</span>
                                             <span class="n">DxlInstruction</span><span class="o">.</span><span class="n">RESET</span><span class="p">,</span> <span class="p">(</span><span class="n">mode</span><span class="p">,</span> <span class="p">))</span></div>
 
 
 <div class="viewcode-block" id="DxlReadDataPacket"><a class="viewcode-back" href="../../../../pypot.dynamixel.html#pypot.dynamixel.protocol.v2.DxlReadDataPacket">[docs]</a><span class="k">class</span> <span class="nc">DxlReadDataPacket</span><span class="p">(</span><span class="n">DxlInstructionPacket</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; This class is used to represent read data packet (to read value). &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="nb">id</span><span class="p">,</span> <span class="n">address</span><span class="p">,</span> <span class="n">length</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="nb">id</span><span class="p">,</span> <span class="n">address</span><span class="p">,</span> <span class="n">length</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">DxlInstructionPacket</span><span class="o">.</span><span class="fm">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="nb">id</span><span class="p">,</span>
                                             <span class="n">DxlInstruction</span><span class="o">.</span><span class="n">READ_DATA</span><span class="p">,</span>
                                             <span class="nb">list</span><span class="p">(</span><span class="n">dxl_code</span><span class="p">(</span><span class="n">address</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span> <span class="o">+</span>
                                             <span class="nb">list</span><span class="p">(</span><span class="n">dxl_code</span><span class="p">(</span><span class="n">length</span><span class="p">,</span> <span class="mi">2</span><span class="p">)))</span>
 
-    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="s1">&#39;DxlReadDataPacket(id=</span><span class="si">{}</span><span class="s1">, address=</span><span class="si">{}</span><span class="s1">, length=</span><span class="si">{}</span><span class="s1">)&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
             <span class="n">dxl_decode</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">reversed</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">]))),</span>
@@ -250,14 +250,14 @@
 
 <div class="viewcode-block" id="DxlSyncReadPacket"><a class="viewcode-back" href="../../../../pypot.dynamixel.html#pypot.dynamixel.protocol.v2.DxlSyncReadPacket">[docs]</a><span class="k">class</span> <span class="nc">DxlSyncReadPacket</span><span class="p">(</span><span class="n">DxlInstructionPacket</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; This class is used to represent sync read packet (to synchronously read values). &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">ids</span><span class="p">,</span> <span class="n">address</span><span class="p">,</span> <span class="n">length</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">ids</span><span class="p">,</span> <span class="n">address</span><span class="p">,</span> <span class="n">length</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">DxlInstructionPacket</span><span class="o">.</span><span class="fm">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">DxlBroadcast</span><span class="p">,</span>
                                             <span class="n">DxlInstruction</span><span class="o">.</span><span class="n">SYNC_READ</span><span class="p">,</span>
                                             <span class="nb">list</span><span class="p">(</span><span class="n">dxl_code</span><span class="p">(</span><span class="n">address</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span> <span class="o">+</span>
                                             <span class="nb">list</span><span class="p">(</span><span class="n">dxl_code</span><span class="p">(</span><span class="n">length</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span> <span class="o">+</span>
                                             <span class="nb">list</span><span class="p">(</span><span class="n">ids</span><span class="p">))</span>
 
-    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="p">(</span><span class="s1">&#39;DxlSyncReadDataPacket(ids=</span><span class="si">{}</span><span class="s1">, &#39;</span>
                 <span class="s1">&#39;address=</span><span class="si">{}</span><span class="s1">, length=</span><span class="si">{}</span><span class="s1">)&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="mi">4</span><span class="p">:],</span>
                                                 <span class="n">dxl_decode</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">]),</span>
@@ -266,13 +266,13 @@
 
 <div class="viewcode-block" id="DxlWriteDataPacket"><a class="viewcode-back" href="../../../../pypot.dynamixel.html#pypot.dynamixel.protocol.v2.DxlWriteDataPacket">[docs]</a><span class="k">class</span> <span class="nc">DxlWriteDataPacket</span><span class="p">(</span><span class="n">DxlInstructionPacket</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; This class is used to reprensent write data packet (to write value). &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="nb">id</span><span class="p">,</span> <span class="n">address</span><span class="p">,</span> <span class="n">coded_value</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="nb">id</span><span class="p">,</span> <span class="n">address</span><span class="p">,</span> <span class="n">coded_value</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">DxlInstructionPacket</span><span class="o">.</span><span class="fm">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="nb">id</span><span class="p">,</span>
                                             <span class="n">DxlInstruction</span><span class="o">.</span><span class="n">WRITE_DATA</span><span class="p">,</span>
                                             <span class="nb">list</span><span class="p">(</span><span class="n">dxl_code</span><span class="p">(</span><span class="n">address</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span> <span class="o">+</span>
                                             <span class="nb">list</span><span class="p">(</span><span class="n">coded_value</span><span class="p">))</span>
 
-    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="p">(</span><span class="s1">&#39;DxlWriteDataPacket(id=</span><span class="si">{}</span><span class="s1">, address=</span><span class="si">{}</span><span class="s1">, value=</span><span class="si">{}</span><span class="s1">)&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
                 <span class="n">dxl_decode</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">]),</span>
@@ -281,14 +281,14 @@
 
 <div class="viewcode-block" id="DxlSyncWritePacket"><a class="viewcode-back" href="../../../../pypot.dynamixel.html#pypot.dynamixel.protocol.v2.DxlSyncWritePacket">[docs]</a><span class="k">class</span> <span class="nc">DxlSyncWritePacket</span><span class="p">(</span><span class="n">DxlInstructionPacket</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; This class is used to represent sync write packet (to synchronously write values). &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">address</span><span class="p">,</span> <span class="n">length</span><span class="p">,</span> <span class="n">id_value_couples</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">address</span><span class="p">,</span> <span class="n">length</span><span class="p">,</span> <span class="n">id_value_couples</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">DxlInstructionPacket</span><span class="o">.</span><span class="fm">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">DxlBroadcast</span><span class="p">,</span>
                                             <span class="n">DxlInstruction</span><span class="o">.</span><span class="n">SYNC_WRITE</span><span class="p">,</span>
                                             <span class="nb">list</span><span class="p">(</span><span class="n">itertools</span><span class="o">.</span><span class="n">chain</span><span class="p">(</span><span class="n">dxl_code</span><span class="p">(</span><span class="n">address</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span>
                                                                  <span class="n">dxl_code</span><span class="p">(</span><span class="n">length</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span>
                                                                  <span class="n">id_value_couples</span><span class="p">)))</span>
 
-    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">address</span> <span class="o">=</span> <span class="n">dxl_decode</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">])</span>
         <span class="n">length</span> <span class="o">=</span> <span class="n">dxl_decode</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="mi">2</span><span class="p">:</span><span class="mi">4</span><span class="p">])</span>
 

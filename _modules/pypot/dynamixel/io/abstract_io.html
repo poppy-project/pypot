@@ -147,10 +147,10 @@
 <span class="kn">import</span> <span class="nn">itertools</span>
 <span class="kn">import</span> <span class="nn">threading</span>
 
-<span class="kn">from</span> <span class="nn">collections</span> <span class="k">import</span> <span class="n">namedtuple</span><span class="p">,</span> <span class="n">OrderedDict</span>
-<span class="kn">from</span> <span class="nn">contextlib</span> <span class="k">import</span> <span class="n">contextmanager</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">namedtuple</span><span class="p">,</span> <span class="n">OrderedDict</span>
+<span class="kn">from</span> <span class="nn">contextlib</span> <span class="kn">import</span> <span class="n">contextmanager</span>
 
-<span class="kn">from</span> <span class="nn">..conversion</span> <span class="k">import</span> <span class="p">(</span><span class="n">dxl_code_all</span><span class="p">,</span> <span class="n">dxl_decode_all</span><span class="p">,</span> <span class="n">decode_error</span><span class="p">,</span>
+<span class="kn">from</span> <span class="nn">..conversion</span> <span class="kn">import</span> <span class="p">(</span><span class="n">dxl_code_all</span><span class="p">,</span> <span class="n">dxl_decode_all</span><span class="p">,</span> <span class="n">decode_error</span><span class="p">,</span>
                           <span class="n">dxl_to_model</span><span class="p">)</span>
 
 
@@ -186,7 +186,7 @@
 
     <span class="c1"># MARK: - Open, Close and Flush the communication</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                  <span class="n">port</span><span class="p">,</span> <span class="n">baudrate</span><span class="o">=</span><span class="mi">1000000</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span>
                  <span class="n">use_sync_read</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
                  <span class="n">error_handler_cls</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -215,16 +215,16 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">port</span><span class="p">,</span> <span class="n">baudrate</span><span class="p">,</span> <span class="n">timeout</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span>
 
-    <span class="k">def</span> <span class="nf">__del__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__del__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 
-    <span class="k">def</span> <span class="nf">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_value</span><span class="p">,</span> <span class="n">traceback</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_value</span><span class="p">,</span> <span class="n">traceback</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 
-    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="p">(</span><span class="s1">&#39;&lt;DXL IO: closed=</span><span class="si">{self.closed}</span><span class="s1">, &#39;</span>
                 <span class="s1">&#39;port=&quot;</span><span class="si">{self.port}</span><span class="s1">&quot;, &#39;</span>
                 <span class="s1">&#39;baudrate=</span><span class="si">{self.baudrate}</span><span class="s1">, &#39;</span>
@@ -694,22 +694,22 @@
 
 <span class="k">class</span> <span class="nc">DxlCommunicationError</span><span class="p">(</span><span class="n">DxlError</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; Base error for communication error encountered when using :class:`~pypot.dynamixel.io.DxlIO`. &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dxl_io</span><span class="p">,</span> <span class="n">message</span><span class="p">,</span> <span class="n">instruction_packet</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dxl_io</span><span class="p">,</span> <span class="n">message</span><span class="p">,</span> <span class="n">instruction_packet</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">dxl_io</span> <span class="o">=</span> <span class="n">dxl_io</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">message</span> <span class="o">=</span> <span class="n">message</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">instruction_packet</span> <span class="o">=</span> <span class="n">instruction_packet</span>
 
-    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="s1">&#39;</span><span class="si">{self.message}</span><span class="s1"> after sending </span><span class="si">{self.instruction_packet}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
 
 
 <span class="k">class</span> <span class="nc">DxlTimeoutError</span><span class="p">(</span><span class="n">DxlCommunicationError</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; Timeout error encountered when using :class:`~pypot.dynamixel.io.DxlIO`. &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dxl_io</span><span class="p">,</span> <span class="n">instruction_packet</span><span class="p">,</span> <span class="n">ids</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dxl_io</span><span class="p">,</span> <span class="n">instruction_packet</span><span class="p">,</span> <span class="n">ids</span><span class="p">):</span>
         <span class="n">DxlCommunicationError</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dxl_io</span><span class="p">,</span> <span class="s1">&#39;timeout occured&#39;</span><span class="p">,</span> <span class="n">instruction_packet</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ids</span> <span class="o">=</span> <span class="n">ids</span>
 
-    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="s1">&#39;motors </span><span class="si">{}</span><span class="s1"> did not respond after sending </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ids</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">instruction_packet</span><span class="p">)</span>
 
 

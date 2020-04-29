@@ -142,14 +142,14 @@
 <span></span><span class="kn">import</span> <span class="nn">time</span>
 <span class="kn">import</span> <span class="nn">logging</span>
 
-<span class="kn">from</span> <span class="nn">.io.abstract_io</span> <span class="k">import</span> <span class="n">DxlError</span>
-<span class="kn">from</span> <span class="nn">..robot.controller</span> <span class="k">import</span> <span class="n">MotorsController</span>
+<span class="kn">from</span> <span class="nn">.io.abstract_io</span> <span class="kn">import</span> <span class="n">DxlError</span>
+<span class="kn">from</span> <span class="nn">..robot.controller</span> <span class="kn">import</span> <span class="n">MotorsController</span>
 
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="DxlController"><a class="viewcode-back" href="../../../pypot.dynamixel.html#pypot.dynamixel.controller.DxlController">[docs]</a><span class="k">class</span> <span class="nc">DxlController</span><span class="p">(</span><span class="n">MotorsController</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">io</span><span class="p">,</span> <span class="n">motors</span><span class="p">,</span> <span class="n">sync_freq</span><span class="p">,</span> <span class="n">synchronous</span><span class="p">,</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">io</span><span class="p">,</span> <span class="n">motors</span><span class="p">,</span> <span class="n">sync_freq</span><span class="p">,</span> <span class="n">synchronous</span><span class="p">,</span>
                  <span class="n">mode</span><span class="p">,</span> <span class="n">regname</span><span class="p">,</span> <span class="n">varname</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="n">MotorsController</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">io</span><span class="p">,</span> <span class="n">motors</span><span class="p">,</span> <span class="n">sync_freq</span><span class="p">)</span>
 
@@ -237,7 +237,7 @@
 
 
 <div class="viewcode-block" id="AngleLimitRegisterController"><a class="viewcode-back" href="../../../pypot.dynamixel.html#pypot.dynamixel.controller.AngleLimitRegisterController">[docs]</a><span class="k">class</span> <span class="nc">AngleLimitRegisterController</span><span class="p">(</span><span class="n">DxlController</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">io</span><span class="p">,</span> <span class="n">motors</span><span class="p">,</span> <span class="n">sync_freq</span><span class="p">,</span> <span class="n">synchronous</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">io</span><span class="p">,</span> <span class="n">motors</span><span class="p">,</span> <span class="n">sync_freq</span><span class="p">,</span> <span class="n">synchronous</span><span class="p">):</span>
         <span class="n">DxlController</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">io</span><span class="p">,</span> <span class="n">motors</span><span class="p">,</span> <span class="n">sync_freq</span><span class="p">,</span>
                                <span class="n">synchronous</span><span class="p">,</span> <span class="s1">&#39;get&#39;</span><span class="p">,</span> <span class="s1">&#39;angle_limit&#39;</span><span class="p">)</span>
 
@@ -278,7 +278,7 @@
 
 
 <div class="viewcode-block" id="PosSpeedLoadDxlController"><a class="viewcode-back" href="../../../pypot.dynamixel.html#pypot.dynamixel.controller.PosSpeedLoadDxlController">[docs]</a><span class="k">class</span> <span class="nc">PosSpeedLoadDxlController</span><span class="p">(</span><span class="n">DxlController</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">io</span><span class="p">,</span> <span class="n">motors</span><span class="p">,</span> <span class="n">sync_freq</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">io</span><span class="p">,</span> <span class="n">motors</span><span class="p">,</span> <span class="n">sync_freq</span><span class="p">):</span>
         <span class="n">DxlController</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">io</span><span class="p">,</span> <span class="n">motors</span><span class="p">,</span> <span class="n">sync_freq</span><span class="p">,</span>
                                <span class="kc">False</span><span class="p">,</span> <span class="s1">&#39;get&#39;</span><span class="p">,</span> <span class="s1">&#39;present_position&#39;</span><span class="p">)</span>
 

@@ -197,7 +197,7 @@
 <h2>Connecting the robot to your computer<a class="headerlink" href="#connecting-the-robot-to-your-computer" title="Permalink to this headline">¶</a></h2>
 <p>Now that you have your own robot, let’s start writing the code necessary to control it.</p>
 <p>The first step is to setup the configuration for your robot. It will describe the motor configuration of your robot, the USB2serial controller used and make the initialization really easy. Configurations are described as Python dictionaries. Yet, they can be quite repetitive to write. Luckily, the pypot package comes with an example of a configuration for an Ergo-Robot. You can first import it, so you can modify it:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pypot.robot.config</span> <span class="k">import</span> <span class="n">ergo_robot_config</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pypot.robot.config</span> <span class="kn">import</span> <span class="n">ergo_robot_config</span>
 </pre></div>
 </div>
 <p>If you do some introspection on this object, you will see that it is just a regular Python dictionary. So you can directly edit it like you will do with any other dict. You can also copy the one provided with pypot and work with your own copy:</p>

@@ -140,7 +140,7 @@
   <h1>Source code for pypot.robot.robot</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">logging</span>
 
-<span class="kn">from</span> <span class="nn">..primitive.manager</span> <span class="k">import</span> <span class="n">PrimitiveManager</span>
+<span class="kn">from</span> <span class="nn">..primitive.manager</span> <span class="kn">import</span> <span class="n">PrimitiveManager</span>
 
 
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
@@ -156,7 +156,7 @@
 <span class="sd">    This class also provides a generic motors accessor in order to (more or less) easily extends this class to other types of motor.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">motor_controllers</span><span class="o">=</span><span class="p">[],</span> <span class="n">sensor_controllers</span><span class="o">=</span><span class="p">[],</span> <span class="n">sync</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">motor_controllers</span><span class="o">=</span><span class="p">[],</span> <span class="n">sensor_controllers</span><span class="o">=</span><span class="p">[],</span> <span class="n">sync</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        :param list motor_controllers: motors controllers to attach to the robot</span>
 <span class="sd">        :param list sensor_controllers: sensors controllers to attach to the robot</span>
@@ -193,7 +193,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">stop_sync</span><span class="p">()</span>
         <span class="p">[</span><span class="n">c</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">close</span><span class="p">()</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_controllers</span> <span class="k">if</span> <span class="n">c</span><span class="o">.</span><span class="n">io</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">]</span></div>
 
-    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="s1">&#39;&lt;Robot motors=</span><span class="si">{}</span><span class="s1">&gt;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">motors</span><span class="p">)</span>
 
 <div class="viewcode-block" id="Robot.start_sync"><a class="viewcode-back" href="../../../pypot.robot.html#pypot.robot.robot.Robot.start_sync">[docs]</a>    <span class="k">def</span> <span class="nf">start_sync</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -293,7 +293,7 @@
 <span class="sd">            .. note:: The generated config should be used as a basis and must probably be modified.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="kn">from</span> <span class="nn">..dynamixel.controller</span> <span class="k">import</span> <span class="n">DxlController</span>
+        <span class="kn">from</span> <span class="nn">..dynamixel.controller</span> <span class="kn">import</span> <span class="n">DxlController</span>
 
         <span class="n">dxl_controllers</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_controllers</span>
                            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">DxlController</span><span class="p">)]</span>

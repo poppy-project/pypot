@@ -143,10 +143,10 @@
 <span class="kn">import</span> <span class="nn">time</span>
 <span class="kn">import</span> <span class="nn">ctypes</span>
 
-<span class="kn">from</span> <span class="nn">threading</span> <span class="k">import</span> <span class="n">Lock</span>
+<span class="kn">from</span> <span class="nn">threading</span> <span class="kn">import</span> <span class="n">Lock</span>
 
-<span class="kn">from</span> <span class="nn">.remoteApiBindings</span> <span class="k">import</span> <span class="n">vrep</span> <span class="k">as</span> <span class="n">remote_api</span>
-<span class="kn">from</span> <span class="nn">..robot.io</span> <span class="k">import</span> <span class="n">AbstractIO</span>
+<span class="kn">from</span> <span class="nn">.remoteApiBindings</span> <span class="kn">import</span> <span class="n">vrep</span> <span class="k">as</span> <span class="n">remote_api</span>
+<span class="kn">from</span> <span class="nn">..robot.io</span> <span class="kn">import</span> <span class="n">AbstractIO</span>
 
 
 <span class="n">vrep_error</span> <span class="o">=</span> <span class="p">{</span>
@@ -177,7 +177,7 @@
     <span class="n">MAX_ITER</span> <span class="o">=</span> <span class="mi">5</span>
     <span class="n">TIMEOUT</span> <span class="o">=</span> <span class="mf">0.4</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vrep_host</span><span class="o">=</span><span class="s1">&#39;127.0.0.1&#39;</span><span class="p">,</span> <span class="n">vrep_port</span><span class="o">=</span><span class="mi">19997</span><span class="p">,</span> <span class="n">scene</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vrep_host</span><span class="o">=</span><span class="s1">&#39;127.0.0.1&#39;</span><span class="p">,</span> <span class="n">vrep_port</span><span class="o">=</span><span class="mi">19997</span><span class="p">,</span> <span class="n">scene</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Starts the connection with the V-REP remote API server.</span>
 
 <span class="sd">        :param str vrep_host: V-REP remote API server host</span>
@@ -520,7 +520,7 @@
 
     <span class="sd">&quot;&quot;&quot; Base class for V-REP IO Errors. &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">error_code</span><span class="p">,</span> <span class="n">message</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">error_code</span><span class="p">,</span> <span class="n">message</span><span class="p">):</span>
         <span class="n">message</span> <span class="o">=</span> <span class="s1">&#39;V-REP error code </span><span class="si">{}</span><span class="s1"> (</span><span class="si">{}</span><span class="s1">): &quot;</span><span class="si">{}</span><span class="s1">&quot;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
             <span class="n">error_code</span><span class="p">,</span> <span class="n">vrep_error</span><span class="p">[</span><span class="n">error_code</span><span class="p">],</span> <span class="n">message</span><span class="p">)</span>
         <span class="ne">Exception</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">)</span></div>

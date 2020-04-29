@@ -148,18 +148,18 @@
 <span class="kn">import</span> <span class="nn">socket</span>
 <span class="kn">import</span> <span class="nn">logging</span>
 
-<span class="kn">from</span> <span class="nn">tornado.wsgi</span> <span class="k">import</span> <span class="n">WSGIContainer</span>
-<span class="kn">from</span> <span class="nn">tornado.httpserver</span> <span class="k">import</span> <span class="n">HTTPServer</span>
-<span class="kn">from</span> <span class="nn">tornado.ioloop</span> <span class="k">import</span> <span class="n">IOLoop</span>
+<span class="kn">from</span> <span class="nn">tornado.wsgi</span> <span class="kn">import</span> <span class="n">WSGIContainer</span>
+<span class="kn">from</span> <span class="nn">tornado.httpserver</span> <span class="kn">import</span> <span class="n">HTTPServer</span>
+<span class="kn">from</span> <span class="nn">tornado.ioloop</span> <span class="kn">import</span> <span class="n">IOLoop</span>
 
-<span class="kn">from</span> <span class="nn">bottle</span> <span class="k">import</span> <span class="n">request</span>
-<span class="kn">from</span> <span class="nn">bottle</span> <span class="k">import</span> <span class="n">response</span>
+<span class="kn">from</span> <span class="nn">bottle</span> <span class="kn">import</span> <span class="n">request</span>
+<span class="kn">from</span> <span class="nn">bottle</span> <span class="kn">import</span> <span class="n">response</span>
 
-<span class="kn">from</span> <span class="nn">contextlib</span> <span class="k">import</span> <span class="n">closing</span>
-<span class="kn">from</span> <span class="nn">ast</span> <span class="k">import</span> <span class="n">literal_eval</span> <span class="k">as</span> <span class="n">make_tuple</span>
+<span class="kn">from</span> <span class="nn">contextlib</span> <span class="kn">import</span> <span class="n">closing</span>
+<span class="kn">from</span> <span class="nn">ast</span> <span class="kn">import</span> <span class="n">literal_eval</span> <span class="k">as</span> <span class="n">make_tuple</span>
 
-<span class="kn">from</span> <span class="nn">.server</span> <span class="k">import</span> <span class="n">AbstractServer</span>
-<span class="kn">from</span> <span class="nn">..utils.appdirs</span> <span class="k">import</span> <span class="n">user_data_dir</span>
+<span class="kn">from</span> <span class="nn">.server</span> <span class="kn">import</span> <span class="n">AbstractServer</span>
+<span class="kn">from</span> <span class="nn">..utils.appdirs</span> <span class="kn">import</span> <span class="n">user_data_dir</span>
 
 
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
@@ -252,7 +252,7 @@
     <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;enable_cors&#39;</span>
     <span class="n">api</span> <span class="o">=</span> <span class="mi">2</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="s1">&#39;*&#39;</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="s1">&#39;*&#39;</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">origin</span> <span class="o">=</span> <span class="n">origin</span>
 
 <div class="viewcode-block" id="EnableCors.apply"><a class="viewcode-back" href="../../../pypot.server.html#pypot.server.snap.EnableCors.apply">[docs]</a>    <span class="k">def</span> <span class="nf">apply</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fn</span><span class="p">,</span> <span class="n">context</span><span class="p">):</span>
@@ -284,7 +284,7 @@
 
 <div class="viewcode-block" id="SnapRobotServer"><a class="viewcode-back" href="../../../pypot.server.html#pypot.server.snap.SnapRobotServer">[docs]</a><span class="k">class</span> <span class="nc">SnapRobotServer</span><span class="p">(</span><span class="n">AbstractServer</span><span class="p">):</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">robot</span><span class="p">,</span> <span class="n">host</span><span class="o">=</span><span class="s1">&#39;0.0.0.0&#39;</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="s1">&#39;6969&#39;</span><span class="p">,</span> <span class="n">quiet</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">robot</span><span class="p">,</span> <span class="n">host</span><span class="o">=</span><span class="s1">&#39;0.0.0.0&#39;</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="s1">&#39;6969&#39;</span><span class="p">,</span> <span class="n">quiet</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="n">AbstractServer</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">robot</span><span class="p">,</span> <span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">quiet</span> <span class="o">=</span> <span class="n">quiet</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">app</span> <span class="o">=</span> <span class="n">bottle</span><span class="o">.</span><span class="n">Bottle</span><span class="p">()</span>

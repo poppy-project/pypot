@@ -151,7 +151,7 @@
 <span class="sd">        More specifically you can start/stop them.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">):</span>
         <span class="n">client</span> <span class="o">=</span> <span class="n">zerorpc</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
         <span class="n">client</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s1">&#39;tcp://</span><span class="si">{}</span><span class="s1">:</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">))</span>
 
@@ -159,18 +159,18 @@
 
         <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">get_motors_list</span><span class="p">():</span>
             <span class="k">class</span> <span class="nc">Register</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-                <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">motorname</span><span class="p">,</span> <span class="n">regname</span><span class="p">):</span>
+                <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">motorname</span><span class="p">,</span> <span class="n">regname</span><span class="p">):</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">motorname</span> <span class="o">=</span> <span class="n">motorname</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">regname</span> <span class="o">=</span> <span class="n">regname</span>
 
-                <span class="k">def</span> <span class="nf">__get__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">owner</span><span class="p">):</span>
+                <span class="k">def</span> <span class="fm">__get__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">owner</span><span class="p">):</span>
                     <span class="k">return</span> <span class="n">client</span><span class="o">.</span><span class="n">get_register_value</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">motorname</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">regname</span><span class="p">)</span>
 
-                <span class="k">def</span> <span class="nf">__set__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+                <span class="k">def</span> <span class="fm">__set__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
                     <span class="n">client</span><span class="o">.</span><span class="n">set_register_value</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">motorname</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">regname</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
 
             <span class="k">class</span> <span class="nc">Motor</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-                <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+                <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
                     <span class="k">return</span> <span class="p">(</span><span class="s1">&#39;&lt;Motor name=</span><span class="si">{self.name}</span><span class="s1"> &#39;</span>
                             <span class="s1">&#39;id=</span><span class="si">{self.id}</span><span class="s1"> &#39;</span>
                             <span class="s1">&#39;pos=</span><span class="si">{self.present_position}</span><span class="s1">&gt;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
@@ -187,7 +187,7 @@
             <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">alias</span><span class="p">,</span> <span class="n">motors</span><span class="p">)</span>
 
         <span class="k">class</span> <span class="nc">Primitive</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-            <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+            <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
 
             <span class="k">def</span> <span class="nf">start</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>

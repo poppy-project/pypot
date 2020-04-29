@@ -139,17 +139,17 @@
                 <div class="body">
                   
   <h1>Source code for pypot.utils.trajectory</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">division</span>
+<span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">division</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span>
 <span class="kn">import</span> <span class="nn">collections</span>
 
 <span class="kn">import</span> <span class="nn">pypot.utils.pypot_time</span> <span class="k">as</span> <span class="nn">time</span>
-<span class="kn">from</span> <span class="nn">..utils.stoppablethread</span> <span class="k">import</span> <span class="n">StoppableLoopThread</span>
+<span class="kn">from</span> <span class="nn">..utils.stoppablethread</span> <span class="kn">import</span> <span class="n">StoppableLoopThread</span>
 
 
 <div class="viewcode-block" id="MinimumJerkTrajectory"><a class="viewcode-back" href="../../../pypot.utils.html#pypot.utils.trajectory.MinimumJerkTrajectory">[docs]</a><span class="k">class</span> <span class="nc">MinimumJerkTrajectory</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">initial</span><span class="p">,</span> <span class="n">final</span><span class="p">,</span> <span class="n">duration</span><span class="p">,</span> <span class="n">init_vel</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">init_acc</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">final_vel</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">final_acc</span><span class="o">=</span><span class="mf">0.0</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">initial</span><span class="p">,</span> <span class="n">final</span><span class="p">,</span> <span class="n">duration</span><span class="p">,</span> <span class="n">init_vel</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">init_acc</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">final_vel</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">final_acc</span><span class="o">=</span><span class="mf">0.0</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">initial</span> <span class="o">=</span> <span class="n">initial</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">final</span> <span class="o">=</span> <span class="n">final</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">duration</span> <span class="o">=</span> <span class="n">duration</span>
@@ -202,7 +202,7 @@
 
 
 <div class="viewcode-block" id="GotoMinJerk"><a class="viewcode-back" href="../../../pypot.utils.html#pypot.utils.trajectory.GotoMinJerk">[docs]</a><span class="k">class</span> <span class="nc">GotoMinJerk</span><span class="p">(</span><span class="n">StoppableLoopThread</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">motor</span><span class="p">,</span> <span class="n">position</span><span class="p">,</span> <span class="n">duration</span><span class="p">,</span> <span class="n">frequency</span><span class="o">=</span><span class="mi">50</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">motor</span><span class="p">,</span> <span class="n">position</span><span class="p">,</span> <span class="n">duration</span><span class="p">,</span> <span class="n">frequency</span><span class="o">=</span><span class="mi">50</span><span class="p">):</span>
         <span class="n">StoppableLoopThread</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">frequency</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">motor</span> <span class="o">=</span> <span class="n">motor</span>
@@ -229,7 +229,7 @@
 
 
 <div class="viewcode-block" id="GotoLinear"><a class="viewcode-back" href="../../../pypot.utils.html#pypot.utils.trajectory.GotoLinear">[docs]</a><span class="k">class</span> <span class="nc">GotoLinear</span><span class="p">(</span><span class="n">StoppableLoopThread</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">motor</span><span class="p">,</span> <span class="n">position</span><span class="p">,</span> <span class="n">duration</span><span class="p">,</span> <span class="n">frequency</span><span class="o">=</span><span class="mi">50</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">motor</span><span class="p">,</span> <span class="n">position</span><span class="p">,</span> <span class="n">duration</span><span class="p">,</span> <span class="n">frequency</span><span class="o">=</span><span class="mi">50</span><span class="p">):</span>
         <span class="n">StoppableLoopThread</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">frequency</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">motor</span> <span class="o">=</span> <span class="n">motor</span>

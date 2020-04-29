@@ -138,15 +138,15 @@
                 <div class="body">
                   
   <h1>Source code for pypot.primitive.move</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">division</span>
+<span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">division</span>
 
 <span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">import</span> <span class="nn">time</span>
 <span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
-<span class="kn">from</span> <span class="nn">.primitive</span> <span class="k">import</span> <span class="n">LoopPrimitive</span>
-<span class="kn">from</span> <span class="nn">pypot.utils.interpolation</span> <span class="k">import</span> <span class="n">KDTreeDict</span>
+<span class="kn">from</span> <span class="nn">.primitive</span> <span class="kn">import</span> <span class="n">LoopPrimitive</span>
+<span class="kn">from</span> <span class="nn">pypot.utils.interpolation</span> <span class="kn">import</span> <span class="n">KDTreeDict</span>
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
 
@@ -158,15 +158,15 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">freq</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">freq</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_framerate</span> <span class="o">=</span> <span class="n">freq</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_timed_positions</span> <span class="o">=</span> <span class="n">KDTreeDict</span><span class="p">()</span>
 
-    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="s1">&#39;&lt;Move framerate=</span><span class="si">{}</span><span class="s1"> #keyframes=</span><span class="si">{}</span><span class="s1">&gt;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">framerate</span><span class="p">,</span>
                                                           <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">positions</span><span class="p">()))</span>
 
-    <span class="k">def</span> <span class="nf">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_timed_positions</span><span class="o">.</span><span class="n">items</span><span class="p">())[</span><span class="n">i</span><span class="p">]</span>
 
     <span class="nd">@property</span>
@@ -256,7 +256,7 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">robot</span><span class="p">,</span> <span class="n">freq</span><span class="p">,</span> <span class="n">tracked_motors</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">robot</span><span class="p">,</span> <span class="n">freq</span><span class="p">,</span> <span class="n">tracked_motors</span><span class="p">):</span>
         <span class="n">LoopPrimitive</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">robot</span><span class="p">,</span> <span class="n">freq</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">freq</span> <span class="o">=</span> <span class="n">freq</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">tracked_motors</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_mockup_motor</span><span class="p">,</span> <span class="n">tracked_motors</span><span class="p">)</span>
@@ -290,7 +290,7 @@
 <span class="sd">        The play_speed attribute change only time lockup/interpolation</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">robot</span><span class="p">,</span> <span class="n">move</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">play_speed</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">move_filename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">start_max_speed</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">robot</span><span class="p">,</span> <span class="n">move</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">play_speed</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">move_filename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">start_max_speed</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">move</span> <span class="o">=</span> <span class="n">move</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">backwards</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="k">if</span> <span class="n">move_filename</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>

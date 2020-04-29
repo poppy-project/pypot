@@ -138,13 +138,13 @@
                 <div class="body">
                   
   <h1>Source code for pypot.utils</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">collections</span> <span class="k">import</span> <span class="n">namedtuple</span>
-<span class="kn">from</span> <span class="nn">operator</span> <span class="k">import</span> <span class="n">attrgetter</span>
-<span class="kn">from</span> <span class="nn">threading</span> <span class="k">import</span> <span class="n">Event</span>
+<span></span><span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">namedtuple</span>
+<span class="kn">from</span> <span class="nn">operator</span> <span class="kn">import</span> <span class="n">attrgetter</span>
+<span class="kn">from</span> <span class="nn">threading</span> <span class="kn">import</span> <span class="n">Event</span>
 
-<span class="kn">from</span> <span class="nn">.stoppablethread</span> <span class="k">import</span> <span class="n">StoppableThread</span><span class="p">,</span> <span class="n">StoppableLoopThread</span>
-<span class="kn">from</span> <span class="nn">.pypot_time</span> <span class="k">import</span> <span class="n">time</span>
-<span class="kn">from</span> <span class="nn">.flushed_print</span> <span class="k">import</span> <span class="n">flushed_print</span>
+<span class="kn">from</span> <span class="nn">.stoppablethread</span> <span class="kn">import</span> <span class="n">StoppableThread</span><span class="p">,</span> <span class="n">StoppableLoopThread</span>
+<span class="kn">from</span> <span class="nn">.pypot_time</span> <span class="kn">import</span> <span class="n">time</span>
+<span class="kn">from</span> <span class="nn">.flushed_print</span> <span class="kn">import</span> <span class="n">flushed_print</span>
 
 <span class="n">Point2D</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span><span class="s1">&#39;Point2D&#39;</span><span class="p">,</span> <span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">))</span>
 <span class="n">Point3D</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span><span class="s1">&#39;Point3D&#39;</span><span class="p">,</span> <span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="s1">&#39;z&#39;</span><span class="p">))</span>
@@ -172,7 +172,7 @@
 
 
 <div class="viewcode-block" id="SyncEvent"><a class="viewcode-back" href="../../pypot.utils.html#pypot.utils.SyncEvent">[docs]</a><span class="k">class</span> <span class="nc">SyncEvent</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">period</span><span class="o">=.</span><span class="mi">1</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">period</span><span class="o">=.</span><span class="mi">1</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_event</span> <span class="o">=</span> <span class="n">Event</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_needed</span> <span class="o">=</span> <span class="kc">False</span>
 

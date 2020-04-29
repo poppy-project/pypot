@@ -138,14 +138,14 @@
                 <div class="body">
                   
   <h1>Source code for pypot.robot.sensor</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">numpy</span> <span class="k">import</span> <span class="n">array</span><span class="p">,</span> <span class="n">zeros</span>
+<span></span><span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">array</span><span class="p">,</span> <span class="n">zeros</span>
 
 
 <div class="viewcode-block" id="Sensor"><a class="viewcode-back" href="../../../pypot.robot.html#pypot.robot.sensor.Sensor">[docs]</a><span class="k">class</span> <span class="nc">Sensor</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; Purely abstract class representing any sensor object. &quot;&quot;&quot;</span>
     <span class="n">registers</span> <span class="o">=</span> <span class="p">[]</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_name</span> <span class="o">=</span> <span class="n">name</span>
 
     <span class="nd">@property</span>
@@ -156,7 +156,7 @@
 <div class="viewcode-block" id="ObjectTracker"><a class="viewcode-back" href="../../../pypot.robot.html#pypot.robot.sensor.ObjectTracker">[docs]</a><span class="k">class</span> <span class="nc">ObjectTracker</span><span class="p">(</span><span class="n">Sensor</span><span class="p">):</span>
     <span class="n">registers</span> <span class="o">=</span> <span class="n">Sensor</span><span class="o">.</span><span class="n">registers</span> <span class="o">+</span> <span class="p">[</span><span class="s1">&#39;position&#39;</span><span class="p">,</span> <span class="s1">&#39;orientation&#39;</span><span class="p">]</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
         <span class="n">Sensor</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_pos</span> <span class="o">=</span> <span class="n">zeros</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>

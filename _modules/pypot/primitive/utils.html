@@ -140,17 +140,17 @@
   <h1>Source code for pypot.primitive.utils</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">numpy</span>
 
-<span class="kn">from</span> <span class="nn">copy</span> <span class="k">import</span> <span class="n">deepcopy</span>
-<span class="kn">from</span> <span class="nn">collections</span> <span class="k">import</span> <span class="n">defaultdict</span>
+<span class="kn">from</span> <span class="nn">copy</span> <span class="kn">import</span> <span class="n">deepcopy</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">defaultdict</span>
 
-<span class="kn">from</span> <span class="nn">.primitive</span> <span class="k">import</span> <span class="n">Primitive</span><span class="p">,</span> <span class="n">LoopPrimitive</span>
+<span class="kn">from</span> <span class="nn">.primitive</span> <span class="kn">import</span> <span class="n">Primitive</span><span class="p">,</span> <span class="n">LoopPrimitive</span>
 
 
 <div class="viewcode-block" id="Sinus"><a class="viewcode-back" href="../../../pypot.primitive.html#pypot.primitive.utils.Sinus">[docs]</a><span class="k">class</span> <span class="nc">Sinus</span><span class="p">(</span><span class="n">LoopPrimitive</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; Apply a sinus on the motor specified as argument. Parameters (amp, offset and phase) should be specified in degree. &quot;&quot;&quot;</span>
     <span class="n">properties</span> <span class="o">=</span> <span class="n">LoopPrimitive</span><span class="o">.</span><span class="n">properties</span> <span class="o">+</span> <span class="p">[</span><span class="s1">&#39;frequency&#39;</span><span class="p">,</span> <span class="s1">&#39;amplitude&#39;</span><span class="p">,</span> <span class="s1">&#39;offset&#39;</span><span class="p">,</span> <span class="s1">&#39;phase&#39;</span><span class="p">]</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">robot</span><span class="p">,</span> <span class="n">refresh_freq</span><span class="p">,</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">robot</span><span class="p">,</span> <span class="n">refresh_freq</span><span class="p">,</span>
                  <span class="n">motor_list</span><span class="p">,</span>
                  <span class="n">amp</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">phase</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
 
@@ -207,7 +207,7 @@
 <div class="viewcode-block" id="Cosinus"><a class="viewcode-back" href="../../../pypot.primitive.html#pypot.primitive.utils.Cosinus">[docs]</a><span class="k">class</span> <span class="nc">Cosinus</span><span class="p">(</span><span class="n">Sinus</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; Apply a cosinus on the motor specified as argument. Parameters (amp, offset and phase) should be specified in degree. &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">robot</span><span class="p">,</span> <span class="n">refresh_freq</span><span class="p">,</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">robot</span><span class="p">,</span> <span class="n">refresh_freq</span><span class="p">,</span>
                  <span class="n">motor_list</span><span class="p">,</span>
                  <span class="n">amp</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">phase</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
 
@@ -217,7 +217,7 @@
 
 
 <div class="viewcode-block" id="PositionWatcher"><a class="viewcode-back" href="../../../pypot.primitive.html#pypot.primitive.utils.PositionWatcher">[docs]</a><span class="k">class</span> <span class="nc">PositionWatcher</span><span class="p">(</span><span class="n">LoopPrimitive</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">robot</span><span class="p">,</span> <span class="n">refresh_freq</span><span class="p">,</span> <span class="n">watched_motors</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">robot</span><span class="p">,</span> <span class="n">refresh_freq</span><span class="p">,</span> <span class="n">watched_motors</span><span class="p">):</span>
         <span class="n">LoopPrimitive</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">robot</span><span class="p">,</span> <span class="n">refresh_freq</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_pos</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span>
@@ -247,7 +247,7 @@
 
 
 <div class="viewcode-block" id="SimplePosture"><a class="viewcode-back" href="../../../pypot.primitive.html#pypot.primitive.utils.SimplePosture">[docs]</a><span class="k">class</span> <span class="nc">SimplePosture</span><span class="p">(</span><span class="n">Primitive</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">robot</span><span class="p">,</span> <span class="n">duration</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">robot</span><span class="p">,</span> <span class="n">duration</span><span class="p">):</span>
         <span class="n">Primitive</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">robot</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">duration</span> <span class="o">=</span> <span class="n">duration</span>

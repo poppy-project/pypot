@@ -230,8 +230,8 @@ For instance:</p>
 <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;my_config.json&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
     <span class="n">config</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
 
-<span class="kn">from</span> <span class="nn">pypot.robot</span> <span class="k">import</span> <span class="n">from_config</span>
-<span class="kn">from</span> <span class="nn">pypot.vrep</span> <span class="k">import</span> <span class="n">from_vrep</span>
+<span class="kn">from</span> <span class="nn">pypot.robot</span> <span class="kn">import</span> <span class="n">from_config</span>
+<span class="kn">from</span> <span class="nn">pypot.vrep</span> <span class="kn">import</span> <span class="n">from_vrep</span>
 
 <span class="n">real_robot</span> <span class="o">=</span> <span class="n">from_config</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
 <span class="n">simulated_robot</span> <span class="o">=</span> <span class="n">from_vrep</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="s1">&#39;127.0.0.1&#39;</span><span class="p">,</span> <span class="mi">19997</span><span class="p">,</span> <span class="s1">&#39;poppy.ttt&#39;</span><span class="p">)</span>

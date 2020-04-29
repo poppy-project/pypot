@@ -141,18 +141,18 @@
 <span></span><span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">import</span> <span class="nn">logging</span>
 
-<span class="kn">from</span> <span class="nn">functools</span> <span class="k">import</span> <span class="n">partial</span>
-<span class="kn">from</span> <span class="nn">collections</span> <span class="k">import</span> <span class="n">OrderedDict</span>
+<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">partial</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">OrderedDict</span>
 
-<span class="kn">from</span> <span class="nn">.io</span> <span class="k">import</span> <span class="p">(</span><span class="n">VrepIO</span><span class="p">,</span> <span class="n">close_all_connections</span><span class="p">,</span>
+<span class="kn">from</span> <span class="nn">.io</span> <span class="kn">import</span> <span class="p">(</span><span class="n">VrepIO</span><span class="p">,</span> <span class="n">close_all_connections</span><span class="p">,</span>
                  <span class="n">VrepIOError</span><span class="p">,</span> <span class="n">VrepConnectionError</span><span class="p">)</span>
 
-<span class="kn">from</span> <span class="nn">.controller</span> <span class="k">import</span> <span class="n">VrepController</span><span class="p">,</span> <span class="n">VrepObjectTracker</span>
-<span class="kn">from</span> <span class="nn">.controller</span> <span class="k">import</span> <span class="n">VrepCollisionTracker</span><span class="p">,</span> <span class="n">VrepCollisionDetector</span>
+<span class="kn">from</span> <span class="nn">.controller</span> <span class="kn">import</span> <span class="n">VrepController</span><span class="p">,</span> <span class="n">VrepObjectTracker</span>
+<span class="kn">from</span> <span class="nn">.controller</span> <span class="kn">import</span> <span class="n">VrepCollisionTracker</span><span class="p">,</span> <span class="n">VrepCollisionDetector</span>
 
-<span class="kn">from</span> <span class="nn">..robot</span> <span class="k">import</span> <span class="n">Robot</span>
-<span class="kn">from</span> <span class="nn">..robot.sensor</span> <span class="k">import</span> <span class="n">ObjectTracker</span>
-<span class="kn">from</span> <span class="nn">..robot.config</span> <span class="k">import</span> <span class="n">motor_from_confignode</span><span class="p">,</span> <span class="n">make_alias</span>
+<span class="kn">from</span> <span class="nn">..robot</span> <span class="kn">import</span> <span class="n">Robot</span>
+<span class="kn">from</span> <span class="nn">..robot.sensor</span> <span class="kn">import</span> <span class="n">ObjectTracker</span>
+<span class="kn">from</span> <span class="nn">..robot.config</span> <span class="kn">import</span> <span class="n">motor_from_confignode</span><span class="p">,</span> <span class="n">make_alias</span>
 
 
 <span class="kn">import</span> <span class="nn">pypot.utils.pypot_time</span> <span class="k">as</span> <span class="nn">pypot_time</span>
@@ -162,7 +162,7 @@
 
 
 <div class="viewcode-block" id="vrep_time"><a class="viewcode-back" href="../../pypot.vrep.html#pypot.vrep.vrep_time">[docs]</a><span class="k">class</span> <span class="nc">vrep_time</span><span class="p">():</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vrep_io</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vrep_io</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">io</span> <span class="o">=</span> <span class="n">vrep_io</span>
 
 <div class="viewcode-block" id="vrep_time.get_time"><a class="viewcode-back" href="../../pypot.vrep.html#pypot.vrep.vrep_time.get_time">[docs]</a>    <span class="k">def</span> <span class="nf">get_time</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">trial</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>

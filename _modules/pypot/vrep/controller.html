@@ -139,20 +139,20 @@
                 <div class="body">
                   
   <h1>Source code for pypot.vrep.controller</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">numpy</span> <span class="k">import</span> <span class="n">rad2deg</span><span class="p">,</span> <span class="n">deg2rad</span>
-<span class="kn">from</span> <span class="nn">collections</span> <span class="k">import</span> <span class="n">deque</span>
+<span></span><span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">rad2deg</span><span class="p">,</span> <span class="n">deg2rad</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">deque</span>
 
-<span class="kn">from</span> <span class="nn">..robot.controller</span> <span class="k">import</span> <span class="n">MotorsController</span><span class="p">,</span> <span class="n">SensorsController</span>
-<span class="kn">from</span> <span class="nn">..dynamixel.conversion</span> <span class="k">import</span> <span class="n">torque_max</span>
-<span class="kn">from</span> <span class="nn">..robot.sensor</span> <span class="k">import</span> <span class="n">Sensor</span>
-<span class="kn">from</span> <span class="nn">.io</span> <span class="k">import</span> <span class="n">remote_api</span>
+<span class="kn">from</span> <span class="nn">..robot.controller</span> <span class="kn">import</span> <span class="n">MotorsController</span><span class="p">,</span> <span class="n">SensorsController</span>
+<span class="kn">from</span> <span class="nn">..dynamixel.conversion</span> <span class="kn">import</span> <span class="n">torque_max</span>
+<span class="kn">from</span> <span class="nn">..robot.sensor</span> <span class="kn">import</span> <span class="n">Sensor</span>
+<span class="kn">from</span> <span class="nn">.io</span> <span class="kn">import</span> <span class="n">remote_api</span>
 
 
 <div class="viewcode-block" id="VrepController"><a class="viewcode-back" href="../../../pypot.vrep.html#pypot.vrep.controller.VrepController">[docs]</a><span class="k">class</span> <span class="nc">VrepController</span><span class="p">(</span><span class="n">MotorsController</span><span class="p">):</span>
 
     <span class="sd">&quot;&quot;&quot; V-REP motors controller. &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vrep_io</span><span class="p">,</span> <span class="n">scene</span><span class="p">,</span> <span class="n">motors</span><span class="p">,</span> <span class="n">sync_freq</span><span class="o">=</span><span class="mf">50.</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vrep_io</span><span class="p">,</span> <span class="n">scene</span><span class="p">,</span> <span class="n">motors</span><span class="p">,</span> <span class="n">sync_freq</span><span class="o">=</span><span class="mf">50.</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        :param vrep_io: vrep io instance</span>
 <span class="sd">        :type vrep_io: :class:`~pypot.vrep.io.VrepIO`</span>
@@ -296,7 +296,7 @@
 
 <div class="viewcode-block" id="VrepCollisionDetector"><a class="viewcode-back" href="../../../pypot.vrep.html#pypot.vrep.controller.VrepCollisionDetector">[docs]</a><span class="k">class</span> <span class="nc">VrepCollisionDetector</span><span class="p">(</span><span class="n">Sensor</span><span class="p">):</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
         <span class="n">Sensor</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_colliding</span> <span class="o">=</span> <span class="kc">False</span>

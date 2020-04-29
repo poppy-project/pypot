@@ -268,7 +268,7 @@
 
 <span class="kn">import</span> <span class="nn">pypot.robot</span>
 
-<span class="kn">from</span> <span class="nn">pypot.robot.config</span> <span class="k">import</span> <span class="n">ergo_robot_config</span>
+<span class="kn">from</span> <span class="nn">pypot.robot.config</span> <span class="kn">import</span> <span class="n">ergo_robot_config</span>
 
 <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;ergo.json&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
     <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">ergo_robot_config</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
@@ -346,7 +346,7 @@
 <div class="section" id="auto-detection-and-generation-of-the-configuration">
 <h2>Auto-detection and generation of the configuration<a class="headerlink" href="#auto-detection-and-generation-of-the-configuration" title="Permalink to this headline">¶</a></h2>
 <p>Pypot provides another way of creating your <a class="reference internal" href="pypot.robot.html#pypot.robot.robot.Robot" title="pypot.robot.robot.Robot"><code class="xref py py-class docutils literal notranslate"><span class="pre">Robot</span></code></a>. The <a class="reference internal" href="pypot.dynamixel.html#pypot.dynamixel.autodetect_robot" title="pypot.dynamixel.autodetect_robot"><code class="xref py py-func docutils literal notranslate"><span class="pre">autodetect_robot()</span></code></a> can scan all dynamixel ports plugged and find all connected motors. It then returns the corresponding <a class="reference internal" href="pypot.robot.html#pypot.robot.robot.Robot" title="pypot.robot.robot.Robot"><code class="xref py py-class docutils literal notranslate"><span class="pre">Robot</span></code></a>. For instance:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pypot.dynamixel</span> <span class="k">import</span> <span class="n">autodetect_robot</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pypot.dynamixel</span> <span class="kn">import</span> <span class="n">autodetect_robot</span>
 
 <span class="n">my_robot</span> <span class="o">=</span> <span class="n">autodetect_robot</span><span class="p">()</span>
 
@@ -369,7 +369,7 @@
 </pre></div>
 </div>
 <p>You can then easily re-create your robot:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pypot.robot</span> <span class="k">import</span> <span class="n">from_json</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pypot.robot</span> <span class="kn">import</span> <span class="n">from_json</span>
 
 <span class="n">my_robot</span> <span class="o">=</span> <span class="n">from_json</span><span class="p">(</span><span class="s1">&#39;my_robot.json&#39;</span><span class="p">)</span>
 </pre></div>
@@ -409,7 +409,7 @@
 <p>As shown in the examples above, the robot class let you directly access the different motors. For instance, let’s assume we are working with an Ergo-robot, you could then write:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pypot.robot</span>
 
-<span class="kn">from</span> <span class="nn">pypot.robot.config</span> <span class="k">import</span> <span class="n">ergo_robot_config</span>
+<span class="kn">from</span> <span class="nn">pypot.robot.config</span> <span class="kn">import</span> <span class="n">ergo_robot_config</span>
 
 <span class="n">robot</span> <span class="o">=</span> <span class="n">pypot</span><span class="o">.</span><span class="n">robot</span><span class="o">.</span><span class="n">from_config</span><span class="p">(</span><span class="n">ergo_robot_config</span><span class="p">)</span>
 
@@ -431,7 +431,7 @@
 
 <span class="kn">import</span> <span class="nn">pypot.robot</span>
 
-<span class="kn">from</span> <span class="nn">pypot.robot.config</span> <span class="k">import</span> <span class="n">ergo_robot_config</span>
+<span class="kn">from</span> <span class="nn">pypot.robot.config</span> <span class="kn">import</span> <span class="n">ergo_robot_config</span>
 
 <span class="n">amp</span> <span class="o">=</span> <span class="mi">30</span>
 <span class="n">freq</span> <span class="o">=</span> <span class="mf">0.5</span>
@@ -510,7 +510,7 @@
 <p class="last">You should be careful that all your primitives correctly respond to the stop signal. Indeed, having a blocking primitive will prevent the <a class="reference internal" href="pypot.robot.html#pypot.robot.robot.Robot.close" title="pypot.robot.robot.Robot.close"><code class="xref py py-meth docutils literal notranslate"><span class="pre">close()</span></code></a> method to terminate (please refer to <a class="reference internal" href="primitive.html#start-prim"><span class="std std-ref">Start, Stop, Pause, and Resume</span></a> for details).</p>
 </div>
 <p>Thanks to the <a class="reference external" href="https://docs.python.org/3/library/contextlib.html#contextlib.closing" title="(in Python v3.8)"><code class="xref py py-func docutils literal notranslate"><span class="pre">contextlib.closing()</span></code></a> decorator you can easily make sure that the close function of your robot is always called whatever happened inside your code:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">contextlib</span> <span class="k">import</span> <span class="n">closing</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">contextlib</span> <span class="kn">import</span> <span class="n">closing</span>
 
 <span class="kn">import</span> <span class="nn">pypot.robot</span>
 
