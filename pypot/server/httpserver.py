@@ -86,7 +86,7 @@ class IndexHandler(PoppyRequestHandler):
 class MotorsListHandler(PoppyRequestHandler):
     def get(self, alias='motors'):
         self.write_json({
-            'alias': self.restful_robot.get_motors_list(alias)
+            alias: self.restful_robot.get_motors_list(alias)
         })
 
 
@@ -210,6 +210,55 @@ class MotorsRegistersHandler(PoppyRequestHandler):
 
         self.write_json(registers_motors)
 
+class PathsUrl(PoppyRequestHandler):
+    def get(self):
+        out='<b>All url paths available:</b><br>'
+        get='<br><b>Get method url:</b><br>'
+        post='<br><b>Post method url:</b><br>'
+        for url in url_paths:
+            tmp=url[0]
+            tmp=tmp.replace('\\','')
+            tmp=tmp.replace('?','')
+            tmp=tmp.replace('<','&lt')
+            tmp=tmp.replace('>','&gt')
+            tmp=tmp.replace('(P','')
+            tmp=tmp.replace('[a-zA-Z0-9_]+)','')
+            if 'value' in tmp:
+                post+=tmp+'<br>'
+            else:
+                get+=tmp+'<br>'
+        out+=get
+        out+=post
+        self.write(out)
+
+url_paths=[
+    (r'/', PathsUrl),
+    (r'/robot\.json', IndexHandler),
+    (r'/motor/alias/list\.json', MotorsAliasesListHandler),
+    (r'/motor/(?P<alias>[a-zA-Z0-9_]+)/?list\.json', MotorsListHandler),
+    (r'/sensor/list\.json', SensorsListHandler),
+    (r'/motor/(?P<motor_name>[a-zA-Z0-9_]+)/register/list\.json', MotorRegistersListHandler),
+    (r'/sensor/(?P<motor_name>[a-zA-Z0-9_]+)/register/list\.json', MotorRegistersListHandler),
+    (r'/motor/(?P<motor_name>[a-zA-Z0-9_]+)/register/(?P<register_name>[a-zA-Z0-9_]+)/list\.json', MotorRegisterHandler),
+    (r'/sensor/(?P<motor_name>[a-zA-Z0-9_]+)/register/(?P<register_name>[a-zA-Z0-9_]+)/list\.json', MotorRegisterHandler),
+    (r'/motor/(?P<motor_name>[a-zA-Z0-9_]+)/register/(?P<register_name>[a-zA-Z0-9_]+)', MotorRegisterHandler),
+    (r'/sensor/(?P<motor_name>[a-zA-Z0-9_]+)/register/(?P<register_name>[a-zA-Z0-9_]+)', MotorRegisterHandler),
+    (r'/motor/(?P<motor_name>[a-zA-Z0-9_]+)/register/(?P<register_name>[a-zA-Z0-9_]+)/value\.json', UpdateMotorRegisterHandler),
+    (r'/sensor/(?P<motor_name>[a-zA-Z0-9_]+)/register/(?P<register_name>[a-zA-Z0-9_]+)/value\.json', UpdateMotorRegisterHandler),
+    (r'/primitive/list\.json', PrimitivesListHandler),
+    (r'/primitive/running/list\.json', RunningPrimitivesListHandler),
+    (r'/primitive/(?P<primitive_name>[a-zA-Z0-9_]+)/start\.json', StartPrimitiveHandler),
+    (r'/primitive/(?P<primitive_name>[a-zA-Z0-9_]+)/stop\.json', StopPrimitiveHandler),
+    (r'/primitive/(?P<primitive_name>[a-zA-Z0-9_]+)/pause\.json', PausePrimitiveHandler),
+    (r'/primitive/(?P<primitive_name>[a-zA-Z0-9_]+)/resume\.json', ResumePrimitiveHandler),
+    (r'/primitive/(?P<primitive_name>[a-zA-Z0-9_]+)/property/list\.json', PrimitivePropertiesListHandler),
+    (r'/primitive/(?P<primitive_name>[a-zA-Z0-9_]+)/property/(?P<prop>[a-zA-Z0-9_]+)', PrimitivePropertyHandler),
+    (r'/primitive/(?P<primitive_name>[a-zA-Z0-9_]+)/property/(?P<prop>[a-zA-Z0-9_]+)/value\.json', SetPrimitivePropertyHandler),
+    (r'/primitive/(?P<primitive_name>[a-zA-Z0-9_]+)/method/list\.json', ListPrimitiveMethodsHandler),
+    (r'/primitive/(?P<primitive_name>[a-zA-Z0-9_]+)/method/(?P<method_name>[a-zA-Z0-9_]+)/args\.json', CallPrimitiveMethodHandler),
+    (r'/motors/register/(?P<register_name>[a-zA-Z0-9_]+)', MotorsRegistersHandler),
+    ]
+
 
 class HTTPRobotServer(AbstractServer):
     """Refer to the REST API for an exhaustive list of the possible routes."""
@@ -219,36 +268,7 @@ class HTTPRobotServer(AbstractServer):
 
     def make_app(self):
         PoppyRequestHandler.restful_robot = self.restful_robot
-        return Application([
-            (r'/(robot\.json)?', IndexHandler),
-            (r'/motor/alias/list\.json', MotorsAliasesListHandler),
-            (r'/motor/(?P<alias>[a-zA-Z0-9_]+)/?list\.json', MotorsListHandler),
-            (r'/sensor/list\.json', SensorsListHandler),
-            (r'/motor/(?P<motor_name>[a-zA-Z0-9_]+)/register/list\.json', MotorRegistersListHandler),
-            (r'/sensor/(?P<motor_name>[a-zA-Z0-9_]+)/register/list\.json', MotorRegistersListHandler),
-
-            (r'/motor/(?P<motor_name>[a-zA-Z0-9_]+)/register/(?P<register_name>[a-zA-Z0-9_]+)/list\.json', MotorRegisterHandler),
-            (r'/sensor/(?P<motor_name>[a-zA-Z0-9_]+)/register/(?P<register_name>[a-zA-Z0-9_]+)/list\.json', MotorRegisterHandler),
-
-            (r'/motor/(?P<motor_name>[a-zA-Z0-9_]+)/register/(?P<register_name>[a-zA-Z0-9_]+)', MotorRegisterHandler),
-            (r'/sensor/(?P<motor_name>[a-zA-Z0-9_]+)/register/(?P<register_name>[a-zA-Z0-9_]+)', MotorRegisterHandler),
-
-            (r'/motor/(?P<motor_name>[a-zA-Z0-9_]+)/register/(?P<register_name>[a-zA-Z0-9_]+)/value\.json', UpdateMotorRegisterHandler),
-            (r'/sensor/(?P<motor_name>[a-zA-Z0-9_]+)/register/(?P<register_name>[a-zA-Z0-9_]+)/value\.json', UpdateMotorRegisterHandler),
-
-            (r'/primitive/list\.json', PrimitivesListHandler),
-            (r'/primitive/running/list\.json', RunningPrimitivesListHandler),
-            (r'/primitive/(?P<primitive_name>[a-zA-Z0-9_]+)/start\.json', StartPrimitiveHandler),
-            (r'/primitive/(?P<primitive_name>[a-zA-Z0-9_]+)/stop\.json', StopPrimitiveHandler),
-            (r'/primitive/(?P<primitive_name>[a-zA-Z0-9_]+)/pause\.json', PausePrimitiveHandler),
-            (r'/primitive/(?P<primitive_name>[a-zA-Z0-9_]+)/resume\.json', ResumePrimitiveHandler),
-            (r'/primitive/(?P<primitive_name>[a-zA-Z0-9_]+)/property/list\.json', PrimitivePropertiesListHandler),
-            (r'/primitive/(?P<primitive_name>[a-zA-Z0-9_]+)/property/(?P<prop>[a-zA-Z0-9_]+)', PrimitivePropertyHandler),
-            (r'/primitive/(?P<primitive_name>[a-zA-Z0-9_]+)/property/(?P<prop>[a-zA-Z0-9_]+)/value\.json', SetPrimitivePropertyHandler),
-            (r'/primitive/(?P<primitive_name>[a-zA-Z0-9_]+)/method/list\.json', ListPrimitiveMethodsHandler),
-            (r'/primitive/(?P<primitive_name>[a-zA-Z0-9_]+)/method/(?P<method_name>[a-zA-Z0-9_]+)/args\.json', CallPrimitiveMethodHandler),
-            (r'/motors/register/(?P<register_name>[a-zA-Z0-9_]+)', MotorsRegistersHandler),
-        ])
+        return Application(url_paths)
 
     def run(self, **kwargs):
         """ Start the tornado server, run forever"""

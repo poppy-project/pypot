@@ -167,7 +167,9 @@ class SnapRobotServer(AbstractServer):
 
         @self.app.get('/')
         def get_sitemap():
-            return '</br>'.join([escape(r.rule.format()) for r in self.app.routes])
+            out='<b>All url paths available:</b><br>'
+            out+='</br>'.join([escape(r.rule.format()) for r in self.app.routes])
+            return out
 
         @self.app.get('/motors/<alias>')
         def get_motors(alias):
