@@ -1,7 +1,7 @@
 from numpy import deg2rad, rad2deg, array, eye
 
 from ikpy.chain import Chain
-from ikpy.URDF_utils import get_chain_from_joints
+from ikpy.urdf.URDF import get_chain_from_joints
 
 
 class IKChain(Chain):
