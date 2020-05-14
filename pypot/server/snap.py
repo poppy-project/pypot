@@ -2,11 +2,13 @@ import os
 import re
 import sys
 import numpy
+import cv2
 import errno
 import shutil
 import bottle
 import socket
 import logging
+import datetime
 
 from tornado.wsgi import WSGIContainer
 from tornado.httpserver import HTTPServer
@@ -392,6 +394,19 @@ class SnapRobotServer(AbstractServer):
                 return str(any([m.id in markers[marker] for m in detected]))
             except AttributeError:
                 return 'Error: marker detector is not activated'
+
+        @self.app.get('/frame.png')
+        def frame():
+            _, img = cv2.imencode('.png', rr.robot.camera.frame)
+            response.set_header('Content-type', 'image/png')
+            return img.tobytes()
+        @self.app.get('/frame.png/saved_in_my_documents')
+        def save_frame():
+            _, img = cv2.imencode('.png', rr.robot.camera.frame)
+            #os.makedirs("pictures_path", exist_ok=True)
+            cv2.imwrite("{}.png".format(datetime.datetime.now()),img)
+            response.set_header('Content-type', 'image/png')
+            return img.tobytes()
 
         @self.app.get('/ik/<chain>/endeffector')
         def ik_endeffector(chain):
