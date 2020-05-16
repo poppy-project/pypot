@@ -24,7 +24,6 @@ install_requires = ['numpy',
                     'ikpy',
                     'bottle',
                     'requests',
-                    'poppy-creature>=2'  # Kept to avoid breaking old imports
                     ]
 
 if sys.version_info < (2, 7):
