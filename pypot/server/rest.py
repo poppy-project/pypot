@@ -122,33 +122,33 @@ class RESTRobot(object):
 
     # TODO (Theo) : change names with a dic instead of ugly format
     def start_move_recorder(self, move_name, motors_name=None):
-        if not hasattr(self.robot, '_{}_recorder'.format(self.moves_path+move_name)):
+        if not hasattr(self.robot, '_{}_recorder'.format(move_name)):
             if motors_name is not None:
                 motors = [getattr(self.robot, m) for m in motors_name]
             else:
                 motors = getattr(self.robot, 'motors')
             recorder = MoveRecorder(self.robot, 50, motors)
-            self.robot.attach_primitive(recorder, '_{}_recorder'.format(self.moves_path+move_name))
+            self.robot.attach_primitive(recorder, '_{}_recorder'.format(move_name))
             recorder.start()
         else:
-            recorder = getattr(self.robot, '_{}_recorder'.format(self.moves_path+move_name))
+            recorder = getattr(self.robot, '_{}_recorder'.format(move_name))
             recorder.start()
 
     def attach_move_recorder(self, move_name, motors_name):
         motors = [getattr(self.robot, m) for m in motors_name]
         recorder = MoveRecorder(self.robot, 50, motors)
-        self.robot.attach_primitive(recorder, '_{}_recorder'.format(self.moves_path+move_name))
+        self.robot.attach_primitive(recorder, '_{}_recorder'.format(move_name))
 
     def get_move_recorder_motors(self, move_name):
         try:
-            recorder = getattr(self.robot, '_{}_recorder'.format(self.moves_path+move_name))
+            recorder = getattr(self.robot, '_{}_recorder'.format(move_name))
             return [str(m.name) for m in recorder.tracked_motors]
         except AttributeError:
             return None
 
     def stop_move_recorder(self, move_name):
         """Allow more easily than stop_primitive() to save in a filename the recorded move"""
-        recorder = getattr(self.robot, '_{}_recorder'.format(self.moves_path+move_name))
+        recorder = getattr(self.robot, '_{}_recorder'.format(move_name))
         recorder.stop()
         with open('{}.record'.format(self.moves_path+move_name), 'w') as f:
             recorder.move.save(f)
@@ -156,7 +156,7 @@ class RESTRobot(object):
         # Stop player if running : to discuss
         # Recording a playing move can produce strange outputs, but could be a good feature
         try:
-            player = getattr(self.robot, '_{}_player'.format(self.moves_path+move_name))
+            player = getattr(self.robot, '_{}_player'.format(move_name))
             if player.running:
                 player.stop()
         except AttributeError:
@@ -168,7 +168,7 @@ class RESTRobot(object):
 
         # check if running
         try:
-            player = getattr(self.robot, '_{}_player'.format(self.moves_path+move_name))
+            player = getattr(self.robot, '_{}_player'.format(move_name))
             if player.running:
                 return
         except AttributeError:
@@ -178,14 +178,14 @@ class RESTRobot(object):
         with open('{}.record'.format(self.moves_path+move_name)) as f:
             loaded_move = Move.load(f)
         player = MovePlayer(self.robot, loaded_move, play_speed=speed, backwards=backwards)
-        self.robot.attach_primitive(player, '_{}_player'.format(self.moves_path+move_name))
+        self.robot.attach_primitive(player, '_{}_player'.format(move_name))
 
         player.start()
         return player.duration()
 
     def get_available_record_list(self):
         """Get list of json recorded movement files"""
-        return [f.split('.record')[0] for f in os.listdir('.') if f.endswith('.record')]
+        return [f.split('.record')[0] for f in os.listdir('./'+self.moves_path) if f.endswith('.record')]
 
     def remove_move_record(self, move_name):
         """Remove the json recorded movement file"""
