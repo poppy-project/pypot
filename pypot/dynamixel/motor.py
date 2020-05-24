@@ -189,10 +189,10 @@ class DxlMotor(Motor):
         self._compliant_behavior = value
 
         # Start the safe compliance behavior when the motor should be compliant
-        if value is 'safe' and self.compliant:
+        if value == 'safe' and self.compliant:
             self._safe_compliance.start()
 
-        if value is 'dummy':
+        if value == 'dummy':
             use_safe = self._safe_compliance.started
             if use_safe:
                 self._safe_compliance.stop()
