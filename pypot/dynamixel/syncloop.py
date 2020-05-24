@@ -50,7 +50,7 @@ class BaseDxlController(MetaDxlController):
         ]
 
         pid_motors = [m for m in motors
-                      if (m.model.startswith('MX') or
+                      if (m.model.startswith('MX') or  \
                           m.model.startswith('XL-320'))]
         if pid_motors:
             controllers.insert(0, DxlController(io, pid_motors, 10., False,
@@ -65,8 +65,8 @@ class BaseDxlController(MetaDxlController):
                                                 'set', 'goal_force', 'goal_force'))
 
         current_motors = [m for m in motors
-                          if (m.model.startswith('MX-64') or
-                              m.model.startswith('MX-106') or
+                          if (m.model.startswith('MX-64') or  \
+                              m.model.startswith('MX-106') or \
                               m.model.startswith('SR'))]
 
         if current_motors:
