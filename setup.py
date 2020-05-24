@@ -34,6 +34,7 @@ if sys.version_info < (2, 7):
 if sys.version_info < (3, 4):
     install_requires.append('enum34')
 
+
 def package_files(directory):
     paths = []
     for (path, directories, filenames) in os.walk(directory):
@@ -41,6 +42,7 @@ def package_files(directory):
             full_path = os.path.join(path, filename)
             paths.append((path, [full_path]))
     return paths
+
 
 setup(name='pypot',
       version=version(),
