@@ -21,7 +21,7 @@ install_requires = ['numpy',
                     'pyserial>2.6',
                     'tornado',
                     'scipy',
-                    'ikpy==2.3.3',
+                    'ikpy',
                     'bottle',
                     'requests',
                     'poppy-creature>=2'  # Kept to avoid breaking old imports
