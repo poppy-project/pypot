@@ -181,10 +181,6 @@ class SnapRobotServer(AbstractServer):
         def get_motor_register(motor, register):
             return str(rr.get_motor_register_value(motor, register))
 
-        @self.app.get('/motor/<motor>/get/registers')
-        def get_motor_register(motor):
-            return str(rr.get_registers_list(motor))
-
         @self.app.get('/motors/get/positions')
         def get_motors_positions():
             get_pos = lambda m: rr.get_motor_register_value(
