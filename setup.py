@@ -21,7 +21,7 @@ install_requires = ['numpy',
                     'pyserial>2.6',
                     'tornado',
                     'scipy',
-                    'ikpy',
+                    'ikpy==3.0.1',
                     'bottle',
                     'requests',
                     ]
