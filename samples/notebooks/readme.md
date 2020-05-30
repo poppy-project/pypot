@@ -44,10 +44,10 @@ Assuming that you creature is connected to the same network as your computer (se
 If you want to run Notebooks on your local machine, because you are working with the simulator for instance, you will have to start the jupyter notebook server yourself.
 
 To do this, you will need to find your way in the sometimes [confusing](http://captiongenerator.com/30052/Hitler-reacts-to-the-Python-ecosystem) [python packaging system](https://python-packaging-user-guide.readthedocs.org/en/latest/current.html). In details, you will need (this is not the only way to install all the tools but this is probably the most straightforward):
-* a [python](https://www.python.org) interpreter (we tested with *2.7*, *3.4* or *pypy-2.5*) see how to install it on your os on [python website](https://www.python.org/downloads/). You can use pre-packaged Python distribution such as [Anaconda](https://store.continuum.io/cshop/anaconda/) or [Spyder](https://github.com/spyder-ide/spyder).
+* a [python](https://www.python.org) interpreter (we tested with *3.4* or *pypy-2.5*)
 * the [pip tool](https://pip.pypa.io) for installing Python packages - [this documentation describe how to install pip on your system](https://pip.pypa.io/en/latest/installing.html#install-pip).
 
-Now that you have a working Python environment, you can install the [Jupyter Notebook package](http://jupyter.readthedocs.org/en/latest/install.html) using pip (or conda). You only have to run the following line on a command line terminal:
+Now that you have a working Python environment, you can install the [Jupyter Notebook package](http://jupyter.readthedocs.org/en/latest/install.html) using pip. You only have to run the following line on a command line terminal:
 
 ```bash
 pip install jupyter

@@ -8,13 +8,11 @@ Pypot is written in `python <https://www.python.org/>`__ and need a python inter
 
 Windows
 ~~~~~~~~~~~~~~~~~~~
-The easier way is to install `Anaconda <http://continuum.io/downloads>`_ a pre-packaged `python <https://www.python.org/>`__ distribution with lot of scientific librairies pre-compiled and a graphical installer.
-
-After that, you can install pypot with `pip <#via-python-packages>`_ in the command prompt.
+Install Python for Windows, then you can install pypot with `pip <#via-python-packages>`_ in the command prompt.
 
 GNU/Linux
 ~~~~~~~~~~~~~~~~~~~
-You can also install `Anaconda <http://continuum.io/downloads>`_, but it's faster to use the binaries provided by your default package manager. 
+Use the binaries provided by your default package manager.
 
 On Ubuntu & Debian::
 
@@ -66,8 +64,8 @@ You can also install it from the source. You can clone/fork our repo directly on
 
 Before you start building pypot, you need to make sure that the following packages are already installed on your computer:
 
-* `python <http://www.python.org>`_ developed on 2.7 (also works on 3)
-* `pyserial <http://pyserial.sourceforge.net/>`_ 2.6 (or later)
+* `python <http://www.python.org>`_ 
+* `pyserial <http://pyserial.sourceforge.net/>`_
 * `numpy <http://www.numpy.org>`_
 * `scipy <www.scipy.org/>`_
 * `enum34 <https://pypi.python.org/pypi/enum34>`_
