@@ -24,6 +24,7 @@ install_requires = ['numpy',
                     'ikpy==3.0.1',
                     'bottle',
                     'requests',
+                    'opencv-contrib-python==4.1.0.25',
                     ]
 
 if sys.version_info < (2, 7):
