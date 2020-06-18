@@ -53,7 +53,7 @@ class MarkerDetector(SensorsController):
         return ['markers']
 
     def _detect(self, q, img):
-        q.put(detect_markers(img))
+        q.put(list(detect_markers(img)))
 
     def _bg_detection(self, img):
         if not hasattr(self, 'q'):
