@@ -125,7 +125,9 @@ class AbstractPoppyCreature(Robot):
                     exc_type, exc_inst, tb = sys.exc_info()
 
             else:
-                raise OSError('Could not initalize robot: {} '.format(exc_inst))
+                import traceback
+                traceback.print_tb(tb)
+                raise OSError('Could not initialize robot: {}'.format(exc_inst))
             poppy_creature.simulated = False
 
         with open(config) as f:
