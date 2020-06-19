@@ -181,7 +181,7 @@ class MovePlayer(LoopPrimitive):
             position = self.positions[self.__duration]
         else:
             position = self.positions[0]
-        for motor, value in position.iteritems():
+        for motor, value in position.items():
             motor = getattr(self.robot, motor)
             motor.compliant = False
             delta_angle = abs(motor.present_position - value[0])
@@ -199,7 +199,7 @@ class MovePlayer(LoopPrimitive):
             else:
                 position = self.positions[self.elapsed_time * self.play_speed]
 
-            for motor, value in position.iteritems():
+            for motor, value in position.items():
                 # TODO: Ask pierre if its not a fgi to turn off the compliance
                 getattr(self.robot, motor).compliant = False
                 getattr(self.robot, motor).goal_position = value[0]

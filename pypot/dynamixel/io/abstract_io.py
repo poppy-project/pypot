@@ -241,7 +241,7 @@ class AbstractDxlIO(object):
 
         self._change_id(new_id_for_id)
 
-        for motor_id, new_id in new_id_for_id.iteritems():
+        for motor_id, new_id in new_id_for_id.items():
             if motor_id in self._known_models:
                 self._known_models[new_id] = self._known_models[motor_id]
                 del self._known_models[motor_id]
@@ -462,7 +462,7 @@ class AbstractDxlIO(object):
                                     map(control.si_to_dxl, value_for_id.values(), models)))
 
         data = []
-        for motor_id, value in value_for_id.iteritems():
+        for motor_id, value in value_for_id.items():
             data.extend(itertools.chain((motor_id, ),
                                         dxl_code_all(value, control.length, control.nb_elem)))
 

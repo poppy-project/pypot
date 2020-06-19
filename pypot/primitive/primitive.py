@@ -214,7 +214,7 @@ class MockupRobot(object):
         return getattr(self._robot, attr)
 
     def goto_position(self, position_for_motors, duration, control=None, wait=False):
-        for i, (motor_name, position) in enumerate(position_for_motors.iteritems()):
+        for i, (motor_name, position) in enumerate(position_for_motors.items()):
             w = False if i < len(position_for_motors) - 1 else wait
 
             m = getattr(self, motor_name)

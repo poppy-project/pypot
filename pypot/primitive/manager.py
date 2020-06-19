@@ -55,10 +55,10 @@ class PrimitiveManager(StoppableLoopThread):
                 to_set = defaultdict(list)
 
                 for p in self._prim:
-                    for key, val in getattr(p.robot, m.name)._to_set.iteritems():
+                    for key, val in getattr(p.robot, m.name)._to_set.items():
                         to_set[key].append(val)
 
-                for key, val in to_set.iteritems():
+                for key, val in to_set.items():
                     if key == 'led':
                         colors = set(val)
                         if len(colors) > 1:

@@ -52,7 +52,7 @@ try:
             """ Only returns the objects that have been tracked less than 20ms ago. """
             dt = 0.02
             f = lambda name: (datetime.datetime.now() - self.tracked_objects[name].timestamp).total_seconds()
-            return dict([(k, v) for k, v in self.tracked_objects.iteritems() if f(k) < dt])
+            return dict([(k, v) for k, v in self.tracked_objects.items() if f(k) < dt])
 
         def handler(self, obj, data):
             self.tracked_objects[obj] = TrackedObject(numpy.array(*data['position']),

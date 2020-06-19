@@ -124,7 +124,7 @@ class HerboristApp(PyQt4.QtGui.QApplication):
     def update_motor_tree(self, baud_for_ids):
         self.window.motor_tree.clear()
 
-        for b, ids in baud_for_ids.iteritems():
+        for b, ids in baud_for_ids.items():
             baud_root = PyQt4.QtGui.QTreeWidgetItem(self.window.motor_tree, [str(b)])
             baud_root.setExpanded(True)
             f = int(baud_root.flags()) - int(PyQt4.QtCore.Qt.ItemIsSelectable)
@@ -299,7 +299,7 @@ class HerboristApp(PyQt4.QtGui.QApplication):
             self.window.goal_position_dial.setEnabled(False)
             self.window.goal_position_lcd.setEnabled(False)
 
-        for b, ids in self.selected_motors.iteritems():
+        for b, ids in self.selected_motors.items():
             dxl_io = get_dxl_connection(self.port, b, self.protocol)
             (dxl_io.enable_torque if torque_enable else dxl_io.disable_torque)(ids)
             time.sleep(0.05)
@@ -321,7 +321,7 @@ class HerboristApp(PyQt4.QtGui.QApplication):
         upper_limit = self.window.upper_limit_dial.value()
         new_id = self.window.id_spinbox.value()
 
-        for b, ids in self.selected_motors.iteritems():
+        for b, ids in self.selected_motors.items():
             dxl_io = get_dxl_connection(self.port, b, self.protocol)
             dxl_io.set_return_delay_time(dict(zip(ids, itertools.repeat(rdt))))
             dxl_io.set_status_return_level(dict(zip(ids, itertools.repeat(srl))), convert=False)
@@ -351,7 +351,7 @@ class HerboristApp(PyQt4.QtGui.QApplication):
 
             release_dxl_connection()
 
-        for b, ids in self.selected_motors.iteritems():
+        for b, ids in self.selected_motors.items():
             new_b = int(self.window.baud_combobox.currentText())
             if b != new_b:
                 dxl_io = get_dxl_connection(self.port, b, self.protocol)
