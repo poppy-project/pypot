@@ -309,8 +309,8 @@ class AbstractDxlIO(object):
 
     def set_pid_gain(self, pid_for_id, **kwargs):
         """ Sets the pid gain to the specified motors. """
-        pid_for_id = dict(itertools.izip(pid_for_id.iterkeys(),
-                                         [tuple(reversed(t)) for t in pid_for_id.values()]))
+        pid_for_id = dict(zip(pid_for_id.iterkeys(),
+                          [tuple(reversed(t)) for t in pid_for_id.values()]))
         self._set_pid_gain(pid_for_id, **kwargs)
 
     # MARK: - Generic Getter / Setter
@@ -417,7 +417,7 @@ class AbstractDxlIO(object):
 
                 values.extend(sp.parameters)
 
-        values = list(itertools.izip(*([iter(values)] * control.length * control.nb_elem)))
+        values = list(zip(*([iter(values)] * control.length * control.nb_elem)))
         values = [dxl_decode_all(value, control.nb_elem) for value in values]
 
         if not values:
