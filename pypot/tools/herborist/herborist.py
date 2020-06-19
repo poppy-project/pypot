@@ -3,9 +3,10 @@ import time
 import itertools
 import threading
 
-import PyQt4.QtCore
-import PyQt4.QtGui
-import PyQt4.uic
+import PyQt5.QtCore as QtCore
+import PyQt5.QtGui as QtGui
+import PyQt5.uic as uic
+from PyQt5.QtWidgets import QApplication
 
 from collections import defaultdict
 from pkg_resources import resource_filename
@@ -35,10 +36,10 @@ def release_dxl_connection():
     __lock.release()
 
 
-class HerboristApp(PyQt4.QtGui.QApplication):
+class HerboristApp(QApplication):
     def __init__(self, argv):
-        PyQt4.QtGui.QApplication.__init__(self, argv)
-        self.window = PyQt4.uic.loadUi(resource_filename('pypot', '/tools/herborist/herborist.ui'))
+        QApplication.__init__(self, argv)
+        self.window = uic.loadUi(resource_filename('pypot', '/tools/herborist/herborist.ui'))
 
         self.enable_motor_view(False)
 
@@ -86,11 +87,11 @@ class HerboristApp(PyQt4.QtGui.QApplication):
 
     # MARK: - Port update
 
-    class UpdatePortThread(PyQt4.QtCore.QThread):
-        port_updated = PyQt4.QtCore.pyqtSignal(list)
+    class UpdatePortThread(QtCore.QThread):
+        port_updated = QtCore.pyqtSignal(list)
 
         def __init__(self):
-            PyQt4.QtCore.QThread.__init__(self)
+            QtCore.QThread.__init__(self)
             self.daemon = True
 
         def run(self):
@@ -125,17 +126,17 @@ class HerboristApp(PyQt4.QtGui.QApplication):
         self.window.motor_tree.clear()
 
         for b, ids in baud_for_ids.items():
-            baud_root = PyQt4.QtGui.QTreeWidgetItem(self.window.motor_tree, [str(b)])
+            baud_root = QtGui.QTreeWidgetItem(self.window.motor_tree, [str(b)])
             baud_root.setExpanded(True)
-            f = int(baud_root.flags()) - int(PyQt4.QtCore.Qt.ItemIsSelectable)
-            baud_root.setFlags(PyQt4.QtCore.Qt.ItemFlags(f))
+            f = int(baud_root.flags()) - int(QtCore.Qt.ItemIsSelectable)
+            baud_root.setFlags(QtCore.Qt.ItemFlags(f))
 
             dxl_io = get_dxl_connection(self.port, b, self.protocol)
             models = dxl_io.get_model(ids)
             release_dxl_connection()
 
             for id, model in zip(ids, models):
-                PyQt4.QtGui.QTreeWidgetItem(baud_root, ['', str(id), model])
+                QtGui.QTreeWidgetItem(baud_root, ['', str(id), model])
 
     def start_scanning(self):
         self.window.scan_button.setEnabled(False)
@@ -153,7 +154,7 @@ class HerboristApp(PyQt4.QtGui.QApplication):
                     b = 57142
                 baudrates.append(b)
 
-        id_range = range(self.window.min_id.value(), self.window.max_id.value() + 1)
+        id_range = list(range(self.window.min_id.value(), self.window.max_id.value() + 1))
 
         self.window.scan_progress.setValue(0)
         self.window.scan_progress.setMaximum(len(baudrates) * len(id_range) - 1)
@@ -172,14 +173,14 @@ class HerboristApp(PyQt4.QtGui.QApplication):
         self.window.abort_button.setEnabled(False)
         self.window.scan_button.setEnabled(True)
 
-    class ScanThread(PyQt4.QtCore.QThread):
-        done = PyQt4.QtCore.pyqtSignal()
-        part_done = PyQt4.QtCore.pyqtSignal(int)
+    class ScanThread(QtCore.QThread):
+        done = QtCore.pyqtSignal()
+        part_done = QtCore.pyqtSignal(int)
 
         def __init__(self, port, baudrates, protocol, id_range,
                      motor_tree, scan_progress):
 
-            PyQt4.QtCore.QThread.__init__(self)
+            QtCore.QThread.__init__(self)
             self.daemon = True
 
             self.running = threading.Event()
@@ -195,10 +196,10 @@ class HerboristApp(PyQt4.QtGui.QApplication):
 
         def run(self):
             for b in self.baudrates:
-                baud_root = PyQt4.QtGui.QTreeWidgetItem(self.motor_tree, [str(b)])
+                baud_root = QtGui.QTreeWidgetItem(self.motor_tree, [str(b)])
                 baud_root.setExpanded(True)
-                f = int(baud_root.flags()) - int(PyQt4.QtCore.Qt.ItemIsSelectable)
-                baud_root.setFlags(PyQt4.QtCore.Qt.ItemFlags(f))
+                f = int(baud_root.flags()) - int(QtCore.Qt.ItemIsSelectable)
+                baud_root.setFlags(QtCore.Qt.ItemFlags(f))
 
                 dxl_io = get_dxl_connection(self.port, b, self.protocol)
 
@@ -208,7 +209,7 @@ class HerboristApp(PyQt4.QtGui.QApplication):
 
                     if dxl_io.ping(id):
                         model = dxl_io.get_model((id, ))[0]
-                        PyQt4.QtGui.QTreeWidgetItem(baud_root, ['', str(id), model])
+                        QtGui.QTreeWidgetItem(baud_root, ['', str(id), model])
 
                     self.part_done.emit(self.scan_progress.value() + 1)
 
@@ -232,7 +233,7 @@ class HerboristApp(PyQt4.QtGui.QApplication):
 
         self.enable_motor_view(True)
 
-        if len(list(itertools.chain(*self.selected_motors.values()))) > 1:
+        if len(list(itertools.chain(*list(self.selected_motors.values())))) > 1:
             for widget_name in ('id_spinbox',
                                 'present_position_dial',
                                 'goal_position_dial',
@@ -323,18 +324,18 @@ class HerboristApp(PyQt4.QtGui.QApplication):
 
         for b, ids in self.selected_motors.items():
             dxl_io = get_dxl_connection(self.port, b, self.protocol)
-            dxl_io.set_return_delay_time(dict(zip(ids, itertools.repeat(rdt))))
-            dxl_io.set_status_return_level(dict(zip(ids, itertools.repeat(srl))), convert=False)
-            dxl_io.set_max_torque(dict(zip(ids, itertools.repeat(torque_max))))
-            dxl_io.set_angle_limit(dict(zip(ids, itertools.repeat((lower_limit, upper_limit)))))
+            dxl_io.set_return_delay_time(dict(list(zip(ids, itertools.repeat(rdt)))))
+            dxl_io.set_status_return_level(dict(list(zip(ids, itertools.repeat(srl)))), convert=False)
+            dxl_io.set_max_torque(dict(list(zip(ids, itertools.repeat(torque_max)))))
+            dxl_io.set_angle_limit(dict(list(zip(ids, itertools.repeat((lower_limit, upper_limit))))))
             time.sleep(0.15)
             release_dxl_connection()
 
         new_ids = self.ids.copy()
 
-        old_ids = self.selected_motors.values()
+        old_ids = list(self.selected_motors.values())
         if len(old_ids) == 1 and len(old_ids[0]) == 1 and new_id != old_ids[0][0]:
-            b, old_id = self.selected_motors.keys()[0], old_ids[0][0]
+            b, old_id = list(self.selected_motors.keys())[0], old_ids[0][0]
             dxl_io = get_dxl_connection(self.port, b, self.protocol)
             try:
                 dxl_io.change_id({old_id: new_id})
@@ -344,7 +345,7 @@ class HerboristApp(PyQt4.QtGui.QApplication):
                 new_ids[b] = l
 
             except ValueError:
-                PyQt4.QtGui.QMessageBox.about(self.window,
+                QtGui.QMessageBox.about(self.window,
                                               '',
                                               'This id is already used.')
                 pass
@@ -355,7 +356,7 @@ class HerboristApp(PyQt4.QtGui.QApplication):
             new_b = int(self.window.baud_combobox.currentText())
             if b != new_b:
                 dxl_io = get_dxl_connection(self.port, b, self.protocol)
-                dxl_io.change_baudrate(dict(zip(ids, itertools.repeat(new_b))))
+                dxl_io.change_baudrate(dict(list(zip(ids, itertools.repeat(new_b)))))
                 time.sleep(0.1)
                 release_dxl_connection()
 
@@ -366,11 +367,11 @@ class HerboristApp(PyQt4.QtGui.QApplication):
 
         self.update_motor_tree(new_ids)
 
-    class UpdateMotorThread(PyQt4.QtCore.QThread):
-        position_updated = PyQt4.QtCore.pyqtSignal(int)
+    class UpdateMotorThread(QtCore.QThread):
+        position_updated = QtCore.pyqtSignal(int)
 
         def __init__(self, port, baudrate, protocol, mid):
-            PyQt4.QtCore.QThread.__init__(self)
+            QtCore.QThread.__init__(self)
             self.running = threading.Event()
             self.running.set()
 
@@ -407,7 +408,7 @@ class HerboristApp(PyQt4.QtGui.QApplication):
 
     @property
     def baudrate(self):
-        return self.selected_motors.keys()[0]
+        return list(self.selected_motors.keys())[0]
 
     @property
     def id(self):
