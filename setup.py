@@ -28,12 +28,9 @@ install_requires = ['numpy',
                     'pyqt5',
                     ]
 
-if sys.version_info < (2, 7):
-    print("python version < 2.7 is not supported")
-    sys.exit(1)
-
 if sys.version_info < (3, 4):
-    install_requires.append('enum34')
+    print("python version < 3.4 is not supported")
+    sys.exit(1)
 
 def package_files(directory):
     paths = []
