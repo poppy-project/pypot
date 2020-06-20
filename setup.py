@@ -25,6 +25,7 @@ install_requires = ['numpy',
                     'bottle',
                     'requests',
                     'opencv-contrib-python==4.1.0.25',
+                    'pyqt5',
                     ]
 
 if sys.version_info < (2, 7):
