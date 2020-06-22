@@ -309,7 +309,7 @@ class AbstractDxlIO(object):
 
     def set_pid_gain(self, pid_for_id, **kwargs):
         """ Sets the pid gain to the specified motors. """
-        pid_for_id = dict(zip(pid_for_id.iterkeys(),
+        pid_for_id = dict(zip(pid_for_id.keys(),
                           [tuple(reversed(t)) for t in pid_for_id.values()]))
         self._set_pid_gain(pid_for_id, **kwargs)
 
