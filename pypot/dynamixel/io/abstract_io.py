@@ -127,7 +127,7 @@ class AbstractDxlIO(object):
                     self._serial = serial.Serial(port, 9600)
                     self._serial.close()
 
-                self._serial = serial.Serial(port, baudrate, timeout=timeout)
+                self._serial = serial.Serial(port, baudrate, timeout=timeout, write_timeout=timeout)
                 self.__used_ports.add(port)
 
             if (platform.system() == 'Darwin' and
@@ -483,7 +483,11 @@ class AbstractDxlIO(object):
             self.flush(_force_lock=True)
 
             data = instruction_packet.to_string()
-            nbytes = self._serial.write(data)
+            try:
+                nbytes = self._serial.write(data)
+            except serial.serialutil.SerialTimeoutException:
+                nbytes = 0
+            
             if len(data) != nbytes:
                 raise DxlCommunicationError(self,
                                             'instruction packet not entirely sent',
