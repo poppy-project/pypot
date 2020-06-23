@@ -47,7 +47,7 @@ class DxlIO(AbstractDxlIO):
 
         pos_max = [conv.position_range[m][0] for m in models]
         limits = ((0, 0) if mode == 'wheel' else (0, pos_max[i] - 1)
-                  for i, mode in enumerate(mode_for_id.itervalues()))
+                  for i, mode in enumerate(mode_for_id.values()))
 
         self._set_angle_limit(dict(zip(mode_for_id.keys(), limits)), convert=False)
         self._known_mode.update(mode_for_id.items())

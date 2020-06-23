@@ -235,7 +235,7 @@ class AbstractDxlIO(object):
         if len(set(new_id_for_id.values())) < len(new_id_for_id):
             raise ValueError('each id must be unique.')
 
-        for new_id in new_id_for_id.itervalues():
+        for new_id in new_id_for_id.values():
             if self.ping(new_id):
                 raise ValueError('id {} is already used.'.format(new_id))
 
