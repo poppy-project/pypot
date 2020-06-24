@@ -198,7 +198,27 @@ Examples:
         url = '{}#open:{}'.format(snap_url, block_url)
 
     with closing(start_poppy_with_services(args)):
-        print('Robot created and running!')
+
+        msg=''
+
+        if args.dummy or args.poppy_simu:
+            msg+= 'Simulated robot created! He is running on: ip={}'.format(find_local_ip())
+        else:
+            msg+= 'Robot instantiated! He is running on: ip={},'.format(find_local_ip())
+            if args.disable_camera: msg+= ' without camera access.'
+            else: msg+= ' with camera access.'
+
+        if args.vrep: msg+= ' With V-REP link.'
+
+        if args.snap or args.ws or args.http or args.poppy_simu:
+            msg+= '\nServer started on:'
+            if args.http or args.poppy_simu: msg+= ' http_port={},'.format(args.http_port)
+            if args.snap: msg+= ' Snap_port={},'.format(args.snap_port)
+            if args.ws: msg+= ' ws_port={},'.format(args.ws_port)
+            msg= msg[0:-1]+'.'
+
+        print(msg)
+
         sys.stdout.flush()
 
         if static_server_started:
