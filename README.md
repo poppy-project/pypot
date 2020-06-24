@@ -42,7 +42,7 @@ The full pypot documentation on a html format can be found [here](http://poppy-p
 
 ## Installation
 
-Pypot is a library entirely written in [Python](https://www.python.org). It works with Python *3.3+*. It is cross-platform and has been tested on Windows, Mac, Linux - yet specific usb to serial driver may be required depending on your system (see below).
+Pypot is a library entirely written in [Python](https://www.python.org). It works with Python *3.5+*. It is cross-platform and has been tested on Windows, Mac, Linux - yet specific usb to serial driver may be required depending on your system (see below).
 
 You can build and install pypot with the typically python way:
 
@@ -59,6 +59,3 @@ You will also have to install the driver for the USB2serial port. There are a fe
 
 For more details on the installation procedure, please refer to the [installation section](http://poppy-project.github.io/pypot/intro.html#installation) of the documentation.
 
-## Roadmap
-
-The roadmap of the project can be found [here](https://github.com/poppy-project/pypot/blob/master/roadmap.md).
