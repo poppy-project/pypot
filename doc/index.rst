@@ -41,7 +41,6 @@ Welcome to pypot's documentation!
     :titlesonly:
     :maxdepth: 2
 
-    herborist.rst
     move.rst
 
 

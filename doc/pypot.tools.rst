@@ -6,8 +6,6 @@ Submodules
 
 .. toctree::
 
-    herborist
-
 
 pypot.tools.dxl_reset module
 ----------------------------
