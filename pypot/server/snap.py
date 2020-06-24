@@ -231,7 +231,7 @@ class SnapRobotServer(AbstractServer):
         # TODO: delete ?
         @self.app.get('/motors/set/positions/<positions>')
         def set_motors_positions(positions):
-            positions = map(lambda s: float(s), positions[:-1].split(';'))
+            positions = [float(s) for s in positions[:-1].split(';')]
             for m, p in zip(rr.get_motors_list(), positions):
                 rr.set_motor_register_value(m, 'goal_position', p)
             return 'Done!'

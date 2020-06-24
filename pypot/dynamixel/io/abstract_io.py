@@ -454,7 +454,7 @@ class AbstractDxlIO(object):
         convert = kwargs['convert'] if ('convert' in kwargs) else self._convert
 
         if convert:
-            models = self.get_model(value_for_id.keys())
+            models = self.get_model(list(value_for_id.keys()))
             if not models:
                 return
 

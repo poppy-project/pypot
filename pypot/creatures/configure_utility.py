@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from __future__ import print_function
+
 
 """
 Poppy configuration tools
@@ -68,7 +68,7 @@ def main():
         args.extend(('--angle-limit',motor_config['angle_limit'][0],motor_config['angle_limit'][1],
                      '--goto-zero'))
         
-    call(['dxl-config'] + map(str, args))
+    call(['dxl-config'] + list(map(str, args)))
 
 
 if __name__ == '__main__':

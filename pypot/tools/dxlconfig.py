@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from __future__ import print_function
+
 
 """
 
@@ -45,7 +45,7 @@ def main():
     parser.add_argument('--id', type=int, required=True,
                         help='Chosen motor id.')
     parser.add_argument('--type', type=str, required=True,
-                        choices=dynamixelModels.values(),
+                        choices=list(dynamixelModels.values()),
                         help='Type of the motor to configure.')
     parser.add_argument('--port', type=str,
                         choices=available_ports, default=default_port,
@@ -78,7 +78,7 @@ def main():
                 io.factory_reset()
     else:
         with Dxl320IO(args.port, baudrate=1000000, timeout=0.01) as io:
-            io.factory_reset(ids=range(253))
+            io.factory_reset(ids=list(range(253)))
     print('Done!')
 
     factory_baudrate = 57600 if args.type.startswith('MX') else 1000000

@@ -56,7 +56,7 @@ class DxlIO(AbstractDxlIO):
         """ Sets the angle limit to the specified motors. """
         convert = kwargs['convert'] if 'convert' in kwargs else self._convert
 
-        if 'wheel' in self.get_control_mode(limit_for_id.keys()):
+        if 'wheel' in self.get_control_mode(list(limit_for_id.keys())):
             raise ValueError('can not change the angle limit of a motor in wheel mode')
 
         if (0, 0) in limit_for_id.values():

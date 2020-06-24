@@ -19,10 +19,10 @@ class Dxl320IO(AbstractDxlIO):
         a = self._get_goal_pos_speed(ids)
         b = self.get_torque_limit(ids)
 
-        return zip(*zip(*a) + [b])
+        return list(zip(*list(zip(*a)) + [b]))
 
     def set_goal_position_speed_load(self, value_for_ids):
-        values = zip(*value_for_ids.values())
+        values = list(zip(*list(value_for_ids.values())))
 
         self._set_goal_pos_speed(dict(zip(value_for_ids.keys(),
                                           zip(*(values[0], values[1])))))

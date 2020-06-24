@@ -93,7 +93,7 @@ def from_vrep(config, vrep_host='127.0.0.1', vrep_port=19997, scene=None,
     pypot_time.time = vreptime.get_time
     pypot_time.sleep = vreptime.sleep
 
-    if isinstance(config, basestring):
+    if isinstance(config, str):
         with open(config) as f:
             config = json.load(f, object_pairs_hook=OrderedDict)
 

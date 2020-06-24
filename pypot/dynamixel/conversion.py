@@ -220,7 +220,7 @@ def baudrate_to_dxl(value, model):
     for k, v in current_baudrates.items():
         if (abs(v - value) / float(value)) < 0.05:
             return k
-    raise ValueError('incorrect baudrate {} (possible values {})'.format(value, current_baudrates.values()))
+    raise ValueError('incorrect baudrate {} (possible values {})'.format(value, list(current_baudrates.values())))
 
 # MARK: - Return Delay Time
 
