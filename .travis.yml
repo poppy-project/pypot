@@ -35,11 +35,6 @@ matrix:
 
     # Remove OSX builds temporally as they are very slow to startup
     # - os: osx
-    #   python: 2.7 # For travis UI only
-    #   osx_image: xcode6.4
-    #   env: TRAVIS_OS_NAME=osx TRAVIS_PYTHON_VERSION=2.7
-
-    # - os: osx
     #   python: 3.6 # For travis UI only
     #   osx_image: xcode6.4
     #   env: TRAVIS_OS_NAME=osx TRAVIS_PYTHON_VERSION=3.6
@@ -47,15 +42,6 @@ matrix:
     # Linux VM
     # Python 3.4 is not supported anymore by conda
     # https://github.com/ContinuumIO/anaconda-issues/issues/6615
-
-    - python: 2.7
-      os: linux
-      language: python
-      env: UPDATE_DOC=true
-
-    - python: 3.4
-      language: python
-      os: linux
 
     - python: 3.5
       language: python
@@ -65,7 +51,15 @@ matrix:
       language: python
       os: linux
 
-    - python: 3.5
+    - python: 3.7
+      language: python
+      os: linux
+
+    - python: 3.8
+      language: python
+      os: linux
+
+    - python: 3.8
       language: python
       os: linux
       env: PEP8_CAUSE_FAILLURE=true
