@@ -35,7 +35,7 @@ class MarkerDetector(SensorsController):
         self._names = cameras
 
         self.detect = (lambda img: self._bg_detection(img)
-                       if multiprocess else detect_markers(img))
+                       if multiprocess else list(detect_markers(img)))
 
     def update(self):
         if not hasattr(self, 'cameras'):
@@ -53,7 +53,7 @@ class MarkerDetector(SensorsController):
         return ['markers']
 
     def _detect(self, q, img):
-        q.put(detect_markers(img))
+        q.put(list(detect_markers(img)))
 
     def _bg_detection(self, img):
         if not hasattr(self, 'q'):

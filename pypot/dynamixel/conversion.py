@@ -217,10 +217,10 @@ def dxl_to_baudrate(value, model):
 
 def baudrate_to_dxl(value, model):
     current_baudrates = dynamixelBaudratesWithModel.get(model, dynamixelBaudrates)
-    for k, v in current_baudrates.iteritems():
+    for k, v in current_baudrates.items():
         if (abs(v - value) / float(value)) < 0.05:
             return k
-    raise ValueError('incorrect baudrate {} (possible values {})'.format(value, current_baudrates.values()))
+    raise ValueError('incorrect baudrate {} (possible values {})'.format(value, list(current_baudrates.values())))
 
 # MARK: - Return Delay Time
 
@@ -362,7 +362,7 @@ def dxl_decode(data):
 
 def dxl_decode_all(data, nb_elem):
     if nb_elem > 1:
-        data = list(itertools.izip(*([iter(data)] * (len(data) // nb_elem))))
+        data = list(zip(*([iter(data)] * (len(data) // nb_elem))))
         return tuple(map(dxl_decode, data))
     else:
         return dxl_decode(data)

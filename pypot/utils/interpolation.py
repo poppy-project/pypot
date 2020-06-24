@@ -30,8 +30,6 @@ class KDTreeDict(dict):
         #     key = (key,)
         return super(KDTreeDict, self).__getitem__(key)
 
-    def __iter__(self):
-        return iter(self.store)
 
     def __len__(self):
         return len(self.__keys)
@@ -48,7 +46,7 @@ class KDTreeDict(dict):
         self.__stale = False
 
     def nearest_keys(self, key):
-        """Find the nearest_keys (l2 distance) thanks to a cKDTree query"""
+        """Find the nearest_keys (l2 distance) as strings thanks to a cKDTree query"""
         if not isinstance(key, tuple):
             _key = (key,)
         if self.__stale:
@@ -63,12 +61,17 @@ class KDTreeDict(dict):
             return self.__keys[idx]
 
     def interpolate_motor_positions(self, input_key, nearest_keys):
-        """ Process linear interpolation to estimate actual speed and position of motors
+        """
+            Process linear interpolation to estimate current speed and position of motors
             Method specific to the :meth:~pypot.primitive.move.Move.position() structure
             it is a KDTreeDict[timestamp] = {dict[motor]=(position,speed)}
+
+        :param input_key: string of a float as returned by cKDTree.query()
+        :param nearest_keys: 2-tuples of strings of a float as returned by cKDTree.query()
         """
 
-        # TODO : to be rewrited with more style (map ?)
+        # WARNING: input_key and nearest_keys are string encoding floats as returned by cKDTree
+        # TODO: to be rewrited with more style (map ?)
 
         if len(nearest_keys) == 1:
             return self[nearest_keys[0]]
@@ -80,26 +83,30 @@ class KDTreeDict(dict):
         elif nearest_keys[0] == nearest_keys[1]:
             # Bug from nearest key ?
             return self[nearest_keys[0]]
-
         # Problem if ValueError: A value in x_new is above the interpolation range.
-        elif input_key < min(nearest_keys):
-            return self[min(nearest_keys)]
-        elif input_key > max(nearest_keys):
-            return self[max(nearest_keys)]
+        else:
+            float_nearest_keys = [float(k) for k in nearest_keys]
+            float_input_key = float(input_key)
+            if float_input_key < min(float_nearest_keys):
+                return self[min(float_nearest_keys)]
+            elif float_input_key > max(float_nearest_keys):
+                return self[max(float_nearest_keys)]
+            else:              
+                interpolated_positions = {}
+                for (k, v), (k2, v2) in zip(self[nearest_keys[0]].items(), self[nearest_keys[1]].items()):
+                    if k == k2:
+                        x = np.array(float_nearest_keys)
+                        y_pos = np.array([v[0], v2[0]])
+                        y_speed = np.array([v[1], v2[1]])
+                        f_pos = interp1d(x, y_pos, bounds_error=False)
+                        f_speed = interp1d(x, y_speed, bounds_error=False)
 
-        interpolated_positions = {}
-        for (k, v), (k2, v2) in zip(self[nearest_keys[0]].items(), self[nearest_keys[1]].items()):
-            if k == k2:
-                x = np.array(nearest_keys)
-                y_pos = np.array([v[0], v2[0]])
-                y_speed = np.array([v[1], v2[1]])
-                f_pos = interp1d(x, y_pos, bounds_error=False)
-                f_speed = interp1d(x, y_speed, bounds_error=False)
-                # print k, input_key, (float(f_pos(input_key[0])), float(f_speed(input_key[0])))
-                interpolated_positions[k] = (f_pos(input_key), f_speed(input_key))
-            else:
-                raise IndexError("key are not identics. Motor added during the record ?")
-        return interpolated_positions
+                        pos = f_pos(float_input_key)
+                        speed = f_speed(float_input_key)
+                        interpolated_positions[k] = (pos, speed)
+                    else:
+                        raise IndexError("key are not identics. Motor added during the record ?")
+                return interpolated_positions
 
     def __missing__(self, key):
         if key is None:

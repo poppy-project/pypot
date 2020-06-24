@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from __future__ import print_function
+
 
 import os
 import sys
@@ -19,10 +19,8 @@ from pypot.utils import flushed_print as print
 
 from multiprocessing import Process
 from http.server import HTTPServer
-try:
-    from http.server import SimpleHTTPRequestHandler  # Py3
-except ImportError:
-    from SimpleHTTPServer import SimpleHTTPRequestHandler  # Py2
+from http.server import SimpleHTTPRequestHandler
+
 
 def start_poppy_with_services(args):
     params = poppy_params_from_args(args)
@@ -84,7 +82,7 @@ Examples:
     parser.add_argument('creature', type=str,
                         help='poppy creature name',
                         action='store', nargs='?',
-                        choices=installed_poppy_creatures.keys())
+                        choices=list(installed_poppy_creatures.keys()))
     parser.add_argument('--dummy',
                         help='use a simulated dummy robot',
                         action='store_true')
@@ -144,7 +142,7 @@ Examples:
             parser.print_help()
             sys.exit(1)
 
-        args.creature = installed_poppy_creatures.keys()[0]
+        args.creature = list(installed_poppy_creatures.keys())[0]
         print('No creature specified, use {}'.format(args.creature))
 
     if args.log_file:

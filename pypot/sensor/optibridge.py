@@ -45,7 +45,7 @@ class OptiTrackClient(threading.Thread):
             d = pickle.loads(self.s.recv())
             self._tracked_obj = {
                 k: d[k]
-                for k in filter(lambda k: k in self.obj_name, d.keys())
+                for k in [k for k in list(d.keys()) if k in self.obj_name]
             }
 
     @property

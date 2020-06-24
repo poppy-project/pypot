@@ -72,7 +72,7 @@ class RegisterOwner(type):
         return super(RegisterOwner, cls).__new__(cls, name, bases, attrs)
 
 
-class DxlMotor(Motor):
+class DxlMotor(Motor, metaclass=RegisterOwner):
     """ High-level class used to represent and control a generic dynamixel motor.
 
         This class provides all level access to (see :attr:`~pypot.dynamixel.motor.DxlMotor.registers` for an exhaustive list):
@@ -92,7 +92,6 @@ class DxlMotor(Motor):
         Those properties are synchronized with the real motors values thanks to a :class:`~pypot.dynamixel.controller.DxlController`.
 
         """
-    __metaclass__ = RegisterOwner
 
     registers = Motor.registers + ['registers',
                                    'goal_speed',

@@ -23,6 +23,7 @@ class RESTRobot(object):
 
     def __init__(self, robot):
         self.robot = robot
+        self.moves_path=""
 
     # Access motor related values
 
@@ -148,7 +149,8 @@ class RESTRobot(object):
         """Allow more easily than stop_primitive() to save in a filename the recorded move"""
         recorder = getattr(self.robot, '_{}_recorder'.format(move_name))
         recorder.stop()
-        with open('{}.record'.format(move_name), 'w') as f:
+        #os.makedirs(self.moves_path, exist_ok=True)
+        with open('{}.record'.format(self.moves_path+move_name), 'w') as f:
             recorder.move.save(f)
 
         # Stop player if running : to discuss
@@ -173,7 +175,8 @@ class RESTRobot(object):
             pass
 
         # if not running, override the play primitive
-        with open('{}.record'.format(move_name)) as f:
+        #os.makedirs(self.moves_path, exist_ok=True)
+        with open('{}.record'.format(self.moves_path+move_name)) as f:
             loaded_move = Move.load(f)
         player = MovePlayer(self.robot, loaded_move, play_speed=speed, backwards=backwards)
         self.robot.attach_primitive(player, '_{}_player'.format(move_name))
@@ -183,8 +186,10 @@ class RESTRobot(object):
 
     def get_available_record_list(self):
         """Get list of json recorded movement files"""
-        return [f.split('.record')[0] for f in os.listdir('.') if f.endswith('.record')]
+        #os.makedirs(self.moves_path, exist_ok=True)
+        return [f.split('.record')[0] for f in os.listdir('./'+self.moves_path) if f.endswith('.record')]
 
     def remove_move_record(self, move_name):
         """Remove the json recorded movement file"""
-        return os.remove('{}.record'.format(move_name))
+        #os.makedirs(self.moves_path, exist_ok=True)
+        return os.remove('{}.record'.format(self.moves_path+move_name))

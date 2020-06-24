@@ -1,10 +1,8 @@
 from abc import ABCMeta, abstractmethod
 
 
-class AbstractIO(object):
+class AbstractIO(object, metaclass=ABCMeta):
     """ AbstractIO class which handles communication with "hardware" motors. """
-
-    __metaclass__ = ABCMeta
 
     @abstractmethod
     def close(self):

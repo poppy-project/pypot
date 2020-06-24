@@ -29,20 +29,20 @@ def _get_available_ports():
         return glob.glob('/dev/com*')
 
     elif platform.system() == 'Windows':
-        import _winreg
+        import winreg
         import itertools
 
         ports = []
         path = 'HARDWARE\\DEVICEMAP\\SERIALCOMM'
-        key = _winreg.OpenKey(_winreg.HKEY_LOCAL_MACHINE, path)
+        key = winreg.OpenKey(winreg.HKEY_LOCAL_MACHINE, path)
 
         for i in itertools.count():
             try:
-                ports.append(str(_winreg.EnumValue(key, i)[1]))
+                ports.append(str(winreg.EnumValue(key, i)[1]))
             except WindowsError:
                 return ports
     else:
-        raise EnvironmentError('{} is an unsupported platform, cannot find serial ports !'.format(platform.system()))
+        raise EnvironmentError('{} is an unsupported platform, cannot find serial ports!'.format(platform.system()))
     return []
 
 
@@ -50,7 +50,7 @@ def get_available_ports(only_free=False):
     ports = _get_available_ports()
 
     if only_free:
-        ports = list(set(ports) - set(DxlIO.get_used_ports()))
+        ports = [port for port in ports if port not in DxlIO.get_used_ports()]
 
     return ports
 

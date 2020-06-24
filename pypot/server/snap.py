@@ -2,11 +2,13 @@ import os
 import re
 import sys
 import numpy
+import cv2
 import errno
 import shutil
 import bottle
 import socket
 import logging
+import datetime
 
 from tornado.wsgi import WSGIContainer
 from tornado.httpserver import HTTPServer
@@ -167,7 +169,9 @@ class SnapRobotServer(AbstractServer):
 
         @self.app.get('/')
         def get_sitemap():
-            return '</br>'.join([escape(r.rule.format()) for r in self.app.routes])
+            out='<b>All url paths available:</b><br>'
+            out+='</br>'.join([escape(r.rule.format()) for r in self.app.routes])
+            return out
 
         @self.app.get('/motors/<alias>')
         def get_motors(alias):
@@ -227,7 +231,7 @@ class SnapRobotServer(AbstractServer):
         # TODO: delete ?
         @self.app.get('/motors/set/positions/<positions>')
         def set_motors_positions(positions):
-            positions = map(lambda s: float(s), positions[:-1].split(';'))
+            positions = [float(s) for s in positions[:-1].split(';')]
             for m, p in zip(rr.get_motors_list(), positions):
                 rr.set_motor_register_value(m, 'goal_position', p)
             return 'Done!'
@@ -390,6 +394,19 @@ class SnapRobotServer(AbstractServer):
                 return str(any([m.id in markers[marker] for m in detected]))
             except AttributeError:
                 return 'Error: marker detector is not activated'
+
+        @self.app.get('/frame.png')
+        def frame():
+            _, img = cv2.imencode('.png', rr.robot.camera.frame)
+            response.set_header('Content-type', 'image/png')
+            return img.tobytes()
+        @self.app.get('/frame.png/saved_in_my_documents')
+        def save_frame():
+            _, img = cv2.imencode('.png', rr.robot.camera.frame)
+            #os.makedirs("pictures_path", exist_ok=True)
+            cv2.imwrite("{}.png".format(datetime.datetime.now()),img)
+            response.set_header('Content-type', 'image/png')
+            return img.tobytes()
 
         @self.app.get('/ik/<chain>/endeffector')
         def ik_endeffector(chain):

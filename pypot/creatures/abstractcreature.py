@@ -1,4 +1,4 @@
-from __future__ import print_function
+
 
 import sys
 import logging
@@ -42,7 +42,7 @@ class AbstractPoppyCreature(Robot):
 
         :param str config: path to a specific json config (if None uses the default config of the poppy creature - e.g. poppy_humanoid.json)
 
-        :param str simulator: name of the simulator used : 'vrep', 'poppy-simu', or 'dummy-robot'
+        :param str simulator: name of the simulator used : 'vrep', 'poppy-simu', or 'dummy'
         :param str scene: specify a particular simulation scene (if None uses the default scene of the poppy creature, use "keep-existing" to keep the current VRep scene - e.g. poppy_humanoid.ttt)
         :param str host: host of the simulator
         :param int port: port of the simulator
@@ -125,7 +125,9 @@ class AbstractPoppyCreature(Robot):
                     exc_type, exc_inst, tb = sys.exc_info()
 
             else:
-                raise OSError('Could not initalize robot: {} '.format(exc_inst))
+                import traceback
+                traceback.print_tb(tb)
+                raise OSError('Could not initialize robot: {}'.format(exc_inst))
             poppy_creature.simulated = False
 
         with open(config) as f:

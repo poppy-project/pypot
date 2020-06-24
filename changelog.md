@@ -1,5 +1,13 @@
 # Changelog
 
+## V 3.2
+
+* Fix compatibility with Python 3.8 and drop compatibility with Python 2 
+* Add optionnal path for move recorder
+* Add Snap entry points for webcam access in the REST API
+* Add notebook ‘Another language’
+* Updated ikpy to the latest version
+
 ## V 3.1
 
 * Add support for connecting multiple robots to a same VREP scene.

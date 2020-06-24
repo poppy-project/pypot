@@ -117,7 +117,7 @@ class AbstractDxlIO(object):
                 self.close(_force_lock=True)
 
                 if port in self.__used_ports:
-                    raise DxlError('Another instance of pypot use the port {}. You should restart your Python kernel to pass through this issue.'.format(port))
+                    raise DxlError('Another instance of pypot is using the port {}. You should restart your Python kernel to pass through this issue.'.format(port))
 
                 # Dirty walkaround to fix a strange bug.
                 # Observed with the USB2AX on Linux with pyserial 2.7
@@ -127,7 +127,7 @@ class AbstractDxlIO(object):
                     self._serial = serial.Serial(port, 9600)
                     self._serial.close()
 
-                self._serial = serial.Serial(port, baudrate, timeout=timeout)
+                self._serial = serial.Serial(port, baudrate, timeout=timeout, write_timeout=timeout)
                 self.__used_ports.add(port)
 
             if (platform.system() == 'Darwin' and
@@ -235,13 +235,13 @@ class AbstractDxlIO(object):
         if len(set(new_id_for_id.values())) < len(new_id_for_id):
             raise ValueError('each id must be unique.')
 
-        for new_id in new_id_for_id.itervalues():
+        for new_id in new_id_for_id.values():
             if self.ping(new_id):
                 raise ValueError('id {} is already used.'.format(new_id))
 
         self._change_id(new_id_for_id)
 
-        for motor_id, new_id in new_id_for_id.iteritems():
+        for motor_id, new_id in new_id_for_id.items():
             if motor_id in self._known_models:
                 self._known_models[new_id] = self._known_models[motor_id]
                 del self._known_models[motor_id]
@@ -309,8 +309,8 @@ class AbstractDxlIO(object):
 
     def set_pid_gain(self, pid_for_id, **kwargs):
         """ Sets the pid gain to the specified motors. """
-        pid_for_id = dict(itertools.izip(pid_for_id.iterkeys(),
-                                         [tuple(reversed(t)) for t in pid_for_id.values()]))
+        pid_for_id = dict(zip(pid_for_id.keys(),
+                          [tuple(reversed(t)) for t in pid_for_id.values()]))
         self._set_pid_gain(pid_for_id, **kwargs)
 
     # MARK: - Generic Getter / Setter
@@ -417,7 +417,7 @@ class AbstractDxlIO(object):
 
                 values.extend(sp.parameters)
 
-        values = list(itertools.izip(*([iter(values)] * control.length * control.nb_elem)))
+        values = list(zip(*([iter(values)] * control.length * control.nb_elem)))
         values = [dxl_decode_all(value, control.nb_elem) for value in values]
 
         if not values:
@@ -454,7 +454,7 @@ class AbstractDxlIO(object):
         convert = kwargs['convert'] if ('convert' in kwargs) else self._convert
 
         if convert:
-            models = self.get_model(value_for_id.keys())
+            models = self.get_model(list(value_for_id.keys()))
             if not models:
                 return
 
@@ -462,7 +462,7 @@ class AbstractDxlIO(object):
                                     map(control.si_to_dxl, value_for_id.values(), models)))
 
         data = []
-        for motor_id, value in value_for_id.iteritems():
+        for motor_id, value in value_for_id.items():
             data.extend(itertools.chain((motor_id, ),
                                         dxl_code_all(value, control.length, control.nb_elem)))
 
@@ -483,7 +483,11 @@ class AbstractDxlIO(object):
             self.flush(_force_lock=True)
 
             data = instruction_packet.to_string()
-            nbytes = self._serial.write(data)
+            try:
+                nbytes = self._serial.write(data)
+            except serial.serialutil.SerialTimeoutException:
+                nbytes = 0
+            
             if len(data) != nbytes:
                 raise DxlCommunicationError(self,
                                             'instruction packet not entirely sent',

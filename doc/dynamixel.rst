@@ -52,7 +52,7 @@ To create a connection, open up a python terminal and type the following code::
 
 This should open a connection through a virtual communication port to your device.
 
-.. warning:: It is important to note that it will open a connection using a default baud rate. By default your motors are set up to work on the robotis default baud rate (57140) while pypot is set up to work with a 1000000 baud rate. To communicate with your motors, you must ensure that this baud rate is the same baud rate that the motors are configure to use. So, you will need to change either the configuration of your motors (see :ref:`Herborist <herborist>` section) or change the default baud rate of your connection.
+.. warning:: It is important to note that it will open a connection using a default baud rate. By default your motors are set up to work on the robotis default baud rate (57140) while pypot is set up to work with a 1000000 baud rate. To communicate with your motors, you must ensure that this baud rate is the same baud rate that the motors are configure to use. So, you will need to change either the configuration of your motors (see `the Herborist tool <http://github.com/poppy-project/herborist/>`_.) or change the default baud rate of your connection.
 
 To set up a connection with another baud rate you can write::
 

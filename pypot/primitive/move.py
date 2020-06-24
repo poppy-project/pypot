@@ -1,4 +1,4 @@
-from __future__ import division
+
 
 import json
 import time
@@ -54,7 +54,7 @@ class Move(object):
         if not pos:
             return
 
-        motors = pos[0].keys()
+        motors = list(pos[0].keys())
 
         n = len(pos)
         t = np.linspace(0, n / self.framerate, n)
@@ -119,7 +119,7 @@ class MoveRecorder(LoopPrimitive):
     def __init__(self, robot, freq, tracked_motors):
         LoopPrimitive.__init__(self, robot, freq)
         self.freq = freq
-        self.tracked_motors = map(self.get_mockup_motor, tracked_motors)
+        self.tracked_motors = list(map(self.get_mockup_motor, tracked_motors))
 
     def setup(self):
         self._move = Move(self.freq)
@@ -136,7 +136,7 @@ class MoveRecorder(LoopPrimitive):
 
     def add_tracked_motors(self, tracked_motors):
         """Add new motors to the recording"""
-        new_mockup_motors = map(self.get_mockup_motor, tracked_motors)
+        new_mockup_motors = list(map(self.get_mockup_motor, tracked_motors))
         self.tracked_motors = list(set(self.tracked_motors + new_mockup_motors))
 
 
@@ -181,7 +181,7 @@ class MovePlayer(LoopPrimitive):
             position = self.positions[self.__duration]
         else:
             position = self.positions[0]
-        for motor, value in position.iteritems():
+        for motor, value in position.items():
             motor = getattr(self.robot, motor)
             motor.compliant = False
             delta_angle = abs(motor.present_position - value[0])
@@ -199,7 +199,7 @@ class MovePlayer(LoopPrimitive):
             else:
                 position = self.positions[self.elapsed_time * self.play_speed]
 
-            for motor, value in position.iteritems():
+            for motor, value in position.items():
                 # TODO: Ask pierre if its not a fgi to turn off the compliance
                 getattr(self.robot, motor).compliant = False
                 getattr(self.robot, motor).goal_position = value[0]

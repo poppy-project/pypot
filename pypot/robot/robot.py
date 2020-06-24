@@ -134,7 +134,7 @@ class Robot(object):
             .. note::In case of dynamixel motors, the speed is automatically adjusted so the goal position is reached after the chosen duration.
 
             """
-        for i, (motor_name, position) in enumerate(position_for_motors.iteritems()):
+        for i, (motor_name, position) in enumerate(position_for_motors.items()):
             w = False if i < len(position_for_motors) - 1 else wait
 
             m = getattr(self, motor_name)

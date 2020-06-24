@@ -39,7 +39,8 @@ If you do some introspection on this object, you will see that it is just a regu
     my_config = dict(ergo_robot_config)
     my_config['controllers']['my_dxl_controller']['port']  = 'COM6' # For Windows' users
 
-You will only have to modify the USB2serial port and the id of the motors so they correspond to your robot. If you do not know how to get this information, you can refer to the documentation on the :ref:`Herborist tool <herborist>`. Alternatively, you can directly ask pypot::
+You will only have to modify the USB2serial port and the id of the motors so they correspond to your robot. If you do not know how to get this information, you can refer to the documentation on the `Herborist tool <http://github.com/poppy-project/herborist/>`__.
+Alternatively, you can directly ask pypot::
 
     import pypot.dynamixel
 

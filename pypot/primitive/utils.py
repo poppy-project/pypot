@@ -103,7 +103,7 @@ class PositionWatcher(LoopPrimitive):
             ax.plot(t, pos)
         ax.set_ylabel('position (in deg)')
         ax.set_xlabel('time (in s)')
-        ax.legend(self._pos.keys(), loc='best')
+        ax.legend(list(self._pos.keys()), loc='best')
 
 
 class SimplePosture(Primitive):

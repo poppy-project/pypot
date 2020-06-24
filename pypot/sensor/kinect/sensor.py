@@ -90,7 +90,7 @@ class KinectSensor(object):
             img = numpy.zeros((480, 640, 3))
             skeleton = kinect.tracked_skeleton
             if skeleton:
-                for user, skel in skeleton.iteritems():
+                for user, skel in skeleton.items():
                     for joint_name in skel.joints:
                         x, y = getattr(skel, joint_name).pixel_coordinate
                         pt = (int(x), int(y))

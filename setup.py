@@ -12,11 +12,6 @@ def version():
     with open('pypot/_version.py') as f:
         return re.search(r"^__version__ = ['\"]([^'\"]*)['\"]", f.read()).group(1)
 
-
-extra = {}
-if sys.version_info >= (3,):
-    extra['use_2to3'] = True
-
 install_requires = ['numpy',
                     'pyserial>2.6',
                     'tornado',
@@ -24,16 +19,12 @@ install_requires = ['numpy',
                     'ikpy==3.0.1',
                     'bottle',
                     'requests',
-                    'poppy-creature>=2'  # Kept to avoid breaking old imports
+                    'opencv-contrib-python',
                     ]
 
-if sys.version_info < (2, 7):
-    print("python version < 2.7 is not supported")
+if sys.version_info < (3, 5):
+    print("python version < 3.5 is not supported")
     sys.exit(1)
-
-if sys.version_info < (3, 4):
-    install_requires.append('enum34')
-
 
 def package_files(directory):
     paths = []
@@ -79,11 +70,9 @@ setup(name='pypot',
       license='GNU GENERAL PUBLIC LICENSE Version 3',
 
       classifiers=[
-          "Programming Language :: Python :: 2",
           "Programming Language :: Python :: 3",
           "Topic :: Scientific/Engineering", ],
 
       data_files=package_files("pypot/snap/"),
 
-      **extra
       )
