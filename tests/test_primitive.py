@@ -10,7 +10,7 @@ from pypot.primitive import LoopPrimitive
 
 class TestPrimLifeCycle(unittest.TestCase):
     def setUp(self):
-        self.jr = PoppyErgoJr(simulator='poppy-simu')
+        self.jr = PoppyErgoJr(simulator='dummy')
 
     def tearDown(self):
         self.jr.close()
