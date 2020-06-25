@@ -20,6 +20,7 @@ install_requires = ['numpy',
                     'bottle',
                     'requests',
                     'opencv-contrib-python',
+                    'wget',
                     ]
 
 if sys.version_info < (3, 5):
