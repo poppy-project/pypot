@@ -1,93 +1,34 @@
 language: python
-
 env:
   global:
-
-    # Directory of setup.py
-    - SETUP_DIR=$TRAVIS_BUILD_DIR/.
-    # PyPi credentials for uploads to PyPi on release.
-    - PYPI_USERNAME=pierre-rouanet
-    # PYPI_PASSWD encrypted below > travis encrypt PYPI_PASSWD=XXXXXX --add
-    - secure: "ovWnNtOxp9SzfayLkI/NbeQld76FatyUm7Bdj6d9XWxokQpj130pf5uBwrUs32TCDmWJxfIC/8Jn7IA4kMWLzH/hN+M6AIc290EiSmLNaNU4HOh6hdx6qERHLSoPFVHgI1xPTEUouNWXkP3LR8nFja/iK1ai4ecGUBoIrtG0TW4="    # Used to built the repo URL https://github.com/$GH_USERNAME/$GH_USERNAME.git
-    - GH_USERNAME=poppy-project
-    - GH_REPO=pypot
-    # Git and Github credentials for pushing documentation
-    - GIT_EMAIL=poppy-bot-ci@inria.fr
-    - GIT_NAME=poppy-bot
-    # GH_TOKEN encrypted below > travis encrypt GH_TOKEN=XXXXXX --add
-    - secure: "TgJGS9wFmr9zrUSMFDSH/p4sj77+6FwGUpQin4Sfl97cEXoHjeKrDsJvkEV8HZG2mAHnMyMeEqnzJbmCdhCB+9GAu31hdpXies6fA0tFDgtMUbf2lD16M7pL8jJ3zTxR4FCXLLd6ST3x+HLSrPfITkbNvOt1jmgVXdVTHKsSLRM="
-
-    # V-REP conf
-    # - VREP_VERSION=3_1_2
-    # - VREP_ROOT_DIR=$TRAVIS_BUILD_DIR/vrep
-
-    # travis encrypt id_rsa_encrypted_key=...
-    # openssl aes-256-cbc -k $id_rsa_encrypted_key -in ../id_rsa -out id_rsa.enc
-    # Key of encrypted id_rsa, ssh private key
-    # - id_rsa_encrypted_key=fze16fz1ra6!
-
-
-matrix:
-  # Don't wait for allowed failures
-  fast_finish: true
-
+    # Pypi key is too long for travis, split it in 2: https://travis-ci.community/t/travis-encrypt-data-too-large-for-pypi-tokens-with-older-repos/5792/5
+    # env variables are set with SECRET1= and SECRET2= prefixes
+    - secure: "UV5rCCT/wv/sS7+OlMrnI08vtBOc+W+R7Jq9Dupx+Sc6aYVj5YAj4CLj8LL9kgIkrKwSJqJBU6yDgUwIVrGWmYVZxLOaAivLdJY3/GebZuwEpTxroqS8lWt7yGi2Y+Bc6U6y6AC8WmNKHQ5AyghOEkN4GqLbs/XL+9BvxkAmcCE="
+    - secure: "bk8yUMpSrfSYDbKaWwGQxh2TR8rV+jJodSQx0InNnhdia2WA/vB9ALgHfJlDXHb50BizOlrkx4xcCL+QkHd2WoK1LeCMDrirflc+X8bnK55OJZ67zXHn45B9uwopIz0oNyv24xbPcGW+RXXDIF5M8TPuJIDr/v14Zz81CYs/Qx0="
+ matrix:
   include:
-
-    # Remove OSX builds temporally as they are very slow to startup
-    # - os: osx
-    #   python: 3.6 # For travis UI only
-    #   osx_image: xcode6.4
-    #   env: TRAVIS_OS_NAME=osx TRAVIS_PYTHON_VERSION=3.6
-
-    # Linux VM
-    # Python 3.4 is not supported anymore by conda
-    # https://github.com/ContinuumIO/anaconda-issues/issues/6615
-
-    - python: 3.5
-      language: python
-      os: linux
-
-    - python: 3.6
-      language: python
-      os: linux
-
-    - python: 3.7
-      language: python
-      os: linux
-
-    - python: 3.8
-      language: python
-      os: linux
-
-    #- python: 3.8
-    #  language: python
-    #  os: linux
-    #  env: PEP8_CAUSE_FAILLURE=true
-
-addons:
-  apt:
-    packages:
-      # For building the pdf documentation
-      - texlive
-      - texlive-latex-extra
-      - dvipng
-
-before_install:
-  - . ./ci/before_install.sh
-
+  - python: 3.5
+    language: python
+    os: linux
+  - python: 3.6
+    language: python
+    os: linux
+  - python: 3.7
+    language: python
+    os: linux
+  - python: 3.8
+    language: python
+    os: linux
 install:
-  - . ./ci/install.sh
-
+- pip install .
 script:
-  - . ./ci/run_tests.sh
-
-after_success:
-  - if [[ "$UPDATE_DOC" == true ]]; then . ./ci/update_documentation.sh; fi
-  - . ./ci/after_success_release.sh
-
-
-notifications:
-  email:
-    - poppy-bot-ci@inria.fr
-  on_failure: change
-  on_success: change
+- ". ./ci/run_tests.sh"
+deploy:
+  distributions: "sdist bdist_wheel"
+  skip_existing: true
+  provider: pypi
+  username: __token__
+  password: $SECRET1$SECRET2
+    secure: 
+  on:
+    tags: true
