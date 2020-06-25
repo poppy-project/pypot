@@ -63,8 +63,8 @@ setup(name='pypot',
       zip_safe=False,
 
       author='See https://github.com/poppy-project/pypot/graphs/contributors',
-      author_email='pierre.rouanet@gmail.com',
-      description='Python Library for Robot Control',
+      author_email='dev@poppy-station.org',
+      description='Python 3 Library for Robot Control',
       long_description=open('README.md', encoding='utf-8').read(),
       url='https://github.com/poppy-project/pypot',
       license='GNU GENERAL PUBLIC LICENSE Version 3',
@@ -72,7 +72,4 @@ setup(name='pypot',
       classifiers=[
           "Programming Language :: Python :: 3",
           "Topic :: Scientific/Engineering", ],
-
-      data_files=package_files("pypot/snap/"),
-
       )
