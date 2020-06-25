@@ -29,6 +29,5 @@ deploy:
   provider: pypi
   username: __token__
   password: $SECRET1$SECRET2
-    secure: 
   on:
     tags: true
