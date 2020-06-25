@@ -26,6 +26,7 @@ script:
 deploy:
   distributions: "sdist bdist_wheel"
   skip_existing: true
+  skip_cleanup: true
   provider: pypi
   username: __token__
   password: $SECRET1$SECRET2
