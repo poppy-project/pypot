@@ -1,6 +1,6 @@
 # Changelog
 
-## V 3.2
+## V 4.0
 
 * Fix compatibility with Python 3.8 and drop compatibility with Python 2 
 * Add optionnal path for move recorder
