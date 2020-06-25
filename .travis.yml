@@ -24,7 +24,7 @@ install:
 script:
 - ". ./ci/run_tests.sh"
 deploy:
-  distributions: "sdist bdist_wheel"
+  distributions: "sdist"
   skip_existing: true
   skip_cleanup: true
   provider: pypi
