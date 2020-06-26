@@ -3,9 +3,10 @@
 ## V 4.0
 
 * Fix compatibility with Python 3.8 and drop compatibility with Python 2 
-* Add optionnal path for move recorder
+* Fix poppy-configure and dxl-config for recent Dynamixel firmwares with protocol v1
+* Replaced the Snap build from pypot by a Snap downloader for `poppy-services --snap`
 * Add Snap entry points for webcam access in the REST API
-* Add notebook ‘Another language’
+* Jupyter notebooks update for py3
 * Updated ikpy to the latest version
 
 ## V 3.1
