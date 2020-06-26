@@ -5,7 +5,7 @@ We generate the profile using [yappi](https://bitbucket.org/sumerc/yappi/) and e
 import time
 import yappi
 
-from poppy.creatures import PoppyErgoJr
+from pypot.creatures import PoppyErgoJr
 jr = PoppyErgoJr()
 
 yappi.start();time.sleep(100); yappi.stop()
