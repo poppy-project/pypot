@@ -67,7 +67,7 @@ def main():
           'Could not find an available serial port!')
 
     protocol = 2 if args.type in 'XL-320' else 1
-    serial_port = default_port if args.port == "auto" else serial_port
+    serial_port = default_port if args.port == "auto" else args.port
     DxlIOPort = DxlIO if protocol == 1 else Dxl320IO
 
     # Factory Reset
