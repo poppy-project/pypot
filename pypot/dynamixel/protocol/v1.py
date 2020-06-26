@@ -84,8 +84,8 @@ class DxlPingPacket(DxlInstructionPacket):
 
 class DxlResetPacket(DxlInstructionPacket):
     """ This class is used to represent reset packet. """
-    def __new__(cls):
-        return DxlInstructionPacket.__new__(cls, DxlBroadcast,
+    def __new__(cls, id=DxlBroadcast):
+        return DxlInstructionPacket.__new__(cls, id,
                                             DxlInstruction.RESET, ())
 
 

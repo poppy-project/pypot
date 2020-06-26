@@ -71,12 +71,14 @@ def main():
     DxlIOPort = DxlIO if protocol == 1 else Dxl320IO
 
     # Factory Reset
-    print('Factory reset...')
+    print('Factory reset, you must see the moto LED flickering 4 times')
     if protocol == 1:
+        print("Using protocol 1...")
         for br in [57600, 1000000]:
             with DxlIO(serial_port, baudrate=br) as io:
                 io.factory_reset()
     else:
+        print("Using protocol 2...")
         with Dxl320IO(serial_port, baudrate=1000000, timeout=0.01) as io:
             io.factory_reset(ids=list(range(253)))
     print('Done!')
@@ -93,6 +95,7 @@ def main():
     else:
         print('Could not communicate with the motor...')
         print('Make sure one (and only one) is connected and try again')
+        print('If the issue persists, use Dynamixel wizard to attempt a firmware recovery')
         sys.exit(1)
 
     # Switch to 1M bauds

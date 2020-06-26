@@ -1,6 +1,6 @@
 import itertools
 
-from .abstract_io import (AbstractDxlIO, _DxlControl,
+from .abstract_io import (AbstractDxlIO, _DxlControl, DxlCommunicationError,
                           _DxlAccess, DxlTimeoutError)
 from .. import conversion as conv
 from ..protocol import v1 as v1
@@ -11,12 +11,15 @@ class DxlIO(AbstractDxlIO):
 
     def factory_reset(self):
         """ Reset all motors on the bus to their factory default settings. """
-        try:
-            self._send_packet(self._protocol.DxlResetPacket())
-
-        except DxlTimeoutError:
-            pass
-
+        # Recent firmwares can't send the reset packet to broadcast, so the motor won't reply
+        for id in range(253):
+            try:
+                self._send_packet(self._protocol.DxlResetPacket(id))
+            except (DxlTimeoutError, DxlCommunicationError):
+                pass
+            else:
+                break
+    
     def get_control_mode(self, ids):
         """ Gets the mode ('joint' or 'wheel') for the specified motors. """
         to_get_ids = [id for id in ids if id not in self._known_mode]
