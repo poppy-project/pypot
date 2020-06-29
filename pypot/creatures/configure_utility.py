@@ -19,11 +19,20 @@ from pypot.utils import flushed_print as print
 
 
 def find_port_for_motor(config, motor):
-    for bus in config['controllers'].values():
-        motor_on_bus = sum([config['motorgroups'][n]
-                            for n in bus['attached_motors']], [])
-        if motor in motor_on_bus:
-            return bus['port']
+    def flatten_motorgroups(motors, groups):
+        l = []
+        for m in motors:
+            if m in groups:
+                l += flatten_motorgroups(groups[m], groups)
+            else:
+                l.append(m)
+        return l
+    
+    for bus in config['controllers']:
+        motors_on_bus = config['controllers'][bus]["attached_motors"]
+        motors = flatten_motorgroups(motors_on_bus, config['motorgroups'])
+        if motor in motors:
+            return config['controllers'][bus]["port"]
 
     raise ValueError('Something must be wrong in your configuration file. '
                      'Could not find bus for motor {}'.format(motor))
