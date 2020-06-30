@@ -86,7 +86,7 @@ class IndexHandler(PoppyRequestHandler):
 class MotorsListHandler(PoppyRequestHandler):
     def get(self, alias='motors'):
         self.write_json({
-            'alias': self.restful_robot.get_motors_list(alias)
+            alias: self.restful_robot.get_motors_list(alias)
         })
 
 
