@@ -110,7 +110,7 @@ class Robot(object):
     @property
     def primitives(self):
         """ Returns all the primitives name attached to the robot. """
-        return self._attached_primitives.values()
+        return list(self._attached_primitives.values())
 
     @property
     def compliant(self):
