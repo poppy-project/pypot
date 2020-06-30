@@ -71,7 +71,7 @@ def main():
     DxlIOPort = DxlIO if protocol == 1 else Dxl320IO
 
     # Factory Reset
-    print('Factory reset, you must see the moto LED flickering 4 times')
+    print('Factory reset, you must see the motor LED flickering 4 times')
     if protocol == 1:
         print("Using protocol 1...")
         for br in [57600, 1000000]:
