@@ -101,9 +101,11 @@ def find_port(ids, strict=True):
             except DxlError:
                 logger.warning('DxlError on port {}'.format(port))
                 continue
-
-    raise IndexError('No suitable port found for ids {}. These ids are missing {} !'.format(
-        ids, list(set(ids) - set(ids_founds))))
+    
+    missing = list(set(ids) - set(ids_founds))
+    if len(missing) == 0:
+        raise ValueError('All motors have been found but they are not connected as specified in the configuration file, please check connections')
+    raise IndexError('No suitable port found for ids {}. These ids are missing {} !'.format(ids, missing))
 
 
 def autodetect_robot():
