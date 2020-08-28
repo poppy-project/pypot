@@ -34,11 +34,7 @@ All those creatures are based on a combination of standard dynamixel actuators, 
 
 ## Documentation
 
-The full pypot documentation on a html format can be found [here](http://poppy-project.github.io/pypot/). It provides tutorials, examples and a complete API.
-
-**The documentation is slowly moving toward [Jupyter Notebooks](http://jupyter.org) are they are such a powerful tool for writing and sharing tutorials, experiments or pedagogical contents.**
-
-**They can be found [here](https://github.com/poppy-project/pypot/tree/master/samples/notebooks#notebooks-everywhere) with a detailed explanation on how they can be used, installed, and modified.**
+The full pypot documentation on a html format can be found [here](https://docs.poppy-project.org/en/software-libraries/pypot.html). It provides tutorials, examples and a complete API.
 
 ## Installation
 
@@ -53,7 +49,7 @@ pip install .
 
 You will also have to install the driver for the USB2serial port. There are a few devices that have been tested with pypot that could be used:
 
-* USB2AX - this device is designed to manage TTL communication only
+* [USB2AX](http://www.xevelabs.com/doku.php?id=product:usb2ax:quickstart) - this device is designed to manage TTL communication only
 * USB2Dynamixel - this device can manage both TTL and RS485 communication.
 * [Pixl board](https://github.com/poppy-project/pixl) for RaspberryPi
 
