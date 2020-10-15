@@ -88,7 +88,7 @@ def find_port(ids, strict=True):
                     _ids_founds = dxl.scan(ids)
                     ids_founds += _ids_founds
 
-                    if strict and len(_ids_founds) == len(ids):
+                    if strict and sorted(_ids_founds) == sorted(ids):
                         return port
 
                     if not strict and len(_ids_founds) >= len(ids) / 2:
