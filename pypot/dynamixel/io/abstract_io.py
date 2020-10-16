@@ -147,7 +147,7 @@ class AbstractDxlIO(object):
         if not self.closed:
             with self.__force_lock(_force_lock) or self._serial_lock:
                 self._serial.close()
-                self.__used_ports.remove(self.port)
+                if self.port in self.__used_ports: self.__used_ports.remove(self.port)
 
             logger.info("Closing port '%s'", self.port,
                         extra={'port': self.port,
