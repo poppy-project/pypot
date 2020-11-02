@@ -128,7 +128,7 @@ def from_vrep(config, vrep_host='127.0.0.1', vrep_port=19997, scene=None,
     def start_simu():
         vrep_io.start_simulation()
 
-        for m, p in init_pos.iteritems():
+        for m, p in init_pos.items():
             m.goal_position = p
 
         vc.start()
