@@ -5,7 +5,7 @@ env:
     # env variables are set with SECRET1= and SECRET2= prefixes
     - secure: "UV5rCCT/wv/sS7+OlMrnI08vtBOc+W+R7Jq9Dupx+Sc6aYVj5YAj4CLj8LL9kgIkrKwSJqJBU6yDgUwIVrGWmYVZxLOaAivLdJY3/GebZuwEpTxroqS8lWt7yGi2Y+Bc6U6y6AC8WmNKHQ5AyghOEkN4GqLbs/XL+9BvxkAmcCE="
     - secure: "bk8yUMpSrfSYDbKaWwGQxh2TR8rV+jJodSQx0InNnhdia2WA/vB9ALgHfJlDXHb50BizOlrkx4xcCL+QkHd2WoK1LeCMDrirflc+X8bnK55OJZ67zXHn45B9uwopIz0oNyv24xbPcGW+RXXDIF5M8TPuJIDr/v14Zz81CYs/Qx0="
-matrix:
+jobs:
   include:
   - python: 3.5
     language: python
@@ -26,7 +26,7 @@ script:
 deploy:
   distributions: "sdist"
   skip_existing: true
-  skip_cleanup: true
+  cleanup: false
   provider: pypi
   username: __token__
   password: $SECRET1$SECRET2
