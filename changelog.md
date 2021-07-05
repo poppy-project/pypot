@@ -1,5 +1,8 @@
 # Changelog
 
+## V 4.1
+* Add support for EX motors
+
 ## V 4.0
 
 * Fix compatibility with Python 3.8 and drop compatibility with Python 2 
