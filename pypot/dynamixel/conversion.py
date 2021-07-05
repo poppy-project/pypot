@@ -22,6 +22,7 @@ from enum import Enum
 position_range = {
     'MX': (4096, 360.0),
     'SR': (4096, 360.0),
+    'EX': (4096, 251.0),
     '*': (1024, 300.0)
 }
 
@@ -60,6 +61,8 @@ def dxl_to_degree(value, model):
         determined_model = 'MX'
     elif model.startswith('SR'):
         determined_model = 'SR'
+    elif model.startswith('EX'):
+        determined_model = 'EX'
     max_pos, max_deg = position_range[determined_model]
 
     return round(((max_deg * float(value)) / (max_pos - 1)) - (max_deg / 2), 2)
@@ -71,6 +74,8 @@ def degree_to_dxl(value, model):
         determined_model = 'MX'
     elif model.startswith('SR'):
         determined_model = 'SR'
+    elif model.startswith('EX'):
+        determined_model = 'EX'
     max_pos, max_deg = position_range[determined_model]
 
     pos = int(round((max_pos - 1) * ((max_deg / 2 + float(value)) / max_deg), 0))

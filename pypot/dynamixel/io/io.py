@@ -45,6 +45,8 @@ class DxlIO(AbstractDxlIO):
                 models += ['MX']
             elif m.startswith('SR'):
                 models += ['SR']
+            elif m.startswith('EX'):
+                models += ['EX']
             else:
                 models += ['*']
 
