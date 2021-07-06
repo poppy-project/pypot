@@ -53,7 +53,7 @@ def download_vpl_interactively(vpl_app_name, vpl_app_url, extract=False):
                 try:
                     downloaded_app = download(vpl_app_url, tempfile.gettempdir())
                 except URLError as e:
-                    print("Cannot download the {] app from {}: {}".format(vpl_app_name, vpl_app_url, str(e)), file=sys.stderr)
+                    print("Cannot download the {} app from {}: {}".format(vpl_app_name, vpl_app_url, str(e)), file=sys.stderr)
                 else:
                     try:
                         with ZipFile(downloaded_app, 'r') as archive:
