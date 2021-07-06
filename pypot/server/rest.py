@@ -23,7 +23,7 @@ class RESTRobot(object):
 
     def __init__(self, robot):
         self.robot = robot
-        self.moves_path=""
+        self.moves_path = ""
 
     # Access motor related values
 
@@ -54,9 +54,15 @@ class RESTRobot(object):
     def get_motors_alias(self):
         return self.robot.alias
 
-    def set_goto_position_for_motor(self, motor, position, duration):
+    def set_goto_position_for_motor(self, motor, position, duration, wait=False):
         m = getattr(self.robot, motor)
-        m.goto_position(position, duration, wait=False)
+        m.goto_position(position, duration, wait=wait)
+
+    def set_goto_positions_for_motors(self, motors, positions, duration, control=None, wait=False):
+        for i, motor_name in enumerate(motors):
+            w = False if i < len(motors) - 1 else wait
+            m = getattr(self.robot, motor_name)
+            m.goto_position(positions[i], duration, control, wait=w)
 
     # Access sensor related values
 
@@ -145,6 +151,16 @@ class RESTRobot(object):
         except AttributeError:
             return None
 
+    def get_move_recorder(self, move_name):
+        try:
+            recorder = getattr(self.robot, '_{}_recorder'.format(move_name))
+            move = recorder.move
+            print(move.__repr__())
+            print(move.positions())
+            return move.positions()
+        except AttributeError:
+            return 'I was not able to find _{}_recorder'.format(move_name)
+
     def stop_move_recorder(self, move_name):
         """Allow more easily than stop_primitive() to save in a filename the recorded move"""
         recorder = getattr(self.robot, '_{}_recorder'.format(move_name))
@@ -191,5 +207,8 @@ class RESTRobot(object):
 
     def remove_move_record(self, move_name):
         """Remove the json recorded movement file"""
-        #os.makedirs(self.moves_path, exist_ok=True)
-        return os.remove('{}.record'.format(self.moves_path+move_name))
+        try:
+            os.remove('{}.record'.format(self.moves_path+move_name))
+            return True
+        except FileNotFoundError:
+            return False
