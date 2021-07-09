@@ -312,11 +312,13 @@ class MotorsGotoHandler(PoppyRequestHandler):
 		try:
 			self.restful_robot.set_goto_positions_for_motors(motors, positions, duration, wait=wait)
 			self.set_status(202)
-			resp = {}
+			motor_positions = {}
 			for m, motors in enumerate(motors):
-				resp[motors] = positions[m]
+				motor_positions[motors] = positions[m]
 			self.write_json({
-				"goto": resp
+				"motors": motor_positions,
+				"duration": duration,
+				"waiting": wait
 			})
 		except FileNotFoundError as e:
 			self.set_status(404)
@@ -352,8 +354,11 @@ class MotorGotoHandler(PoppyRequestHandler):
 			self.restful_robot.set_goto_position_for_motor(motor_name, position, duration, wait=wait)
 			self.set_status(202)
 			self.write_json({
-				motor_name: "moving {} to {} in {}s.{}".format(motor_name, position, duration,
-															   " I'm waiting." if wait else '')
+				"motors": {
+					motor_name: position
+				},
+				"duration": duration,
+				"waiting": wait
 			})
 		except Exception as ex:
 			template = "An exception of type {0} occured. Arguments:\n{1!r}"
@@ -543,9 +548,9 @@ class MoveHandler(PoppyRequestHandler):
 		try:
 			self.set_status(200)
 			info = self.restful_robot.get_move_recorder(move_name)
-			print(info)
 			self.write_json({
-				"moves": info
+				move_name: info,
+				"length": len(info)
 			})
 		except FileNotFoundError as e:
 			self.set_status(404)
