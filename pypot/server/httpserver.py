@@ -822,11 +822,20 @@ class CallPrimitiveMethodHandler(PoppyRequestHandler):
 	"""
 
 	def post(self, primitive_name, method_name):
-		data = json.loads(self.request.body.decode())
-		response = self.restful_robot.call_primitive_method(primitive_name, method_name, data)
-		self.write_json({
-			'{}:{}'.format(primitive_name, method_name): response
-		})
+		try:
+			data = json.loads(self.request.body.decode())
+			response = self.restful_robot.call_primitive_method(primitive_name, method_name, data)
+			self.write_json({
+				'{}:{}'.format(primitive_name, method_name): response
+			})
+		except AttributeError as e:
+			self.set_status(404)
+			self.write_json({
+				"error": "Primitive '{}' does not exist".format(primitive_name),
+				"tip": "You can find the list of the primitives with /primitives/list.json",
+				"details": "{}".format(e.args[0])
+			})
+
 
 
 # endregion
