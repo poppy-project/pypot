@@ -154,14 +154,10 @@ class MotorsListHandler(PoppyRequestHandler):
 	def get(self, alias='motors'):
 		try:
 			motors = self.restful_robot.get_motors_list(alias)
-			if not motors:
-				# No motor found in the given alias
-				self.set_status(204)
-			else:
-				self.set_status(200)
-				self.write_json({
-					alias: motors
-				})
+			self.set_status(200)
+			self.write_json({
+				alias: motors
+			})
 		except AttributeError as e:
 			self.set_status(404)
 			self.write_json({
@@ -178,13 +174,10 @@ class MotorsAliasesListHandler(PoppyRequestHandler):
 
 	def get(self):
 		aliases = self.restful_robot.get_motors_alias()
-		if not aliases:
-			self.set_status(204)
-		else:
-			self.set_status(200)
-			self.write_json({
-				"aliases": aliases
-			})
+		self.set_status(200)
+		self.write_json({
+			"aliases": aliases
+		})
 
 
 class MotorRegistersListHandler(PoppyRequestHandler):
