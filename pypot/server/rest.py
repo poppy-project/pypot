@@ -155,8 +155,6 @@ class RESTRobot(object):
         try:
             recorder = getattr(self.robot, '_{}_recorder'.format(move_name))
             move = recorder.move
-            print(move.__repr__())
-            print(move.positions())
             return move.positions()
         except AttributeError:
             return 'I was not able to find _{}_recorder'.format(move_name)
