@@ -217,7 +217,8 @@ class MotorRegisterHandler(PoppyRequestHandler):
 			# either motor given does not exist or the motor does not have the required register.
 			self.set_status(404)
 			self.write_json({
-				"error": "Either motor '{}' or register '{}' does not exist.".format(motor_name, register_name),
+				"error": "Either motor '{}' or register '{}' does not exist. Or you want to change a read-only register"
+						 " value".format(motor_name, register_name),
 				"tip": "You can find the list of motors with /motors/list.json and their registers with "
 					   "/motors/<motor_name>/registers/list.json",
 				"details": "{}".format(e.args[0])
@@ -438,7 +439,8 @@ class SensorRegisterHandler(PoppyRequestHandler):
 			# either sensor given does not exist or the sensor does not have the required register.
 			self.set_status(404)
 			self.write_json({
-				"error": "Either sensor '{}' or register '{}' does not exist.".format(sensor_name, register_name),
+				"error": "Either sensor '{}' or register '{}' does not exist. Or you want to change a read-only register"
+						 " value".format(sensor_name, register_name),
 				"tip": "You can find the list of sensors with /sensors/list.json and their registers with "
 					   "/sensors/<sensor_name>/registers/list.json",
 				"details": "{}".format(e.args[0])
