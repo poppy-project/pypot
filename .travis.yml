@@ -3,8 +3,8 @@ env:
   global:
     # Pypi key is too long for travis, split it in 2: https://travis-ci.community/t/travis-encrypt-data-too-large-for-pypi-tokens-with-older-repos/5792/5
     # env variables are set with SECRET1= and SECRET2= prefixes
-    - secure: "WfqVqenEViBDdo6Mc7FQ9RvYgqp/8jZQ0FyPPDXM2FgX04WLxHzUkqKnrxHTEYtcNWlvdFHVIFsfxsvi5Vrw56DQuTw6fjjaPvKyVfSHtD+NU8E2m1L+2xMkpC2ZJMZ+ynwFF3Qw3j8NT6PS7qIUGM+swc0P7tSVid1xuUzIhUY="
-    - secure: "OHOvS85p+h8ZoBoqdvS/ZBAO+YyA2hkd1ScoOpSBj9azDEXlBZeYbuib+PLxnBLmBGIsA6HBLpgZ/P3f4g56XkqndXC6U/H7Vown9NPoCWUrFqd0+Hwx3kEDVdOGIqRWwD0iu8q2ZcX1LsPXT151T+pg0B942hu2RYatBhqU58k="
+    - secure: xCFtxc1J0FWbSCk41o8n1GpVbrBN/FdTYFgNTDgshsOlOZK7N1MdeJkmrkNeWxCcmIB9k1PqtTrH5rsr54vIoe065NAsw3xjQtioACeGuYJ/jh04XRuTInxWH6ONIixoAJ3MFX6LZELdmg1UBQI6r5dggtRS2+hswtYLlhTc9X8=
+    - secure: yrpcT2OPa82rVLVSzcg4PfqsctxwWVAaOuOvU81YZSaZ3osdIOO/p+/9bNxeXvncKwOUqjtu4f6UmULNrIex/7pe4VQTI2ThjO1n3Jvt02QREFkL4doGcddGhkRqZ/8e8I+1u8ydfltQ/mcLuN4+GR8AzL4nahhfcmHEbUlZsRE=
 jobs:
   include:
   - python: 3.6
