@@ -38,7 +38,7 @@ The full pypot documentation on a html format can be found [here](https://docs.p
 
 ## Installation
 
-Pypot is a library entirely written in [Python](https://www.python.org). It works with Python *3.5+*. It is cross-platform and has been tested on Windows, Mac, Linux - yet specific usb to serial driver may be required depending on your system (see below).
+Pypot is a library entirely written in [Python](https://www.python.org). It works with Python *3.6+*. It is cross-platform and has been tested on Windows, Mac, Linux - yet specific usb to serial driver may be required depending on your system (see below).
 
 You can build and install pypot with the typically python way:
 
