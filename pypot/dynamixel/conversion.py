@@ -85,23 +85,26 @@ def degree_to_dxl(value, model):
 
 # MARK: - Speed
 
+# Speed factor (RPM per least significant bit)
+def _speed_factor(model):
+    if model == 'MX-12':
+        return 0.916
+
+    if model.startswith('MX') or model.startswith('SR'):
+        return 0.114
+
+    return 0.111
 
 def dxl_to_speed(value, model):
     cw, speed = divmod(value, 1024)
     direction = (-2 * cw + 1)
 
-    speed_factor = 0.111
-    if model.startswith('MX') or model.startswith('SR'):
-        speed_factor = 0.114
-
-    return direction * (speed * speed_factor) * 6
+    return direction * (speed * _speed_factor(model)) * 6
 
 
 def speed_to_dxl(value, model):
     direction = 1024 if value < 0 else 0
-    speed_factor = 0.111
-    if model.startswith('MX') or model.startswith('SR'):
-        speed_factor = 0.114
+    speed_factor = _speed_factor(model)
 
     max_value = 1023 * speed_factor * 6
     value = min(max(value, -max_value), max_value)
