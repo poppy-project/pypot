@@ -339,7 +339,7 @@ class MotorGotoHandler(PoppyRequestHandler):
 			data = json.loads(self.request.body.decode())
 			position = float(data["position"])
 			duration = float(data["duration"])
-			wait = str(data["wait"]) == 'true'
+			wait = bool(str(data["wait"]) in {'true', 'True', '1'})
 		except (ValueError, AttributeError) as e:
 			self.set_status(404)
 			self.write_json({
