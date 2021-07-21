@@ -73,11 +73,12 @@ def poppy_params_from_args(args):
 def main():
 	parser = argparse.ArgumentParser(
 		description=('Poppy services launcher. Use it to quickly instantiate a poppy creature with Snap!, '
-					 'an http server, or a remote robot.'),
+					 'Scratch, an http server, or a remote robot.'),
 		epilog="""
 Examples:
+* poppy-services --http poppy-ergo-jr
 * poppy-services --snap poppy-torso
-* poppy-services --snap --vrep poppy-humanoid""",
+* poppy-services --scratch --vrep poppy-humanoid""",
 		formatter_class=RawTextHelpFormatter)
 
 	parser.add_argument('creature', type=str,
