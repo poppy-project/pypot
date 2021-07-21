@@ -274,10 +274,6 @@ class RegisterValuesHandler(PoppyRequestHandler):
 				"tip": "You can find the list of the registers of a motor with /motors/<motor_name>/registers/list.json",
 				"details": "{}".format(e.args[0])
 			})
-		except Exception as ex:
-			template = "An exception of type {0} occured. Arguments:\n{1!r}"
-			message = template.format(type(ex).__name__, ex.args)
-			print(message)
 
 
 # endregion
@@ -320,12 +316,12 @@ class MotorsGotoHandler(PoppyRequestHandler):
 				"duration": duration,
 				"waiting": wait
 			})
-		except FileNotFoundError as e:
+		except AttributeError as e:
 			self.set_status(404)
 			self.write_json({
-				"error": "The move you want to play does not exist.",
-				"tip": "Start by recording a move with /records/<move_name>/record.json",
-				"details": "{}: {}".format(type(e).__name__, e.args[0])
+				"error": "One of the motors given does not exist.",
+				"tip": "You can find the list of motors with /motors/list.json",
+				"details": "{}".format(e.args[0])
 			})
 
 
@@ -360,10 +356,13 @@ class MotorGotoHandler(PoppyRequestHandler):
 				"duration": duration,
 				"waiting": wait
 			})
-		except Exception as ex:
-			template = "An exception of type {0} occured. Arguments:\n{1!r}"
-			message = template.format(type(ex).__name__, ex.args)
-			print(message)
+		except AttributeError as e:
+			self.set_status(404)
+			self.write_json({
+				"error": "Motor '{}' does not exist.".format(motor_name),
+				"tip": "You can find the list of motors with /motors/list.json",
+				"details": "{}".format(e.args[0])
+			})
 
 
 # endregion
