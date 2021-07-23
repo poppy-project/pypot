@@ -4,6 +4,7 @@ from operator import attrgetter
 from pypot.primitive.move import MovePlayer, MoveRecorder, Move
 from pathlib import Path
 
+
 class RESTRobot(object):
 
     """ REST API for a Robot.
@@ -23,7 +24,7 @@ class RESTRobot(object):
 
     def __init__(self, robot):
         self.robot = robot
-        self.moves_path = Path("")
+        self.moves_path = Path(".")
 
     # Access motor related values
 
