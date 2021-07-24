@@ -13,7 +13,7 @@ jobs:
       # The Python version from the matrix used to build and deploy to Pypi 
       PYTHON_BUILD_VERSION: 3.8
       # Condition for building and deploying
-      BUILD_AND_DEPLOY: ${{ github.event_name == 'push' && startsWith(github.ref, 'refs/tags') && matrix.python-version == env.PYTHON_BUILD_VERSION }}
+      BUILD_AND_DEPLOY: ${{ github.event_name == 'push'  && matrix.python-version == env.PYTHON_BUILD_VERSION }}
     steps:
       - uses: actions/checkout@v2
       - name: Set up Python ${{ matrix.python-version }}
