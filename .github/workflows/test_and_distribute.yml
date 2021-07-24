@@ -19,7 +19,7 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install flake8 wheel ../pypot
+          pip install flake8 wheel websocket ../pypot
           pip install poppy-ergo-jr
       - name: Lint with flake8
         run: |
