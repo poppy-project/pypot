@@ -12,8 +12,6 @@ jobs:
     env:
       # The Python version from the matrix used to build and deploy to Pypi 
       PYTHON_BUILD_VERSION: 3.8
-      # Condition for building and deploying
-      BUILD_AND_DEPLOY: ${{ github.event_name == 'push'  && matrix.python-version == $PYTHON_BUILD_VERSION }}
     steps:
       - uses: actions/checkout@v2
       - name: Set up Python ${{ matrix.python-version }}
@@ -36,11 +34,11 @@ jobs:
         run: |
           python -m unittest discover
       - name: Build package with Python ${{ env.PYTHON_BUILD_VERSION }}
-        if: ${{ env.BUILD_AND_DEPLOY }}
+        if: ${{ github.event_name == 'push' && matrix.python-version == env.PYTHON_BUILD_VERSION }}
         run: python -m build
 #     - name: Publish package relying on pypa/gh-action-pypi-publish with Python ${{ env.PYTHON_BUILD_VERSION }}
 #       uses: pypa/gh-action-pypi-publish@27b31702a0e7fc50959f5ad993c78deac1bdfc29
-#       if: ${{ env.BUILD_AND_DEPLOY }}
+#       if: ${{ github.event_name == 'push' && matrix.python-version == env.PYTHON_BUILD_VERSION }}
 #       with:
 #         user: __token__
 #         password: ${{ secrets.PYPI_API_TOKEN }}
