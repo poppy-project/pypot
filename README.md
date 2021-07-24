@@ -1,5 +1,5 @@
 [![PyPI](https://img.shields.io/pypi/v/pypot.svg)](https://pypi.python.org/pypi/pypot/)
-[![Build Status](https://travis-ci.org/poppy-project/pypot.svg?branch=master)](https://travis-ci.org/poppy-project/pypot) 
+[![Build Status](https://github.com/poppy-project/pypot/actions/workflows/test_and_distribute.yml/badge.svg)](https://github.com/poppy-project/pypot/actions)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.591809.svg)](https://doi.org/10.5281/zenodo.591809)
 
 
