@@ -14,7 +14,7 @@ logger = logging.getLogger(__name__)
 
 
 class MyJSONEncoder(json.JSONEncoder):
-	""" JSONEncoder which tries to call a json property before using the enconding default function. """
+	""" JSONEncoder which tries to call a json property before using the encoding default function. """
 
 	def default(self, obj):
 		if hasattr(obj, 'json'):
@@ -101,7 +101,7 @@ class IndexHandler(PoppyRequestHandler):
 
 		running_primitives = self.restful_robot.get_running_primitives_list()
 		for prim in self.restful_robot.get_primitives_list():
-			primitve = {
+			primitive = {
 				'primitive': prim,
 				'running': prim in running_primitives,
 				'properties': [],
@@ -109,11 +109,11 @@ class IndexHandler(PoppyRequestHandler):
 				'methods': self.restful_robot.get_primitive_methods_list(prim)
 			}
 			for prop in self.restful_robot.get_primitive_properties_list(prim):
-				primitve['properties'].append({
+				primitive['properties'].append({
 					'property': prop,
 					'value': self.restful_robot.get_primitive_property(prim, prop)
 				})
-			out['primitives'].append(primitve)
+			out['primitives'].append(primitive)
 		self.set_status(200)
 		self.write_json(out)
 
@@ -921,10 +921,10 @@ class HTTPRobotServer(AbstractServer):
 			app.listen(self.port)
 			loop.start()
 
-		except socket.error as serr:
+		except socket.error as sErr:
 			# Re raise the socket error if not "[Errno 98] Address already in use"
-			if serr.errno != errno.EADDRINUSE:
-				raise serr
+			if sErr.errno != errno.EADDRINUSE:
+				raise sErr
 			else:
 				logger.warning(
 					'The webserver port {} is already used. May be the HttpRobotServer is already running or another '
