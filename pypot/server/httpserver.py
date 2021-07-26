@@ -82,6 +82,9 @@ class LocalIp(PoppyRequestHandler):
 
 
 class IndexHandler(PoppyRequestHandler):
+	""" API REST Request Handler for request:
+	GET /robot.json
+	"""
 	def get(self):
 		out = {
 			'motors': [],
@@ -116,6 +119,9 @@ class IndexHandler(PoppyRequestHandler):
 
 
 class PathsUrl(PoppyRequestHandler):
+	""" API REST Request Handler for request:
+	GET /
+	"""
 	@staticmethod
 	def has_method(class_obj, method_name):
 		return method_name in class_obj.__dict__
@@ -663,7 +669,7 @@ class PrimitivesListHandler(PoppyRequestHandler):
 
 class RunningPrimitivesListHandler(PoppyRequestHandler):
 	""" API REST Request Handler for request:
-	GET /primitives/<primitive_name>/pause.json
+	GET /primitives/running/list.json
 	"""
 
 	def get(self):
@@ -817,7 +823,7 @@ class ListPrimitiveMethodsHandler(PoppyRequestHandler):
 
 class CallPrimitiveMethodHandler(PoppyRequestHandler):
 	""" API REST Request Handler for request:
-	GET /primitives/<primitive_name>/methods/<method_name>/args.json
+	POST /primitives/<primitive_name>/methods/<method_name>/args.json
 	"""
 
 	def post(self, primitive_name, method_name):
