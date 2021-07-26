@@ -298,11 +298,13 @@ class MotorsGotoHandler(PoppyRequestHandler):
 			motors = list(map(str, data["motors"]))  # motors field is a list
 			positions = list(map(float, data["positions"]))  # positions field is a list
 			duration = float(data["duration"])  # duration is a str or a float
+			if duration <= 0:
+				raise ValueError("Duration should be > 0")
 			wait = bool(str(data["wait"]) in {'true', 'True', '1'})
 			if len(motors) != len(positions):
-				raise IndexError
-		except (ValueError, IndexError, AttributeError) as e:
-			self.set_status(404)
+				raise IndexError("There is not the same amount of motors and positions")
+		except (ValueError, IndexError, AttributeError, KeyError) as e:
+			self.set_status(400)
 			self.write_json({
 				"error": "Cannot read data given.",
 				"tip": 'Four fields are required in this post request. "motors" is a list of motor names (given as '
@@ -342,9 +344,11 @@ class MotorGotoHandler(PoppyRequestHandler):
 			data = json.loads(self.request.body.decode())
 			position = float(data["position"])
 			duration = float(data["duration"])
+			if duration <= 0:
+				raise ValueError("Duration should be > 0")
 			wait = bool(str(data["wait"]) in {'true', 'True', '1'})
-		except (ValueError, AttributeError) as e:
-			self.set_status(404)
+		except (ValueError, AttributeError, KeyError) as e:
+			self.set_status(400)
 			self.write_json({
 				"error": "Cannot read data given.",
 				"tip": 'Three fields are required in this post request. "position" a angle for the motor, given as '
