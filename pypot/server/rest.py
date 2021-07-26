@@ -116,6 +116,7 @@ class RESTRobot(object):
 
     def _set_register_value(self, object, register, value):
         o = getattr(self.robot, object)
+        getattr(o, register)  # does register exists ?
         setattr(o, register, value)
 
     def _get_register_value(self, object, register):
