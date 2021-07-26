@@ -582,6 +582,15 @@ class PlayMoveHandler(PoppyRequestHandler):
 				# if speed is negative, then play move backwards
 				opposite_direction = True
 				speed = abs(speed)
+		except (KeyError, json.decoder.JSONDecodeError) as jde:  # speed field is missing
+			self.set_status(400)
+			self.write_json({
+				"error": "speed field is missing.",
+				"tip": 'Speed value should be given with json format as a string, and with a minus sign (-) if you '
+				       'want to play the move backwards. Example: {"speed": "-1.0"}',
+				"details": "{}".format(jde.args[0])
+			})
+			return  # we have to stop the function if data isn't well defined
 		except AttributeError as e:
 			self.set_status(404)
 			self.write_json({
