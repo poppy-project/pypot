@@ -114,7 +114,7 @@ class IndexHandler(PoppyRequestHandler):
 					'value': self.restful_robot.get_primitive_property(prim, prop)
 				})
 			out['primitives'].append(primitve)
-
+		self.set_status(200)
 		self.write_json(out)
 
 
@@ -144,6 +144,7 @@ class PathsUrl(PoppyRequestHandler):
 				post += tmp + '<br>'
 		out += get
 		out += post
+		self.set_status(200)
 		self.write(out)
 
 
@@ -234,7 +235,7 @@ class MotorRegisterHandler(PoppyRequestHandler):
 		try:
 			data = json.loads(self.request.body.decode())
 		except json.decoder.JSONDecodeError as jsDE:
-			self.set_status(404)
+			self.set_status(400)
 			self.write_json({
 				"error": "Data given is not valid.",
 				"tip": "{}".format(jsDE.args[0])
@@ -621,7 +622,7 @@ class StopMoveHandler(PoppyRequestHandler):
 				move_name: "stopped"
 			})
 		except AttributeError as e:
-			self.set_status(404)
+			self.set_status(400)
 			self.write_json({
 				"error": "The move you want to stop has not started.",
 				"tip": "Start by playing a move with /records/<move_name>/play.json",
