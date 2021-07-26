@@ -159,7 +159,7 @@ class RESTRobot(object):
             move = recorder.move
             return move.positions()
         except AttributeError:
-            return 'I was not able to find _{}_recorder'.format(move_name)
+            raise FileNotFoundError('I was not able to find _{}_recorder'.format(move_name))
 
     def stop_move_recorder(self, move_name):
         """Allow more easily than stop_primitive() to save in a filename the recorded move"""
