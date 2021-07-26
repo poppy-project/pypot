@@ -487,13 +487,8 @@ class RecordMoveHandler(PoppyRequestHandler):
 		try:
 			data = json.loads(self.request.body.decode())
 			motors = data["motors"]
-		except json.decoder.JSONDecodeError as jsDE:
-			self.set_status(404)
-			self.write_json({
-				"error": "Data given is not valid.",
-				"details": "{}".format(jsDE.args[0]),
-			})
-			return  # we have to stop the function if data isn't well defined
+		except json.decoder.JSONDecodeError:  # body is empty
+			motors = self.restful_robot.get_motors_list('motors')
 		except AttributeError as e:
 			self.set_status(404)
 			self.write_json({
