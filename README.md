@@ -4,54 +4,58 @@
 
 
 
-# Pypot: A Python lib for Dynamixel motors control
+# Pypot ⚙️ A Python library for Dynamixel motor control 
 
-Pypot is a library developed in the [Inria FLOWERS](https://flowers.inria.fr/) team to make it easy and fast to control custom robots based on dynamixel motors. This framework provides different levels of abstraction corresponding to different types of use. More precisely, you can use pypot to:
+Pypot is a cross-platform Python library making it easy and fast to control custom robots based on multiple models of Dynamixel motors. Use Pypot to:
 
-* directly control robotis motors (both protocol v1 and v2 are supported) through a USB2serial device,
-* define the structure of your particular robot and control it through high-level commands,
-* define primitives and easily combine them to create complex behavior.
+* control Robotis motors through USB2Dynamixel, USB2AX or [Pixl 4 Raspberry Pi](https://github.com/poppy-project/pixl) devices,
+* define kinematic chains of a custom robot and control it through high-level commands (Forward & Inverse Kinematics),
+* define primitives (motions applying to motor groups) and easily combine them to create custom complex behaviors (Robot dance, arm shaking, writing with a pen...).
+* define sensor access and processing (QRCode detection, force sensors, RGB-D, ...)
 
-Pypot has been entirely written in Python to allow for fast development, easy deployment and quick scripting by non-necessary expert developers. It can also benefits from the scientific and machine learning libraries existing in Python. The serial communication is handled through the standard library and thus allows for rather high performance (10ms sensorimotor loop). It is crossed-platform and has been tested on Linux, Windows and Mac OS.
+Pypot is also compatible with the [CoppeliaSim simulator](http://www.coppeliarobotics.com) (formerly V-REP), embeds a [REST API](https://docs.poppy-project.org/en/programming/rest.html) for Web-based control, and supports visual programming via [Scratch](https://docs.poppy-project.org/en/getting-started/program-the-robot.html#using-scratch) and [Snap](https://docs.poppy-project.org/en/getting-started/program-the-robot.html#using-snap).
 
-Pypot is also compatible with the [CoppeliaSim simulator](http://www.coppeliarobotics.com) (formerly V-REP). This allows you to seamlessly switch from a real robot to its simulated equivalent without having to modify your code.
+## 🔌 Compatible hardware
 
-Finally, it has been developed to permit an easy and fast extension to other types of motors and sensors.
+**Compatible motors:** MX-106, MX-64, MX-28, MX-12, AX-12, AX-18, RX-24, RX-28, RX-64, XL-320, SR-RH4D, EX-106. Derivated versions are also supported (e.g. MX-28AT, MX-28R, MX-28T, ...). Both protocols v1 and v2 are supported
 
-## The Poppy-project: open source
+**Compatible sensors:** Kinect 1, QRCode from RGB camera, sonar, micro-switch from Raspberry Pi GPIO, digital or analog sensor connected to Arduino
 
-Pypot is part of the [Poppy project](http://www.poppy-project.org) aiming at developing robotic creations that are easy to build, customize, deploy, and share. It promotes open-source by sharing hardware, software, and web tools.
+**Compatible interpreters:** Python 3.6, 3.7, 3.8, 3.9
 
-At the moment we already proposed a few Poppy Creatures:
+Other models of motors and sensors can be integrated with little effort and time. Other programming languages may be connected through the REST API.
 
-* the [Poppy Humanoid](https://github.com/poppy-project/poppy-humanoid): a kid-size humanoid robot designed for biped locomotion and physical human-robot interaction,
-* a [Poppy Torso](https://github.com/poppy-project/poppy-torso): the humanoid torso, with a suction pad to install it on a desk
-* and a [Poppy Ergo Jr](https://github.com/poppy-project/poppy-ergo-jr) with low-cost XL-320 robotis motors and modular 3D printed parts.
+## Read 📖 [Documentation](https://docs.poppy-project.org/en/software-libraries/pypot.html) and get ⁉️ [Assistance](https://forum.poppy-project.org/)
+
+## Pypot is part of the opensource Poppy project
+
+Pypot is part of the [Poppy project](http://www.poppy-project.org) aiming at developing robotic creations that are easy to build, customize, deploy, and share. It promotes open-source by sharing 3D-printed hardware, software, and web tools.
+
+The Poppy creatures are:
+* **[Poppy Humanoid](https://www.poppy-project.org/en/robots/poppy-humanoid/)**: a kid-size humanoid robot designed for biped locomotion and physical human-robot interaction (25 DoF) for biped research and university workshops,
+* **[Poppy Torso](https://www.poppy-project.org/en/robots/poppy-torso/)**: just the torso of the humanoid robot, with a suction pad to stick it attach it firmly to a desk (13 DoF) for HRI research, university and high school workshops
+* **[Poppy Ergo Jr](https://www.poppy-project.org/en/robots/poppy-ergo-jr/)**: a low-cost robotic arm for primary to middle school (6 Dof) for primary or middle school workshops
 
 ![Poppy Humanoid](./doc/poppy-creatures.jpg)
 
 All those creatures are based on a combination of standard dynamixel actuators, 3D printed parts and open-source electronics such as Arduino boards. Both the hardware (3D models, electronics...) and software can be freely used, modified and duplicated.
 
-## Documentation
+## 💻 Installation
 
-The full pypot documentation on a html format can be found [here](https://docs.poppy-project.org/en/software-libraries/pypot.html). It provides tutorials, examples and a complete API.
+If you are using a Poppy robot embedding a Raspberry Pi, Pypot is already shipped with it. For custom robots, just type ⌨️ `pip install pypot` in your system terminal! 
 
-## Installation
-
-Pypot is a library entirely written in [Python](https://www.python.org). It works with Python *3.6+*. It is cross-platform and has been tested on Windows, Mac, Linux - yet specific usb to serial driver may be required depending on your system (see below).
-
-You can build and install pypot with the typically python way:
-
+If you intend to modify or add features to Pypot, create a virtual environment and install it from sources instead:
 ```bash
-cd pypot
+git clone https://github.com/poppy-project/pypot
+cd pypot/pypot
 pip install .
 ```
 
-You will also have to install the driver for the USB2serial port. There are a few devices that have been tested with pypot that could be used:
-
+Additional drivers may be needed for USB2serial, depending of your OS. Check here:
 * [USB2AX](http://www.xevelabs.com/doku.php?id=product:usb2ax:quickstart) - this device is designed to manage TTL communication only
 * USB2Dynamixel - this device can manage both TTL and RS485 communication.
 * [Pixl board](https://github.com/poppy-project/pixl) for RaspberryPi
 
-For more details on the installation procedure, please refer to the [installation section](http://poppy-project.github.io/pypot/intro.html#installation) of the documentation.
+## 👨‍💻 Contributing
 
+If this is the first time you contribute to Pypot, it is a good idea to share your work on [the forum](https://forum.poppy-project.org/) first, we will be happy to give you a hand so that you can contribute to the opensource project.
