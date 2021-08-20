@@ -52,9 +52,28 @@ class IKChain(Chain):
         angles = self.convert_to_ik_angles(self.joints_position)
         return self.forward_kinematics(angles)[:3, 3]
 
-    def goto(self, position, duration, wait=False, accurate=False):
+    @property
+    def position(self):
+        """ Returns the cartesian position of the end of the chain (in meters). """
+        angles = self.convert_to_ik_angles(self.joints_position)
+        return self.forward_kinematics(angles)[:3, 3]
+
+    @property
+    def orientation(self):
+        """ Returns the orientation of the end of the chain (in ???). """
+        angles = self.convert_to_ik_angles(self.joints_position)
+        return self.forward_kinematics(angles)[:3, 0]
+
+    @property
+    def pose(self):
+        """  """
+        angles = self.convert_to_ik_angles(self.joints_position)
+        return self.forward_kinematics(angles)
+
+    def goto(self, position, orientation, duration, wait=False, accurate=False):
         """ Goes to a given cartesian position.
         :param list position: [x, y, z] representing the target position (in meters)
+        :param list orientation: [roll, pitch, yaw] representing the target orientation (in ???)
         :param float duration: move duration
         :param bool wait: whether to wait for the end of the move
         :param bool accurate: trade-off between accurate solution and computation time. By default, use the not so
@@ -62,37 +81,30 @@ class IKChain(Chain):
         """
         if len(position) != 3:
             raise ValueError('Position should be a list [x, y, z]!')
-        print("### goto ###")
-        self._goto(position, duration, wait, accurate)
-        print("goto done")
+        self._goto(position, orientation, duration, wait, accurate)
 
-    def _goto(self, pose, duration, wait, accurate):
+    def _goto(self, position, orientation, duration, wait, accurate):
         """ Goes to a given cartesian pose.
-        :param matrix pose: [x, y, z] representing the target position (in meters)
+        :param matrix position: [x, y, z] representing the target position (in meters)
+        :param list orientation: [roll, pitch, yaw] representing the target orientation (in ???)
         :param float duration: move duration
         :param bool wait: whether to wait for the end of the move
         :param bool accurate: trade-off between accurate solution and computation time. By default, use the not so
         accurate but fast version.
         """
-        print("### _goto ###")
-
         kwargs = {}
         if not accurate:
             kwargs['max_iter'] = 3
 
-        # q0 = self.convert_to_ik_angles(self.joints_position)
-        # print("q0:", q0)
+        q0 = self.convert_to_ik_angles(self.joints_position)
 
-        q = self.inverse_kinematics(pose, **kwargs)
-        print("q:", q)
+        q = self.inverse_kinematics(target_position=position, target_orientation=orientation, initial_position=q0, **kwargs)
 
         joints = self.convert_from_ik_angles(q)
-        print("joints:", joints)
 
         last = self.motors[-1]
         for m, pos in list(zip(self.motors, joints)):
             m.goto_position(pos, duration, wait=False if m != last else wait)
-        print("_goto done")
 
     def convert_to_ik_angles(self, joints):
         """ Convert from poppy representation to IKPY internal representation. """

@@ -215,14 +215,16 @@ class RESTRobot(object):
 
     def ik_endeffector(self, chain):
         c = getattr(self.robot, chain)
-        pos = list(round(c.end_effector, 4))
-        return ','.join(map(str, pos))
+        position = ','.join(map(str, list(round(c.position, 4))))
+        orientation = ','.join(map(str, list(round(c.orientation, 4))))
+        pose = round(c.pose, 4)
+        return position, orientation, pose
 
-    def ik_goto(self, chain, x, y, z, duration, wait=False):
-        print("### ik_goto ###")
+    def ik_goto(self, chain, xyz, rpy, duration, wait=False):
+
         c = getattr(self.robot, chain)
-        print(c)
-        c.goto([x, y, z], duration, wait)
-        print("### ik_goto DONE ###")
-        pos = list(round(c.end_effector, 4))
-        return ','.join(map(str, pos))
+        c.goto(xyz, rpy, duration, wait)
+
+        position = ','.join(map(str, list(round(c.position, 4))))
+        orientation = ','.join(map(str, list(round(c.orientation, 4))))
+        return position, orientation

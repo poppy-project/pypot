@@ -868,8 +868,11 @@ class IKValueHandler(PoppyRequestHandler):
 	def get(self, chain_name):
 		try:
 			self.set_status(200)
+			ans = self.restful_robot.ik_endeffector(chain_name)
 			self.write_json({
-				"xyz": self.restful_robot.ik_endeffector(chain_name)
+				"xyz": ans[0],
+				"rpy": ans[1],
+				"pose": ans[2],
 			})
 		except AttributeError as e:
 			# chain given does not exist.
@@ -895,18 +898,21 @@ class IKGotoHandler(PoppyRequestHandler):
 	def post(self, chain_name):
 		try:
 			data = json.loads(self.request.body.decode())
-			xyz = str(data["xyz"])
-			print("xyz:", xyz)
-			x, y, z = xyz.split(",")
+
+			xyz = list(map(float, str(data["xyz"]).split(",")))  # list [x, y, z]
+
+			# list [roll, pitch, yaw] (optionnal)
+			rpy = list(map(float, str(data["rpy"]).split(","))) if "rpy" in data else None
+
 			duration = float(data["duration"])
-			print("duration:", duration)
 			wait = data["wait"] if "wait" in data else False
-			print("wait:", wait)
-			position = self.restful_robot.ik_goto(chain_name, x, y, z, duration, wait)
-			print("position (END):", position)
+
+			pose = self.restful_robot.ik_goto(chain_name, xyz, rpy, duration, wait)
+
 			self.set_status(200)
 			self.write_json({
-				"xyz": position
+				"xyz": pose[0],
+				"rpy": pose[1]
 			})
 		except AttributeError as e:
 			# chain given does not exist.
