@@ -1,7 +1,7 @@
 from .download import download_vpl_interactively
 
 # Scratch latest release download to local data directory in userspace
-VPL_APP_URL = "https://github.com/poppy-project/scratch-poppy/releases/download/v1.0.0-beta/scratch-application.zip"
+VPL_APP_URL = "https://github.com/poppy-project/scratch-poppy/releases/latest/download/scratch-application.zip"
 VPL_APP_NAME = "scratch-application"
 VPL_EXTRACT_ZIP_ROOT = True 
 
