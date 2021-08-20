@@ -253,7 +253,7 @@ Examples:
 		sys.stdout.flush()
 
 		if snap_static_server_started or scratch_static_server_started:
-			for browser_name in ['chromium-browser', 'chromium', 'google-chrome',
+			for browser_name in ['firefox', 'chromium-browser', 'chromium', 'google-chrome',
 								 'chrome', 'safari', 'midori', None]:
 				try:
 					browser = webbrowser.get(browser_name)
