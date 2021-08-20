@@ -853,6 +853,78 @@ class CallPrimitiveMethodHandler(PoppyRequestHandler):
 
 # endregion
 
+# IK Handlers region
+
+# Chain name(s) for
+#     * Ergo Jr is 'chain' (https://github.com/poppy-project/poppy-ergo-jr/blob/47dd208ab256a526fbd89653b3f4f996ca503a65/software/poppy_ergo_jr/poppy_ergo_jr.py#L27)
+#     * Torso are 'l_arm_chain' and 'l_arm_chain' (https://github.com/poppy-project/poppy-torso/blob/f1de072c88e7d6e0702664aec5028fb8266d37a4/software/poppy_torso/poppy_torso.py#L39)
+#     * Humanoid do not have IK chains yet.
+
+class IKValueHandler(PoppyRequestHandler):
+	""" API REST Request Handler for request:
+	GET /ik/<chain_name>/value.json
+	"""
+
+	def get(self, chain_name):
+		try:
+			self.set_status(200)
+			self.write_json({
+				"xyz": self.restful_robot.ik_endeffector(chain_name)
+			})
+		except AttributeError as e:
+			# chain given does not exist.
+			self.set_status(404)
+			self.write_json({
+				"error": "Chain '{}' does not exist for this robot".format(chain_name),
+				"tip": "The Ergo's Chain names are 'chain', the Torso's are 'l_arm_chain' and 'l_arm_chain' and the"
+				       "Humanoid has none.",
+				"details": "{}".format(" ".join(e.args))
+			})
+		except Exception as ex:
+			template = "An exception of type {0} occured. Arguments:\n{1}"
+			message = template.format(type(ex).__name__, " ".join(ex.args))
+			self.set_status(400)
+			self.write_json({"error": message})
+
+
+class IKGotoHandler(PoppyRequestHandler):
+	""" API REST Request Handler for request:
+	GET /ik/<chain_name>/goto.json + x,y,z, duration[, wait]
+	"""
+
+	def post(self, chain_name):
+		try:
+			data = json.loads(self.request.body.decode())
+			xyz = str(data["xyz"])
+			print("xyz:", xyz)
+			x, y, z = xyz.split(",")
+			duration = float(data["duration"])
+			print("duration:", duration)
+			wait = data["wait"] if "wait" in data else False
+			print("wait:", wait)
+			position = self.restful_robot.ik_goto(chain_name, x, y, z, duration, wait)
+			print("position (END):", position)
+			self.set_status(200)
+			self.write_json({
+				"xyz": position
+			})
+		except AttributeError as e:
+			# chain given does not exist.
+			self.set_status(404)
+			self.write_json({
+				"error": "Chain '{}' does not exist for this robot".format(chain_name),
+				"tip": "The Ergo's Chain names are 'chain', the Torso's are 'l_arm_chain' and 'l_arm_chain' and the"
+				       "Humanoid has none.",
+				"details": "{}".format(" ".join(e.args))
+			})
+		except Exception as ex:
+			template = "An exception of type {0} occured. Arguments:\n{1}"
+			message = template.format(type(ex).__name__, " ".join(ex.args))
+			self.set_status(400)
+			self.write_json({"error": message})
+
+# endregion
+
 url_paths = [
 	# Miscellaneous
 	(r'/', PathsUrl),
@@ -898,6 +970,11 @@ url_paths = [
 	(r'/primitives/(?P<primitive_name>[a-zA-Z0-9_]+)/methods/list\.json', ListPrimitiveMethodsHandler),
 	(r'/primitives/(?P<primitive_name>[a-zA-Z0-9_]+)/methods/(?P<method_name>[a-zA-Z0-9_]+)/args\.json',
 	 CallPrimitiveMethodHandler),
+
+	# Primitives
+	# Todo (Antoine) : Find a better name for those requests
+	(r'/ik/(?P<chain_name>[a-zA-Z0-9_]+)/value\.json', IKValueHandler),
+	(r'/ik/(?P<chain_name>[a-zA-Z0-9_]+)/goto\.json', IKGotoHandler)
 ]
 
 

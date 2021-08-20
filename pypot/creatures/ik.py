@@ -62,32 +62,37 @@ class IKChain(Chain):
         """
         if len(position) != 3:
             raise ValueError('Position should be a list [x, y, z]!')
-
-        M = eye(4)
-        M[:3, 3] = position
-        self._goto(M, duration, wait, accurate)
+        print("### goto ###")
+        self._goto(position, duration, wait, accurate)
+        print("goto done")
 
     def _goto(self, pose, duration, wait, accurate):
         """ Goes to a given cartesian pose.
-        :param matrix pose: homogeneous matrix representing the target position
+        :param matrix pose: [x, y, z] representing the target position (in meters)
         :param float duration: move duration
         :param bool wait: whether to wait for the end of the move
         :param bool accurate: trade-off between accurate solution and computation time. By default, use the not so
         accurate but fast version.
         """
+        print("### _goto ###")
 
         kwargs = {}
         if not accurate:
             kwargs['max_iter'] = 3
 
-        q0 = self.convert_to_ik_angles(self.joints_position)
-        q = self.inverse_kinematics(pose, initial_position=q0, **kwargs)
+        # q0 = self.convert_to_ik_angles(self.joints_position)
+        # print("q0:", q0)
+
+        q = self.inverse_kinematics(pose, **kwargs)
+        print("q:", q)
 
         joints = self.convert_from_ik_angles(q)
+        print("joints:", joints)
 
         last = self.motors[-1]
         for m, pos in list(zip(self.motors, joints)):
             m.goto_position(pos, duration, wait=False if m != last else wait)
+        print("_goto done")
 
     def convert_to_ik_angles(self, joints):
         """ Convert from poppy representation to IKPY internal representation. """

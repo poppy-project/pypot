@@ -1,4 +1,5 @@
 import os
+from numpy import round
 
 from operator import attrgetter
 from pypot.primitive.move import MovePlayer, MoveRecorder, Move
@@ -211,3 +212,17 @@ class RESTRobot(object):
             return True
         except FileNotFoundError:
             return False
+
+    def ik_endeffector(self, chain):
+        c = getattr(self.robot, chain)
+        pos = list(round(c.end_effector, 4))
+        return ','.join(map(str, pos))
+
+    def ik_goto(self, chain, x, y, z, duration, wait=False):
+        print("### ik_goto ###")
+        c = getattr(self.robot, chain)
+        print(c)
+        c.goto([x, y, z], duration, wait)
+        print("### ik_goto DONE ###")
+        pos = list(round(c.end_effector, 4))
+        return ','.join(map(str, pos))
