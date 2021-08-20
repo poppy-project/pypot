@@ -84,14 +84,27 @@ class TestRestApi(unittest.TestCase):
         url = '/motors/list.json'  # OK
         response = self.get(url)
         self.assert_status(response, 200, 'GET ' + url)
+        response_json = json.loads(response.text)
+        for m in ['m1', 'm2', 'm3', 'm4', 'm5', 'm6']:  # Checks if all motors are present
+            self.assertTrue(m in response_json["motors"], m + " could not be found in the list of motors")
 
         url = '/motors/motors/list.json'  # OK
         response = self.get(url)
         self.assert_status(response, 200, 'GET ' + url)
 
+        url = '/motors/base/list.json'  # OK
+        response = self.get(url)
+        self.assert_status(response, 200, 'GET ' + url)
+        response_json = json.loads(response.text)
+        for m in ['m1', 'm2', 'm3']:  # Checks if all motors are present
+            self.assertTrue(m in response_json["base"], m + " could not be found in the list of motors")
+
         url = '/motors/tip/list.json'  # OK
         response = self.get(url)
         self.assert_status(response, 200, 'GET ' + url)
+        response_json = json.loads(response.text)
+        for m in ['m4', 'm5', 'm6']:  # Checks if all motors are present
+            self.assertTrue(m in response_json["tip"], m + " could not be found in the list of motors")
 
         url = '/motors/unknown_alias/list.json'  # Unknown alias
         response = self.get(url)
@@ -104,6 +117,9 @@ class TestRestApi(unittest.TestCase):
         url = '/motors/aliases/list.json'  # OK
         response = self.get(url)
         self.assert_status(response, 200, 'GET ' + url)
+        response_json = json.loads(response.text)
+        for a in ['base', 'tip']:  # Checks if all aliases are present
+            self.assertTrue(a in response_json["aliases"], a + " could not be found in the list of aliases")
 
     def test_motors_registers_list(self):
         """ API REST test for request:
@@ -112,6 +128,11 @@ class TestRestApi(unittest.TestCase):
         url = '/motors/m1/registers/list.json'  # OK
         response = self.get(url)
         self.assert_status(response, 200, 'GET ' + url)
+        response_json = json.loads(response.text)
+        for r in ['goal_speed', 'compliant', 'safe_compliant', 'angle_limit', 'id', 'name', 'model', 'present_position',
+                  'goal_position', 'present_speed', 'moving_speed', 'present_load', 'torque_limit', 'lower_limit',
+                  'upper_limit', 'present_voltage', 'present_temperature', 'pid', 'led', 'control_mode']:
+            self.assertTrue(r in response_json["registers"], r + " could not be found in the list of registers")
 
         url = '/motors/unknown_motor/registers/list.json'  # Unknown motor
         response = self.get(url)
@@ -161,6 +182,9 @@ class TestRestApi(unittest.TestCase):
         url = '/motors/registers/compliant/list.json'  # OK
         response = self.get(url)
         self.assert_status(response, 200, 'GET ' + url)
+        response_json = json.loads(response.text)
+        for m in ['m1', 'm2', 'm3', 'm4', 'm5', 'm6']:
+            self.assertTrue(m in response_json["compliant"], m + " could not be found in the list of motors")
 
         url = '/motors/registers/unknown_register/list.json'  # Unknown register
         response = self.get(url)
@@ -278,6 +302,8 @@ class TestRestApi(unittest.TestCase):
         response = self.get(url)
         self.assert_status(response, 404, 'GET ' + url)
 
+        self.one_line_assert(self.post, '/records/unit_test/delete.json', 202)   # Deletes the record 'unit_test'
+
     def test_records_record_and_save(self):
         """ API REST test for request:
         POST /records/<move_name>/record.json [+ motors] (optional)
@@ -310,6 +336,20 @@ class TestRestApi(unittest.TestCase):
         response = self.post(url, data)
         self.assert_status(response, 404, 'POST ' + url)
 
+        self.one_line_assert(self.post, '/records/unit_test/delete.json', 202)   # Deletes the record 'unit_test'
+
+    def test_record_delete(self):
+        """ API REST test for request:
+        POST records/<move_name>/delete.json
+        """
+        self.one_line_assert(self.post, '/records/unit_test/record.json', 202)  # Creates a record 'unit_test'
+        self.one_line_assert(self.post, '/records/unit_test/save.json', 202)
+
+        url = '/records/unit_test/delete.json'  # OK
+        data = None
+        response = self.post(url, data)
+        self.assert_status(response, 202, 'POST ' + url)
+
     def test_record_play(self):
         """ API REST test for request:
         POST /records/<move_name>/play.json + speed
@@ -339,6 +379,8 @@ class TestRestApi(unittest.TestCase):
         response = self.post(url, data)
         self.assert_status(response, 404, 'POST ' + url)
 
+        self.one_line_assert(self.post, '/records/unit_test/delete.json', 202)   # Deletes the record 'unit_test'
+
     def test_record_stop(self):
         """ API REST test for request:
         POST /records/<move_name>/stop.json
@@ -356,6 +398,8 @@ class TestRestApi(unittest.TestCase):
         data = None
         response = self.post(url, data)
         self.assert_status(response, 400, 'POST ' + url)
+
+        self.one_line_assert(self.post, '/records/unit_test/delete.json', 202)   # Deletes the record 'unit_test'
     # endregion
 
     # region primitives
