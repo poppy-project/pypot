@@ -872,7 +872,6 @@ class IKValueHandler(PoppyRequestHandler):
 			self.write_json({
 				"xyz": ans[0],
 				"rpy": ans[1],
-				"pose": ans[2],
 			})
 		except AttributeError as e:
 			# chain given does not exist.
@@ -880,7 +879,7 @@ class IKValueHandler(PoppyRequestHandler):
 			self.write_json({
 				"error": "Chain '{}' does not exist for this robot".format(chain_name),
 				"tip": "The Ergo's Chain names are 'chain', the Torso's are 'l_arm_chain' and 'l_arm_chain' and the"
-				       "Humanoid has none.",
+				       " Humanoid has none.",
 				"details": "{}".format(" ".join(e.args))
 			})
 		except Exception as ex:
@@ -892,27 +891,29 @@ class IKValueHandler(PoppyRequestHandler):
 
 class IKGotoHandler(PoppyRequestHandler):
 	""" API REST Request Handler for request:
-	GET /ik/<chain_name>/goto.json + x,y,z, duration[, wait]
+	GET /ik/<chain_name>/goto.json + x,y,z, duration[, wait][, rotation]
 	"""
 
 	def post(self, chain_name):
 		try:
 			data = json.loads(self.request.body.decode())
 
-			xyz = list(map(float, str(data["xyz"]).split(",")))  # list [x, y, z]
+			xyz = list(map(float, str(data["xyz"]).split(","))) if "xyz" in data else None  # list [x, y, z]
 
-			# list [roll, pitch, yaw] (optionnal)
-			rpy = list(map(float, str(data["rpy"]).split(","))) if "rpy" in data else None
-
+			# list [TransformXAxis.x, TransformXAxis.y, TransformXAxis.z] (optionnal)
+			rot = list(map(float, str(data["rot"]).split(","))) if "rot" in data else None
 			duration = float(data["duration"])
 			wait = data["wait"] if "wait" in data else False
-
-			pose = self.restful_robot.ik_goto(chain_name, xyz, rpy, duration, wait)
+			rpy = list(map(float, str(data["rpy"]).split(","))) if "rpy" in data else None
+			if rpy:
+				rot = self.restful_robot.ik_rpy(chain_name, *rpy)
+			print(rot)
+			pose = self.restful_robot.ik_goto(chain_name, xyz, rot, duration, wait)
 
 			self.set_status(200)
 			self.write_json({
 				"xyz": pose[0],
-				"rpy": pose[1]
+				"rot": pose[1]
 			})
 		except AttributeError as e:
 			# chain given does not exist.
@@ -920,7 +921,7 @@ class IKGotoHandler(PoppyRequestHandler):
 			self.write_json({
 				"error": "Chain '{}' does not exist for this robot".format(chain_name),
 				"tip": "The Ergo's Chain names are 'chain', the Torso's are 'l_arm_chain' and 'l_arm_chain' and the"
-				       "Humanoid has none.",
+				       " Humanoid has none.",
 				"details": "{}".format(" ".join(e.args))
 			})
 		except Exception as ex:
@@ -929,7 +930,36 @@ class IKGotoHandler(PoppyRequestHandler):
 			self.set_status(400)
 			self.write_json({"error": message})
 
+class IKRPYHandler(PoppyRequestHandler):
+	""" API REST Request Handler for request:
+	GET /ik/<chain_name>/rpy.json + r, p, y
+	"""
+	def get(self, chain_name):
+		try:
+			data = json.loads(self.request.body.decode())
+			r = float(data["r"])
+			p = float(data["p"])
+			y = float(data["y"])
+			self.set_status(200)
+			self.write_json({
+				"rpy": self.restful_robot.ik_rpy(chain_name, r, p, y)
+			})
+		except AttributeError as e:
+			# chain given does not exist.
+			self.set_status(404)
+			self.write_json({
+				"error": "Chain '{}' does not exist for this robot".format(chain_name),
+				"tip": "The Ergo's Chain names are 'chain', the Torso's are 'l_arm_chain' and 'l_arm_chain' and the"
+				       " Humanoid has none.",
+				"details": "{}".format(" ".join(e.args))
+			})
+		except Exception as ex:
+			template = "An exception of type {0} occured. Arguments:\n{1}"
+			message = template.format(type(ex).__name__, " ".join(ex.args))
+			self.set_status(400)
+			self.write_json({"error": message})
 # endregion
+
 
 url_paths = [
 	# Miscellaneous
@@ -980,7 +1010,8 @@ url_paths = [
 	# Primitives
 	# Todo (Antoine) : Find a better name for those requests
 	(r'/ik/(?P<chain_name>[a-zA-Z0-9_]+)/value\.json', IKValueHandler),
-	(r'/ik/(?P<chain_name>[a-zA-Z0-9_]+)/goto\.json', IKGotoHandler)
+	(r'/ik/(?P<chain_name>[a-zA-Z0-9_]+)/goto\.json', IKGotoHandler),
+	(r'/ik/(?P<chain_name>[a-zA-Z0-9_]+)/rpy\.json', IKRPYHandler)
 ]
 
 

@@ -217,14 +217,13 @@ class RESTRobot(object):
         c = getattr(self.robot, chain)
         position = ','.join(map(str, list(round(c.position, 4))))
         orientation = ','.join(map(str, list(round(c.orientation, 4))))
-        pose = round(c.pose, 4)
-        return position, orientation, pose
-
-    def ik_goto(self, chain, xyz, rpy, duration, wait=False):
-
-        c = getattr(self.robot, chain)
-        c.goto(xyz, rpy, duration, wait)
-
-        position = ','.join(map(str, list(round(c.position, 4))))
-        orientation = ','.join(map(str, list(round(c.orientation, 4))))
         return position, orientation
+
+    def ik_goto(self, chain, xyz, rot, duration, wait=False):
+        c = getattr(self.robot, chain)
+        c.goto(xyz, rot, duration, wait)
+        return self.ik_endeffector(chain)
+
+    def ik_rpy(self, chain, roll, pitch, yaw):
+        c = getattr(self.robot, chain)
+        return c.rpy(roll, pitch, yaw)
