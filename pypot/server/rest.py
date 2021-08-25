@@ -211,3 +211,25 @@ class RESTRobot(object):
             return True
         except FileNotFoundError:
             return False
+
+    def markers_list(self):
+        try:
+            return str(self.robot.marker_detector.markers)
+        except Exception as ex:
+            template = "An exception of type {0} occured. Arguments:\n{1}"
+            message = template.format(type(ex).__name__, " ".join(ex.args))
+            return message
+
+
+    def detect_marker(self, marker):
+        markers = {
+            'tetris': [112259237],
+            'caribou': [221052793],
+            'lapin': [44616414],
+            'rabbit': [44616414],
+        }
+        try:
+            detected = self.robot.marker_detector.markers
+            return str(any([m.id in markers[marker] for m in detected]))
+        except AttributeError:
+            return "Error: marker detector is not activated"
