@@ -853,6 +853,28 @@ class CallPrimitiveMethodHandler(PoppyRequestHandler):
 
 # endregion
 
+
+# Camera Handlers region
+
+class QRCodeHandler(PoppyRequestHandler):
+	""" API REST Request Handler for request:
+	GET /code/<code_name>.json
+	"""
+
+	def get(self, code_name):
+		self.set_status(200)
+		if code_name == 'list':
+			self.write_json({
+				"codes": self.restful_robot.markers_list()
+			})
+		else:
+			self.write_json({
+				"code": self.restful_robot.detect_marker(code_name)
+			})
+
+
+# endregion
+
 url_paths = [
 	# Miscellaneous
 	(r'/', PathsUrl),
@@ -875,6 +897,7 @@ url_paths = [
 	(r'/sensors/(?P<sensor_name>[a-zA-Z0-9_]+)/registers/list\.json', SensorRegistersListHandler),
 	(r'/sensors/(?P<sensor_name>[a-zA-Z0-9_]+)/registers/(?P<register_name>[a-zA-Z0-9_]+)/value\.json',
 	 SensorRegisterHandler),
+	(r'/code/(?P<code_name>[a-zA-Z0-9_]+)\.json', QRCodeHandler),
 
 	# Moves
 	(r'/records/list\.json', ListRecordedMovesHandler),
