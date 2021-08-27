@@ -857,7 +857,7 @@ class CallPrimitiveMethodHandler(PoppyRequestHandler):
 
 # Chain name(s) for
 #     * Ergo Jr is 'chain' (https://github.com/poppy-project/poppy-ergo-jr/blob/47dd208ab256a526fbd89653b3f4f996ca503a65/software/poppy_ergo_jr/poppy_ergo_jr.py#L27)
-#     * Torso are 'l_arm_chain' and 'l_arm_chain' (https://github.com/poppy-project/poppy-torso/blob/f1de072c88e7d6e0702664aec5028fb8266d37a4/software/poppy_torso/poppy_torso.py#L39)
+#     * Torso are 'l_arm_chain' and 'r_arm_chain' (https://github.com/poppy-project/poppy-torso/blob/f1de072c88e7d6e0702664aec5028fb8266d37a4/software/poppy_torso/poppy_torso.py#L39)
 #     * Humanoid do not have IK chains yet.
 
 class IKValueHandler(PoppyRequestHandler):
@@ -891,23 +891,29 @@ class IKValueHandler(PoppyRequestHandler):
 
 class IKGotoHandler(PoppyRequestHandler):
 	""" API REST Request Handler for request:
-	GET /ik/<chain_name>/goto.json + x,y,z, duration[, wait][, rotation]
+	GET /ik/<chain_name>/goto.json + duration, [x,y,z], [, wait][, rotation]
 	"""
 
 	def post(self, chain_name):
 		try:
 			data = json.loads(self.request.body.decode())
+			duration = float(data["duration"])  # in seconds
+			wait = data["wait"] if "wait" in data else False  # wait is set to False if not defined
 
-			xyz = list(map(float, str(data["xyz"]).split(","))) if "xyz" in data else None  # list [x, y, z]
+			# position: list [x, y, z]
+			xyz = list(map(float, str(data["xyz"]).split(","))) if "xyz" in data else None
 
-			# list [TransformXAxis.x, TransformXAxis.y, TransformXAxis.z] (optionnal)
+			# rotation: list [TransformXAxis.x, TransformXAxis.y, TransformXAxis.z]
 			rot = list(map(float, str(data["rot"]).split(","))) if "rot" in data else None
-			duration = float(data["duration"])
-			wait = data["wait"] if "wait" in data else False
+
+			# roll/pitch/yaw: list [roll, pitch, yaw]
 			rpy = list(map(float, str(data["rpy"]).split(","))) if "rpy" in data else None
 			if rpy:
+				# When rpy is defined, it overwrites the value of rotation
+				# The function ik_rpy converts a list of rpy into a 3x3 rotation matrix
 				rot = self.restful_robot.ik_rpy(chain_name, *rpy)
-			print(rot)
+
+			# goto requested position. Returned value is the real position (cartesian + rotation) of the end effector
 			pose = self.restful_robot.ik_goto(chain_name, xyz, rot, duration, wait)
 
 			self.set_status(200)
