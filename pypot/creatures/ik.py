@@ -1,7 +1,7 @@
 from ikpy.chain import Chain
 from ikpy.utils.geometry import rpy_matrix
 from ikpy.urdf.URDF import get_chain_from_joints
-from numpy import deg2rad, rad2deg, array, eye
+from numpy import deg2rad, rad2deg, array, arctan2, sqrt
 
 
 class IKChain(Chain):
@@ -65,7 +65,17 @@ class IKChain(Chain):
         angles = self.convert_to_ik_angles(self.joints_position)
         return self.forward_kinematics(angles)[:3, 0]
 
-    def rpy(self, r, p, y):
+    @property
+    def rpy(self):
+        angles = self.convert_to_ik_angles(self.joints_position)
+        R = self.forward_kinematics(angles)
+        yaw = arctan2(R[2][1], R[1][1])
+        pitch = arctan2(-R[3][1], sqrt(R[3][2] ^ 2 + R[3][3] ^ 2))
+        roll = arctan2(R[3][2], R[3][3])
+        return roll, pitch, yaw
+
+    @staticmethod
+    def rpy_to_rotation_matrix(r, p, y):
         return rpy_matrix(r, p, y)
 
     def goto(self, position, orientation, duration, wait=False, accurate=False):

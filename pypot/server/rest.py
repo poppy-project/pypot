@@ -226,4 +226,4 @@ class RESTRobot(object):
 
     def ik_rpy(self, chain, roll, pitch, yaw):
         c = getattr(self.robot, chain)
-        return c.rpy(roll, pitch, yaw)
+        return c.rpy_to_rotation_matrix(roll, pitch, yaw)
