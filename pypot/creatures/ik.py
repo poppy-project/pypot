@@ -66,7 +66,21 @@ class IKChain(Chain):
         return self.forward_kinematics(angles)[:3, 0]
 
     @property
+    def pose(self):
+        """
+        Gives the 4x4 afﬁne transformation matrix of the current position
+        *Used for debug*
+        :return: 4x4 afﬁne transformation matrix (float)
+        """
+        angles = self.convert_to_ik_angles(self.joints_position)
+        return self.forward_kinematics(angles)
+
+    @property
     def rpy(self):
+        """
+        Gives the rpy values of the current position
+        :return: roll, pitch, yaw (float)
+        """
         angles = self.convert_to_ik_angles(self.joints_position)
         R = self.forward_kinematics(angles)
         yaw = arctan2(R[2][1], R[1][1])
@@ -74,8 +88,14 @@ class IKChain(Chain):
         roll = arctan2(R[3][2], R[3][3])
         return roll, pitch, yaw
 
-    @staticmethod
-    def rpy_to_rotation_matrix(r, p, y):
+    def rpy_to_rotation_matrix(self, r, p, y):
+        """
+        converts rpy to a 3x3 rotation matrix
+        :param r: roll (float)
+        :param p: pitch (float)
+        :param y: yaw (float)
+        :return: 3x3 rotation matrix
+        """
         return rpy_matrix(r, p, y)
 
     def goto(self, position, orientation, duration, wait=False, accurate=False):
