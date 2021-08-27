@@ -587,7 +587,7 @@ class PlayMoveHandler(PoppyRequestHandler):
 			self.write_json({
 				"error": "speed field is missing.",
 				"tip": 'Speed value should be given with json format as a string, and with a minus sign (-) if you '
-				       'want to play the move backwards. Example: {"speed": "-1.0"}',
+					   'want to play the move backwards. Example: {"speed": "-1.0"}',
 				"details": "{}".format(" ".join(jde.args))
 			})
 			return  # we have to stop the function if data isn't well defined
@@ -853,7 +853,7 @@ class CallPrimitiveMethodHandler(PoppyRequestHandler):
 
 # endregion
 
-# IK Handlers region
+# region IK Handlers
 
 # Chain name(s) for
 #     * Ergo Jr is 'chain' (https://github.com/poppy-project/poppy-ergo-jr/blob/47dd208ab256a526fbd89653b3f4f996ca503a65/software/poppy_ergo_jr/poppy_ergo_jr.py#L27)
@@ -869,9 +869,13 @@ class IKValueHandler(PoppyRequestHandler):
 		try:
 			self.set_status(200)
 			ans = self.restful_robot.ik_endeffector(chain_name)
+			command = "curl -X POST \\\n\t-H 'Content-Type: application/json' \\\n\t-d '{\"xyz\": \"" + ans[0] +\
+			          "\", \"xyz\": \"" + ans[1] + "\", \"duration\":\"3\", \"wait\":\"True\"}'" \
+			                                       "\\\n\thttp://localhost\\:8080/ik/chain/goto.json "
+			print(command)
 			self.write_json({
 				"xyz": ans[0],
-				"rpy": ans[1],
+				"rot": ans[1],
 			})
 		except AttributeError as e:
 			# chain given does not exist.
@@ -879,7 +883,7 @@ class IKValueHandler(PoppyRequestHandler):
 			self.write_json({
 				"error": "Chain '{}' does not exist for this robot".format(chain_name),
 				"tip": "The Ergo's Chain names are 'chain', the Torso's are 'l_arm_chain' and 'l_arm_chain' and the"
-				       " Humanoid has none.",
+					   " Humanoid has none.",
 				"details": "{}".format(" ".join(e.args))
 			})
 		except Exception as ex:
@@ -927,7 +931,7 @@ class IKGotoHandler(PoppyRequestHandler):
 			self.write_json({
 				"error": "Chain '{}' does not exist for this robot".format(chain_name),
 				"tip": "The Ergo's Chain names are 'chain', the Torso's are 'l_arm_chain' and 'l_arm_chain' and the"
-				       " Humanoid has none.",
+					   " Humanoid has none.",
 				"details": "{}".format(" ".join(e.args))
 			})
 		except Exception as ex:
@@ -936,10 +940,12 @@ class IKGotoHandler(PoppyRequestHandler):
 			self.set_status(400)
 			self.write_json({"error": message})
 
+
 class IKRPYHandler(PoppyRequestHandler):
 	""" API REST Request Handler for request:
 	GET /ik/<chain_name>/rpy.json + r, p, y
 	"""
+
 	def get(self, chain_name):
 		try:
 			data = json.loads(self.request.body.decode())
@@ -956,7 +962,7 @@ class IKRPYHandler(PoppyRequestHandler):
 			self.write_json({
 				"error": "Chain '{}' does not exist for this robot".format(chain_name),
 				"tip": "The Ergo's Chain names are 'chain', the Torso's are 'l_arm_chain' and 'l_arm_chain' and the"
-				       " Humanoid has none.",
+					   " Humanoid has none.",
 				"details": "{}".format(" ".join(e.args))
 			})
 		except Exception as ex:
@@ -964,6 +970,8 @@ class IKRPYHandler(PoppyRequestHandler):
 			message = template.format(type(ex).__name__, " ".join(ex.args))
 			self.set_status(400)
 			self.write_json({"error": message})
+
+
 # endregion
 
 
