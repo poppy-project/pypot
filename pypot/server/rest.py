@@ -228,8 +228,5 @@ class RESTRobot(object):
             'lapin': [44616414],
             'rabbit': [44616414],
         }
-        try:
-            detected = self.robot.marker_detector.markers
-            return str(any([m.id in markers[marker] for m in detected]))
-        except AttributeError:
-            return "Error: marker detector is not activated"
+        detected = self.robot.marker_detector.markers
+        return any([m['id'] in markers[marker] for m in detected])

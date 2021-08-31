@@ -858,7 +858,7 @@ class CallPrimitiveMethodHandler(PoppyRequestHandler):
 
 class QRCodeHandler(PoppyRequestHandler):
 	""" API REST Request Handler for request:
-	GET /code/<code_name>.json
+	GET /sensors/code/<code_name>.json
 	"""
 
 	def get(self, code_name):
@@ -868,9 +868,27 @@ class QRCodeHandler(PoppyRequestHandler):
 				"codes": self.restful_robot.markers_list()
 			})
 		else:
-			self.write_json({
-				"code": self.restful_robot.detect_marker(code_name)
-			})
+			try:
+				self.set_status(200)
+				self.write_json({
+					"found": self.restful_robot.detect_marker(code_name)
+				})
+			except AttributeError as e:
+				# QRcode is not implemented
+				self.set_status(404)
+				self.write_json({
+					"error": "Code detection has been removed from robot",
+					"tip": "Add marker_detector in software/poppy_ergo_jr/configuration/poppy_ergo_jr.json",
+					"details": "{}".format(" ".join(e.args))
+				})
+			except KeyError as e:
+				# Code asked is not defined
+				self.set_status(404)
+				self.write_json({
+					"error": "The code you asked for does not exist",
+					"tip": "All preset codes are caribou, tetris and lapin/rabbit",
+					"details": "{}".format(" ".join(e.args))
+				})
 
 
 # endregion
@@ -897,7 +915,7 @@ url_paths = [
 	(r'/sensors/(?P<sensor_name>[a-zA-Z0-9_]+)/registers/list\.json', SensorRegistersListHandler),
 	(r'/sensors/(?P<sensor_name>[a-zA-Z0-9_]+)/registers/(?P<register_name>[a-zA-Z0-9_]+)/value\.json',
 	 SensorRegisterHandler),
-	(r'/code/(?P<code_name>[a-zA-Z0-9_]+)\.json', QRCodeHandler),
+	(r'/sensors/code/(?P<code_name>[a-zA-Z0-9_]+)\.json', QRCodeHandler),
 
 	# Moves
 	(r'/records/list\.json', ListRecordedMovesHandler),
