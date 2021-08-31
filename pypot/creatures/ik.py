@@ -124,8 +124,22 @@ class IKChain(Chain):
         if not accurate:
             kwargs['max_iter'] = 3
 
+        if orientation is not None:
+            shape = array(orientation).shape
+            if shape == (3, 3):
+                orientation_mode = "all"
+            elif shape == (3,):
+                orientation_mode = "X"
+            else:
+                orientation_mode = None
+        else:
+            orientation_mode = None
+
         # q0 = self.convert_to_ik_angles(self.joints_position)
-        q = self.inverse_kinematics(target_position=position, target_orientation=orientation, **kwargs)
+        q = self.inverse_kinematics(target_position=position,
+                                    target_orientation=orientation,
+                                    orientation_mode=orientation_mode,
+                                    **kwargs)
 
         joints = self.convert_from_ik_angles(q)
 

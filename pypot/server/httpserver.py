@@ -863,16 +863,19 @@ class CallPrimitiveMethodHandler(PoppyRequestHandler):
 class IKValueHandler(PoppyRequestHandler):
 	""" API REST Request Handler for request:
 	GET /ik/<chain_name>/value.json
+	It returns the xyz coordinates of the effector and the list [Rx.x, Rx.y, Rx.z], which is the transformation along X
+	axis. Those values may not readable by a humain. The goal is to replace 'rot' values by roll, pitch and yaw.
 	"""
 
 	def get(self, chain_name):
 		try:
 			self.set_status(200)
 			ans = self.restful_robot.ik_endeffector(chain_name)
-			command = "curl -X POST \\\n\t-H 'Content-Type: application/json' \\\n\t-d '{\"xyz\": \"" + ans[0] +\
-			          "\", \"xyz\": \"" + ans[1] + "\", \"duration\":\"3\", \"wait\":\"True\"}'" \
-			                                       "\\\n\thttp://localhost\\:8080/ik/chain/goto.json "
-			print(command)
+			# Prints a curl command which instructs the robot to reach the current position.
+			# command = "curl -X POST \\\n\t-H 'Content-Type: application/json' \\\n\t-d '{\"xyz\": \"" + ans[0] +\
+			#          "\", \"xyz\": \"" + ans[1] + "\", \"duration\":\"3\", \"wait\":\"True\"}'" \
+			#                                       "\\\n\thttp://localhost\\:8080/ik/chain/goto.json "
+			# print(command)
 			self.write_json({
 				"xyz": ans[0],
 				"rot": ans[1],
@@ -896,6 +899,8 @@ class IKValueHandler(PoppyRequestHandler):
 class IKGotoHandler(PoppyRequestHandler):
 	""" API REST Request Handler for request:
 	GET /ik/<chain_name>/goto.json + duration, [x,y,z], [, wait][, rotation]
+	IK is not operational. You may encounter difficulties while requesting an orientation AND a position.
+	Orientation will take priority over position.
 	"""
 
 	def post(self, chain_name):
@@ -917,6 +922,7 @@ class IKGotoHandler(PoppyRequestHandler):
 				# The function ik_rpy converts a list of rpy into a 3x3 rotation matrix
 				rot = self.restful_robot.ik_rpy(chain_name, *rpy)
 
+			print("/!\\ IK Post method has some problems with orientation. It will prioritize orientation over position.")
 			# goto requested position. Returned value is the real position (cartesian + rotation) of the end effector
 			pose = self.restful_robot.ik_goto(chain_name, xyz, rot, duration, wait)
 
@@ -944,6 +950,7 @@ class IKGotoHandler(PoppyRequestHandler):
 class IKRPYHandler(PoppyRequestHandler):
 	""" API REST Request Handler for request:
 	GET /ik/<chain_name>/rpy.json + r, p, y
+	It is mainly used for debug, it may be removed when IK is operationnal
 	"""
 
 	def get(self, chain_name):

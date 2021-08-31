@@ -212,6 +212,7 @@ class RESTRobot(object):
         except FileNotFoundError:
             return False
 
+    # IK
     def ik_endeffector(self, chain):
         """
         Gives position & orientation of the end effector
@@ -238,5 +239,13 @@ class RESTRobot(object):
         return self.ik_endeffector(chain)
 
     def ik_rpy(self, chain, roll, pitch, yaw):
+        """
+        Gives the 3x3 affine rotation matrix corresponding the rpy values given.
+        :param chain: name of the IK chain
+        :param roll: float, -pi to pi
+        :param pitch: float, -pi to pi
+        :param yaw: float, -pi to pi
+        :return: 3x3 affine rotation matrix
+        """
         c = getattr(self.robot, chain)
         return c.rpy_to_rotation_matrix(roll, pitch, yaw)
