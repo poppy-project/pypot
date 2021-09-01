@@ -65,19 +65,18 @@ class LocalIp(PoppyRequestHandler):
 			s.close()
 			return local_ip
 
-		ip = "not found"
-
 		try:
 			ip = find_local_ip()
 			self.set_status(200)
 			self.write_json({
 				"ip": ip
 			})
-		except socket.error:
+		except socket.error as e:
 			self.set_status(404)
 			self.write_json({
 				"error": "Cannot find ip of your Poppy Robot",
-				"tip": "Poppy is unable to resolve its ip. Try to resolve it using ifconfig / ipconfig."
+				"tip": "Poppy is unable to resolve its ip. Try to resolve it using ifconfig / ipconfig.",
+				"details": "{}".format(" ".join(e.args))
 			})
 
 
