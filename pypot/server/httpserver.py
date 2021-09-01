@@ -462,6 +462,27 @@ class SensorRegisterHandler(PoppyRequestHandler):
 			})
 
 
+class CameraHandler(PoppyRequestHandler):
+	""" API REST Request Handler for request:
+	GET /sensors/camera/frame.png
+	"""
+
+	def get(self):
+		try:
+			frame = self.restful_robot.getFrameFromCamera()
+			self.set_status(200)
+			self.set_header('Content-type', 'image/png')
+			self.write(frame)
+		except AttributeError as e:
+			# Camera is not available.
+			self.set_status(404)
+			self.write_json({
+				"error": "No camera was found.",
+				"tip": "Verify your camera is well plugged. On http://poppy.local/logs, verify camera is enabled. If "
+				       "you are simulating a Poppy robot, you will unfortunately not be able to use the camera",
+				"details": "{}".format(" ".join(e.args))
+			})
+
 # endregion
 
 # region Moves Handlers
@@ -875,6 +896,7 @@ url_paths = [
 	(r'/sensors/(?P<sensor_name>[a-zA-Z0-9_]+)/registers/list\.json', SensorRegistersListHandler),
 	(r'/sensors/(?P<sensor_name>[a-zA-Z0-9_]+)/registers/(?P<register_name>[a-zA-Z0-9_]+)/value\.json',
 	 SensorRegisterHandler),
+	(r'/sensors/camera/frame\.png', CameraHandler),
 
 	# Moves
 	(r'/records/list\.json', ListRecordedMovesHandler),

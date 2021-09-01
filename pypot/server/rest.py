@@ -1,4 +1,5 @@
 import os
+import cv2  # for camera frame
 
 from operator import attrgetter
 from pypot.primitive.move import MovePlayer, MoveRecorder, Move
@@ -211,3 +212,8 @@ class RESTRobot(object):
             return True
         except FileNotFoundError:
             return False
+
+    def getFrameFromCamera(self):
+        """Gets and encodes the camera frame to .png format"""
+        _, img = cv2.imencode('.png', self.robot.camera.frame)
+        return img.tobytes()
