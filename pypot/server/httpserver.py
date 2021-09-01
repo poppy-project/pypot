@@ -462,6 +462,41 @@ class SensorRegisterHandler(PoppyRequestHandler):
 			})
 
 
+class MarkerDetectorHandler(PoppyRequestHandler):
+	""" API REST Request Handler for requests:
+	GET /sensors/code/list.json
+	GET /sensors/code/<code_name>.json
+	"""
+
+	def get(self, code_name):
+		self.set_status(200)
+		if code_name == 'list':
+			self.write_json({
+				"codes": self.restful_robot.markers_list()
+			})
+		else:
+			try:
+				self.set_status(200)
+				self.write_json({
+					"found": self.restful_robot.detect_marker(code_name)
+				})
+			except AttributeError as e:
+				# QRcode is not implemented
+				self.set_status(404)
+				self.write_json({
+					"error": "Code detection has been removed from robot",
+					"tip": "Add marker_detector in software/poppy_ergo_jr/configuration/poppy_ergo_jr.json",
+					"details": "{}".format(" ".join(e.args))
+				})
+			except KeyError as e:
+				# Code asked is not defined
+				self.set_status(404)
+				self.write_json({
+					"error": "The code you asked for does not exist",
+					"tip": "All preset codes are caribou, tetris and lapin/rabbit",
+					"details": "{}".format(" ".join(e.args))
+				})
+
 # endregion
 
 # region Moves Handlers
@@ -854,45 +889,6 @@ class CallPrimitiveMethodHandler(PoppyRequestHandler):
 # endregion
 
 
-# Camera Handlers region
-
-class QRCodeHandler(PoppyRequestHandler):
-	""" API REST Request Handler for request:
-	GET /sensors/code/<code_name>.json
-	"""
-
-	def get(self, code_name):
-		self.set_status(200)
-		if code_name == 'list':
-			self.write_json({
-				"codes": self.restful_robot.markers_list()
-			})
-		else:
-			try:
-				self.set_status(200)
-				self.write_json({
-					"found": self.restful_robot.detect_marker(code_name)
-				})
-			except AttributeError as e:
-				# QRcode is not implemented
-				self.set_status(404)
-				self.write_json({
-					"error": "Code detection has been removed from robot",
-					"tip": "Add marker_detector in software/poppy_ergo_jr/configuration/poppy_ergo_jr.json",
-					"details": "{}".format(" ".join(e.args))
-				})
-			except KeyError as e:
-				# Code asked is not defined
-				self.set_status(404)
-				self.write_json({
-					"error": "The code you asked for does not exist",
-					"tip": "All preset codes are caribou, tetris and lapin/rabbit",
-					"details": "{}".format(" ".join(e.args))
-				})
-
-
-# endregion
-
 url_paths = [
 	# Miscellaneous
 	(r'/', PathsUrl),
@@ -915,7 +911,7 @@ url_paths = [
 	(r'/sensors/(?P<sensor_name>[a-zA-Z0-9_]+)/registers/list\.json', SensorRegistersListHandler),
 	(r'/sensors/(?P<sensor_name>[a-zA-Z0-9_]+)/registers/(?P<register_name>[a-zA-Z0-9_]+)/value\.json',
 	 SensorRegisterHandler),
-	(r'/sensors/code/(?P<code_name>[a-zA-Z0-9_]+)\.json', QRCodeHandler),
+	(r'/sensors/code/(?P<code_name>[a-zA-Z0-9_]+)\.json', MarkerDetectorHandler),
 
 	# Moves
 	(r'/records/list\.json', ListRecordedMovesHandler),
