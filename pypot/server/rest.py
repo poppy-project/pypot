@@ -217,3 +217,19 @@ class RESTRobot(object):
         """Gets and encodes the camera frame to .png format"""
         _, img = cv2.imencode('.png', self.robot.camera.frame)
         return img.tobytes()
+
+    def markers_list(self):
+        """Gives the ids of all readable markers in front of the camera"""
+        detected_markers = self.robot.marker_detector.markers
+        return [m.id for m in detected_markers]
+
+    def detect_marker(self, marker):
+        """Returns a boolean depending on whether the name of the qrcode given in parameter is visible by the camera"""
+        markers = {
+            'tetris': [112259237],
+            'caribou': [221052793],
+            'lapin': [44616414],
+            'rabbit': [44616414],
+        }
+        detected_markers_ids = self.markers_list()
+        return any([m in markers[marker] for m in detected_markers_ids])
