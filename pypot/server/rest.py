@@ -213,20 +213,17 @@ class RESTRobot(object):
             return False
 
     def markers_list(self):
-        try:
-            return str(self.robot.marker_detector.markers)
-        except Exception as ex:
-            template = "An exception of type {0} occured. Arguments:\n{1}"
-            message = template.format(type(ex).__name__, " ".join(ex.args))
-            return message
-
+        """Gives the ids of all readable markers in front of the camera"""
+        detected_markers = self.robot.marker_detector.markers
+        return [m.id for m in detected_markers]
 
     def detect_marker(self, marker):
+        """Returns a boolean depending on whether the name of the qrcode given in parameter is visible by the camera"""
         markers = {
             'tetris': [112259237],
             'caribou': [221052793],
             'lapin': [44616414],
             'rabbit': [44616414],
         }
-        detected = self.robot.marker_detector.markers
-        return any([m['id'] in markers[marker] for m in detected])
+        detected_markers_ids = self.markers_list()
+        return any([m in markers[marker] for m in detected_markers_ids])
