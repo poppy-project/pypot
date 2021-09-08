@@ -1,11 +1,13 @@
 import os
+from numpy import round
+import cv2  # for camera frame
 
 from operator import attrgetter
 from pypot.primitive.move import MovePlayer, MoveRecorder, Move
+from pathlib import Path
 
 
 class RESTRobot(object):
-
     """ REST API for a Robot.
 
     Through the REST API you can currently access:
@@ -23,7 +25,7 @@ class RESTRobot(object):
 
     def __init__(self, robot):
         self.robot = robot
-        self.moves_path=""
+        self.moves_path = Path(".")
 
     # Access motor related values
 
@@ -54,9 +56,15 @@ class RESTRobot(object):
     def get_motors_alias(self):
         return self.robot.alias
 
-    def set_goto_position_for_motor(self, motor, position, duration):
+    def set_goto_position_for_motor(self, motor, position, duration, wait=False):
         m = getattr(self.robot, motor)
-        m.goto_position(position, duration, wait=False)
+        m.goto_position(position, duration, wait=wait)
+
+    def set_goto_positions_for_motors(self, motors, positions, duration, control=None, wait=False):
+        for i, motor_name in enumerate(motors):
+            w = False if i < len(motors) - 1 else wait
+            m = getattr(self.robot, motor_name)
+            m.goto_position(positions[i], duration, control, wait=w)
 
     # Access sensor related values
 
@@ -109,6 +117,7 @@ class RESTRobot(object):
 
     def _set_register_value(self, object, register, value):
         o = getattr(self.robot, object)
+        getattr(o, register)  # does register exists ?
         setattr(o, register, value)
 
     def _get_register_value(self, object, register):
@@ -145,12 +154,20 @@ class RESTRobot(object):
         except AttributeError:
             return None
 
+    def get_move_recorder(self, move_name):
+        try:
+            recorder = getattr(self.robot, '_{}_recorder'.format(move_name))
+            move = recorder.move
+            return move.positions()
+        except AttributeError:
+            raise FileNotFoundError('I was not able to find _{}_recorder'.format(move_name))
+
     def stop_move_recorder(self, move_name):
         """Allow more easily than stop_primitive() to save in a filename the recorded move"""
         recorder = getattr(self.robot, '_{}_recorder'.format(move_name))
         recorder.stop()
-        #os.makedirs(self.moves_path, exist_ok=True)
-        with open('{}.record'.format(self.moves_path+move_name), 'w') as f:
+
+        with open(self.moves_path.joinpath("{}.record".format(move_name)), 'w') as f:
             recorder.move.save(f)
 
         # Stop player if running : to discuss
@@ -175,8 +192,8 @@ class RESTRobot(object):
             pass
 
         # if not running, override the play primitive
-        #os.makedirs(self.moves_path, exist_ok=True)
-        with open('{}.record'.format(self.moves_path+move_name)) as f:
+
+        with open(self.moves_path.joinpath("{}.record".format(move_name))) as f:
             loaded_move = Move.load(f)
         player = MovePlayer(self.robot, loaded_move, play_speed=speed, backwards=backwards)
         self.robot.attach_primitive(player, '_{}_player'.format(move_name))
@@ -186,10 +203,71 @@ class RESTRobot(object):
 
     def get_available_record_list(self):
         """Get list of json recorded movement files"""
-        #os.makedirs(self.moves_path, exist_ok=True)
-        return [f.split('.record')[0] for f in os.listdir('./'+self.moves_path) if f.endswith('.record')]
+        return [f.stem for f in self.moves_path.glob('*.record') if f.is_file()]
 
     def remove_move_record(self, move_name):
         """Remove the json recorded movement file"""
-        #os.makedirs(self.moves_path, exist_ok=True)
-        return os.remove('{}.record'.format(self.moves_path+move_name))
+        try:
+            os.remove(self.moves_path.joinpath("{}.record".format(move_name)))
+            return True
+        except FileNotFoundError:
+            return False
+
+    def getFrameFromCamera(self):
+        """Gets and encodes the camera frame to .png format"""
+        _, img = cv2.imencode('.png', self.robot.camera.frame)
+        return img.tobytes()
+
+    def markers_list(self):
+        """Gives the ids of all readable markers in front of the camera"""
+        detected_markers = self.robot.marker_detector.markers
+        return [m.id for m in detected_markers]
+
+    def detect_marker(self, marker):
+        """Returns a boolean depending on whether the name of the qrcode given in parameter is visible by the camera"""
+        markers = {
+            'tetris': [112259237],
+            'caribou': [221052793],
+            'lapin': [44616414],
+            'rabbit': [44616414],
+        }
+        detected_markers_ids = self.markers_list()
+        return any([m in markers[marker] for m in detected_markers_ids])
+
+    # IK
+    def ik_endeffector(self, chain):
+        """
+        Gives position & orientation of the end effector
+        :param chain: name of the IK chain
+        :return: tuple of strings for position & orientation ("x,y,z", "Rx.x,Rx.y,Rx.z")
+        """
+        c = getattr(self.robot, chain)
+        position = ','.join(map(str, list(round(c.position, 4))))
+        orientation = ','.join(map(str, list(round(c.orientation, 4))))
+        return position, orientation
+
+    def ik_goto(self, chain, xyz, rot, duration, wait=False):
+        """
+        goto a position defined by a xyz and/or an orientation
+        :param chain: name of the IK chain
+        :param xyz: cartesian coordinates (list of floats, in m)
+        :param rot: [Rx.x, Rx.y, Rx.z] (see https://www.brainvoyager.com/bv/doc/UsersGuide/CoordsAndTransforms/SpatialTransformationMatrices.html)
+        :param duration: duration of the movement (float, in s)
+        :param wait: do we wait the end of the move before giving the answer ? (boolean)
+        :return: Gives position & orientation of the end effector after the move
+        """
+        c = getattr(self.robot, chain)
+        c.goto(xyz, rot, duration, wait)
+        return self.ik_endeffector(chain)
+
+    def ik_rpy(self, chain, roll, pitch, yaw):
+        """
+        Gives the 3x3 affine rotation matrix corresponding the rpy values given.
+        :param chain: name of the IK chain
+        :param roll: float, -pi to pi
+        :param pitch: float, -pi to pi
+        :param yaw: float, -pi to pi
+        :return: 3x3 affine rotation matrix
+        """
+        c = getattr(self.robot, chain)
+        return c.rpy_to_rotation_matrix(roll, pitch, yaw)

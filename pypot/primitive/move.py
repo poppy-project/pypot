@@ -120,6 +120,7 @@ class MoveRecorder(LoopPrimitive):
         LoopPrimitive.__init__(self, robot, freq)
         self.freq = freq
         self.tracked_motors = list(map(self.get_mockup_motor, tracked_motors))
+        self._move = Move(self.freq)
 
     def setup(self):
         self._move = Move(self.freq)
