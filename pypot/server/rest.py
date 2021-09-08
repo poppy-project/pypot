@@ -1,4 +1,5 @@
 import os
+from numpy import round
 import cv2  # for camera frame
 
 from operator import attrgetter
@@ -7,7 +8,6 @@ from pathlib import Path
 
 
 class RESTRobot(object):
-
     """ REST API for a Robot.
 
     Through the REST API you can currently access:
@@ -233,3 +233,41 @@ class RESTRobot(object):
         }
         detected_markers_ids = self.markers_list()
         return any([m in markers[marker] for m in detected_markers_ids])
+
+    # IK
+    def ik_endeffector(self, chain):
+        """
+        Gives position & orientation of the end effector
+        :param chain: name of the IK chain
+        :return: tuple of strings for position & orientation ("x,y,z", "Rx.x,Rx.y,Rx.z")
+        """
+        c = getattr(self.robot, chain)
+        position = ','.join(map(str, list(round(c.position, 4))))
+        orientation = ','.join(map(str, list(round(c.orientation, 4))))
+        return position, orientation
+
+    def ik_goto(self, chain, xyz, rot, duration, wait=False):
+        """
+        goto a position defined by a xyz and/or an orientation
+        :param chain: name of the IK chain
+        :param xyz: cartesian coordinates (list of floats, in m)
+        :param rot: [Rx.x, Rx.y, Rx.z] (see https://www.brainvoyager.com/bv/doc/UsersGuide/CoordsAndTransforms/SpatialTransformationMatrices.html)
+        :param duration: duration of the movement (float, in s)
+        :param wait: do we wait the end of the move before giving the answer ? (boolean)
+        :return: Gives position & orientation of the end effector after the move
+        """
+        c = getattr(self.robot, chain)
+        c.goto(xyz, rot, duration, wait)
+        return self.ik_endeffector(chain)
+
+    def ik_rpy(self, chain, roll, pitch, yaw):
+        """
+        Gives the 3x3 affine rotation matrix corresponding the rpy values given.
+        :param chain: name of the IK chain
+        :param roll: float, -pi to pi
+        :param pitch: float, -pi to pi
+        :param yaw: float, -pi to pi
+        :return: 3x3 affine rotation matrix
+        """
+        c = getattr(self.robot, chain)
+        return c.rpy_to_rotation_matrix(roll, pitch, yaw)

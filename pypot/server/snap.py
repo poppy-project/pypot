@@ -411,7 +411,7 @@ class SnapRobotServer(AbstractServer):
         @self.app.get('/ik/<chain>/endeffector')
         def ik_endeffector(chain):
             c = getattr(rr.robot, chain)
-            pos = list(numpy.round(c.end_effector, 4))
+            pos = list(numpy.round(c.position, 4))
             return ','.join(map(str, pos))
 
         @self.app.get('/ik/<chain>/goto/<x>/<y>/<z>/<duration>')

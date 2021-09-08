@@ -642,7 +642,7 @@ class PlayMoveHandler(PoppyRequestHandler):
 			self.write_json({
 				"error": "speed field is missing.",
 				"tip": 'Speed value should be given with json format as a string, and with a minus sign (-) if you '
-				       'want to play the move backwards. Example: {"speed": "-1.0"}',
+					   'want to play the move backwards. Example: {"speed": "-1.0"}',
 				"details": "{}".format(" ".join(jde.args))
 			})
 			return  # we have to stop the function if data isn't well defined
@@ -908,6 +908,134 @@ class CallPrimitiveMethodHandler(PoppyRequestHandler):
 
 # endregion
 
+# region IK Handlers
+
+# Chain name(s) for
+#     * Ergo Jr is 'chain' (https://github.com/poppy-project/poppy-ergo-jr/blob/47dd208ab256a526fbd89653b3f4f996ca503a65/software/poppy_ergo_jr/poppy_ergo_jr.py#L27)
+#     * Torso are 'l_arm_chain' and 'r_arm_chain' (https://github.com/poppy-project/poppy-torso/blob/f1de072c88e7d6e0702664aec5028fb8266d37a4/software/poppy_torso/poppy_torso.py#L39)
+#     * Humanoid do not have IK chains yet.
+
+class IKValueHandler(PoppyRequestHandler):
+	""" API REST Request Handler for request:
+	GET /ik/<chain_name>/value.json
+	It returns the xyz coordinates of the effector and the list [Rx.x, Rx.y, Rx.z], which is the transformation along X
+	axis. Those values may not readable by a humain. The goal is to replace 'rot' values by roll, pitch and yaw.
+	"""
+
+	def get(self, chain_name):
+		try:
+			self.set_status(200)
+			ans = self.restful_robot.ik_endeffector(chain_name)
+			# Prints a curl command which instructs the robot to reach the current position.
+			# command = "curl -X POST \\\n\t-H 'Content-Type: application/json' \\\n\t-d '{\"xyz\": \"" + ans[0] +\
+			#          "\", \"xyz\": \"" + ans[1] + "\", \"duration\":\"3\", \"wait\":\"True\"}'" \
+			#                                       "\\\n\thttp://localhost\\:8080/ik/chain/goto.json "
+			# print(command)
+			self.write_json({
+				"xyz": ans[0],
+				"rot": ans[1],
+			})
+		except AttributeError as e:
+			# chain given does not exist.
+			self.set_status(404)
+			self.write_json({
+				"error": "Chain '{}' does not exist for this robot".format(chain_name),
+				"tip": "The Ergo's Chain names are 'chain', the Torso's are 'l_arm_chain' and 'l_arm_chain' and the"
+					   " Humanoid has none.",
+				"details": "{}".format(" ".join(e.args))
+			})
+		except Exception as ex:
+			template = "An exception of type {0} occured. Arguments:\n{1}"
+			message = template.format(type(ex).__name__, " ".join(ex.args))
+			self.set_status(400)
+			self.write_json({"error": message})
+
+
+class IKGotoHandler(PoppyRequestHandler):
+	""" API REST Request Handler for request:
+	GET /ik/<chain_name>/goto.json + duration, [x,y,z], [, wait][, rotation]
+	IK is not operational. You may encounter difficulties while requesting an orientation AND a position.
+	Orientation will take priority over position.
+	"""
+
+	def post(self, chain_name):
+		try:
+			data = json.loads(self.request.body.decode())
+			duration = float(data["duration"])  # in seconds
+			wait = data["wait"] if "wait" in data else False  # wait is set to False if not defined
+
+			# position: list [x, y, z]
+			xyz = list(map(float, str(data["xyz"]).split(","))) if "xyz" in data else None
+
+			# rotation: list [TransformXAxis.x, TransformXAxis.y, TransformXAxis.z]
+			rot = list(map(float, str(data["rot"]).split(","))) if "rot" in data else None
+
+			# roll/pitch/yaw: list [roll, pitch, yaw]
+			rpy = list(map(float, str(data["rpy"]).split(","))) if "rpy" in data else None
+			if rpy:
+				# When rpy is defined, it overwrites the value of rotation
+				# The function ik_rpy converts a list of rpy into a 3x3 rotation matrix
+				rot = self.restful_robot.ik_rpy(chain_name, *rpy)
+
+			print("/!\\ IK Post method has some problems with orientation. It will prioritize orientation over position.")
+			# goto requested position. Returned value is the real position (cartesian + rotation) of the end effector
+			pose = self.restful_robot.ik_goto(chain_name, xyz, rot, duration, wait)
+
+			self.set_status(200)
+			self.write_json({
+				"xyz": pose[0],
+				"rot": pose[1]
+			})
+		except AttributeError as e:
+			# chain given does not exist.
+			self.set_status(404)
+			self.write_json({
+				"error": "Chain '{}' does not exist for this robot".format(chain_name),
+				"tip": "The Ergo's Chain names are 'chain', the Torso's are 'l_arm_chain' and 'l_arm_chain' and the"
+					   " Humanoid has none.",
+				"details": "{}".format(" ".join(e.args))
+			})
+		except Exception as ex:
+			template = "An exception of type {0} occured. Arguments:\n{1}"
+			message = template.format(type(ex).__name__, " ".join(ex.args))
+			self.set_status(400)
+			self.write_json({"error": message})
+
+
+class IKRPYHandler(PoppyRequestHandler):
+	""" API REST Request Handler for request:
+	GET /ik/<chain_name>/rpy.json + r, p, y
+	It is mainly used for debug, it may be removed when IK is operationnal
+	"""
+
+	def get(self, chain_name):
+		try:
+			data = json.loads(self.request.body.decode())
+			r = float(data["r"])
+			p = float(data["p"])
+			y = float(data["y"])
+			self.set_status(200)
+			self.write_json({
+				"rpy": self.restful_robot.ik_rpy(chain_name, r, p, y)
+			})
+		except AttributeError as e:
+			# chain given does not exist.
+			self.set_status(404)
+			self.write_json({
+				"error": "Chain '{}' does not exist for this robot".format(chain_name),
+				"tip": "The Ergo's Chain names are 'chain', the Torso's are 'l_arm_chain' and 'l_arm_chain' and the"
+					   " Humanoid has none.",
+				"details": "{}".format(" ".join(e.args))
+			})
+		except Exception as ex:
+			template = "An exception of type {0} occured. Arguments:\n{1}"
+			message = template.format(type(ex).__name__, " ".join(ex.args))
+			self.set_status(400)
+			self.write_json({"error": message})
+
+
+# endregion
+
 
 url_paths = [
 	# Miscellaneous
@@ -956,6 +1084,11 @@ url_paths = [
 	(r'/primitives/(?P<primitive_name>[a-zA-Z0-9_]+)/methods/list\.json', ListPrimitiveMethodsHandler),
 	(r'/primitives/(?P<primitive_name>[a-zA-Z0-9_]+)/methods/(?P<method_name>[a-zA-Z0-9_]+)/args\.json',
 	 CallPrimitiveMethodHandler),
+
+	# Ik
+	(r'/ik/(?P<chain_name>[a-zA-Z0-9_]+)/value\.json', IKValueHandler),
+	(r'/ik/(?P<chain_name>[a-zA-Z0-9_]+)/goto\.json', IKGotoHandler),
+	(r'/ik/(?P<chain_name>[a-zA-Z0-9_]+)/rpy\.json', IKRPYHandler)
 ]
 
 
