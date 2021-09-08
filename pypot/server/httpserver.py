@@ -76,7 +76,7 @@ class LocalIp(PoppyRequestHandler):
 			self.write_json({
 				"error": "Cannot find ip of your Poppy Robot",
 				"tip": "Poppy is unable to resolve its ip. Try to resolve it using ifconfig / ipconfig.",
-				"details": "{}".format(" ".join(e.args))
+				"details": "{}".format(" ".join(str(e.args)))
 			})
 
 
@@ -169,7 +169,7 @@ class MotorsListHandler(PoppyRequestHandler):
 			self.write_json({
 				"error": "Alias '{}' does not exist.".format(alias),
 				"tip": "You can find the list of aliases with /motors/aliases/list.json",
-				"details": "{}".format(" ".join(e.args))
+				"details": "{}".format(" ".join(str(e.args)))
 			})
 
 
@@ -203,7 +203,7 @@ class MotorRegistersListHandler(PoppyRequestHandler):
 			self.write_json({
 				"error": "Motor '{}' does not exist.".format(motor_name),
 				"tip": "You can find the list of motors with /motors/list.json",
-				"details": "{}".format(" ".join(e.args))
+				"details": "{}".format(" ".join(str(e.args)))
 			})
 
 
@@ -227,7 +227,7 @@ class MotorRegisterHandler(PoppyRequestHandler):
 						 " value".format(motor_name, register_name),
 				"tip": "You can find the list of motors with /motors/list.json and their registers with "
 					   "/motors/<motor_name>/registers/list.json",
-				"details": "{}".format(" ".join(e.args))
+				"details": "{}".format(" ".join(str(e.args)))
 			})
 
 	def post(self, motor_name, register_name):
@@ -253,7 +253,7 @@ class MotorRegisterHandler(PoppyRequestHandler):
 				"error": "Either motor '{}' or register '{}' does not exist.".format(motor_name, register_name),
 				"tip": "You can find the list of motors with /motors/list.json and their registers with "
 					   "/motors/<motor_name>/registers/list.json",
-				"details": "{}".format(" ".join(e.args))
+				"details": "{}".format(" ".join(str(e.args)))
 			})
 
 
@@ -278,7 +278,7 @@ class RegisterValuesHandler(PoppyRequestHandler):
 			self.write_json({
 				"error": "A motor does not have the register '{}'.".format(register_name),
 				"tip": "You can find the list of the registers of a motor with /motors/<motor_name>/registers/list.json",
-				"details": "{}".format(" ".join(e.args))
+				"details": "{}".format(" ".join(str(e.args)))
 			})
 
 
@@ -310,7 +310,7 @@ class MotorsGotoHandler(PoppyRequestHandler):
 					   'strings). "positions" is a list of angles for motors (given as strings or floats). '
 					   '"duration" is the time in seconds to do the move, given as string or float."wait" is a boolean.'
 					   ' Example: "{"motors": ["m1","m2"], "positions": [90, 0]}',
-				"details": "{}".format(" ".join(e.args))
+				"details": "{}".format(" ".join(str(e.args)))
 			})
 			return  # we have to stop the function if data isn't well defined
 		try:
@@ -329,7 +329,7 @@ class MotorsGotoHandler(PoppyRequestHandler):
 			self.write_json({
 				"error": "One of the motors given does not exist.",
 				"tip": "You can find the list of motors with /motors/list.json",
-				"details": "{}".format(" ".join(e.args))
+				"details": "{}".format(" ".join(str(e.args)))
 			})
 
 
@@ -371,7 +371,7 @@ class MotorGotoHandler(PoppyRequestHandler):
 			self.write_json({
 				"error": "Motor '{}' does not exist.".format(motor_name),
 				"tip": "You can find the list of motors with /motors/list.json",
-				"details": "{}".format(" ".join(e.args))
+				"details": "{}".format(" ".join(str(e.args)))
 			})
 
 
@@ -407,7 +407,7 @@ class SensorRegistersListHandler(PoppyRequestHandler):
 			self.write_json({
 				"error": "Sensor '{}' does not exist.".format(sensor_name),
 				"tip": "You can find the list of sensors with /sensors/list.json",
-				"details": "{}".format(" ".join(e.args))
+				"details": "{}".format(" ".join(str(e.args)))
 			})
 
 
@@ -430,7 +430,7 @@ class SensorRegisterHandler(PoppyRequestHandler):
 				"error": "Either sensor '{}' or register '{}' does not exist.".format(sensor_name, register_name),
 				"tip": "You can find the list of sensors with /sensors/list.json and their registers with "
 					   "/sensors/<sensor_name>/registers/list.json",
-				"details": "{}".format(" ".join(e.args))
+				"details": "{}".format(" ".join(str(e.args)))
 			})
 
 	def post(self, sensor_name, register_name):
@@ -457,7 +457,7 @@ class SensorRegisterHandler(PoppyRequestHandler):
 						 " value".format(sensor_name, register_name),
 				"tip": "You can find the list of sensors with /sensors/list.json and their registers with "
 					   "/sensors/<sensor_name>/registers/list.json",
-				"details": "{}".format(" ".join(e.args))
+				"details": "{}".format(" ".join(str(e.args)))
 			})
 
 
@@ -479,7 +479,7 @@ class CameraHandler(PoppyRequestHandler):
 				"error": "No camera was found.",
 				"tip": "Verify your camera is well plugged. On http://poppy.local/logs, verify camera is enabled. If "
 				       "you are simulating a Poppy robot, you will unfortunately not be able to use the camera",
-				"details": "{}".format(" ".join(e.args))
+				"details": "{}".format(" ".join(str(e.args)))
 			})
 
 class MarkerDetectorHandler(PoppyRequestHandler):
@@ -506,7 +506,7 @@ class MarkerDetectorHandler(PoppyRequestHandler):
 				self.write_json({
 					"error": "Code detection has been removed from robot",
 					"tip": "Add marker_detector in software/poppy_ergo_jr/configuration/poppy_ergo_jr.json",
-					"details": "{}".format(" ".join(e.args))
+					"details": "{}".format(" ".join(str(e.args)))
 				})
 			except KeyError as e:
 				# Code asked is not defined
@@ -514,7 +514,7 @@ class MarkerDetectorHandler(PoppyRequestHandler):
 				self.write_json({
 					"error": "The code you asked for does not exist",
 					"tip": "All preset codes are caribou, tetris and lapin/rabbit",
-					"details": "{}".format(" ".join(e.args))
+					"details": "{}".format(" ".join(str(e.args)))
 				})
 
 # endregion
@@ -550,7 +550,7 @@ class RecordMoveHandler(PoppyRequestHandler):
 				"error": "Cannot read data given.",
 				"tip": "Motors should be given with json format either as a string, with motor names separated by a "
 					   "comma (,), or as a list. Example: {'motors': 'm1,m2'} or {'motors': ['m1', 'm2']} ",
-				"details": "{}".format(" ".join(e.args))
+				"details": "{}".format(" ".join(str(e.args)))
 			})
 			return  # we have to stop the function if data isn't well defined
 		if motors:
@@ -566,7 +566,7 @@ class RecordMoveHandler(PoppyRequestHandler):
 					"error": "At least one of the motors given could not be found.",
 					"tip": "Motors should be given with json format either as a string, with motor names separated by "
 						   'a comma (,), or as a list. Example: {"motors": "m1,m2"} or {"motors": ["m1", "m2"]}',
-					"details": "{}".format(" ".join(e.args))
+					"details": "{}".format(" ".join(str(e.args)))
 				})
 				return  # we have to stop the function if data isn't well defined
 		else:
@@ -595,7 +595,7 @@ class SaveMoveHandler(PoppyRequestHandler):
 			self.write_json({
 				"error": "The move you want to save is not being recorded.",
 				"tip": "Start by recording a move with /records/<move_name>/record.json",
-				"details": "{}".format(" ".join(e.args))
+				"details": "{}".format(" ".join(str(e.args)))
 			})
 
 
@@ -617,7 +617,7 @@ class MoveHandler(PoppyRequestHandler):
 			self.write_json({
 				"error": "The move you want to play does not exist.",
 				"tip": "Start by recording a move with /records/<move_name>/record.json",
-				"details": "{}".format(" ".join(e.args))
+				"details": "{}".format(" ".join(str(e.args)))
 			})
 
 
@@ -652,7 +652,7 @@ class PlayMoveHandler(PoppyRequestHandler):
 				"error": "Cannot read data given.",
 				"tip": 'Speed value should be given with json format as a string, and with a minus sign (-) if you '
 					   'want to play the move backwards. Example: {"speed": "-1.0"}',
-				"details": "{}".format(" ".join(e.args))
+				"details": "{}".format(" ".join(str(e.args)))
 			})
 			return  # we have to stop the function if data isn't well defined
 
@@ -667,7 +667,7 @@ class PlayMoveHandler(PoppyRequestHandler):
 			self.write_json({
 				"error": "The move you want to play does not exist.",
 				"tip": "Start by recording a move with /records/<move_name>/record.json",
-				"details": "{}".format(" ".join(e.args))
+				"details": "{}".format(" ".join(str(e.args)))
 			})
 
 
@@ -689,7 +689,7 @@ class StopMoveHandler(PoppyRequestHandler):
 			self.write_json({
 				"error": "The move you want to stop has not started.",
 				"tip": "Start by playing a move with /records/<move_name>/play.json",
-				"details": "{}".format(" ".join(e.args))
+				"details": "{}".format(" ".join(str(e.args)))
 			})
 
 
@@ -761,7 +761,7 @@ class StartPrimitiveHandler(PoppyRequestHandler):
 			self.write_json({
 				"error": "Primitive '{}' does not exist".format(primitive_name),
 				"tip": "You can find the list of the primitives with /primitives/list.json",
-				"details": "{}".format(" ".join(e.args))
+				"details": "{}".format(" ".join(str(e.args)))
 			})
 
 
@@ -783,7 +783,7 @@ class StopPrimitiveHandler(PoppyRequestHandler):
 			self.write_json({
 				"error": "Primitive '{}' does not exist".format(primitive_name),
 				"tip": "You can find the list of the primitives with /primitives/list.json",
-				"details": "{}".format(" ".join(e.args))
+				"details": "{}".format(" ".join(str(e.args)))
 			})
 
 
@@ -805,7 +805,7 @@ class PausePrimitiveHandler(PoppyRequestHandler):
 			self.write_json({
 				"error": "Primitive '{}' does not exist".format(primitive_name),
 				"tip": "You can find the list of the primitives with /primitives/list.json",
-				"details": "{}".format(" ".join(e.args))
+				"details": "{}".format(" ".join(str(e.args)))
 			})
 
 
@@ -827,7 +827,7 @@ class ResumePrimitiveHandler(PoppyRequestHandler):
 			self.write_json({
 				"error": "Primitive '{}' does not exist".format(primitive_name),
 				"tip": "You can find the list of the primitives with /primitives/list.json",
-				"details": "{}".format(" ".join(e.args))
+				"details": "{}".format(" ".join(str(e.args)))
 			})
 
 
@@ -848,7 +848,7 @@ class PrimitivePropertiesListHandler(PoppyRequestHandler):
 			self.write_json({
 				"error": "Primitive '{}' does not exist".format(primitive_name),
 				"tip": "You can find the list of the primitives with /primitives/list.json",
-				"details": "{}".format(" ".join(e.args))
+				"details": "{}".format(" ".join(str(e.args)))
 			})
 
 
@@ -881,7 +881,7 @@ class ListPrimitiveMethodsHandler(PoppyRequestHandler):
 			self.write_json({
 				"error": "Primitive '{}' does not exist".format(primitive_name),
 				"tip": "You can find the list of the primitives with /primitives/list.json",
-				"details": "{}".format(" ".join(e.args))
+				"details": "{}".format(" ".join(str(e.args)))
 			})
 
 
@@ -902,7 +902,7 @@ class CallPrimitiveMethodHandler(PoppyRequestHandler):
 			self.write_json({
 				"error": "Primitive '{}' does not exist".format(primitive_name),
 				"tip": "You can find the list of the primitives with /primitives/list.json",
-				"details": "{}".format(" ".join(e.args))
+				"details": "{}".format(" ".join(str(e.args)))
 			})
 
 
@@ -942,7 +942,7 @@ class IKValueHandler(PoppyRequestHandler):
 				"error": "Chain '{}' does not exist for this robot".format(chain_name),
 				"tip": "The Ergo's Chain names are 'chain', the Torso's are 'l_arm_chain' and 'l_arm_chain' and the"
 					   " Humanoid has none.",
-				"details": "{}".format(" ".join(e.args))
+				"details": "{}".format(" ".join(str(e.args)))
 			})
 		except Exception as ex:
 			template = "An exception of type {0} occured. Arguments:\n{1}"
@@ -993,7 +993,7 @@ class IKGotoHandler(PoppyRequestHandler):
 				"error": "Chain '{}' does not exist for this robot".format(chain_name),
 				"tip": "The Ergo's Chain names are 'chain', the Torso's are 'l_arm_chain' and 'l_arm_chain' and the"
 					   " Humanoid has none.",
-				"details": "{}".format(" ".join(e.args))
+				"details": "{}".format(" ".join(str(e.args)))
 			})
 		except Exception as ex:
 			template = "An exception of type {0} occured. Arguments:\n{1}"
@@ -1025,7 +1025,7 @@ class IKRPYHandler(PoppyRequestHandler):
 				"error": "Chain '{}' does not exist for this robot".format(chain_name),
 				"tip": "The Ergo's Chain names are 'chain', the Torso's are 'l_arm_chain' and 'l_arm_chain' and the"
 					   " Humanoid has none.",
-				"details": "{}".format(" ".join(e.args))
+				"details": "{}".format(" ".join(str(e.args)))
 			})
 		except Exception as ex:
 			template = "An exception of type {0} occured. Arguments:\n{1}"
