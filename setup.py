@@ -19,7 +19,7 @@ install_requires = ['numpy',
                     'ikpy==3.0.1',
                     'bottle',
                     'requests',
-                    'opencv-contrib-python',
+                    'opencv-python-headless',
                     'wget',
                     ]
 
