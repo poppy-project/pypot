@@ -167,7 +167,7 @@ class DxlMotor(Motor, metaclass=RegisterOwner):
 
         else:
             # 0.7 corresponds approx. to the min speed that will be converted into 0
-            # and as 0 corredsponds to setting the max speed, we have to check this case
+            # and as 0 corresponds to setting the max speed, we have to check this case
             value = numpy.sign(value) * 0.7 if abs(value) < 0.7 else value
 
             self.goal_position = numpy.sign(value) * self.max_pos

@@ -11,7 +11,7 @@ We already have written a few tutorial notebooks that you can browse here: https
 
 Other notebooks should shorty extend this list!
 
-In the next sections, we decribe how those notebooks can be [viewed](https://github.com/poppy-project/pypot/blob/master/samples/notebooks/readme.md#browse-notebook-online), [installed](https://github.com/poppy-project/pypot/blob/master/samples/notebooks/readme.md#running-notebooks-locally), [run on your robot](https://github.com/poppy-project/pypot/blob/master/samples/notebooks/readme.md#connecting-to-a-remote-notebook) or [locally](https://github.com/poppy-project/pypot/blob/master/samples/notebooks/readme.md#running-notebooks-locally), shared and how you can [contribute](https://github.com/poppy-project/pypot/blob/master/samples/notebooks/readme.md#contribute) by writting your own notebooks!
+In the next sections, we decribe how those notebooks can be [viewed](https://github.com/poppy-project/pypot/blob/master/samples/notebooks/readme.md#browse-notebook-online), [installed](https://github.com/poppy-project/pypot/blob/master/samples/notebooks/readme.md#running-notebooks-locally), [run on your robot](https://github.com/poppy-project/pypot/blob/master/samples/notebooks/readme.md#connecting-to-a-remote-notebook) or [locally](https://github.com/poppy-project/pypot/blob/master/samples/notebooks/readme.md#running-notebooks-locally), shared and how you can [contribute](https://github.com/poppy-project/pypot/blob/master/samples/notebooks/readme.md#contribute) by writing your own notebooks!
 
 # Open Source
 All the resources content from the Poppy Project is open source. This naturally also extends to the notebooks.
