@@ -489,33 +489,32 @@ class MarkerDetectorHandler(PoppyRequestHandler):
 	"""
 
 	def get(self, code_name):
-		self.set_status(200)
-		if code_name == 'list':
-			self.write_json({
-				"codes": self.restful_robot.markers_list()
-			})
-		else:
-			try:
-				self.set_status(200)
+		try:
+			self.set_status(200)
+			if code_name == 'list':
+				self.write_json({
+					"codes": self.restful_robot.markers_list()
+				})
+			else:
 				self.write_json({
 					"found": self.restful_robot.detect_marker(code_name)
 				})
-			except AttributeError as e:
-				# QRcode is not implemented
-				self.set_status(404)
-				self.write_json({
-					"error": "Code detection has been removed from robot",
-					"tip": "Add marker_detector in software/poppy_ergo_jr/configuration/poppy_ergo_jr.json",
-					"details": "{}".format(" ".join(list(map(str, e.args))))
-				})
-			except KeyError as e:
-				# Code asked is not defined
-				self.set_status(404)
-				self.write_json({
-					"error": "The code you asked for does not exist",
-					"tip": "All preset codes are caribou, tetris and lapin/rabbit",
-					"details": "{}".format(" ".join(list(map(str, e.args))))
-				})
+		except AttributeError as e:
+			# QRcode is not implemented
+			self.set_status(404)
+			self.write_json({
+				"error": "Code detection has been removed from robot",
+				"tip": "Add marker_detector in software/poppy_ergo_jr/configuration/poppy_ergo_jr.json",
+				"details": "{}".format(" ".join(list(map(str, e.args))))
+			})
+		except KeyError as e:
+			# Code asked is not defined
+			self.set_status(404)
+			self.write_json({
+				"error": "The code you asked for does not exist",
+				"tip": "All preset codes are caribou, tetris and lapin/rabbit",
+				"details": "{}".format(" ".join(list(map(str, e.args))))
+			})
 
 # endregion
 
