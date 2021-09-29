@@ -6,7 +6,7 @@ from ...utils import StoppableLoopThread
 
 
 class ArduinoSensor(Sensor):
-    """ Give acces to arduino sensor.
+    """ Give access to arduino sensor.
 
         Here it is an example of the arduino code to retrieve the time:
 

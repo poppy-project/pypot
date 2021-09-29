@@ -43,7 +43,7 @@ class Primitive(StoppableThread):
     properties = []
 
     def __init__(self, robot):
-        """ At instanciation, it automatically transforms the :class:`~pypot.robot.robot.Robot` into a :class:`~pypot.primitive.primitive.MockupRobot`.
+        """ At instantiation, it automatically transforms the :class:`~pypot.robot.robot.Robot` into a :class:`~pypot.primitive.primitive.MockupRobot`.
 
         .. warning:: You should not directly pass motors as argument to the primitive. If you need to, use the method :meth:`~pypot.primitive.primitive.Primitive.get_mockup_motor` to transform them into "fake" motors. See the :ref:`write_own_prim` section for details.
 
@@ -294,7 +294,7 @@ class MockupMotor(object):
 
         else:
             # 0.7 corresponds approx. to the min speed that will be converted into 0
-            # and as 0 corredsponds to setting the max speed, we have to check this case
+            # and as 0 corresponds to setting the max speed, we have to check this case
             value = numpy.sign(value) * 0.7 if abs(value) < 0.7 else value
 
             self.goal_position = numpy.sign(value) * self.max_pos

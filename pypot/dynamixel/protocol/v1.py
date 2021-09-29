@@ -119,7 +119,7 @@ class DxlSyncReadPacket(DxlInstructionPacket):
 
 
 class DxlWriteDataPacket(DxlInstructionPacket):
-    """ This class is used to reprensent write data packet (to write value). """
+    """ This class is used to represent write data packet (to write value). """
     def __new__(cls, id, address, coded_value):
         return DxlInstructionPacket.__new__(cls, id,
                                             DxlInstruction.WRITE_DATA,

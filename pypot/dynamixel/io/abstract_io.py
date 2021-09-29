@@ -50,7 +50,7 @@ class AbstractDxlIO(object):
                  use_sync_read=False,
                  error_handler_cls=None,
                  convert=True):
-        """ At instanciation, it opens the serial port and sets the communication parameters.
+        """ At instantiation, it opens the serial port and sets the communication parameters.
 
             :param string port: the serial port to use (e.g. Unix (/dev/tty...), Windows (COM...)).
             :param int baudrate: default for new motors: 57600, for PyPot motors: 1000000
