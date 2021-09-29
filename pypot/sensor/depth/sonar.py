@@ -11,7 +11,7 @@ from ...utils.i2c_controller import I2cController
 
 
 class SonarSensor(Sensor):
-    """ Give acces to ultrasonic I2C modules SRF-02 in a *pypot way*
+    """ Give access to ultrasonic I2C modules SRF-02 in a *pypot way*
 
         It provides one register: distance (in meters).
 
@@ -45,7 +45,7 @@ class SonarSensor(Sensor):
 
 
 class Sonar(object):
-    """ Give acces to ultrasonic I2C modules SRF-02 connected with I2C pin of your board.
+    """ Give access to ultrasonic I2C modules SRF-02 connected with I2C pin of your board.
         To get more information, go to http://www.robot-electronics.co.uk/htm/srf02techI2C.htm
 
         Example:

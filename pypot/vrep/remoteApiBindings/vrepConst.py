@@ -172,7 +172,7 @@ sim_message_eventcallback_abouttoundo                 =0x118   # the undo button
 sim_message_eventcallback_undoperformed                 =0x119   # the undo button was hit and a previous state restored 
 sim_message_eventcallback_abouttoredo                 =0x11a   # the redo button was hit and a future state is about to be restored  
 sim_message_eventcallback_redoperformed                 =0x11b   # the redo button was hit and a future state restored  
-sim_message_eventcallback_scripticondblclick         =0x11c   # scipt icon was double clicked.  (aux[0]=object handle associated with script set replyData[0] to 1 if script should not be opened)  
+sim_message_eventcallback_scripticondblclick         =0x11c   # script icon was double clicked.  (aux[0]=object handle associated with script set replyData[0] to 1 if script should not be opened)  
 sim_message_eventcallback_simulationabouttostart     =0x11d
 sim_message_eventcallback_simulationended            =0x11e
 sim_message_eventcallback_reserved5                     =0x11f   # do not use 
@@ -198,8 +198,8 @@ sim_objectproperty_reserved1                =0x0000
 sim_objectproperty_reserved2                =0x0001
 sim_objectproperty_reserved3                =0x0002
 sim_objectproperty_reserved4                =0x0003
-sim_objectproperty_reserved5                =0x0004 # formely sim_objectproperty_visible 
-sim_objectproperty_reserved6                =0x0008 # formely sim_objectproperty_wireframe 
+sim_objectproperty_reserved5                =0x0004 # formerly sim_objectproperty_visible 
+sim_objectproperty_reserved6                =0x0008 # formerly sim_objectproperty_wireframe 
 sim_objectproperty_collapsed                =0x0010
 sim_objectproperty_selectable                =0x0020
 sim_objectproperty_reserved7                =0x0040

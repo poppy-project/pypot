@@ -267,7 +267,7 @@ class VrepIO(AbstractIO):
         self._inject_lua_code(lua_code)
 
     def _inject_lua_code(self, lua_code):
-        """ Sends raw lua code and evaluate it wihtout any checking! """
+        """ Sends raw lua code and evaluate it without any checking! """
         msg = (ctypes.c_ubyte * len(lua_code)).from_buffer_copy(lua_code.encode())
         self.call_remote_api('simxWriteStringStream', 'my_lua_code', msg)
 

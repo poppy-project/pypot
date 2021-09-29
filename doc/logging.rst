@@ -19,7 +19,7 @@ Pypot is logging information at all different levels:
 
 Pypot's logging naming convention is following pypot's architecture. Here is the detail of what pypot is logging with the associated logger's name:
 
-* The logger's name **pypot.dynamixel.io** is logging information related to opening/closing port (INFO) and each sent/received package (DEBUG). The communication and timeout error are also logged (WARNING). This logger always provides you the port name, the baudrate and timout of your connection as extra information.
+* The logger's name **pypot.dynamixel.io** is logging information related to opening/closing port (INFO) and each sent/received package (DEBUG). The communication and timeout error are also logged (WARNING). This logger always provides you the port name, the baudrate and timeout of your connection as extra information.
 
 * The logger **pypot.dynamixel.motor** is logging each time a register of a motor is set (DEBUG). The name of the register, the name of the motor and the set value are given in the message.
 
