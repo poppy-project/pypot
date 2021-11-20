@@ -17,7 +17,7 @@ Pypot is also compatible with the [CoppeliaSim simulator](http://www.coppeliarob
 
 ## 🔌 Compatible hardware
 
-**Compatible motors:** MX-106, MX-64, MX-28, MX-12, AX-12, AX-18, RX-24, RX-28, RX-64, XL-320, SR-RH4D, EX-106. Derivated versions are also supported (e.g. MX-28AT, MX-28R, MX-28T, ...). Both protocols v1 and v2 are supported
+**Compatible motors:** MX-106, MX-64, MX-28, MX-12, AX-12, AX-18, RX-24, RX-28, RX-64, XL-320, SR-RH4D, EX-106. Derivated versions are also supported (e.g. MX-28AT, MX-28R, MX-28T, ...). Both protocols v1 and v2 are supported but v2 is used only for XL-320. Use [Herborist](https://github.com/poppy-project/herborist#herborist) to help detect IDs and baudrates of motors.
 
 **Compatible sensors:** Kinect 1, QRCode from RGB camera, sonar, micro-switch from Raspberry Pi GPIO, digital or analog sensor connected to Arduino
 
