@@ -173,11 +173,15 @@ dynamixelModels = {
     350: 'XL-320',  # 94 + (1<<8)
     400: 'SR-RH4D',
     401: 'SR-RH4D',  # Virtual motor
+    16897: 'USB2AX'
 }
 
 
 def dxl_to_model(value, dummy=None):
-    return dynamixelModels[value]
+    try:
+        return dynamixelModels[value]
+    except KeyError:
+        return 'Unknown model number {}'.format(value)
 # MARK: - Drive Mode
 
 
