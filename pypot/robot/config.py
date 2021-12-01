@@ -162,6 +162,7 @@ def sensor_from_confignode(config, s_name, robot):
 
 def dxl_io_from_confignode(config, c_params, ids, strict):
     port = c_params['port']
+    baudrate = c_params["baudrate"] if "baudrate" in c_params else 1000000
 
     if port == 'auto':
         port = pypot.dynamixel.find_port(ids, strict)
@@ -184,6 +185,7 @@ def dxl_io_from_confignode(config, c_params, ids, strict):
                 else pypot.dynamixel.io.DxlIO)
 
     dxl_io = DxlIOCls(port=port,
+                      baudrate=baudrate,
                       use_sync_read=sync_read,
                       error_handler_cls=handler)
 
