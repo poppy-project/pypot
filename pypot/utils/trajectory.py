@@ -1,7 +1,7 @@
 
 
 import numpy
-import collections
+import collections.abc
 
 import pypot.utils.pypot_time as time
 from ..utils.stoppablethread import StoppableLoopThread
@@ -42,7 +42,7 @@ class MinimumJerkTrajectory(object):
         return self._mygenerator[-1](t)
 
     def domain(self, x):
-        if not isinstance(x, collections.Iterable):
+        if not isinstance(x, collections.abc.Iterable):
             x = numpy.array([x])
 
         return numpy.array([
@@ -54,7 +54,7 @@ class MinimumJerkTrajectory(object):
         return [((numpy.array(x) >= self.durations[i])) for i in range(len(self.durations) - 1)]
 
     def fix_input(self, x):
-        return x if isinstance(x, collections.Iterable) else numpy.array([0, x])
+        return x if isinstance(x, collections.abc.Iterable) else numpy.array([0, x])
 
     def get_generator(self):
         return lambda x: numpy.piecewise(x, self.domain(x), [self._generators[j] for j in range(len(self._generators))] + [self.finals[-1]])
