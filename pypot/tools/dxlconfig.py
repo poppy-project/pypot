@@ -57,7 +57,8 @@ def main():
                         help='Set new angle limit.')
     parser.add_argument('--goto-zero', action='store_true',
                         help='Go to zero position after configuring the motor')
-
+    parser.add_argument('--timeout', type=int, default=2,
+                        help='Timeout for the motor config (seconds)')
     args = parser.parse_args()
 
     check(1 <= args.id <= 253,
@@ -75,7 +76,7 @@ def main():
     if protocol == 1:
         print("Using protocol 1...")
         for br in [57600, 1000000]:
-            with DxlIO(serial_port, baudrate=br) as io:
+            with DxlIO(serial_port, baudrate=br, timeout=0.01) as io:
                 io.factory_reset()
     else:
         print("Using protocol 2...")
@@ -87,7 +88,7 @@ def main():
 
     # Wait for the motor to "reboot..."
     for _ in range(10):
-        with DxlIOPort(serial_port, baudrate=factory_baudrate) as io:
+        with DxlIOPort(serial_port, baudrate=factory_baudrate, timeout=args.timeout) as io:
             if io.ping(1):
                 break
 
@@ -101,7 +102,7 @@ def main():
     # Switch to 1M bauds
     if args.type.startswith('MX') or args.type.startswith('SR'):
         print('Changing to 1M bauds...')
-        with DxlIO(serial_port, baudrate=factory_baudrate) as io:
+        with DxlIO(serial_port, baudrate=factory_baudrate, timeout=args.timeout) as io:
             io.change_baudrate({1: 1000000})
 
         time.sleep(.5)
@@ -110,7 +111,7 @@ def main():
     # Change id
     print('Changing id to {}...'.format(args.id))
     if args.id != 1:
-        with DxlIOPort(serial_port) as io:
+        with DxlIOPort(serial_port, timeout=args.timeout) as io:
             io.change_id({1: args.id})
 
             time.sleep(.5)
@@ -121,7 +122,7 @@ def main():
     # Set return delay time
     if args.return_delay_time is not None:
         print('Changing return delay time to {}...'.format(args.return_delay_time))
-        with DxlIOPort(serial_port) as io:
+        with DxlIOPort(serial_port, timeout=args.timeout) as io:
             io.set_return_delay_time({args.id: args.return_delay_time})
 
             time.sleep(.5)
@@ -132,7 +133,7 @@ def main():
     # Set wheel Mode
     if args.wheel_mode == True:
         print('Set wheel mode')
-        with DxlIOPort(serial_port) as io:
+        with DxlIOPort(serial_port, timeout=args.timeout) as io:
             io.set_control_mode({args.id :'wheel'})
 
             time.sleep(.5)
@@ -144,7 +145,7 @@ def main():
     # Set Angle Limit
     if args.angle_limit is not None:
         print('Changing angle limit to {}...'.format(args.angle_limit))
-        with DxlIOPort(serial_port) as io:
+        with DxlIOPort(serial_port, timeout=args.timeout) as io:
             io.set_angle_limit({args.id: args.angle_limit})
 
             time.sleep(.5)
@@ -157,7 +158,7 @@ def main():
     # GOTO ZERO
     if args.goto_zero:
         print('Going to position 0...')
-        with DxlIOPort(serial_port) as io:
+        with DxlIOPort(serial_port, timeout=args.timeout) as io:
             io.set_moving_speed({args.id: 100.0})
             io.set_goal_position({args.id: 0.0})
 
